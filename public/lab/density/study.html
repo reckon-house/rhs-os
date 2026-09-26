@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Study panel · density · Reckon*House</title>
+<!-- ── THE STUDY PANEL, ON ITS OWN (27 Sept 2026) ──────────────────────
+     A test bench for study-panel.js, shaped like the Cross-reference: the
+     left half is blank paper standing in for the index, the right half is
+     the stage, and the stage holds one room. The room is the study named
+     in the address (study.html#arc). The list on the left steps through
+     all thirty, newest first, the way the Cross-reference's Work column
+     runs; Next at the foot of a room goes to the one below it.
+
+     Nothing here is the design. It only sizes the stage the way the
+     Cross-reference will (half the glass, scrolling on its own) so the
+     room can be judged at the size it will live at. On a phone the whole
+     screen is the stage and the list follows under it. -->
+<link rel="stylesheet" href="/lab/density/density.css">
+<link rel="stylesheet" href="/lab/density/study-panel.css">
+<style>
+  html, body { height: 100%; }
+  body { overflow: hidden; }
+  #left { position: fixed; left: 0; top: 0; bottom: 0; width: 50vw; padding: 22px 28px; overflow-y: auto; }
+  #mark { display: block; width: max-content; font-size: 17px; }
+  #list { position: absolute; left: 28px; bottom: 22px; columns: 2; column-gap: 28px; width: min(420px, calc(100% - 56px)); font-size: 11.5px; line-height: 1.5; }
+  #list a { display: flex; justify-content: space-between; gap: 12px; color: var(--grey); break-inside: avoid; }
+  #list a span:last-child { font-variant-numeric: tabular-nums; }
+  #list a:hover, #list a.on { color: var(--ink); }
+  #list a.on span:first-child { text-decoration: underline; text-underline-offset: 0.2em; }
+  #stage { position: fixed; top: 0; right: 0; bottom: 0; width: 50vw; overflow-y: auto; overflow-x: hidden; overscroll-behavior: contain; border-left: 1px solid var(--hair); }
+  @media (max-width: 760px) {
+    html, body { height: auto; }
+    body { overflow: auto; }
+    #stage { position: relative; width: 100%; height: 100svh; border: 0; }
+    #left { position: static; width: auto; padding: 28px 16px 40px; border-top: 1px solid var(--hair); }
+    #list { position: static; width: auto; margin-top: 20px; }
+  }
+</style>
+</head>
+<body>
+<div id="stage"></div>
+<div id="left">
+  <a id="mark" class="mark" href="/lab/density/">Reckon<i>*</i>House</a>
+  <nav id="list" aria-label="Studies"></nav>
+</div>
+<script src="/lab/density/fragments.js"></script>
+<script src="/lab/density/density.js"></script>
+<script src="/lab/density/study-panel.js"></script>
+<script>
+  (() => {
+    const D = window.D, stage = document.getElementById("stage"), list = document.getElementById("list");
+    const ORDER = D.studies.map((s, i) => [s, i]).sort((a, b) => b[0].y - a[0].y || a[1] - b[1]).map((x) => x[0]);
+    ORDER.forEach((s) => {
+      const a = document.createElement("a"); a.href = "#" + s.k; a.dataset.k = s.k;
+      a.innerHTML = "<span>" + D.esc(D.title(s.k)) + "</span><span>" + s.y + "</span>";
+      list.appendChild(a);
+    });
+    let room = null;
+    const show = () => {
+      const k = decodeURIComponent(location.hash.slice(1)) || "arc";
+      if (room) room.destroy();
+      const i = ORDER.findIndex((s) => s.k === k);
+      const nx = i < 0 ? null : ORDER[(i + 1) % ORDER.length];
+      room = StudyPanel.render(stage, k, {
+        next: nx ? { k: nx.k, t: D.title(nx.k) } : null,
+        onNext: (nk) => { location.hash = nk; },
+        onClose: () => { if (room) room.destroy(); room = null; window.ROOM = null; list.querySelectorAll("a").forEach((a) => a.classList.remove("on")); },
+      });
+      window.ROOM = room;
+      list.querySelectorAll("a").forEach((a) => a.classList.toggle("on", a.dataset.k === k));
+    };
+    addEventListener("hashchange", show);
+    show();
+  })();
+</script>
+</body>
+</html>

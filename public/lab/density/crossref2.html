@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Cross-reference two · density · Reckon*House</title>
+<!-- ── CROSS-REFERENCE TWO (27 Sept 2026) ───────────────────────────────
+     He picked the Cross-reference (crossref.html, left untouched so the
+     two can be compared) and asked for two things. On the look: "push the
+     editorial feel there - more images". On the reach: "on a category what
+     if it's a grid of those projects a user could select - let's say it's
+     ARC - user clicks and the options unload/animate out and ARC
+     animates/loads in. maybe we never have to actually leave this one
+     page if the right side loads all the case studies."
+
+     So the right half is now a stage with three depths, and the index on
+     the left never moves.
+
+     Hover, as before: rest on an entry and what shares a study stays in
+     ink, hairlines run from each related entry to the focus. What changed
+     is the focus. Where an entry holds pictures it sets a cluster, not a
+     single picture: one large at its honest size and two or three smaller
+     ones set with air, each captioned with its study and year. A study
+     leads with its board picture and three of its own; a line sets four of
+     its studies on its own colour with its name under them; a year its
+     rooms over the numeral; a capability the pictures whose own
+     description names it; a tool the sentence that names it under the
+     studies that use it. The wheel, the arrow keys or a swipe still step
+     through the rest of what the entry holds, four pictures at a time.
+     Figures and sentences stay type.
+
+     Click, and the stage opens. A line, a year, a capability, a tool, a
+     figure or an About section opens a shelf: the studies it touches, each
+     as the picture the board uses for it, set as an editorial page rather
+     than a card grid. The first is large with its two-tone lead (the
+     board's own sentence in ink, the rest in grey), then pairs at one
+     height, uneven pairs, a row of three, a picture set to one side with
+     its lead beside it. A line's shelf sits on the line's colour, a
+     figure's on black. Hover a picture and the index lights what that
+     study holds, with a hairline from each entry to the picture; hover an
+     entry and the shelf keeps only the studies it touches, wired to it.
+
+     Click a picture (or a study in Work, or a picture in the focus) and
+     the study opens in place. The other pictures drop away, the chosen one
+     flies into the room's cover, and the room is composed there by
+     study-panel.js from the study's own fragments, so all thirty exist
+     without anyone making them. The room scrolls on its own. While it is
+     open the index is its spec sheet: what the study holds stays in ink,
+     the rest goes grey, and its name in Work is set solid. Rest on an
+     entry the room holds (a figure, a tool, a service, a year, a line)
+     and the room scrolls to where that fragment sits, underlines it, and
+     a hairline runs from the entry to it. Next, at the foot, flies the
+     next study's small cover up into the next room, in the shelf's order.
+
+     Close, at the top of the stage, or Escape, goes back one depth: a
+     room to its shelf, the cover flying back into its place as the other
+     pictures rise again; a shelf to rest. Each depth has an address
+     (#line/digital, #year/2024, #cap/..., #tool/..., #fig/...,
+     #about/..., #study/arc), so the back button steps through them and a
+     link opens straight onto one.
+
+     Type: Avenir Next only, his call for this round. Everything the first
+     version set in Ogg (figures, sentences, line names, years, his
+     statement) is set the way the board sets big type: 700, 800 for the
+     largest figures, tracking tightened as it grows.
+
+     On a phone the index and its band behave as before (a tap is the
+     hover); a second tap, or a tap on a picture in the band, raises the
+     stage as a sheet over the page, with Close at the top.
+
+     The index in three hierarchies (27 Sept 2026). He looked at the index
+     as one size of type everywhere and asked for "some visual hierarchy",
+     the lines large and leading, sizes stepping down, "maybe there are
+     some thumbnails worked in for projects too". Three answers, chosen by
+     the address (?index=a, b, c) or by the letters at the foot of the
+     index, A by default. A is three sizes: the lines large with a strip
+     of their studies' pictures at the height of their capitals, Work as a
+     contact sheet, the figures bold, the rest as fine print. B is his
+     idea as he said it, each section a step smaller than the one before,
+     with Work running on as a paragraph and each study's picture set in
+     the line like a word. C lets the pictures lead: the lines as large
+     words in their own colours, every study's picture in one grid, fine
+     print under it. The index now scrolls in its own half while the
+     stage stays put. The lists are cleaner in all three: a capability or
+     tool spelled two ways is one entry, and a figure with no unit and no
+     noun ("0", "1.0x") leaves the index for its study.
+
+     The markup is only the frame; crossref2.js reads everything from
+     fragments.js, and crossref2.css holds the look. -->
+<link rel="stylesheet" href="/lab/density/density.css">
+<link rel="stylesheet" href="/lab/density/study-panel.css">
+<link rel="stylesheet" href="/lab/density/crossref2.css">
+<script>if (innerWidth <= 760) document.documentElement.classList.add("stack");
+document.documentElement.dataset.ix = ((/[?&]index=([abc])\b/i.exec(location.search) || [0, "a"])[1]).toLowerCase();</script>
+</head>
+<body>
+<a id="mark" class="mark" href="/">Reckon<i>*</i>House</a>
+<div id="field"></div>
+<section id="focus" aria-live="polite"></section>
+<nav id="idx" aria-label="Index"></nav>
+<div id="stage" aria-live="polite"></div>
+<svg id="wires" aria-hidden="true"></svg>
+<script src="/lab/density/fragments.js"></script>
+<script src="/lab/density/density.js"></script>
+<script src="/lab/density/study-panel.js"></script>
+<script src="/lab/density/crossref2.js"></script>
+</body>
+</html>

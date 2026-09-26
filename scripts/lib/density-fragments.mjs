@@ -143,11 +143,17 @@ for (const s of Object.values(H.studies)) {
         facts.forEach(([label, value]) => add(k, "fact", { label: clean(label), value: clean(value), where }));
         break;
       }
-      case "section-header":
-        head = clean(sec.title);
-        add(k, "line", { text: head, weight: "head", label: clean(sec.label), where });
+      case "section-header": {
+        /* a pressing headline is set in two halves: the title in ink and
+           its held last line in grey. The fragment's text is the whole
+           sentence, so every view reads it complete; ink and held keep the
+           halves for a view that sets them two-tone */
+        const held = clean(sec.pressing && sec.pressing.heldLine);
+        head = clean(sec.title + (held ? " " + held : ""));
+        add(k, "line", { text: head, weight: "head", label: clean(sec.label), where, ...(held ? { ink: clean(sec.title), held } : {}) });
         if (sec.subhead) add(k, "line", { text: clean(sec.subhead), weight: "sub", where });
         break;
+      }
       case "editorial-headline": add(k, "line", { text: clean(sec.text || sec.content || sec.headline || ""), weight: "display", where }); break;
       case "text": case "text-right": {
         const big = sec.size === "xl" || sec.size === "subhead" || sec.size === "lg";

@@ -46,7 +46,7 @@
 </head>
 <body>
 <header><a class="mark" href="/">Reckon<i>*</i>House</a>
-  <h1>Six ways to show all of it at once</h1>
+  <h1>Ways to show all of it at once</h1>
   <p class="sub">Density against focus, the whole range of the work, and nothing typed by hand. Every prototype runs on the same pieces, taken from your own files.</p>
 </header>
 
@@ -64,6 +64,7 @@
 
 <section class="read">
   <h2>My read</h2>
+  <p>The Cross-reference, two, is the one to judge now. <span>The rooms are generated from each study's own pieces, so all 30 exist and stay in step with the real studies; a new study gets a room for free.</span></p>
   <p>The Cross-reference is your brief taken literally: the whole practice as one screen of small lists, and one thing large on open paper. <span>It is the one I would build the homepage from.</span></p>
   <p>The Workings is the answer to the work with no picture. <span>Every study on one schedule, so a six-week launch and a ten-year archive share an axis, and Sally OS finally has a shape.</span></p>
   <p>The bigger point is that these are not six sites. <span>They are six ways of looking at one library, and the site could offer them as views: the index to find, the catalogue to read, the map to see the whole career, the workings to see how, a brief to answer a need.</span></p>
@@ -71,6 +72,8 @@
 
 <script>
 const PROTOS = [
+  { id: "crossref2", name: "The Cross-reference, two", design: "Your pick, pushed. The index on the left now has hierarchy, in three versions you switch with A, B and C at its foot: the lines large with strips of their pictures, then Work as a contact sheet, then fine print. The right half composes clusters of pictures on hover, opens shelves of studies laid out like a magazine page, and sets any study as a room: a new case study made from its own pieces, in Avenir Next only.",
+    move: "Click a line and its studies fill the right half on the line's colour. Click a picture and the others drop away while it flies up into the study's cover, and the study builds in and scrolls on its own. While a study is open the index is its spec sheet: rest on a figure or a tool and the study scrolls to where it appears. Close and the back button step out; every state has an address." },
   { id: "crossref", name: "The Cross-reference", design: "The whole practice on the left half of one screen as an index in small type: every study and year, the six lines, About, the years, then every service, tool and figure run in like a tracklist. The right half is open paper that shows one thing large: a picture at an honest size, a figure in Ogg, the sentence that names a tool, a line's colour as a field, or a chart drawn from its numbers.",
     move: "Rest on any entry and everything that shares a study with it stays in ink while the rest goes grey, with hairlines running to the thing in focus. Click to lock, then the wheel or the arrow keys step through everything that entry holds. A second click opens the study." },
   { id: "workings", name: "The Workings", design: "All 30 studies on one screen as a production schedule, one row each on shared axes. Time runs on one scale from a minute to a decade, counts are drawn as squares in the study's palette, then shares, tools and tiny pictures. Most time lanes are empty because most studies state no time, and the page leaves that showing.",

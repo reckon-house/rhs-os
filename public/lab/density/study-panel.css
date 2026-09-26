@@ -1,0 +1,277 @@
+/* ── THE STUDY PANEL: its type and its page (27 Sept 2026) ────────────
+   The room is a magazine page fitted to half a screen, so everything is
+   measured against the panel, not the window: the panel is a size
+   container and the scale below reads its width (cqw). Loads after
+   density.css, which holds the house tokens and the Avenir Next faces.
+
+   His call for this round: Avenir Next only, even for the large type,
+   and no Ogg. The big type is set the way the board sets its own: 600
+   to 800, tight tracking (about -0.05em at display sizes, -0.055em at
+   the largest, -0.03em around 20 to 30px), line-height near 0.9 to 1.
+   Figures go very large, so scale does what the serif used to.
+
+   The vocabulary comes from the pieces he sent back from the Mind and
+   the Brief (26 Sept): weights that change at close sizes (a regular
+   lede, medium body, a short bold line), the two-tone lead, a kicker
+   under a hairline, labels in small grey caps over a bold head, the spec
+   table, swatches with the hex under them, a figure on a black field,
+   and a small picture set beside its text. Ink, paper, one grey. Colour
+   only from the study: its fill under the first pull quote, its palette
+   in the title block, its lines' own squares. */
+
+.sp { container: sp / inline-size; position: relative; min-height: 100%; background: var(--paper); color: var(--ink); font-family: var(--sans);
+  overflow-x: clip; -webkit-font-smoothing: antialiased; --m: 34px; --vh: 800px; --gc: clamp(20px, 3.4cqw, 36px); --grey2: rgba(0, 0, 0, 0.3); }
+.sp *, .sp *::before, .sp *::after { box-sizing: border-box; }
+/* the reset sits under :where() so every class rule below outranks it */
+.sp :where(p, h1, h2, h3, blockquote, figure, dl, dd, ol, ul) { margin: 0; }
+.sp :where(ul, ol) { padding: 0; list-style: none; }
+.sp a { color: inherit; text-decoration: none; }
+.sp-g { color: var(--grey); }
+/* small grey caps: the label voice */
+.sp-caps { font-size: 10.5px; font-weight: 600; letter-spacing: 0.08em; line-height: 1.3; text-transform: uppercase; color: var(--grey); }
+
+/* ── the bar: the study's name once the title has gone, and Close ── */
+.sp-bar { position: sticky; top: 0; height: 0; z-index: 5; }
+.sp-bar-in { position: relative; display: flex; justify-content: space-between; align-items: baseline; gap: 16px; padding: 13px var(--m) 0;
+  color: #fff; mix-blend-mode: difference; font-size: 12px; font-weight: 600; letter-spacing: -0.004em; line-height: 1.2; pointer-events: none; }
+.sp-bar-t { opacity: 0; transition: opacity 0.25s ease; white-space: nowrap; overflow: hidden; text-overflow: clip; }
+.sp.sp-past .sp-bar-t { opacity: 1; }
+/* once the title has gone the bar is a running head on paper, the height
+   the sticky column titles and asides already clear (44px). Set in white
+   with difference it read on the cover, but further down it printed the
+   study's name through figures, heads and paragraphs (27 Sept review) */
+.sp-bar-in::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 40px; background: var(--paper); border-bottom: 1px solid var(--hair); opacity: 0; transition: opacity 0.2s ease; }
+.sp.sp-past .sp-bar-in { color: var(--ink); mix-blend-mode: normal; }
+.sp.sp-past .sp-bar-in::before { opacity: 1; }
+.sp-bar-t, .sp-x { position: relative; }
+.sp.sp-past .sp-x { pointer-events: auto; }
+.sp-x { pointer-events: auto; margin-left: auto; padding: 0; border: 0; background: none; font: inherit; color: inherit; cursor: pointer; }
+.sp-x:focus-visible { outline: 1px solid currentColor; outline-offset: 3px; }
+
+/* ── pictures: edge to edge, no radius ── */
+.sp-pic { position: relative; overflow: hidden; background: rgba(0, 0, 0, 0.045); }
+.sp-pic.alpha { background: var(--cream); }
+.sp-pic img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 0.45s ease; }
+.sp-pic.in img { opacity: 1; }
+
+/* the cover: edge to edge, or at its honest size with air */
+.sp-cover { position: relative; }
+.sp-cover.small { padding: calc(var(--m) + 22px) var(--m) 0; }
+.sp-cside { display: none; }
+.sp-cover.side { display: flex; justify-content: space-between; align-items: flex-end; gap: var(--gc); }
+.sp-cover.side .sp-cside { display: block; min-width: 0; }
+.sp-cover.side .sp-cpic { flex: none; }
+.sp-cside .sp-meta { margin: 0; }
+.sp-cside .sp-lines { flex-direction: column; gap: 1px; margin-top: 10px; }
+.sp-open.sp-bare { display: none; }
+
+/* rows at one height; their width and place are set from the pixels */
+.sp-plates { margin-top: clamp(44px, 9cqw, 88px); }
+.sp-row { display: flex; gap: var(--g, 8px); }
+.sp-row + .sp-row { margin-top: var(--g, 8px); }
+.sp-row > .sp-pic { flex: var(--r) 1 0; min-width: 0; aspect-ratio: var(--ar); }
+.sp-cap { margin-top: 10px; font-size: 11.5px; font-weight: 500; line-height: 1.45; letter-spacing: -0.002em; color: var(--grey); }
+.sp-cap + .sp-row, .sp-one + .sp-row, .sp-row + .sp-one, .sp-one + .sp-one { margin-top: clamp(28px, 5cqw, 44px); }
+.sp-one { position: relative; }
+.sp-one.side .sp-cap { position: absolute; bottom: 0; margin: 0; }
+
+/* ── the head ── */
+.sp-head { padding: clamp(22px, 3.8cqw, 34px) var(--m) 0; }
+.sp-title { font-size: 72px; font-weight: 700; letter-spacing: -0.055em; line-height: 0.9; text-wrap: balance; margin-left: -0.04em; }
+.sp-stand { margin-top: clamp(18px, 3cqw, 28px); max-width: 23em; font-size: clamp(19px, 3.2cqw, 26px); font-weight: 600; letter-spacing: -0.03em; line-height: 1.18; }
+
+/* ── the grid: a rail for small heads and facts, a column for text ── */
+.sp-grid { padding: 0 var(--m); }
+.sp-open { margin: clamp(36px, 7cqw, 64px) var(--m) 0; padding: 12px 0 0; border-top: 1px solid var(--hair); }
+.sp-solo .sp-meta { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 22px; margin: 0; }
+.sp-solo .sp-lines { margin: 0; flex-direction: row; }
+.sp-meta { margin-bottom: 22px; font-size: 12px; font-weight: 600; line-height: 1.45; letter-spacing: -0.004em; }
+.sp-kk { color: var(--grey); }
+.sp-kk .y { color: var(--grey2); margin-left: 0.35em; font-variant-numeric: tabular-nums; }
+.sp-lines { display: flex; flex-wrap: wrap; gap: 2px 14px; margin-top: 6px; }
+.sp-line { white-space: nowrap; }
+.sp-line i { display: inline-block; width: 0.62em; height: 0.62em; margin-right: 0.45em; vertical-align: 0.02em; }
+
+/* body: three weights at close sizes, so the column has a pulse */
+.sp-p { max-width: 34em; margin-bottom: 1.05em; font-size: 15px; font-weight: 500; letter-spacing: -0.006em; line-height: 1.62; }
+.sp-p:last-child { margin-bottom: 0; }
+.sp-ls { max-width: 27em; margin-bottom: 0.9em; font-size: clamp(16.5px, 2.4cqw, 18.5px); font-weight: 400; letter-spacing: -0.012em; line-height: 1.52; }
+.sp-lede { max-width: 25em; margin-bottom: 0.85em; font-size: clamp(18px, 2.8cqw, 21.5px); font-weight: 400; letter-spacing: -0.016em; line-height: 1.44; }
+.sp-col { margin-bottom: 0.6em; font-size: 15.5px; font-weight: 700; letter-spacing: -0.022em; line-height: 1.22; }
+
+@container sp (min-width: 560px) {
+  .sp-grid { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 7fr); column-gap: var(--gc); align-items: start; }
+  .sp-open { padding-left: 0; padding-right: 0; }
+  .sp-rail { grid-column: 1; }
+  .sp-text { grid-column: 2; }
+  .sp-meta { margin: 0.2em 0 0; }
+  .sp-lines { flex-direction: column; gap: 1px; margin-top: 10px; }
+  .sp-col { position: sticky; top: 44px; margin-top: 0.1em; }
+}
+
+/* an item with a title of its own sits under a hairline, like a kicker */
+.sp-run.sp-hasc { padding-top: 12px; border-top: 1px solid var(--hair); margin-left: var(--m); margin-right: var(--m); padding-left: 0; padding-right: 0; }
+.sp-sec > .sp-run.sp-hasc + .sp-run.sp-hasc { margin-top: clamp(28px, 5cqw, 44px); }
+
+/* ── figures: the figure large, the sentence it came from small ── */
+.sp-fm { min-width: 0; }
+.sp-fn { font-size: 120px; font-weight: 700; letter-spacing: -0.055em; line-height: 0.86; white-space: nowrap; margin-left: -0.05em; }
+.sp-fn .sp-g { letter-spacing: -0.04em; }
+.sp-fs { max-width: 25em; margin-top: 0.9em; font-size: 13.5px; font-weight: 500; letter-spacing: -0.004em; line-height: 1.52; }
+.sp-fs b { font-weight: 700; }
+.sp-band { display: grid; gap: clamp(36px, 7cqw, 64px) clamp(18px, 3.4cqw, 36px); margin: clamp(48px, 10cqw, 96px) var(--m) 0; }
+.sp-figs { display: grid; gap: 28px 24px; margin: 2.1em 0 2.2em; }
+.sp-figs:first-child { margin-top: 0.4em; }
+.sp-figs:last-child { margin-bottom: 0; }
+@container sp (min-width: 560px) {
+  .sp-band.n2, .sp-band.n4 { grid-template-columns: 1fr 1fr; align-items: start; }
+  .sp-band.n3 { grid-template-columns: 1fr 1fr; align-items: start; }
+  .sp-band.n3 > :first-child { grid-column: 1 / -1; }
+  .sp-band.sp-stack { grid-template-columns: 1fr; }
+  .sp-figs.n2, .sp-figs.n3 { grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: start; }
+}
+
+/* the black field: the room's one loud figure block. White figures, the
+   label in caps, the sentence in grey, the study small at the foot */
+.sp-black { margin: clamp(56px, 11cqw, 104px) 0 0; padding: clamp(34px, 6.4cqw, 58px) var(--m) clamp(22px, 3.6cqw, 30px); background: #000; color: #fff; }
+.sp-black .sp-band, .sp-black .sp-nums { margin: 0; }
+.sp-black .sp-fn { font-weight: 800; letter-spacing: -0.06em; }
+.sp-black .sp-fs, .sp-black .sp-ns { color: rgba(255, 255, 255, 0.52); }
+.sp-black .sp-fs b { color: #fff; }
+.sp-black .sp-nl { color: #fff; }
+.sp-black .sp-numt { border-color: rgba(255, 255, 255, 0.16); }
+.sp-black .sp-nr { border-color: rgba(255, 255, 255, 0.16); }
+.sp-black .sp-nr .s { color: rgba(255, 255, 255, 0.52); }
+.sp-bcap { margin-top: clamp(40px, 7.4cqw, 68px); font-size: 12px; font-weight: 600; letter-spacing: -0.004em; line-height: 1.3; color: rgba(255, 255, 255, 0.55); }
+.sp-bcap .y { margin-left: 0.35em; color: rgba(255, 255, 255, 0.32); font-variant-numeric: tabular-nums; }
+
+/* ── sections ── */
+.sp-sec { margin-top: clamp(80px, 15cqw, 150px); }
+.sp-kick { margin: 0 var(--m); padding-top: 11px; border-top: 1px solid var(--ink); }
+.sp-h { max-width: 12.5em; margin: clamp(20px, 3.6cqw, 34px) var(--m) 0; font-size: clamp(32px, 6.4cqw, 60px); font-weight: 700; letter-spacing: -0.05em; line-height: 0.96; text-wrap: balance; margin-left: calc(var(--m) - 0.04em); }
+.sp-deck { max-width: 25em; margin: clamp(14px, 2.4cqw, 22px) var(--m) 0; font-size: clamp(18px, 2.9cqw, 23px); font-weight: 600; letter-spacing: -0.03em; line-height: 1.22; }
+.sp-deck.sp-short { font-size: clamp(20px, 3.5cqw, 28px); font-weight: 700; letter-spacing: -0.035em; line-height: 1.1; }
+.sp-sec > .sp-run, .sp-sec > .sp-aside, .sp > .sp-run, .sp > .sp-aside { margin-top: clamp(32px, 6cqw, 56px); }
+.sp-sec > .sp-plates { margin-top: clamp(40px, 8cqw, 76px); }
+.sp-sec > .sp-plates + .sp-run, .sp-sec > .sp-plates + .sp-aside { margin-top: clamp(40px, 8cqw, 76px); }
+
+/* a small or tall picture beside its text */
+.sp-aside { padding: 0 var(--m); }
+.sp-aw { width: min(100%, var(--pw, 100%)); margin-bottom: 24px; }
+.sp-apic { width: 100%; aspect-ratio: var(--ar); }
+.sp-acap { margin-top: 9px; }
+.sp-in-aside { padding: 0; }
+.sp-in-aside.sp-hasc { margin: 0; }
+.sp-in-aside + .sp-in-aside { margin-top: clamp(26px, 4.6cqw, 40px); }
+@container sp (min-width: 560px) {
+  .sp-aside { display: grid; grid-template-columns: var(--pw) minmax(0, 1fr); column-gap: clamp(22px, 4cqw, 40px); align-items: start; }
+  .sp-aside.r { grid-template-columns: minmax(0, 1fr) var(--pw); }
+  .sp-aside.r .sp-aw { order: 2; }
+  .sp-aw { position: sticky; top: 44px; width: auto; margin: 0; }
+  .sp-aside .sp-at { min-width: 0; }
+  .sp-aside .sp-in-aside { display: block; padding: 0; }
+  .sp-aside .sp-in-aside .sp-col { position: static; }
+  .sp-aside .sp-in-aside .sp-p { max-width: 30em; }
+}
+
+/* the pull quote: large, with room around it; the first on the study's fill */
+.sp-pull { margin-top: clamp(80px, 15cqw, 150px); padding: 0 var(--m); }
+.sp-pq { font-size: 64px; font-weight: 700; letter-spacing: -0.052em; line-height: 0.95; text-wrap: balance; margin-left: -0.04em; }
+.sp-field { background: var(--fill); color: var(--fink); padding: clamp(56px, 12cqw, 120px) var(--m) clamp(26px, 4.4cqw, 38px); }
+.sp-field .sp-g { color: inherit; opacity: 0.55; }
+.sp-fcap { margin-top: clamp(56px, 11cqw, 104px); font-size: 12px; font-weight: 600; letter-spacing: -0.004em; opacity: 0.62; }
+.sp-fcap .y { margin-left: 0.35em; opacity: 0.6; }
+.sp-sec > .sp-pull:not(.sp-field) { margin-top: clamp(60px, 11cqw, 110px); }
+.sp-pull:not(.sp-field) .sp-pq { max-width: 11em; }
+.sp-pull.sp-field + .sp-plates { margin-top: 0; }
+.sp-pull:not(.sp-field) + .sp-plates { margin-top: clamp(40px, 8cqw, 76px); }
+
+/* the closing lines */
+.sp-closing { margin: clamp(44px, 8cqw, 76px) var(--m) 0; }
+.sp-closing p { max-width: 17em; margin-bottom: 0.4em; font-size: clamp(22px, 4.3cqw, 38px); font-weight: 700; letter-spacing: -0.042em; line-height: 1.06; }
+.sp-closing p + p { font-weight: 600; font-size: clamp(18px, 2.9cqw, 23px); letter-spacing: -0.03em; line-height: 1.22; max-width: 25em; margin-top: 0.7em; }
+.sp-closing p:last-child { margin-bottom: 0; }
+/* a closing that runs past a couple of lines set at display size was a
+   wall of bold; a long one steps down to the deck's scale and keeps the
+   weight (27 Sept review) */
+.sp-closing p.sp-long { max-width: 23em; font-size: clamp(19px, 3.2cqw, 25px); letter-spacing: -0.03em; line-height: 1.18; }
+
+/* feature cards: items under hairlines */
+.sp-cards { display: grid; gap: 30px 28px; margin: clamp(34px, 6cqw, 56px) var(--m) 0; }
+.sp-card { padding-top: 12px; border-top: 1px solid var(--hair); }
+.sp-card h3 { font-size: 15.5px; font-weight: 700; letter-spacing: -0.022em; line-height: 1.25; }
+.sp-card p { margin-top: 0.5em; font-size: 14px; font-weight: 500; letter-spacing: -0.004em; line-height: 1.55; }
+@container sp (min-width: 560px) { .sp-cards { grid-template-columns: 1fr 1fr; } }
+
+/* stats: four large, the rest as a ruled table */
+.sp-nums { margin: clamp(40px, 8cqw, 76px) var(--m) 0; }
+.sp-numg { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(32px, 6cqw, 54px) clamp(18px, 3.4cqw, 36px); align-items: start; }
+.sp-numg.n1 { grid-template-columns: 1fr; }
+.sp-nl { margin-top: 1.1em; font-size: 10.5px; font-weight: 600; letter-spacing: 0.08em; line-height: 1.3; text-transform: uppercase; }
+.sp-ns { margin-top: 0.35em; font-size: 13px; font-weight: 500; line-height: 1.45; color: var(--grey); }
+.sp-numt { margin-top: clamp(36px, 7cqw, 64px); border-bottom: 1px solid var(--hair); }
+.sp-nr { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 3fr) minmax(0, 5fr); gap: 4px 16px; padding: 9px 0; border-top: 1px solid var(--hair); font-size: 13px; line-height: 1.4; align-items: baseline; }
+.sp-nr .v { font-size: 18px; font-weight: 700; letter-spacing: -0.035em; font-variant-numeric: tabular-nums; }
+.sp-nr .l { font-weight: 600; }
+.sp-nr .s { font-weight: 500; color: var(--grey); }
+@container sp (max-width: 559px) { .sp-nr { grid-template-columns: minmax(0, 2fr) minmax(0, 3fr); } .sp-nr .s { grid-column: 2; } }
+
+/* a chart and a timeline, drawn from their numbers */
+.sp-chart, .sp-steps { margin: clamp(44px, 9cqw, 84px) var(--m) 0; }
+.sp-chart .sp-fn { margin-top: 16px; }
+.sp-bar2 { display: grid; grid-template-columns: 1fr auto; gap: 6px 16px; margin-top: 18px; font-size: 13px; font-weight: 600; letter-spacing: -0.004em; }
+.sp-bar2 + .sp-bar2 { margin-top: 14px; }
+.sp-chart .sp-fn + .sp-bar2 { margin-top: 32px; }
+.sp-bar2 span:last-of-type { font-weight: 500; font-variant-numeric: tabular-nums; }
+.sp-bar2 i { grid-column: 1 / -1; display: block; height: 14px; background: var(--ink); }
+.sp-dur { margin-top: 12px; font-size: clamp(26px, 5.4cqw, 48px); font-weight: 700; letter-spacing: -0.05em; line-height: 1; }
+.sp-stl { display: grid; margin-top: 22px; border-top: 1px solid var(--ink); }
+.sp-stl li { padding: 10px 12px 12px 0; border-bottom: 1px solid var(--hair); font-size: 13px; line-height: 1.35; }
+.sp-stl li b { font-weight: 700; letter-spacing: -0.012em; }
+.sp-stl li span:last-child { display: block; margin-top: 3px; font-weight: 500; color: var(--grey); }
+@container sp (min-width: 560px) { .sp-stl { grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); } .sp-stl li { border-bottom: 0; } }
+
+/* ── the title block: the spec table, the services and stack as lists,
+   the palette as swatches with the hex under them ── */
+.sp-spec { margin: clamp(90px, 16cqw, 160px) var(--m) 0; padding-top: 12px; border-top: 1px solid var(--hair); }
+.sp-spec-h { margin-bottom: clamp(26px, 5cqw, 44px); font-size: 12px; font-weight: 600; letter-spacing: -0.004em; line-height: 1.3; }
+.sp-tb { border-bottom: 1px solid var(--hair); }
+.sp-tr { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 7fr); column-gap: var(--gc); padding: 11px 0 12px; border-top: 1px solid var(--hair); align-items: baseline; }
+.sp-tr dt { padding-top: 0.15em; font-size: 10.5px; font-weight: 600; letter-spacing: 0.08em; line-height: 1.4; text-transform: uppercase; color: var(--grey); overflow-wrap: anywhere; }
+.sp-tr dd { font-size: 14.5px; font-weight: 500; letter-spacing: -0.008em; line-height: 1.45; }
+.sp-tcols { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px var(--gc); margin-top: clamp(34px, 6cqw, 54px); }
+.sp-tcol { padding-top: 11px; border-top: 1px solid var(--hair); }
+.sp-tcol ul { margin-top: 10px; }
+.sp-tcol li { font-size: 14.5px; font-weight: 500; letter-spacing: -0.008em; line-height: 1.45; }
+.sp-palw { margin-top: clamp(40px, 7cqw, 64px); }
+.sp-pal { position: relative; display: grid; grid-template-columns: repeat(var(--n, 5), minmax(0, 132px)); gap: clamp(6px, 1.2cqw, 10px); margin-top: 12px; }
+.sp-sw i { display: block; aspect-ratio: 1; }
+.sp-sw span { display: block; margin-top: 8px; font-size: 10px; font-weight: 600; letter-spacing: 0.07em; line-height: 1.3; text-transform: uppercase; color: var(--grey); font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+.sp-sw span + span { margin-top: 1px; letter-spacing: 0.02em; text-transform: none; font-weight: 500; }
+
+/* ── the foot ── */
+.sp-foot { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 22px 28px; margin: clamp(80px, 14cqw, 130px) var(--m) 0; padding: 12px 0 clamp(32px, 6cqw, 56px); border-top: 1px solid var(--ink); }
+.sp-next { flex: 1 1 60%; display: grid; grid-template-columns: minmax(0, 1fr) auto; column-gap: clamp(16px, 3cqw, 28px); align-items: end; min-width: 0; cursor: pointer; }
+.sp-next .sp-caps { grid-column: 1; align-self: start; margin-bottom: clamp(26px, 5cqw, 44px); }
+.sp-next-t { grid-column: 1; font-size: clamp(30px, 6.6cqw, 62px); font-weight: 700; letter-spacing: -0.05em; line-height: 0.95; text-wrap: balance; transition: color 0.2s ease; margin-left: -0.04em; }
+.sp-next:hover .sp-next-t { color: var(--grey); }
+.sp-next-pic { grid-column: 2; grid-row: 1 / span 2; width: clamp(84px, 19cqw, 170px); aspect-ratio: var(--ar); }
+.sp-full { font-size: 13px; font-weight: 600; letter-spacing: -0.004em; padding-bottom: 1px; border-bottom: 1px solid currentColor; }
+.sp-full:hover { color: var(--grey); }
+
+/* ── marks: what a caller points at, quietly ── */
+.sp .sp-on { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 0.2em; }
+.sp .sp-fm.sp-on, .sp .sp-tr.sp-on, .sp .sp-card.sp-on, .sp .sp-nr.sp-on { text-decoration: none; box-shadow: inset 0 1px 0 var(--ink); }
+.sp .sp-black .sp-fm.sp-on, .sp .sp-black .sp-nr.sp-on { box-shadow: inset 0 1px 0 #fff; }
+.sp .sp-fm.sp-on .sp-fn { text-decoration: underline; text-decoration-thickness: 0.035em; text-underline-offset: 0.1em; }
+.sp .sp-pic.sp-on::after, .sp .sp-pal.sp-on::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 3px; background: var(--ink); }
+.sp .sp-pal.sp-on::after { bottom: -8px; height: 2px; }
+
+/* ── arriving ── */
+@keyframes sp-up { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+.sp-enter .sp-head { animation: sp-up 0.7s var(--ease) 0.05s both; }
+.sp-enter .sp-open { animation: sp-up 0.7s var(--ease) 0.16s both; }
+@media (prefers-reduced-motion: reduce) {
+  .sp-enter .sp-head, .sp-enter .sp-open { animation: none; }
+  .sp-pic img { transition: none; }
+}

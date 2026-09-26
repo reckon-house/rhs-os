@@ -1,0 +1,854 @@
+/* ── THE STUDY PANEL: a case study made for the stage (27 Sept 2026) ──
+   His words, on the Cross-reference: "maybe we never have to actually
+   leave this one page if the right side loads all the case studies. we
+   could do a case study in that space and maybe the case studies are new
+   versions to fit this space and design."
+
+   None of these rooms is made by hand. One editorial template composes
+   every study from its own fragments (fragments.js, through window.D), so
+   all thirty exist at once, stay in step with the real studies, and a new
+   study gets a room the day it gets fragments. Curation can come later as
+   small overrides; LEAD_SAME below is the first and only one.
+
+   How a room is put together, top to bottom. The treatments are the
+   ones he sent back from the Mind and the Brief on 26 Sept ("just ideas
+   to work different sizes and images in - feel editorial"), used as a
+   vocabulary so the page changes pace rather than as a fixed order:
+   - The cover is the board's own lead picture, the one the grid tile
+     shows, so a caller can fly the tile into it. It runs edge to edge
+     when its pixels allow. When they do not, it sits at its honest size,
+     set right, and the kicker moves into the space beside it.
+   - The title, then the study's own subtitle as the board's two-tone
+     lead (the first sentence in ink, the rest in grey), then a hairline
+     and the kicker: the discipline, its year lighter, its lines.
+   - The abstract: its first paragraph a size up in the regular weight,
+     the rest in medium. Any sentence in it that carries a figure moves
+     into a band of figures under it, the figure set large and the
+     sentence small beneath. Every sentence appears once: a figure is
+     lifted out of its paragraph, never copied.
+   - One black field per room: the study's stats when it has three or
+     more, otherwise the abstract's figures. White figures, labels in
+     small caps, the sentence in grey, the study named small at its foot.
+   - The sections in order: the label in small grey caps under a rule,
+     the head, its deck (a short one set as a bold beat of its own), then
+     the paragraphs, the first of them in the regular weight. A column's
+     title sits in the rail under a hairline, beside its text. Stats as
+     figures, the chart and the timeline drawn from their numbers,
+     feature cards under hairlines, and the pull quote. The first pull
+     quote sits on the study's own fill colour; the rest on paper.
+   - Pictures sit where they occur, cut into rows at one height. A row
+     runs edge to edge only when every picture in it can honestly fill
+     that width; otherwise it keeps its native size and is set in turn
+     against the text column, the right margin and the left. A single
+     picture carries its own description as a caption, beside it when it
+     leaves room. A small or tall picture after text goes beside that
+     text, up to three of a section's columns, when the text stands about
+     as tall as the picture.
+   - The reel frames the study opens with (the "meta" pictures) are its
+     overview, not any one section's. The first one or two follow the
+     abstract; the rest are dealt, in order, to the sections that have no
+     picture of their own, so a study that is mostly words still turns
+     pages. Faux Reel has no pictures of its own and reads as text and
+     figures under its board picture.
+   - A title block at the end, like the Brief's: the facts as a table
+     with small grey caps labels, the services and the stack as two
+     lists side by side, the palette as swatches with the hex under
+     each. Then Next and Full study.
+
+   Rules it keeps: nothing on the page is written here (labels like
+   "Next", "Full study" and "Close" are the only words of its own); no em
+   dash reaches the page; no picture shows wider than half its pixels
+   (D.maxCss); pictures load only when they near the view, against the
+   caller's scroll container, thumbnail first; type is Avenir Next only.
+
+   What it cannot do yet. A pressing section's head is only the ink half
+   of its headline ("Most homeowners have never"); the grey half lives in
+   the study file as pressing.heldLine and fragments.js does not carry it,
+   so many heads read unfinished. If the generator ever writes a head as
+   "ink | grey", the second half sets grey here with no change. The lead
+   duplicates in LEAD_SAME were found by comparing thumbnails (27 Sept);
+   a new study whose lead repeats one of its pictures shows it twice until
+   it gets a line there.
+
+       const room = StudyPanel.render(container, "arc", { next: { k, t } | null, onNext(k), onClose() });
+       room.el, room.cover, room.scroller, room.ids
+       room.find(id) -> Element | null     room.mark([ids])     room.destroy()
+       room.scrollTo(id, { smooth }) -> true | false
+       StudyPanel.cover(k) -> { src, w, h, t384, t768 } | null
+
+   The container is the caller's: it sizes it and makes it scroll
+   (overflow-y: auto). The room lays out to the container's width, 390
+   to about 1000px, and rebuilds its rows when that width changes by more
+   than a little. Every fragment it draws carries data-f="<id>".
+*/
+(() => {
+  const D = window.D;
+  if (!D) return;
+
+  /* The board's lead picture is often one of the study's own pictures, or
+     a crop of it. That picture is the cover, so the room does not show it
+     again: its fragment id goes on the cover instead. Measured 27 Sept
+     2026 by comparing each lead with every picture in its study. */
+  const LEAD_SAME = {
+    "nordstrom-personalization": "/case-studies/nordstrom-personalization/nordstrom-personalization-homepage-laptop-mockup-hero.jpg",
+    "jeffrey-ecommerce": "/case-studies/jeffrey-ecommerce/jeffrey-new-york-saint-laurent-shoes-homepage-laptop-hero.jpg",
+    "nordstrom-framework": "/case-studies/nordstrom-framework/nordstrom-framework-on-our-list-phone-turntable.jpg",
+    "amber-shockey-co": "/case-studies/amber-shockey-co/amber-shockey-co-blue-florals-plate-in-wire-rack-hero.jpg",
+    "loved-by-nordstrom": "/case-studies/loved-by-nordstrom/loved-by-nordstrom-ipad-tibi-tiles-held.jpg",
+    "jeffrey-spring": "/case-studies/jeffrey-spring/jeffrey-spring-campaign-homepage-laptop-mockup-hero.jpg",
+    "capitan-boot-co": "/case-studies/capitan-boot-co/capitan-boot-co-western-original-desert-landscape-cattle-skull-logo-prickly-pear-cactus-agave-plants-arid-mountains-branding-campaign.jpg",
+    "nordstrom-beauty": "/case-studies/nordstrom-beauty/nordstrom-beauty-hub-laptop-homepage-mockup.jpg",
+    "hill-country-oak": "/case-studies/hill-country-oak/hill-country-oakworks-billboard-winter-trees-hero.jpg",
+    "j-christianson": "/case-studies/j-christianson/j-christianson-storefront-sign-dot-grid-brown.jpg",
+    "cosmo-prof": "/case-studies/cosmo-prof/cosmo-prof-photography-direction-hair-color-brushes-product-detail-quad-composition.jpg",
+    "you-by-sally": "/case-studies/you-by-sally/you-by-sally-street-display-case-hero.jpg",
+    "fairview-bedroom": "/case-studies/fairview-bedroom/fairview-suite-bedroom-chandelier-fireplace-windows-wide.jpg",
+    "big-bend": "/case-studies/big-bend/hero.jpg",
+    "hill-country-kitchen": "/case-studies/hill-country-kitchen/hill-country-kitchen-island-pendants-marble-wide.jpg",
+    "hill-country-bath": "/case-studies/hill-country-bath/hill-country-bath-vanity-marble-globe-sconces-sage.jpg",
+    "black-white-type": "/case-studies/black-white-type/typography-patterns-the-fancy-poster-wood-surface-lifestyle.jpg",
+    "hill-country-living": "/case-studies/hill-country-living/hill-country-living-cognac-leather-sofa-tweed-armchairs-limestone-fireplace-pendant-chandelier-wide.jpg",
+    "floor-and-decor": "/case-studies/floor-and-decor/urban-southwest-primary-bath-exposed-brick-matte-black-soaking-tub.jpg",
+    "fairview-sitting": "/case-studies/fairview-sitting/fairview-sitting-black-box-beams-stone-fireplace-pampas-grass-architectural-wide.jpg",
+    "fairview-entry": "/case-studies/fairview-entry/hero1.avif",
+    "chalet": "/case-studies/chalet/chalet-living-room-a-frame-glass-doors-malm-fireplace-sputnik-chandelier.jpg",
+    "robert-rodriguez": "/case-studies/robert-rodriguez/neiman-marcus-robert-rodriguez-woman-cream-polka-dot-dress-pink-blazer-orange-yellow-backdrop-storefront-window-display-campaign.jpg",
+    "sally-os": "/case-studies/sally-os/heroes/sally-os-asset-hub-platform-hero.jpg",
+    "dsc": "/case-studies/dsc/dsc-marketing-site-laptop-stool-hero.jpg",
+  };
+
+  const el = (t, c, h) => { const e = document.createElement(t); if (c) e.className = c; if (h != null) e.innerHTML = h; return e; };
+  /* the house rule: no em dash reaches the page. A range keeps its figures
+     with an en dash (2008–2018); anywhere else it becomes a middle dot, as
+     the Cross-reference does */
+  const clean = (s) => String(s == null ? "" : s).replace(/(\d)\s*\u2014\s*(\d)/g, "$1\u2013$2").replace(/\s*\u2014\s*/g, " \u00b7 ");
+  const esc = (s) => D.esc(clean(s));
+  /* a line written "ink | grey" is one sentence in two halves */
+  const halves = (t) => { const s = String(t || ""); const i = s.indexOf(" | "); return i < 0 ? [s, ""] : [s.slice(0, i), s.slice(i + 3)]; };
+  const inkGrey = (t) => { const [a, b] = halves(t); return esc(a) + (b ? ' <span class="sp-g">' + esc(b) + "</span>" : ""); };
+  /* a pressing headline carries its halves (ink, held); the room sets the
+     held line grey, as the study page does */
+  const inkGreyF = (f) => (f.held ? esc(f.ink) + ' <span class="sp-g">' + esc(f.held) + "</span>" : inkGrey(f.text));
+  const ratio = (f) => f.w / f.h;
+
+  /* ── figures inside his sentences: the same pattern the Cross-reference
+     reads its Figures column with. Digits with whatever unit sits on
+     them; a number word with a time unit; a number word of four or more
+     with a count ── */
+  const NUMW = { two: 2, three: 3, four: 4, five: 5, six: 6, seven: 7, eight: 8, nine: 9, ten: 10, eleven: 11, twelve: 12, thirteen: 13, fourteen: 14, fifteen: 15, twenty: 20, thirty: 30 };
+  const TIME = "weeks?|years?|months?|days?|hours?|minutes?";
+  const COUNT = "stores|tools|trainers|programs|categories|materials|marbles|stones|prints|tiles|shapes|collections|logos|setups|photographs|frames|finishes|weights|colorways|providers|applications|channels|locations|rooms|album covers|clients|lockups|feet";
+  const RW = new RegExp("\\b(" + Object.keys(NUMW).join("|") + ")[- ](" + TIME + "|" + COUNT + ")\\b", "gi");
+  const RD = /(?<![A-Za-z0-9'’.\-])(?:Weeks? )?~?\$?\d[\d,]*(?:\.\d+)?(?:[-–]\$?\d[\d,]*(?:\.\d+)?)?(?:%|\+|x\d+|x|KB|MB|ms|fps|M|")?(?:[- ](?:square feet|foot|feet|hours|minutes|weeks|wks|items|stores|store|square|wide|degree|per page|SKUs))?(?![A-Za-z0-9])/g;
+  const figsIn = (text) => {
+    const out = []; let m;
+    const rd = new RegExp(RD.source, "g");
+    while ((m = rd.exec(text))) {
+      const s = m[0].trim().replace(/[,.]+$/, "");
+      if (!s) continue;
+      if (/^\d+$/.test(s)) { const n = +s; if (s.length < 2 || (n >= 2000 && n <= 2030)) continue; }
+      if (/^\d+\.\d+$/.test(s)) continue;
+      out.push({ s, at: m.index });
+    }
+    const rw = new RegExp(RW.source, "gi");
+    while ((m = rw.exec(text))) {
+      const n = NUMW[m[1].toLowerCase()]; const time = new RegExp("^(" + TIME + ")$", "i").test(m[2]);
+      if (time || n >= 4) out.push({ s: m[0], at: m.index });
+    }
+    return out.sort((a, b) => a.at - b.at).map((x) => x.s);
+  };
+  /* the one figure a sentence is set under: a sum or a share first. A
+     sentence with more than three figures is a spec, not a figure, and
+     stays in its paragraph */
+  const pickFig = (f) => {
+    if (!f.num) return null;
+    const fs = figsIn(f.text);
+    if (!fs.length || fs.length > 3) return null;
+    const s = fs.find((x) => /[$%]/.test(x)) || fs[0];
+    if (/"$/.test(s) || /^\d+\.\d+x$/.test(s) || f.text.indexOf(s) < 0) return null;
+    return s;
+  };
+  const withFig = (text, fig) => {
+    const i = text.indexOf(fig);
+    return i < 0 ? esc(text) : esc(text.slice(0, i)) + "<b>" + esc(fig) + "</b>" + esc(text.slice(i + fig.length));
+  };
+
+  /* ── compose: a study's fragments, in its own reading order, sorted into
+     the parts of a room. Nothing is dropped except the Author fact (it is
+     him on every study) and the picture the cover already shows ── */
+  const compose = (k) => {
+    const s = D.study(k); if (!s) return null;
+    const dupSrc = s.lead ? LEAD_SAME[k] || null : null;
+    const M = { k, s, lead: s.lead || null, dup: null, stand: null, abs: [], facts: [], tools: [], palette: null, secs: [], pool: [] };
+    let sec = { open: true, head: null, items: [] }; M.secs.push(sec);
+    for (const f of D.byStudy(k)) {
+      if (f.kind === "palette") { if (!M.palette) M.palette = f; continue; }
+      if (f.kind === "fact") { if (f.label !== "Author") M.facts.push(f); continue; }
+      if (f.kind === "tool") { M.tools.push(f); continue; }
+      if (f.kind === "pic") {
+        if (dupSrc && f.src === dupSrc) { M.dup = f; continue; }
+        if (f.where === "meta") { M.pool.push(f); continue; }
+        sec.items.push({ t: "pic", f }); continue;
+      }
+      if (f.kind === "num" || f.kind === "chart" || f.kind === "steps") { sec.items.push({ t: f.kind, f }); continue; }
+      if (f.kind !== "line") continue;
+      if (f.weight === "sub" && f.where === "meta" && !M.stand) { M.stand = f; continue; }
+      if (f.weight === "body" && f.where === "abstract") { M.abs.push(f); continue; }
+      if (f.weight === "head" && f.where === "section-header") { sec = { head: f, items: [] }; M.secs.push(sec); continue; }
+      if (f.weight === "head") { sec.items.push({ t: f.note ? "card" : "col", f }); continue; }
+      if (f.weight === "display") { sec.items.push({ t: "pull", f }); continue; }
+      if (f.weight === "sub") { sec.items.push({ t: f.where === "closing" ? "closing" : "deck", f }); continue; }
+      sec.items.push({ t: "body", f });
+    }
+    /* the reel: one or two frames after the abstract, the rest dealt to
+       the sections with no picture of their own, set after their first
+       run of text so the section reads words, picture, words */
+    const pool = M.pool.slice();
+    M.openPics = pool.splice(0, pool.length >= 6 ? 2 : 1);
+    const bare = M.secs.filter((x) => !x.open && !x.items.some((i) => i.t === "pic"));
+    if (bare.length && pool.length) {
+      const per = Math.min(3, Math.ceil(pool.length / bare.length));
+      bare.forEach((x) => {
+        const take = pool.splice(0, per); if (!take.length) return;
+        const firstBody = x.items.findIndex((i) => i.t === "body");
+        let at = firstBody < 0 ? -1 : x.items.findIndex((i, j) => j > firstBody && i.t !== "body");
+        const closeAt = x.items.findIndex((i) => i.t === "closing");
+        if (at < 0) at = closeAt < 0 ? x.items.length : closeAt;
+        x.items.splice(at, 0, ...take.map((f) => ({ t: "pic", f, dealt: true })));
+      });
+    }
+    M.openPics = M.openPics.concat(pool);
+    return M;
+  };
+
+  /* ── shape a section's items into blocks: paragraphs joined by their
+     paragraph index, a column's title with its text, consecutive pictures
+     as one group, consecutive stats as one grid ── */
+  const shape = (items, figs) => {
+    const out = []; let run = null, para = null;
+    for (const it of items) {
+      if (it.t === "body") {
+        if (!run) { run = { t: "run", col: null, parts: [] }; out.push(run); para = null; }
+        const fig = figs.take(it.f);
+        if (fig) {
+          const last = run.parts[run.parts.length - 1];
+          if (last && last.t === "figs") last.list.push({ f: it.f, fig }); else run.parts.push({ t: "figs", list: [{ f: it.f, fig }] });
+          para = null; continue;
+        }
+        if (!para || para.pi !== it.f.pi) { para = { t: "p", pi: it.f.pi, lines: [] }; run.parts.push(para); }
+        para.lines.push(it.f); continue;
+      }
+      if (it.t === "col") { run = { t: "run", col: it.f, parts: [] }; out.push(run); para = null; continue; }
+      run = null; para = null;
+      const last = out[out.length - 1];
+      if (it.t === "pic") { if (last && last.t === "pics") last.list.push(it.f); else out.push({ t: "pics", list: [it.f] }); continue; }
+      if (it.t === "num") { if (last && last.t === "nums" && last.si === it.f.si) last.list.push(it.f); else out.push({ t: "nums", si: it.f.si, list: [it.f] }); continue; }
+      if (it.t === "card") { if (last && last.t === "cards") last.list.push(it.f); else out.push({ t: "cards", list: [it.f] }); continue; }
+      if (it.t === "closing") { if (last && last.t === "closing") last.list.push(it.f); else out.push({ t: "closing", list: [it.f] }); continue; }
+      out.push({ t: it.t, f: it.f });
+    }
+    return out;
+  };
+
+  /* ── pictures in rows at one height. A small search over where to break
+     the rows: each row is scored by how far its height sits from a
+     comfortable one (0.45 of the panel), how much air an honest cap
+     leaves, and a few tastes (pairs over quartets, a wide opener edge to
+     edge, transparent and opaque kept apart) ── */
+  const partition = (list, W, V, g) => {
+    const n = list.length, T = W * 0.45, Vc = V * 0.84;
+    const cost = (a, b) => {
+      const ps = list.slice(a, b), m = ps.length;
+      const R = ps.reduce((s, f) => s + ratio(f), 0);
+      const h = (W - g * (m - 1)) / R;
+      const H = Math.min(h, Math.min(...ps.map((f) => f.h / 2)), Vc);
+      let c = Math.pow(Math.log(H / T), 2) + 1.2 * (1 - H / h);
+      if (m === 1 && ratio(ps[0]) < 0.9) c += 0.5;
+      if (m === 3) c += 0.12;
+      if (m === 4) c += 0.4;
+      if (a === 0 && m === 1 && ratio(ps[0]) >= 1.2 && H >= h - 1) c -= 0.25;
+      if (ps.some((f) => f.alpha) && ps.some((f) => !f.alpha)) c += 0.4;
+      return c;
+    };
+    const best = [0], cut = [0];
+    for (let i = 1; i <= n; i++) {
+      best[i] = Infinity;
+      for (let m = 1; m <= Math.min(4, i); m++) { const c = best[i - m] + cost(i - m, i); if (c < best[i]) { best[i] = c; cut[i] = i - m; } }
+    }
+    const rows = []; for (let i = n; i > 0; i = cut[i]) rows.unshift(list.slice(cut[i], i));
+    return rows;
+  };
+
+  /* ── the room ── */
+  const cover = (k) => { const s = D.study(k); return s && s.lead ? { src: s.lead.src, w: s.lead.w, h: s.lead.h, t384: s.lead.t384 || null, t768: s.lead.t768 || null } : null; };
+
+  function render(container, k, opts) {
+    const o = opts || {};
+    const M = compose(k);
+    const root = el("article", "sp sp-enter"); root.dataset.k = k;
+    container.appendChild(root);
+    try { container.scrollTop = 0; } catch (e) { /* a container that cannot scroll */ }
+    const room = { el: root, cover: null, scroller: container, ids: [], destroy, find, mark, scrollTo };
+    if (!M) return room;
+
+    let io = null, ro = null, headIO = null, fontsT = 0, dead = false;
+    let parts = null; /* what layout() needs to reach: rows, asides, fitted type */
+    let builtW = 0;
+
+    /* lazy pictures: nothing loads until it nears the view of the caller's
+       scroll container; then the thumbnail, then the honest rung */
+    const pending = new Map();
+    const loadPic = (box) => {
+      const f = box._f; if (!f || box._loaded) return; box._loaded = true;
+      const w = Math.max(1, box.offsetWidth || box._w || 200);
+      const want = D.rung(f, w);
+      const quick = f.t384 && f.t384 !== want ? f.t384 : null;
+      let pv = null;
+      if (quick) { pv = el("img", "sp-q"); pv.alt = ""; pv.decoding = "async"; pv.src = encodeURI(quick); box.appendChild(pv); }
+      const im = D.img(f, w, { eager: true });
+      im.addEventListener("load", () => { box.classList.add("in"); if (pv) setTimeout(() => pv.remove(), 400); }, { once: true });
+      if (pv) pv.addEventListener("load", () => box.classList.add("in"), { once: true });
+      box.appendChild(im);
+    };
+    const watch = (box, eager) => {
+      if (eager) { loadPic(box); return; }
+      pending.set(box, true); if (io) io.observe(box);
+    };
+    const startIO = () => {
+      if (!("IntersectionObserver" in window)) { pending.forEach((_, b) => loadPic(b)); return; }
+      io = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { io.unobserve(e.target); pending.delete(e.target); loadPic(e.target); } }),
+        { root: container, rootMargin: "40% 0px 60% 0px" });
+      pending.forEach((_, b) => io.observe(b));
+    };
+
+    const ids = [];
+    const tag = (node, f) => { if (f && f.id) { node.dataset.f = f.id; ids.push(f.id); } return node; };
+    const picBox = (f, cls) => {
+      const b = el("div", "sp-pic" + (f.alpha ? " alpha" : "") + (cls ? " " + cls : ""));
+      b._f = f; b.style.setProperty("--ar", f.w + " / " + f.h); b.style.setProperty("--r", ratio(f).toFixed(4));
+      return tag(b, f);
+    };
+
+    /* ── build, for a width. Called again when the panel changes width by
+       more than a little, since where rows break depends on it ── */
+    const build = () => {
+      const W = root.clientWidth || container.clientWidth || 700;
+      const V = container.clientHeight || window.innerHeight || 800;
+      builtW = W;
+      ids.length = 0; pending.clear();
+      const P = { rows: [], asides: [], figs: [], title: null, pulls: [], coverBox: null, coverFrame: null };
+      const s = M.s;
+      const frag = document.createDocumentFragment();
+      const g = Math.max(5, Math.round(W * 0.011));
+      const C = W - 2 * margin(W);
+      const figs = { used: new Set(), n: 0, take(f) {
+        const s2 = pickFig(f); if (!s2) return null;
+        const key = s2.toLowerCase(); if (this.used.has(key) || this.n >= 2) return null;
+        this.used.add(key); this.n++; return s2;
+      } };
+      /* the room's one black field goes to its stats when it has three or
+         more; otherwise to the first group of figures it meets */
+      const statsFirst = M.secs.some((x) => x.items.filter((i) => i.t === "num").length >= 3);
+      let airSide = 0, asideSide = 0, pulled = 0, lede = false, blackDone = false;
+      const blackOr = (node) => {
+        if (blackDone) return node;
+        blackDone = true;
+        const b = el("div", "sp-black"); b.appendChild(node);
+        b.appendChild(el("div", "sp-bcap", esc(D.title(k)) + '<span class="y">' + esc(s.y) + "</span>"));
+        return b;
+      };
+      const AIR = ["t", "r", "l"];
+
+      /* the bar: the study's name once its title has scrolled away, and
+         Close. Set in white with difference, so it reads on any picture */
+      const bar = el("div", "sp-bar");
+      const barIn = el("div", "sp-bar-in");
+      barIn.appendChild(el("span", "sp-bar-t", esc(D.title(k))));
+      if (o.onClose) { const x = el("button", "sp-x", "Close"); x.type = "button"; x.addEventListener("click", () => o.onClose()); barIn.appendChild(x); }
+      bar.appendChild(barIn); frag.appendChild(bar);
+
+      /* the cover */
+      const cv = el("figure", "sp-cover");
+      if (M.lead) {
+        const lf = { src: M.lead.src, w: M.lead.w, h: M.lead.h, t384: M.lead.t384, t768: M.lead.t768, alt: s.t };
+        const box = el("div", "sp-pic sp-cpic"); box._f = lf;
+        if (M.dup) tag(box, M.dup);
+        const side = el("div", "sp-cside"); cv.appendChild(side); P.coverSide = side;
+        cv.appendChild(box); P.coverBox = box; P.coverFrame = cv; P.lead = lf;
+        room.cover = box;
+      }
+      frag.appendChild(cv);
+
+      /* the title, the subtitle, and the quiet facts */
+      const head = el("header", "sp-head");
+      const h1 = el("h1", "sp-title", esc(D.title(k))); head.appendChild(h1); P.title = h1;
+      if (M.stand) head.appendChild(tag(el("p", "sp-stand", inkGrey(M.stand.text)), M.stand));
+      else if (s.fact) head.appendChild(el("p", "sp-stand", esc(s.fact) + (s.rest ? ' <span class="sp-g">' + esc(s.rest) + "</span>" : "")));
+      frag.appendChild(head);
+
+      /* the kicker: the discipline, its year lighter, then its lines */
+      const meta = el("div", "sp-meta");
+      meta.appendChild(el("div", "sp-kk", esc(s.s) + '<span class="y">' + esc(s.y) + "</span>"));
+      const lines = (D.data.lines || []).filter((l) => (s.tags || []).includes(l.tag));
+      if (lines.length) meta.appendChild(el("div", "sp-lines", lines.map((l) => '<span class="sp-line"><i style="background:' + l.color + '"></i>' + esc(l.name) + "</span>").join("")));
+
+      /* the abstract, with its figures lifted into the band */
+      const band = [], absLines = [];
+      M.abs.forEach((f) => {
+        const s2 = band.length < 4 ? pickFig(f) : null;
+        if (s2 && !figs.used.has(s2.toLowerCase())) { figs.used.add(s2.toLowerCase()); band.push({ f, fig: s2 }); }
+        else absLines.push(f);
+      });
+      /* with no abstract, the kicker runs as one line under its hairline */
+      const open = el("section", absLines.length ? "sp-open sp-grid" : "sp-open sp-solo");
+      const rail = el("div", "sp-rail"); rail.appendChild(meta); open.appendChild(rail);
+      if (absLines.length) {
+        const txt = el("div", "sp-text");
+        paras(absLines).forEach((p, i) => txt.appendChild(paraEl(p, i === 0 ? "sp-p sp-lede" : "sp-p")));
+        open.appendChild(txt);
+      }
+      frag.appendChild(open);
+      P.meta = meta; P.rail = rail; P.open = open; P.openBare = !absLines.length;
+      /* on the black field two long figures stack, each the full width,
+         rather than halve each other */
+      if (band.length) frag.appendChild(statsFirst || blackDone ? figBlock(band, "sp-band")
+        : blackOr(figBlock(band, "sp-band" + (band.length === 2 && band.some((x) => x.fig.length > 5) ? " sp-stack" : ""))));
+
+      /* the opening plates, then whatever the study put before its first head */
+      if (M.openPics.length) frag.appendChild(picGroup(M.openPics, "sp-plates sp-first"));
+      M.secs.forEach((sec) => {
+        figs.n = 0; lede = !sec.open;
+        const blocks = asideUp(shape(sec.items, figs));
+        if (sec.open) { blocks.forEach((b) => frag.appendChild(blockEl(b))); return; }
+        const se = el("section", "sp-sec");
+        /* the label as the study writes it, in small grey caps, over the head */
+        se.appendChild(el("div", "sp-kick sp-caps", esc(sec.head.label || "")));
+        /* a head that is only the opening words of the sentence right under
+           it (Faux Reel's "The reel up top is") would read twice; the
+           sentence carries it, under the label (27 Sept review) */
+        const ink = (sec.head.held ? sec.head.ink : halves(sec.head.text)[0]).trim();
+        const firstText = sec.items.find((i) => i.f && i.f.kind === "line" && i.t !== "col" && i.t !== "card");
+        if (!(ink && firstText && firstText.f.text.length > ink.length && firstText.f.text.startsWith(ink))) se.appendChild(tag(el("h2", "sp-h", inkGreyF(sec.head)), sec.head));
+        blocks.forEach((b) => se.appendChild(blockEl(b)));
+        frag.appendChild(se);
+      });
+
+      /* the title block: the study under a hairline, its facts as a
+         table, its services and stack as lists side by side, its palette
+         as swatches with the hex under each */
+      const spec = el("section", "sp-spec");
+      spec.appendChild(el("div", "sp-spec-h sp-kk", esc(D.title(k)) + '<span class="y">' + esc(s.y) + "</span>"));
+      if (M.facts.length) {
+        const tb = el("dl", "sp-tb");
+        M.facts.forEach((f) => { const r = el("div", "sp-tr"); r.appendChild(el("dt", null, esc(f.label))); r.appendChild(el("dd", null, esc(f.value))); tb.appendChild(tag(r, f)); });
+        spec.appendChild(tb);
+      }
+      const byLabel = new Map(); M.tools.forEach((f) => { if (!byLabel.has(f.label)) byLabel.set(f.label, []); byLabel.get(f.label).push(f); });
+      if (byLabel.size) {
+        const cols = el("div", "sp-tcols");
+        byLabel.forEach((list, label) => {
+          const c = el("div", "sp-tcol"); c.appendChild(el("div", "sp-caps", esc(label)));
+          const ul = el("ul"); list.forEach((f) => ul.appendChild(tag(el("li", null, esc(f.value)), f)));
+          c.appendChild(ul); cols.appendChild(c);
+        });
+        spec.appendChild(cols);
+      }
+      if (M.palette && M.palette.colors && M.palette.colors.length) {
+        const pal = el("div", "sp-pal"); pal.style.setProperty("--n", M.palette.colors.length);
+        M.palette.colors.forEach((c) => {
+          const sw = el("div", "sp-sw", '<i style="background:' + esc(c.hex) + '"></i><span>' + esc(String(c.hex).toUpperCase()) + "</span>" + (c.name ? "<span>" + esc(c.name) + "</span>" : ""));
+          pal.appendChild(sw);
+        });
+        const pw = el("div", "sp-palw"); if (M.palette.title) pw.appendChild(el("div", "sp-caps", esc(M.palette.title))); pw.appendChild(tag(pal, M.palette));
+        spec.appendChild(pw);
+      }
+      frag.appendChild(spec);
+
+      /* the foot */
+      const foot = el("footer", "sp-foot");
+      if (o.next && o.next.k && D.study(o.next.k)) {
+        const nk = o.next.k;
+        const a = el("a", "sp-next"); a.href = D.href(nk);
+        a.appendChild(el("span", "sp-caps", "Next"));
+        a.appendChild(el("span", "sp-next-t", esc(o.next.t || D.title(nk))));
+        const nc = cover(nk);
+        if (nc) { const nb = picBox({ src: nc.src, w: nc.w, h: nc.h, t384: nc.t384, t768: nc.t768, alt: "" }, "sp-next-pic"); a.appendChild(nb); watch(nb); }
+        a.addEventListener("click", (ev) => {
+          if (ev.metaKey || ev.ctrlKey || ev.shiftKey || ev.button) return; /* a new tab is still a new tab */
+          if (!o.onNext) return;
+          ev.preventDefault(); o.onNext(nk);
+        });
+        foot.appendChild(a);
+      }
+      const full = el("a", "sp-full", "Full study"); full.href = D.href(k);
+      foot.appendChild(full);
+      frag.appendChild(foot);
+
+      root.replaceChildren(frag);
+      room.ids = ids.slice();
+      parts = P;
+
+      /* ── the builders ── */
+      function paras(list) {
+        const out = []; let p = null;
+        list.forEach((f) => { if (!p || p.pi !== f.pi) { p = { pi: f.pi, lines: [] }; out.push(p); } p.lines.push(f); });
+        return out;
+      }
+      function paraEl(p, cls) {
+        const e = el("p", cls);
+        p.lines.forEach((f, i) => { if (i) e.appendChild(document.createTextNode(" ")); e.appendChild(tag(el("span", null, esc(f.text)), f)); });
+        return e;
+      }
+      function figBlock(list, cls) {
+        const b = el("div", cls + " n" + list.length);
+        list.forEach(({ f, fig }) => {
+          const c = tag(el("div", "sp-fm"), f);
+          const n = el("div", "sp-fn", esc(fig)); c.appendChild(n);
+          c.appendChild(el("p", "sp-fs", withFig(f.text, fig)));
+          b.appendChild(c); P.figs.push({ n, cell: c, group: b });
+        });
+        return b;
+      }
+      function picGroup(list, cls) {
+        const wrap = el("div", cls || "sp-plates");
+        partition(list, W, V, g).forEach((ps) => {
+          const row = el("div", "sp-row n" + ps.length);
+          row.style.setProperty("--g", g + "px");
+          ps.forEach((f) => { const b = picBox(f); row.appendChild(b); watch(b); });
+          const air = AIR[airSide++ % AIR.length];
+          /* a single picture keeps its own words as a caption, under it,
+             or beside it when the picture leaves room on one side */
+          let one = null, cap = null;
+          if (ps.length === 1 && ps[0].alt) {
+            one = el("div", "sp-one"); one.appendChild(row);
+            cap = el("p", "sp-cap", esc(ps[0].alt)); one.appendChild(cap);
+            wrap.appendChild(one);
+          } else wrap.appendChild(row);
+          P.rows.push({ row, ps, air, one, cap });
+        });
+        return wrap;
+      }
+      /* a small or tall picture that follows text goes beside it instead
+         of standing alone in a row of its own. When a group follows, its
+         first picture goes beside and the rest keep their rows. Runs of
+         text in a row (a section's columns) share the one picture, the
+         way a page sets a small plate beside a column of items */
+      /* how tall a run of text will stand at a width: plain arithmetic on
+         its characters, close enough to tell a paragraph from a page */
+      function textH(runs, w) {
+        return runs.reduce((h, r) => h + (r.col ? 34 : 0) + r.parts.reduce((a, p) => {
+          if (p.t !== "p") return a + 150 * p.list.length;
+          const n = p.lines.reduce((c, f) => c + f.text.length + 1, 0);
+          return a + Math.ceil(n / Math.max(20, w / 7.4)) * 24.3 + 16;
+        }, 0) + 30, 0);
+      }
+      function asideUp(blocks) {
+        const out = [];
+        const small = (f) => f.w / 2 < 0.62 * C || ratio(f) < 0.85;
+        blocks.forEach((b) => {
+          const prev = out[out.length - 1];
+          if (b.t === "pics" && prev && prev.t === "run" && W >= 560 && small(b.list[0]) && (b.list.length === 1 || ratio(b.list[0]) < 0.85 || b.list[0].w / 2 < 0.46 * C)) {
+            const f = b.list[0];
+            const runs = [prev];
+            for (let j = out.length - 2; j >= 0 && runs.length < 3 && out[j].t === "run" && out[j].col && runs[0].col; j--) runs.unshift(out[j]);
+            /* only beside text that stands about as tall as the picture:
+               a tall screen next to one short line is mostly a hole */
+            const pw = Math.min(f.w / 2, C * (runs.length > 1 ? 0.4 : 0.44), V * 0.8 * ratio(f));
+            if (pw / ratio(f) > Math.max(textH(runs, C - pw - 30) * 1.9, V * 0.42)) { out.push(b); return; }
+            out.splice(out.length - runs.length, runs.length);
+            out.push({ t: "aside", runs, f });
+            if (b.list.length > 1) out.push({ t: "pics", list: b.list.slice(1) });
+            return;
+          }
+          out.push(b);
+        });
+        return out;
+      }
+      function runEl(run) {
+        const g2 = el("div", "sp-grid sp-run" + (run.col ? " sp-hasc" : ""));
+        const rl = el("div", "sp-rail");
+        if (run.col) rl.appendChild(tag(el("h3", "sp-col", inkGrey(run.col.text)), run.col));
+        g2.appendChild(rl);
+        const t = el("div", "sp-text");
+        run.parts.forEach((p) => {
+          /* the first paragraph of a section is its lede: regular weight,
+             a size up, so the medium body under it reads as a change */
+          if (p.t === "p") { t.appendChild(paraEl(p, lede ? "sp-p sp-ls" : "sp-p")); lede = false; }
+          else t.appendChild(figBlock(p.list, "sp-figs"));
+        });
+        g2.appendChild(t);
+        return g2;
+      }
+      function blockEl(b) {
+        switch (b.t) {
+          case "run": return runEl(b);
+          case "aside": {
+            const a = el("div", "sp-aside " + (asideSide++ % 2 ? "l" : "r"));
+            const pb = picBox(b.f, "sp-apic"); watch(pb);
+            const pw = el("div", "sp-aw"); pw.appendChild(pb); a.appendChild(pw);
+            const at = el("div", "sp-at");
+            b.runs.forEach((run) => { const r = runEl(run); r.classList.add("sp-in-aside"); at.appendChild(r); });
+            a.appendChild(at);
+            P.asides.push({ a, pw, f: b.f, runs: b.runs });
+            return a;
+          }
+          case "pics": return picGroup(b.list);
+          /* a deck that is one short line is set as a bold beat of its own */
+          case "deck": return tag(el("p", "sp-deck" + (b.f.text.length <= 52 && b.f.text.indexOf(" | ") < 0 ? " sp-short" : ""), inkGrey(b.f.text)), b.f);
+          case "pull": {
+            const first = pulled++ === 0;
+            const q = el("blockquote", "sp-pull" + (first ? " sp-field" : ""));
+            if (first) { q.style.setProperty("--fill", s.fill || "#000"); q.style.setProperty("--fink", s.ink || D.ink(s.fill || "#000")); }
+            const t = el("p", "sp-pq", inkGrey(b.f.text)); q.appendChild(t); P.pulls.push(t);
+            if (first) q.appendChild(el("div", "sp-fcap", esc(D.title(k)) + '<span class="y">' + esc(s.y) + "</span>"));
+            return tag(q, b.f);
+          }
+          case "closing": {
+            const c = el("div", "sp-closing");
+            b.list.forEach((f, i) => c.appendChild(tag(el("p", !i && f.text.length > 150 ? "sp-long" : null, inkGrey(f.text)), f)));
+            return c;
+          }
+          case "cards": {
+            const c = el("div", "sp-cards");
+            b.list.forEach((f) => { const d = el("div", "sp-card"); d.appendChild(el("h3", null, esc(f.text))); d.appendChild(el("p", null, esc(f.note))); c.appendChild(tag(d, f)); });
+            return c;
+          }
+          case "nums": {
+            const big = b.list.slice(0, 4), rest = b.list.slice(4);
+            const w = el("div", "sp-nums");
+            const grid = el("div", "sp-numg n" + big.length);
+            big.forEach((f) => {
+              const c = tag(el("div", "sp-fm"), f);
+              const n = el("div", "sp-fn", esc(f.value)); c.appendChild(n);
+              c.appendChild(el("p", "sp-nl", esc(f.label)));
+              if (f.sub) c.appendChild(el("p", "sp-ns", esc(f.sub)));
+              grid.appendChild(c); P.figs.push({ n, cell: c, group: grid });
+            });
+            w.appendChild(grid);
+            if (rest.length) {
+              const tl = el("div", "sp-numt");
+              rest.forEach((f) => { const r = el("div", "sp-nr", '<span class="v">' + esc(f.value) + '</span><span class="l">' + esc(f.label) + '</span><span class="s">' + esc(f.sub || "") + "</span>"); tl.appendChild(tag(r, f)); });
+              w.appendChild(tl);
+            }
+            return blackOr(w);
+          }
+          case "chart": {
+            const f = b.f; const c = el("div", "sp-chart");
+            c.appendChild(el("div", "sp-caps", esc(f.title)));
+            const n = el("div", "sp-fn", esc(f.callout) + (f.suffix ? ' <span class="sp-g">' + esc(f.suffix) + "</span>" : ""));
+            c.appendChild(n); P.figs.push({ n, cell: c, group: c });
+            f.bars.forEach((x) => c.appendChild(el("div", "sp-bar2", '<span>' + esc(x.label) + '</span><span>' + esc(x.value) + '</span><i style="width:' + Math.max(1, x.width) + '%"></i>')));
+            return tag(c, f);
+          }
+          case "steps": {
+            const f = b.f; const c = el("div", "sp-steps");
+            c.appendChild(el("div", "sp-caps", esc(f.title)));
+            if (f.duration) c.appendChild(el("p", "sp-dur", esc(f.duration)));
+            const row = el("ol", "sp-stl");
+            f.steps.forEach((x) => row.appendChild(el("li", null, (x.n ? '<span class="sp-g">' + esc(x.n) + "</span> " : "") + "<b>" + esc(x.title) + "</b>" + (x.note ? "<span>" + esc(x.note) + "</span>" : ""))));
+            c.appendChild(row);
+            return tag(c, f);
+          }
+          default: return el("div");
+        }
+      }
+    };
+
+    /* ── layout: everything that depends on the panel's size and the
+       fonts, done after they settle and again on resize ── */
+    function margin(W) { return Math.round(Math.min(44, Math.max(16, W * 0.046))); }
+    const layout = () => {
+      if (dead || !parts) return;
+      const W = root.clientWidth, V = container.clientHeight || window.innerHeight;
+      if (W < 60) return;
+      const m = margin(W), C = W - 2 * m;
+      root.style.setProperty("--m", m + "px");
+      root.style.setProperty("--vh", V + "px");
+
+      /* the cover: edge to edge if the lead can honestly fill it, cropped
+         to 0.62 of the glass (so the lead shows on arrival) if it is taller; else at its own
+         honest size, with air */
+      if (parts.coverBox) {
+        const f = parts.lead, r = ratio(f), hon = f.w / 2, capH = Math.max(260, Math.round(V * 0.62));
+        const box = parts.coverBox, frame = parts.coverFrame;
+        let side = false;
+        if (hon >= W - 0.5) {
+          frame.classList.remove("small");
+          box.style.width = W + "px"; box.style.height = Math.round(Math.min(W / r, capH)) + "px";
+        } else {
+          frame.classList.add("small");
+          let w = Math.min(hon, C), h = w / r;
+          if (h > capH) { h = capH; w = h * r; }
+          box.style.width = Math.round(w) + "px"; box.style.height = Math.round(h) + "px";
+          /* a small cover leaves a hole beside it. When the hole is wide
+             enough, the cover sets to the right and the kicker (the
+             discipline, the year, the lines) moves into the hole at its
+             foot, the way a magazine opener sets its standfirst */
+          side = W >= 560 && C - w >= 200;
+        }
+        frame.classList.toggle("side", side);
+        const home = side ? parts.coverSide : parts.rail;
+        if (parts.meta.parentNode !== home) home.appendChild(parts.meta);
+        parts.open.classList.toggle("sp-bare", side && parts.openBare);
+        if (!box._loaded) loadPic(box);
+      }
+
+      /* rows: as wide as the panel if every picture can fill it; else at
+         the width their pixels allow, set in turn against the text
+         column, the right margin and the left, so the page keeps moving */
+      const wide = W >= 560, gc = Math.min(36, Math.max(20, W * 0.034));
+      const tx = wide ? m + (C - gc) * 0.3 + gc : m, tw = W - m - tx;
+      parts.rows.forEach((R) => {
+        const n = R.ps.length, g = parseFloat(R.row.style.getPropertyValue("--g")) || 8;
+        const sum = R.ps.reduce((s, f) => s + ratio(f), 0);
+        const Hc = Math.min(Math.min(...R.ps.map((f) => f.h / 2)), V * 0.84);
+        const maxW = Hc * sum + g * (n - 1);
+        let w, ml;
+        if (maxW >= W - 0.5) { w = W; ml = 0; }
+        else if (maxW > C) { w = maxW; ml = (W - w) / 2; }
+        else {
+          w = maxW;
+          if (R.air === "t" && wide) ml = w <= tw + 0.5 ? tx : W - m - w;
+          else ml = R.air === "r" ? W - m - w : m;
+        }
+        R.row.classList.toggle("bleed", w >= W - 0.5);
+        R.row.style.width = Math.floor(w) + "px"; R.row.style.marginLeft = Math.round(ml) + "px";
+        if (R.cap) {
+          const gs = Math.max(18, Math.round(W * 0.03));
+          const right = W - m - (ml + w), left = ml - m;
+          const side = !wide ? null : right >= 190 ? "r" : left >= 190 ? "l" : null;
+          R.one.classList.toggle("side", !!side);
+          R.cap.style.left = R.cap.style.width = R.cap.style.marginLeft = R.cap.style.maxWidth = "";
+          if (side === "r") { R.cap.style.left = Math.round(ml + w + gs) + "px"; R.cap.style.width = Math.min(250, Math.floor(right - gs)) + "px"; }
+          else if (side === "l") { const cw = Math.min(250, Math.floor(left - gs)); R.cap.style.left = Math.round(ml - gs - cw) + "px"; R.cap.style.width = cw + "px"; }
+          else { R.cap.style.marginLeft = Math.max(m, Math.round(ml)) + "px"; R.cap.style.maxWidth = Math.max(240, Math.min(C, Math.floor(w))) + "px"; }
+        }
+      });
+      parts.asides.forEach((A) => {
+        const f = A.f, pw = Math.floor(Math.min(f.w / 2, C * (A.runs.length > 1 ? 0.4 : 0.44), V * 0.8 * ratio(f)));
+        A.a.style.setProperty("--pw", pw + "px");
+      });
+      /* keep what is already loaded asking for the right rung */
+      root.querySelectorAll(".sp-pic img").forEach((im) => { const w = im.parentNode.offsetWidth; if (w) im.sizes = w + "px"; });
+
+      fitType(W);
+    };
+
+    /* the largest size at which a block of type keeps to a number of lines */
+    const fitLines = (node, lo, hi, maxLines) => {
+      const lh = parseFloat(getComputedStyle(node).lineHeight) / parseFloat(getComputedStyle(node).fontSize) || 1;
+      let best = lo;
+      for (let i = 0; i < 12; i++) {
+        const mid = (lo + hi) / 2; node.style.fontSize = mid + "px";
+        const ok = node.scrollWidth <= node.clientWidth + 1 && node.offsetHeight <= mid * lh * maxLines + 2;
+        if (ok) { best = mid; lo = mid; } else hi = mid;
+      }
+      node.style.fontSize = Math.floor(best * 2) / 2 + "px";
+    };
+    const fitType = (W) => {
+      /* the title: big, but under the cover, never over it in weight */
+      if (parts.title) {
+        const t = parts.title, len = t.textContent.length;
+        fitLines(t, Math.max(34, W * 0.07), Math.min(104, W * (len <= 12 ? 0.135 : 0.108)), len > 26 ? 3 : 2);
+      }
+      parts.pulls.forEach((q) => { const len = q.textContent.length; fitLines(q, 22, Math.min(96, W * (len < 50 ? 0.1 : len < 80 ? 0.082 : 0.068)), len < 50 ? 3 : 4); });
+      /* figures: one line each, as large as their cell allows, at three
+         scales: the black field loudest, a band on paper next, a figure
+         inside the text column quietest */
+      parts.figs.forEach(({ n }) => {
+        const cap = n.closest(".sp-black") ? Math.min(300, W * 0.36) : n.closest(".sp-band, .sp-numg, .sp-chart") ? Math.min(210, W * 0.24) : Math.min(96, W * 0.125);
+        n.style.fontSize = "100px"; n.style.whiteSpace = "nowrap";
+        const avail = n.parentNode.clientWidth || W; const w100 = n.scrollWidth || 1;
+        n.style.fontSize = Math.floor(Math.max(28, Math.min(cap, (avail / w100) * 100 * 0.985))) + "px";
+      });
+      /* figures side by side share a size so they read as a set; a band of
+         three leads with its first figure alone, larger */
+      const groups = new Map();
+      parts.figs.forEach((x) => {
+        const gr = x.group; if (!gr.classList.contains("sp-numg") && !gr.classList.contains("sp-band") && !gr.classList.contains("sp-figs")) return;
+        if (gr.classList.contains("sp-band") && gr.classList.contains("n3") && x.cell === gr.firstElementChild) return;
+        if (!groups.has(gr)) groups.set(gr, []); groups.get(gr).push(x);
+      });
+      groups.forEach((list) => { if (list.length < 2 && !list[0].group.classList.contains("sp-numg")) return; const min = Math.min(...list.map((x) => parseFloat(x.n.style.fontSize))); list.forEach((x) => { x.n.style.fontSize = min + "px"; }); });
+      /* the next study's name keeps to its column beside the small cover: a
+         long word ("personalization" on a phone) steps the size down rather
+         than run under the picture (27 Sept review) */
+      const nt = root.querySelector(".sp-next-t");
+      if (nt) {
+        nt.style.fontSize = "";
+        let px = parseFloat(getComputedStyle(nt).fontSize);
+        while (px > 20 && nt.scrollWidth > nt.clientWidth + 1) { px -= 1; nt.style.fontSize = px + "px"; }
+      }
+    };
+
+    build();
+    startIO();
+    layout();
+    if (document.fonts && document.fonts.ready) {
+      Promise.all(["700 100px 'Avenir Next'", "600 20px 'Avenir Next'", "500 15px 'Avenir Next'", "800 100px 'Avenir Next'"].map((f) => document.fonts.load(f).catch(() => null)))
+        .then(() => document.fonts.ready).then(() => { if (!dead) layout(); });
+    }
+
+    /* the bar's name shows once the title has gone */
+    const watchTitle = () => {
+      if (headIO) headIO.disconnect();
+      if (!("IntersectionObserver" in window) || !parts.title) return;
+      headIO = new IntersectionObserver(([e]) => root.classList.toggle("sp-past", !e.isIntersecting && e.boundingClientRect.top < (e.rootBounds ? e.rootBounds.top : 0) + 10), { root: container, threshold: 0 });
+      headIO.observe(parts.title);
+    };
+    watchTitle();
+
+    /* a new width: small changes relayout; a real change rebuilds the rows
+       and keeps the reader where they were */
+    let rzT = 0;
+    if ("ResizeObserver" in window) {
+      ro = new ResizeObserver(() => {
+        cancelAnimationFrame(rzT);
+        rzT = requestAnimationFrame(() => {
+          if (dead) return;
+          const W = root.clientWidth;
+          if (Math.abs(W - builtW) > Math.max(40, builtW * 0.12)) {
+            const anchor = firstInView();
+            if (io) io.disconnect();
+            build(); startIO(); layout(); watchTitle(); markAgain();
+            if (anchor) { const e2 = find(anchor.id); if (e2) container.scrollTop += e2.getBoundingClientRect().top - container.getBoundingClientRect().top - anchor.off; }
+          } else layout();
+        });
+      });
+      ro.observe(container);
+    }
+    const firstInView = () => {
+      const top = container.getBoundingClientRect().top;
+      for (const e of root.querySelectorAll("[data-f]")) { const r = e.getBoundingClientRect(); if (r.bottom > top + 1) return { id: e.dataset.f, off: r.top - top }; }
+      return null;
+    };
+
+    /* the arrival plays once, not again on a rebuild */
+    setTimeout(() => root.classList.remove("sp-enter"), 1400);
+
+    let marked = [];
+    function find(id) { return root.querySelector('[data-f="' + String(id).replace(/"/g, "") + '"]'); }
+    function mark(list) {
+      marked.forEach((e) => e.classList.remove("sp-on"));
+      marked = (list || []).map(find).filter(Boolean);
+      marked.forEach((e) => e.classList.add("sp-on"));
+      room._markIds = (list || []).slice();
+    }
+    function markAgain() { if (room._markIds) mark(room._markIds); }
+    function scrollTo(id, o2) {
+      const e = find(id); if (!e) return false;
+      const top = e.getBoundingClientRect().top - container.getBoundingClientRect().top + container.scrollTop - Math.round(container.clientHeight * 0.18);
+      container.scrollTo({ top: Math.max(0, top), behavior: o2 && o2.smooth ? "smooth" : "auto" });
+      return true;
+    }
+    function destroy() {
+      dead = true;
+      if (io) io.disconnect(); if (ro) ro.disconnect(); if (headIO) headIO.disconnect();
+      clearTimeout(fontsT); cancelAnimationFrame(rzT);
+      root.remove();
+    }
+    return room;
+  }
+
+  window.StudyPanel = { render, cover };
+})();
