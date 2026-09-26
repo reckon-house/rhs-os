@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>The zoom · density · Reckon*House</title>
+<!-- ── DENSITY: THE ZOOM (26 Sept 2026) ────────────────────────────────
+     His ask: "areas of density and feed like construction of content
+     highly contrasted with negative space and focus on something", and
+     "show the scope of all the things i have done and can do". He does
+     not want a system to maintain, and he does not want generic UI.
+
+     The idea: one plane with everything on it, and how close you are
+     changes what a thing is. The unit is the fragment (a sentence, a
+     figure, a picture, a spec line), not the case study. Every study is
+     an island of its own fragments, and the plane is a map.
+
+     The map has two axes, both read off the data:
+       x is the year the study was published.
+       y is the kind of work, from the screen to the room: Apps, Systems,
+         Digital, Campaigns, Branding, Interiors (the board's six lines).
+         A study with several lines sits at the average of them, so
+         A.R.C. (Digital, Branding, Apps, Systems) lands between Systems
+         and Digital, and the rooms sit on the floor of the map.
+     Islands are sized by what they hold. Where two want the same spot
+     the smaller one steps to the nearest free place, a greedy search
+     around its own year and line, no forces, so the map comes out the
+     same every time. About is the map's legend, in the empty corner
+     under the early years; the Daybook sits after the last year. A new
+     study in fragments.js lands on the map by itself.
+
+     Each island sets its words in columns first (its colour tile with
+     the name, the lede, the spec table, the sections, the tools and the
+     palette), then its pictures underneath: a contact sheet of the small
+     ones, then its plates (heroes and full-width images) in bigger rows,
+     so each island runs from dense to open. From far away a study reads
+     as how much of it is words and how much is pictures. Sally OS is
+     grey. West Texas is colour.
+
+     Three distances, one layout:
+       Far: a canvas. Sentences are grey bars, figures are dots, the
+         pictures are tiles in the study's own palette until their
+         thumbnails have come in, names in small type.
+       Middle: still the canvas. Names, heads and figures set in type,
+         thumbnails drawn, body copy still bars. The island you are on
+         stays black; the others go pale.
+       Close: real HTML, built only for what is on the glass. The line
+         breaks were measured once for the canvas, so the bars become
+         the words in the same places.
+     A picture is never shown wider than half its own pixels. Up close
+     a small one stops growing and sits on cream in its box.
+
+     How it moves: the wheel or a pinch zooms around the pointer, a drag
+     pans and glides, a sideways swipe pans. Double-click flies to an
+     island, then into the words where you clicked. Escape flies back out
+     one step. Flights take the zoom-out-then-in path (van Wijk and Nuij)
+     so a long trip reads as travel. From far away, a line's name on the
+     left keeps that line's studies in ink across the years and sets the
+     line's own sentence beside the mark. Index lists every island. Search
+     turns the fragments that match into black fields and fades the rest;
+     Return flies to them. A phone gets the same map laid out tall, with
+     pinch, drag and tap to fly, and up close one column fills the glass.
+
+     Cost: the whole map is on the glass at the start, so every tile asks
+     for its 384px thumbnail, biggest first (about 370 small files). Full
+     files load only up close, and only when a picture is shown wider than
+     its thumbnail can carry.
+
+     Not done: no picture opens bigger than its place on the map (the
+     study page is one click from the colour tile, up close). Tiles show
+     palette colour until their thumbnail arrives. Pictures carry no
+     captions. Where islands crowd, as the 2023 rooms do, some names are
+     left off the far view rather than cut; hovering names them. Ogg is
+     asked for by name (his Mac has it; everyone else sees Georgia).
+     Nothing is remembered between visits except the address. -->
+<link rel="stylesheet" href="/lab/density/density.css">
+<style>
+  html, body { height: 100%; overflow: hidden; overscroll-behavior: none; }
+  body { position: fixed; inset: 0; background: var(--paper); }
+  #stage { position: absolute; inset: 0; overflow: hidden; touch-action: none; cursor: grab; user-select: none; -webkit-user-select: none; }
+  #stage.drag { cursor: grabbing; }
+  #map { position: absolute; left: 0; top: 0; }
+  /* the close layer: real type and real pictures, only what is on the glass */
+  #page { position: absolute; left: 0; top: 0; width: 0; height: 0; transform-origin: 0 0; pointer-events: none; opacity: 0; }
+  #page .b { position: absolute; }
+  #page .r { position: absolute; left: 0; top: 0; white-space: pre; }
+  #page a { pointer-events: auto; -webkit-user-drag: none; }
+  #page a.b:hover .c-tile, #page a.r:hover { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 0.18em; }
+  #page .pic { overflow: hidden; }
+  #page .pic.cream { background: var(--cream); }
+  #page .pic img { position: absolute; left: 0; top: 0; width: 100%; height: 100%; object-fit: cover; -webkit-user-drag: none; opacity: 0; transition: opacity 0.35s ease; }
+  #page .pic img.in { opacity: 1; }
+  #page .sw { position: absolute; }
+  .c-grey { color: var(--grey); }
+  .c-tileg { opacity: 0.62; }
+
+  /* ── the chrome: the mark and where you are, the scale, search, index ── */
+  .chrome { position: fixed; z-index: 20; }
+  #veil { position: fixed; z-index: 15; left: 0; right: 0; top: 0; height: 66px; background: var(--paper); box-shadow: 0 1px 0 var(--hair); opacity: 0; pointer-events: none; }
+  body.tall #veil { height: 52px; }
+  #mast { left: 32px; top: 26px; display: flex; align-items: baseline; gap: 16px; font-size: 17px; pointer-events: none; }
+  #mast .mark { font-size: 17px; pointer-events: auto; }
+  #here { font-size: 15px; font-weight: 600; letter-spacing: -0.02em; white-space: nowrap; }
+  #here i { font-style: normal; color: var(--grey); margin-left: 0.4em; }
+  #tools { right: 32px; top: 26px; display: flex; align-items: baseline; gap: 26px; font-size: 15px; font-weight: 600; letter-spacing: -0.01em; }
+  #scale { color: var(--grey); font-variant-numeric: tabular-nums; min-width: 3.4em; text-align: right; }
+  .find { display: flex; align-items: baseline; gap: 10px; }
+  .find input { width: 150px; padding: 0 0 3px; border: 0; border-bottom: 1px solid var(--hair); border-radius: 0; background: transparent;
+    font: inherit; font-weight: 500; color: var(--ink); outline: none; -webkit-appearance: none; appearance: none; }
+  .find input::placeholder { color: var(--grey); opacity: 1; }
+  .find input:focus { border-bottom-color: var(--ink); }
+  .find input::-webkit-search-cancel-button { display: none; }
+  .find .n { color: var(--grey); font-variant-numeric: tabular-nums; min-width: 1.6em; }
+  #idx, #index .x { padding: 0; border: 0; background: none; font: inherit; cursor: pointer; }
+  #idx:hover, #index .x:hover { color: var(--grey); }
+
+  /* the index: every island in a plain list, a way to fly */
+  #index { position: fixed; z-index: 40; top: 0; right: 0; bottom: 0; width: min(420px, 100vw); padding: 74px 32px 40px; background: var(--paper);
+    box-shadow: -1px 0 0 var(--hair); clip-path: inset(0 0 0 100%); pointer-events: none; transition: clip-path 0.6s var(--ease); overflow: auto; }
+  #index.on { clip-path: inset(0 0 0 0); pointer-events: auto; }
+  #index .x { position: absolute; right: 32px; top: 26px; font-size: 15px; font-weight: 600; }
+  #index .find { display: none; margin: 0 0 26px; font-size: 15px; font-weight: 600; }
+  #index ol { margin: 0; padding: 0; list-style: none; }
+  #index li button { display: flex; width: 100%; align-items: baseline; gap: 12px; padding: 5px 0; border: 0; border-top: 1px solid var(--hair); background: none;
+    font: inherit; font-size: 15px; font-weight: 600; letter-spacing: -0.01em; text-align: left; color: var(--ink); cursor: pointer; }
+  #index li button:hover { color: var(--grey); }
+  #index li button .t { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  #index li button i { font-style: normal; color: var(--grey); font-variant-numeric: tabular-nums; }
+  #index li button .sw { flex: none; width: 9px; height: 9px; align-self: center; }
+  #index li.here button { color: var(--ink); }
+  #index li.here button .t { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 0.2em; }
+
+  /* ── a phone: the mark and the name up top, the index holds search ── */
+  body.tall #mast { left: 16px; top: 18px; gap: 10px; }
+  body.tall #mast .mark { font-size: 16px; }
+  body.tall #here { font-size: 13px; max-width: calc(100vw - 196px); overflow: hidden; text-overflow: ellipsis; }
+  body.tall #here i { display: none; }
+  body.tall #scale { display: none; }
+  body.tall #tools { right: 16px; top: 18px; gap: 14px; font-size: 14px; }
+  body.tall #tools .find { display: none; }
+  body.tall #index { padding: 64px 16px 32px; }
+  body.tall #index .x { right: 16px; top: 18px; }
+  body.tall #index .find { display: flex; }
+  body.tall #index .find input { flex: 1; width: auto; }
+</style>
+</head>
+<body>
+<div id="stage"><canvas id="map"></canvas><div id="page"></div></div>
+<div id="veil" aria-hidden="true"></div>
+<header id="mast" class="chrome"><a class="mark" href="/">Reckon<i>*</i>House</a><span id="here"></span></header>
+<div id="tools" class="chrome">
+  <label class="find"><input id="q" type="search" placeholder="Search" autocomplete="off" spellcheck="false" aria-label="Search"><span class="n" id="qn"></span></label>
+  <span id="scale" aria-label="Scale"></span>
+  <button id="idx" type="button">Index</button>
+</div>
+<aside id="index" aria-label="Index">
+  <button class="x" type="button">Close</button>
+  <label class="find"><input id="q2" type="search" placeholder="Search" autocomplete="off" spellcheck="false" aria-label="Search"><span class="n" id="qn2"></span></label>
+  <ol id="list"></ol>
+</aside>
+<script src="/lab/density/fragments.js"></script>
+<script src="/lab/density/density.js"></script>
+<script src="/lab/density/zoom.js"></script>
+</body>
+</html>

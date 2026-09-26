@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>The Brief · density · Reckon*House</title>
+<!-- ── THE BRIEF (26 Sept 2026) ────────────────────────────────────────
+     His ask, after the scroll concepts read as "just another version of
+     what's been done 1000 times": areas of density and feed-like content,
+     highly contrasted with negative space and a focus on something. Show
+     the scope, a brand and a room and an app and a workflow that has no
+     picture at all, without it becoming generic UI.
+
+     The idea: the site answers a need. One field asks what you are
+     working on (the field only says Search: a question would be copy
+     he never wrote). What you type is counted against his 2,017 fragments
+     (fragments.js), and the page composes a spread from the ones that
+     matched: his best line as the headline, the lead picture as large as
+     its pixels allow, a few more pictures small, his figures set as
+     figures, his steps if there are any, the tools, the studies it came
+     from, and at the foot the way to talk. Nothing on it is written for
+     it. Every sentence, figure and name is his, from the data.
+
+     How it works. The ranking is D.search: plain counting, with the
+     board's six lines as synonyms. Once it knows the studies, the spread
+     may draw on the rest of their fragments, ranked below what matched.
+     Then it picks one of four compositions from what it found (the rules
+     are a few lines in compose(), in brief.js):
+     - Pictures: the lead picture bleeds off the right when its pixels
+       allow, or sits at its honest size with air around it when they
+       do not. The headline holds the left, small pictures under it.
+     - Figures: a field in the lead study's own colour (from its palette)
+       holds his numbers, the first one as large as the field allows.
+     - Process: the headline, then his steps across the full width, or a
+       column of his lines under one head, numbered, or the daybook.
+     - Sparse: one line, very large, and almost nothing else.
+     "a kitchen" finds pictures, "insurance" and "workflow" find figures,
+     "operating model" finds a process, "a tinkerer" finds one sentence.
+
+     Under the spread sits the catalogue: every other fragment the need
+     matched, dense, in seven columns, a picture every few pieces. That
+     is the density; the spread is the negative space. Click anything,
+     on the spread or in the catalogue, and the page recomposes around
+     it: a picture becomes the lead, a line the headline, a figure the
+     field's first number. Pieces in both spreads travel to their new
+     places; new ones wipe in. The trail in the bar names each step, the
+     address keeps it (#q=, #l=, #s=, #f=), so a spread can be sent. Enter
+     in the field starts again from the need; Escape or Close goes back.
+     Captions and Close over a bled picture take the ink that reads on
+     the part of the picture under them.
+
+     Later, the site's own Ask (/api/ask, a model) could choose the
+     fragments instead of the counting. The spread would not change: it
+     takes a ranked pool, whoever ranked it. This page does not call it.
+
+     Not done: the counting is literal, so a need in words he never used
+     finds little and gets the sparse spread ("packaging" finds one
+     daybook entry). Only A.R.C. has real steps and a chart, so other
+     process spreads use a column of his lines. The compositions are
+     tuned at 1512x770 and 390x844, and checked for collisions at
+     1024x640, 1280x720 and 1920x1080. The catalogue shows the first 96
+     matches. Ogg is his installed copy, asked for by name; anyone
+     without it sees Georgia. -->
+<link rel="stylesheet" href="/lab/density/density.css">
+<link rel="stylesheet" href="/lab/density/brief.css">
+</head>
+<body class="ask">
+<header id="bar">
+  <a class="mark" href="/">Reckon<i>*</i>House</a>
+  <ul id="trail"></ul>
+  <button id="close" type="button">Close</button>
+  <p id="stock"></p>
+</header>
+<textarea id="q" rows="1" placeholder="Search" aria-label="Search" spellcheck="false" autocomplete="off" enterkeyhint="go"></textarea>
+<button id="go" type="button">Return</button>
+<main>
+  <section id="ask">
+    <ul class="lines" id="lines"></ul>
+    <ul class="needs" id="needs"></ul>
+    <div id="strip"></div>
+    <nav id="index"><header></header><ol></ol></nav>
+  </section>
+  <section id="spread"></section>
+  <section id="cat"></section>
+</main>
+<script src="/lab/density/fragments.js"></script>
+<script src="/lab/density/density.js"></script>
+<script src="/lab/density/brief.js"></script>
+</body>
+</html>

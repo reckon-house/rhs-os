@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Density · Reckon*House</title>
+<!-- ── DENSITY: THE INDEX (26 Sept 2026) ──────────────────────────────
+     His brief, after the scroll concepts: "i see areas of density and
+     feed like construction of content highly contrasted with negative
+     space and focus on something", the whole range of the work including
+     "a workflow ... that has no real 'visual'", a system that updates
+     itself, and "not some generic UI". Then: "let's maybe build like a
+     handful of prototypes and see if something lands".
+
+     Six prototypes, each live in a frame at his laptop's size. All six
+     read the same 2,017 fragments (fragments.js, made from the study data
+     files, the About draft and the daybook), so what differs between
+     them is only the idea. The words on this page are notes to him, not
+     site copy. -->
+<link rel="stylesheet" href="/lab/density/density.css">
+<style>
+  :root { --gut: 50px; }
+  header { padding: 44px var(--gut) 0; }
+  header .mark { font-size: 24px; }
+  h1 { margin: 14vh 0 0; max-width: 17ch; font-size: 5vw; font-weight: 600; letter-spacing: -0.05em; line-height: 1.02; }
+  .sub { margin: 26px 0 0; max-width: 46ch; font-size: 20px; font-weight: 600; letter-spacing: -0.03em; line-height: 1.3; color: var(--grey); }
+  section { padding: 14vh var(--gut) 0; }
+  h2 { margin: 0 0 30px; font-size: 24px; font-weight: 700; letter-spacing: -0.05em; line-height: 1.2; }
+  .idea p { margin: 0 0 16px; max-width: 46em; font-size: 20px; font-weight: 600; letter-spacing: -0.03em; line-height: 1.35; }
+  .idea p span { color: var(--grey); }
+  .cards { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12vh 3vw; }
+  .card .frame { position: relative; width: 100%; overflow: hidden; background: var(--cream); box-shadow: 0 0 0 1px var(--hair); }
+  .card iframe { position: absolute; left: 0; top: 0; width: 1512px; height: 770px; border: 0; transform-origin: 0 0; }
+  .card h3 { margin: 22px 0 4px; font-size: 24px; font-weight: 700; letter-spacing: -0.05em; line-height: 1.2; display: flex; justify-content: space-between; align-items: baseline; gap: 16px; }
+  .card h3 a { font-size: 12px; font-weight: 600; color: var(--grey); white-space: nowrap; transition: color 0.3s ease; }
+  .card h3 a:hover { color: var(--ink); }
+  .card dl { margin: 14px 0 0; display: grid; grid-template-columns: 7.5em minmax(0, 1fr); gap: 10px 18px; font-size: 15px; font-weight: 500; letter-spacing: -0.01em; line-height: 1.5; }
+  .card dt { font-size: 12px; font-weight: 600; color: var(--grey); padding-top: 2px; }
+  .card dd { margin: 0; }
+  .read { padding-bottom: 20vh; }
+  .read p { margin: 0 0 16px; max-width: 46em; font-size: 20px; font-weight: 600; letter-spacing: -0.03em; line-height: 1.35; }
+  .read p span { color: var(--grey); }
+  @media (max-width: 900px) { .cards { grid-template-columns: 1fr; } h1 { font-size: 10vw; } :root { --gut: 20px; } }
+</style>
+</head>
+<body>
+<header><a class="mark" href="/">Reckon<i>*</i>House</a>
+  <h1>Six ways to show all of it at once</h1>
+  <p class="sub">Density against focus, the whole range of the work, and nothing typed by hand. Every prototype runs on the same pieces, taken from your own files.</p>
+</header>
+
+<section class="idea">
+  <h2>The idea under all six</h2>
+  <p>The unit is a fragment, not a case study. <span>A picture, a sentence, a figure, a spec line, a tool, a palette, a day from the daybook. The 30 studies, your About draft and the daybook come apart into 2,017 of them, made by a script from the files the site already has.</span></p>
+  <p>So the site updates itself. <span>Add a study and its pieces join every view. What you curate is the rules each view lays pieces out by, plus a few moments you pick by hand.</span></p>
+  <p>And the work with no picture stops being a gap. <span>A figure, a before and after, a stated time or a run of steps is a piece too, and each view gives it a form.</span></p>
+</section>
+
+<section>
+  <h2>The prototypes</h2>
+  <div class="cards" id="cards"></div>
+</section>
+
+<section class="read">
+  <h2>My read</h2>
+  <p>The Cross-reference is your brief taken literally: the whole practice as one screen of small lists, and one thing large on open paper. <span>It is the one I would build the homepage from.</span></p>
+  <p>The Workings is the answer to the work with no picture. <span>Every study on one schedule, so a six-week launch and a ten-year archive share an axis, and Sally OS finally has a shape.</span></p>
+  <p>The bigger point is that these are not six sites. <span>They are six ways of looking at one library, and the site could offer them as views: the index to find, the catalogue to read, the map to see the whole career, the workings to see how, a brief to answer a need.</span></p>
+</section>
+
+<script>
+const PROTOS = [
+  { id: "crossref", name: "The Cross-reference", design: "The whole practice on the left half of one screen as an index in small type: every study and year, the six lines, About, the years, then every service, tool and figure run in like a tracklist. The right half is open paper that shows one thing large: a picture at an honest size, a figure in Ogg, the sentence that names a tool, a line's colour as a field, or a chart drawn from its numbers.",
+    move: "Rest on any entry and everything that shares a study with it stays in ink while the rest goes grey, with hairlines running to the thing in focus. Click to lock, then the wheel or the arrow keys step through everything that entry holds. A second click opens the study." },
+  { id: "workings", name: "The Workings", design: "All 30 studies on one screen as a production schedule, one row each on shared axes. Time runs on one scale from a minute to a decade, counts are drawn as squares in the study's palette, then shares, tools and tiny pictures. Most time lanes are empty because most studies state no time, and the page leaves that showing.",
+    move: "Point at any cell and it reads out large above. Sort by Year or Time; by Time the studies climb like a staircase from a day to ten years. Click a row and it opens as a working drawing: the span draws itself, steps arrive in order, and a before and after is drawn as an arrow on the time line." },
+  { id: "brief", name: "The Brief", design: "One large field. What you type is matched against the pieces and the page lays out a single spread from them: a headline, a lead picture, figures, steps, tools, the studies and the way to talk. The layout follows what was found, so a kitchen gets a bleeding picture, workflow gets a colour field of numbers, and one sentence can hold the whole page.",
+    move: "As you type, matching thumbnails wipe up and the index dims what did not match. On Return the pieces arrive, big things first. Click any piece and the spread lays itself out again around it." },
+  { id: "catalogue", name: "The Catalogue", design: "Every study as a numbered entry in narrow columns of small type, like a label's broadsheet: a tiny sleeve, its palette in hex, a spec table, the opening of its abstract, its figures and a numbered tracklist of its sections. Between rows come bands of plates with a lot of air and black fields with display lines in Ogg.",
+    move: "Hover an entry to mark its plates below; click its number to go down to its plate, enlarged on black, and step through the study with the arrow keys. Search or a line name lights the matching entries. Print lays the whole sheet out as one poster." },
+  { id: "zoom", name: "The Map", design: "The whole career as one map: left to right the year, top to bottom the kind of work from screen to room. From far away you see where the work piled up and where years are empty. Up close each study is an island of its words, figures and pictures.",
+    move: "Scroll or pinch to zoom around the pointer and drag to pan. Getting closer changes what things are: sentences start as grey bars, figures as dots and pictures as colour tiles, and become real type and pictures as you arrive. Double-click flies to an island; Escape steps back out." },
+  { id: "mind", name: "The Mind", design: "Everything in one dense field: sentences, small pictures, figures on black, palettes, spec lines and daybook entries, mixed so every screen holds every line of work. Under it the archive is drawn as a chart, one mark per piece, a tower per study in the order they were made.",
+    move: "Typing pulls the best matches into a spread while everything else flies down into its mark in the chart, and the matches turn black in their towers, so you can see which years a word belongs to. Click any piece to open it large with its study gathered beside it." },
+];
+const esc = (s) => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;");
+const cards = document.getElementById("cards");
+const frames = PROTOS.map((c) => {
+  const card = document.createElement("article"); card.className = "card";
+  card.innerHTML = '<div class="frame"><iframe loading="lazy" title="' + esc(c.name) + '" src="/lab/density/' + c.id + '.html"></iframe></div>'
+    + '<h3><span>' + esc(c.name) + '</span><a href="/lab/density/' + c.id + '.html">Open it full size →</a></h3>'
+    + "<dl><dt>Design</dt><dd>" + esc(c.design) + "</dd><dt>How it moves</dt><dd>" + esc(c.move) + "</dd></dl>";
+  cards.appendChild(card);
+  return { f: card.querySelector("iframe"), box: card.querySelector(".frame") };
+});
+const fit = () => frames.forEach(({ f, box }) => { const s = box.clientWidth / 1512; f.style.transform = "scale(" + s + ")"; box.style.height = Math.round(770 * s) + "px"; });
+fit(); addEventListener("resize", fit, { passive: true });
+</script>
+</body>
+</html>

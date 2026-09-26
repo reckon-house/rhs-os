@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Cross-reference · density · Reckon*House</title>
+<!-- ── THE CROSS-REFERENCE (26 Sept 2026) ──────────────────────────────
+     His ask: "i really want it somehow show the scope of all the things i
+     have done and can do", and what he sees with his eyes closed, "areas
+     of density ... highly contrasted with negative space and focus on
+     something." The hard part, in his words, is a brand project next to
+     an interior next to an app next to a workflow "that has no real
+     'visual'".
+
+     The idea: the unit is a fragment, not a case study. The whole practice
+     sits on one screen as an index in small type, the way a label's
+     broadsheet lists its catalogue: every study with its year, the six
+     lines, the four About sections, the years, every service, every tool
+     and every figure in his sentences. Work, Lines and About are lists;
+     the rest run in like a tracklist, which is the only way 247 entries
+     fit a quarter of the glass. The other half is open paper, and it
+     shows one thing large.
+
+     How it works. Rest on any entry and everything that shares a study
+     with it stays in ink while the rest goes grey, and a hairline runs
+     from each related entry across the gutter to the thing in focus. The
+     counts on the column heads say how much lit. The focus shows the best
+     thing the entry has: a picture at an honest size, a figure set in
+     Ogg, a sentence, a line's own colour as a field, a year with its
+     rooms, a chart or a timeline drawn from its numbers. So a tool with
+     no picture (Supabase) shows the sentence that names it, and a
+     workflow shows its numbers. Click locks it. The wheel over the focus,
+     the arrow keys, a click on the focus or a swipe on a phone then step
+     through everything else the entry holds, like a feed, and the study
+     in view is underlined in Work with its own solid wire. A second click
+     on the locked entry opens the study. Escape, or a click on empty
+     paper, lets go. At rest the open half carries his statement.
+
+     An entry takes the focus only when the pointer rests on it for a
+     beat (90ms), so sweeping across three columns toward a picture does
+     not change the picture on the way.
+
+     Nothing on the page is typed by hand. The lists are read from
+     fragments.js, so a new study shows up in every column on its own.
+     The index is fitted by measuring: four columns on his MacBook, the
+     type steps down from 13px until everything fits (11.25px at
+     1512x770), and the page never scrolls. Below 10.5px the index keeps
+     its place beside the focus and scrolls instead (a 1280x720 laptop);
+     under three columns' width, or on a phone, it stacks. Figures are
+     pulled from his sentences by pattern: digits with their unit, or a
+     number word with a time unit, or a count of four or more. About's
+     sentences cross-reference the studies they name.
+
+     On a phone the focus is a band at the top that stays put, and the
+     lists run down the page under it. A tap is the hover; a second tap
+     opens the study.
+
+     Not done: the hairlines are not drawn on a phone. The picture chosen
+     for a service is a word match on the picture's own description, so a
+     service with no matching picture falls back to the studies' lead
+     pictures. Tools holds every tool that is not a Service (today that is
+     only Stack). Some figures are technical (the 2.0x to 0.8x search
+     weights) because the pattern keeps anything he wrote with a unit.
+     On a retina screen the honest rung for a big picture is the full
+     file, so the focus shows the 768 thumbnail first and asks for the
+     file only after the pointer has stayed a quarter second. -->
+<link rel="stylesheet" href="/lab/density/density.css">
+<script>if (innerWidth <= 760) document.documentElement.classList.add("stack");</script>
+<style>
+  :root { --m: 28px; --fs: 12px; --idxw: min(46vw, 760px); --gut: 64px; --cols: 4; --top: 22px; }
+  html, body { height: 100%; }
+  body { overflow: hidden; }
+
+  /* ── the mark ── */
+  #mark { display: block; width: max-content; margin: 0 0 20px; font-size: 17px; break-after: avoid; }
+
+  /* ── the index: columns of small type, fitted by measuring ── */
+  #idx { position: fixed; left: var(--m); top: var(--top); bottom: var(--top); width: var(--idxw); z-index: 3;
+    column-count: var(--cols); column-gap: 18px; column-fill: auto; font-size: var(--fs); line-height: 1.27; }
+  .grp { margin: 0 0 1.05em; }
+  .grp h2 { display: flex; justify-content: space-between; align-items: baseline; margin: 0 0 0.45em; padding: 0 0 0.4em;
+    border-bottom: 1px solid var(--hair); font: 400 9.5px/1 var(--mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--grey);
+    break-after: avoid; break-inside: avoid; }
+  .grp h2 .n { letter-spacing: 0.02em; font-variant-numeric: tabular-nums; }
+  .grp h2 .n b { font-weight: 400; color: var(--ink); }
+  .e { display: block; break-inside: avoid; font-weight: 500; letter-spacing: -0.003em; color: var(--ink); cursor: pointer;
+    transition: color 0.2s ease, background-color 0.2s ease; -webkit-tap-highlight-color: transparent; }
+  .e .t { text-decoration: none; }
+  .e:focus { outline: none; }
+  .e:focus-visible { outline: 1px solid var(--ink); outline-offset: 2px; }
+  /* a study: its name, and its year set to the column's edge like a catalogue */
+  .e.w { display: flex; justify-content: space-between; gap: 0.7em; }
+  .e .y { flex: none; color: var(--grey); font-variant-numeric: tabular-nums; transition: color 0.2s ease; }
+  /* a line: its own colour, as a chip */
+  .e .chip { display: inline-block; width: 0.62em; height: 0.62em; margin: 0 0.5em 0 0; background: var(--c); vertical-align: 0.02em; transition: opacity 0.2s ease; }
+  /* short entries run in, like a tracklist */
+  .grp.run .items { line-height: 1.42; }
+  .grp.run .e { display: inline; }
+  .grp.run .e.nw { white-space: nowrap; }
+  .grp.run .sep { color: rgba(0, 0, 0, 0.3); margin: 0 0 0 0.3em; transition: color 0.2s ease; }
+  body.x .grp.run .sep { color: var(--faint); }
+  .grp.run .e.fig { font-variant-numeric: tabular-nums; }
+
+  /* the cross-reference: what shares a study stays in ink */
+  body.x .e { color: var(--faint); }
+  body.x .e .y { color: var(--faint); }
+  body.x .e .chip { opacity: 0.22; }
+  body.x .e.on { color: var(--ink); }
+  body.x .e.on .y { color: var(--grey); }
+  body.x .e.on .chip { opacity: 1; }
+  body.held .e:hover .t, body.held .grp.run .e:hover { text-decoration: underline; text-decoration-color: var(--faint); text-underline-offset: 0.2em; }
+  .e.me .t, .grp.run .e.me, .e.cur .t { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 0.2em; }
+  .e.lock { background: var(--ink); color: var(--paper) !important; box-shadow: 0 0 0 0.18em var(--ink); }
+  .e.lock .y { color: rgba(255, 255, 255, 0.6) !important; }
+  .e.lock .t { text-decoration: none; }
+
+  /* ── the wires: from each related entry to the thing in focus ── */
+  #wires { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 2; pointer-events: none; }
+  #wires path { fill: none; stroke: var(--ink); stroke-width: 0.6; opacity: 0.13; }
+  #wires path.me { opacity: 0.9; stroke-width: 0.8; transition: stroke-dashoffset 0.45s var(--ease); }
+  #wires circle { fill: var(--ink); }
+  #wires g { opacity: 0; transition: opacity 0.35s ease; }
+  #wires g.in { opacity: 1; }
+
+  /* ── the open half ── */
+  #field { position: fixed; top: 0; right: 0; bottom: 0; left: calc(var(--m) + var(--idxw) + var(--gut) / 2); z-index: 1; background: var(--fc, var(--paper));
+    clip-path: inset(100% 0 0 0); transition: clip-path 0.55s var(--ease); }
+  #field.on { clip-path: inset(0 0 0 0); }
+  #focus { position: fixed; top: var(--m); right: var(--m); bottom: var(--m); left: calc(var(--m) + var(--idxw) + var(--gut)); z-index: 4; }
+  .layer { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: flex-end; align-items: flex-start;
+    color: var(--lc, var(--ink)); opacity: 1; transition: opacity 0.16s ease; }
+  .layer.out { opacity: 0; pointer-events: none; }
+  .layer:not(.out) { animation: arrive 0.2s ease both; }
+  @keyframes arrive { from { opacity: 0; } to { opacity: 1; } }
+  .main { position: relative; max-width: 100%; }
+  .main.step { cursor: pointer; }
+
+  /* a picture: never wider than half its pixels, and it rises into place */
+  .pic { position: relative; overflow: hidden; background: #ece8e4; }
+  .pic.alpha { background: var(--cream); }
+  .pic img { position: absolute; left: 0; top: 0; width: 100%; height: 100%; object-fit: cover; }
+  .pic.alpha img { object-fit: contain; }
+  .rise { animation: rise 0.5s var(--ease) both; }
+  @keyframes rise { from { clip-path: inset(100% 0 0 0); } to { clip-path: inset(0 0 0 0); } }
+  .strip { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 10px; margin: 0 0 22px; }
+
+  /* type in the open half: Ogg for the one big thing, Avenir for the rest */
+  .big { font-family: var(--serif); font-weight: 700; line-height: 0.98; letter-spacing: -0.012em; }
+  .fig .big { white-space: nowrap; line-height: 0.86; letter-spacing: -0.02em; }
+  .say { font-family: var(--serif); font-weight: 700; line-height: 1.08; letter-spacing: -0.008em; }
+  .say .g, .big .g { color: var(--grey); }
+  .lbl { margin: 0.9em 0 0; font-size: 13px; font-weight: 600; letter-spacing: -0.004em; line-height: 1.45; }
+  .lbl .g { font-weight: 500; color: var(--grey); }
+  .sent { max-width: 34em; margin: 1.1em 0 0; font-size: 15px; font-weight: 500; letter-spacing: -0.006em; line-height: 1.55; color: var(--grey); }
+  .sent b, .sent mark { font-weight: 600; color: var(--ink); background: none; }
+  .body2 { columns: 2; column-gap: 28px; max-width: 700px; margin: 1.4em 0 0; font-size: 13px; font-weight: 500; line-height: 1.6; color: var(--grey); }
+  .body2 p { margin: 0 0 0.8em; break-inside: avoid; }
+  .mono { font: 400 9.5px/1.3 var(--mono); letter-spacing: 0.08em; text-transform: uppercase; }
+
+  /* a chart and a timeline, drawn from their numbers */
+  .bars { width: 100%; margin: 26px 0 0; }
+  .bar { display: grid; grid-template-columns: 1fr auto; gap: 4px 16px; margin: 0 0 14px; font-size: 13px; font-weight: 500; color: var(--grey); }
+  .bar i { grid-column: 1 / -1; display: block; height: 18px; background: var(--faint); }
+  .bar.hl { color: var(--ink); }
+  .bar.hl i { background: var(--ink); }
+  .steps { display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; width: 100%; margin: 26px 0 0; border-top: 1px solid var(--ink); }
+  .steps div { padding: 10px 12px 0 0; font-size: 13px; font-weight: 600; line-height: 1.35; }
+  .steps div span { display: block; margin-top: 4px; font-weight: 500; color: var(--grey); }
+  .swatches { display: flex; }
+  .swatches div { display: flex; flex-direction: column; justify-content: flex-end; padding: 0 0 10px 10px; }
+
+  /* the caption: the study, its year, what it was */
+  .cap { width: 100%; margin: 14px 0 0; display: flex; justify-content: space-between; align-items: flex-start; gap: 24px;
+    font-size: 13px; font-weight: 600; letter-spacing: -0.004em; line-height: 1.45; }
+  .cap:empty { display: none; }
+  .cap .who .g { font-weight: 500; color: var(--grey); margin-left: 0.4em; }
+  .cap .alt { display: block; max-width: 44em; margin-top: 2px; font-weight: 500; color: var(--grey); }
+  .cap .pal { display: inline-flex; gap: 3px; margin-left: 0.7em; vertical-align: 0.05em; }
+  .cap .pal i { display: block; width: 9px; height: 9px; }
+  .cap .act { flex: none; display: flex; gap: 18px; align-items: baseline; }
+  .cap .act .mono { opacity: 0.55; }
+  .cap .act a { border-bottom: 1px solid currentColor; }
+
+  /* at rest: his statement, quietly */
+  .rest .say { max-width: 15em; }
+  .rest .sent { max-width: 30em; }
+  .rest .links { display: flex; flex-wrap: wrap; gap: 6px 22px; margin: 1.6em 0 0; font-size: 13px; font-weight: 600; }
+  .rest .links a { border-bottom: 1px solid var(--hair); }
+  .rest .links a:hover { border-bottom-color: var(--ink); }
+  .rest .prac { margin: 0 0 1.2em; }
+  .rest .prac span + span::before { content: " · "; }
+
+  /* ── a short glass: the index scrolls under a still focus ── */
+  html.scrolly body { overflow-y: auto; overflow-x: hidden; }
+  html.scrolly #idx { position: absolute; bottom: auto; column-fill: balance; padding-bottom: var(--top); }
+
+  /* ── stacked: a phone, or any glass too small for the index to fit.
+     The focus is a band at the top that stays put; the lists run down ── */
+  html.stack { --m: 16px; --fs: 12.5px; }
+  html.stack, html.stack body { height: auto; }
+  html.stack body { overflow: visible; overflow-x: clip; }
+  html.stack #mark { margin: 18px var(--m) 12px; }
+  html.stack #focus { position: sticky; top: 0; left: auto; right: auto; bottom: auto; height: min(46svh, 400px); margin: 0; padding: 12px var(--m) 14px;
+    background: var(--fc, var(--paper)); border-bottom: 1px solid var(--hair); transition: background-color 0.3s ease; }
+  html.stack .layer { inset: 12px var(--m) 14px; }
+  html.stack #field, html.stack #wires { display: none; }
+  html.stack #idx { position: static; width: auto; max-width: 900px; margin: 20px var(--m) 48px; column-count: 1; }
+  html.stack .grp { margin: 0 0 2em; }
+  html.stack .grp.list .items { columns: 2; column-gap: 18px; }
+  html.stack .grp[data-g="work"] .items { columns: 1; }
+  html.stack .e { padding: 0.12em 0; }
+  html.stack .grp.run .e { padding: 0; line-height: 1.7; }
+  html.stack .cap { font-size: 12px; margin-top: 10px; }
+  html.stack .cap .alt { display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; }
+  html.stack .sent { font-size: 13px; }
+  html.stack .body2 { columns: 1; font-size: 12px; }
+  html.stack .rest .links { font-size: 12px; margin-top: 1em; }
+</style>
+</head>
+<body>
+<a id="mark" class="mark" href="/">Reckon<i>*</i>House</a>
+<div id="field"></div>
+<section id="focus" aria-live="polite"></section>
+<nav id="idx" aria-label="Index"></nav>
+<svg id="wires" aria-hidden="true"></svg>
+<script src="/lab/density/fragments.js"></script>
+<script src="/lab/density/density.js"></script>
+<script src="/lab/density/crossref.js"></script>
+</body>
+</html>

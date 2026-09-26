@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Catalogue · density · Reckon*House</title>
+<!-- ── THE CATALOGUE (26 Sept 2026) ─────────────────────────────────────
+     His ask: "areas of density and feed like construction of content
+     highly contrasted with negative space and focus on something", and
+     "show the scope of all the things i have done and can do", including
+     the workflow work that "has no real 'visual' - it's just a
+     description and maybe a chart or graph". One of his references was a
+     record label's printed broadsheet. This page is that sheet.
+
+     The idea: the unit is the fragment, not the case study. A study is a
+     catalogue entry, the way a release is on a label's sheet, and every
+     entry is built from whatever fragments it carries. That is why the
+     workflow studies read as fully as the photographed ones: a format
+     made of spec tables, tracklists and figures has no favourite kind of
+     work. Sally OS and A.R.C. are the longest entries on the sheet, not
+     the emptiest.
+
+     How it works:
+     - Numbers. Every study gets a catalogue number by year, oldest first,
+       the way a label numbers its releases (RH001 is 2008). The sheet
+       shows them newest first, the way a label's current sheet leads with
+       the latest release. Plates are numbered inside their entry
+       (RH026.03 is A.R.C.'s third picture, in the order the study shows
+       them).
+     - The sheet. Narrow columns of small type: the number, a sleeve (the
+       lead picture, tiny) beside the study's declared palette, the spec
+       table from its fact fragments, the opening of its abstract, any
+       figures, chart or timeline it has, a tracklist of its section heads
+       with the plates each section holds, the credits from its tool
+       fragments, and a contact strip of every plate. Hierarchy is weight,
+       not size. The column count comes from the glass (8 on his 1512
+       window, 2 on a phone), so a new study is a new column. An entry
+       much longer than the rest (Sally OS, A.R.C.) takes two columns and
+       runs its text across both, like a feature. The number rows hold
+       under the running head while a row is read.
+     - The plates. After each sheet of entries, a band of those entries'
+       pictures, composed like the lower half of a broadsheet: one focus
+       plate as large as its pixels allow, pairs and scatters with a lot of
+       air, and black fields where a study's own display lines are set in
+       Ogg. The roles are chosen from what each study carries: the best
+       photograph is the focus, a study with two or more display lines
+       (the workflow ones first) gets a black field, and a study with no
+       pictures at all (Faux Reel) gets its figures as a plate made of type,
+       in its own colour. Hovering an entry marks its plates in the band
+       below. Clicking a catalogue number, the sleeve or a strip plate goes
+       to that plate and enlarges it on black; clicking a plate opens its
+       study.
+     - The colour bar along the masthead is every study's palette, in
+       catalogue order, like the control strip on a printed sheet. Under
+       it, the board's six lines index the catalogue by kind of work;
+       hovering one lights its entries.
+     - Search is the kit's plain counting (D.search): a study stays lit
+       when any of its fragments matches a word of its own, its name, or
+       one of its lines ("workflow" finds the six Systems studies), and
+       the rest of the sheet and its plates fall back.
+     - Print sets the sheet as one poster (A0 portrait): the plates bands
+       drop out, the entries run 16 across, and every picture on the sheet
+       is pinned to its 384px thumbnail and loaded first, so none prints
+       blank and no full file is fetched for a 20mm sleeve.
+
+     Nothing here is written for the page. Every sentence, figure and name
+     is verbatim from fragments.js; the labels are plain nouns. The data
+     carries a few em dashes (a date range, some alt text), and they are
+     set as an en dash between figures and a comma elsewhere.
+
+     Not done: search lights whole entries, not the line that matched.
+     The roles in a band are chosen by rule, so a band can land on two
+     similar plates. Ctrl-P without the Print label can miss pictures the
+     page has not loaded yet. Hover marking has nothing to show on a
+     phone. Ogg is asked for by name, so anyone without it sees Georgia
+     in the statement, the fields and the figures. -->
+<link rel="stylesheet" href="/lab/density/density.css">
+<link rel="stylesheet" href="/lab/density/catalogue.css">
+</head>
+<body>
+<div id="crop" aria-hidden="true"><i class="tl"></i><i class="tr"></i></div>
+
+<header id="rh" aria-label="Running head">
+  <a class="mark" href="/">Reckon<i>*</i>House</a>
+  <span class="m cat">Catalogue</span>
+  <span id="rh-now"></span>
+  <span class="sp"></span>
+  <a class="m lk" href="#index">Index</a>
+  <button class="m lk" data-print>Print</button>
+</header>
+
+<header id="mast">
+  <div class="mrow">
+    <a class="mark" href="/">Reckon<i>*</i>House</a>
+    <span class="m">Catalogue</span>
+    <span class="m" id="m-range"></span>
+    <span class="m" id="m-years"></span>
+    <label class="srch"><input id="q" type="text" placeholder="Search" autocomplete="off" spellcheck="false" aria-label="Search"><span class="m" id="q-n"></span></label>
+    <span class="sp"></span>
+    <a class="m lk" href="#index">Index</a>
+    <button class="m lk" data-print>Print</button>
+  </div>
+  <div class="mgrid">
+    <div class="stmt">
+      <h1 id="m-ink"></h1>
+      <p id="m-grey"></p>
+    </div>
+    <aside class="imprint" id="m-imprint"></aside>
+  </div>
+  <div id="bar" aria-label="Palettes"></div>
+  <div class="lines" id="m-lines"></div>
+</header>
+
+<main id="sheet"></main>
+
+<section id="index" aria-label="Index"></section>
+
+<footer id="foot"></footer>
+
+<div id="lb" aria-hidden="true">
+  <div class="lb-top">
+    <span class="m" id="lb-no"></span>
+    <a id="lb-t"></a>
+    <span class="sp"></span>
+    <a class="m lk" id="lb-open">Open</a>
+    <button class="m lk" id="lb-x">Close</button>
+  </div>
+  <div class="lb-well"><a class="lb-box" id="lb-box"></a></div>
+  <div class="lb-foot">
+    <p id="lb-cap"></p>
+    <div id="lb-strip"></div>
+  </div>
+</div>
+
+<script src="/lab/density/fragments.js"></script>
+<script src="/lab/density/density.js"></script>
+<script src="/lab/density/catalogue.js"></script>
+</body>
+</html>

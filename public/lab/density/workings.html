@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>The Workings · density · Reckon*House</title>
+<!-- ── THE WORKINGS (26 Sept 2026) ───────────────────────────────────
+     His ask: "a typical digital project or brand project with interior
+     design with an app but also solving a workflow strategically that
+     has no real 'visual' - it's just a description and maybe a chart or
+     graph - bringing that all together is hard!" And: "what i dont want
+     is some generic UI either."
+
+     The idea: draw the structure of the work instead of showing its
+     pictures. Every study becomes one line of a production schedule for
+     the whole practice, and all of them fit one screen, the way a
+     label's broadsheet fits a catalogue on a page. Each line is set on
+     the same axes, so things line up down the sheet:
+     - Time. One axis from a minute to a decade, logarithmic, with the
+       Day line as the origin. A duration he states grows right from it
+       (a shoot day, six weeks, ten weeks, about four months, twelve
+       months, about ten years). Where he gives a before and an after in
+       hours and minutes (A.R.C., Sally OS), it is drawn left of the Day
+       line as an arrow. Most studies state no time, and their lane is
+       left empty. The gaps are the honest part.
+     - Parts. A count he states, drawn as that many squares in the
+       study's own palette.
+     - Figures. A share is a filled bar, an area is a square drawn to one
+       scale for every room, anything else is set as type.
+     - Lines, tools, and the pictures as small evidence.
+     Pointing at a cell reads it out large in the band above. Clicking a
+     line opens it in place as a working drawing: the rest of the
+     practice folds to strips above and below, the steps are drawn to
+     their own scale (or as order only, when he gives an order and no
+     durations), the study sits on the practice's time axis among the
+     others, and its facts go in a title block the way a drawing sheet
+     carries one. Arrow keys move between sheets, Escape closes.
+
+     How it stays honest: nothing on the page is written here. The
+     hand-mapped table in workings.js says which of his sentences are a
+     study's time, steps, parts, figures, before and after, and every
+     quote in it is looked for, exactly, in that study's own fragments
+     before it is drawn. A quote that is not found is dropped and named
+     in the console. The only numbers the table adds are the ones that
+     place a quote on a drawing (six weeks sits at 42 days).
+
+     How it moves: the motion is the drawing being made. On load each
+     stated time draws out from the Day line, a row at a time. Opened, a
+     sheet's dimension line draws, ordered steps arrive in their order,
+     and a count counts its squares. Reduced motion turns it all off.
+
+     A.R.C. carries a chart fragment (8-12 hours by hand, ~30 minutes
+     with the app). Its two bars are the same fact as the arrow on the
+     time axis, so the sheet draws it there once, with the chart's own
+     callout, instead of twice.
+
+     Not done: the table covers what I found reading the fragments once;
+     it will miss things, and a new study gets its line (name, lines,
+     tools, pictures) but no time, parts or figures until someone maps
+     them. Ordered steps are my reading of sentences like "the name
+     first, then the mark"; worth his eye. The phone keeps the time lane,
+     parts and figures and opens sheets as a column; it loses the fold.
+     The two densest sheets (A.R.C., Sally OS) are taller than the fold
+     at 770px, so they grow and the page scrolls for them. On the phone
+     ledger Sally's "about four months" sits over its own short bar.
+     Ogg is asked for by name (installed on his Mac); others see Georgia. -->
+<link rel="stylesheet" href="/lab/density/density.css">
+<link rel="stylesheet" href="/lab/density/workings.css">
+</head>
+<body>
+<header id="top">
+  <a class="mark" href="/">Reckon<i>*</i>House</a>
+  <span class="here">Workings</span>
+  <nav class="sort" aria-label="Order"><button type="button" data-sort="year" class="on">Year</button><button type="button" data-sort="time">Time</button></nav>
+  <button type="button" id="close" hidden>Close</button>
+</header>
+<section id="read" aria-live="polite">
+  <div class="rd-l"><div class="big"></div><div class="sm"></div></div>
+  <div class="side"></div>
+</section>
+<main id="ledger">
+  <div id="colhead"></div>
+  <div class="rows-wrap"><div id="grid" aria-hidden="true"></div><ol id="rows"></ol></div>
+</main>
+<div id="tip" aria-hidden="true"></div>
+<script src="/lab/density/fragments.js"></script>
+<script src="/lab/density/density.js"></script>
+<script src="/lab/density/workings.js"></script>
+</body>
+</html>

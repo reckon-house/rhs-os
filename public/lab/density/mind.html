@@ -1,0 +1,314 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>The mind · density · Reckon*House</title>
+<!-- ── THE MIND (26 Sept 2026) ─────────────────────────────────────────
+     His ask: "areas of density and feed like construction of content
+     highly contrasted with negative space and focus on something", and
+     "show the scope of all the things i have done and can do". He had
+     just turned down a round of scroll concepts as "just another version
+     of what's been done 1000 times".
+
+     The idea: the unit is a fragment, not a case study. Every picture,
+     sentence, figure, spec line, tool, palette and daybook entry sits in
+     one field, the way a mind holds things: not filed by project, mixed.
+     A kitchen detail sits next to a Sally OS sentence next to $49,630.
+     One field searches it. The page writes nothing; it only arranges
+     what fragments.js already says.
+
+     How it works. The field is packed on the grid from a lookahead
+     skyline. Every kind of every study is spread evenly down the whole
+     page (the i-th of a study's n pictures sits near i/n, the same for
+     its sentences and its figures), so any screen carries every line of
+     work; the first of each kind comes to the top, so the first screens
+     are a front page of everything. Display lines break the density as
+     pauses, one on air and the next on its study's own fill, so there
+     is always one thing in focus, and the columns are squared off
+     before each one. Figures are black fields. Pictures are thumbnails
+     at no more than half their pixels. The opening is his statement
+     from the data and the whole archive as a chart.
+
+     Typing pulls the best matches out into a spread (the top one large,
+     the next few beside it, the rest as a list) and the field collapses
+     into its texture: every fragment as one small mark, stacked into a
+     tower per study, towers in time order, About first and the Daybook
+     last. It is a chart of the whole archive, pictures at the foot of
+     each tower and words above, so the texture says what each project
+     is made of. A search inks its matches in the towers, so you see
+     where in twenty years a word lives. The pieces you could see fly
+     into their own marks; clearing the field flies them back.
+
+     Clicking a fragment focuses it: large, with air, and its study
+     gathers beside it as a catalogue entry (every picture as a
+     thumbnail, the palette, its figures, the section heads as a
+     numbered list, the spec table, the tools). The title and year link
+     to the study's page. Arrow keys walk the study. Escape, Close or a
+     click on the texture goes back.
+
+     Two small links between the halves. Rest the pointer on a fragment
+     in the field and the rest of its study on screen stays lit while
+     everything else steps back, so you see how the page is woven; the
+     chart at the top does the same for the tower under the pointer.
+     In a search, the result under the pointer is ringed in the texture,
+     so you see where in time it sits.
+
+     Everything comes from the data: a new study in fragments.js is a new
+     tower, new marks and new fragments in the field with no code change.
+     The suggested words are counted from the fragments, not picked.
+
+     Left out on purpose: the thirty "Author: Jeremy Prasatik" spec
+     lines stay in the texture and the search but not the field, and so
+     do the "Published" lines that only repeat their caption's year
+     (review, 26 Sept; the 2008 to 2018 range still shows). Section
+     heads show as written, and some are half a sentence, because the
+     other half lives in the study files, not in fragments.js.
+
+     Not done: no URL state (a search or a focus cannot be linked to or
+     reached with the back button yet); fragments are not keyboard
+     stops (the field, the arrows and Escape are); the field lays out
+     every fragment at once (about 170ms here), which would want
+     windowing if the archive triples; hover links are desktop only. Ogg
+     is asked for by name and is only on his Mac; everyone else sees
+     Georgia. -->
+<link rel="stylesheet" href="/lab/density/density.css">
+<style>
+  :root { --mg: 32px; --head: 64px; --gut: 14px; --tex: 150px; --fill-ink: #000; }
+  html { scrollbar-width: thin; }
+  body { min-height: 100vh; overflow-x: hidden; }
+  html.locked { overflow: hidden; }
+
+  /* ── the head: the mark, the one field, the words it knows ── */
+  #head { position: fixed; z-index: 50; left: 0; right: 0; top: 0; height: var(--head); display: flex; align-items: center; gap: 0;
+    padding: 0 var(--mg); background: var(--paper); }
+  #head .mark { flex: none; font-size: 17px; width: var(--c2, 230px); }
+  #head .q { flex: none; display: flex; align-items: baseline; gap: 12px; width: var(--c3, 352px); margin-left: var(--gut); }
+  #head .q span { flex: none; font-size: 15px; font-weight: 600; letter-spacing: -0.01em; color: var(--grey); }
+  #q { flex: 1; min-width: 0; border: 0; border-radius: 0; padding: 4px 0 5px; background: none; outline: none; box-shadow: inset 0 -1px 0 var(--faint);
+    font: inherit; font-size: 17px; font-weight: 600; letter-spacing: -0.02em; color: var(--ink); transition: box-shadow 0.25s ease; -webkit-appearance: none; appearance: none; }
+  #q:focus { box-shadow: inset 0 -1px 0 var(--ink); }
+  #sug { flex: 1; min-width: 0; display: flex; align-items: baseline; gap: 0 14px; margin-left: calc(var(--gut) * 2); white-space: nowrap; overflow: hidden;
+    font-size: 13px; font-weight: 600; letter-spacing: -0.01em; }
+  #sug button { padding: 0; border: 0; background: none; cursor: pointer; color: var(--grey); transition: color 0.2s ease; font: inherit; }
+  #sug button:hover, #sug button.on { color: var(--ink); }
+  #sug .sep { width: 10px; flex: none; }
+  #count { flex: none; margin-left: 16px; font-size: 13px; font-weight: 600; font-variant-numeric: tabular-nums; color: var(--grey); min-width: 3ch; text-align: right; }
+  #close { flex: none; margin-left: 20px; padding: 0; border: 0; background: none; font-size: 15px; font-weight: 600; letter-spacing: -0.01em; cursor: pointer; }
+  #close[hidden] { display: none; }
+
+  /* ── the field ── */
+  #field { position: relative; margin-top: var(--head); }
+  .it { position: absolute; left: 0; top: 0; transform-origin: 0 0; cursor: pointer; }
+  .it.k-pic { background: #EFEBE7; overflow: hidden; }
+  .it.k-pic.alpha, .sp .alpha { background: var(--cream); }
+  .it img, .sp img { width: 100%; height: 100%; opacity: 0; transition: opacity 0.45s ease; }
+  .it img.in, .sp img.in { opacity: 1; }
+  .it.k-pic:hover img.in { opacity: 0.86; }
+
+  .cp { display: block; font-size: 10px; font-weight: 600; letter-spacing: 0.005em; line-height: 1.3; color: var(--grey); margin-bottom: 5px; }
+  .cp i { font-style: normal; opacity: 0.62; margin-left: 0.3em; font-variant-numeric: tabular-nums; }
+  .lb { display: block; font-size: 9px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; line-height: 1.35; color: var(--grey); }
+  .tx { margin: 0; }
+  .it.k-line, .it.k-fact, .it.k-day, .it.k-tool, .it.k-chart, .it.k-steps { padding-top: 7px; box-shadow: inset 0 1px 0 var(--hair); }
+  .it.k-line .tx { font-size: 12.5px; font-weight: 500; letter-spacing: -0.006em; line-height: 1.42; }
+  .it.w-sub .tx { font-size: 16px; font-weight: 600; letter-spacing: -0.018em; line-height: 1.3; }
+  .it.w-head .tx { font-size: 17px; font-weight: 700; letter-spacing: -0.03em; line-height: 1.18; }
+  .it.w-head .lb { margin-bottom: 4px; }
+  .g { color: var(--grey); }
+  .it { transition: opacity 0.35s ease; }
+  #field.assoc .it[data-id]:not(.kin) { opacity: 0.16; }
+  #field.assoc .it.kin .cp { color: var(--ink); }
+  .sp.hero mark { text-decoration-thickness: max(1px, 0.035em); text-underline-offset: 0.12em; }
+
+  .it.k-fact .fv { margin: 3px 0 0; font-size: 12.5px; font-weight: 500; letter-spacing: -0.006em; line-height: 1.38; }
+  .it.k-tool { font-size: 12px; font-weight: 600; letter-spacing: -0.01em; line-height: 1.3; }
+  .it.k-tool .lb { margin-bottom: 2px; }
+  .it.k-day .dh { display: block; font-size: 10px; font-weight: 600; line-height: 1.3; margin-bottom: 5px; font-variant-numeric: tabular-nums; }
+  .it.k-day .dh i { font-style: normal; color: var(--grey); margin-left: 0.4em; }
+  .it.k-day .tx { font-size: 12px; font-weight: 500; letter-spacing: -0.004em; line-height: 1.45; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 7; overflow: hidden; }
+  .it.k-day .tx b { font-weight: 700; }
+
+  .it.k-num { background: #000; color: #fff; padding: 12px 12px 13px; }
+  .it.k-num .nv { display: block; font-family: var(--serif); font-weight: 700; font-size: 44px; line-height: 1; letter-spacing: -0.01em; }
+  .it.k-num .lb { color: rgba(255, 255, 255, 0.92); margin-top: 10px; }
+  .it.k-num .ns { display: block; font-size: 11px; font-weight: 500; line-height: 1.35; color: rgba(255, 255, 255, 0.55); margin-top: 3px; }
+  .it.k-num .cp { color: rgba(255, 255, 255, 0.45); margin: 10px 0 0; }
+
+  .strip { display: flex; height: 38px; }
+  .strip span { flex: 1; display: flex; align-items: flex-end; padding: 0 0 4px 5px; font-family: var(--mono); font-size: 8.5px; letter-spacing: 0.02em; }
+  .it.k-palette .cp { margin: 6px 0 0; }
+
+  .bars { margin: 8px 0 0; }
+  .bars div { margin: 0 0 7px; font-size: 11px; font-weight: 600; line-height: 1.3; }
+  .bars div i { font-style: normal; color: var(--grey); margin-left: 0.4em; }
+  .bars s { display: block; height: 7px; margin-top: 3px; background: #000; text-decoration: none; }
+  .callout { display: block; font-family: var(--serif); font-weight: 700; font-size: 34px; line-height: 1; margin-top: 8px; }
+  .callout i { font-style: normal; font-family: var(--sans); font-size: 12px; font-weight: 600; margin-left: 6px; }
+  .steps { list-style: none; margin: 6px 0 0; padding: 0; font-size: 12px; font-weight: 600; line-height: 1.35; counter-reset: s; }
+  .steps li { display: flex; gap: 8px; padding: 4px 0; box-shadow: inset 0 -1px 0 var(--hair); counter-increment: s; }
+  .steps li::before { content: counter(s, decimal-leading-zero); color: var(--grey); font-variant-numeric: tabular-nums; }
+  .steps li i { font-style: normal; color: var(--grey); margin-left: auto; }
+  .dur { display: block; font-size: 12px; font-weight: 600; margin-top: 3px; }
+
+  /* pauses: one sentence, the rest of the width left empty */
+  .pause { left: 0; cursor: pointer; }
+  .pause .pt { position: relative; font-family: var(--serif); font-weight: 700; line-height: 1.02; letter-spacing: -0.012em; margin: 0; }
+  .pause .cp { margin: 16px 0 0; font-size: 12px; }
+  .pause.fill .cp { color: inherit; opacity: 0.62; }
+  .pause.fill .cp i { opacity: 1; }
+  .opening { cursor: default; }
+  .opening .pt { font-size: inherit; }
+  .opening .og { margin: 18px 0 0; font-size: 17px; font-weight: 500; letter-spacing: -0.012em; line-height: 1.45; color: var(--grey); }
+  .opening .pt i { font-style: normal; color: var(--grey); }
+  .opening canvas { position: absolute; cursor: pointer; }
+  .olabs span { position: absolute; top: 0; white-space: nowrap; }
+  .ord i { font-style: normal; color: var(--grey); margin-left: 0.35em; }
+  .ord span { display: block; font-weight: 500; color: rgba(0, 0, 0, 0.62); }
+  .ends { cursor: default; }
+  .ends a { display: block; font-size: 15px; font-weight: 600; letter-spacing: -0.01em; line-height: 1.75; }
+  .ends a:hover { color: var(--grey); }
+  .ends .pt a { font-size: inherit; line-height: inherit; letter-spacing: inherit; }
+
+  /* ── the mind: spread above, texture below ── */
+  #mind { position: fixed; z-index: 40; left: 0; right: 0; top: var(--head); bottom: 0; pointer-events: none; visibility: hidden; }
+  #mind.on { pointer-events: auto; visibility: visible; }
+  #mind.solid { background: var(--paper); }
+  #stage { position: absolute; left: 0; right: 0; top: 0; overflow: hidden; }
+  #spread { position: absolute; inset: 0; }
+  .sp { position: absolute; left: 0; top: 0; transform-origin: 0 0; }
+  .sp[data-id] { cursor: pointer; }
+  .sp.hero { cursor: default; }
+  .searching .sp.hero { cursor: pointer; }
+  .sp mark { background: none; color: inherit; text-decoration: underline; text-decoration-thickness: max(1px, 0.055em); text-underline-offset: 0.14em; }
+  .sp .cp { font-size: 11px; }
+  .sp .fig { display: block; overflow: hidden; background: #EFEBE7; }
+  .sp .alt { display: block; margin-top: 8px; font-size: 11px; font-weight: 500; line-height: 1.4; color: var(--grey); max-width: 46ch; }
+  .sp .tx { font-weight: 600; letter-spacing: -0.02em; line-height: 1.22; }
+  .sp .tx.serif { font-family: var(--serif); font-weight: 700; letter-spacing: -0.012em; line-height: 1.02; }
+  .sp .lb { margin-bottom: 8px; }
+  .sp.mid .tx { font-size: 15px; font-weight: 600; letter-spacing: -0.015em; line-height: 1.32; }
+  .sp.mid .tx.serif { font-size: 26px; }
+  .sp.mid .cp { margin: 0 0 6px; }
+  .sp.mid .fig + .cp { margin: 7px 0 0; }
+
+  .sp.black { background: #000; color: #fff; }
+  .sp.black .cp, .sp.black .lb { color: rgba(255, 255, 255, 0.6); }
+  .sp .nv { display: block; font-family: var(--serif); font-weight: 700; line-height: 0.9; letter-spacing: -0.02em; }
+  .sp .ns { display: block; font-size: 13px; font-weight: 500; line-height: 1.4; margin-top: 6px; opacity: 0.62; }
+
+  /* the rest of the matches, as a column of small type */
+  .more { overflow-y: auto; overflow-x: hidden; scrollbar-width: none; overscroll-behavior: contain; }
+  .more::-webkit-scrollbar { display: none; }
+  .more .row { display: flex; gap: 10px; padding: 6px 0 7px; box-shadow: inset 0 1px 0 var(--hair); cursor: pointer; }
+  .more .row:hover .rt { color: var(--ink); }
+  .more .row .th { flex: none; height: 38px; overflow: hidden; background: #EFEBE7; }
+  .more .row .th img { height: 100%; width: auto; }
+  .more .rt { min-width: 0; font-size: 11.5px; font-weight: 500; line-height: 1.38; letter-spacing: -0.004em; color: rgba(0, 0, 0, 0.62); transition: color 0.2s ease;
+    display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3; overflow: hidden; }
+  .more .rt mark { color: var(--ink); text-decoration: none; font-weight: 600; }
+  .more .cp { margin-bottom: 2px; font-size: 10px; }
+  .more .ln { padding: 12px 0 14px; font-size: 13px; font-weight: 500; line-height: 1.38; letter-spacing: -0.008em; color: var(--grey); }
+  .more .ln b { font-weight: 600; color: var(--ink); }
+
+  /* the catalogue entry a focus gathers */
+  .cat { overflow-y: auto; overflow-x: hidden; scrollbar-width: none; overscroll-behavior: contain; padding-bottom: 24px; }
+  .cat::-webkit-scrollbar { display: none; }
+  .cat h2 { margin: 0; font-family: var(--serif); font-weight: 700; font-size: 40px; line-height: 1.02; letter-spacing: -0.012em; }
+  .cat h2 a:hover { color: var(--grey); }
+  .cat .yr { display: block; margin: 8px 0 0; font-size: 13px; font-weight: 600; letter-spacing: -0.01em; color: var(--grey); }
+  .cat .yr a { color: var(--ink); margin-right: 0.6em; }
+  .cat .lede { margin: 16px 0 0; font-size: 15px; font-weight: 600; letter-spacing: -0.015em; line-height: 1.35; max-width: 40ch; }
+  .cat .lede .g { font-weight: 500; }
+  .cat .thumbs { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 22px; }
+  .cat .thumbs button { position: relative; flex: none; height: 52px; padding: 0; border: 0; overflow: hidden; background: #EFEBE7; cursor: pointer; }
+  .cat .thumbs button.alpha { background: var(--cream); }
+  .cat .thumbs button img { height: 100%; width: 100%; }
+  .cat .thumbs button.here::after { content: ""; position: absolute; inset: 0; box-shadow: inset 0 0 0 2px #000; }
+  .cat .thumbs button:hover img.in { opacity: 0.8; }
+  .cat .pal { margin-top: 4px; cursor: pointer; }
+  .cat .pal .strip { height: 26px; }
+  .cat .pal.here .strip { box-shadow: inset 0 0 0 2px #000; }
+  .cat .nums { display: flex; flex-wrap: wrap; gap: 14px 22px; margin-top: 22px; }
+  .cat .nums button { padding: 0; border: 0; background: none; text-align: left; cursor: pointer; }
+  .cat .nums b { display: block; font-family: var(--serif); font-size: 30px; line-height: 1; }
+  .cat .nums .lb { margin-top: 4px; }
+  .cat .nums button.here b { text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 5px; }
+  .cat .tl { list-style: none; margin: 26px 0 0; padding: 0; columns: 2; column-gap: var(--gut); }
+  .cat .tl li { display: flex; gap: 10px; padding: 5px 0 6px; box-shadow: inset 0 1px 0 var(--hair); break-inside: avoid; font-size: 12px; font-weight: 600; letter-spacing: -0.01em; line-height: 1.3; cursor: pointer; }
+  .cat .tl li b { flex: none; width: 2ch; font-weight: 600; color: var(--grey); font-variant-numeric: tabular-nums; }
+  .cat .tl li:hover span { color: var(--grey); }
+  .cat .tl li.here b { color: var(--ink); }
+  .cat .tl li.here span { text-decoration: underline; text-underline-offset: 3px; }
+  .cat .spec { margin: 22px 0 0; }
+  .cat .spec div { display: grid; grid-template-columns: 104px 1fr; gap: 12px; padding: 5px 0 6px; box-shadow: inset 0 1px 0 var(--hair); cursor: pointer; }
+  .cat .spec dt { font-size: 9px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--grey); padding-top: 2px; }
+  .cat .spec dd { margin: 0; font-size: 11.5px; font-weight: 500; line-height: 1.38; }
+  .cat .spec div.here dd, .cat .spec span.here { font-weight: 700; }
+  .cat .spec.tools { margin-top: 0; }
+  .cat .spec.tools div { cursor: default; }
+  .cat .spec.tools span { cursor: pointer; }
+  .cat .spec.tools span:hover { color: var(--grey); }
+  .cat .days { margin-top: 22px; }
+  .cat .days div { display: flex; gap: 12px; padding: 5px 0 6px; box-shadow: inset 0 1px 0 var(--hair); font-size: 11.5px; font-weight: 500; line-height: 1.38; cursor: pointer; }
+  .cat .days div b { flex: none; width: 76px; font-weight: 600; font-variant-numeric: tabular-nums; }
+  .cat .days div.here { font-weight: 700; }
+  .cat .days div:hover span { color: var(--grey); }
+  .cat .sec { margin-top: 22px; cursor: pointer; }
+
+  /* the texture: every fragment as one mark, a tower per study */
+  #band { position: absolute; left: 0; right: 0; cursor: pointer; }
+  #tex { position: absolute; left: 0; top: 0; }
+  #labs { position: absolute; left: 0; right: 0; height: 16px; pointer-events: none; font-size: 9.5px; font-weight: 600; letter-spacing: 0.01em;
+    font-variant-numeric: tabular-nums; color: var(--grey); }
+  #labs span { position: absolute; top: 0; white-space: nowrap; }
+  #read { position: absolute; left: 0; pointer-events: none; font-size: 11px; font-weight: 600; letter-spacing: -0.004em; line-height: 1.35; max-width: 340px;
+    opacity: 0; transition: opacity 0.15s ease; }
+  #read.on { opacity: 1; }
+  #read i { font-style: normal; color: var(--grey); margin-left: 0.35em; }
+  #read span { display: block; font-weight: 500; color: rgba(0, 0, 0, 0.62); }
+
+  @media (max-width: 759px) {
+    :root { --mg: 16px; --head: 84px; --gut: 10px; }
+    #head { display: grid; grid-template-columns: auto minmax(0, 1fr) auto auto; grid-template-rows: 34px 30px; align-items: center; column-gap: 12px; row-gap: 8px;
+      padding: 12px var(--mg) 0; }
+    #head .mark { grid-area: 1 / 1; width: auto; font-size: 16px; }
+    #head .q { grid-area: 1 / 2; width: auto; margin: 0; gap: 8px; }
+    #head .q span { font-size: 13px; }
+    #q { font-size: 16px; }
+    #count { grid-area: 1 / 3; margin: 0; min-width: 0; font-size: 12px; }
+    #close { grid-area: 1 / 4; margin: 0; font-size: 14px; }
+    #sug { grid-area: 2 / 1 / 3 / 5; margin: 0; overflow-x: auto; scrollbar-width: none; font-size: 13px; gap: 0 14px; }
+    .sp.mid .tx { font-size: 13px; }
+    .sp.mid .tx.serif { font-size: 20px; }
+    #sug::-webkit-scrollbar { display: none; }
+    #stage { overflow-y: auto; overflow-x: hidden; }
+    .sp .alt { max-width: none; }
+    .cat h2 { font-size: 32px; }
+    .cat .tl { columns: 1; }
+    .more, .cat { overflow: visible; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .it img, .sp img { transition: none; }
+  }
+</style>
+</head>
+<body>
+<header id="head">
+  <a class="mark" href="/">Reckon<i>*</i>House</a>
+  <label class="q"><span>Search</span><input id="q" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" enterkeyhint="search"></label>
+  <nav id="sug"></nav>
+  <span id="count"></span>
+  <button id="close" type="button" hidden>Close</button>
+</header>
+<main id="field"></main>
+<div id="mind">
+  <div id="stage"><div id="spread"></div></div>
+  <div id="band"><canvas id="tex"></canvas><div id="labs"></div><div id="read"></div></div>
+</div>
+<script src="/lab/density/fragments.js"></script>
+<script src="/lab/density/density.js"></script>
+<script src="/lab/density/mind.js"></script>
+</body>
+</html>
