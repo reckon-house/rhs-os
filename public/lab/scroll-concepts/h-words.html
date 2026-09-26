@@ -37,6 +37,18 @@
      the same move as the pictures, so you never leave the page; and the
      end is a contents page of the words, each one a way back.
 
+     Then the two pushes he said yes to ("let's try those two pushes").
+     THE WORD IS A WINDOW: once the text is down, the ink drains up out
+     of the letters and the section's pictures show through them, then
+     the word opens from the heart of its thickest stroke until they fill
+     the glass. It is the page that has the word cut out of it (an SVG
+     mask), not the pictures clipped to it, because Chrome stops drawing
+     a letter past about 5,000px: the holes grow to 4,400px of type and
+     the paper dissolves for the rest. FIELDS: after a section's last
+     picture a field in the next line's own colour rises, and the next
+     word arrives on it before its page slides in. The colour is the
+     line's lead study's, from its palette (house.js); the end's is black.
+
      Ogg is Sharp Type's and it is installed on his Mac, so the page asks
      for it by name and never ships the files. Anyone without it sees
      Georgia. Going live needs a web licence. -->
@@ -80,9 +92,8 @@
   .fr { position: absolute; display: block; overflow: hidden; background: #e6e1dc; }
   .fr > img { position: absolute; left: 0; top: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 0.5s ease; }
   .fr > img.in { opacity: 1; }
-  /* 6% spare width for the lag as it comes in: any more and the A.R.C.
-     tablet (2,600 wide) goes soft at 1512 */
-  .fr.held > img { left: -3%; width: 106%; will-change: transform; }
+  .fr.field { transition: none; }
+  #clips { position: absolute; left: 0; top: 0; width: 0; height: 0; overflow: hidden; }
   .fr .cap { position: absolute; left: 18px; bottom: 15px; z-index: 2; font-size: 12px; font-weight: 600; letter-spacing: -0.004em; line-height: 1.3;
     color: var(--cc, #fff); transition: color 0.3s ease; pointer-events: none; }
   .fr .cap i { font-style: normal; opacity: 0.62; margin-left: 0.4em; }
@@ -145,6 +156,7 @@
 </head>
 <body>
 <section id="stage"><div class="pin"><div id="world"></div><div id="words" aria-hidden="true"></div></div></section>
+<svg id="clips" aria-hidden="true" focusable="false"><defs></defs></svg>
 <div id="mast" class="chrome"><a class="mark" href="/">Reckon<i>*</i>House</a><span id="here"></span></div>
 <button id="idx" class="chrome" type="button">Index</button>
 <aside id="toc" aria-label="Contents"><button class="x" type="button">Close</button><ul class="toc" id="tocList"></ul><p class="mail" id="tocMail"></p></aside>
@@ -277,15 +289,73 @@ function frame(p, x, y, w, h, kind) {
   const s = BYH[p.h]; a.appendChild(el("span", "cap", esc(title(p.h)) + (s ? "<i>" + s.y + "</i>" : "")));
   const f = { el: a, img: im, cap: a.lastChild, p, x, y, y0: y, w, h, kind, lum: null, armed: false, src: p.src || (p.reel && p.reel[0] && p.reel[0].src) };
   /* honest: never shown wider than half the file's own pixels */
-  if (p.w && p.h2 && !p.reel) { const shown = Math.max(w, h * p.w / p.h2) * (kind === "held" ? 1.06 : 1);
+  if (p.w && p.h2 && !p.reel) { const shown = Math.max(w, h * p.w / p.h2) * 1;
     if (p.w < shown * 2 * 0.97) console.info("[words] soft by " + Math.round((1 - p.w / (shown * 2)) * 100) + "%:", p.src.split("/").pop(), Math.round(shown) + "px shown"); }
   return f;
+}
+
+/* ── THE WINDOW: a word the pictures show through, then open ──────── */
+const NS = "http://www.w3.org/2000/svg", clipDefs = document.querySelector("#clips defs");
+/* how far each point of ink is from the paper, in thirds of a pixel:
+   two passes of a 3-4 chamfer */
+function chamfer(D, W, H) {
+  for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) {
+    const p = y * W + x; if (!D[p]) continue; let m = D[p];
+    if (x > 0) m = Math.min(m, D[p - 1] + 3);
+    if (y > 0) { m = Math.min(m, D[p - W] + 3); if (x > 0) m = Math.min(m, D[p - W - 1] + 4); if (x < W - 1) m = Math.min(m, D[p - W + 1] + 4); }
+    D[p] = m;
+  }
+  for (let y = H - 1; y >= 0; y--) for (let x = W - 1; x >= 0; x--) {
+    const p = y * W + x; if (!D[p]) continue; let m = D[p];
+    if (x < W - 1) m = Math.min(m, D[p + 1] + 3);
+    if (y < H - 1) { m = Math.min(m, D[p + W] + 3); if (x < W - 1) m = Math.min(m, D[p + W + 1] + 4); if (x > 0) m = Math.min(m, D[p + W - 1] + 4); }
+    D[p] = m;
+  }
+}
+function windowFor(up, Fw, fam, rx, base, i) {
+  const css = "font-family:" + fam + ";font-weight:700;letter-spacing:-0.012em";
+  /* the glyphs where the browser sets them, kerning and tracking and all */
+  const m = document.createElementNS(NS, "svg"); m.setAttribute("width", "10"); m.setAttribute("height", "10");
+  m.style.cssText = "position:absolute;left:-99999px;top:0;overflow:visible";
+  const mt = document.createElementNS(NS, "text"); mt.textContent = up; mt.setAttribute("x", "0"); mt.setAttribute("y", "0");
+  mt.setAttribute("font-size", Fw); mt.style.cssText = css; m.appendChild(mt); document.body.appendChild(m);
+  const xs = [...up].map((_, k) => mt.getStartPositionOfChar(k).x), tw = mt.getComputedTextLength(); m.remove();
+  /* the page is paper with the word cut out of it, where the word
+     stands. A mask, not a clip on the pictures: Chrome stops drawing a
+     letter past about 5,000px, so the holes grow only so far and then
+     the paper dissolves */
+  const mk = document.createElementNS(NS, "mask"); mk.id = "hole-" + i; mk.setAttribute("maskUnits", "userSpaceOnUse");
+  [["x", -VW], ["y", -VH], ["width", 3 * VW], ["height", 3 * VH]].forEach(([k, v]) => mk.setAttribute(k, v));
+  const rc = document.createElementNS(NS, "rect"); [["x", -VW], ["y", -VH], ["width", 3 * VW], ["height", 3 * VH], ["fill", "#fff"]].forEach(([k, v]) => rc.setAttribute(k, v));
+  const tx = document.createElementNS(NS, "text"); tx.textContent = up; tx.setAttribute("x", rx); tx.setAttribute("y", base); tx.setAttribute("fill", "#000");
+  tx.setAttribute("font-size", Fw); tx.style.cssText = css; mk.appendChild(rc); mk.appendChild(tx); clipDefs.appendChild(mk);
+  /* it opens from the heart of the thickest stroke on the glass, so the
+     pictures fill the glass before any edge of a letter can cross it */
+  const q = 0.25, by = Math.ceil(Fw * q * 0.92), W0 = Math.ceil(tw * q) + 8, H0 = Math.ceil(Fw * q) + 8;
+  const c = document.createElement("canvas"); c.width = W0; c.height = H0;
+  const g = c.getContext("2d"); g.font = "700 " + (Fw * q) + "px " + fam; g.textBaseline = "alphabetic";
+  [...up].forEach((ch, k) => g.fillText(ch, 4 + xs[k] * q, by));
+  const px = g.getImageData(0, 0, W0, H0).data, D = new Float32Array(W0 * H0);
+  for (let k = 0; k < W0 * H0; k++) D[k] = px[k * 4 + 3] > 127 ? 1e9 : 0;
+  chamfer(D, W0, H0);
+  const lo = Math.max(0.18 * VW, rx), hi = Math.min(0.82 * VW, rx + tw);
+  let best = null;
+  for (let y = 0; y < H0; y++) for (let x = 0; x < W0; x++) {
+    const v = D[y * W0 + x]; if (!v) continue;
+    const sx = rx + (x - 4) / q; if (sx < lo || sx > hi) continue;
+    const score = v - Math.abs(sx - VW / 2) / VW;
+    if (!best || score > best.score) best = { x, y, v, score };
+  }
+  if (!best) return { tx, ox: VW / 2, oy: base - Fw * 0.35, smax: Math.min(12, 4400 / Fw) };
+  const ox = rx + (best.x - 4) / q, oy = base + (best.y - by) / q, r = Math.max(3, best.v / 3 / q);
+  const far = Math.max(Math.hypot(ox, oy), Math.hypot(VW - ox, oy), Math.hypot(ox, VH - oy), Math.hypot(VW - ox, VH - oy));
+  return { tx, ox, oy, r, smax: Math.min(far / r * 1.12, 4400 / Fw) };
 }
 
 function build() {
   VW = innerWidth; VH = innerHeight; TALL = VW <= 760 || VW / VH < 1.05;
   document.body.classList.toggle("tall", TALL);
-  world.textContent = ""; wordsEl.textContent = "";
+  world.textContent = ""; wordsEl.textContent = ""; clipDefs.textContent = "";
   reels.forEach((r) => clearInterval(r.t)); reels.length = 0;
   /* a third of the glass tall on a desktop, and on a phone about as wide
      as a desktop's is for its glass, so a word still reads as a word */
@@ -294,13 +364,14 @@ function build() {
   const textX = TALL ? 22 : Math.round(0.2435 * VW), textY = Math.round((TALL ? 0.14 : 0.2) * VH);
   const restX = TALL ? 14 : Math.round(textX - 0.038 * VW);
   /* the baseline sits a hair under the glass, so the serifs are cut */
-  const wordTop = Math.round(VH * 1.008 - T.base);
+  const base = VH * 1.008, wordTop = Math.round(base - T.base);
   const sW = Math.round(0.61 * VW), cW = VW - sW;
   const secs = [], blocks = [], words = [];
 
   ALL.forEach((sec, i) => {
-    /* ── the page ── */
-    const px = 2 * i * VW, pnl = el("section", "pnl"); pnl.id = "s-" + sec.id;
+    /* ── the page. A section's pictures stand on the same spot of the
+       strip as its page, over it, and show only through its word ── */
+    const px = i * VW, pnl = el("section", "pnl"); pnl.id = "s-" + sec.id;
     pnl.style.cssText = "left:" + px + "px;width:" + VW + "px";
     const txt = el("div", "txt"); txt.style.left = textX + "px"; txt.style.top = textY + "px";
     pnl.appendChild(txt); world.appendChild(pnl);
@@ -341,13 +412,15 @@ function build() {
     const Wn = W + (n ? Math.round(F * 0.03) + 30 : 0);
     w.style.width = Wn + "px"; w.style.height = Fw + "px";
     const rx = sec.end ? Math.min(restX, VW - 28 - Wn) : restX;
-    words.push({ el: w, a, b, W: Wn, Wt: W, i, rx, top: Math.round(VH * 1.008 - T.base * Fw / F), x: null, split: null });
+    const wd = { el: w, a, b, n, W: Wn, Wt: W, Fw, i, rx, top: Math.round(base - T.base * Fw / F), baseY: T.base * Fw / F, capH: T.cap * Fw, split: null, vis: false };
+    if (sec.moves) Object.assign(wd, windowFor(up, Fw, T.fam, rx, base, i));
+    words.push(wd);
 
     /* ── its pictures ── */
     if (!sec.moves) return;
-    const bx = (2 * i + 1) * VW, blk = el("div", "blk"); blk.style.cssText = "left:" + bx + "px;width:" + VW + "px";
-    const col = el("div", "col"); blk.appendChild(col); world.appendChild(blk);
-    const B = { i, x: bx, el: blk, col, frames: [], moves: [], cy: -1, maxY: 0, near: false };
+    const blk = el("div", "blk"); blk.style.cssText = "left:" + px + "px;width:" + VW + "px;visibility:hidden";
+    const col = el("div", "col"); blk.appendChild(col); world.insertBefore(blk, pnl);
+    const B = { i, x: px, el: blk, col, pnl, frames: [], moves: [], cy: 0, maxY: 0, near: false, shown: false };
     let y = 0;
     sec.moves.forEach((m) => {
       const held = pic(...m.held), bleed = pic(...m.bleed), cps = m.col.map((c) => pic(...c)).filter(Boolean);
@@ -373,24 +446,35 @@ function build() {
       /* then the set lifts away under a picture at full bleed */
       if (bleed) { const f = frame(bleed, 0, y, VW, VH, "bleed"); col.appendChild(f.el); B.frames.push(f); y += VH; }
     });
+    /* between sections a field in the next line's own colour (its lead
+       study's, from that study's palette) rises over the last picture,
+       and the next word arrives on it before its page does. The end's is
+       the house's black */
+    const nx = ALL[i + 1], L2 = nx && nx.tag ? lineOf(nx.tag) : null;
+    const fe = el("div", "fr field"); fe.style.cssText = "left:0;top:" + y + "px;width:" + VW + "px;height:" + VH + "px;background:" + (L2 ? L2.color : INK);
+    col.appendChild(fe);
+    B.frames.push({ el: fe, img: null, cap: null, p: {}, x: 0, y, w: VW, h: VH, kind: "field", lum: null, ink: L2 ? L2.ink : PAPER, armed: true });
+    y += VH;
     B.H = y; B.maxY = Math.max(0, y - VH); col.style.height = y + "px";
     B.frames.forEach((f) => { if (f.p.reel) reels.push({ f, k: 0, t: 0 }); });
     blocks.push(B);
   });
 
-  /* ── THE ROUTE: across, the words, across, up, across ── */
+  /* ── THE ROUTE: the word arrives, its page slides in under it, the
+     text drops, the word opens onto its pictures, they rise, and a field
+     brings the next word ── */
   const beats = []; let s = 0;
   const add = (b) => { b.s = s; s += b.S; beats.push(b); return b; };
-  const travel = (k, i, L) => { const v = 1.3, a = Math.min(0.45 * VH, L / v / 2); return { k, i, L, v, a, S: L / v + a }; };
   ALL.forEach((sec, i) => {
-    if (i > 0) add(travel("in", i, VW));
+    if (i > 0) add({ k: "in", i, S: 1.9 * VH });
     add({ k: "settle", i, S: (i === 0 ? 1.25 : sec.end ? 0.9 : 0.75) * VH });
     if (sec.end) { add({ k: "rest", i, S: 0.2 * VH }); return; }
-    add(travel("out", i, VW));
-    const B = blocks.find((b) => b.i === i), L = B.maxY, a = Math.min(0.35 * VH, L / 2);
-    B.up = add({ k: "up", i, L, v: 1, a, S: L + a + 0.3 * VH });
+    const B = blocks.find((b) => b.i === i);
+    B.open = add({ k: "open", i, S: 1.5 * VH });
+    const L = B.maxY, a = Math.min(0.35 * VH, L / 2);
+    B.up = add({ k: "up", i, L, v: 1, a, S: L + a + 0.15 * VH });
   });
-  words.forEach((w) => ["in", "settle", "out"].forEach((k) => { w[k] = beats.find((b) => b.k === k && b.i === w.i) || null; }));
+  words.forEach((w) => ["in", "settle", "open"].forEach((k) => { w[k] = beats.find((b) => b.k === k && b.i === w.i) || null; }));
   S = { F, T, textX, textY, restX, wordTop, sW, cW, secs, blocks, words, beats, total: s };
   stage.style.height = Math.round(s + VH) + "px";
   toc();
@@ -405,19 +489,17 @@ const posAt = (b, u) => {
   if (u >= run) { const w = run + a - u; return L - v * w * w / (2 * a); }
   return v * (a / 2 + (u - a));
 };
+const inOut = (t) => t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
 const stageTop = () => stage.getBoundingClientRect().top + scrollY;
 function beatAt(d) {
   const B = S.beats; for (const b of B) if (d < b.s + b.S - 1.5) return b;
   return B[B.length - 1];
 }
+/* the page only goes across on an "in", and only once its word is on */
 function state(d) {
-  const b = beatAt(d), u = clamp(d - b.s, 0, b.S), px = (i) => 2 * i * VW;
-  let camX = 0;
-  if (b.k === "in") camX = px(b.i) - VW + posAt(b, u);
-  else if (b.k === "settle" || b.k === "rest") camX = px(b.i);
-  else if (b.k === "out") camX = px(b.i) + posAt(b, u);
-  else if (b.k === "up") camX = px(b.i) + VW;
-  return { b, u, t: b.S ? u / b.S : 1, camX };
+  const b = beatAt(d), u = clamp(d - b.s, 0, b.S), t = b.S ? u / b.S : 1;
+  const camX = b.k === "in" ? (b.i - 1) * VW + VW * inOut(clamp((t - 0.42) / 0.58, 0, 1)) : b.i * VW;
+  return { b, u, t, camX };
 }
 
 /* ── LIGHT: what a picture looks like where something sits on it ─── */
@@ -443,18 +525,24 @@ const lumIn = (f, x0, y0, x1, y1) => {
     for (let x = Math.floor(x0 * 12); x < Math.max(Math.floor(x0 * 12) + 1, Math.ceil(x1 * 12)); x++) { s += f.lum[clamp(y, 0, 11) * 12 + clamp(x, 0, 11)]; n++; }
   return s / n;
 };
-/* what is under a point of the glass, and the colour that reads on it */
+/* what is under a point of the glass: a section's pictures, once its
+   word has opened onto them, or else its paper */
 function under(sx, sy, camX) {
-  const X = camX + sx, slot = Math.floor(X / VW);
-  if (slot % 2 === 0 || slot < 0) return null;
-  const B = S.blocks.find((b) => b.i === (slot - 1) / 2); if (!B) return null;
+  const X = camX + sx, i = Math.floor(X / VW);
+  const B = S.blocks.find((b) => b.i === i); if (!B || !B.shown) return null;
   const lx = X - B.x, ly = sy + Math.max(0, B.cy);
   for (const f of B.frames) if (lx >= f.x && lx < f.x + f.w && ly >= f.y && ly < f.y + f.h) return { f, fx: (lx - f.x) / f.w, fy: (ly - f.y) / f.h };
   return null;
 }
+/* a field says its own ink; a picture is read */
 function inkAt(sx, sy, camX) {
-  const u = under(sx, sy, camX); if (!u) return INK;
+  const u = under(sx, sy, camX); if (!u) return INK; if (u.f.ink) return u.f.ink;
   const r = 0.09; return lumIn(u.f, u.fx - r, u.fy - r, u.fx + r, u.fy + r) < 0.55 ? PAPER : INK;
+}
+function pickOn(sx, camX) {
+  const u = under(clamp(sx, 0, VW - 1), VH * 0.86, camX);
+  if (!u) return INK; if (u.f.ink) return u.f.ink;
+  return lumIn(u.f, 0, 0.62, 1, 1) < 0.5 ? PAPER : INK;
 }
 
 /* ── EACH FRAME ───────────────────────────────────────────────────── */
@@ -465,50 +553,82 @@ function draw(r) {
   const st = state(d), camX = st.camX; cur = st;
   world.style.transform = "translate3d(" + (-camX).toFixed(1) + "px,0,0)";
 
-  /* the pictures: each set rises in place on its own beat */
+  /* the pictures: hidden until their word opens onto them, then rising
+     in place on their own beat */
   S.blocks.forEach((B) => {
     const sx = B.x - camX, near = sx < VW * 2.2 && sx > -VW * 1.6;
     if (near && !B.near) arm(B);
     B.near = near;
-    const b = B.up, cy = d <= b.s ? 0 : d >= b.s + b.S ? B.maxY : posAt(b, d - b.s);
-    if (cy !== B.cy) { B.cy = cy; B.col.style.transform = "translate3d(0," + (-cy).toFixed(1) + "px,0)"; }
+    const ob = B.open, w = S.words[B.i];
+    let lift = 0, mask = "none", fade = 1, page = "visible";
+    if (d >= ob.s && d < ob.s + ob.S) {
+      const t = (d - ob.s) / ob.S, k1 = ease(clamp(t / 0.3, 0, 1)), p2 = clamp((t - 0.3) / 0.7, 0, 1);
+      /* a steady zoom reads as steady when it is steady in scale's log */
+      const sc = Math.exp(Math.log(w.smax) * inOut(p2)), key = sc.toFixed(3);
+      if (w.tx.__k !== key) { w.tx.__k = key;
+        w.tx.setAttribute("transform", "translate(" + w.ox.toFixed(1) + " " + w.oy.toFixed(1) + ") scale(" + key + ") translate(" + (-w.ox).toFixed(1) + " " + (-w.oy).toFixed(1) + ")"); }
+      mask = "url(#hole-" + B.i + ")";
+      /* the letters have filled most of the glass by the time the paper
+         goes, so what dissolves is the last of the page */
+      fade = 1 - ease(clamp((t - 0.72) / 0.28, 0, 1));
+      /* and the pictures rise into the letters as the ink drains */
+      lift = REDUCE ? 0 : (1 - k1) * 0.1 * VH;
+      B.shown = fade < 0.5;
+    } else { B.shown = d >= ob.s + ob.S; if (B.shown) page = "hidden"; }
+    const vis = d >= ob.s ? "visible" : "hidden";
+    if (B.el.__vis !== vis) { B.el.__vis = vis; B.el.style.visibility = vis; }
+    const P0 = B.pnl, fk = fade.toFixed(3);
+    if (P0.__mask !== mask) { P0.__mask = mask; P0.style.mask = mask; P0.style.webkitMask = mask; }
+    if (P0.__fade !== fk) { P0.__fade = fk; P0.style.opacity = fk; }
+    if (P0.__page !== page) { P0.__page = page; P0.style.visibility = page; }
+    const b = B.up, cy = d <= b.s ? 0 : d >= b.s + b.S ? B.maxY : posAt(b, d - b.s), ty = lift - cy;
+    B.cy = cy;
+    if (ty !== B.ty) { B.ty = ty; B.col.style.transform = "translate3d(0," + ty.toFixed(1) + "px,0)"; }
     if (!near || TALL) return;
     B.moves.forEach((mv) => {
       if (!mv.held) return;
       /* held while its neighbours climb, then it lifts away with them */
       const off = clamp(cy - mv.top, 0, mv.h - VH); mv.held.y = mv.top + off;
       mv.held.el.style.transform = "translate3d(0," + off.toFixed(1) + "px,0)";
-      /* and it lags a little as it comes in from the right */
-      if (!REDUCE) mv.held.img.style.transform = "translate3d(" + (clamp(sx, 0, VW) / VW * 0.03 * S.sW).toFixed(1) + "px,0,0)";
     });
   });
 
-  /* the words: in faster than the page, still while the text drops, out
-     faster again, taking the colour of any picture they cross */
+  /* the words: on over the field before their page, still while the text
+     drops, then the ink drains out of them and they open */
   S.words.forEach((w) => {
-    const px = 2 * w.i * VW, at = (b) => clamp((d - b.s) / b.S, 0, 1); let x;
-    if (w.in && d < w.in.s) x = VW + 10;
-    else if (w.in && d < w.in.s + w.in.S) x = lerp(VW + 8, w.rx, ease(clamp(at(w.in) / 0.6, 0, 1)));
+    const at = (b) => clamp((d - b.s) / b.S, 0, 1);
+    let x = null, drain = null;
+    if (w.in && d < w.in.s) x = null;
+    else if (w.in && d < w.in.s + w.in.S) x = lerp(VW + 8, w.rx, ease(clamp(at(w.in) / 0.42, 0, 1)));
     else if (!w.in && d < w.settle.s + w.settle.S) x = lerp(0.62 * VW, w.rx, ease(clamp(at(w.settle) / 0.55, 0, 1)));
-    else if (!w.out || d < w.out.s) x = w.rx;
-    else if (d < w.out.s + w.out.S) x = w.rx - (w.rx + w.W + 16) * inOut(clamp((at(w.out) - 0.3) / 0.7, 0, 1));
-    else x = -w.W - 10;
-    const vis = x < VW + 4 && x + w.W > -4;
+    else if (!w.open || d < w.open.s) x = w.rx;
+    else if (d < w.open.s + w.open.S && at(w.open) < 0.3) { x = w.rx; drain = REDUCE ? 1 : ease(at(w.open) / 0.3); }
+    const vis = x != null && x < VW + 4 && x + w.W > -4;
     if (!vis) { if (w.vis) { w.el.style.visibility = "hidden"; w.vis = false; } return; }
     if (!w.vis) { w.el.style.visibility = "visible"; w.vis = true; }
     w.el.style.transform = "translate3d(" + x.toFixed(1) + "px," + w.top + "px,0)";
-    /* where the page ends and a picture begins, under the word */
-    let edge = null, left = INK, right = INK;
+    if (drain != null) {
+      /* the ink drains up out of the letters, and what shows in them is
+         the pictures, rising */
+      const cut = lerp(w.baseY + 0.05 * w.Fw, w.baseY - w.capH - 0.05 * w.Fw, drain);
+      w.a.style.color = INK; w.a.style.clipPath = "inset(-20% 0 " + (w.Fw - cut).toFixed(1) + "px 0)";
+      w.b.style.clipPath = "inset(0 0 0 100%)";
+      if (w.n) w.n.style.opacity = (1 - drain).toFixed(3);
+      w.split = null; return;
+    }
+    if (w.n && w.n.style.opacity) w.n.style.opacity = "";
+    /* where its page begins under it: the field's ink on one side of the
+       edge, the page's on the other */
+    const px = w.i * VW; let edge = null, left = INK;
     if (camX < px - 0.5) { edge = px - camX; left = pickOn(edge - 24, camX); }
-    else if (camX > px + 0.5 && ALL[w.i].moves) { edge = px + VW - camX; right = pickOn(edge + 24, camX); }
     const cut = edge == null ? w.W : clamp(edge - x, 0, w.W);
-    const key = cut.toFixed(0) + left + right;
+    const key = cut.toFixed(0) + left;
     if (w.split !== key) {
       w.split = key;
-      w.a.style.color = left; w.b.style.color = right;
+      w.a.style.color = left; w.b.style.color = INK;
       w.a.style.clipPath = "inset(-20% " + Math.max(0, w.Wt - cut).toFixed(1) + "px -20% 0)";
       w.b.style.clipPath = "inset(-20% 0 -20% " + Math.min(cut, w.Wt).toFixed(1) + "px)";
-      const n = w.el.querySelector(".n"); if (n) n.style.color = cut >= w.W - 30 ? left : right;
+      if (w.n) w.n.style.color = cut >= w.W - 30 ? left : INK;
     }
   });
 
@@ -527,8 +647,9 @@ function draw(r) {
     });
   });
 
-  /* the mark names the section, and takes the colour that reads */
-  const i = st.b.k === "in" && posAt(st.b, st.u) < VW / 2 ? st.b.i - 1 : st.b.i, sec = ALL[i];
+  /* the mark names the section once its word is on, and takes the
+     colour that reads */
+  const i = st.b.k === "in" && st.t < 0.3 ? st.b.i - 1 : st.b.i, sec = ALL[i];
   if (sec !== lastSec) {
     lastSec = sec; document.getElementById("here").textContent = sec.word;
     if (!study.open && hashReady) history.replaceState(null, "", "#" + sec.id);
@@ -537,13 +658,6 @@ function draw(r) {
   document.getElementById("mast").style.setProperty("--c", inkAt(60, 40, camX));
   document.getElementById("idx").style.setProperty("--c", inkAt(VW - 50, 40, camX));
   reelTick(camX);
-}
-const inOut = (t) => t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
-/* the colour a word takes on the picture at that point of its band */
-function pickOn(sx, camX) {
-  const u = under(clamp(sx, 0, VW - 1), VH * 0.86, camX);
-  if (!u) return INK;
-  return lumIn(u.f, 0, 0.62, 1, 1) < 0.5 ? PAPER : INK;
 }
 
 /* ── LOADING: a set's pictures come in as the page nears them ─────── */
