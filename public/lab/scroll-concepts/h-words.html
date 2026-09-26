@@ -1,0 +1,675 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>The words · scroll concepts · Reckon*House</title>
+<!-- ── CONCEPT H: THE WORDS (25 Sept 2026) ─────────────────────────────
+     His ask, with eight frames drawn in Figma: "what if there's even more
+     of a combo and we work in a big font at the bottom but look at a
+     serif (this is ogg). the big scrolls over, intro text scrolls down
+     and in then the big images scroll from the bottom up in place until
+     that section of images is done then the next big text header comes
+     in and that sections image scroll up. maybe we mix some of the other
+     elements we've looked at too ... how do we push it?!"
+
+     His frames, as built: a word in Ogg Bold as tall as a third of the
+     glass sits on the foot of the page with its serifs just cut by the
+     edge (measured off his comp: the O's thick side is 0.204 of the cap,
+     Ogg Bold's exactly). It slides in from the right faster than the
+     page, then the text drops in line by line. The page goes on across,
+     the word leaves faster than it came and crosses the first picture as
+     it arrives, and when the pictures fill the glass the page stops going
+     across and they rise in place: one held on one side while a column of
+     its neighbours climbs past it, then the whole set lifts away under a
+     picture at full bleed. Then across again, into the next word.
+
+     The sections are the board's lines, in the order his About names
+     them: technology (Apps), workflow and structure (Systems), marketing
+     (Digital), creative (Campaigns), brand (Branding), then Interiors.
+     Every study sits in one line. About's pictures are his comp's.
+
+     The pushes, each small: where the word crosses a picture it takes
+     the colour that reads on that picture (his APPS frame set black type
+     on the dark Ivy Park laptop); the mark names the section you are in;
+     every picture opens its study in a sheet that rises from the foot,
+     the same move as the pictures, so you never leave the page; and the
+     end is a contents page of the words, each one a way back.
+
+     Ogg is Sharp Type's and it is installed on his Mac, so the page asks
+     for it by name and never ships the files. Anyone without it sees
+     Georgia. Going live needs a web licence. -->
+<link rel="stylesheet" href="/lab/scroll-concepts/ride.css">
+<style>
+  @font-face { font-family: "RH Ogg"; src: local("Ogg Bold"), local("Ogg-Bold"); font-weight: 700; font-display: block; }
+  :root { --serif: "RH Ogg", "Ogg", Georgia, "Times New Roman", serif; --mg: 32px;
+    --lead: clamp(16px, 2.45vh, 22px); --body: clamp(13px, 1.9vh, 16px); --colw: clamp(280px, 22.5vw, 380px); }
+  body { overflow-x: hidden; }
+  #stage { position: relative; }
+  #stage > .pin { position: sticky; top: 0; height: 100vh; overflow: hidden; background: var(--paper); }
+  #world { position: absolute; left: 0; top: 0; height: 100%; will-change: transform; }
+  #words { position: absolute; inset: 0; pointer-events: none; z-index: 5; }
+
+  /* ── a section's page: the text, set small against the word ── */
+  .pnl { position: absolute; top: 0; height: 100%; background: var(--paper); }
+  .txt { position: absolute; width: var(--colw); }
+  /* width: ride.css narrows any .lead to its longest word, for captions */
+  .txt .lead { width: auto; margin: 0; font-size: var(--lead); font-weight: 600; letter-spacing: -0.012em; line-height: 1.72; }
+  .txt .body { margin: 0.9em 0 0; font-size: var(--body); font-weight: 400; letter-spacing: -0.004em; line-height: 1.85; }
+  .txt .list { margin: 1.1em 0 0; padding: 0; list-style: none; font-size: var(--body); line-height: 1.85; }
+  .txt .list a, .txt .list button { display: block; padding: 0; border: 0; background: none; font: inherit; font-weight: 500; letter-spacing: -0.004em;
+    text-align: left; color: inherit; cursor: pointer; white-space: nowrap; }
+  .txt .list i { font-style: normal; color: var(--grey); margin-left: 0.35em; }
+  .txt .list a:hover, .txt .list button:hover { color: var(--grey); }
+  .txt .lead a { border-bottom: 1px solid currentColor; }
+  /* a line drops into its own slot: the slot is the mask */
+  .ln { display: block; overflow: hidden; padding-bottom: 0.14em; margin-bottom: -0.14em; }
+  .ln > span { display: block; will-change: transform; }
+
+  /* the end: every word again, as the way back */
+  .toc { position: absolute; margin: 0; padding: 0; list-style: none; }
+  .toc button { display: flex; align-items: flex-start; gap: 0.18em; padding: 0; border: 0; background: none; color: var(--grey);
+    font-family: var(--serif); font-weight: 700; line-height: 1.08; letter-spacing: -0.01em; cursor: pointer; transition: color 0.25s ease; }
+  .toc button:hover { color: var(--ink); }
+  .toc sup { position: relative; top: 0.5em; margin-left: 0.3em; vertical-align: top; font-family: var(--sans); font-size: 13px; font-weight: 600; letter-spacing: 0; line-height: 1; }
+
+  /* ── the pictures: edge to edge, rising in place ── */
+  .blk { position: absolute; top: 0; height: 100%; overflow: hidden; background: #e6e1dc; }
+  .blk .col { position: absolute; left: 0; top: 0; width: 100%; will-change: transform; }
+  .fr { position: absolute; display: block; overflow: hidden; background: #e6e1dc; }
+  .fr > img { position: absolute; left: 0; top: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 0.5s ease; }
+  .fr > img.in { opacity: 1; }
+  /* 6% spare width for the lag as it comes in: any more and the A.R.C.
+     tablet (2,600 wide) goes soft at 1512 */
+  .fr.held > img { left: -3%; width: 106%; will-change: transform; }
+  .fr .cap { position: absolute; left: 18px; bottom: 15px; z-index: 2; font-size: 12px; font-weight: 600; letter-spacing: -0.004em; line-height: 1.3;
+    color: var(--cc, #fff); transition: color 0.3s ease; pointer-events: none; }
+  .fr .cap i { font-style: normal; opacity: 0.62; margin-left: 0.4em; }
+  .fr.held .cap { bottom: 15px; }
+
+  /* ── the word: two layers, ink and the colour that reads on a picture ── */
+  .wd { position: absolute; left: 0; top: 0; visibility: hidden; font-family: var(--serif); font-weight: 700; line-height: 1;
+    letter-spacing: -0.012em; white-space: nowrap; will-change: transform; }
+  .wd .a, .wd .b { position: absolute; left: 0; top: 0; }
+  .wd .b { color: #fff; }
+  .wd .n { position: absolute; font-family: var(--sans); font-size: 15px; font-weight: 600; letter-spacing: 0; line-height: 1; }
+
+  /* ── the chrome: the mark and the section it is in, and the index ── */
+  .chrome { position: fixed; z-index: 30; color: var(--c, #000); transition: color 0.3s ease; }
+  #mast { left: var(--mg); top: 28px; display: flex; align-items: baseline; gap: 16px; font-size: 17px; }
+  #mast .mark { font-size: 17px; }
+  #here { font-weight: 600; letter-spacing: -0.02em; opacity: 0.5; white-space: nowrap; }
+  #idx { right: var(--mg); top: 28px; padding: 0; border: 0; background: none; font: inherit; font-size: 15px; font-weight: 600; letter-spacing: -0.01em;
+    line-height: 1.2; cursor: pointer; }
+
+  /* the contents, from the right */
+  #toc { position: fixed; z-index: 40; top: 0; right: 0; bottom: 0; width: min(560px, 100vw); padding: 96px 48px 48px; background: var(--paper); color: var(--ink);
+    box-shadow: -1px 0 0 var(--hair); clip-path: inset(0 0 0 100%); pointer-events: none; transition: clip-path 0.7s var(--ease); overflow: auto; }
+  #toc.on { clip-path: inset(0 0 0 0); pointer-events: auto; }
+  #toc .x { position: absolute; right: 48px; top: 28px; padding: 0; border: 0; background: none; font: inherit; font-size: 15px; font-weight: 600; cursor: pointer; }
+  #toc .toc { position: relative; }
+  #toc .toc button { font-size: clamp(36px, 6.4vh, 60px); }
+  #toc .toc button.here { color: var(--ink); }
+  #toc .mail { margin: 40px 0 0; font-size: 15px; font-weight: 600; line-height: 1.8; }
+  #toc .mail a { display: block; }
+
+  /* ── a study rises from the foot, the same move as the pictures ── */
+  #study { position: fixed; z-index: 60; inset: 0; display: flex; flex-direction: column; background: var(--paper);
+    transform: translateY(101%); transition: transform 0.85s var(--ease); visibility: hidden; }
+  #study.on { transform: none; visibility: visible; }
+  #study.shut { visibility: visible; }
+  #study .bar { flex: none; display: flex; align-items: baseline; gap: 16px; height: 64px; padding: 26px var(--mg) 0; box-shadow: 0 1px 0 var(--hair);
+    font-size: 15px; font-weight: 600; letter-spacing: -0.01em; }
+  #study .bar .t { font-size: 17px; font-weight: 700; letter-spacing: -0.03em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  #study .bar .t i { font-style: normal; font-weight: 600; opacity: 0.5; margin-left: 0.4em; }
+  #study .bar .sp { flex: 1; }
+  #study .bar a, #study .bar button { padding: 0; border: 0; background: none; font: inherit; cursor: pointer; white-space: nowrap; }
+  #study .bar a { color: var(--grey); } #study .bar a:hover { color: var(--ink); }
+  #study .well { position: relative; flex: 1; min-height: 0; background: #e6e1dc; }
+  #study .well img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: opacity 0.6s ease; }
+  #study .well .wait { position: absolute; left: var(--mg); bottom: 24px; margin: 0; font-size: 12px; font-weight: 600; color: #fff;
+    text-shadow: 0 1px 14px rgba(0, 0, 0, 0.5); transition: opacity 0.4s ease; }
+  #study iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; background: var(--paper); opacity: 0; transition: opacity 0.6s ease;
+    pointer-events: auto !important; }
+  #study.ready iframe { opacity: 1; } #study.ready .well img, #study.ready .wait { opacity: 0; }
+
+  /* ── a tall glass (a phone, or a tablet stood up): the pictures run in
+     one column at their own shape, and the text takes the width ── */
+  body.tall { --mg: 20px; --colw: calc(100vw - 44px); }
+  body.tall #mast { top: 22px; gap: 12px; } body.tall #idx { top: 22px; }
+  body.tall .fr .cap { left: 14px; bottom: 12px; }
+  body.tall #toc { padding: 80px 24px 40px; } body.tall #toc .x { right: 24px; top: 22px; }
+  body.tall #study .bar { padding-top: 22px; height: 58px; }
+</style>
+</head>
+<body>
+<section id="stage"><div class="pin"><div id="world"></div><div id="words" aria-hidden="true"></div></div></section>
+<div id="mast" class="chrome"><a class="mark" href="/">Reckon<i>*</i>House</a><span id="here"></span></div>
+<button id="idx" class="chrome" type="button">Index</button>
+<aside id="toc" aria-label="Contents"><button class="x" type="button">Close</button><ul class="toc" id="tocList"></ul><p class="mail" id="tocMail"></p></aside>
+<div id="study" role="dialog" aria-modal="true" aria-label="Case study">
+  <div class="bar"><span class="t"></span><span class="sp"></span><a class="open" target="_top" href="/">Open the page</a><button class="x" type="button">Close</button></div>
+  <div class="well"><img alt=""><p class="wait">Loading the study</p><iframe title="Case study"></iframe></div>
+</div>
+<script src="/lab/scroll-concepts/house.js"></script>
+<script src="/lab/scroll-concepts/pictures.js"></script>
+<script src="/lab/scroll-concepts/vendor/lenis.min.js"></script>
+<script src="/lab/scroll-concepts/ride.js"></script>
+<script>
+(function () {
+"use strict";
+const H = window.HOUSE, P = window.PICTURES, R = window.Ride, clamp = R.clamp, lerp = R.lerp, ease = R.ease;
+const REDUCE = matchMedia("(prefers-reduced-motion: reduce)").matches;
+const el = (t, c, h) => { const e = document.createElement(t); if (c) e.className = c; if (h != null) e.innerHTML = h; return e; };
+const esc = (s) => String(s == null ? "" : s).replace(/&/g, "&amp;").replace(/</g, "&lt;");
+const INK = "#000", PAPER = "#fff";
+const stage = document.getElementById("stage"), world = document.getElementById("world"), wordsEl = document.getElementById("words");
+
+/* ── WHAT IS SHOWN ────────────────────────────────────────────────── */
+/* the house's studies by the address their page lives at */
+const BYH = {}; Object.values(H.studies).forEach((s) => { BYH[s.h] = s; });
+const lineOf = (tag) => H.lines.find((l) => l.tag === tag);
+/* a picture by its study's address and the start of its file name */
+const pic = (h, name) => {
+  if (name === "*reel") return { h, reel: (P[h] || []).slice(0, 8), w: 4, h2: 3 };
+  const f = (P[h] || []).find((p) => p.src.split("/").pop().startsWith(name));
+  if (!f) console.warn("[words] no picture", h, name);
+  return f ? { src: f.src, alt: f.alt, w: f.w, h2: f.h, h } : null;
+};
+/* two studies share a title (three Hill Country rooms, two Fairview
+   rooms): the room tells them apart */
+const TITLES = {}; Object.values(H.studies).forEach((s) => { TITLES[s.t] = (TITLES[s.t] || 0) + 1; });
+const title = (h) => { const s = BYH[h]; if (!s) return h; if (TITLES[s.t] < 2) return s.t;
+  const room = String(s.s || "").replace(/^interior design,\s*/i, ""); return s.t + ", " + room; };
+
+/* About is his comp's copy, as he wrote it there, and his comp's five
+   pictures. The lines keep the board's sentences. */
+const SECS = [
+  { id: "about", word: "About",
+    lead: "I solve problems in a number of mediums from technology, business workflow, organizational structure, marketing, creative and brand.",
+    body: "With 20+ years of experience working across organizations large and small I help create campaigns, brands and use new tools and technology (like AI) to streamline the workflow and process around. I understand the data and analytics needed to solve these problems.",
+    moves: [{ side: "left", held: ["robert-rodriguez", "neiman-marcus-robert-rodriguez-woman-model-pink-blazer"],
+      col: [["arc", "rhs-arc-app-project-select-phone"], ["nordstrom-personalization", "rhs-nordstrom-personalization-laptop"], ["sally", "rhs-sally-os-asset-hub-laptop"]],
+      bleed: ["ivy-park", "ivy-park-nordstrom-laptop-brand-experience"] }] },
+  { id: "apps", tag: "app",
+    moves: [{ side: "left", held: ["arc", "arc-app-tablet-kitchen-living-room"],
+      col: [["dsc", "dsc-marketing-site-laptop-hero"], ["sizzle", "*reel"], ["dsc", "dsc-ai-scheduler-phone"]],
+      bleed: ["arc", "arc-app-kitchen-project-selection"] }] },
+  { id: "systems", tag: "systems",
+    moves: [{ side: "left", held: ["sally", "sally-os-brand-brain"],
+      col: [["nordstrom-framework", "nordstrom-content-framework-lockup-on-our-list"], ["nordstrom-personalization", "nordstrom-personalization-system-design-woman-model-blue-floral"], ["sally", "sally-os-utilities-marketplace"]],
+      bleed: ["nordstrom-personalization", "nordstrom-personalization-homepage-laptop"] }] },
+  { id: "digital", tag: "digital",
+    moves: [{ side: "left", held: ["ivy-park", "ivy-park-campaign-assets-grid"],
+      col: [["nordstrom-beauty", "nordstrom-beauty-tryon-iphone"], ["cosmo-prof", "cosmo-prof-photography-direction-hair-color-brushes"], ["jeffrey-ecommerce", "jeffrey-new-york-digital-flagship"]],
+      bleed: ["you-by-sally", "you-by-sally-street-display-case"] },
+    { side: "right", held: ["neiman-marcus", "neiman-marcus-insite-contemporary-art-magazine"],
+      col: [["loved-by-nordstrom", "loved-by-nordstrom-iphone-instagram"], ["jeffrey-spring", "jeffrey-spring-campaign-hero-grid"], ["neiman-marcus", "neiman-marcus-insite-color-story-rainbow"]],
+      bleed: ["loved-by-nordstrom", "loved-by-nordstrom-gallery-wall"] }] },
+  { id: "campaigns", tag: "creative",
+    moves: [{ side: "left", held: ["robert-rodriguez", "neiman-marcus-robert-rodriguez-woman-yellow-blazer-white-pants-coral"],
+      col: [["robert-rodriguez", "robert-rodriguez-logo-typography-gradient"], ["capitan-boot-co", "capitan-boot-co-branding-system"], ["hill-country-oak", "hill-country-oakworks-mid-century-tree-silhouette-poster"]],
+      bleed: ["capitan-boot-co", "capitan-boot-co-western-branding-desert-landscape-mountains-clouds"] },
+    { side: "right", held: ["big-bend", "elena_wide"],
+      col: [["big-bend", "chisos-range-panorama"], ["branding-graphics", "branding-graphics-inna-foil-zine"], ["branding-graphics", "branding-graphics-abc-123"]],
+      bleed: ["hill-country-oak", "hill-country-oakworks-outdoor-banner"] }] },
+  { id: "branding", tag: "branding",
+    moves: [{ side: "left", held: ["amber-shockey-co", "amber-shockey-co-black-linework-geometric-plates"],
+      col: [["black-white-type", "typography-patterns-stepper-poster"], ["amber-shockey-co", "amber-shockey-co-blue-florals-peony-wallpaper"], ["black-white-type", "typography-patterns-white-poster-gate"]],
+      bleed: ["j-christianson", "j-christianson-storefront-tree-stripe"] }] },
+  { id: "interiors", tag: "interiors",
+    moves: [{ side: "left", held: ["hill-country-kitchen", "hill-country-kitchen-island-pendants"],
+      col: [["hill-country-bath", "hill-country-bath-his-vanity"], ["hill-country-living", "hill-country-living-cognac-leather-sofa-open-kitchen"], ["floor-and-decor", "urban-southwest-primary-bath-exposed-brick"]],
+      bleed: ["fairview-sitting", "fairview-sitting-stacked-stone"] },
+    { side: "right", held: ["fairview-entry", "hero1"],
+      col: [["fairview-suite", "fairview-suite-bedroom-sofa-chair"], ["chalet", "chalet-a-frame-ceiling"]],
+      bleed: ["chalet", "chalet-living-room-a-frame-glass-doors"] }] },
+];
+SECS.forEach((sec) => {
+  const L = sec.tag ? lineOf(sec.tag) : null;
+  if (L) { sec.word = L.name; sec.lead = L.sentence; }
+  /* the studies in the order the pictures show them, each once */
+  const seen = [];
+  sec.moves.forEach((m) => [m.held, ...m.col, m.bleed].forEach(([h]) => { if (!seen.includes(h)) seen.push(h); }));
+  sec.studies = sec.tag ? seen : null;
+});
+/* the last word is the greeting his address opens with, and it is the
+   one word short enough to land whole */
+const END = { id: "hello", word: "Hello", end: true,
+  lead: '<a href="mailto:' + esc(H.email) + '">' + esc(H.email) + "</a>",
+  links: [["Book 30 minutes", "/book"], ["The daybook", "/daybook"]] };
+const ALL = [...SECS, END];
+
+/* ── THE LAYOUT ───────────────────────────────────────────────────── */
+let VW = 0, VH = 0, TALL = false, S = null;
+const probe = (font, txt) => {
+  const s = el("span", null, esc(txt)); s.style.cssText = "position:absolute;left:-9999px;top:0;white-space:nowrap;font:" + font;
+  const mark = el("span"); mark.style.cssText = "display:inline-block;width:0;height:0;vertical-align:baseline";
+  s.appendChild(mark); document.body.appendChild(s);
+  const r = { w: s.offsetWidth, base: mark.offsetTop }; s.remove(); return r;
+};
+const inkC = document.createElement("canvas").getContext("2d");
+function typeMetrics(F) {
+  const fam = getComputedStyle(document.documentElement).getPropertyValue("--serif");
+  inkC.font = "700 100px " + fam;
+  const cap = inkC.measureText("H").actualBoundingBoxAscent / 100 || 0.695;
+  const base = probe("700 " + F + "px/1 " + fam, "H").base;
+  return { cap, base, fam };
+}
+
+/* split a paragraph into its lines as it sets, each in its own slot */
+function lines(p) {
+  const words = p.textContent.split(/\s+/).filter(Boolean); p.textContent = "";
+  const spans = words.map((w, i) => { const s = el("span", null, esc(w)); p.appendChild(s); if (i < words.length - 1) p.appendChild(document.createTextNode(" ")); return s; });
+  const rows = []; let top = null;
+  spans.forEach((s) => { if (s.offsetTop !== top) { top = s.offsetTop; rows.push([]); } rows[rows.length - 1].push(s.textContent); });
+  p.textContent = "";
+  return rows.map((ws) => { const ln = el("span", "ln"), inn = el("span", null, esc(ws.join(" "))); ln.appendChild(inn); p.appendChild(ln); return inn; });
+}
+function slot(node) { const ln = el("span", "ln"), inn = el("span"); while (node.firstChild) inn.appendChild(node.firstChild); ln.appendChild(inn); node.appendChild(ln); return inn; }
+
+/* a picture box. Its image waits for the page to come near it */
+function frame(p, x, y, w, h, kind) {
+  const a = el("a", "fr " + kind); a.href = "/case-studies/" + p.h; a.dataset.h = p.h; a.dataset.cur = "Open";
+  a.style.cssText = "left:" + x + "px;top:" + y + "px;width:" + w + "px;height:" + h + "px";
+  const im = el("img"); im.alt = p.alt || ""; im.decoding = "async"; a.appendChild(im);
+  const s = BYH[p.h]; a.appendChild(el("span", "cap", esc(title(p.h)) + (s ? "<i>" + s.y + "</i>" : "")));
+  const f = { el: a, img: im, cap: a.lastChild, p, x, y, y0: y, w, h, kind, lum: null, armed: false, src: p.src || (p.reel && p.reel[0] && p.reel[0].src) };
+  /* honest: never shown wider than half the file's own pixels */
+  if (p.w && p.h2 && !p.reel) { const shown = Math.max(w, h * p.w / p.h2) * (kind === "held" ? 1.06 : 1);
+    if (p.w < shown * 2 * 0.97) console.info("[words] soft by " + Math.round((1 - p.w / (shown * 2)) * 100) + "%:", p.src.split("/").pop(), Math.round(shown) + "px shown"); }
+  return f;
+}
+
+function build() {
+  VW = innerWidth; VH = innerHeight; TALL = VW <= 760 || VW / VH < 1.05;
+  document.body.classList.toggle("tall", TALL);
+  world.textContent = ""; wordsEl.textContent = "";
+  reels.forEach((r) => clearInterval(r.t)); reels.length = 0;
+  /* a third of the glass tall on a desktop, and on a phone about as wide
+     as a desktop's is for its glass, so a word still reads as a word */
+  const F = Math.round(TALL ? Math.min(0.45 * VH, 0.4 * VW) : 0.45 * VH);
+  const T = typeMetrics(F);
+  const textX = TALL ? 22 : Math.round(0.2435 * VW), textY = Math.round((TALL ? 0.14 : 0.2) * VH);
+  const restX = TALL ? 14 : Math.round(textX - 0.038 * VW);
+  /* the baseline sits a hair under the glass, so the serifs are cut */
+  const wordTop = Math.round(VH * 1.008 - T.base);
+  const sW = Math.round(0.61 * VW), cW = VW - sW;
+  const secs = [], blocks = [], words = [];
+
+  ALL.forEach((sec, i) => {
+    /* ── the page ── */
+    const px = 2 * i * VW, pnl = el("section", "pnl"); pnl.id = "s-" + sec.id;
+    pnl.style.cssText = "left:" + px + "px;width:" + VW + "px";
+    const txt = el("div", "txt"); txt.style.left = textX + "px"; txt.style.top = textY + "px";
+    pnl.appendChild(txt); world.appendChild(pnl);
+    const lead = el("p", "lead", sec.end ? sec.lead : esc(sec.lead)); txt.appendChild(lead);
+    let rows = sec.end ? [slot(lead)] : lines(lead);
+    if (sec.body) { const b = el("p", "body", esc(sec.body)); txt.appendChild(b); rows = rows.concat(lines(b)); }
+    const items = sec.studies ? sec.studies.map((h) => ({ h, html: esc(title(h)) + "<i>" + (BYH[h] ? BYH[h].y : "") + "</i>" }))
+      : sec.links ? sec.links.map(([t, href]) => ({ href, html: esc(t) })) : [];
+    if (items.length) {
+      const ul = el("ul", "list"); txt.appendChild(ul);
+      items.forEach((it) => {
+        const li = el("li"), a = el("a", null, it.html); a.href = it.href || "/case-studies/" + it.h; if (it.h) { a.dataset.h = it.h; a.dataset.cur = "Open"; }
+        li.appendChild(a); ul.appendChild(li); rows.push(slot(a));
+      });
+    }
+    /* the end: the words again, down the right, as the way back */
+    if (sec.end && !TALL) {
+      const ul = el("ul", "toc"); ul.style.left = Math.round(0.58 * VW) + "px"; ul.style.top = textY + "px";
+      const fs = Math.round(Math.min(0.062 * VH, 0.042 * VW));
+      SECS.forEach((s, k) => {
+        const li = el("li"), b = el("button", null, esc(s.word.toUpperCase()) + (s.studies ? "<sup>(" + s.studies.length + ")</sup>" : ""));
+        b.type = "button"; b.style.fontSize = fs + "px"; b.addEventListener("click", () => goTo(k)); li.appendChild(b); ul.appendChild(li); rows.push(slot(b));
+      });
+      pnl.appendChild(ul);
+    }
+    secs.push({ sec, i, x: px, rows, pnl });
+
+    /* ── the word ── */
+    const up = sec.word.toUpperCase();
+    const w = el("div", "wd"); w.style.fontSize = F + "px";
+    const a = el("span", "a", esc(up)), b = el("span", "b", esc(up)); w.appendChild(a); w.appendChild(b);
+    wordsEl.appendChild(w);
+    let W = Math.ceil(a.offsetWidth), Fw = F;
+    /* the last word lands whole: where it would run off, it sets smaller */
+    if (sec.end && W > VW - restX - 28) { Fw = Math.floor(F * (VW - restX - 28) / W); w.style.fontSize = Fw + "px"; W = Math.ceil(a.offsetWidth); }
+    let n = null;
+    if (sec.studies) { n = el("span", "n", "(" + sec.studies.length + ")"); n.style.left = (W + Math.round(F * 0.03)) + "px"; n.style.top = Math.round(T.base - T.cap * F) + "px"; w.appendChild(n); }
+    const Wn = W + (n ? Math.round(F * 0.03) + 30 : 0);
+    w.style.width = Wn + "px"; w.style.height = Fw + "px";
+    const rx = sec.end ? Math.min(restX, VW - 28 - Wn) : restX;
+    words.push({ el: w, a, b, W: Wn, Wt: W, i, rx, top: Math.round(VH * 1.008 - T.base * Fw / F), x: null, split: null });
+
+    /* ── its pictures ── */
+    if (!sec.moves) return;
+    const bx = (2 * i + 1) * VW, blk = el("div", "blk"); blk.style.cssText = "left:" + bx + "px;width:" + VW + "px";
+    const col = el("div", "col"); blk.appendChild(col); world.appendChild(blk);
+    const B = { i, x: bx, el: blk, col, frames: [], moves: [], cy: -1, maxY: 0, near: false };
+    let y = 0;
+    sec.moves.forEach((m) => {
+      const held = pic(...m.held), bleed = pic(...m.bleed), cps = m.col.map((c) => pic(...c)).filter(Boolean);
+      if (TALL) {
+        /* one column, every picture at its own shape */
+        [held, ...cps, bleed].filter(Boolean).forEach((p) => {
+          const h = Math.round(VW * (p.reel ? 0.75 : p.h2 / p.w));
+          const f = frame(p, 0, y, VW, h, p.reel ? "reel" : "col"); col.appendChild(f.el); B.frames.push(f); y += h;
+        });
+        return;
+      }
+      /* one held on its side while its neighbours climb past it */
+      const cx = m.side === "left" ? sW : 0, hx = m.side === "left" ? 0 : cW;
+      let hs = cps.map((p) => p.reel ? cW * 0.75 : cW * p.h2 / p.w);
+      const sum = hs.reduce((s, v) => s + v, 0);
+      if (sum < VH) hs = hs.map((v) => v * VH / sum);
+      const Hc = Math.max(VH, hs.reduce((s, v) => s + v, 0));
+      const mv = { top: y, h: Math.round(Hc), held: null };
+      if (held) { const f = frame(held, hx, y, sW, VH, "held"); col.appendChild(f.el); B.frames.push(f); mv.held = f; }
+      let cy = y;
+      cps.forEach((p, k) => { const h = Math.round(hs[k]); const f = frame(p, cx, cy, cW, h, p.reel ? "col reel" : "col"); col.appendChild(f.el); B.frames.push(f); cy += h; });
+      y += mv.h; B.moves.push(mv);
+      /* then the set lifts away under a picture at full bleed */
+      if (bleed) { const f = frame(bleed, 0, y, VW, VH, "bleed"); col.appendChild(f.el); B.frames.push(f); y += VH; }
+    });
+    B.H = y; B.maxY = Math.max(0, y - VH); col.style.height = y + "px";
+    B.frames.forEach((f) => { if (f.p.reel) reels.push({ f, k: 0, t: 0 }); });
+    blocks.push(B);
+  });
+
+  /* ── THE ROUTE: across, the words, across, up, across ── */
+  const beats = []; let s = 0;
+  const add = (b) => { b.s = s; s += b.S; beats.push(b); return b; };
+  const travel = (k, i, L) => { const v = 1.3, a = Math.min(0.45 * VH, L / v / 2); return { k, i, L, v, a, S: L / v + a }; };
+  ALL.forEach((sec, i) => {
+    if (i > 0) add(travel("in", i, VW));
+    add({ k: "settle", i, S: (i === 0 ? 1.25 : sec.end ? 0.9 : 0.75) * VH });
+    if (sec.end) { add({ k: "rest", i, S: 0.2 * VH }); return; }
+    add(travel("out", i, VW));
+    const B = blocks.find((b) => b.i === i), L = B.maxY, a = Math.min(0.35 * VH, L / 2);
+    B.up = add({ k: "up", i, L, v: 1, a, S: L + a + 0.3 * VH });
+  });
+  words.forEach((w) => ["in", "settle", "out"].forEach((k) => { w[k] = beats.find((b) => b.k === k && b.i === w.i) || null; }));
+  S = { F, T, textX, textY, restX, wordTop, sW, cW, secs, blocks, words, beats, total: s };
+  stage.style.height = Math.round(s + VH) + "px";
+  toc();
+}
+const reels = [];
+
+/* along a beat: eased into and out of, the scroll's own speed between */
+const posAt = (b, u) => {
+  const { L, v, a } = b; if (!L) return 0;
+  const run = L / v; u = clamp(u, 0, run + a);
+  if (u <= a) return v * u * u / (2 * a);
+  if (u >= run) { const w = run + a - u; return L - v * w * w / (2 * a); }
+  return v * (a / 2 + (u - a));
+};
+const stageTop = () => stage.getBoundingClientRect().top + scrollY;
+function beatAt(d) {
+  const B = S.beats; for (const b of B) if (d < b.s + b.S - 1.5) return b;
+  return B[B.length - 1];
+}
+function state(d) {
+  const b = beatAt(d), u = clamp(d - b.s, 0, b.S), px = (i) => 2 * i * VW;
+  let camX = 0;
+  if (b.k === "in") camX = px(b.i) - VW + posAt(b, u);
+  else if (b.k === "settle" || b.k === "rest") camX = px(b.i);
+  else if (b.k === "out") camX = px(b.i) + posAt(b, u);
+  else if (b.k === "up") camX = px(b.i) + VW;
+  return { b, u, t: b.S ? u / b.S : 1, camX };
+}
+
+/* ── LIGHT: what a picture looks like where something sits on it ─── */
+const lc = document.createElement("canvas"); lc.width = lc.height = 12;
+const lx = lc.getContext("2d", { willReadFrequently: true });
+function sample(f) {
+  const im = f.img, iw = im.naturalWidth, ih = im.naturalHeight; if (!iw) return;
+  const ba = f.w / f.h, ia = iw / ih; let sx = 0, sy = 0, sw = iw, sh = ih;
+  if (ia > ba) { sw = ih * ba; sx = (iw - sw) / 2; } else { sh = iw / ba; sy = (ih - sh) / 2; }
+  try {
+    lx.drawImage(im, sx, sy, sw, sh, 0, 0, 12, 12);
+    const d = lx.getImageData(0, 0, 12, 12).data, g = new Float32Array(144);
+    for (let k = 0; k < 144; k++) g[k] = (0.2126 * d[k * 4] + 0.7152 * d[k * 4 + 1] + 0.0722 * d[k * 4 + 2]) / 255;
+    f.lum = g;
+  } catch (e) { return; }
+  f.cap.style.setProperty("--cc", lumIn(f, 0, 0.78, 0.55, 1) < 0.6 ? PAPER : INK);
+  clearTimeout(sample.t); sample.t = setTimeout(R.frame, 30);
+}
+const lumIn = (f, x0, y0, x1, y1) => {
+  if (!f || !f.lum) return 0.35;
+  let s = 0, n = 0;
+  for (let y = Math.floor(y0 * 12); y < Math.max(Math.floor(y0 * 12) + 1, Math.ceil(y1 * 12)); y++)
+    for (let x = Math.floor(x0 * 12); x < Math.max(Math.floor(x0 * 12) + 1, Math.ceil(x1 * 12)); x++) { s += f.lum[clamp(y, 0, 11) * 12 + clamp(x, 0, 11)]; n++; }
+  return s / n;
+};
+/* what is under a point of the glass, and the colour that reads on it */
+function under(sx, sy, camX) {
+  const X = camX + sx, slot = Math.floor(X / VW);
+  if (slot % 2 === 0 || slot < 0) return null;
+  const B = S.blocks.find((b) => b.i === (slot - 1) / 2); if (!B) return null;
+  const lx = X - B.x, ly = sy + Math.max(0, B.cy);
+  for (const f of B.frames) if (lx >= f.x && lx < f.x + f.w && ly >= f.y && ly < f.y + f.h) return { f, fx: (lx - f.x) / f.w, fy: (ly - f.y) / f.h };
+  return null;
+}
+function inkAt(sx, sy, camX) {
+  const u = under(sx, sy, camX); if (!u) return INK;
+  const r = 0.09; return lumIn(u.f, u.fx - r, u.fy - r, u.fx + r, u.fy + r) < 0.55 ? PAPER : INK;
+}
+
+/* ── EACH FRAME ───────────────────────────────────────────────────── */
+let lastSec = null, cur = null, hashReady = false;
+function draw(r) {
+  if (!S) return;
+  const d = clamp(r.y - stageTop(), 0, S.total);
+  const st = state(d), camX = st.camX; cur = st;
+  world.style.transform = "translate3d(" + (-camX).toFixed(1) + "px,0,0)";
+
+  /* the pictures: each set rises in place on its own beat */
+  S.blocks.forEach((B) => {
+    const sx = B.x - camX, near = sx < VW * 2.2 && sx > -VW * 1.6;
+    if (near && !B.near) arm(B);
+    B.near = near;
+    const b = B.up, cy = d <= b.s ? 0 : d >= b.s + b.S ? B.maxY : posAt(b, d - b.s);
+    if (cy !== B.cy) { B.cy = cy; B.col.style.transform = "translate3d(0," + (-cy).toFixed(1) + "px,0)"; }
+    if (!near || TALL) return;
+    B.moves.forEach((mv) => {
+      if (!mv.held) return;
+      /* held while its neighbours climb, then it lifts away with them */
+      const off = clamp(cy - mv.top, 0, mv.h - VH); mv.held.y = mv.top + off;
+      mv.held.el.style.transform = "translate3d(0," + off.toFixed(1) + "px,0)";
+      /* and it lags a little as it comes in from the right */
+      if (!REDUCE) mv.held.img.style.transform = "translate3d(" + (clamp(sx, 0, VW) / VW * 0.03 * S.sW).toFixed(1) + "px,0,0)";
+    });
+  });
+
+  /* the words: in faster than the page, still while the text drops, out
+     faster again, taking the colour of any picture they cross */
+  S.words.forEach((w) => {
+    const px = 2 * w.i * VW, at = (b) => clamp((d - b.s) / b.S, 0, 1); let x;
+    if (w.in && d < w.in.s) x = VW + 10;
+    else if (w.in && d < w.in.s + w.in.S) x = lerp(VW + 8, w.rx, ease(clamp(at(w.in) / 0.6, 0, 1)));
+    else if (!w.in && d < w.settle.s + w.settle.S) x = lerp(0.62 * VW, w.rx, ease(clamp(at(w.settle) / 0.55, 0, 1)));
+    else if (!w.out || d < w.out.s) x = w.rx;
+    else if (d < w.out.s + w.out.S) x = w.rx - (w.rx + w.W + 16) * inOut(clamp((at(w.out) - 0.3) / 0.7, 0, 1));
+    else x = -w.W - 10;
+    const vis = x < VW + 4 && x + w.W > -4;
+    if (!vis) { if (w.vis) { w.el.style.visibility = "hidden"; w.vis = false; } return; }
+    if (!w.vis) { w.el.style.visibility = "visible"; w.vis = true; }
+    w.el.style.transform = "translate3d(" + x.toFixed(1) + "px," + w.top + "px,0)";
+    /* where the page ends and a picture begins, under the word */
+    let edge = null, left = INK, right = INK;
+    if (camX < px - 0.5) { edge = px - camX; left = pickOn(edge - 24, camX); }
+    else if (camX > px + 0.5 && ALL[w.i].moves) { edge = px + VW - camX; right = pickOn(edge + 24, camX); }
+    const cut = edge == null ? w.W : clamp(edge - x, 0, w.W);
+    const key = cut.toFixed(0) + left + right;
+    if (w.split !== key) {
+      w.split = key;
+      w.a.style.color = left; w.b.style.color = right;
+      w.a.style.clipPath = "inset(-20% " + Math.max(0, w.Wt - cut).toFixed(1) + "px -20% 0)";
+      w.b.style.clipPath = "inset(-20% 0 -20% " + Math.min(cut, w.Wt).toFixed(1) + "px)";
+      const n = w.el.querySelector(".n"); if (n) n.style.color = cut >= w.W - 30 ? left : right;
+    }
+  });
+
+  /* the text drops in, line by line, while the page holds */
+  S.secs.forEach((pg) => {
+    if (Math.abs(pg.x - camX) > VW * 1.05) return;
+    const set = S.beats.find((b) => b.k === "settle" && b.i === pg.i);
+    const t = d <= set.s ? 0 : d >= set.s + set.S ? 1 : (d - set.s) / set.S;
+    const n = pg.rows.length;
+    pg.rows.forEach((row, k) => {
+      /* About opens with its first line already down, as in his frame */
+      const start = pg.i === 0 ? (k === 0 ? -1 : (k - 1) / n * 0.6) : k / n * 0.55;
+      const e = REDUCE ? 1 : ease(clamp((t - start) / 0.32, 0, 1));
+      const v = ((1 - e) * -106).toFixed(2);
+      if (row.__v !== v) { row.__v = v; row.style.transform = "translate3d(0," + v + "%,0)"; }
+    });
+  });
+
+  /* the mark names the section, and takes the colour that reads */
+  const i = st.b.k === "in" && posAt(st.b, st.u) < VW / 2 ? st.b.i - 1 : st.b.i, sec = ALL[i];
+  if (sec !== lastSec) {
+    lastSec = sec; document.getElementById("here").textContent = sec.word;
+    if (!study.open && hashReady) history.replaceState(null, "", "#" + sec.id);
+    document.querySelectorAll("#tocList button").forEach((b, k) => b.classList.toggle("here", k === i));
+  }
+  document.getElementById("mast").style.setProperty("--c", inkAt(60, 40, camX));
+  document.getElementById("idx").style.setProperty("--c", inkAt(VW - 50, 40, camX));
+  reelTick(camX);
+}
+const inOut = (t) => t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+/* the colour a word takes on the picture at that point of its band */
+function pickOn(sx, camX) {
+  const u = under(clamp(sx, 0, VW - 1), VH * 0.86, camX);
+  if (!u) return INK;
+  return lumIn(u.f, 0, 0.62, 1, 1) < 0.5 ? PAPER : INK;
+}
+
+/* ── LOADING: a set's pictures come in as the page nears them ─────── */
+function arm(B) {
+  B.frames.forEach((f) => {
+    if (f.armed) return; f.armed = true;
+    const im = f.img;
+    im.onload = () => { im.classList.add("in"); if (!f.lum || f.p.reel) sample(f); };
+    im.src = encodeURI(f.src);
+    if (f.p.reel) f.p.reel.forEach((q) => { const pre = new Image(); pre.decoding = "async"; pre.src = encodeURI(q.src); });
+  });
+}
+/* Faux Reel is a tool that cuts a reel from the work, so its box plays
+   one: its own cover frames, cut while it is on the glass */
+let lastTick = 0;
+function reelTick(camX) {
+  const now = performance.now(); if (REDUCE || now - lastTick < 90) return; lastTick = now;
+  reels.forEach((r) => {
+    const B = S.blocks.find((b) => b.frames.includes(r.f)); if (!B) return;
+    const top = r.f.y - Math.max(0, B.cy), left = B.x - camX + r.f.x;
+    const on = left < VW && left + r.f.w > 0 && top < VH && top + r.f.h > 0;
+    if (on && !r.t) r.t = setInterval(() => { r.k = (r.k + 1) % r.f.p.reel.length; r.f.img.src = encodeURI(r.f.p.reel[r.k].src); }, 260);
+    if (!on && r.t) { clearInterval(r.t); r.t = 0; }
+  });
+}
+
+/* ── GOING PLACES ─────────────────────────────────────────────────── */
+function goTo(i, now) {
+  const b = S.beats.find((x) => x.k === "settle" && x.i === i); if (!b) return;
+  R.to(stageTop() + b.s + b.S - 2, now); tocEl.classList.remove("on");
+}
+const tocEl = document.getElementById("toc");
+function toc() {
+  const ul = document.getElementById("tocList"); ul.textContent = "";
+  SECS.forEach((s, k) => {
+    const li = el("li"), b = el("button", null, esc(s.word.toUpperCase()) + (s.studies ? "<sup>(" + s.studies.length + ")</sup>" : ""));
+    b.type = "button"; b.addEventListener("click", () => goTo(k)); li.appendChild(b); ul.appendChild(li);
+  });
+  const li = el("li"), b = el("button", null, "HELLO"); b.type = "button"; b.addEventListener("click", () => goTo(ALL.length - 1)); li.appendChild(b); ul.appendChild(li);
+  document.getElementById("tocMail").innerHTML = '<a href="mailto:' + esc(H.email) + '">' + esc(H.email) + '</a><a href="/book">Book 30 minutes</a><a href="/daybook">The daybook</a>';
+  lastSec = null;
+}
+document.getElementById("idx").addEventListener("click", () => tocEl.classList.add("on"));
+tocEl.querySelector(".x").addEventListener("click", () => tocEl.classList.remove("on"));
+
+/* ── A STUDY RISES FROM THE FOOT ──────────────────────────────────── */
+const sheet = document.getElementById("study"), frameEl = sheet.querySelector("iframe"), ph = sheet.querySelector(".well img");
+const study = { open: false, pushed: false };
+function openStudy(h, src, push) {
+  const s = BYH[h];
+  sheet.querySelector(".t").innerHTML = esc(title(h)) + (s ? "<i>" + s.y + "</i>" : "");
+  sheet.querySelector(".open").href = "/case-studies/" + h;
+  sheet.classList.remove("ready"); ph.src = src ? encodeURI(src) : ""; ph.style.display = src ? "" : "none";
+  frameEl.src = "/case-studies/" + h;
+  sheet.classList.add("on"); study.open = true;
+  if (R.lenis) R.lenis.stop(); document.documentElement.style.overflow = "hidden";
+  if (push !== false) { history.pushState({ study: h }, "", "#" + (lastSec ? lastSec.id : "about") + "/" + h); study.pushed = true; }
+}
+function closeStudy(fromPop) {
+  if (!study.open) return;
+  study.open = false; sheet.classList.remove("on");
+  if (R.lenis) R.lenis.start(); document.documentElement.style.overflow = "";
+  setTimeout(() => { if (!study.open) { frameEl.src = "about:blank"; sheet.classList.remove("ready"); } }, 900);
+  if (!fromPop && study.pushed) { study.pushed = false; history.back(); }
+  if (lastSec) history.replaceState(null, "", "#" + lastSec.id);
+}
+frameEl.addEventListener("load", () => {
+  if (!study.open) return;
+  let path = "", doc = null; try { path = frameEl.contentWindow.location.pathname; doc = frameEl.contentDocument; } catch (e) { return; }
+  if (path === "blank" || path === "") return;
+  /* a link inside the study that leaves it takes the whole window */
+  if (!path.startsWith("/case-studies/")) { location.href = frameEl.contentWindow.location.href; return; }
+  /* the study's own Close closes the sheet, and its Next keeps the bar
+     honest about which study is up */
+  if (doc && !doc.__words) {
+    doc.__words = true;
+    doc.addEventListener("click", (e) => {
+      if (e.target.closest && e.target.closest('[aria-label="Close the case study"]')) { e.preventDefault(); e.stopPropagation(); closeStudy(); return; }
+      /* Next moves inside the app without a page load */
+      setTimeout(syncBar, 900);
+    }, true);
+  }
+  syncBar();
+  sheet.classList.add("ready");
+});
+function syncBar() {
+  let path = ""; try { path = frameEl.contentWindow.location.pathname; } catch (e) { return; }
+  const h = path.split("/")[2], s = BYH[h];
+  if (s) { sheet.querySelector(".t").innerHTML = esc(title(h)) + "<i>" + s.y + "</i>"; sheet.querySelector(".open").href = "/case-studies/" + h; }
+}
+sheet.querySelector(".x").addEventListener("click", () => closeStudy());
+addEventListener("keydown", (e) => { if (e.key === "Escape") { if (study.open) closeStudy(); else tocEl.classList.remove("on"); } });
+addEventListener("popstate", () => { if (study.open) { study.pushed = false; closeStudy(true); } });
+document.addEventListener("click", (e) => {
+  const a = e.target.closest && e.target.closest("a[data-h]"); if (!a || e.metaKey || e.ctrlKey || e.shiftKey) return;
+  e.preventDefault();
+  const f = S && S.blocks.flatMap((b) => b.frames).find((x) => x.el === a);
+  const src = f ? f.src : ((P[a.dataset.h] || [])[0] || {}).src;
+  openStudy(a.dataset.h, src);
+});
+
+/* ── START ────────────────────────────────────────────────────────── */
+const HASH0 = location.hash;
+build();
+R.start({ pre: draw });
+/* for the compare page and for testing: the beats, and a way along them */
+window.WORDS = { get S() { return S; }, get cur() { return cur; },
+  go: (i, k, f) => { const b = S.beats.find((x) => x.i === i && x.k === k); if (b) R.to(stageTop() + b.s + clamp(f || 0, 0, 1) * b.S, true); } };
+/* an address opens the page on its section, and a study's opens it too */
+const deep = () => {
+  const [id, h] = HASH0.slice(1).split("/"); const i = ALL.findIndex((s) => s.id === id);
+  if (i > 0 || (i === 0 && h)) goTo(i, true);
+  if (h && BYH[h] && !study.open) openStudy(h, ((P[h] || [])[0] || {}).src, false);
+};
+if (HASH0.length > 1) { requestAnimationFrame(deep); setTimeout(() => { if (!study.open) deep(); hashReady = true; }, 400); }
+else hashReady = true;
+/* a rebuild keeps you on the same beat at the same point along it */
+let rt = 0; const rebuild = () => {
+  let keep = null;
+  if (S) { const d = clamp(scrollY - stageTop(), 0, S.total), b = beatAt(d); keep = { n: S.beats.indexOf(b), k: b.S ? (d - b.s) / b.S : 0 }; }
+  build(); R.remeasure();
+  if (keep && S.beats[keep.n]) { const b = S.beats[keep.n]; R.to(stageTop() + b.s + keep.k * b.S, true); }
+};
+addEventListener("resize", () => { clearTimeout(rt); rt = setTimeout(rebuild, 140); });
+if (document.fonts) Promise.all([document.fonts.load('700 100px "RH Ogg"'), document.fonts.load('600 16px "Avenir Next"'), document.fonts.load('400 16px "Avenir Next"')]).then(rebuild, rebuild);
+})();
+</script>
+</body>
+</html>
