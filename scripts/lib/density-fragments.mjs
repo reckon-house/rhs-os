@@ -81,7 +81,11 @@ function thumbs(src, houseKey, dataSlug, w) {
 /* ── the studies ── */
 const frags = [], studies = [], skipped = [];
 let fid = 0;
-const add = (k, kind, o) => { const f = { id: kind[0] + (++fid).toString(36), k, kind, ...o }; frags.push(f); return f; };
+/* si is the section a fragment came from and pi the paragraph, both in
+   the study's own order, so a view can set a study back into its
+   sentences and sections without guessing */
+let SI = 0, PI = 0;
+const add = (k, kind, o) => { const f = { id: kind[0] + (++fid).toString(36), k, kind, si: SI, pi: PI, ...o }; frags.push(f); return f; };
 
 for (const s of Object.values(H.studies)) {
   const file = "src/data/" + s.h + "-case-study.ts";
@@ -89,7 +93,13 @@ for (const s of Object.values(H.studies)) {
   const study = Object.values(load(file)).find((v) => v && typeof v === "object" && Array.isArray(v.sections));
   if (!study) { skipped.push(s.k); continue; }
   const k = s.k;
-  studies.push({ k, h: s.h, t: s.t, s: s.s, y: s.y, tags: s.tags, fact: s.fact, rest: s.rest, palette: s.palette, fill: s.fill, ink: s.ink });
+  /* the picture the board already chose for the study's tile */
+  let lead = null;
+  if (s.frames && s.frames[0]) {
+    const t384 = s.frames[0], full = t384.replace("@384", "");
+    if (fs.existsSync(path.join(ROOT, "public", full))) lead = { src: full, t384, t768: s.r768 ? t384.replace("@384", "@768") : null, w: s.nat[0], h: s.nat[1] };
+  }
+  studies.push({ k, h: s.h, t: s.t, s: s.s, y: s.y, tags: s.tags, fact: s.fact, rest: s.rest, palette: s.palette, fill: s.fill, ink: s.ink, lead });
 
   /* every picture it names, once, with the first words written for it */
   const seen = new Map();
@@ -118,11 +128,11 @@ for (const s of Object.values(H.studies)) {
   if (s.palette && s.palette.length) add(k, "palette", { title: "Palette", colors: s.palette.map((hex) => ({ hex })), where: "declared" });
   let head = "";
   for (const sec of study.sections) {
-    const where = sec.type;
+    const where = sec.type; SI++; PI++;
     switch (sec.type) {
       case "meta": {
         if (sec.subtitle) add(k, "line", { text: clean(sec.subtitle), weight: "sub", where });
-        if (sec.abstract) paras(sec.abstract).forEach((p) => sentences(p).forEach((t) => add(k, "line", { text: t, weight: "body", where: "abstract", num: hasNumber(t) })));
+        if (sec.abstract) paras(sec.abstract).forEach((p) => (PI++, sentences(p)).forEach((t) => add(k, "line", { text: t, weight: "body", where: "abstract", num: hasNumber(t) })));
         const facts = [];
         if (sec.field) facts.push(["Field", sec.field]);
         if (sec.author) facts.push(["Author", sec.author]);
@@ -142,18 +152,20 @@ for (const s of Object.values(H.studies)) {
       case "text": case "text-right": {
         const big = sec.size === "xl" || sec.size === "subhead" || sec.size === "lg";
         paras(sec.content).forEach((p) => {
+          PI++;
           if (big) add(k, "line", { text: p, weight: "sub", head, where });
           else sentences(p).forEach((t) => add(k, "line", { text: t, weight: "body", head, where, num: hasNumber(t) }));
         });
         break;
       }
       case "two-column-text":
-        [[sec.leftTitle, sec.left], [sec.rightTitle, sec.right]].forEach(([t, c]) => paras(c).forEach((p) => sentences(p).forEach((x) => add(k, "line", { text: x, weight: "body", head: clean(t || head), where, num: hasNumber(x) }))));
+        [[sec.leftTitle, sec.left], [sec.rightTitle, sec.right]].forEach(([t, c]) => paras(c).forEach((p) => (PI++, sentences(p)).forEach((x) => add(k, "line", { text: x, weight: "body", head: clean(t || head), where, num: hasNumber(x) }))));
         break;
       case "three-column-text":
         (sec.columns || []).forEach((c) => {
+          PI++;
           if (c.title) add(k, "line", { text: clean(c.title), weight: "head", where, small: true });
-          paras(c.content).forEach((p) => sentences(p).forEach((x) => add(k, "line", { text: x, weight: "body", head: clean(c.title || head), where, num: hasNumber(x) })));
+          paras(c.content).forEach((p) => (PI++, sentences(p)).forEach((x) => add(k, "line", { text: x, weight: "body", head: clean(c.title || head), where, num: hasNumber(x) })));
         });
         break;
       case "stats-summary": (sec.items || []).forEach((i) => add(k, "num", { value: clean(i.value), label: clean(i.label), sub: clean(i.sublabel), where })); break;
