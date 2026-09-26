@@ -84,7 +84,10 @@ body.x .e.on .chip { opacity: 1; }
 body.staged .e:not(.on):hover .t, body.staged .grp.run .e:not(.on):hover, body.staged .grp.wall .e:not(.on):hover { text-decoration: underline; text-decoration-color: var(--faint); text-underline-offset: 0.2em; }
 
 /* the switch at the foot: three letters */
-.ixsw { display: flex; gap: 16px; margin: 56px 0 0; padding: 10px 0 0; border-top: 1px solid var(--hair); color: var(--grey); }
+.ixtop { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; margin: 0 0 30px; }
+.ixtop #mark { margin: 0; }
+.ixsw { display: flex; align-items: baseline; gap: 14px; margin: 0 0 0 auto; color: var(--grey); font-size: 12px; }
+.ixsw .ixl { margin-right: 4px; color: var(--faint); }
 .ixsw a { padding: 2px 0; }
 .ixsw a:hover { color: var(--ink); }
 .ixsw a.on { color: var(--ink); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 0.3em; }
@@ -320,6 +323,7 @@ html.stack, html.stack body { height: auto; }
 html.stack body { overflow: visible; overflow-x: clip; }
 html.stack.sheet body { overflow: hidden; }
 html.stack #mark { margin: 18px var(--m) 12px; }
+html.stack .ixtop #mark { margin: 0; }
 html.stack #focus { position: sticky; top: 0; left: auto; right: auto; bottom: auto; height: min(46svh, 400px); margin: 0; padding: 12px var(--m) 14px;
   background: var(--fc, var(--paper)); border-bottom: 1px solid var(--hair); transition: background-color 0.3s ease, opacity 0.28s ease; }
 html.stack .layer { inset: 12px var(--m) 14px; }

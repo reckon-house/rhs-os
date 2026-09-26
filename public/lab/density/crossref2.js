@@ -373,12 +373,18 @@
   const buildIndex = () => {
     THUMBS = []; STRIPS = [];
     GROUPS.forEach((g) => { g.count = null; });
-    const markIn = MARK.parentNode === IDX;
+    const markIn = IDX.contains(MARK);
     IDX.replaceChildren();
-    if (markIn) IDX.appendChild(MARK);
+    /* the switch: three letters, nothing else. It sits on the mark's line
+       at the top, where it can be found; at the foot of an index two
+       screens tall it could not (his "how do i go between the different
+       versions?", 27 Sept) */
+    const sw = el("div", "ixsw caps", '<span class="ixl">Index</span>' + IXS.map((x) => '<a href="?index=' + x + '" data-ix="' + x + '"' + (x === IX ? ' class="on" aria-current="true"' : "") + ">" + x.toUpperCase() + "</a>").join(""));
+    const top = el("div", "ixtop");
+    if (markIn) top.appendChild(MARK);
+    top.appendChild(sw);
+    IDX.appendChild(top);
     LAYOUT[IX]().filter(Boolean).forEach((n) => IDX.appendChild(n));
-    /* the switch: three letters, nothing else */
-    IDX.appendChild(el("div", "ixsw caps", IXS.map((x) => '<a href="?index=' + x + '" data-ix="' + x + '"' + (x === IX ? ' class="on" aria-current="true"' : "") + ">" + x.toUpperCase() + "</a>").join("")));
   };
   const setIndex = (x) => {
     if (x === IX || !IXS.includes(x)) return;
