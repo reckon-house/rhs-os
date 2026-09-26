@@ -19,6 +19,19 @@
      INDEX, IN THREE HIERARCHIES below. It scrolls in its own half now,
      its pictures load as they near the view, and a study clicked in
      Work flies from its own picture there into the room.
+   - Index D, the default (27 Sept, later). The first version's four
+     columns of small type, fitted to one screen by measuring, with a type
+     scale and a few pictures set into them; see INDEX D below.
+   - No category colour (27 Sept, later). The lines lost their squares,
+     their coloured words and their coloured grounds, in every version and
+     on every depth. A line is a word now. A study's own palette inside
+     its room is the study's, and stays.
+   - The shelf as a magazine grid (27 Sept, latest). Pictures edge to
+     edge with nothing between, a cover with the entry's name over it,
+     justified rows, and heroes that run past the edge and scroll
+     sideways; see THE SHELF AS A MAGAZINE GRID below. Flights now clip
+     to what is on screen (visRect), so a hero scrolled halfway flies
+     from the half you see.
 
    Nothing here writes a sentence; every word on the page is a fragment's
    own. The words of its own are structural: Close, Next, Work, and the
@@ -278,9 +291,37 @@
      smallest size, and a picture in the index lights and dims with its
      entry, so the cross-reference reads in pictures as well as words.
      ════════════════════════════════════════════════════════════════════ */
-  const IXS = ["a", "b", "c"];
-  let IX = (new URLSearchParams(location.search).get("index") || "a").toLowerCase();
-  if (!IXS.includes(IX)) IX = "a";
+  /* ════════════════════════════════════════════════════════════════════
+     INDEX D (27 Sept 2026, later). He looked at A, B and C and asked for
+     "one that's more columns like the original ... i loved the dense
+     editorial/magazine look it had just maybe with some type scale and
+     images mixed in". So D is crossref.html's index again (four columns
+     of small type on his MacBook, Work, Lines and About as lists, the rest
+     run on with middle dots, the type fitted by measuring until the whole
+     index sits on one screen) with a contents page's scale set into it:
+
+     - the six lines lead the first column as the largest words, with how
+       many studies each holds, sized so the longest fills the column;
+     - in Work, each line's lead study is a feature: a size up, with its
+       board picture butted to its name, two lines of its type tall. The
+       other twenty-four stay rows;
+     - four figures are set large inside the Figures run, the number
+       large and any noun after it at the run's size.
+
+     Four sizes and no more (the mark aside): the caps over each group,
+     the run, the features, the lines and big figures. The pictures are
+     six, one per line, all at one height and each in its own proportion,
+     so a phone screen is narrow and a storefront wide. Lines, features
+     and figures are the same entries doing the same things as in A, B and
+     C.
+     ════════════════════════════════════════════════════════════════════ */
+  const FEAT = new Set((DATA.lines || []).map((l) => l.lead).filter((k) => D.study(k)));
+  /* the figures set large: the biggest claims, from four studies */
+  const BIGFIG = ["$3M", "2,000+ stores", "$49,630", "95%"];
+
+  const IXS = ["a", "b", "c", "d"];
+  let IX = (new URLSearchParams(location.search).get("index") || "d").toLowerCase();
+  if (!IXS.includes(IX)) IX = "d";
   HTML.dataset.ix = IX;
   let THUMBS = [], STRIPS = [], tio = null;
 
@@ -313,10 +354,22 @@
     const g = o.g.id;
     if (g === "work") {
       a.classList.add("w");
-      const th = thumb(o.k, mode === "tile" ? "we" : "");
+      /* D pictures only its features; the other studies are words */
+      const th = mode === "dwork" && !FEAT.has(o.k) ? null : thumb(o.k, mode === "tile" ? "we" : "");
       if (th) a.appendChild(th);
       if (mode === "tile") a.appendChild(el("span", "tc", '<span class="t">' + esc(o.label) + '</span> <span class="y">' + D.year(o.k) + "</span>"));
-      else if (mode === "inline") {
+      else if (mode === "dwork" && FEAT.has(o.k)) {
+        /* D: a line's lead study is a feature, set a size up with its
+           picture butted to the name; every other study stays a row */
+        a.classList.add("ft");
+        /* each picture keeps its own proportion, within reason, at one height */
+        if (th) th.style.setProperty("--r", Math.max(0.8, Math.min(1.6, ratio(th._f))).toFixed(3));
+        /* the year after the name, floated to the column's edge on the
+           name's last line (27 Sept review). Floated on the first line it
+           cut that line short, so a long name broke as "Hill / Country
+           home, / kitchen", and on a wide glass ran under the picture */
+        a.appendChild(el("span", "tx", '<span class="t">' + esc(o.label) + '</span> <span class="y we">' + D.year(o.k) + "</span>"));
+      } else if (mode === "inline") {
         /* running on as text: the picture never parts from the first word
            of its name, nor the year from the last */
         const words = clean(o.label).split(" "), first = words.shift();
@@ -327,15 +380,26 @@
         a.replaceChildren(t, document.createTextNode("\u00a0"), el("span", "y we", String(D.year(o.k))));
       } else a.insertAdjacentHTML("beforeend", '<span class="t">' + esc(o.label) + '</span><span class="y we">' + D.year(o.k) + "</span>");
     } else if (g === "lines") {
-      const l = o.line; a.style.setProperty("--c", l.color); a.style.setProperty("--ci", l.ink);
+      /* a line is a word: no square, no colour of its own (27 Sept) */
+      const l = o.line;
       if (mode === "row") {
         a.classList.add("ln");
-        a.appendChild(el("span", "nm", '<span class="chip"></span><span class="t">' + esc(o.label) + "</span>"));
+        a.appendChild(el("span", "nm", '<span class="t">' + esc(o.label) + "</span>"));
         const strip = el("span", "strip we");
         l.studies.filter((k) => D.study(k)).forEach((k) => { const th = thumb(k); if (th) { strip.appendChild(th); STRIPS.push(th); } });
         a.appendChild(strip);
       } else if (mode === "word") { a.classList.add("lw"); a.innerHTML = '<span class="t">' + esc(o.label) + "</span>"; }
-      else a.innerHTML = '<span class="chip"></span><span class="t">' + esc(o.label) + "</span>";
+      else if (mode === "dline") {
+        /* D: the largest words on the page, with how many studies each holds */
+        a.classList.add("ld");
+        a.innerHTML = '<span class="t">' + esc(o.label) + '</span><span class="y we">' + l.studies.filter((k) => D.study(k)).length + "</span>";
+      } else a.innerHTML = '<span class="t">' + esc(o.label) + "</span>";
+    } else if (g === "figures" && mode === "dfig" && BIGFIG.includes(o.label)) {
+      /* D: a handful of figures set large. The number is large and a noun
+         after it stays at the size of the run, as a magazine sets a figure */
+      const m = /^([~$]?[\d][\d,.]*[%+MKx]*)(.*)$/.exec(clean(o.label)) || [0, clean(o.label), ""];
+      a.classList.add("fig", "bf");
+      a.innerHTML = '<span class="t"><span class="fn">' + D.esc(m[1]) + "</span>" + (m[2] ? '<span class="fu">' + D.esc(m[2]) + "</span>" : "") + "</span>";
     } else {
       a.innerHTML = '<span class="t">' + esc(o.label) + "</span>";
       if (g === "figures") a.classList.add("fig");
@@ -346,16 +410,19 @@
      "wall" set the entries on as text with a middle dot between */
   const section = (id, mode) => {
     const g = G[id]; if (!g.items.length) return null;
-    const sec = el("section", "grp " + mode); sec.dataset.g = id;
+    /* D's modes are the first version's list and run, with its own scale */
+    const sec = el("section", "grp " + ({ dfig: "run dfig", dline: "list dline", dwork: "list dwork" }[mode] || mode)); sec.dataset.g = id;
     const h = el("h2", null, "<span>" + g.name + '</span><span class="n">' + g.items.length + "</span>");
     g.count = h.querySelector(".n"); sec.appendChild(h);
     const box = el("div", "items");
     g.items.forEach((o, j) => {
       const a = entryEl(o, mode);
-      if (mode === "run" || mode === "wall") {
+      if (mode === "run" || mode === "wall" || mode === "dfig") {
         if (o.label.length <= 22) a.classList.add("nw");
-        const it = el("span", "it"); it.appendChild(a);
-        if (j < g.items.length - 1) it.appendChild(el("span", "sep", "·"));
+        const big = a.classList.contains("bf");
+        const it = el("span", "it" + (big ? " bf" : "")); it.appendChild(a);
+        /* a figure set large stands on its own line, with no dot after it */
+        if (j < g.items.length - 1 && !big) it.appendChild(el("span", "sep", "·"));
         box.appendChild(it); box.appendChild(document.createTextNode(" "));
       } else { box.appendChild(a); if (mode === "inline" || mode === "word") box.appendChild(document.createTextNode(" ")); }
     });
@@ -369,6 +436,8 @@
       section("figures", "run"), section("capabilities", "run"), section("tools", "run")],
     c: () => [section("lines", "word"), section("work", "tile"),
       block("fine", [section("about", "list"), section("years", "run"), section("figures", "run"), section("capabilities", "run"), section("tools", "run")])],
+    d: () => [block("dcols", [section("lines", "dline"), section("work", "dwork"), section("about", "list"), section("years", "run"),
+      section("capabilities", "run"), section("tools", "run"), section("figures", "dfig")])],
   };
   const buildIndex = () => {
     THUMBS = []; STRIPS = [];
@@ -385,6 +454,10 @@
     top.appendChild(sw);
     IDX.appendChild(top);
     LAYOUT[IX]().filter(Boolean).forEach((n) => IDX.appendChild(n));
+    /* in D the mark and the switch head the first column only, as the
+       first version's mark did, so the other three run to the top */
+    const cols = IX === "d" && IDX.querySelector(".dcols");
+    if (cols) cols.insertBefore(top, cols.firstChild);
   };
   const setIndex = (x) => {
     if (x === IX || !IXS.includes(x)) return;
@@ -401,10 +474,42 @@
   /* fit: the index scrolls in its own half now, so fitting is only the
      few sizes each version measures: the strips' pictures (A) to the room
      the longest strip has, and the coloured words (C) to two lines */
+  /* D is fitted the way the first version was: four columns (two on a
+     phone, one per group), and the run's type stepped down from 12.5px until the whole
+     index fits the glass with nothing past the last column. Every other
+     size follows the run's, except the lines', which are sized to their
+     column: the longest name and its count fill it. Below 10.25px the
+     index keeps its columns, balanced, and scrolls in its own half */
+  const fitD = () => {
+    const root = HTML.style, box = IDX.querySelector(".dcols"); if (!box) return;
+    HTML.classList.remove("dscroll");
+    /* a phone reads down, so there the index is one column and each group
+       sets its own measure (the lines in two, Work as one list, the runs
+       full width); two columns of the whole index would mean reading one
+       long column and scrolling back up for the next */
+    root.setProperty("--cols", phone() ? 1 : Math.max(3, Math.min(5, Math.round(box.clientWidth / 172))));
+    const lines = () => {
+      const ls = [...box.querySelectorAll(".e.ld")]; if (!ls.length) return;
+      root.setProperty("--fl", "100px");
+      const w = Math.max(...ls.map((a) => a.querySelector(".t").offsetWidth));
+      const n = Math.max(...ls.map((a) => a.querySelector(".y").offsetWidth));
+      const room = ls[0].clientWidth - n - 6;
+      root.setProperty("--fl", Math.floor(Math.min(phone() ? 44 : 40, (room / w) * 100 * 0.985) * 4) / 4 + "px");
+    };
+    if (phone()) { root.setProperty("--fs", "12px"); lines(); return; }
+    for (let fs = 12.5; fs >= 10.24; fs -= 0.125) {
+      root.setProperty("--fs", fs + "px"); lines();
+      if (box.scrollWidth <= box.clientWidth + 1) return;
+    }
+    HTML.classList.add("dscroll");
+    root.setProperty("--fs", "11.25px"); lines();
+  };
   const sizeIndex = () => {
     const root = HTML.style;
     root.removeProperty("--ts"); root.removeProperty("--lw"); root.removeProperty("--gc");
-    if (IX === "a") {
+    root.removeProperty("--fs"); root.removeProperty("--fl"); root.removeProperty("--cols");
+    if (IX === "d") fitD();
+    else if (IX === "a") {
       const strips = [...IDX.querySelectorAll(".strip")]; if (!strips.length) return;
       const n = Math.max(...strips.map((s) => s.children.length));
       const w = strips[0].clientWidth;
@@ -426,8 +531,12 @@
     let stack = innerWidth <= 760 || Math.min(innerWidth * 0.46, 760) < 430;
     HTML.classList.remove("scrolly");
     HTML.classList.toggle("stack", stack);
+    /* on a desk the mark heads the index on one line with the switch, as
+       buildIndex meant it to (it had been set a line above); stacked, it
+       sits over the band */
+    const top = IDX.querySelector(".ixtop");
     if (stack) { if (MARK.parentNode !== document.body) document.body.insertBefore(MARK, FOCUS); }
-    else if (IDX.firstChild !== MARK) IDX.insertBefore(MARK, IDX.firstChild);
+    else if (top && top.firstChild !== MARK) top.insertBefore(MARK, top.firstChild);
     sizeIndex();
     if (fresh || stack !== was || !tio) watchThumbs();
   };
@@ -731,11 +840,9 @@
     const layer = el("div", "layer"); const main = el("div", "main"); const cap = el("div", "cap");
     layer.appendChild(main); layer.appendChild(cap); FOCUS.appendChild(layer);
 
-    /* the field: a line's own colour fills the open half */
-    const field = it.t === "linefield" ? it.line : null;
-    document.body.style.setProperty("--fc", field ? field.color : "var(--paper)");
-    FIELD.classList.toggle("on", !!field && !staged());
-    layer.style.setProperty("--lc", field ? field.ink : "var(--ink)");
+    /* a line no longer fills the open half with its colour (27 Sept): its
+       studies and its name sit on paper, in ink, like everything else */
+    FIELD.classList.remove("on");
 
     /* the caption first, so the thing itself gets whatever height is left.
        A cluster of one study names it here; a cluster of several names
@@ -774,45 +881,21 @@
     return [b.right + 3, y];
   };
   const pathD = (p, q) => { const mx = (p[0] + q[0]) / 2; return "M" + p[0].toFixed(1) + " " + p[1].toFixed(1) + " C" + mx.toFixed(1) + " " + p[1].toFixed(1) + " " + mx.toFixed(1) + " " + q[1].toFixed(1) + " " + q[0].toFixed(1) + " " + q[1].toFixed(1); };
-  /* where the hairlines cross onto a coloured ground (a line's field or
-     shelf), the part over it is drawn in that ground's own ink, so a wire
-     stays ink on paper and white on a dark line, and takes no other colour */
-  const groundNow = () => {
-    if (staged()) {
-      if (VIEW.v === "shelf" && SH && GROUND(SH.o)) return { x: STAGE.getBoundingClientRect().left, c: GROUND(SH.o).fg };
-      return null;
-    }
-    if (FIELD.classList.contains("on")) { const l = cur && cur.o.line; return l ? { x: FIELD.getBoundingClientRect().left, c: l.ink } : null; }
-    return null;
-  };
-  /* pairs: [{ x: entry, q: [x, y], me }]; dots at each end on the stage */
+  /* pairs: [{ x: entry, q: [x, y], me }]; dots at each end on the stage.
+     Every ground is paper now (27 Sept), so a wire is ink all the way */
   const draw = (pairs, o) => {
     WIRES.innerHTML = "";
     if (phone() || !pairs.length) return null;
     const g = document.createElementNS(NS, "g");
-    const gr = groundNow();
-    let clipL = null, clipR = null;
-    if (gr) {
-      const defs = document.createElementNS(NS, "defs");
-      const mk = (id, x0, x1) => { const c = document.createElementNS(NS, "clipPath"); c.setAttribute("id", id); const r = document.createElementNS(NS, "rect"); r.setAttribute("x", x0); r.setAttribute("y", -10); r.setAttribute("width", Math.max(0, x1 - x0)); r.setAttribute("height", innerHeight + 20); c.appendChild(r); defs.appendChild(c); };
-      mk("wl", -10, gr.x); mk("wr", gr.x, innerWidth + 10); g.appendChild(defs); clipL = "url(#wl)"; clipR = "url(#wr)";
-    }
     const dots = new Map();
     pairs.forEach(({ x, q, me }) => {
       const p = endOf(x); if (!p || !q) return;
-      const d = pathD(p, q);
-      const add = (clip, color) => {
-        const path = document.createElementNS(NS, "path"); path.setAttribute("d", d);
-        if (me) path.setAttribute("class", "me");
-        if (clip) path.setAttribute("clip-path", clip);
-        if (color) path.style.stroke = color;
-        g.appendChild(path);
-      };
-      add(clipL, null);
-      if (gr) add(clipR, gr.c);
+      const path = document.createElementNS(NS, "path"); path.setAttribute("d", pathD(p, q));
+      if (me) path.setAttribute("class", "me");
+      g.appendChild(path);
       dots.set(q[0].toFixed(0) + "," + q[1].toFixed(0), q);
     });
-    dots.forEach((q) => { const d = document.createElementNS(NS, "circle"); d.setAttribute("cx", q[0]); d.setAttribute("cy", q[1]); d.setAttribute("r", 2.2); if (gr && q[0] >= gr.x) d.style.fill = gr.c; g.appendChild(d); });
+    dots.forEach((q) => { const d = document.createElementNS(NS, "circle"); d.setAttribute("cx", q[0]); d.setAttribute("cy", q[1]); d.setAttribute("r", 2.2); g.appendChild(d); });
     WIRES.appendChild(g);
     if (o && o.live) { g.classList.add("live"); return g; }
     g.querySelectorAll("path.me").forEach((pth) => { const L = pth.getTotalLength(); pth.style.strokeDasharray = L; pth.style.strokeDashoffset = L; });
@@ -861,7 +944,6 @@
   };
   const keyOf = (st) => (st.v === "shelf" ? st.key : st.v === "study" ? "study/" + st.k : "");
   const parentOf = (st) => (st.v === "study" && st.from && KEYMAP.has(st.from) ? { v: "shelf", key: st.from } : { v: "rest" });
-  const margin = (W) => Math.round(Math.min(44, Math.max(16, W * 0.046)));
   const rectIn = (r, box) => r.bottom > box.top + 8 && r.top < box.bottom - 8 && r.width > 0;
   const nameOf = (o) => (o.g.id === "work" ? D.title(o.k) : o.g.id === "lines" ? o.line.name : o.g.id === "about" ? o.about.name
     : o.g.id === "years" ? String(o.y) : o.g.id === "figures" ? o.fig.s : o.v);
@@ -875,12 +957,34 @@
     const im = ims[ims.length - 1];
     return im ? im.currentSrc || im.src : encodeURI(f.t384 || f.t768 || f.src);
   };
+  /* what of a box is on the glass: its rect cut by every ancestor that
+     clips it (a hero's sideways scroller, the shelf under its running
+     head, the room, the index). A picture flies from and lands on only
+     that much, so a hero scrolled halfway leaves from the half you see */
+  const visRect = (box) => {
+    const r = box.getBoundingClientRect();
+    let L = r.left, T = r.top, R = r.right, B = r.bottom;
+    for (let a = box.parentElement; a && a !== document.body && a !== HTML; a = a.parentElement) {
+      const cs = getComputedStyle(a);
+      if (cs.overflowX === "visible" && cs.overflowY === "visible") continue;
+      const q = a.getBoundingClientRect();
+      if (cs.overflowX !== "visible") { L = Math.max(L, q.left); R = Math.min(R, q.right); }
+      if (cs.overflowY !== "visible") { T = Math.max(T, q.top + (a.classList.contains("shelf") ? HEAD : 0)); B = Math.min(B, q.bottom); }
+    }
+    L = Math.max(L, 0); T = Math.max(T, 0); R = Math.min(R, innerWidth); B = Math.min(B, innerHeight);
+    return R - L > 2 && B - T > 2 ? { left: L, top: T, right: R, bottom: B, width: R - L, height: B - T } : null;
+  };
   const fly = (fromBox, f, toBox, opt) => {
-    const A = fromBox.getBoundingClientRect(), B = toBox.getBoundingClientRect();
-    if (!A.width || !B.width || still()) return null;
+    opt = opt || {};
+    const A0 = fromBox.getBoundingClientRect(), B0 = toBox.getBoundingClientRect();
+    if (!A0.width || !B0.width || still()) return null;
+    const A = opt.clipA || visRect(fromBox) || A0, B = opt.clipB || visRect(toBox) || B0;
     const r = ratio(f);
     const full = (R) => { const w = Math.max(R.width, R.height * r), h = w / r; return { x: R.left + (R.width - w) / 2, y: R.top + (R.height - h) / 2, w, h }; };
-    const FA = full(A), FB = full(B), s = FA.w / FB.w;
+    /* a picture landing on a box that shows another picture covers only
+       the part of the box on screen, then gives way to it: covering the
+       whole of a hero wider than the stage would blow it up */
+    const FA = full(A0), FB = full(opt.fitB ? B : B0), s = FA.w / FB.w;
     const im = document.createElement("img"); im.className = "flyer"; im.alt = ""; im.decoding = "sync";
     im.src = shownSrc(fromBox, f);
     Object.assign(im.style, { left: FB.x + "px", top: FB.y + "px", width: FB.w + "px", height: FB.h + "px" });
@@ -889,7 +993,7 @@
     const k1 = { transform: "translate(0px,0px) scale(1)", clipPath: "inset(" + inset(B, FB, 1) + ")" };
     im.style.transform = k0.transform; im.style.clipPath = k0.clipPath;
     document.body.appendChild(im);
-    const an = im.animate([k0, k1], { duration: (opt && opt.ms) || 580, easing: EASE, fill: "forwards" });
+    const an = im.animate([k0, k1], { duration: opt.ms || 580, easing: EASE, fill: "forwards" });
     const flight = { im, an };
     FLIGHTS.add(flight);
     return flight;
@@ -916,11 +1020,12 @@
   };
 
   /* ── a shelf ── */
-  const GROUND = (o) => (o.g.id === "lines" ? { bg: o.line.color, fg: o.line.ink } : o.g.id === "figures" ? { bg: "#000", fg: "#fff" } : null);
   const shelfStudies = (o) => (o.g.id === "lines" ? o.line.studies.filter((k) => D.study(k)) : byRank([...o.rel]));
   const shelfLead = (o) => {
     if (o.g.id === "lines") return esc(o.line.sentence);
-    if (o.g.id === "about") return esc(o.about.lede) + (o.about.body[0] ? ' <span class="g">' + esc(o.about.body[0]) + "</span>" : "");
+    /* About sets its lede only: over a picture a cover holds a sentence,
+       not a paragraph */
+    if (o.g.id === "about") return esc(o.about.lede);
     if (o.g.id === "tools") { const t = namedIn(o.v, o.rel).find((x) => !x.label); return t ? greyHl(t.text, t.hl).replace('class="h"', "") : null; }
     if (o.g.id === "figures") {
       const src = o.fig.src[0]; if (!src) return null; const it = src.item;
@@ -929,27 +1034,458 @@
     }
     return null;
   };
-  /* the rows: a feature first, then pairs at one height, uneven pairs, a
-     row of three, and a picture set to one side with its lead beside it,
-     so the page changes pace. Every picture at or under half its pixels */
-  const PLAN = ["P2u", "O", "P3", "P2", "O", "P2u", "P3"];
-  const NEED = { P2u: 2, O: 1, P3: 3, P2: 2 };
-  const plan = (n) => {
-    const rows = n ? ["F"] : []; let left = n - 1, i = 0;
-    while (left > 0) {
-      let p = PLAN[i++ % PLAN.length];
-      if (NEED[p] > left) p = left === 1 ? "O" : left === 2 ? "P2" : "P3";
-      rows.push(p); left -= NEED[p];
-    }
-    return rows;
+
+  /* ════════════════════════════════════════════════════════════════════
+     THE SHELF AS A MAGAZINE GRID (27 Sept 2026, later). He looked at the
+     Digital shelf (framed pictures with air between them, on the line's
+     colour) and asked: "what if it's an edge to edge grid - no color or
+     background showing? and maybe we mix some hero images in that are so
+     large you have to scroll left/right inside the column to view it?
+     like it's cropped...really give it a magazine/grid look as well".
+
+     So a shelf is pictures butted together from the stage's left edge to
+     the window's right and down to its foot, nothing between them. Only
+     a thin running head on paper stays at the top, on the index's first
+     line, with Close. The grid is blocks, each exactly the stage wide:
+
+     - the cover: the first study cropped to the stage, the entry's name
+       and lead set over it (a line opens on its own lead study);
+     - rows of two, three and four at one height, as tall as the
+       pictures' shapes make them, their widths summing to the stage;
+     - a tall picture beside a stack of two, either way round;
+     - one picture across the width, cropped to a band;
+     - heroes: one picture set near the stage's height, so wide it runs
+       past the edge, in a row that scrolls sideways (a trackpad swipe,
+       a mouse drag with a grab cursor, a finger), with a thin rule
+       saying where you are. It opens centred, so both edges are cut;
+     - at the foot, the next entry of the same kind as a last cover.
+
+     Which picture a study shows depends on its slot: its board lead when
+     the slot is the lead's shape, else one of its own nearer the shape,
+     so a row is not three of the same 3:2. A hero is a study's largest
+     picture (most are 3,000 pixels or more), never wider than half its
+     pixels, so a small picture is never stretched into one; a study with
+     none that large is never a hero. Every slot is checked the same way
+     before it is used: the width the picture is drawn at under its crop
+     is at most half its pixels. A shelf of few studies brings them back
+     with their other pictures, so it still fills.
+
+     Captions sit on the pictures, bottom left: the study and its year, in
+     paper or ink by what the picture is under the words (sampled from its
+     thumbnail on a 16 by 16 canvas). Where neither holds enough contrast
+     a soft scrim goes under those words only.
+     ════════════════════════════════════════════════════════════════════ */
+  const HEAD = 44; /* the running head: paper, on the index's top line */
+  const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+  /* the width a picture is drawn at when it covers a box, and whether
+     that is at most half its pixels */
+  const coverW = (bw, bh, f) => Math.max(bw, bh * ratio(f));
+  const honest = (bw, bh, f) => !!f && coverW(bw, bh, f) <= D.maxCss(f) + 0.01;
+  const OWN = {};
+  /* a study's own pictures with a ground of their own (a transparent one
+     would show paper through) */
+  const ownOf = (k) => OWN[k] || (OWN[k] = picsOf(k).filter((f) => !f.alpha && f.w && f.h));
+  const FEW = () => (phone() ? 4 : 5);
+  /* what a study can show: its board lead and its own. A study shown more
+     than once keeps to its own, since the lead is often one of them */
+  const candsFor = (S, k, taken) => {
+    const own = ownOf(k), lead = leadOf(k);
+    return ((S.multi && own.length) || !lead ? [] : [lead]).concat(own).filter((f) => !S.used.has(f.src) && !(taken && taken.has(f.src)));
   };
-  const buildShelf = (o) => {
-    const gr = GROUND(o);
-    const layer = el("div", "shelf" + (gr ? "" : " paper") + (gr && /^#f/i.test(gr.fg) ? " inv" : ""));
+  /* the one nearest the slot's shape that the slot would not stretch; the
+     board's own lead when it is close */
+  const pickFor = (S, k, want, fits, taken) => {
+    let best = null, bs = Infinity;
+    candsFor(S, k, taken).forEach((f) => {
+      if (fits && !fits(f)) return;
+      const s = Math.abs(Math.log(ratio(f) / want)) - (f.lead ? 0.3 : 0);
+      if (s < bs) { bs = s; best = f; }
+    });
+    return best;
+  };
+  const shelfOrder = (o) => {
+    const ks = shelfStudies(o), lead = o.g.id === "lines" && o.line.lead;
+    return lead && ks.includes(lead) ? [lead].concat(ks.filter((k) => k !== lead)) : ks;
+  };
+  const coverH = (avail) => Math.round(avail * (phone() ? 0.6 : 0.7));
+  /* the picture a shelf opens on: its first study that fills the cover
+     without stretching, else the next that does */
+  const coverOf = (S, ks, W, Hc) => {
+    for (let i = 0; i < Math.min(ks.length, 8); i++) {
+      const f = pickFor(S, ks[i], W / Hc, (x) => honest(W, Hc, x));
+      if (f) return { i, k: ks[i], f };
+    }
+    return null;
+  };
+  /* a hero: the study's widest picture that stands near the stage's height
+     at half its pixels or less and still runs well past the edge */
+  const heroPick = (S, k) => {
+    let best = null; const lead = leadOf(k);
+    ownOf(k).concat(!S.multi && lead ? [lead] : []).forEach((f) => {
+      if (S.used.has(f.src)) return;
+      const H = Math.floor(Math.min(S.heroH, f.h / 2)), w = Math.floor(H * ratio(f));
+      if (H < S.heroH * 0.84 || w < S.W * 1.3) return;
+      const s = w * (f.lead ? 0.7 : 1);
+      if (!best || s > best.s) best = { f, H, w, s };
+    });
+    return best;
+  };
+
+  /* the blocks: what each wants of its pictures' shapes */
+  const NEEDN = { r2: 2, r3: 3, r4: 4, ts: 3, st: 3, full: 1 };
+  const WANTS = { r2: [[0.75, 1.5], [1.5, 1]], r3: [[1.5, 0.75, 1.33], [1, 1.5, 0.8]], r4: [[1, 1.5, 0.75, 1.5], [1.5, 0.8, 1.5, 1]] };
+  const PWANTS = { r2: [[0.8, 1.5], [1.5, 0.8]], r3: [[0.8, 1, 0.8], [0.8, 1, 0.8]], r4: [[0.8, 1, 0.8, 1], [1, 0.8, 1, 0.8]] };
+  const MINW = () => (phone() ? 92 : 110);
+  /* a row at one height: widths in proportion to the pictures' shapes,
+     summing to the stage. Capped in height, the tiles crop a little */
+  const solveRow = (S, t, ks, v) => {
+    const wants = (phone() ? PWANTS : WANTS)[t][v % 2];
+    const W = S.W, sw = wants.reduce((a, b) => a + b, 0);
+    let need = wants.map((x) => (W * x) / sw);
+    for (let pass = 0; pass < 3; pass++) {
+      const taken = new Set();
+      const fs = ks.map((k, i) => { const f = pickFor(S, k, wants[i], (x) => D.maxCss(x) >= need[i], taken); if (f) taken.add(f.src); return f; });
+      if (fs.some((f) => !f)) return null;
+      const R = fs.reduce((s, f) => s + ratio(f), 0);
+      const H = Math.floor(Math.min(W / R, S.rowMax));
+      const ws = fs.map((f) => (W * ratio(f)) / R);
+      if (ws.some((w) => w < MINW())) return null;
+      const bad = fs.map((f, i) => !honest(ws[i], H, f));
+      if (!bad.some(Boolean)) return { t, ks, fs, H, ws };
+      need = need.map((n, i) => (bad[i] ? Math.max(n, ws[i]) + 1 : n));
+    }
+    return null;
+  };
+  /* a tall picture beside a stack of two, solved so both sides are one
+     height: H = W / (tall's shape + the stack's) */
+  const solveTS = (S, t, ks) => {
+    const W = S.W;
+    let needT = W * 0.4, needS = W * 0.5;
+    for (let pass = 0; pass < 3; pass++) {
+      const taken = new Set();
+      const ft = pickFor(S, ks[0], 0.72, (x) => D.maxCss(x) >= needT, taken); if (!ft) return null; taken.add(ft.src);
+      const f1 = pickFor(S, ks[1], 1.5, (x) => D.maxCss(x) >= needS, taken); if (!f1) return null; taken.add(f1.src);
+      const f2 = pickFor(S, ks[2], 1.5, (x) => D.maxCss(x) >= needS, taken); if (!f2) return null;
+      const inv = 1 / ratio(f1) + 1 / ratio(f2);
+      const H0 = W / (ratio(ft) + 1 / inv);
+      const wt = H0 * ratio(ft), ws = W - wt;
+      const H = Math.floor(Math.min(H0, S.rowMax)), sc = H / H0;
+      const hs = [ws / ratio(f1), ws / ratio(f2)];
+      const okT = honest(wt, H, ft), ok1 = honest(ws, hs[0] * sc, f1), ok2 = honest(ws, hs[1] * sc, f2);
+      if (okT && ok1 && ok2 && Math.min(wt, ws) >= MINW()) return { t, ks, fs: [ft, f1, f2], H, wt, ws, hs };
+      if (!okT) needT = wt + 1;
+      if (!ok1 || !ok2) needS = ws + 1;
+    }
+    return null;
+  };
+  /* one picture across the width, cropped to a band */
+  const solveFull = (S, t, ks) => {
+    const W = S.W, H = Math.floor(Math.min(W / (phone() ? 1.3 : 1.85), S.avail * 0.66));
+    const f = pickFor(S, ks[0], W / H, (x) => honest(W, H, x));
+    return f ? { t: "full", ks: [ks[0]], fs: [f], H } : null;
+  };
+  const solveBlock = (S, t, ks, v) => (t === "ts" || t === "st" ? solveTS(S, t, ks) : t === "full" ? solveFull(S, t, ks) : solveRow(S, t, ks, v));
+  /* the last resort, when no picture a study has can fill a slot: it sits
+     at its honest size and the paper shows beside it. Only a study with a
+     single small picture comes to this */
+  const solveSolo = (S, k) => {
+    const c = candsFor(S, k).sort((a, b) => D.maxCss(b) - D.maxCss(a))[0]; if (!c) return null;
+    const w0 = Math.min(S.W, D.maxCss(c)), H = Math.floor(Math.min(w0 / ratio(c), S.rowMax));
+    return { t: "solo", ks: [k], fs: [c], H, w: Math.floor(Math.min(w0, H * ratio(c))) };
+  };
+
+  const planShelf = (S) => {
+    const ks = shelfOrder(S.o), W = S.W;
+    S.multi = ks.length < FEW();
+    const slots = ks.slice();
+    if (S.multi) {
+      const want = phone() ? 7 : 8;
+      for (let round = 1; slots.length < want && round < 16; round++) {
+        let added = false;
+        ks.forEach((k) => { if (slots.length < want && ownOf(k).length > round) { slots.push(k); added = true; } });
+        if (!added) break;
+      }
+    }
+    /* a shelf with no study (a figure only About holds) is its name on paper */
+    if (!slots.length) return [{ t: "cover", bare: true, ks: [], fs: [], H: 0 }];
+    const blocks = [], shown = new Set();
+    const use = (b) => { b.fs.forEach((f) => S.used.add(f.src)); b.ks.forEach((k) => shown.add(k)); blocks.push(b); };
+    let q = slots.slice();
+    /* heroes first, so the cover and the rows cannot spend the one picture
+       large enough: two on a long shelf, one on a short, each the study
+       whose picture runs furthest past the edge (a little in favour of the
+       nearer). The cover's study is never one */
+    const want = q.length - 1 >= 8 ? 2 : q.length >= 2 ? 1 : 0;
+    const heroes = [];
+    for (let n = 0; n < want; n++) {
+      let got = null;
+      q.forEach((k, i) => { if (!i) return; const h = heroPick(S, k); if (h && (!got || h.w - i * 30 > got.s)) got = { i, h, s: h.w - i * 30 }; });
+      if (!got) break;
+      heroes.push({ t: "hero", ks: [q[got.i]], fs: [got.h.f], H: got.h.H, w: got.h.w });
+      S.used.add(got.h.f.src); q.splice(got.i, 1);
+    }
+    let cv = coverOf(S, q, W, S.Hc);
+    if (!cv && heroes.length) {
+      /* no cover left once the heroes took theirs: the cover comes first */
+      heroes.forEach((h) => S.used.delete(h.fs[0].src)); heroes.length = 0; q = slots.slice();
+      cv = coverOf(S, q, W, S.Hc);
+    }
+    if (cv) { q.splice(cv.i, 1); use({ t: "cover", ks: [cv.k], fs: [cv.f], H: S.Hc }); }
+    else { const b = solveSolo(S, q.shift()); if (b) { b.t = "cover"; b.solo = true; use(b); } }
+    /* a short shelf brings its studies back, and taking out the cover and
+       the heroes could leave two of one study side by side in a row, with
+       the same caption twice (year 2024 set Robert Rodriguez beside
+       himself). The rest are dealt so that one study never follows
+       itself while another can go between (27 Sept review) */
+    if (S.multi && new Set(q).size > 1) {
+      const left = q.slice(), out = []; let prev = cv ? cv.k : null;
+      while (left.length) {
+        const n = {}; left.forEach((k) => { n[k] = (n[k] || 0) + 1; });
+        let at = -1;
+        left.forEach((k, i) => { if (k !== prev && (at < 0 || n[k] > n[left[at]])) at = i; });
+        if (at < 0) at = 0;
+        prev = left[at]; out.push(prev); left.splice(at, 1);
+      }
+      q = out;
+    }
+    heroes.forEach((h) => shown.add(h.ks[0]));
+    /* placed after the first row and after the third, or straight after the
+       cover when little else is left */
+    const heroAt = heroes.length === 2 ? [1, 3] : heroes.length === 1 ? [q.length <= 4 ? 0 : 1] : [];
+    const PAT = phone() ? ["r2", "ts", "full", "st", "r2", "r3"] : ["r3", "ts", "r4", "r2", "full", "st", "r3", "r4", "r2", "ts"];
+    let pi = 0, bi = 0, hi = 0, v = 0, guard = 0;
+    const heroNow = () => { while (hi < heroes.length && bi >= heroAt[hi]) { blocks.push(heroes[hi++]); bi++; } };
+    while (q.length && guard++ < 80) {
+      heroNow();
+      const left = q.length;
+      let t = PAT[pi++ % PAT.length];
+      if (NEEDN[t] > left) t = left === 1 ? "full" : left === 2 ? "r2" : left === 3 ? (phone() ? "ts" : "r3") : phone() ? "r2" : "r4";
+      /* never leave one study to the end that cannot fill a band alone:
+         take one more into this block, or one fewer */
+      if (left - NEEDN[t] === 1 && !solveFull(S, "full", [q[left - 1]])) t = { r2: "r3", r3: phone() ? "r2" : "r4", ts: phone() ? "r2" : "r4", st: phone() ? "r2" : "r4", r4: "r3", full: "r2" }[t];
+      let b = solveBlock(S, t, q.slice(0, NEEDN[t]), v++);
+      if (!b) for (const t2 of phone() ? ["r2", "ts", "full"] : ["r3", "r4", "ts", "r2", "full"]) {
+        if (t2 === t || NEEDN[t2] > left) continue;
+        b = solveBlock(S, t2, q.slice(0, NEEDN[t2]), v++); if (b) break;
+      }
+      /* nothing fills the width with it. A study already on the shelf is
+         left out rather than set alone on paper; only one not yet shown
+         keeps its honest size with the paper beside it */
+      if (!b && !shown.has(q[0])) b = solveSolo(S, q[0]);
+      q.splice(0, b ? b.ks.length : 1);
+      if (b) { use(b); bi++; }
+    }
+    bi = Infinity; heroNow();
+    return blocks;
+  };
+
+  /* ── what a picture is under the words on it ── */
+  const LN = 16;
+  const LC = document.createElement("canvas"); LC.width = LC.height = LN;
+  const LX = LC.getContext("2d", { willReadFrequently: true });
+  /* the picture as its box draws it (cropped to cover, centred), 16 by 16 */
+  const sampleBox = (box, im) => {
+    const iw = im.naturalWidth, ih = im.naturalHeight; if (!iw || !ih) return false;
+    const ba = box.offsetWidth / Math.max(1, box.offsetHeight), ia = iw / ih;
+    let sx = 0, sy = 0, sw = iw, sh = ih;
+    if (ia > ba) { sw = ih * ba; sx = (iw - sw) / 2; } else { sh = iw / ba; sy = (ih - sh) / 2; }
+    try {
+      LX.clearRect(0, 0, LN, LN); LX.drawImage(im, sx, sy, sw, sh, 0, 0, LN, LN);
+      const d = LX.getImageData(0, 0, LN, LN).data, g = new Float32Array(LN * LN);
+      for (let i = 0; i < LN * LN; i++) g[i] = (0.2126 * d[i * 4] + 0.7152 * d[i * 4 + 1] + 0.0722 * d[i * 4 + 2]) / 255;
+      box._lum = g; return true;
+    } catch (e) { return false; }
+  };
+  const lin = (v) => (v <= 0.04045 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4));
+  /* paper or ink over a region (fractions of the box): whichever holds
+     more contrast on average; a scrim when even that is thin, or when a
+     cell under the words fights it */
+  const inkOver = (g, q, force) => {
+    const a = clamp(Math.floor(q[0] * LN), 0, LN - 1), b = clamp(Math.ceil(q[2] * LN) - 1, a, LN - 1);
+    const c = clamp(Math.floor(q[1] * LN), 0, LN - 1), d = clamp(Math.ceil(q[3] * LN) - 1, c, LN - 1);
+    let s = 0, n = 0, lo = 1, hi = 0;
+    for (let y = c; y <= d; y++) for (let x = a; x <= b; x++) { const L = lin(g[y * LN + x]); s += L; n++; lo = Math.min(lo, L); hi = Math.max(hi, L); }
+    const m = s / n;
+    const light = force != null ? force : 1.05 / (m + 0.05) >= (m + 0.05) / 0.05;
+    const avg = light ? 1.05 / (m + 0.05) : (m + 0.05) / 0.05;
+    const worst = light ? 1.05 / (hi + 0.05) : (lo + 0.05) / 0.05;
+    return { light, scrim: avg < 4.5 || worst < 2.2 };
+  };
+  const regionOf = (node, box) => {
+    const r = node.getBoundingClientRect(), b = box.getBoundingClientRect();
+    if (!b.width || !b.height || !r.width) return null;
+    return [(r.left - b.left) / b.width, (r.top - b.top) / b.height, (r.right - b.left) / b.width, (r.bottom - b.top) / b.height];
+  };
+  const inkOn = (node, box, noScrim, force) => {
+    const q = box._lum && regionOf(node, box); if (!q) return null;
+    const v = inkOver(box._lum, q, force);
+    node.classList.toggle("lt", v.light); node.classList.toggle("scr", !noScrim && v.scrim); node.classList.add("inked");
+    return v;
+  };
+  /* the words over a picture: its caption, a hero's rule, and a cover's
+     name and lead, which take one ink together (the scrim under the lead
+     only; the name is large enough to hold) */
+  const paintOver = (box) => {
+    if (!box._lum) return;
+    const t = box._t;
+    const over = (t && t.over) || box._over;
+    if (over) {
+      /* a cover's name goes where the picture is calmest for it, the foot
+         or the head of the cover, whichever holds its ink over more of
+         the cells under it (it is hidden until now, so the move is unseen).
+         The Next cover at a shelf's foot chooses the same way (27 Sept
+         review) */
+      if (!over._placed) {
+        over._placed = true;
+        const q = regionOf(over, box), H = box.offsetHeight || 1, top = (phone() ? 14 : 18) / H;
+        if (q) {
+          const qt = [q[0], top, q[2], top + (q[3] - q[1])];
+          if (held(box._lum, qt) > held(box._lum, q) + 0.08) { over.classList.add("at-top"); if (t && t.over === over) t.cap.classList.add("at-foot"); }
+        }
+      }
+      /* a name this large crosses light and dark at once, so its ink is
+         the one that holds over more of it, not the one that suits the
+         average: the average set "Campaigns" in ink over a dark shop
+         front, and lost its first letters (27 Sept review) */
+      const q = regionOf(over, box), hb = q && heldBy(box._lum, q);
+      const v = inkOn(over, box, true, hb && hb.w !== hb.k ? hb.w > hb.k : null);
+      if (v) over.querySelectorAll(".sh-lead, .caps").forEach((n) => inkOn(n, box, false, v.light));
+    }
+    if (t) { inkOn(t.cap, box); if (t.rule) inkOn(t.rule, box, true); }
+  };
+  /* how much of a region holds a 3:1 contrast in paper (w) and in ink (k) */
+  const heldBy = (g, q) => {
+    const a = clamp(Math.floor(q[0] * LN), 0, LN - 1), b = clamp(Math.ceil(q[2] * LN) - 1, a, LN - 1);
+    const c = clamp(Math.floor(q[1] * LN), 0, LN - 1), d = clamp(Math.ceil(q[3] * LN) - 1, c, LN - 1);
+    let w = 0, k = 0, n = 0;
+    for (let y = c; y <= d; y++) for (let x = a; x <= b; x++) { const L = lin(g[y * LN + x]); n++; if (1.05 / (L + 0.05) >= 3) w++; if ((L + 0.05) / 0.05 >= 3) k++; }
+    return { w: w / n, k: k / n };
+  };
+  /* and for the better of the two */
+  const held = (g, q) => { const h = heldBy(g, q); return Math.max(h.w, h.k); };
+
+  /* ── the blocks, built ── */
+  /* the words are clamped inside their own span: clamped on the caption
+     itself, a third line showed through its padding (27 Sept review) */
+  const capHtml = (k) => '<span class="tl"><span class="t">' + esc(D.title(k)) + '</span> <span class="y">' + D.year(k) + "</span></span>";
+  const tileEl = (S, k, f, cls) => {
+    const a = el("a", "tu" + (cls ? " " + cls : "")); a.href = "#study/" + k; a.dataset.k = k; a.draggable = false;
+    const box = el("div", "tpic"); a.appendChild(box);
+    const cap = el("div", "tcap", capHtml(k)); a.appendChild(cap);
+    const t = { k, f, box, a, cap };
+    box._f = f; box._t = t; a._t = t;
+    S.tiles.push(t); S.units.push(a); S.boxes.push(box);
+    return a;
+  };
+  const flexOf = (a, n) => { a.style.flex = n.toFixed(3) + " 1 0px"; };
+  const coverEl = (S, b) => {
+    const o = S.o;
+    /* a study whose only picture is too small to fill the stage keeps its
+       honest size at the right edge, and its name sits on the paper
+       beside it, in ink */
+    const blk = el("div", "g-cover" + (b.bare ? " bare" : b.solo ? " solo" : "")); if (!b.bare) blk.style.height = b.H + "px";
+    const a = b.bare ? null : tileEl(S, b.ks[0], b.fs[0], "cov");
+    if (b.solo) a.style.width = b.w + "px";
+    if (a) blk.appendChild(a);
+    const tt = el("div", "g-title" + (b.bare || b.solo ? " inked" : ""));
+    if (b.solo) tt.style.right = b.w + (phone() ? 16 : 20) + "px";
+    const nm = el("h2", "sh-name" + (o.g.id === "years" || o.g.id === "figures" ? " num" : ""), esc(nameOf(o)));
+    tt.appendChild(nm);
+    const ld = shelfLead(o); if (ld) tt.appendChild(el("p", "sh-lead", ld));
+    blk.appendChild(tt);
+    if (a && !b.solo) a._t.over = tt;
+    S.cover = { blk, tt, nm, a, t: a && a._t };
+    S.units.push(tt);
+    return blk;
+  };
+  const heroEl = (S, b) => {
+    const k = b.ks[0], f = b.fs[0];
+    const a = el("a", "tu hero"); a.href = "#study/" + k; a.dataset.k = k; a.draggable = false; a.style.height = b.H + "px";
+    const sc = el("div", "hx");
+    const box = el("div", "tpic"); box.style.width = b.w + "px"; box.style.height = b.H + "px";
+    sc.appendChild(box); a.appendChild(sc);
+    const cap = el("div", "tcap", capHtml(k)); a.appendChild(cap);
+    const rule = el("div", "hx-rule", "<i></i>"); a.appendChild(rule);
+    const t = { k, f, box, a, cap, sc, rule, hero: true, raf: 0 };
+    box._f = f; box._t = t; a._t = t;
+    S.tiles.push(t); S.units.push(a); S.boxes.push(box); S.heroes.push(t);
+    dragScroll(sc);
+    sc.addEventListener("scroll", () => { cancelAnimationFrame(t.raf); t.raf = requestAnimationFrame(() => heroMoved(t)); }, { passive: true });
+    /* from the keyboard: Tab reaches a hero, the arrows move it (27 Sept review) */
+    a.addEventListener("keydown", (ev) => {
+      if (ev.key !== "ArrowLeft" && ev.key !== "ArrowRight") return;
+      ev.preventDefault();
+      sc.scrollBy({ left: (ev.key === "ArrowRight" ? 1 : -1) * sc.clientWidth * 0.4, behavior: still() ? "auto" : "smooth" });
+    });
+    return a;
+  };
+  /* where the hero is: the rule's mark is the window onto the picture */
+  const heroMoved = (t) => {
+    const sc = t.sc, sw = sc.scrollWidth || 1;
+    const i = t.rule.firstChild;
+    i.style.left = (100 * sc.scrollLeft) / sw + "%"; i.style.width = (100 * sc.clientWidth) / sw + "%";
+    if (t.box._lum) { inkOn(t.cap, t.box); inkOn(t.rule, t.box, true); }
+  };
+  /* a hero moves under a trackpad or a finger on its own; a mouse drags
+     it, with a little glide on letting go. A drag is never a click */
+  const dragScroll = (sc) => {
+    let id = null, x0 = 0, s0 = 0, moved = false, vx = 0, lx = 0, lt = 0, raf = 0;
+    sc.addEventListener("pointerdown", (ev) => {
+      if (ev.pointerType !== "mouse" || ev.button !== 0) return;
+      cancelAnimationFrame(raf); id = ev.pointerId; x0 = lx = ev.clientX; s0 = sc.scrollLeft; lt = performance.now(); moved = false; vx = 0;
+    });
+    sc.addEventListener("pointermove", (ev) => {
+      if (ev.pointerId !== id) return;
+      const dx = ev.clientX - x0;
+      if (!moved && Math.abs(dx) > 5) { moved = true; try { sc.setPointerCapture(id); } catch (e) { /* gone */ } sc.classList.add("grabbing"); }
+      if (!moved) return;
+      sc.scrollLeft = s0 - dx;
+      const now = performance.now(), dt = Math.max(1, now - lt);
+      vx = 0.75 * ((ev.clientX - lx) / dt) + 0.25 * vx; lx = ev.clientX; lt = now;
+    });
+    const end = (ev) => {
+      if (ev.pointerId !== id) return; id = null;
+      sc.classList.remove("grabbing");
+      if (!moved) return;
+      sc._drag = true; setTimeout(() => { sc._drag = false; }, 0);
+      if (still() || Math.abs(vx) < 0.05 || performance.now() - lt > 90) return;
+      let v = -vx * 16, last = performance.now();
+      const glide = (now) => { const d = Math.min(3, (now - last) / 16); last = now; sc.scrollLeft += v * d; v *= Math.pow(0.93, d); if (Math.abs(v) > 0.35) raf = requestAnimationFrame(glide); };
+      raf = requestAnimationFrame(glide);
+    };
+    sc.addEventListener("pointerup", end); sc.addEventListener("pointercancel", end);
+    sc.addEventListener("click", (ev) => { if (sc._drag) { ev.preventDefault(); ev.stopPropagation(); sc._drag = false; } }, true);
+  };
+  const blockEl = (S, b) => {
+    if (b.t === "cover") return coverEl(S, b);
+    if (b.t === "hero") return heroEl(S, b);
+    const row = el("div", "g-row g-" + b.t); row.style.height = b.H + "px";
+    if (b.t === "ts" || b.t === "st") {
+      const tall = tileEl(S, b.ks[0], b.fs[0]); flexOf(tall, b.wt);
+      const st = el("div", "g-stack"); flexOf(st, b.ws);
+      [1, 2].forEach((i) => { const a = tileEl(S, b.ks[i], b.fs[i]); flexOf(a, b.hs[i - 1]); st.appendChild(a); });
+      row.appendChild(tall); row.appendChild(st);
+    } else if (b.t === "full") { const a = tileEl(S, b.ks[0], b.fs[0]); flexOf(a, 1); row.appendChild(a); }
+    else if (b.t === "solo") { const a = tileEl(S, b.ks[0], b.fs[0]); a.style.flex = "0 0 " + b.w + "px"; row.appendChild(a); }
+    else b.fs.forEach((f, j) => { const a = tileEl(S, b.ks[j], f); flexOf(a, b.ws[j]); row.appendChild(a); });
+    /* a study on two pictures that touch is captioned once, on the first
+       (a year of two studies set the same name and year side by side). In
+       a row only neighbours touch; beside a stack, all three do */
+    const seen = new Set(); let prev = null;
+    [...row.querySelectorAll(".tu")].forEach((a) => {
+      const k = a.dataset.k;
+      if (b.t === "ts" || b.t === "st" ? seen.has(k) : prev === k) a.classList.add("rep");
+      seen.add(k); prev = k;
+    });
+    return row;
+  };
+
+  const buildShelf = (o, held) => {
+    const layer = el("div", "shelf");
     layer.dataset.key = o.key;
-    if (gr) { layer.style.setProperty("--bg", gr.bg); layer.style.setProperty("--fg", gr.fg); }
+    if (held) layer.style.visibility = "hidden";
     STAGE.appendChild(layer);
-    const S = { key: o.key, o, layer, ks: shelfStudies(o), tiles: [], units: [], io: null, W: 0, visible: true };
+    const S = { key: o.key, o, layer, ks: shelfStudies(o), tiles: [], units: [], boxes: [], heroes: [], io: null, W: 0, V: 0, visible: !held, clicked: null };
     layoutShelf(S);
     layer.addEventListener("click", (ev) => shelfClick(S, ev));
     layer.addEventListener("pointerover", (ev) => { if (ev.pointerType === "mouse") tileOver(S, ev.target.closest(".tu")); });
@@ -957,7 +1493,8 @@
     let sc = 0;
     layer.addEventListener("scroll", () => {
       cancelAnimationFrame(sc); sc = requestAnimationFrame(() => {
-        layer.classList.toggle("past", layer.scrollTop > (S.nameEl ? S.nameEl.offsetTop + S.nameEl.offsetHeight - 40 : 120));
+        const cv = S.cover && S.cover.blk;
+        layer.classList.toggle("past", layer.scrollTop > (cv ? cv.offsetTop + cv.offsetHeight - HEAD - 24 : 120));
         /* a scroll still gliding when a tile is clicked lands after the room
            has opened; its wires belong to the shelf, so they are drawn only
            while the shelf is the page (27 Sept review) */
@@ -969,150 +1506,126 @@
   };
   const layoutShelf = (S) => {
     const o = S.o, layer = S.layer;
-    const W = layer.clientWidth || STAGE.clientWidth, V = layer.clientHeight || innerHeight;
-    const m = phone() ? 18 : margin(W), C = W - 2 * m, g = Math.max(10, Math.round(W * 0.016));
-    S.W = W; layer.style.setProperty("--m", m + "px");
-    if (S.io) S.io.disconnect();
-    S.tiles = []; S.units = [];
+    const W = layer.getBoundingClientRect().width || STAGE.clientWidth, V = layer.clientHeight || innerHeight;
+    Object.assign(S, { W, V, avail: V - HEAD, used: new Set(), tiles: [], units: [], boxes: [], heroes: [], cover: null, next: null, clicked: null });
+    S.Hc = coverH(S.avail); S.heroH = Math.round(S.avail * (phone() ? 0.64 : 0.96)); S.rowMax = Math.round(S.avail * 0.92);
+    /* one study: its name is on the cover, and only there */
+    layer.classList.toggle("one", S.ks.length === 1);
+    if (S.io) { S.io.disconnect(); S.io = null; }
     const frag = document.createDocumentFragment();
-    const bar = el("div", "sh-bar", '<span class="sh-bar-t">' + esc(nameOf(o)) + "</span>");
+    /* the running head: what the shelf is and how many studies, its name
+       once the cover has gone by, and Close */
+    const bar = el("div", "sh-bar");
+    bar.appendChild(el("span", "sh-bar-k caps", "<span>" + esc(o.g.name) + '</span><span class="n">Work<b>' + S.ks.length + "</b></span>"));
+    bar.appendChild(el("span", "sh-bar-t", esc(nameOf(o))));
     const x = el("button", "sh-x", "Close"); x.type = "button"; x.addEventListener("click", (ev) => { ev.stopPropagation(); closeTo({ v: "rest" }); });
     bar.appendChild(x); frag.appendChild(bar);
 
-    const head = el("header", "sh-head");
-    head.appendChild(el("div", "sh-kick caps", "<span>" + esc(o.g.name) + "</span><span>Work<b>" + S.ks.length + "</b></span>"));
-    const nm = el("h2", "sh-name" + (o.g.id === "years" || o.g.id === "figures" ? " num" : ""), esc(nameOf(o)));
-    head.appendChild(nm); S.nameEl = nm;
-    const ld = shelfLead(o); if (ld) head.appendChild(el("p", "sh-lead", ld));
-    frag.appendChild(head); S.units.push(head);
-
     const grid = el("div", "sh-grid");
-    const wide = C >= 520;
-    const L = (k) => leadOf(k) || heroOf(k);
-    const tile = (k, w, cls, noCap) => {
-      const f = L(k); w = Math.floor(Math.min(w, D.maxCss(f))); const h = Math.round(w / ratio(f));
-      const box = el("div", "tpic"); box.style.width = w + "px"; box.style.height = h + "px"; box._f = f;
-      const cap = noCap ? null : el("div", "tcap", '<span class="t">' + esc(D.title(k)) + '</span> <span class="y">' + D.year(k) + "</span>");
-      const t = { k, box, f, w, h };
-      S.tiles.push(t);
-      return { t, box, cap, w, h };
-    };
-    const unit = (k, cls) => { const a = el("a", "tu" + (cls ? " " + cls : "")); a.href = "#study/" + k; a.dataset.k = k; S.units.push(a); return a; };
-    const txt = (k) => {
-      const s = D.study(k);
-      const d = el("div", "sh-txt");
-      d.appendChild(el("div", "sh-kk", '<span class="t">' + esc(D.title(k)) + '</span> <span class="y">' + s.y + '</span><span class="d">' + esc(s.s) + "</span>"));
-      if (s.fact) d.appendChild(el("p", "sh-tt", esc(s.fact) + (s.rest ? ' <span class="g">' + esc(s.rest) + "</span>" : "")));
-      return d;
-    };
-    let side = 0;
-    /* a single picture with its study's lead: under it when the picture is
-       wide and fills the column, beside it when it leaves a column free */
-    const feature = (k, mode) => {
-      const f = L(k), r = ratio(f);
-      const row = el("div", "sh-row");
-      let w, beside;
-      if (mode === "F" && r >= 1.15) {
-        /* the first, if it is wide, as large as its pixels allow: edge to
-           edge when they fill the stage, its lead under it */
-        w = Math.min(D.maxCss(f), W, V * 0.74 * r); if (w < W - 1) w = Math.min(w, C);
-        beside = false;
-      } else {
-        w = Math.min(D.maxCss(f), C * (mode === "F" ? 0.58 : wide ? 0.5 : 0.72), V * (mode === "F" ? 0.74 : 0.62) * r);
-        beside = wide && C - w >= 230;
-      }
-      const T = tile(k, w, null, true);
-      const a = unit(k, "feat" + (beside ? (side++ % 2 ? " rev" : "") : " under"));
-      a.appendChild(T.box); a.appendChild(txt(k));
-      /* a wide picture that can fill the stage runs edge to edge */
-      if (!beside && T.w >= W - 1) { row.classList.add("bleed"); a.querySelector(".sh-txt").style.margin = "18px " + m + "px 0"; }
-      else if (!beside) a.style.width = Math.max(T.w, Math.min(C, 560)) + "px";
-      row.appendChild(a); T.t.a = a;
-      return row;
-    };
-    /* pictures side by side at one height, as tall as honesty allows */
-    const atOneHeight = (ks, maxH) => {
-      const fs = ks.map(L); const R = fs.reduce((s, f) => s + ratio(f), 0);
-      let h = (C - g * (ks.length - 1)) / R;
-      h = Math.min(h, maxH, ...fs.map((f) => D.maxCss(f) / ratio(f)));
-      return fs.map((f) => Math.floor(h * ratio(f)));
-    };
-    const rowOf = (ks, ws, just, align) => {
-      const row = el("div", "sh-row"); row.style.justifyContent = just || "flex-start"; row.style.alignItems = align || "flex-end";
-      if (just === "flex-start" || just === "flex-end") row.style.gap = g + "px";
-      ks.forEach((k, i) => { const T = tile(k, ws[i]); const a = unit(k); a.style.width = T.w + "px"; a.appendChild(T.box); a.appendChild(T.cap); row.appendChild(a); T.t.a = a; });
-      return row;
-    };
-    const rows = plan(S.ks.length); let at = 0, flip = 0;
-    rows.forEach((p) => {
-      const n = p === "F" ? 1 : NEED[p]; const ks = S.ks.slice(at, at + n); at += n;
-      if (p === "F") { grid.appendChild(feature(ks[0], "F")); return; }
-      if (p === "O") { grid.appendChild(feature(ks[0], "O")); return; }
-      if (p === "P2" || p === "P3") {
-        const ws = atOneHeight(ks, V * (p === "P3" ? 0.42 : 0.56));
-        const sum = ws.reduce((a, b) => a + b, 0) + g * (ws.length - 1);
-        grid.appendChild(rowOf(ks, ws, sum >= C - 2 ? "space-between" : flip++ % 2 ? "flex-end" : "flex-start"));
-        return;
-      }
-      /* an uneven pair: one large, one small, set to opposite edges */
-      const big = flip % 2 ? 1 : 0;
-      const ws = ks.map((k, i) => { const f = L(k); return Math.min(D.maxCss(f), (i === big ? (wide ? 0.6 : 0.62) : wide ? 0.3 : 0.34) * C, (i === big ? V * 0.6 : V * 0.36) * ratio(f)); });
-      flip++;
-      grid.appendChild(rowOf(ks, ws, "space-between", big ? "flex-start" : "flex-end"));
-    });
+    planShelf(S).forEach((b) => grid.appendChild(blockEl(S, b)));
     frag.appendChild(grid);
 
-    /* the foot: the next entry of the same kind, so a shelf never ends in a wall */
+    /* the foot: the next entry of the same kind, as the cover it opens on,
+       so a shelf never ends in a wall */
     const items = o.g.items; const nx = items[(items.indexOf(o) + 1) % items.length];
     if (nx && nx !== o) {
-      const foot = el("footer", "sh-foot");
-      const a = el("a", "sh-next"); a.href = "#" + nx.key; a.dataset.key = nx.key;
-      a.appendChild(el("span", "caps", "Next"));
-      a.appendChild(el("span", "sh-next-t", (nx.line ? '<i class="chip" style="--c:' + nx.line.color + '"></i>' : "") + esc(nameOf(nx))));
-      foot.appendChild(a); frag.appendChild(foot); S.units.push(foot);
+      const nks = shelfOrder(nx);
+      const nc = coverOf({ used: new Set(), multi: nks.length < FEW() }, nks, W, S.Hc);
+      const Hn = Math.round(S.avail * (phone() ? 0.44 : 0.5));
+      const a = el("a", "sh-next g-next"); a.href = "#" + nx.key; a.dataset.key = nx.key; a.draggable = false;
+      const nnum = nx.g.id === "years" || nx.g.id === "figures";
+      const tt = el("div", "g-title", '<span class="caps">Next</span><span class="sh-next-t' + (nnum ? " num" : "") + '">' + esc(nameOf(nx)) + "</span>");
+      if (nc && honest(W, Hn, nc.f)) {
+        a.style.height = Hn + "px";
+        const box = el("div", "tpic"); box._f = nc.f; box._over = tt; a.appendChild(box);
+        a._box = box; a._f = nc.f; S.boxes.push(box);
+      } else a.classList.add("bare");
+      a.appendChild(tt);
+      frag.appendChild(a); S.units.push(a); S.next = { a, tt };
     }
     layer.replaceChildren(frag);
 
-    /* the name: as large as it goes on one line, or two when it is long */
-    const nmax = o.g.id === "years" ? Math.min(260, V * 0.3) : o.g.id === "figures" ? Math.min(230, V * 0.28) : Math.min(170, V * 0.22);
-    if (o.g.id === "years" || o.g.id === "figures") oneLine(nm, C, nmax, nmax, o.g.id === "years" ? -0.065 : -0.06);
-    else { nm.style.whiteSpace = "nowrap"; const one = oneLine(nm, C, nmax, nmax); if (one < 64) { nm.style.whiteSpace = ""; fitType(nm, C, 2 * Math.min(100, nmax) * 0.95, Math.min(100, nmax), 34); } }
+    /* the name over the cover: as large as it goes on one line, or two
+       when it is long; its lead under it, smaller until it fits */
+    if (S.cover) {
+      const { nm, tt, a } = S.cover;
+      const inset = phone() ? 16 : 20;
+      const C = S.cover.tt.getBoundingClientRect().width, Hc = a ? a.offsetHeight : S.avail * 0.6;
+      const num = o.g.id === "years" || o.g.id === "figures";
+      const nmax = Math.min(num ? 230 : 150, Hc * (num ? 0.42 : 0.3));
+      if (num) oneLine(nm, C, nmax, nmax, o.g.id === "years" ? -0.065 : -0.06);
+      else { nm.style.whiteSpace = "nowrap"; const one = oneLine(nm, C, nmax, nmax); if (one < 56) { nm.style.whiteSpace = ""; fitType(nm, C, 2 * Math.min(96, nmax) * 0.95, Math.min(96, nmax), 30); } }
+      const ld = tt.querySelector(".sh-lead");
+      if (ld) {
+        ld.style.maxWidth = Math.min(C, phone() ? C : 540) + "px";
+        /* four lines at most, smaller until it fits, else it is left out */
+        const room = Hc - inset - 44 - nm.offsetHeight - 14;
+        let fs = phone() ? 16 : 19; ld.style.fontSize = fs + "px";
+        const over = () => ld.offsetHeight > Math.min(room, fs * 1.22 * 4 + 16);
+        while (over() && fs > 13) { fs -= 1; ld.style.fontSize = fs + "px"; }
+        if (over()) ld.remove();
+      }
+    }
+    if (S.next && S.next.a._box) {
+      const n = S.next.tt.querySelector(".sh-next-t");
+      const C = W - 2 * (phone() ? 16 : 20);
+      const nh = Math.min(130, S.next.a.offsetHeight * 0.42);
+      oneLine(n, C, nh, nh, n.classList.contains("num") ? -0.06 : undefined);
+    }
+    /* a hero opens centred on its picture, so both of its edges are cut */
+    S.heroes.forEach((t) => { t.sc.scrollLeft = Math.max(0, (t.sc.scrollWidth - t.sc.clientWidth) / 2); heroMoved(t); });
 
-    /* pictures load as they near the view, the thumbnail first */
+    /* pictures load as they near the view, the thumbnail first, and only
+       while the shelf is the page (one held behind a room waits) */
     S.io = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { S.io.unobserve(e.target); loadTile(e.target); } }),
-      { root: layer, rootMargin: "40% 0px 60% 0px" });
-    S.tiles.forEach((t) => S.io.observe(t.box));
+      { root: layer, rootMargin: "0px 0px 50% 0px" });
+    S.watch = () => { if (S.io && !S.watching) { S.watching = true; S.boxes.forEach((b) => { if (!b._loaded) S.io.observe(b); }); } };
+    S.watching = false;
+    if (S.visible) S.watch();
   };
+  /* the honest rung for the size the picture is drawn at under its crop,
+     after the rung below it, which is also the one sampled for its light */
   const loadTile = (box) => {
     const f = box._f; if (!f || box._loaded) return; box._loaded = true;
-    const w = box.offsetWidth || 300; const want = D.rung(f, w);
-    const quick = f.t384 && f.t384 !== want ? f.t384 : null;
+    const w = box.offsetWidth || 300, h = box.offsetHeight || 200;
+    const want = D.rung(f, coverW(w, h, f));
+    const rungs = [f.t384, f.t768, f.src].filter(Boolean);
+    const quick = rungs.indexOf(want) > 0 ? rungs[rungs.indexOf(want) - 1] : null;
+    /* the words over it wait for its light; should the canvas refuse the
+       picture, they show in ink anyway */
+    const lit = (im) => {
+      if (box._lum) return;
+      if (sampleBox(box, im)) { paintOver(box); return; }
+      const t = box._t, over = (t && t.over) || box._over;
+      [t && t.cap, t && t.rule, over].forEach((n) => n && n.classList.add("inked"));
+    };
+    const add = (src, then) => { const im = el("img"); im.alt = ""; im.decoding = "async"; im.draggable = false; im.addEventListener("load", () => then(im), { once: true }); im.src = encodeURI(src); box.appendChild(im); return im; };
     let pv = null;
-    if (quick) { pv = el("img"); pv.alt = ""; pv.decoding = "async"; pv.src = encodeURI(quick); pv.addEventListener("load", () => box.classList.add("in"), { once: true }); box.appendChild(pv); }
-    const im = D.img(f, w, { eager: true });
-    im.addEventListener("load", () => { box.classList.add("in"); if (pv) setTimeout(() => pv.remove(), 400); }, { once: true });
-    box.appendChild(im);
+    if (quick) pv = add(quick, (im) => { box.classList.add("in"); lit(im); });
+    add(want, (im) => { box.classList.add("in"); lit(im); if (pv) setTimeout(() => pv.remove(), 400); });
   };
   const unitsInView = (S) => { const box = S.layer.getBoundingClientRect(); return S.units.filter((u) => rectIn(u.getBoundingClientRect(), box)); };
+  /* in: each picture opens upward in reading order, the words after */
   const shelfIn = (S, delay, skip) => {
-    const us = unitsInView(S);
+    const us = unitsInView(S).map((u) => [u, u.getBoundingClientRect()]).sort((a, b) => a[1].top - b[1].top || a[1].left - b[1].left).map((x) => x[0]);
     us.forEach((u, i) => {
       if (u._an) u._an.cancel();
       if (still()) return;
-      u._an = u.animate([{ opacity: 0, transform: "translateY(24px)" }, { opacity: 1, transform: "none" }],
-        { duration: 540, delay: (delay || 0) + i * 45, easing: EASE, fill: "backwards" });
+      const words = u.classList.contains("g-title");
+      u._an = u.animate(words ? [{ opacity: 0, transform: "translateY(18px)" }, { opacity: 1, transform: "none" }] : [{ clipPath: "inset(100% 0 0 0)" }, { clipPath: "inset(0 0 0 0)" }],
+        { duration: words ? 560 : 640, delay: (delay || 0) + (words ? 240 : 0) + i * 45, easing: EASE, fill: "backwards" });
     });
     S.units.forEach((u) => { if (!us.includes(u) && u._an) { u._an.cancel(); u._an = null; } });
     if (skip) skip.style.visibility = "hidden";
   };
+  /* out: the others go to paper; the one flying keeps its place, empty */
   const shelfOut = (S, keep) => {
     const us = unitsInView(S);
     us.forEach((u, i) => {
       if (u._an) u._an.cancel();
       const kept = keep && u.contains(keep);
-      if (kept) { keep.style.visibility = "hidden"; [...u.children].filter((c) => c !== keep).forEach((c) => c.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 200, fill: "forwards" })); u._kept = true; return; }
-      u._an = u.animate([{ opacity: 1, transform: "none" }, { opacity: 0, transform: "translateY(28px)" }],
-        { duration: 340, delay: i * 26, easing: DROP, fill: "forwards" });
+      if (kept) { keep.style.visibility = "hidden"; [...u.children].filter((c) => !c.contains(keep)).forEach((c) => c.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 200, fill: "forwards" })); u._kept = true; return; }
+      u._an = u.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 300, delay: i * 18, easing: DROP, fill: "forwards" });
     });
   };
   const shelfReset = (S) => {
@@ -1124,9 +1637,11 @@
      it; an entry keeps the studies it touches, wired to them */
   const anchorOf = (box, clampTo) => {
     const r = box.getBoundingClientRect(), s = (clampTo || STAGE).getBoundingClientRect();
-    const top = s.top + 50; /* below the shelf's bar */
+    const top = s.top + HEAD + 6; /* below the running head */
     const y = Math.max(top, Math.min(s.bottom - 10, (Math.max(r.top, top) + Math.min(r.bottom, s.bottom)) / 2));
-    return [Math.max(s.left + 2, r.left - 7), y];
+    /* inside the picture's own edge: edge to edge, a point just left of it
+       was on the picture next door (27 Sept review) */
+    return [Math.max(s.left + 2, r.left + 10), y];
   };
   const wireTile = (S, u) => {
     const k = u.dataset.k; const box = u.querySelector(".tpic"); if (!box) return;
@@ -1149,23 +1664,37 @@
     draw(pairs, { live: true });
   };
   const shelfClick = (S, ev) => {
+    if (ev.metaKey || ev.ctrlKey || ev.shiftKey || ev.button) return; /* a new tab is still a new tab */
     const nx = ev.target.closest(".sh-next");
-    if (nx) { if (ev.metaKey || ev.ctrlKey || ev.shiftKey || ev.button) return; ev.preventDefault(); go({ v: "shelf", key: nx.dataset.key }, { push: true }); return; }
+    if (nx) {
+      ev.preventDefault();
+      /* the next shelf opens on this picture: it flies up into its cover */
+      const from = nx._box && nx._box.classList.contains("in") ? { box: nx._box, f: nx._f } : null;
+      go({ v: "shelf", key: nx.dataset.key }, { push: true, from });
+      return;
+    }
     const u = ev.target.closest(".tu"); if (!u) return;
-    if (ev.metaKey || ev.ctrlKey || ev.shiftKey || ev.button) return;
     ev.preventDefault();
+    S.clicked = u._t || null;
     go({ v: "study", k: u.dataset.k, from: S.key }, { push: true });
   };
 
   /* open a shelf over whatever the stage holds */
-  const openShelf = (o) => {
+  const openShelf = (o, how) => {
     const old = SH, oldRoom = RM, was = staged();
     const S = buildShelf(o); SH = S; RM = null;
     setStaged(true); lockEntry(o); cur = null;
     paint(o.rel, o);
     const rise = !still() && !(phone() && !was);
     if (rise) S.layer.animate([{ clipPath: "inset(100% 0 0 0)" }, { clipPath: "inset(0 0 0 0)" }], { duration: 560, easing: EASE });
-    shelfIn(S, rise ? 160 : phone() && !was ? 220 : 60);
+    /* from the foot of the last shelf: its picture flies up into this cover */
+    let skip = null;
+    const fr = how && how.from, ct = S.cover && S.cover.t;
+    if (fr && ct && fr.box.isConnected && ct.f.src === fr.f.src) {
+      const flight = fly(fr.box, fr.f, ct.box, { ms: 640 });
+      if (flight) { skip = ct.box; fr.box.style.visibility = "hidden"; land(flight, ct.box, () => { ct.box.style.visibility = ""; }); }
+    }
+    shelfIn(S, rise ? 160 : phone() && !was ? 220 : 60, skip);
     setTimeout(() => {
       if (old && old !== SH) { if (old.io) old.io.disconnect(); old.layer.remove(); }
       if (oldRoom) { oldRoom.room.destroy(); oldRoom.c.remove(); }
@@ -1175,7 +1704,8 @@
   const holdShelf = (o) => {
     if (SH && SH.key === o.key) return;
     if (SH) { if (SH.io) SH.io.disconnect(); SH.layer.remove(); }
-    SH = buildShelf(o); SH.visible = false; SH.layer.style.visibility = "hidden";
+    /* built unseen, and it loads nothing until Close brings it back */
+    SH = buildShelf(o, true); SH.layer.style.visibility = "hidden";
   };
 
   /* ── a room ── */
@@ -1212,11 +1742,15 @@
       const np = prev.room.el.querySelector(".sp-next-pic");
       if (np && rectIn(np.getBoundingClientRect(), prev.c.getBoundingClientRect())) src = { box: np, f: leadOf(k), target: "cover" };
     }
+    /* on a shelf: the tile clicked (a study can show twice on a short
+       shelf), else its first on screen. It lands on the room's cover, so
+       the study opens at its top; a tile showing another of the study's
+       pictures gives way to the board's lead there as it lands */
     let tileT = null;
     if (!src && SH && SH.visible && !prev) {
-      tileT = SH.tiles.find((t) => t.k === k);
-      if (tileT && rectIn(tileT.box.getBoundingClientRect(), SH.layer.getBoundingClientRect())) src = { box: tileT.box, f: tileT.f, target: "cover" };
-      else tileT = null;
+      const list = SH.clicked && SH.clicked.k === k ? [SH.clicked] : SH.tiles.filter((t) => t.k === k);
+      tileT = list.find((t) => visRect(t.box)) || null;
+      if (tileT) src = { box: tileT.box, f: tileT.f, target: "cover" };
     }
     if (!src && !was) src = focusFace(k);
     if (src && phone() && !was) src = null; /* the sheet is still rising */
@@ -1261,19 +1795,25 @@
   const backToShelf = () => {
     const S = SH, R = RM; RM = null;
     R.c.style.pointerEvents = "none";
-    S.layer.style.visibility = ""; S.visible = true;
+    S.layer.style.visibility = ""; S.visible = true; S.watch();
     shelfReset(S);
-    const t = S.tiles.find((x) => x.k === R.k);
+    const t = (S.clicked && S.clicked.k === R.k ? S.clicked : null) || S.tiles.find((x) => x.k === R.k);
     if (t) {
-      /* bring its picture home into view, most of it, before it flies there */
-      const lb = S.layer.getBoundingClientRect(), tb = t.box.getBoundingClientRect();
-      const seen = Math.min(tb.bottom, lb.bottom) - Math.max(tb.top, lb.top);
-      if (seen < Math.min(tb.height, lb.height) * 0.8) S.layer.scrollTop += tb.top - lb.top - Math.max(48, (lb.height - tb.height) / 2);
+      /* bring its picture home into view, most of it, before it flies
+         there. A hero keeps where it was scrolled sideways */
+      const lb = S.layer.getBoundingClientRect(), tb = t.a.getBoundingClientRect();
+      const top = lb.top + HEAD, vh = lb.height - HEAD;
+      const seen = Math.min(tb.bottom, lb.bottom) - Math.max(tb.top, top);
+      if (seen < Math.min(tb.height, vh) * 0.8) S.layer.scrollTop += tb.top - top - Math.max(0, (vh - tb.height) / 2);
     }
     lockEntry(S.o); paint(S.o.rel, S.o); clearLive();
-    const cover = R.room.cover;
-    const flight = t && cover && rectIn(cover.getBoundingClientRect(), R.c.getBoundingClientRect()) ? fly(cover, t.f, t.box, { ms: 540 }) : null;
-    if (flight) { t.box.style.visibility = "hidden"; cover.style.visibility = "hidden"; land(flight, null, () => { t.box.style.visibility = ""; }); }
+    /* it flies home from where the room shows it: the picture itself when
+       the room has it in view, else the cover (the board's lead, which
+       gives way to the tile's own picture as it lands) */
+    let from = R.room.cover, ff = leadOf(R.k);
+    if (t && !t.f.lead) { const e = R.room.find(t.f.id); if (e && e !== R.room.cover && visRect(e)) { from = e; ff = t.f; } }
+    const flight = t && from && ff && visRect(from) ? fly(from, ff, t.box, { ms: 540, fitB: ff.src !== t.f.src }) : null;
+    if (flight) { t.box.style.visibility = "hidden"; from.style.visibility = "hidden"; land(flight, null, () => { t.box.style.visibility = ""; }); }
     shelfIn(S, 200, null);
     if (flight) t.box.style.visibility = "hidden";
     /* the room's words go first, then its paper lowers off the shelf */
@@ -1394,7 +1934,7 @@
       if (!o) { VIEW = { v: "rest" }; closeStage(); return; }
       if (RM && SH && SH.key === st.key) { backToShelf(); return; }
       if (SH && SH.key === st.key && SH.visible) return;
-      openShelf(o);
+      openShelf(o, how);
       return;
     }
     if (RM && RM.k === st.k) { RM.from = st.from; return; }
@@ -1534,7 +2074,11 @@
       fit();
       HTML.classList.toggle("sheet", staged() && phone());
       if (!staged()) render();
-      if (SH && Math.abs(SH.layer.clientWidth - SH.W) > 30) { const f = SH.layer.scrollTop / Math.max(1, SH.layer.scrollHeight); layoutShelf(SH); SH.layer.scrollTop = f * SH.layer.scrollHeight; }
+      /* a shelf is laid out to its stage's width and height (a hero's is
+         the height's), so it is laid out again when either moves much */
+      if (SH && (Math.abs(SH.layer.getBoundingClientRect().width - SH.W) > 30 || Math.abs(SH.layer.clientHeight - SH.V) > 80)) {
+        const f = SH.layer.scrollTop / Math.max(1, SH.layer.scrollHeight); layoutShelf(SH); SH.layer.scrollTop = f * SH.layer.scrollHeight;
+      }
       WIRES.innerHTML = "";
     });
   });

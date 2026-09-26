@@ -8,16 +8,21 @@
    the big type is set the way the board sets its own: 700, 800 for the
    very largest figures, tracking pulled in as it grows.
 
-   The index has three settings as of 27 Sept 2026, one per value of
-   html[data-ix] (a, b, c). The shared rules come first, then each
+   The index has four settings as of 27 Sept 2026, one per value of
+   html[data-ix] (a, b, c, d; d the default). The shared rules come first, then each
    version's own under its letter, then the phone. What the versions do
    and why is at the top of crossref2.html and above buildIndex in
    crossref2.js; here it is only sizes. A picture in the index is a
    board lead at its smallest rung, and it dims with its entry.
 
    Loads after density.css (the house tokens and the faces) and
-   study-panel.css (the room). Colour only comes from the data: a line's
-   own colour under its shelf, a study's palette inside its room. */
+   study-panel.css (the room). Colour only comes from the data, and only
+   from a study's own: its palette inside its room. As of 27 Sept (later)
+   no category is coded by colour anywhere: the lines' squares, their
+   coloured words and their coloured grounds are gone. Index D, the
+   default, is at the end of the versions. As of 27 Sept (latest) a shelf
+   is an edge-to-edge grid of pictures with nothing between them, under
+   a thin running head on paper; its rules are under "a shelf" below. */
 
 :root { --m: 28px; --fs: 12px; --idxw: min(46vw, 760px); --gut: 64px; --top: 22px;
   --stl: calc(var(--m) + var(--idxw) + var(--gut) / 2); }
@@ -49,7 +54,6 @@ body { overflow: hidden; }
 .e:focus { outline: none; }
 .e:focus-visible { outline: 1px solid var(--ink); outline-offset: 2px; }
 .e .y { color: var(--grey); font-weight: 500; font-variant-numeric: tabular-nums; transition: color 0.2s ease; }
-.e .chip { display: inline-block; width: 0.62em; height: 0.62em; margin: 0 0.5em 0 0; background: var(--c); vertical-align: 0.02em; transition: opacity 0.2s ease; }
 .grp.run .items, .grp.wall .items { line-height: 1.42; }
 .grp.run .e, .grp.wall .e, .grp.inline .e, .grp.word .e { display: inline; }
 .grp .e.nw { white-space: nowrap; }
@@ -66,24 +70,19 @@ body.x .grp .sep { color: var(--faint); }
 /* the cross-reference: what shares a study stays in ink, and so do its pictures */
 body.x .e { color: var(--faint); }
 body.x .e .y { color: var(--faint); }
-body.x .e .chip { opacity: 0.22; }
 body.x .e:not(.on) .th, body.x .strip .th:not(.hit) { opacity: 0.16; }
 body.x .e.on { color: var(--ink); }
 body.x .e.on .y { color: var(--grey); }
-body.x .e.on .chip { opacity: 1; }
 .e.me .t, .grp.run .e.me, .grp.wall .e.me { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 0.2em; }
 .e.cur .t { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 0.2em; }
-/* what the stage holds open: set solid; a line on its own colour, as its shelf is */
+/* what the stage holds open: set solid, in ink, whatever its kind */
 .e.lock { background: var(--ink); color: var(--paper) !important; box-shadow: 0 0 0 0.18em var(--ink); }
 .e.lock .y { color: rgba(255, 255, 255, 0.6) !important; }
 .e.lock .t { text-decoration: none; }
-.e.lock .chip { opacity: 1 !important; outline: 1px solid rgba(255, 255, 255, 0.5); }
 .e.lock .th { opacity: 1 !important; }
-.grp[data-g="lines"] .e.lock { background: var(--c); color: var(--ci) !important; box-shadow: 0 0 0 0.18em var(--c); }
-.grp[data-g="lines"] .e.lock .chip { outline-color: var(--ci); }
 body.staged .e:not(.on):hover .t, body.staged .grp.run .e:not(.on):hover, body.staged .grp.wall .e:not(.on):hover { text-decoration: underline; text-decoration-color: var(--faint); text-underline-offset: 0.2em; }
 
-/* the switch at the foot: three letters */
+/* the switch, on the mark's line: four letters */
 .ixtop { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; margin: 0 0 30px; }
 .ixtop #mark { margin: 0; }
 .ixsw { display: flex; align-items: baseline; gap: 14px; margin: 0 0 0 auto; color: var(--grey); font-size: 12px; }
@@ -97,10 +96,8 @@ body.staged .e:not(.on):hover .t, body.staged .grp.run .e:not(.on):hover, body.s
 [data-ix="a"] .grp[data-g="lines"] .items { display: grid; grid-template-columns: max-content minmax(0, 1fr); column-gap: 30px; }
 [data-ix="a"] .e.ln { grid-column: 1 / -1; display: grid; grid-template-columns: subgrid; align-items: baseline; padding: 9px 0 10px; border-bottom: 1px solid var(--hair); }
 [data-ix="a"] .e.ln .nm { font-size: 32px; font-weight: 700; letter-spacing: -0.05em; line-height: 1; white-space: nowrap; }
-[data-ix="a"] .e.ln .chip { width: 0.38em; height: 0.38em; margin-right: 0.3em; vertical-align: 0.05em; }
 [data-ix="a"] .strip { display: flex; flex-wrap: wrap; gap: 3px; }
 [data-ix="a"] .strip .th { flex: none; width: var(--ts, 22px); height: var(--ts, 22px); }
-[data-ix="a"] .e.ln.lock .th { outline: 1px solid var(--c); }
 [data-ix="a"] .grp[data-g="work"] .items { columns: 2; column-gap: 30px; }
 [data-ix="a"] .grp[data-g="work"] .e { display: flex; align-items: center; gap: 11px; padding: 3px 0; font-size: 15px; font-weight: 500; letter-spacing: -0.014em; line-height: 1.2; }
 [data-ix="a"] .grp[data-g="work"] .th { flex: none; width: 33px; height: 22px; }
@@ -118,7 +115,6 @@ body.staged .e:not(.on):hover .t, body.staged .grp.run .e:not(.on):hover, body.s
 [data-ix="b"] .grp { margin-bottom: 34px; }
 [data-ix="b"] .grp[data-g="lines"] .items { font-size: 32px; font-weight: 700; letter-spacing: -0.05em; line-height: 1.1; }
 [data-ix="b"] .grp[data-g="lines"] .e { margin-right: 0.3em; white-space: nowrap; }
-[data-ix="b"] .grp[data-g="lines"] .chip { width: 0.38em; height: 0.38em; margin-right: 0.22em; vertical-align: 0.05em; }
 [data-ix="b"] .grp[data-g="work"] .items { font-size: 22px; font-weight: 600; letter-spacing: -0.03em; line-height: 1.36; }
 [data-ix="b"] .grp[data-g="work"] .e { margin-right: 0.42em; }
 [data-ix="b"] .grp[data-g="work"] .hold { white-space: nowrap; }
@@ -129,13 +125,12 @@ body.staged .e:not(.on):hover .t, body.staged .grp.run .e:not(.on):hover, body.s
 [data-ix="b"] .grp[data-g="figures"] .items { font-size: 12px; font-weight: 600; }
 [data-ix="b"] .grp[data-g="capabilities"] .items, [data-ix="b"] .grp[data-g="tools"] .items { font-size: 11px; }
 
-/* ── C: pictures lead. The lines as large words in their own colours,
+/* ── C: pictures lead. The lines as large words (in ink since 27 Sept),
    every study's picture in one tight grid, the rest as fine print ── */
 [data-ix="c"] .grp[data-g="lines"] .items { font-size: var(--lw, 48px); font-weight: 700; letter-spacing: -0.05em; line-height: 1.02; }
-[data-ix="c"] .grp[data-g="lines"] .e { color: var(--c); margin-right: 0.2em; white-space: nowrap; }
-[data-ix="c"] body.x .grp[data-g="lines"] .e { opacity: 0.22; color: var(--c); }
-[data-ix="c"] body.x .grp[data-g="lines"] .e.on { opacity: 1; }
-[data-ix="c"] .grp[data-g="lines"] .e.lock { color: var(--ci) !important; opacity: 1; }
+[data-ix="c"] .grp[data-g="lines"] .e { display: inline-block; margin-right: 0.2em; white-space: nowrap; }
+/* set solid, the ink kept inside its own line so it never covers the one above */
+[data-ix="c"] .grp[data-g="lines"] .e.lock { box-shadow: 0 0 0 0.05em var(--ink); }
 [data-ix="c"] .grp[data-g="work"] .items { display: grid; grid-template-columns: repeat(var(--gc, 6), minmax(0, 1fr)); gap: 13px 6px; }
 [data-ix="c"] .grp[data-g="work"] .e { display: block; }
 [data-ix="c"] .grp[data-g="work"] .th { width: 100%; aspect-ratio: 3 / 2; }
@@ -146,6 +141,44 @@ body.staged .e:not(.on):hover .t, body.staged .grp.run .e:not(.on):hover, body.s
 [data-ix="c"] .grp[data-g="work"] .e.lock .tc .t { background: var(--ink); box-shadow: 0 0 0 0.2em var(--ink); }
 [data-ix="c"] .grp[data-g="work"] .e.lock .th { outline: 2px solid var(--ink); outline-offset: 2px; }
 [data-ix="c"] .fine .grp[data-g="figures"] .e { font-weight: 600; }
+
+/* ── D: the first version's columns with a contents page's scale. Four
+   sizes: the caps over each group (9.5px), the run (--fs, fitted to the
+   glass), the features (half again the run), the lines and the big
+   figures (--fl, sized to the column). Only sizes here; what and why is
+   above INDEX D in crossref2.js ── */
+[data-ix="d"] #idx { display: flex; flex-direction: column; padding-bottom: var(--top); overflow-y: hidden; }
+[data-ix="d"] .ixtop { display: block; margin: 0 0 1.9em; break-inside: avoid; }
+[data-ix="d"] .ixtop #mark { margin: 0 0 0.35em; }
+[data-ix="d"] .ixsw { gap: 10px; margin: 0; font-size: 10px; }
+[data-ix="d"] .ixsw .ixl { margin-right: 2px; }
+[data-ix="d"] .dcols { flex: 1 1 auto; min-height: 0; overflow: hidden; columns: var(--cols, 4); column-gap: 18px; column-fill: auto;
+  font-size: var(--fs); line-height: 1.27; --fm: calc(var(--fs) * 1.5); }
+[data-ix="d"] .grp { margin: 0 0 1.1em; }
+[data-ix="d"] .grp h2 { margin: 0 0 0.55em; padding: 0 0 0.45em; }
+[data-ix="d"] .grp.run .items { line-height: 1.42; }
+/* a study: its name, its year at the column's edge like a catalogue */
+[data-ix="d"] .e.w { display: flex; justify-content: space-between; align-items: baseline; gap: 0.7em; }
+/* a line: the largest words on the page, its count at the edge */
+[data-ix="d"] .e.ld { display: flex; justify-content: space-between; align-items: baseline; gap: 6px; }
+[data-ix="d"] .e.ld .t { flex: none; margin-left: -0.045em; font-size: var(--fl, 32px); font-weight: 700; letter-spacing: -0.05em; line-height: 1; white-space: nowrap; }
+/* a feature: a size up, its board picture butted to its name */
+[data-ix="d"] .e.w.ft { display: flow-root; margin: 0.5em 0 0.55em; }
+[data-ix="d"] .e.ft .th { float: left; height: calc(var(--fm) * 1.04 * 2); width: calc(var(--fm) * 1.04 * 2 * var(--r, 1.5)); margin: 0.12em 0.45em 0.1em 0; }
+[data-ix="d"] .e.ft .t { font-size: var(--fm); font-weight: 600; letter-spacing: -0.03em; line-height: 1.04; }
+/* the name is a block beside the picture, so a third line never runs
+   under it; its year sits at the column's edge, as every row's does, on
+   the name's last line, or under it when that line is full (27 Sept review) */
+[data-ix="d"] .e.ft .tx { display: flow-root; }
+[data-ix="d"] .e.ft .y { float: right; margin: calc(var(--fs) * 0.44) 0 0 0.5em; line-height: 1; white-space: nowrap; }
+/* a big figure: on its own line, the number large, a noun after it at the run's size */
+[data-ix="d"] .it.bf { display: block; margin: 0.2em 0 0.3em; }
+[data-ix="d"] .grp.run .e.bf { display: inline-block; white-space: normal; }
+[data-ix="d"] .e.bf .fn { margin-left: -0.04em; font-size: var(--fl, 32px); font-weight: 700; letter-spacing: -0.05em; line-height: 1; }
+[data-ix="d"] .e.bf .fu { margin-left: 0.3em; }
+/* too short a glass for it all: the columns balance and scroll in their half */
+html.dscroll[data-ix="d"] #idx { display: block; overflow-y: auto; padding-bottom: 72px; }
+html.dscroll[data-ix="d"] .dcols { overflow: visible; column-fill: balance; }
 
 /* ── the wires: from each related entry to the thing in focus ── */
 #wires { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 6; pointer-events: none; }
@@ -254,66 +287,104 @@ body.staged #stage { pointer-events: auto; }
 .roomc .sp { min-height: 100%; }
 .flyer { position: fixed; z-index: 60; margin: 0; transform-origin: 0 0; pointer-events: none; will-change: transform, clip-path; }
 
-/* ── a shelf: the studies an entry touches, as a page ── */
-.shelf { --m: 34px; --bg: var(--paper); --fg: var(--ink); --sg: rgba(0, 0, 0, 0.42); --sh: rgba(0, 0, 0, 0.13); --pb: rgba(0, 0, 0, 0.05);
-  background: var(--bg); color: var(--fg); font-family: var(--sans); padding-bottom: 8px; }
-.shelf.paper { border-left: 1px solid var(--hair); }
-.shelf.inv { --sg: rgba(255, 255, 255, 0.6); --sh: rgba(255, 255, 255, 0.24); --pb: rgba(255, 255, 255, 0.07); }
-.sh-bar { position: sticky; top: 0; z-index: 3; display: flex; justify-content: space-between; align-items: baseline; gap: 16px;
-  height: 40px; padding: 13px var(--m) 0; background: var(--bg); font-size: 12px; font-weight: 600; letter-spacing: -0.004em; line-height: 1.2; }
-.sh-bar-t { opacity: 0; transition: opacity 0.25s ease; white-space: nowrap; overflow: hidden; }
+/* ── a shelf: the studies an entry touches, as a magazine grid (27 Sept,
+   later). Pictures butt edge to edge from the stage's left edge to the
+   window's right and down to its foot, and nothing shows between them.
+   A thin running head on paper holds the entry and Close, on the index's
+   first line. Words sit on the pictures in paper (.lt) or ink by what is
+   under them, with a soft scrim under small words only where neither
+   reads (.scr). The blocks' sizes are set in crossref2.js ── */
+.shelf { background: var(--paper); color: var(--ink); font-family: var(--sans); }
+.sh-bar { position: sticky; top: 0; z-index: 4; display: flex; align-items: baseline; gap: 18px; height: 44px; padding: 27px 20px 0;
+  background: var(--paper); font-size: 12px; font-weight: 600; letter-spacing: -0.004em; line-height: 1; white-space: nowrap; }
+.sh-bar-k { display: flex; gap: 14px; color: var(--grey); }
+.sh-bar-k b { margin-left: 0.45em; font-weight: 600; color: var(--ink); }
+.sh-bar-t { min-width: 0; overflow: hidden; text-overflow: ellipsis; opacity: 0; transition: opacity 0.25s ease; }
 .shelf.past .sh-bar-t { opacity: 1; }
 .sh-x { margin-left: auto; padding: 0; border: 0; background: none; font: inherit; color: inherit; cursor: pointer; }
 .sh-x:hover { opacity: 0.6; }
 .sh-x:focus-visible { outline: 1px solid currentColor; outline-offset: 3px; }
-.sh-head { padding: 6px var(--m) 0; }
-.sh-kick { display: flex; justify-content: space-between; gap: 16px; padding-top: 10px; border-top: 1px solid var(--fg); color: var(--sg); }
-.sh-kick b { font-weight: 600; color: var(--fg); margin-left: 0.5em; }
-.sh-name { margin: 22px 0 0 -0.045em; font-size: 120px; font-weight: 700; letter-spacing: -0.055em; line-height: 0.9; text-wrap: balance; }
-.sh-name.num { font-weight: 800; letter-spacing: -0.06em; line-height: 0.84; white-space: nowrap; }
-.sh-lead { max-width: 22em; margin-top: 22px; font-size: 23px; font-weight: 600; letter-spacing: -0.03em; line-height: 1.18; }
-.sh-lead .g { color: var(--sg); }
-.sh-lead mark { background: none; color: var(--fg); }
-.sh-grid { padding-bottom: 12px; }
-.sh-row { display: flex; align-items: flex-end; margin: 0 var(--m); }
-.sh-row + .sh-row { margin-top: clamp(40px, 7vh, 64px); }
-.sh-row:first-child { margin-top: clamp(40px, 8vh, 72px); }
-.sh-row.bleed { margin: 0; }
-.sh-row.bleed:first-child { margin-top: clamp(40px, 8vh, 72px); }
 
-.tu { display: block; flex: none; min-width: 0; color: inherit; cursor: pointer; transition: opacity 0.25s ease; -webkit-tap-highlight-color: transparent; }
-.tpic { position: relative; overflow: hidden; background: var(--pb); }
-.tpic img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 0.4s ease; }
+/* the blocks: a row at one height, a tall one beside a stack (st is the
+   other way round), a band, a cover */
+.g-row { display: flex; }
+.g-st { flex-direction: row-reverse; }
+.g-stack { display: flex; flex-direction: column; min-width: 0; }
+.tu { position: relative; display: block; min-width: 0; min-height: 0; overflow: hidden; color: inherit; cursor: pointer;
+  transition: opacity 0.25s ease; -webkit-tap-highlight-color: transparent; -webkit-user-drag: none; }
+.tpic { position: absolute; inset: 0; overflow: hidden; background: #e8e4e0; }
+.tpic img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 0.4s ease; -webkit-user-drag: none; }
 .tpic.in img { opacity: 1; }
-.tcap { margin-top: 9px; font-size: 12px; font-weight: 600; letter-spacing: -0.004em; line-height: 1.3; }
-/* a real space between a name and its year, so a narrow tile wraps the
-   year under the name instead of running it into the next tile */
-.tcap .y, .sh-kk .y { margin-left: 0.05em; font-weight: 500; color: var(--sg); font-variant-numeric: tabular-nums; }
-.tu:hover .tcap .t, .tu:hover .sh-kk .t { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 0.2em; }
-.shelf.dim .tu:not(.hit) { opacity: 0.18; }
+.shelf.dim .tu:not(.hit), .shelf.dim .tu:not(.hit) + .g-title { opacity: 0.24; }
 
-/* a feature: the picture with its study's own two-tone lead beside or under it */
-.tu.feat { display: flex; align-items: flex-end; gap: clamp(20px, 3.4vw, 36px); width: 100%; }
-.tu.feat.under { flex-direction: column; align-items: stretch; gap: 0; }
-.tu.feat.rev { flex-direction: row-reverse; }
-.tu.feat > .tpic { flex: none; }
-.sh-txt { flex: 1 1 0; min-width: 0; padding-top: 11px; border-top: 1px solid var(--sh); }
-.tu.feat.under .sh-txt { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 7fr); column-gap: clamp(20px, 3.4vw, 36px); margin: 18px var(--m) 0; }
-.sh-row:not(.bleed) .tu.feat.under .sh-txt { margin-left: 0; margin-right: 0; }
-.sh-kk { font-size: 12px; font-weight: 600; letter-spacing: -0.004em; line-height: 1.35; color: var(--sg); }
-.sh-kk .t { color: var(--fg); }
-.sh-kk .d { display: block; margin-top: 2px; font-weight: 500; }
-.sh-tt { margin-top: 14px; max-width: 24em; font-size: clamp(16px, 1.5vw, 20px); font-weight: 600; letter-spacing: -0.024em; line-height: 1.24; }
-.tu.feat.under .sh-tt { margin-top: 0; font-size: clamp(18px, 1.75vw, 24px); letter-spacing: -0.03em; line-height: 1.18; }
-.sh-tt .g { color: var(--sg); }
+/* a caption: the study and its year, small, bottom left on the picture */
+.tcap { position: absolute; left: 0; bottom: 2px; z-index: 2; width: max-content; max-width: 100%; padding: 9px 12px;
+  font-size: 12px; font-weight: 600; letter-spacing: -0.004em; line-height: 1.25; color: var(--ink);
+  opacity: 0; transition: opacity 0.3s ease; pointer-events: none; }
+/* three lines at most, so a long name in a narrow tile keeps its year */
+.tcap .tl { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+/* a shelf of one study names it once, on its cover; the same name and
+   year on every picture below said nothing new (27 Sept review) */
+.shelf.one .tu:not(.cov) .tcap, .tu.rep .tcap { display: none; }
+.tcap .y { font-weight: 500; opacity: 0.72; font-variant-numeric: tabular-nums; }
+.tcap.inked { opacity: 1; }
+.tu:hover .tcap .t { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 0.2em; }
+.shelf .lt { color: #fff; }
+/* the scrim: a soft-edged veil the size of the words, no band */
+.tcap.scr, .g-title .scr { background: rgba(0, 0, 0, 0.26);
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 12px, #000 calc(100% - 12px), transparent), linear-gradient(transparent, #000 8px, #000 calc(100% - 8px), transparent);
+  -webkit-mask-composite: source-in; mask-image: linear-gradient(90deg, transparent, #000 12px, #000 calc(100% - 12px), transparent), linear-gradient(transparent, #000 8px, #000 calc(100% - 8px), transparent);
+  mask-composite: intersect; }
+.tcap.scr:not(.lt), .g-title .scr:not(.lt) { background: rgba(255, 255, 255, 0.5); }
 
-/* the foot: the next entry of the same kind */
-.sh-foot { margin: clamp(80px, 14vh, 130px) var(--m) 0; padding: 12px 0 clamp(30px, 6vh, 56px); border-top: 1px solid var(--fg); }
-.sh-next { display: block; color: inherit; cursor: pointer; }
-.sh-next .caps { color: var(--sg); }
-.sh-next-t { display: block; margin: clamp(22px, 4vh, 40px) 0 0 -0.04em; font-size: clamp(34px, 6.4vw, 64px); font-weight: 700; letter-spacing: -0.05em; line-height: 0.95; }
-.sh-next-t .chip { display: inline-block; width: 0.42em; height: 0.42em; margin-right: 0.18em; vertical-align: 0.06em; background: var(--c); }
-.sh-next:hover .sh-next-t { opacity: 0.6; }
+/* the cover: the first study cropped to the stage; the entry's name and
+   lead over it, its own caption top left */
+.g-cover { position: relative; }
+.g-cover > .tu { position: absolute; top: 0; bottom: 0; left: 0; width: 100%; }
+.g-cover > .tu.cov .tcap { top: 2px; bottom: auto; }
+.g-title { position: absolute; left: 20px; right: 20px; bottom: 18px; z-index: 2; pointer-events: none; color: var(--ink);
+  opacity: 0; transition: opacity 0.3s ease; }
+.g-title.inked { opacity: 1; }
+.g-title.at-top { top: 18px; bottom: auto; }
+.g-cover > .tu.cov .tcap.at-foot { top: auto; bottom: 2px; }
+/* no study to open on: the name and its lead on paper */
+.g-cover.bare { padding: 18vh 20px 48px; }
+.g-cover.bare .g-title { position: static; }
+.g-cover.bare .sh-lead { margin-left: 0; padding-left: 0; }
+.g-cover.solo > .tu { left: auto; right: 0; }
+.g-cover.solo .sh-lead { margin-left: 0; padding-left: 0; }
+.g-title .sh-name { margin: 0 0 0 -0.045em; font-weight: 700; letter-spacing: -0.055em; line-height: 0.9; text-wrap: balance; }
+.g-title .sh-name.num { font-weight: 800; letter-spacing: -0.06em; line-height: 0.84; white-space: nowrap; }
+.g-title .sh-lead { width: fit-content; margin: 14px -12px 0; padding: 7px 12px 8px; font-size: 19px; font-weight: 600; letter-spacing: -0.02em; line-height: 1.22; text-wrap: pretty; }
+.g-title .sh-lead .g { opacity: 0.66; }
+.g-title .sh-lead mark { background: none; color: inherit; }
+
+/* a hero: one picture past the stage's edge, in a row that scrolls
+   sideways. The rule under it is the window onto the whole */
+.hx { position: relative; height: 100%; overflow-x: auto; overflow-y: hidden; overscroll-behavior-x: contain; scrollbar-width: none;
+  cursor: grab; user-select: none; -webkit-user-select: none; }
+.hx::-webkit-scrollbar { display: none; }
+.hx.grabbing { cursor: grabbing; }
+.hx .tpic { position: relative; inset: auto; }
+.tu.hero .tcap { bottom: 17px; }
+.hx-rule { position: absolute; left: 12px; right: 12px; bottom: 13px; z-index: 2; height: 1px; color: var(--ink); pointer-events: none;
+  opacity: 0; transition: opacity 0.3s ease; }
+.hx-rule.inked { opacity: 1; }
+.hx-rule::before { content: ""; position: absolute; inset: 0; background: currentColor; opacity: 0.38; }
+.hx-rule i { position: absolute; top: -1px; height: 3px; background: currentColor; }
+
+/* the foot: the next entry of the same kind, as the cover it opens on */
+.g-next { position: relative; display: block; overflow: hidden; color: inherit; cursor: pointer; -webkit-user-drag: none; }
+.g-next .tpic { position: absolute; inset: 0; }
+.g-next .g-title { bottom: 22px; }
+.g-next .g-title.at-top { top: 18px; bottom: auto; }
+.g-next .caps { display: inline-block; margin: -6px -12px; padding: 6px 12px; }
+.sh-next-t { display: block; margin: 12px 0 0 -0.045em; font-weight: 700; letter-spacing: -0.05em; line-height: 0.9; white-space: nowrap; }
+.sh-next-t.num { font-weight: 800; }
+.g-next:hover .sh-next-t { opacity: 0.8; }
+.g-next.bare { padding: 12px 20px 48px; border-top: 1px solid var(--ink); }
+.g-next.bare .g-title { position: static; opacity: 1; }
+.g-next.bare .sh-next-t { font-size: clamp(34px, 6.4vw, 64px); }
 
 /* ── stacked: a phone, or any glass too small for the index beside the
    stage. The focus is a band at the top that stays put; the index runs
@@ -325,7 +396,7 @@ html.stack.sheet body { overflow: hidden; }
 html.stack #mark { margin: 18px var(--m) 12px; }
 html.stack .ixtop #mark { margin: 0; }
 html.stack #focus { position: sticky; top: 0; left: auto; right: auto; bottom: auto; height: min(46svh, 400px); margin: 0; padding: 12px var(--m) 14px;
-  background: var(--fc, var(--paper)); border-bottom: 1px solid var(--hair); transition: background-color 0.3s ease, opacity 0.28s ease; }
+  background: var(--paper); border-bottom: 1px solid var(--hair); transition: opacity 0.28s ease; }
 html.stack .layer { inset: 12px var(--m) 14px; }
 html.stack #field, html.stack #wires { display: none; }
 html.stack #idx { position: static; width: auto; max-width: 900px; margin: 24px var(--m) 48px; padding: 0; overflow: visible; }
@@ -361,13 +432,28 @@ html.stack .cc { font-size: 10.5px; }
 html.stack #stage { left: 0; z-index: 40; height: 100%; height: 100dvh; transform: translateY(102%); visibility: hidden;
   transition: transform 0.5s var(--ease), visibility 0s linear 0.5s; }
 html.stack body.staged #stage { transform: none; visibility: visible; transition: transform 0.5s var(--ease), visibility 0s; }
-html.stack .shelf.paper, html.stack .roomc { border-left: 0; }
-html.stack .shelf { --m: 18px; }
-html.stack .sh-name { margin-top: 16px; }
-html.stack .sh-lead { font-size: 19px; margin-top: 16px; }
-html.stack .sh-row + .sh-row { margin-top: 40px; }
-html.stack .tu.feat.under .sh-txt { display: block; }
-html.stack .tu.feat.under .sh-tt { margin-top: 10px; font-size: 18px; }
+html.stack .roomc { border-left: 0; }
+html.stack .sh-bar { padding: 27px 16px 0; }
+html.stack .g-title { left: 16px; right: 16px; bottom: 14px; }
+html.stack .g-title.at-top, html.stack .g-next .g-title.at-top { top: 14px; bottom: auto; }
+html.stack .tcap { padding: 8px 10px; font-size: 11px; }
+html.stack .hx-rule { left: 10px; right: 10px; bottom: 11px; }
+html.stack .g-next.bare { padding: 12px 16px 40px; }
+
+/* D on a phone: one column that reads down, the lines two abreast, Work
+   one list, the runs full width */
+html.stack[data-ix="d"] #idx { display: block; }
+html.stack[data-ix="d"] .dcols { overflow: visible; column-fill: balance; }
+html.stack[data-ix="d"] .ixtop { margin-bottom: 26px; }
+html.stack[data-ix="d"] .grp { margin-bottom: 30px; }
+html.stack[data-ix="d"] .grp.dline .items { columns: 2; column-gap: 16px; }
+html.stack[data-ix="d"] .grp.list .e.w:not(.ft) { padding: 0.12em 0; }
+html.stack[data-ix="d"] .grp[data-g="about"] .items { columns: 2; column-gap: 16px; }
+html.stack[data-ix="d"] .grp.run .e { line-height: inherit; }
+html.stack[data-ix="d"] .grp.run .items { line-height: 1.6; }
+
+/* the room keeps a study's own palette; its lines are words there too */
+#stage .sp-line i { display: none; }
 
 @media (prefers-reduced-motion: reduce) {
   #field, .layer, .cp .pic, .rise { transition: none; animation: none; }
