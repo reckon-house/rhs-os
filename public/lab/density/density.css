@@ -1,0 +1,27 @@
+/* ── DENSITY: WHAT EVERY PROTOTYPE SHARES (26 Sept 2026) ─────────────
+   The house's type and colour, and nothing else. Each prototype draws
+   itself; this file only makes sure they speak in the same voice:
+   Avenir Next as the board sets it, Ogg Bold where a page wants a
+   display face (installed on his Mac and asked for by name, never
+   shipped), black on white paper, one grey for the receding half. */
+@font-face { font-family: 'Avenir Next'; src: url('/fonts/AvenirNext-Regular.woff2') format('woff2'), url('/fonts/AvenirNext-Regular.woff') format('woff'); font-weight: 400; font-display: swap; }
+@font-face { font-family: 'Avenir Next'; src: url('/fonts/AvenirNext-Medium.woff') format('woff'); font-weight: 500; font-display: swap; }
+@font-face { font-family: 'Avenir Next'; src: url('/fonts/AvenirNext-DemiBold.woff') format('woff'); font-weight: 600; font-display: swap; }
+@font-face { font-family: 'Avenir Next'; src: url('/fonts/AvenirNext-Bold.woff') format('woff'); font-weight: 700; font-display: swap; }
+@font-face { font-family: 'Avenir Next'; src: url('/fonts/AvenirNext-Heavy.woff') format('woff'); font-weight: 800; font-display: swap; }
+@font-face { font-family: "RH Ogg"; src: local("Ogg Bold"), local("Ogg-Bold"); font-weight: 700; font-display: swap; }
+:root {
+  --ink: #000; --paper: #fff; --cream: #EDE7E2; --grey: rgba(0, 0, 0, 0.42); --faint: rgba(0, 0, 0, 0.16); --hair: rgba(0, 0, 0, 0.13);
+  --sans: "Avenir Next", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --serif: "RH Ogg", "Ogg", Georgia, "Times New Roman", serif;
+  --mono: ui-monospace, "SF Mono", Menlo, monospace;
+  --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+* { box-sizing: border-box; }
+html { background: var(--paper); }
+body { margin: 0; color: var(--ink); background: var(--paper); font-family: var(--sans); -webkit-font-smoothing: antialiased; }
+a { color: inherit; text-decoration: none; }
+button { font: inherit; color: inherit; }
+.mark { font-weight: 700; letter-spacing: -0.05em; line-height: 1.2; }
+.mark i { font-style: normal; font-weight: 400; }
+img { display: block; }
