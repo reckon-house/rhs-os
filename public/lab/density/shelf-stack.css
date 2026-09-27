@@ -53,3 +53,9 @@
 .xk.ph .xk-cap { flex-wrap: wrap; padding: 11px 16px 28px; }
 .xk.ph .xk-d { margin-left: 0; flex-basis: 100%; text-align: left; }
 @media (prefers-reduced-motion: reduce) { .xk-pic img, .xk-t { transition: none !important; } }
+
+/* a line's head (27 Sept): one run, its name in ink and its sentence in
+   grey at one size, as a study's lead is set (study-panel.css .sp-stand);
+   the size is set on the shelf as --stand */
+.xk-stand { flex: 1 1 auto; min-width: 0; max-width: 23em; margin: 0; font-size: var(--stand, 23px); font-weight: 600; letter-spacing: -0.03em; line-height: 1.18; text-wrap: pretty; }
+.xk-stand .g { color: var(--grey); }

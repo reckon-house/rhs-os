@@ -861,3 +861,8 @@ html[data-tx="none"] #idx .stx { display: none; }
 /* ── Faux Reel, running (27 Sept): the product fills whatever box its
    picture would have, over paper, in any layout, the focus and its room */
 sizzle-reel.live { position: absolute !important; inset: 0; width: 100% !important; height: 100% !important; aspect-ratio: auto !important; z-index: 1; }
+
+/* the Next panel for a line: the run its head is set in (shelf-stack.css
+   .xk-stand), at the shelf's --stand, so the scroll into it lands true */
+.sh-foot-t.stand, html.stack .sh-foot-t.stand { max-width: 23em; margin: 0; font-size: var(--stand, 23px); font-weight: 600; letter-spacing: -0.03em; line-height: 1.18; text-wrap: pretty; }
+.sh-foot-t.stand .g { color: var(--grey); }

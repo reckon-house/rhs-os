@@ -92,6 +92,18 @@
     const e = S.ctx.entry || {};
     const h = el("header", "xk-head");
     const top = el("div", "xk-hl");
+    /* a line is set as one run, the way a study's lead is: its name in
+       ink, its sentence after it in grey, one size (27 Sept, his "not on
+       black but reading together - maybe the category is black and the
+       description lighter grey", with a study's two-tone lead as the
+       model, "like that"). The values are the room's .sp-stand */
+    if (e.kind === "line" && e.sentence) {
+      top.appendChild(el("h2", "xk-stand", S.esc(e.name || "") + '. <span class="g">' + S.esc(e.sentence) + "</span>"));
+      if (S.ks.length) top.appendChild(el("span", "xk-n caps", "Work<b>" + S.ks.length + "</b>"));
+      h.appendChild(top);
+      S.nm = null;
+      return h;
+    }
     const nm = el("h2", "xk-name" + (e.kind === "year" || e.kind === "fig" ? " num" : ""), S.esc(e.name || ""));
     top.appendChild(nm);
     if (S.ks.length) top.appendChild(el("span", "xk-n caps", "Work<b>" + S.ks.length + "</b>"));
@@ -107,7 +119,7 @@
     return h;
   };
   const fitName = (S) => {
-    const nm = S.nm; nm.style.fontSize = "";
+    const nm = S.nm; if (!nm) return; nm.style.fontSize = "";
     let fs = parseFloat(getComputedStyle(nm).fontSize) || 64;
     const over = () => nm.scrollWidth > nm.clientWidth + 1 || nm.offsetHeight > fs * 2.05;
     for (let i = 0; i < 24 && fs > 22 && over(); i++) { fs -= 2; nm.style.fontSize = fs + "px"; }
@@ -117,6 +129,10 @@
     const ctx = S.ctx;
     if (S.io) { S.io.disconnect(); S.io = null; }
     Object.assign(S, { W: ctx.width, avail: ctx.height, ph: !!ctx.phone, items: [], units: [] });
+    /* the size a line's run is set at, on the shelf itself, so the Next
+       panel at the foot sets the next line's run at the same size and the
+       scroll into it lands true: the room's clamp(19px, 3.2cqw, 26px) */
+    if (ctx.scroller) ctx.scroller.style.setProperty("--stand", Math.max(19, Math.min(26, S.W * 0.032)).toFixed(1) + "px");
     S.root.classList.toggle("ph", S.ph);
     const head = headEl(S);
     S.root.replaceChildren(head); S.units.push(head);

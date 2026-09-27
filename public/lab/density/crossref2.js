@@ -2078,11 +2078,16 @@
     if (nx && nx !== o) {
       const a = el("a", "sh-foot"); a.href = "#" + nx.key; a.dataset.key = nx.key;
       const ns = shelfSentence(nx), n = shelfOrder(nx).length;
+      /* a line comes as the one run its head is set in (the stack's
+         .xk-stand), so the scroll into it lands on the same words */
+      const run = nx.g.id === "lines" && ns && ns.text;
       a.innerHTML = '<span class="sh-foot-k caps"><span>Next</span><i></i></span>' +
-        '<span class="sh-foot-hl"><span class="sh-foot-t' + (nx.g.id === "years" || nx.g.id === "figures" ? " num" : "") + '">' + esc(nameOf(nx)) + "</span>" +
+        '<span class="sh-foot-hl">' + (run
+          ? '<span class="sh-foot-t stand">' + esc(nameOf(nx)) + '. <span class="g">' + esc(clean(ns.text)) + "</span></span>"
+          : '<span class="sh-foot-t' + (nx.g.id === "years" || nx.g.id === "figures" ? " num" : "") + '">' + esc(nameOf(nx)) + "</span>") +
         (n ? '<span class="sh-foot-n caps">Work<b>' + n + "</b></span>" : "") + "</span>" +
-        (ns && ns.label ? '<span class="sh-foot-l caps">' + esc(clean(ns.label)) + "</span>" : "") +
-        (ns && ns.text ? '<span class="sh-foot-s' + (ns.lead ? " lead" : "") + '">' + (ns.lead ? twoTone(clean(ns.text)) : esc(clean(ns.text))) + "</span>" : "");
+        (!run && ns && ns.label ? '<span class="sh-foot-l caps">' + esc(clean(ns.label)) + "</span>" : "") +
+        (!run && ns && ns.text ? '<span class="sh-foot-s' + (ns.lead ? " lead" : "") + '">' + (ns.lead ? twoTone(clean(ns.text)) : esc(clean(ns.text))) + "</span>" : "");
       kids.push(a); S.foot = a;
     }
     S.layer.replaceChildren(...kids);
@@ -2122,7 +2127,7 @@
   /* the next entry's name is fitted as the stack fits its own (two lines
      at most, never past the edge), so it lands where it will stand */
   const fitFoot = (S) => {
-    const t = S.foot && S.foot.querySelector(".sh-foot-t"); if (!t) return;
+    const t = S.foot && S.foot.querySelector(".sh-foot-t"); if (!t || t.classList.contains("stand")) return;
     t.style.fontSize = ""; let fs = parseFloat(getComputedStyle(t).fontSize) || 64;
     const over = () => t.scrollWidth > t.clientWidth + 1 || t.offsetHeight > fs * 2.05;
     for (let i = 0; i < 24 && fs > 22 && over(); i++) { fs -= 2; t.style.fontSize = fs + "px"; }
