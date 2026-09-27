@@ -600,19 +600,29 @@ html[data-mk="cell"][data-ix="e"] body.x #idx .grp.ec .e.on.ey .pips i, html[dat
 
 /* GREY, the default (27 Sept, his "the cell in a grey AND keep the
    node ... a circle vs a square"): the cell's fill in a light grey, under
-   the hairlines in weight, the words staying ink; and a circle of ink on
+   the hairlines in weight, the words staying ink; and a small circle of ink on
    the rule at the row's left edge, arriving a beat after the fill */
 html[data-mk="grey"][data-ix="e"] #idx .grp.ec :is(.e .nr, .e .er, .e.ey, .e.ecap) { position: relative; z-index: 0; }
 html[data-mk="grey"][data-ix="e"] #idx .grp.ec :is(.e:is(.el, .ef, .ea, .efig) .nr, .e:is(.ew, .etool) .er, .e.ey, .e.ecap)::before {
   content: ""; position: absolute; z-index: -1; top: calc(-1 * var(--pb)); bottom: calc(-1 * var(--pb)); left: calc(var(--eg) / -2 + 0.5px); right: calc(var(--eg) / -2 + 0.5px);
   background: #ECECEC; transform: scaleX(0); transform-origin: 100% 50%; transition: transform 0.36s cubic-bezier(0.45, 0, 0.2, 1); pointer-events: none; }
 html[data-mk="grey"][data-ix="e"] #idx .grp.ec :is(.e:is(.el, .ef, .ea, .efig) .nr, .e:is(.ew, .etool) .er, .e.ey, .e.ecap)::after {
-  content: ""; position: absolute; top: 50%; left: calc(var(--eg) / -2 - 3.5px); width: 7px; height: 7px; margin-top: -3.5px; border-radius: 50%;
+  content: ""; position: absolute; top: 50%; left: calc(var(--eg) / -2 - 2.5px); width: 5px; height: 5px; margin-top: -2.5px; border-radius: 50%;
   background: var(--ink); transform: scale(0); transition: transform 0.3s cubic-bezier(0.2, 0.7, 0.2, 1); pointer-events: none; }
 html[data-mk="grey"][data-ix="e"] body.x #idx .grp.ec :is(.e.on:is(.el, .ef, .ea, .efig) .nr, .e.on:is(.ew, .etool) .er, .e.on.ey, .e.on.ecap)::before,
 html[data-mk="grey"][data-ix="e"] #idx .grp.ec :is(.e.lock:is(.el, .ef, .ea, .efig) .nr, .e.lock:is(.ew, .etool) .er, .e.lock.ey, .e.lock.ecap)::before { transform: scaleX(1); transform-origin: 0 50%; }
 html[data-mk="grey"][data-ix="e"] body.x #idx .grp.ec :is(.e.on:is(.el, .ef, .ea, .efig) .nr, .e.on:is(.ew, .etool) .er, .e.on.ey, .e.on.ecap)::after,
 html[data-mk="grey"][data-ix="e"] #idx .grp.ec :is(.e.lock:is(.el, .ef, .ea, .efig) .nr, .e.lock:is(.ew, .etool) .er, .e.lock.ey, .e.lock.ecap)::after { transform: none; transition-delay: 0.12s; }
+
+/* and in the runs, the entry under the pointer or held open takes the
+   same grey, its words ink, where it was the black band (his "add the
+   same grey cell highlight here ... so it's consistent across the
+   TOC"). A run shares its lines, so the grey sits on the words with a
+   little room either side rather than filling the cell; the entries a
+   hover lights around it stay bold */
+html[data-mk="grey"][data-ix="e"] #idx .erun .e { background-image: linear-gradient(#ECECEC, #ECECEC); box-shadow: none;
+  padding: 0.12em 0.26em 0.14em; margin: -0.12em -0.26em -0.14em; }
+html[data-mk="grey"][data-ix="e"] body.x #idx .erun .e.on, html[data-mk="grey"][data-ix="e"] #idx .erun .e.lock { color: var(--ink) !important; box-shadow: none; }
 
 /* BAR: the band on the words, as before, with room around them. It
    stands out a quarter of the type either side and a fifth above and
