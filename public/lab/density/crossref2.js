@@ -668,39 +668,71 @@
     const c = el("section", "grp ec" + (cls ? " " + cls : "")); c.dataset.g = id; c.style.setProperty("--span", span);
     kids.filter(Boolean).forEach((k) => c.appendChild(k)); return c;
   };
+  /* E is masonry now (27 Sept, his "what if we got rid of these gaps in
+     the TOC so it felt more masonry and things were connected a bit
+     more?"): four columns that each run on, with no row waiting for its
+     tallest cell. The lines head the first column and the six lead
+     studies the other three, two each, staggered; then Work, Years,
+     About, Figures, Capabilities and Tools each go to whichever column is
+     shortest when its turn comes (packE, measured), so the columns close
+     up and end near one another. A phone reads the same blocks as one
+     column in this order. */
   const buildE = () => {
     const wrap = el("div", "eg");
     ["vr1", "vr2", "vr3"].forEach((v) => wrap.appendChild(el("i", "vr " + v)));
-    const band = (...cells) => { const b = el("div", "eb"); cells.forEach((c) => b.appendChild(c)); wrap.appendChild(b); return b; };
+    const mas = el("div", "emas"); wrap.appendChild(mas);
+    const cols = [0, 1, 2, 3].map(() => { const c = el("div", "ecol"); mas.appendChild(c); return c; });
+    let order = 0;
+    const put = (node, ci) => { node.style.order = order++; if (ci != null) cols[ci].appendChild(node); else { node.classList.add("pk"); cols[0].appendChild(node); } return node; };
 
-    /* 01 Lines: the lines, and each one's lead study as a feature */
+    /* 01 Lines, and each line's lead study as a feature */
     const lines = el("div", "elines"); G.lines.items.forEach((o) => lines.appendChild(entryEl(o, "Eline")));
-    const feats = G.work.items.filter((o) => LEAD_OF[o.k]).sort((x, y) => LEAD_OF[x.k].i - LEAD_OF[y.k].i);
-    const fbox = el("div", "efeat");
-    const stacks = [0, 1, 2].map(() => { const st = el("div", "fstack"); fbox.appendChild(st); return st; });
-    feats.forEach((o, i) => { const a = entryEl(o, "Efeat"); a.style.order = i; stacks[i % 3].appendChild(a); });
-    const c1 = cellE("lines", 4, [headE("01", "lines"), block("e1", [lines, fbox])], "c-lines");
-    band(c1);
+    put(cellE("lines", 1, [headE("01", "lines"), lines], "c-lines"), 0);
+    G.work.items.filter((o) => LEAD_OF[o.k]).sort((x, y) => LEAD_OF[x.k].i - LEAD_OF[y.k].i)
+      .forEach((o, i) => put(cellE("work", 1, [entryEl(o, "Efeat")], "c-feat"), 1 + (i % 3)));
 
-    /* 02 Work, 03 Years, 04 About */
-    const rest = G.work.items.filter((o) => !LEAD_OF[o.k]);
-    const wl = el("div", "elist"); rest.forEach((o) => wl.appendChild(entryEl(o, "Ework")));
+    /* the rest, packed where there is room */
+    const wl = el("div", "elist"); G.work.items.filter((o) => !LEAD_OF[o.k]).forEach((o) => wl.appendChild(entryEl(o, "Ework")));
+    put(cellE("work", 1, [headE("02", "work"), wl]));
     const yl = el("div", "eyears"); G.years.items.forEach((o) => yl.appendChild(entryEl(o, "Eyear")));
+    put(cellE("years", 1, [headE("03", "years"), yl]));
     const al = el("div", "eabout"); G.about.items.forEach((o) => al.appendChild(entryEl(o, "Eabout")));
-    band(cellE("work", 2, [headE("02", "work"), wl]), cellE("years", 1, [headE("03", "years"), yl]), cellE("about", 1, [headE("04", "about"), al]));
-
-    /* 05 Figures: four large, the rest run on */
+    put(cellE("about", 1, [headE("04", "about"), al]));
     const big = G.figures.items.filter((o) => BIGFIG.includes(o.label)).sort((x, y) => BIGFIG.indexOf(x.label) - BIGFIG.indexOf(y.label));
     const bl = el("div", "ebig"); big.forEach((o) => bl.appendChild(entryEl(o, "Efig")));
-    band(cellE("figures", 4, [headE("05", "figures"), bl, runE(G.figures.items.filter((o) => !big.includes(o)), "c4")]));
-
-    /* 06 Capabilities, 07 Tools: the five most used, then the rest */
+    put(cellE("figures", 1, [headE("05", "figures"), bl, runE(G.figures.items.filter((o) => !big.includes(o)))]));
     const tc = topBy("capabilities"), tt = topBy("tools");
     const cl = el("div", "ecaps"); tc.forEach((o, i) => { const a = entryEl(o, "Ecap"); a.style.setProperty("--d", i); cl.appendChild(a); });
+    put(cellE("capabilities", 1, [headE("06", "capabilities"), cl, runE(G.capabilities.items.filter((o) => !tc.includes(o)))]));
     const tl = el("div", "etools"); tt.forEach((o, i) => { const a = entryEl(o, "Etool"); a.style.setProperty("--d", i); tl.appendChild(a); });
-    band(cellE("capabilities", 2, [headE("06", "capabilities"), cl, runE(G.capabilities.items.filter((o) => !tc.includes(o)), "c2")]),
-      cellE("tools", 2, [headE("07", "tools"), tl, runE(G.tools.items.filter((o) => !tt.includes(o)), "c2")]));
+    put(cellE("tools", 1, [headE("07", "tools"), tl, runE(G.tools.items.filter((o) => !tt.includes(o)))]));
     return wrap;
+  };
+  /* where the blocks still to place go: every way of sending them to the
+     four columns (each column keeps them in reading order) is tried, and
+     the one whose tallest column is shortest wins, then the one whose
+     columns end nearest one another. Six blocks over four columns is
+     4,096 tries of simple sums, measured once. A phone reads them as one
+     column, in order, so there it only puts them back */
+  const packE = () => {
+    const mas = IDX.querySelector(".emas"); if (!mas) return;
+    const cols = [...mas.children];
+    const rest = [...mas.querySelectorAll(".grp.ec.pk")].sort((a, b) => a.style.order - b.style.order);
+    rest.forEach((b) => b.remove());
+    if (phone()) { rest.forEach((b) => cols[0].appendChild(b)); return; }
+    const gap = parseFloat(getComputedStyle(cols[0]).rowGap) || 0;
+    const base = cols.map((c) => c.offsetHeight);
+    const hs = rest.map((b) => { cols[0].appendChild(b); const h = b.offsetHeight; b.remove(); return h; });
+    const n = rest.length, m = cols.length;
+    let best = null;
+    for (let code = 0; n <= 8 && code < m ** n; code++) {
+      const H = base.slice(); let c = code;
+      for (let i = 0; i < n; i++) { const ci = c % m; c = Math.floor(c / m); H[ci] += (H[ci] > 0 ? gap : 0) + hs[i]; }
+      const mx = Math.max(...H), spread = mx - Math.min(...H);
+      if (!best || mx < best.mx - 0.5 || (Math.abs(mx - best.mx) <= 0.5 && spread < best.spread)) best = { code, mx, spread };
+    }
+    let c = best ? best.code : 0;
+    rest.forEach((b) => { const ci = best ? c % m : cols.indexOf(cols.reduce((x, y) => (y.offsetHeight < x.offsetHeight - 1 ? y : x), cols[0])); c = Math.floor(c / m); cols[ci].appendChild(b); });
   };
   const LAYOUT = {
     a: () => [section("lines", "row"), section("work", "sheet"), section("figures", "wall"),
@@ -793,7 +825,7 @@
     const root = HTML.style;
     root.removeProperty("--ts"); root.removeProperty("--lw"); root.removeProperty("--gc");
     root.removeProperty("--fs"); root.removeProperty("--fl"); root.removeProperty("--cols");
-    if (IX === "e") fitE();
+    if (IX === "e") { fitE(); packE(); }
     else if (IX === "d") fitD();
     else if (IX === "a") {
       const strips = [...IDX.querySelectorAll(".strip")]; if (!strips.length) return;
