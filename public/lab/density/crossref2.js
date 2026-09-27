@@ -1017,13 +1017,25 @@
     },
     fig(main, W, H, it) {
       const wrap = el("div", "fig");
+      /* the picture of the study the figure comes from, over it (his "an
+         image with these", 27 Sept). A figure from About names no one
+         study, so it stands alone rather than borrow a guessed picture */
+      const k = !it.about && it.k && D.study(it.k) ? it.k : null, pf = k ? faceOf(k) : null;
+      let top = null;
+      if (pf) {
+        const ph = Math.min(H * 0.4, 320);
+        top = el("div", "figpic");
+        top.appendChild(picture(pf, Math.min(W * 0.52, ph * ratio(pf))));
+        top.appendChild(el("div", "cc", '<span class="t">' + esc(D.title(k)) + '</span> <span class="y">' + D.year(k) + "</span>"));
+        wrap.appendChild(top);
+      }
       const big = el("div", "big", esc(it.fig)); wrap.appendChild(big);
       let under = null;
       if (it.sent) under = el("p", "sent", hl(it.sent, it.fig));
       else if (it.label) under = el("p", "lbl", '<span class="caps">' + esc(it.label) + "</span>" + (it.sub ? '<span class="g">' + esc(it.sub) + "</span>" : ""));
       if (under) wrap.appendChild(under);
       main.appendChild(wrap);
-      const uh = under ? under.offsetHeight + 24 : 0;
+      const uh = (under ? under.offsetHeight + 24 : 0) + (top ? top.offsetHeight + 30 : 0);
       oneLine(big, W, Math.min((H - uh) * 1.1, 420), 420, -0.06);
     },
     /* a line: four of its studies on its own colour, its sentence, its name */
@@ -1107,7 +1119,11 @@
     /* the caption first, so the thing itself gets whatever height is left.
        A cluster of one study names it here; a cluster of several names
        each picture under itself */
-    const k = it.k && D.study(it.k) ? it.k : null;
+    /* a figure from About is his, not a study's: it was credited to the
+       newest study its sentence's words matched ("At Nordstrom the new CMS
+       saved $3M" read as Nordstrom beauty, 2018), so it is credited to
+       its About section instead (27 Sept) */
+    const k = it.k && D.study(it.k) && !it.about ? it.k : null;
     G.work.items.forEach((x) => x.a.classList.toggle("cur", !!cur && !!k && x.rel.has(k) && x !== cur.o));
     shownK = k;
     let left = "";
@@ -1115,6 +1131,9 @@
       left = who(k);
       const f = it.t === "pic" ? it.f : it.t === "cluster" ? it.pics[0].f : null;
       if (f && f.alt && !f.lead) left += '<span class="alt">' + esc(f.alt) + "</span>";
+    } else if (it.about && it.sent) {
+      const x = aboutOf(it.sent);
+      if (x) left = '<span class="who">About<span class="g">' + esc(x.a.name) + "</span></span>";
     }
     let act = "";
     if (cur && reel.length > 1) act = '<span class="caps">' + ((cur.n % reel.length + reel.length) % reel.length + 1) + "/" + reel.length + "</span>";

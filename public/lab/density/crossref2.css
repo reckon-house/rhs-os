@@ -568,3 +568,8 @@ html.stack[data-ix="e"] .fstack { display: contents; }
 html.stack[data-ix="e"] .elist { columns: 1; }
 html.stack[data-ix="e"] .ebig { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 26px; }
 html.stack[data-ix="e"] .erun.c4 { columns: 2; }
+
+/* a figure's own study, pictured over it, set to the right as a tool's are */
+#focus .fig .figpic { display: flex; flex-direction: column; align-items: flex-end; margin: 0 0 30px; }
+#focus .fig .figpic .cc { margin: 9px 0 0; font-size: 12px; font-weight: 600; letter-spacing: -0.01em; }
+#focus .fig .figpic .cc .y { color: var(--grey); font-weight: 500; }
