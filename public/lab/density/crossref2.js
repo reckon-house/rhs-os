@@ -620,6 +620,17 @@
   };
   const TOPN = 5;
   const topBy = (id) => G[id].items.slice().sort((x, y) => y.rel.size - x.rel.size || x.label.localeCompare(y.label)).slice(0, TOPN);
+  /* the five capabilities set large are chosen, not counted (27 Sept).
+     Counting put the broadest first once entries reached further. His
+     call: AI goes at the top, for the kind of role he is after (building
+     AI tools and workflows a marketing team and its customers can use,
+     at a company like Databricks); then the range behind it. In this
+     order; a key that is missing is skipped and the count fills in */
+  const FEATURED_CAPS = ["cap/ai-strategy", "cap/ai-integration", "cap/product-design", "cap/creative-direction", "cap/interior-design"];
+  const featuredCaps = () => {
+    const picked = FEATURED_CAPS.map((k) => KEYMAP.get(k)).filter((o) => o && o.g && o.g.id === "capabilities");
+    return picked.concat(topBy("capabilities").filter((o) => !picked.includes(o))).slice(0, TOPN);
+  };
   const entryE = (o, mode, a) => {
     const g = o.g.id;
     if (mode === "Eline") {
@@ -727,7 +738,7 @@
     const big = G.figures.items.filter((o) => BIGFIG.includes(o.label)).sort((x, y) => BIGFIG.indexOf(x.label) - BIGFIG.indexOf(y.label));
     const bl = el("div", "ebig"); big.forEach((o, i) => { const a = entryEl(o, "Efig"); a.style.setProperty("--i", i); bl.appendChild(a); });
     put(cellE("figures", 1, [headE("05", "figures"), bl, runE(G.figures.items.filter((o) => !big.includes(o)))]));
-    const tc = topBy("capabilities"), tt = topBy("tools");
+    const tc = featuredCaps(), tt = topBy("tools");
     const cl = el("div", "ecaps"); tc.forEach((o, i) => { const a = entryEl(o, "Ecap"); a.style.setProperty("--d", i); cl.appendChild(a); });
     put(cellE("capabilities", 1, [headE("06", "capabilities"), cl, runE(G.capabilities.items.filter((o) => !tc.includes(o)))]));
     const tl = el("div", "etools"); tt.forEach((o, i) => { const a = entryEl(o, "Etool"); a.style.setProperty("--d", i); tl.appendChild(a); });
