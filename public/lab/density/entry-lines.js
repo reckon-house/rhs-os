@@ -17,6 +17,15 @@
    no outcome, number or reason a study does not state. Keys are the
    entry's address without the # (fig/…, tool/…, cap/…, line/…).
 
+   A figure's line ties the number back to what the work solved (27 Sept,
+   his "for 'figures' - to make them really make sense can we relate them
+   back to what the project solved or did, ya know? that extra bit of
+   context really sells it"): the ink sentence says what the number was a
+   problem of, the grey one what was built and what changed, each from
+   the study's own words, quoted in a comment above the line. A figure
+   whose study says no problem (a timeline, a career fact) stays plain.
+   The rule is kept in CLAUDE.md too, so new work gets the same.
+
    To change a line, change the words; to take one away, delete it. */
 window.ENTRY_LINES = {
   /* A.R.C.: "Perceptron's Mk1 model reads the physical world from footage
@@ -27,12 +36,14 @@ window.ENTRY_LINES = {
   /* Robert Rodriguez x Neiman's: shot in one day; run across social,
      email, the stores and editorial; "Every piece in the campaign is some
      mix of those three" (four photographs, a typeface family, a color field) */
-  "fig/four-photographs": "Neiman Marcus's spring campaign was shot in one day. Every piece of it, across social, email, the stores and editorial, is some mix of four photographs, one typeface family and a color field.",
+  /* what it answered: Robert Rodriguez: "shot in one day and run across social, email, the stores, and editorial" */
+  "fig/four-photographs": "Neiman Marcus's spring campaign had one studio day to cover social, email, the stores and editorial. Every piece is some mix of four photographs, one typeface family and a color field.",
 
   /* the two studies this figure stacks: the Hill Country kitchen ("Sage
      green cabinetry, raw white oak, veined marble, unlacquered brass") and
      the Fairview sitting room ("stone, velvet, brass, and warm oak") */
-  "fig/four-materials": "Both of these rooms are built from just four materials. The Hill Country kitchen is sage green, white oak, marble and brass. The Fairview sitting room is stone, velvet, brass and warm oak.",
+  /* what it answered: Kitchen: "Four materials, picked before the first cabinet was drawn and used on every surface" */
+  "fig/four-materials": "The Hill Country kitchen was designed from four materials picked before the first cabinet was drawn, and between them they cover every surface: sage green, white oak, marble and brass. The Fairview sitting room keeps to stone, velvet, brass and warm oak.",
 
   /* About: "I spent eight years at Nordstrom, where I worked with engineering
      to roll out a new CMS ... At Nordstrom the new CMS saved $3M over four years." */
@@ -164,30 +175,38 @@ window.ENTRY_LINES = {
      (the insurance numbers, Ivy Park's weeks, the early design work) each
      lead with their own number. Lines from About speak as him. ── */
   /* About */
-  "fig/eight-years": "I spent eight years at Nordstrom. I worked with engineering to roll out a new CMS and led the redesign of the digital experience, from marketing down to the product page.",
-  "fig/2-000-store": "A 2,000-store retailer runs its marketing on a platform I made. It's Sally Marketing OS, which I came up with and built at Sally Beauty.",
-  "fig/six-weeks": "At Nordstrom I led the US digital launch of Ivy Park by Beyoncé, six weeks from concept to live. I directed a team of 27 across site, email and apps.",
+  /* what it answered: About: "led the redesign of the digital experience, from marketing down to the product page"; "the new CMS saved $3M over four years" */
+  "fig/eight-years": "I spent eight years at Nordstrom and led the redesign of its digital experience, from marketing down to the product page. I also worked with engineering on the new CMS behind it, which saved $3M over four years.",
+  /* what it answered: Sally OS: "Sally ships thousands of assets per month ... and that output breaks when the tools underneath it don't share context"; About: "the marketing platform a 2,000-store retailer now runs on daily" */
+  "fig/2-000-store": "A 2,000-store retailer ships thousands of marketing assets a month, and that output breaks when the tools underneath don't share context. I came up with Sally Marketing OS to connect them, and the company runs on it every day.",
+  /* what it answered: Ivy Park: "Beyoncé's first activewear line. Nordstrom had the exclusive US partnership"; "most of the product gone within days" */
+  "fig/six-weeks": "Beyoncé's first activewear line launched in the US at Nordstrom, its exclusive partner, six weeks from concept to live. I led that digital launch, and most of the product was gone within days.",
   "fig/1-3m": "For a couple of years I led interior design and selections on custom homes, on $1-3M builds. In 2023 Floor & Decor named me Designer of the Quarter.",
   "fig/four-years": "Over four years, the new CMS at Nordstrom saved $3M. The redesigned UI and templates also cut concept-to-web time 35%.",
   /* Nordstrom framework: "Engagement lifted 22% over two years."; "Four
      buckets sort the homepage, email, and landing pages the way a magazine
      sorts its sections." */
-  "fig/22": "Redesigning Nordstrom's UI and templates lifted customer engagement 22% over two years. The content framework sorts the homepage, email and landing pages into four buckets, the way a magazine sorts its sections.",
+  /* what it answered: Framework: "Nordstrom was producing more digital content than the site had structure for ... Customers got the whole pile and no way through it"; "Engagement lifted 22% over two years" */
+  "fig/22": "Nordstrom was publishing more content than the site had structure for, and customers got the whole pile with no way through it. The framework I concepted sorted it into four named buckets, and engagement rose 22% over two years.",
   "fig/35": "Redesigning Nordstrom's UI and templates cut concept-to-web time 35%. That's the time from an idea to a live page.",
   "fig/27": "At Sally Beauty and CosmoProf I built the in-house creative teams and a new operating model. Execution efficiency went up 27%.",
   "fig/30": "At PetSmart, new site patterns, email templates and AI-assisted product photography lifted creative output 30%. I build the tools as much as the output.",
   /* Faux Reel */
-  "fig/4-8kb": "The whole Faux Reel web component weighs 4.8KB, smaller than any one of the photographs it plays. It turns stills into a sizzle reel with no video file at all.",
+  /* what it answered: Faux Reel: "A sizzle reel is usually footage: shot, edited, rendered, hosted" */
+  "fig/4-8kb": "A sizzle reel usually means footage, shot, edited, rendered and hosted. Faux Reel does it with stills and a 4.8KB web component, smaller than any one of the photographs it plays.",
   /* Sally Marketing OS */
-  "fig/four-months": "Four months in, Sally Marketing OS is six deployed apps sharing one brain. It now reads the market and the customers on its own and proposes the campaigns.",
+  /* what it answered: Sally OS: "I rebuilt each piece with AI and connected them into a single pipeline"; "Four months in, it is six deployed applications with a shared brain" */
+  "fig/four-months": "In four months I rebuilt Sally's marketing tools with AI and connected them, because the output broke whenever they didn't share context. It's six deployed apps working from one brain now, and it reads the market and proposes the campaigns on its own.",
   "fig/two-week": "Research that used to mean a two-week turnaround now gets answered in the same conversation where the strategy is being written. In Sally Marketing OS, that's Perplexity's job.",
   "fig/three-minutes": "The executive deck used to take half a day of a designer's time. In Sally Marketing OS it's one click and three minutes, built straight from the campaign brief.",
-  "fig/four-channels": "One brief becomes social copy for four channels in about a minute. It's one of the tools inside Sally Marketing OS.",
+  /* what it answered: Sally OS: "It takes about a minute to turn one brief into four channels" */
+  "fig/four-channels": "A campaign brief has to become social copy for four channels. In Sally Marketing OS one tool does that in about a minute.",
   /* Dallas Sport Collective: "a six-trainer gym in North Texas"; "out of
      Celina and McKinney, Texas, with a Frisco headquarters on the way";
      "the full trainer roster and the program menu"; "the part I find the
      most fun: an MCP server with eleven tools" */
-  "fig/six-trainers": "Dallas Sport Collective is six trainers in North Texas, out of Celina and McKinney. I built its marketing site, its booking platform and an MCP server, so athletes can book from their AI.",
+  /* what it answered: DSC: "grew from a handful of athletes to more than a hundred ... a pile of texts, handwritten notes, emails, and a Google Sheet"; "6 Trainers: One shared calendar" */
+  "fig/six-trainers": "Dallas Sport Collective's six trainers were scheduling more than a hundred athletes through texts, notes and a spreadsheet. I built them one shared calendar, and members book into it from the app or their own AI.",
   /* a figure tied back to what the work solved (27 Sept, his "for
      'figures' - to make them really make sense can we relate them back to
      what the project solved or did"). Sources: "the schedule underneath it
@@ -198,7 +217,8 @@ window.ENTRY_LINES = {
      one tap" */
   "fig/eleven-programs": "Dallas Sport Collective runs eleven programs, from NFL Combine prep to prenatal fitness, and the schedule for all of them lived in texts, notes and a spreadsheet. I built the booking platform they run on now, where one engine checks every trainer's time and the floor before anything gets booked.",
   "fig/seven-days": "Dallas Sport Collective is open seven days a week across two locations, and one person on the gym floor runs the schedule. Athletes book from the app or from the AI they already use, and the owner approves each request with one tap.",
-  "fig/eleven-tools": "Dallas Sport Collective's MCP server has eleven tools, and it's the part of the project I find the most fun. It lets an athlete ask the AI they already use to book a session.",
+  /* what it answered: DSC: "An athlete never has to open the app"; "which trainer fits a goal" */
+  "fig/eleven-tools": "With eleven tools on Dallas Sport Collective's MCP server, an athlete never has to open the app. They ask the AI they already use, and it reads their schedule, matches a trainer to a goal and puts in a session request.",
   /* A.R.C. */
   "fig/300-000-items": "The average American household holds around 300,000 items. Most homeowners have never added up what they're worth, and A.R.C. does that from the camera.",
   "fig/60": "About 60% of homeowners are underinsured because they've never cataloged what they own. The apps for it ask you to type every item in by hand, so A.R.C. works from the camera instead.",
@@ -216,7 +236,8 @@ window.ENTRY_LINES = {
   "fig/five-years": "Five years after a policy is set, a home might be $50,000 short, and there's no way to know until something goes wrong. A.R.C. shows that gap as a dollar amount.",
   /* "You set the coverage amount when you buy the policy and it tends to
      sit there. Meanwhile the stuff inside the house keeps changing" */
-  "fig/50-000": "A home covered five years ago might be $50,000 short today. The coverage gets set once and tends to sit there, while the things inside keep changing.",
+  /* what it answered: A.R.C.: "You set the coverage amount when you buy the policy and it tends to sit there"; "shows the gap against your policy as a dollar amount" */
+  "fig/50-000": "A home covered five years ago might be $50,000 short today, because the coverage gets set once while the things inside keep changing. A.R.C. puts what you own now against the policy and shows that gap in dollars.",
   "fig/weeks-9-10": "The last two weeks of A.R.C.'s ten were brand and launch. Weeks 9-10 covered the identity and visual system, the marketing site and the go-to-market work.",
   /* "The same 73-item home, documented both ways. The 8-12 hours is an
      estimate. The 30 minutes is how long the app takes." */
@@ -226,38 +247,55 @@ window.ENTRY_LINES = {
   "fig/2-wks": "Each step of A.R.C.'s build took two weeks. There were five of them, from validating the concept through the brand and the launch.",
   /* Robert Rodriguez: "One model, four setups, and the photographs layered
      over each other so the same few pictures could carry a whole look." */
-  "fig/four-setups": "The Robert Rodriguez campaign used one model and four setups. The photographs were layered over each other, so a few pictures could carry the whole look.",
+  /* what it answered: Robert Rodriguez: "the budget covered one day in the studio"; "One model, four setups, and the photographs layered over each other" */
+  "fig/four-setups": "Neiman Marcus's budget for the Robert Rodriguez campaign covered one day in the studio, so the shoot was one model in four setups. Layering the photographs over each other let a few pictures carry the whole look.",
   /* Hill Country home */
-  "fig/four-finishes": "Everything in the Hill Country kitchen, new and vintage, is in the same four finishes. That's why it works as one room.",
-  "fig/eight-feet": "The Hill Country kitchen has eight feet of usable counter. The open shelving faces the dining side.",
-  "fig/400-square-feet": "The Hill Country primary bath is 400 square feet of hard surface, in three marbles picked to go together. That keeps it from looking like a showroom.",
+  /* what it answered: Kitchen: "Shaker cabinet doors ... open shelving are contemporary, the cremone bolts and schoolhouse pendants are European antique"; "It works as one room because all of it is in the same four finishes" */
+  "fig/four-finishes": "The Hill Country kitchen puts Shaker cabinets, contemporary shelving and European antique hardware in one room. It holds together because every piece, new or vintage, is in the same four finishes.",
+  /* what it answered: Kitchen: "used for cooking, gathering, and working in about equal measure"; "Eight feet of usable counter, with the open shelving facing the dining side" */
+  "fig/eight-feet": "The Hill Country kitchen gets used for cooking, gathering and working in about equal measure, so its island carries eight feet of usable counter. Open shelving faces the dining side, with the seating at the other end.",
+  /* what it answered: Bath: "Counters in a warm-veined Calacatta, shower walls in a cooler, grayer slab ..., floor in hex marble mosaic. The three were picked to go together, which keeps 400 square feet of hard surface from looking like a showroom" */
+  "fig/400-square-feet": "The Hill Country primary bath is 400 square feet of hard surface, which can look like a showroom. Three marbles picked to go together keep it from that: warm Calacatta on the counters, a cooler slab in the shower, hex on the floor.",
   /* Black & white type: "Dots at two scales, lines in three directions, and
      a diamond grid, each one drawn as a positive and a negative, twelve
      tiles in all. They fill the letterforms, spill outside them, and sit
      behind them as backgrounds. Three lithographs came out of that set." */
-  "fig/twelve-tiles": "Black & white type is built on twelve pattern tiles: dots, lines and a diamond grid, each drawn positive and negative. They fill the letterforms, spill out of them and sit behind them, and three lithographs came out of the set.",
-  "fig/45-degree": "One 45-degree stripe, at the same line weight, runs through two of the prints. In one it's a single crossbar, easy to miss, and in the other it fills a slab letter top to bottom.",
+  /* what it answered: Black & white type: "The question was how much range a small set of patterns could produce once color, photography and gradients were off the table" */
+  "fig/twelve-tiles": "With color, photography and gradients off the table, Black & white type asked how far twelve pattern tiles could go. Dots, lines and a diamond grid, each drawn positive and negative, fill the letters, spill out of them and sit behind them, and three lithographs came out of it.",
+  /* what it answered: Black & white type: "blown up like that the angle gives the whole stack some speed" */
+  "fig/45-degree": "One 45-degree stripe at the same line weight runs through two of the prints. In one it's a single crossbar, and in the other it fills a slab letter top to bottom, where the angle gives the whole stack some speed.",
   /* Mountain View */
-  "fig/16-foot": "The Mountain View chalet has 16-foot sliding glass doors on its main wall. From every seat in the room, the tree canopy is what you look at.",
+  /* what it answered: Chalet: "A 1968 Pacific Northwest chalet that hadn't been rethought since the '90s"; "Took it down to the studs" */
+  "fig/16-foot": "The Mountain View chalet hadn't been rethought since the '90s, so it was taken to the studs and given 16-foot sliding glass doors on the main wall. Now the tree canopy is what you look at from every seat in the room.",
   /* Loved by Nordstrom */
-  "fig/twelve-months": "Loved by Nordstrom ran for twelve months, across social, email, in-store signage and web landing pages. The template took whatever photography each brand had already licensed.",
-  "fig/1080-square": "A 1080-square social post was enough for a hero on Loved by Nordstrom. The brand's own photography scaled up to 1440 wide with no new art direction.",
-  "fig/1440-wide": "A 1440-wide hero on Loved by Nordstrom could be scaled up from a brand's 1080-square social post. The crop spec was the only art direction it needed.",
+  /* what it answered: Loved by Nordstrom: "a Nordstrom mandate to lift smaller designer labels on the department store floor and the digital storefront at the same time" */
+  "fig/twelve-months": "Nordstrom wanted its smaller designer labels seen on the store floor and online at the same time, so Loved by Nordstrom ran for twelve months across social, email, in-store signage and web. The template took whatever photography each brand had already licensed.",
+  /* what it answered: Loved by Nordstrom: "The template used whatever photography a brand had already licensed"; "scaled up to a 1440-wide hero with no new art direction, just a crop spec" */
+  "fig/1080-square": "Loved by Nordstrom ran on photography the brands had already licensed, down to a 1080-square social post. A crop spec scaled that up to a 1440-wide hero with no new art direction.",
+  /* what it answered: Loved by Nordstrom: "Loved by Nordstrom on the hero slots"; "no new art direction, just a crop spec" */
+  "fig/1440-wide": "A 1440-wide hero on Loved by Nordstrom could come from a brand's 1080-square social post, so a label didn't need new photography to take a hero slot. A crop spec was all the art direction it took.",
   /* Ivy Park: "Four weeks for moodboards, wireframes and a concept pitch,
      then two weeks to build and ship. The brief came in under NDA before
      the team had cleared their schedules" */
-  "fig/four-weeks": "Ivy Park started with four weeks of moodboards, wireframes and a concept pitch. The brief came in under NDA, before the team had even cleared their schedules.",
-  "fig/two-weeks": "Once the concept was pitched, Ivy Park took two weeks to build and ship. It needed components Nordstrom's CMS didn't have yet, so they got built.",
-  "fig/two-years": "The components built for Ivy Park went into Nordstrom's shared library and powered other launches for two years. Over two years, the content framework lifted engagement 22%.",
+  /* what it answered: Ivy Park: "this page had to be the store, the lookbook and the campaign at the same time"; "daily calls with Ivy Park while the direction locked" */
+  "fig/four-weeks": "Ivy Park's page had to be the store, the lookbook and the campaign at once, and getting there took four weeks of moodboards, wireframes and a concept pitch. The brief came in under NDA before the team had cleared their schedules, with daily calls to Ivy Park while the direction locked.",
+  /* what it answered: Ivy Park: "The custom CMS components built for the project went into Nordstrom's shared library" */
+  "fig/two-weeks": "After the pitch, Ivy Park had two weeks to build and ship, on components Nordstrom's CMS didn't have yet. They were built for the launch, then went into the shared library.",
+  /* what it answered: Ivy Park: "went into Nordstrom's shared library and powered other launches for two years" */
+  "fig/two-years": "Ivy Park needed custom components in Nordstrom's CMS, and they outlasted it. They went into the shared library and powered other launches for two years.",
   /* Various design: "Album covers, posters, art prints, logos, and one
      storefront window, made over about ten years for musicians, friends,
      and a handful of brands." */
-  "fig/ten-years": "The early design work spans about ten years: album covers, posters, art prints, logos and one storefront window. It was made for musicians, friends and a handful of brands.",
-  "fig/four-album-covers": "Four album covers, each for a different act, are part of the early design work. So are posters and prints, from a typography exercise to double-exposed landscapes.",
+  /* what it answered: Various design: "Each one has its own look, made to fit that client" */
+  "fig/ten-years": "Over about ten years I made album covers, posters, art prints, logos and one storefront window for musicians, friends and a handful of brands. Each one has its own look, made to fit that client.",
+  /* what it answered: Various design: "hand-drawn type where a piece called for it" */
+  "fig/four-album-covers": "The early work includes four album covers, each for a different act. Every one has its own look, with hand-drawn type wherever a piece called for it.",
   "fig/five-logos": "Five logos for five clients are in the early design work. Each one has its own look, made to fit that client.",
-  "fig/five-clients": "Those five logos were for five different clients, each with its own look. They sit with the album covers, posters and prints from about ten years of work.",
+  /* what it answered: Various design: "Five logos for five clients" */
+  "fig/five-clients": "Five different clients got the five logos in the early work. They were made over about ten years, next to album covers, posters and prints.",
   /* "The photograph was shot on film and blown up to street size." */
-  "fig/4x6": "One 4x6 film photograph was blown up to fill a storefront window. It was shot on film and printed at street size.",
+  /* what it answered: Various design: "one 4x6 film photograph blown up to fill a storefront window" */
+  "fig/4x6": "One 4x6 photograph, shot on film, was blown up to fill a storefront window.",
 
   /* ── CAPABILITIES (drafted 27 Sept). What the capability looks like in
      this work, from the leads of the studies its shelf stacks. The counts

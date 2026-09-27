@@ -206,6 +206,8 @@ These apply to every case study, every time. Non-negotiable.
 
 **Stats:** Real numbers only. Round numbers read as honest. "$49,630" is more credible than "$50,000." Always specify what's measured.
 
+**Index figure lines (`public/lab/density/entry-lines.js`, since Sept 2026):** a figure on the index never stands as a bare fact about the client. Its line says what the number was a problem of, then what was built and what changed: the ink sentence is the problem, the grey one the answer. The reference: "Dallas Sport Collective runs eleven programs, from NFL Combine prep to prenatal fitness, and the schedule for all of them lived in texts, notes and a spreadsheet. I built the booking platform they run on now, where one engine checks every trainer's time and the floor before anything gets booked." Both halves come from the study's own sentences, quoted in a comment beside the line. If the study doesn't say what a number solved (a build timeline, a career fact), the line stays plain. Never invent the problem.
+
 **Section labels:** ALL CAPS with section number. "SECTION 03: METHODOLOGY / HOW IT WORKS"
 
 **Editorial headlines:** 2-3 lines max. Pull quote / magazine spread feel. No periods. Add emotional resonance, don't restate the section above.
@@ -321,6 +323,7 @@ rather than stretching.
    image, which is loud on purpose.
 3. Register in `src/app/case-studies/[slug]/page.tsx`
 4. Update homepage `src/app/page.tsx` to add thumbnail to the grid (the all-work footer index derives from `src/data/projects.ts` automatically)
+5. Write the study's index lines in `public/lab/density/entry-lines.js`, one for each figure, tool and capability it brings. Figures follow "Index figure lines" under Copy Rules: the problem the number measures, then what was built.
 
 ### Pressing (the redesign language)
 New studies ship in the Pressing C language (`style: "pressing"` on the study object); the classic renderer still serves un-migrated studies. **The full porting guide is `PRESSING.md`** — skin matrix, the pressing bag's field semantics, choreography rules, and the porting checklist. The lab prototype `public/lab/swiss-spread.html` is the design spec: tune there, port values back.
