@@ -453,7 +453,7 @@
     sio = new IntersectionObserver((es) => {
       let n = 0;
       es.forEach((e) => { if (!e.isIntersecting) return; sio.unobserve(e.target);
-        e.target.style.transitionDelay = (n++ * 70) + "ms"; e.target.classList.add("seen");
+        const d = n++ * 70; e.target.style.transitionDelay = d + "ms"; e.target.style.setProperty("--gd", d + "ms"); e.target.classList.add("seen");
         setTimeout(() => { e.target.style.transitionDelay = ""; }, 900 + n * 70); });
     }, { root: phone() ? null : IDX, rootMargin: "0px 0px -6% 0px" });
     groups.forEach((g) => { if (!g.classList.contains("seen")) sio.observe(g); });
@@ -583,6 +583,9 @@
      ════════════════════════════════════════════════════════════════════ */
   const LEAD_OF = {}; (DATA.lines || []).forEach((l, i) => { if (D.study(l.lead) && !LEAD_OF[l.lead]) LEAD_OF[l.lead] = { l, i }; });
   const two = (n) => String(n).padStart(2, "0");
+  /* a large word in a mask of its own, so it can rise into place the
+     first time its section is seen (27 Sept, the load pass) */
+  const mk = (html) => '<span class="mk"><span class="mi">' + html + "</span></span>";
   /* the sentence a figure comes from, the figure in ink inside it */
   const figSource = (fig) => {
     const src = fig.src.find((x) => x.item.sent) || fig.src[0]; const it = src.item;
@@ -602,12 +605,13 @@
       const l = o.line, i = (DATA.lines || []).indexOf(l);
       a.classList.add("el");
       a.innerHTML = '<span class="kk caps"><span>' + two(i + 1) + '</span><span class="cnt">' + l.studies.filter((k) => D.study(k)).length + "</span></span>" +
-        '<span class="nr"><span class="t">' + esc(o.label) + '</span></span><span class="dk">' + esc(l.sentence) + "</span>";
+        '<span class="nr"><span class="t">' + mk(esc(o.label)) + '</span></span><span class="dk">' + esc(l.sentence) + "</span>";
+      a.style.setProperty("--i", i);
     } else if (mode === "Efeat") {
       const s = D.study(o.k), L = LEAD_OF[o.k];
       a.classList.add("w", "ef");
       /* .nr is the name's own row, so a mark can fill the cell around it */
-      a.innerHTML = '<span class="kk caps">' + esc(L ? L.l.name : "") + '</span><span class="fy">' + D.year(o.k) + '</span><span class="nr"><span class="t">' + esc(o.label) + "</span></span>";
+      a.innerHTML = '<span class="kk caps">' + esc(L ? L.l.name : "") + '</span><span class="fy">' + mk(D.year(o.k)) + '</span><span class="nr"><span class="t">' + esc(o.label) + "</span></span>";
       const th = thumb(o.k, "fth");
       if (th) { th.style.setProperty("--r", Math.max(0.78, Math.min(1.5, ratio(th._f))).toFixed(3)); a.appendChild(th); }
       if (s && s.fact) a.appendChild(el("span", "dk", esc(s.fact)));
@@ -621,7 +625,7 @@
       a.innerHTML = '<span class="er"><span class="t">' + esc(o.label) + '</span><span class="ld"></span><span class="y we">' + D.year(o.k) + "</span></span>" + credit;
     } else if (mode === "Eyear") {
       a.classList.add("ey");
-      a.innerHTML = '<span class="t">' + esc(o.label) + '</span><span class="pips" aria-hidden="true">' + [...Array(o.rel.size)].map((_, j) => '<i style="--d:' + j + '"></i>').join("") + "</span>";
+      a.innerHTML = '<span class="t">' + mk(esc(o.label)) + '</span><span class="pips" aria-hidden="true">' + [...Array(o.rel.size)].map((_, j) => '<i style="--d:' + j + '"></i>').join("") + "</span>";
     } else if (mode === "Eabout") {
       a.classList.add("ea");
       a.innerHTML = '<span class="nr"><span class="t">' + esc(o.label) + '</span></span><span class="dk">' + esc(o.about.lede || "") + "</span>";
@@ -629,7 +633,7 @@
       const m = /^([~$]?[\d][\d,.]*[%+MKx]*)(.*)$/.exec(clean(o.label)) || [0, clean(o.label), ""];
       const src = figSource(o.fig);
       a.classList.add("fig", "efig");
-      a.innerHTML = '<span class="nr"><span class="t"><span class="fn">' + D.esc(m[1]) + "</span>" + (m[2] ? '<span class="fu">' + D.esc(m[2]) + "</span>" : "") + "</span></span>" +
+      a.innerHTML = '<span class="nr"><span class="t"><span class="fn">' + mk(D.esc(m[1])) + "</span>" + (m[2] ? '<span class="fu">' + D.esc(m[2]) + "</span>" : "") + "</span></span>" +
         (src.label ? '<span class="kk caps">' + esc(src.label) + "</span>" : "") + (src.html ? '<span class="dk">' + src.html + "</span>" : "") +
         (src.credit ? '<span class="cr caps">' + esc(src.credit) + "</span>" : "");
     } else if (mode === "Ecap") {
@@ -695,12 +699,12 @@
     /* the rest, packed where there is room */
     const wl = el("div", "elist"); G.work.items.filter((o) => !LEAD_OF[o.k]).forEach((o) => wl.appendChild(entryEl(o, "Ework")));
     put(cellE("work", 1, [headE("02", "work"), wl]));
-    const yl = el("div", "eyears"); G.years.items.forEach((o) => yl.appendChild(entryEl(o, "Eyear")));
+    const yl = el("div", "eyears"); G.years.items.forEach((o, i) => { const a = entryEl(o, "Eyear"); a.style.setProperty("--i", i); yl.appendChild(a); });
     put(cellE("years", 1, [headE("03", "years"), yl]));
     const al = el("div", "eabout"); G.about.items.forEach((o) => al.appendChild(entryEl(o, "Eabout")));
     put(cellE("about", 1, [headE("04", "about"), al]));
     const big = G.figures.items.filter((o) => BIGFIG.includes(o.label)).sort((x, y) => BIGFIG.indexOf(x.label) - BIGFIG.indexOf(y.label));
-    const bl = el("div", "ebig"); big.forEach((o) => bl.appendChild(entryEl(o, "Efig")));
+    const bl = el("div", "ebig"); big.forEach((o, i) => { const a = entryEl(o, "Efig"); a.style.setProperty("--i", i); bl.appendChild(a); });
     put(cellE("figures", 1, [headE("05", "figures"), bl, runE(G.figures.items.filter((o) => !big.includes(o)))]));
     const tc = topBy("capabilities"), tt = topBy("tools");
     const cl = el("div", "ecaps"); tc.forEach((o, i) => { const a = entryEl(o, "Ecap"); a.style.setProperty("--d", i); cl.appendChild(a); });

@@ -669,6 +669,18 @@ html.anim[data-ix="e"] .e.ecap { transition: opacity 0.5s ease calc(0.15s + var(
 html.anim[data-ix="e"] .grp.ec:not(.seen) .e.ecap { opacity: 0; transform: translateX(-8px); }
 html.anim #idx .th img { transform: scale(1.05); transition: opacity 0.45s ease, transform 1s var(--ease); }
 html.anim #idx .th.in img { transform: none; }
+/* the load pass (27 Sept, his "load and unload animation, etc."): in E
+   the large words (a line's name, a feature's year, a big figure, a
+   year of the chart) rise through masks of their own as their section
+   is first seen, on the site's headline curve, one after another; and
+   a feature's picture unveils down its frame. The clip is on the image,
+   so the thumbnail's own observer still sees it arrive */
+[data-ix="e"] .mk { display: inline-block; clip-path: inset(-0.3em -0.25em -0.32em -0.25em); }
+[data-ix="e"] .mi { display: inline-block; }
+html.anim[data-ix="e"] #idx .grp.ec .mi { transition: transform 1.1s cubic-bezier(0.16, 1, 0.3, 1) calc(var(--gd, 0ms) + 80ms + var(--i, 0) * 70ms); }
+html.anim[data-ix="e"] #idx .grp.ec:not(.seen) .mi { transform: translateY(128%); }
+html.anim[data-ix="e"] #idx .grp.ec .th img { transition: opacity 0.45s ease, transform 1.4s cubic-bezier(0.16, 1, 0.3, 1) calc(var(--gd, 0ms) + 0.15s), clip-path 0.9s cubic-bezier(0.22, 1, 0.36, 1) calc(var(--gd, 0ms) + 0.15s); }
+html.anim[data-ix="e"] #idx .grp.ec:not(.seen) .th img { clip-path: inset(0 0 100% 0); }
 html.anim .layer:not(.out) :is(.say, .lk, .fig .big, .fig .sent, .fig .lbl, .figpic) { animation: lift 0.5s var(--ease) both; }
 html.anim .layer:not(.out) .fig .big { animation-delay: 0.04s; }
 html.anim .layer:not(.out) :is(.fig .sent, .fig .lbl) { animation-delay: 0.1s; }
