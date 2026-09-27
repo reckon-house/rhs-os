@@ -87,7 +87,9 @@
       S.items.push({ k, fig, box }); S.units.push(fig);
     });
     S.io = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { S.io.unobserve(e.target); load(e.target, S); } }),
-      { root: ctx.scroller || null, rootMargin: "0px 0px 60% 0px" });
+      /* above as well as below: a shelf can be arrived at from its end,
+         scrolling back up (27 Sept) */
+      { root: ctx.scroller || null, rootMargin: "60% 0px 60% 0px" });
     S.items.forEach((t) => S.io.observe(t.box));
   };
   /* the honest rung for the width it is drawn at under its crop, after the

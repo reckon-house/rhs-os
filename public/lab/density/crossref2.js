@@ -359,7 +359,12 @@
   });
   TOOLS.filter((t) => t.service).forEach(({ v, vs, rel, alias }) => add("capabilities", { label: v, v, vs, rel, alias, make: () => capReel(v, rel) }, slug(v)));
   TOOLS.filter((t) => !t.service).forEach(({ v, vs, rel, alias }) => add("tools", { label: v, v, vs, rel, alias, make: () => toolReel(v, rel) }, slug(v)));
-  [...FIGS.values()].filter((g) => !bare(g.s)).sort((a, b) => a.order - b.order).forEach((g) => add("figures", { label: g.s, fig: g, rel: g.rel,
+  /* figures that are a spec rather than a claim leave the index (27 Sept,
+     his "drop them"): A.R.C.'s eight category averages, a frame rate, a
+     shelf talker's width, and a search's debounce and page size. They
+     read only inside their studies, and the rooms still set them there */
+  const FIG_SKIP = new Set(["$680", "$425", "$580", "$890", "$310", "$185", "$695", "$5,000+", "20fps", "3.667\"", "300ms", "24 per page"]);
+  [...FIGS.values()].filter((g) => !bare(g.s) && !FIG_SKIP.has(g.s)).sort((a, b) => a.order - b.order).forEach((g) => add("figures", { label: g.s, fig: g, rel: g.rel,
     make: () => g.src.map((x) => x.item) }, slug(g.s)));
   ENTRIES.forEach((o) => (o.alias || []).forEach((k) => { if (!KEYMAP.has(k)) KEYMAP.set(k, o); }));
 
@@ -417,6 +422,12 @@
   const FEAT = new Set((DATA.lines || []).map((l) => l.lead).filter((k) => D.study(k)));
   /* the figures set large: the biggest claims, from four studies */
   const BIGFIG = ["$3M", "2,000+ stores", "$49,630", "95%"];
+  /* a figure whose own words were only a stat's label gets one plain line.
+     DRAFTED 27 Sept for his edit, from the study's own copy (the A.R.C.
+     dashboard's alt text); change the words here, the figure stays bold */
+  const FIG_NOTES = {
+    "$49,630": "A.R.C.'s whole-home dashboard shows $49,630 documented across 8 rooms and 73 items.",
+  };
 
   const IXS = ["a", "b", "c", "d", "e"];
   let IX = (new URLSearchParams(location.search).get("index") || "d").toLowerCase();
@@ -589,9 +600,11 @@
      first time its section is seen (27 Sept, the load pass) */
   const mk = (html) => '<span class="mk"><span class="mi">' + html + "</span></span>";
   /* the sentence a figure comes from, the figure in ink inside it */
+  const boldIn = (t, s) => { const i = t.indexOf(s); return i < 0 ? esc(t) : esc(t.slice(0, i)) + "<b>" + esc(s) + "</b>" + esc(t.slice(i + s.length)); };
   const figSource = (fig) => {
     const src = fig.src.find((x) => x.item.sent) || fig.src[0]; const it = src.item;
     const credit = it.about ? ((aboutOf(it.sent || "") || {}).a || {}).name || "About" : it.k ? D.title(it.k) + " " + D.year(it.k) : "";
+    if (FIG_NOTES[fig.s]) return { html: boldIn(FIG_NOTES[fig.s], fig.s), credit };
     if (it.sent) {
       const i = it.sent.indexOf(fig.s);
       const html = i < 0 ? esc(it.sent) : esc(it.sent.slice(0, i)) + "<b>" + esc(fig.s) + "</b>" + esc(it.sent.slice(i + fig.s.length));
@@ -1558,6 +1571,7 @@
     if (o.g.id === "about") return { text: o.about.lede };
     if (o.g.id === "tools") { const t = namedIn(o.v, o.rel).find((x) => !x.label); return t ? { text: t.text, mark: t.hl } : null; }
     if (o.g.id === "figures") {
+      if (FIG_NOTES[o.fig.s]) return { text: FIG_NOTES[o.fig.s], mark: o.fig.s };
       const src = o.fig.src[0]; if (!src) return null; const it = src.item;
       /* a figure's sentence alone read like a fragment of a spec ("Four
          photographs, a typeface family, and a color field."). His "it's
@@ -1725,16 +1739,57 @@
     const over = () => t.scrollWidth > t.clientWidth + 1 || t.offsetHeight > fs * 2.05;
     for (let i = 0; i < 24 && fs > 22 && over(); i++) { fs -= 2; t.style.fontSize = fs + "px"; }
   };
-  /* how far the next entry has come up, and at the end of it, its shelf */
+  /* how far the next entry has come up, and at the end of it, its shelf.
+     A shelf arrived at from below (scrolling back up) starts at its end
+     with this disarmed, until the reader has scrolled up off the foot */
   const footScroll = (S) => {
     const f = S.foot; if (!f || !f.isConnected || S.pv) return;
     const lb = S.layer.getBoundingClientRect(), fb = f.getBoundingClientRect();
     f.style.setProperty("--fp", Math.max(0, Math.min(1, (lb.bottom - fb.top) / Math.max(1, fb.height))).toFixed(3));
+    if (S.contd && SH === S && fb.top > lb.top + HEAD + 60) S.contd = false;
     const atEnd = S.layer.scrollTop + S.layer.clientHeight >= S.layer.scrollHeight - 2;
-    if (atEnd && fb.top <= lb.top + HEAD + 12 && !S.contd && VIEW.v === "shelf" && SH === S && S.visible) {
-      S.contd = true;
-      go({ v: "shelf", key: f.dataset.key }, { push: true, via: "scroll" });
-    }
+    if (atEnd && fb.top <= lb.top + HEAD + 12 && !S.contd) carryOn(S);
+  };
+  const carryOn = (S) => {
+    if (!S.foot || S.gone2 || VIEW.v !== "shelf" || SH !== S || !S.visible || S.pv) return;
+    S.contd = true; S.gone2 = true;
+    go({ v: "shelf", key: S.foot.dataset.key }, { push: true, via: "scroll" });
+  };
+  /* back up the way the reader came: past the top of a shelf reached by
+     carrying on, to the end of the one before, through the history */
+  let backUp = null;
+  const carryBack = (S) => {
+    if (!S.back || S.gone2 || VIEW.v !== "shelf" || SH !== S || !S.visible || S.pv) return;
+    const hs = history.state; if (!hs || hs.key !== S.key || hs.back !== S.back) return;
+    S.gone2 = true; backUp = S.back;
+    history.back();
+  };
+  /* a pull past either end, by wheel or by finger, counted until it is
+     plainly meant: a pause or a turn starts the count again */
+  const edgePull = (S) => {
+    let acc = 0, dir = 0, at = 0, ty = null;
+    const edge = () => ({ top: S.layer.scrollTop <= 1, end: S.layer.scrollTop + S.layer.clientHeight >= S.layer.scrollHeight - 2 });
+    const push = (d, need) => {
+      const now = performance.now(), sgn = Math.sign(d);
+      if (sgn !== dir || now - at > 260) { acc = 0; dir = sgn; }
+      at = now; acc += Math.abs(d);
+      if (acc < need) return;
+      acc = 0;
+      const e = edge();
+      if (sgn < 0 && e.top) carryBack(S);
+      else if (sgn > 0 && e.end) carryOn(S);
+    };
+    S.layer.addEventListener("wheel", (ev) => {
+      const e = edge(); if (!(ev.deltaY < 0 && e.top) && !(ev.deltaY > 0 && e.end)) { acc = 0; return; }
+      push(ev.deltaY, 140);
+    }, { passive: true });
+    S.layer.addEventListener("touchstart", (ev) => { ty = ev.touches[0].clientY; acc = 0; }, { passive: true });
+    S.layer.addEventListener("touchmove", (ev) => {
+      if (ty == null) return; const y = ev.touches[0].clientY, d = ty - y; ty = y;
+      const e = edge(); if (!(d < 0 && e.top) && !(d > 0 && e.end)) { acc = 0; return; }
+      push(d, 90);
+    }, { passive: true });
+    S.layer.addEventListener("touchend", () => { ty = null; }, { passive: true });
   };
   /* the running head names the entry once the layout's own head (or a
      third of the glass, for a layout without one) has gone under it */
@@ -1758,6 +1813,7 @@
        nothing until Close brings it back */
     if (!held) mountLayout(S);
     layer.addEventListener("click", (ev) => shelfClick(S, ev));
+    edgePull(S);
     let sc = 0;
     layer.addEventListener("scroll", () => {
       cancelAnimationFrame(sc); sc = requestAnimationFrame(() => {
@@ -1925,6 +1981,9 @@
     const old = SH, oldRoom = RM, was = staged();
     const P = !was ? pvOf(o) : null;
     const S = P ? promote(P) : buildShelf(o); SH = S; RM = null;
+    /* reached by carrying on from the shelf before: the way back up */
+    const hs = history.state;
+    S.back = hs && hs.v === "shelf" && hs.key === o.key && hs.via === "scroll" && hs.back ? hs.back : null;
     setStaged(true); lockEntry(o); cur = null;
     paint(o.rel, o);
     keepShelfParam();
@@ -1942,6 +2001,18 @@
     if (how && how.via === "scroll" && old && old.visible && !oldRoom) {
       if (!still()) S.layer.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 200, easing: "ease" });
       shelfEnter(S, { delay: 0, keep: S.body.querySelector("header") });
+      setTimeout(() => { if (old && old !== SH) destroyShelf(old); }, 240);
+      return;
+    }
+    /* back up from the shelf after it: this one arrives at its end, its
+       foot carrying the name the reader was just under, and the pictures
+       are above, where they were */
+    if (how && how.via === "scroll-up" && old && old.visible && !oldRoom) {
+      const f = S.foot;
+      if (f) { S.layer.scrollTop += f.getBoundingClientRect().top - (S.layer.getBoundingClientRect().top + HEAD); pastCheck(S); }
+      S.contd = true;
+      footScroll(S);
+      if (!still()) S.layer.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 200, easing: "ease" });
       setTimeout(() => { if (old && old !== SH) destroyShelf(old); }, 240);
       return;
     }
@@ -2223,7 +2294,7 @@
     how = how || {};
     if (how.push) {
       const h = keyOf(st);
-      history.pushState({ v: st.v, key: st.key || null, k: st.k || null, from: st.from || null, back: keyOf(VIEW) }, "", h ? "#" + h : location.pathname + location.search);
+      history.pushState({ v: st.v, key: st.key || null, k: st.k || null, from: st.from || null, back: keyOf(VIEW), via: how.via || null }, "", h ? "#" + h : location.pathname + location.search);
     }
     apply(st, how);
   };
@@ -2236,7 +2307,8 @@
   addEventListener("popstate", (ev) => {
     const s = ev.state;
     const st = s && s.v ? (s.v === "study" ? { v: "study", k: s.k, from: s.from } : s.v === "shelf" ? { v: "shelf", key: s.key } : { v: "rest" }) : parse(location.hash);
-    apply(st, {});
+    const up = backUp && st.v === "shelf" && st.key === backUp; backUp = null;
+    apply(st, up ? { via: "scroll-up" } : {});
   });
 
   /* what a click on an entry opens */
