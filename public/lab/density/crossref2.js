@@ -996,9 +996,11 @@
     const r = m.getBoundingClientRect();
     const q = [r.left - 12, r.top + r.height / 2];
     const shown = shownK ? G.work.items.find((x) => x.rel.has(shownK) && x !== cur.o) : null;
-    /* with the ink mark the bands already say what is related, so only
-       the hovered entry is wired to what it shows */
-    const pairs = MARKMODE === "dim" ? lit.filter((x) => x !== shown).map((x) => ({ x, q })) : [];
+    /* with the ink mark the bands say what is related and the ring says
+       which entry is speaking, so no wire is drawn at all: a single one
+       still crossed three columns and read as a strikethrough (27 Sept) */
+    if (MARKMODE !== "dim") { WIRES.innerHTML = ""; return; }
+    const pairs = lit.filter((x) => x !== shown).map((x) => ({ x, q }));
     if (shown) pairs.push({ x: shown, q, me: true });
     pairs.push({ x: cur.o, q, me: true });
     draw(pairs, live === true ? { live: true } : null);
@@ -1372,7 +1374,8 @@
     const k = S.hovK, node = S.hovAt && S.hovAt.isConnected ? S.hovAt : tileOf(S, k);
     if (!node) { WIRES.innerHTML = ""; return; }
     const q = anchorOf(node, S.layer), me = WORK[k];
-    draw((MARKMODE === "dim" ? lit.filter((x) => x !== me).map((x) => ({ x, q })) : []).concat(me ? [{ x: me, q, me: true }] : []), { live: true });
+    if (MARKMODE !== "dim") { WIRES.innerHTML = ""; return; }
+    draw(lit.filter((x) => x !== me).map((x) => ({ x, q })).concat(me ? [{ x: me, q, me: true }] : []), { live: true });
   };
   const shelfHover = (S, k, at) => {
     if (VIEW.v !== "shelf" || SH !== S) return;
