@@ -1,0 +1,102 @@
+/* ── A SHELF AS A SPREAD: the look (27 Sept 2026) ──────────────────────
+   Everything here sits under .xs, the root shelf-spread.js renders into
+   the page's shelf, so no other layout's classes can catch it. What the
+   spread is and why is at the top of shelf-spread.js; here it is only
+   sizes. One margin (the running head's: 20px, 16px on a phone), one
+   gutter (20px, 12px), twelve columns, and four sizes on the whole shelf:
+   the name (64px, 40px on a phone), the sentences (19px, 16px), the
+   contents and captions (12px), the label voice (10px, the page's .caps).
+   Paper, ink, one grey, hairlines. Nothing is set over a picture. */
+
+.xs { position: relative; padding: 0 var(--xs-m, 20px); color: var(--ink); font-family: var(--sans); }
+
+/* ── the opener: the name and its sentence, the contents beside them ── */
+.xs-top { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--xs-g, 20px); align-items: start; padding: 30px 0 0; }
+.xs-hd { grid-column: 1 / span 7; min-width: 0; }
+.xs-toc { grid-column: 8 / span 5; min-width: 0; padding-top: 9px; }
+.xs-top.solo .xs-hd { grid-column: 1 / -1; }
+.xs-name { margin: 0 0 0 -0.045em; font-size: 64px; font-weight: 700; letter-spacing: -0.05em; line-height: 0.98; text-wrap: balance; overflow-wrap: normal; }
+.xs-name.num { font-variant-numeric: tabular-nums; }
+.xs-sent { max-width: 31em; margin: 16px 0 0; font-size: 19px; font-weight: 500; letter-spacing: -0.012em; line-height: 1.3; color: var(--grey); text-wrap: pretty; }
+.xs-mk { color: var(--ink); }
+.xs-lbl { margin: 18px 0 0; color: var(--ink); }
+.xs-lbl + .xs-sent { margin-top: 5px; }
+
+/* the contents: under the label voice's "Work" and its count, a hairline,
+   then number, title, year. Each row takes the spread to its study */
+.xs-toc-h { display: flex; justify-content: space-between; align-items: baseline; padding: 0 0 7px; border-bottom: 1px solid var(--hair); color: var(--grey); }
+.xs-toc-h b { font-weight: 600; color: var(--ink); font-variant-numeric: tabular-nums; }
+.xs-toc-l { margin: 7px 0 0; padding: 0; list-style: none; }
+.xs-ti { display: grid; grid-template-columns: 2.2em minmax(0, 1fr) auto; column-gap: 0.6em; align-items: baseline; width: 100%; margin: 0; padding: 2px 0;
+  border: 0; background: none; font: inherit; font-size: 12px; font-weight: 500; letter-spacing: -0.004em; line-height: 1.42; text-align: left; color: var(--ink);
+  cursor: pointer; -webkit-tap-highlight-color: transparent; }
+.xs-ti .t { min-width: 0; }
+.xs-ti .y { margin-left: 0; }
+.xs-ti:hover .t { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 0.2em; }
+.xs-ti:focus-visible { outline: 1px solid var(--ink); outline-offset: 2px; }
+
+/* the number and the year, in the contents and under the pictures: the
+   one grey, the year lighter, as his earlier prototype captioned */
+.xs .n { font-weight: 500; color: var(--grey); font-variant-numeric: tabular-nums; }
+.xs .y { font-weight: 500; color: var(--grey); opacity: 0.72; font-variant-numeric: tabular-nums; }
+
+/* ── the pictures on the grid ── */
+.xs-row { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--xs-g, 20px); align-items: start; margin: 64px 0 0; }
+.xs-body > .xs-row:first-child { margin-top: 48px; }
+.xs-fig { display: block; min-width: 0; color: inherit; cursor: pointer; -webkit-tap-highlight-color: transparent; -webkit-user-drag: none; }
+.xs-lead .xs-fig { grid-column: 1 / -1; }
+.xs-pic { position: relative; width: 100%; overflow: hidden; background: rgba(0, 0, 0, 0.035); }
+.xs-pic img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 0.45s ease; -webkit-user-drag: none; }
+.xs-pic.in img { opacity: 1; }
+
+/* a caption, under its picture: number, the study in grey semibold, its
+   year lighter. In a row every picture is one shape, so the captions
+   share a line */
+.xs-cap { display: block; margin: 10px 0 0; font-size: 12px; font-weight: 600; letter-spacing: -0.004em; line-height: 1.35; color: var(--grey); }
+.xs-cap .n { margin-right: 0.85em; }
+.xs-fig:hover .xs-cap .t, .xs-txt .xs-cap:hover .t { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 0.2em; }
+.xs-fig:focus-visible, .xs-txt .xs-cap:focus-visible { outline: 1px solid var(--ink); outline-offset: 4px; }
+
+/* a passage: the words over five columns beside the picture, under a
+   hairline level with the picture's top edge */
+.xs-txt { min-width: 0; padding: 9px 0 0; border-top: 1px solid var(--hair); }
+.xs-txt .xs-cap { display: inline-block; margin: 0; color: var(--grey); cursor: pointer; }
+.xs-say { margin: 12px 0 0; font-size: 19px; font-weight: 500; letter-spacing: -0.012em; line-height: 1.32; text-wrap: pretty; }
+.xs-say .i { color: var(--ink); }
+.xs-say .g { color: var(--grey); }
+.xs-passage .xs-fig { grid-row: 1; }
+.xs-passage .xs-txt { grid-row: 1; }
+
+/* the close: a hairline, and the page's next entry under it */
+.xs-end { margin: 72px 0 0; border-top: 1px solid var(--hair); }
+
+/* an index entry under the pointer: the names of the studies it touches
+   set solid, ink behind and paper words. Nothing dims */
+.xs.lit .hit .t { background: var(--ink); color: var(--paper); box-shadow: 0 0 0 0.2em var(--ink); -webkit-box-decoration-break: clone; box-decoration-break: clone; text-decoration: none; }
+/* a contents row followed: its caption is marked the same way a moment */
+.xs-cap.at .t { animation: xs-at 1.8s ease forwards; }
+@keyframes xs-at {
+  0%, 55% { background: var(--ink); color: var(--paper); box-shadow: 0 0 0 0.2em var(--ink); }
+  100% { background: transparent; color: var(--grey); box-shadow: 0 0 0 0.2em transparent; }
+}
+
+/* ── a phone: the same grid at the phone's margin, the contents under the
+   name, the passage's words over its picture ── */
+.xs.ph .xs-top { padding-top: 24px; }
+.xs.ph .xs-hd, .xs.ph .xs-toc { grid-column: 1 / -1; }
+.xs.ph .xs-toc { margin-top: 28px; padding-top: 0; }
+.xs.ph .xs-name { font-size: 40px; letter-spacing: -0.045em; }
+.xs.ph .xs-sent { margin-top: 12px; font-size: 16px; }
+.xs.ph .xs-ti { padding: 4px 0; font-size: 12.5px; }
+.xs.ph .xs-row { margin-top: 44px; }
+.xs.ph .xs-body > .xs-row:first-child { margin-top: 36px; }
+.xs.ph .xs-cap { margin-top: 8px; }
+.xs.ph .xs-passage .xs-txt { grid-column: 1 / -1; grid-row: 1; }
+.xs.ph .xs-passage .xs-fig { grid-column: 1 / -1; grid-row: 2; margin-top: 20px; }
+.xs.ph .xs-say { margin-top: 10px; font-size: 16px; line-height: 1.36; }
+.xs.ph .xs-end { margin-top: 56px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .xs-pic img { transition: none; }
+  .xs-cap.at .t { animation: none; }
+}

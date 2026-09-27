@@ -1,0 +1,86 @@
+/* ── A SHELF AS A GRID: the look (27 Sept 2026) ────────────────────────
+   Everything here sits under .xg, the root shelf-grid.js renders into the
+   page's shelf, so another layout's classes can never catch it. What the
+   grid is and why is at the top of shelf-grid.js; here it is only sizes.
+   The head is on paper at the running head's margin (20px, 16px on a
+   phone); the pictures butt edge to edge under it with nothing between;
+   the only words on a picture are its caption. Four sizes on the whole
+   shelf: the name (64px, 40px on a phone), the sentence and the count
+   (19px, 16px), the captions (12px, 11px), the label voice (10px). */
+
+.xg { position: relative; color: var(--ink); font-family: var(--sans); }
+
+/* the head: the entry's name, how many studies at the edge on its
+   baseline (as index D heads a group), its sentence in grey under it */
+.xg-head { padding: 30px 20px 30px; }
+.xg-hl { display: flex; align-items: baseline; justify-content: space-between; gap: 24px; }
+.xg-name { flex: 1 1 auto; min-width: 0; margin: 0 0 0 -0.045em; font-size: 64px; font-weight: 700; letter-spacing: -0.05em; line-height: 0.98;
+  text-wrap: balance; overflow-wrap: normal; }
+.xg-name.num { font-variant-numeric: tabular-nums; }
+.xg-n { flex: none; color: var(--grey); white-space: nowrap; }
+.xg-n b { margin-left: 0.5em; font-weight: 600; color: var(--ink); font-variant-numeric: tabular-nums; }
+.xg-sent { max-width: 31em; margin: 16px 0 0; font-size: 19px; font-weight: 500; letter-spacing: -0.012em; line-height: 1.3; color: var(--grey); text-wrap: pretty; }
+.xg-mk { color: var(--ink); }
+.xg-lbl { margin: 18px 0 0; color: var(--ink); }
+.xg-lbl + .xg-sent { margin-top: 5px; }
+
+/* the blocks: a row at one height, a tall one beside a stack (st is the
+   other way round), a band, the first picture across the width */
+.xg .g-row { display: flex; }
+.xg .g-st { flex-direction: row-reverse; }
+.xg .g-stack { display: flex; flex-direction: column; min-width: 0; }
+.xg .tu { position: relative; display: block; min-width: 0; min-height: 0; overflow: hidden; color: inherit; cursor: pointer;
+  -webkit-tap-highlight-color: transparent; -webkit-user-drag: none; }
+.xg .tpic { position: absolute; inset: 0; overflow: hidden; background: #e8e4e0; }
+.xg .tpic img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 0.4s ease; -webkit-user-drag: none; }
+.xg .tpic.in img { opacity: 1; }
+
+/* a caption: the study and its year, small, bottom left on the picture */
+.xg .tcap { position: absolute; left: 0; bottom: 2px; z-index: 2; width: max-content; max-width: 100%; padding: 9px 12px;
+  font-size: 12px; font-weight: 600; letter-spacing: -0.004em; line-height: 1.25; color: var(--ink);
+  opacity: 0; transition: opacity 0.3s ease, background-color 0.2s ease, color 0.2s ease; pointer-events: none; }
+/* three lines at most, so a long name in a narrow tile keeps its year */
+.xg .tcap .tl { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+/* a shelf of one study names it once, on its first picture */
+.xg.one .tu:not(.cov) .tcap, .xg .tu.rep .tcap { display: none; }
+.xg .tcap .y { font-weight: 500; opacity: 0.72; font-variant-numeric: tabular-nums; }
+.xg .tcap.inked { opacity: 1; }
+.xg .tu:hover .tcap .t { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 0.2em; }
+.xg .lt { color: #fff; }
+/* the veil: soft-edged, the size of the words, no band */
+.xg .tcap.scr { background: rgba(0, 0, 0, 0.26);
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 12px, #000 calc(100% - 12px), transparent), linear-gradient(transparent, #000 8px, #000 calc(100% - 8px), transparent);
+  -webkit-mask-composite: source-in; mask-image: linear-gradient(90deg, transparent, #000 12px, #000 calc(100% - 12px), transparent), linear-gradient(transparent, #000 8px, #000 calc(100% - 8px), transparent);
+  mask-composite: intersect; }
+.xg .tcap.scr:not(.lt) { background: rgba(255, 255, 255, 0.5); }
+/* an index entry under the pointer: the captions of what it touches set
+   solid, ink with paper words. Nothing dims */
+.xg.lit .tu.hit .tcap, .xg.lit .tu.hit .tcap.scr { opacity: 1; background: var(--ink); color: var(--paper); -webkit-mask-image: none; mask-image: none; }
+.xg.lit .tu.hit .tcap .y { opacity: 0.66; }
+.xg.lit .tu.hit.rep .tcap { display: block; }
+
+/* a hero: one picture past the stage's edge, in a row that scrolls
+   sideways. The rule under it is the window onto the whole */
+.xg .hx { position: relative; height: 100%; overflow-x: auto; overflow-y: hidden; overscroll-behavior-x: contain; scrollbar-width: none;
+  cursor: grab; user-select: none; -webkit-user-select: none; }
+.xg .hx::-webkit-scrollbar { display: none; }
+.xg .hx.grabbing { cursor: grabbing; }
+.xg .hx .tpic { position: relative; inset: auto; }
+.xg .tu.hero .tcap { bottom: 17px; }
+.xg .hx-rule { position: absolute; left: 12px; right: 12px; bottom: 13px; z-index: 2; height: 1px; color: var(--ink); pointer-events: none;
+  opacity: 0; transition: opacity 0.3s ease; }
+.xg .hx-rule.inked { opacity: 1; }
+.xg .hx-rule::before { content: ""; position: absolute; inset: 0; background: currentColor; opacity: 0.38; }
+.xg .hx-rule i { position: absolute; top: -1px; height: 3px; background: currentColor; }
+
+/* a phone: the same, at the phone's margin and sizes */
+.xg.ph .xg-head { padding: 24px 16px 24px; }
+.xg.ph .xg-name { font-size: 40px; letter-spacing: -0.045em; }
+.xg.ph .xg-sent { font-size: 16px; }
+.xg.ph .xg-sent { margin-top: 12px; }
+.xg.ph .tcap { padding: 8px 10px; font-size: 11px; }
+.xg.ph .hx-rule { left: 10px; right: 10px; bottom: 11px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .xg .tpic img, .xg .tcap { transition: none; }
+}

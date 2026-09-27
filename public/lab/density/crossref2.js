@@ -26,16 +26,96 @@
      their coloured words and their coloured grounds, in every version and
      on every depth. A line is a word now. A study's own palette inside
      its room is the study's, and stays.
-   - The shelf as a magazine grid (27 Sept, latest). Pictures edge to
-     edge with nothing between, a cover with the entry's name over it,
-     justified rows, and heroes that run past the edge and scroll
-     sideways; see THE SHELF AS A MAGAZINE GRID below. Flights now clip
-     to what is on screen (visRect), so a hero scrolled halfway flies
-     from the half you see.
+   - The shelf as a magazine grid (27 Sept, later). Pictures edge to
+     edge with nothing between, justified rows, and heroes that run past
+     the edge and scroll sideways. Flights clip to what is on screen
+     (visRect), so a hero scrolled halfway flies from the half you see.
+   - The shelf, pluggable (27 Sept, latest). How a shelf sets its studies
+     is a layout any file can register, so several can be compared on one
+     page; the grid is shelf-grid.js now, calmed (the entry's name on
+     paper above the pictures, never over them). See THE SHELF CONTRACT
+     just below, and THE SHELF, PLUGGABLE for the frame the page keeps.
 
    Nothing here writes a sentence; every word on the page is a fragment's
    own. The words of its own are structural: Close, Next, Work, and the
    group names the index already used. */
+/* ── THE SHELF CONTRACT (27 Sept 2026) ────────────────────────────────
+   He wants ways of setting a category side by side: "let's see if we can
+   keep pushing the categories on the right side - it's closer but not
+   quite there yet...do we do some options?". So how a shelf sets its
+   studies is a layout any file can register, and the page keeps
+   everything around it. A layout is
+
+     window.XREF_SHELVES = window.XREF_SHELVES || {};
+     window.XREF_SHELVES[id] = { label, render(container, ctx) -> view };
+
+   id is its address (?shelf=<id>) and label its word in the switch.
+   render is called when a shelf of any kind becomes the page, with an
+   empty container under the running head, and returns a view.
+
+   ctx, which is all it gets (nothing of the page's internals):
+     entry     { kind, id, key, group, name, sentence?, mark?, label? }
+               kind is the address's first word (line, year, cap, tool,
+               fig, about), id its second, key the two ("line/digital"),
+               group the index's name for the kind ("Lines"). name,
+               sentence and label are his words, verbatim, with no em
+               dash: a line's sentence, About's lede, the sentence that
+               names a tool or holds a figure (mark is then that tool or
+               figure, inside it), or a table figure's label and its note
+               (label, sentence).
+     studies   [k, ...] in shelf order (a line opens on its lead study)
+     pics(k)   that study's picture fragments in reading order, each
+               { id, k, src, w, h, t384, t768, alt, alpha } (alpha is a
+               transparent file, which shows paper through)
+     lead(k)   the board's lead picture in the same shape, lead: true
+     width, height   the stage's width, and its height under the running
+               head. Read live (they are getters)
+     scroller  the element that scrolls vertically (the root for an
+               IntersectionObserver that loads pictures as they near)
+     head      the running head's height, over the scroller's top
+     phone     true when the stage is a sheet over a phone
+     open(k, fromEl)   open that study's room. The page flies fromEl's
+               visible rect into the room's cover and keeps the address.
+               fromEl is what shows the picture (a box its img covers, or
+               the img); an _f or data-f (a fragment id) on it lets the
+               flight home find the same picture in the room
+     hover(k|null, el?)   light the index for that study, with hairlines
+               to el (else to tileFor(k)); null when the pointer leaves
+     esc(s), clean(s)   escape for HTML / take out em dashes
+     D         the kit (density.js): D.img(f, cssW) with an honest
+               srcset, D.maxCss(f) = w/2, D.rung, D.title(k), D.year(k),
+               D.study(k)
+
+   view, what it gives back:
+     destroy()         take itself out, stop its observers and timers
+     tileFor(k)        the element a closing room flies back to (the
+                       study's picture on screen, else its first), or null
+     onResize?()       the window changed size; lay out again if it
+                       matters. Without it the page sets the layout afresh
+                       when the stage moves much
+     enter?({ delay, back, keep })   the shelf is the page: on opening, and
+                       when a room closes onto it (back). keep is the
+                       element a picture is flying home to; leave it be
+     leave?(keep)      a room is opening over it; keep is flying out, and
+                       stays where it is, hidden
+     light?(set|null)  an index entry is under the pointer: the studies it
+                       touches, or null once it has gone
+   Without enter and leave the page fades the container in and out.
+
+   The page keeps: the running head (the kind of entry, its name once the
+   layout's own head, marked data-head, has gone under it, the switch,
+   Close), the next entry of the same kind at the foot, Escape, the
+   addresses, the flights, the wires. The switch lists every registered
+   layout by its label with the current one underlined; the choice is
+   kept in the address (?shelf=<id>) and in localStorage, so it holds
+   while he browses. A layout whose file did not load is not in the
+   switch; one that throws gives way to the grid. Every layout keeps the
+   house rules: nothing written (his words, and short structural labels),
+   no em dash, no picture drawn wider than half its pixels, only what is
+   near the screen loaded, Avenir Next only, paper, ink and one grey, no
+   colour for a category, no type over a busy picture. The layouts are
+   shelf-grid.js (grid), shelf-spread.js, shelf-sheet.js, shelf-reel.js,
+   each with its own .css, loaded by crossref2.html before this file. */
 (() => {
   const D = window.D, DATA = D.data, SP = window.StudyPanel;
   const $ = (s) => document.querySelector(s);
@@ -953,7 +1033,7 @@
      and at the start scaled (evenly, so it never distorts) and clipped
      back to A. Only transform and clip-path move ── */
   const shownSrc = (box, f) => {
-    const ims = [...box.querySelectorAll("img")].filter((im) => im.complete && im.naturalWidth);
+    const ims = (box.tagName === "IMG" ? [box] : [...box.querySelectorAll("img")]).filter((im) => im.complete && im.naturalWidth);
     const im = ims[ims.length - 1];
     return im ? im.currentSrc || im.src : encodeURI(f.t384 || f.t768 || f.src);
   };
@@ -1011,7 +1091,7 @@
       const t0 = performance.now();
       const done = () => {
         if (flight.cut) { gone(); return; }
-        const ok = !box || !box.isConnected || box.classList.contains("in") || [...box.querySelectorAll("img")].some((im) => im.complete && im.naturalWidth && im.style.opacity !== "0");
+        const ok = !box || !box.isConnected || box.classList.contains("in") || (box.tagName === "IMG" ? [box] : [...box.querySelectorAll("img")]).some((im) => im.complete && im.naturalWidth && im.style.opacity !== "0");
         if (!ok && performance.now() - t0 < 1400) { requestAnimationFrame(done); return; }
         flight.im.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 220, easing: "ease", fill: "forwards" }).finished.then(gone, gone);
       };
@@ -1021,620 +1101,257 @@
 
   /* ── a shelf ── */
   const shelfStudies = (o) => (o.g.id === "lines" ? o.line.studies.filter((k) => D.study(k)) : byRank([...o.rel]));
-  const shelfLead = (o) => {
-    if (o.g.id === "lines") return esc(o.line.sentence);
-    /* About sets its lede only: over a picture a cover holds a sentence,
-       not a paragraph */
-    if (o.g.id === "about") return esc(o.about.lede);
-    if (o.g.id === "tools") { const t = namedIn(o.v, o.rel).find((x) => !x.label); return t ? greyHl(t.text, t.hl).replace('class="h"', "") : null; }
+  /* the order a shelf deals its studies in: a line opens on its own lead */
+  const shelfOrder = (o) => {
+    const ks = shelfStudies(o), lead = o.g.id === "lines" && o.line.lead;
+    return lead && ks.includes(lead) ? [lead].concat(ks.filter((k) => k !== lead)) : ks;
+  };
+  /* the words a shelf's entry carries, verbatim: a line's sentence,
+     About's lede, the sentence that names a tool (the tool marked in it),
+     the sentence a figure sits in (the figure marked), or a table
+     figure's label and its note */
+  const shelfSentence = (o) => {
+    if (o.g.id === "lines") return { text: o.line.sentence };
+    if (o.g.id === "about") return { text: o.about.lede };
+    if (o.g.id === "tools") { const t = namedIn(o.v, o.rel).find((x) => !x.label); return t ? { text: t.text, mark: t.hl } : null; }
     if (o.g.id === "figures") {
       const src = o.fig.src[0]; if (!src) return null; const it = src.item;
-      if (it.sent) return greyHl(it.sent, o.fig.s);
-      if (it.label) return esc(it.label) + (it.sub ? ' <span class="g">' + esc(it.sub) + "</span>" : "");
+      if (it.sent) return { text: it.sent, mark: o.fig.s };
+      if (it.label) return it.sub ? { label: it.label, text: it.sub } : { label: it.label };
     }
     return null;
   };
 
   /* ════════════════════════════════════════════════════════════════════
-     THE SHELF AS A MAGAZINE GRID (27 Sept 2026, later). He looked at the
-     Digital shelf (framed pictures with air between them, on the line's
-     colour) and asked: "what if it's an edge to edge grid - no color or
-     background showing? and maybe we mix some hero images in that are so
-     large you have to scroll left/right inside the column to view it?
-     like it's cropped...really give it a magazine/grid look as well".
-
-     So a shelf is pictures butted together from the stage's left edge to
-     the window's right and down to its foot, nothing between them. Only
-     a thin running head on paper stays at the top, on the index's first
-     line, with Close. The grid is blocks, each exactly the stage wide:
-
-     - the cover: the first study cropped to the stage, the entry's name
-       and lead set over it (a line opens on its own lead study);
-     - rows of two, three and four at one height, as tall as the
-       pictures' shapes make them, their widths summing to the stage;
-     - a tall picture beside a stack of two, either way round;
-     - one picture across the width, cropped to a band;
-     - heroes: one picture set near the stage's height, so wide it runs
-       past the edge, in a row that scrolls sideways (a trackpad swipe,
-       a mouse drag with a grab cursor, a finger), with a thin rule
-       saying where you are. It opens centred, so both edges are cut;
-     - at the foot, the next entry of the same kind as a last cover.
-
-     Which picture a study shows depends on its slot: its board lead when
-     the slot is the lead's shape, else one of its own nearer the shape,
-     so a row is not three of the same 3:2. A hero is a study's largest
-     picture (most are 3,000 pixels or more), never wider than half its
-     pixels, so a small picture is never stretched into one; a study with
-     none that large is never a hero. Every slot is checked the same way
-     before it is used: the width the picture is drawn at under its crop
-     is at most half its pixels. A shelf of few studies brings them back
-     with their other pictures, so it still fills.
-
-     Captions sit on the pictures, bottom left: the study and its year, in
-     paper or ink by what the picture is under the words (sampled from its
-     thumbnail on a 16 by 16 canvas). Where neither holds enough contrast
-     a soft scrim goes under those words only.
+     THE SHELF, PLUGGABLE (27 Sept 2026, latest). How a shelf sets its
+     pictures is a layout on window.XREF_SHELVES (the contract is at the
+     top of this file; the edge-to-edge grid that lived here is
+     shelf-grid.js now). What stays here is the frame every layout sits
+     in: the running head (the kind of entry, its name once the layout's
+     own head has gone by, the switch between layouts, Close), the next
+     entry at the foot, on paper, the hairlines to the index, and the
+     flights into and out of a room. A layout is mounted only while its
+     shelf is the page, so a shelf held behind a room loads nothing until
+     Close brings it back.
      ════════════════════════════════════════════════════════════════════ */
   const HEAD = 44; /* the running head: paper, on the index's top line */
-  const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
-  /* the width a picture is drawn at when it covers a box, and whether
-     that is at most half its pixels */
-  const coverW = (bw, bh, f) => Math.max(bw, bh * ratio(f));
-  const honest = (bw, bh, f) => !!f && coverW(bw, bh, f) <= D.maxCss(f) + 0.01;
-  const OWN = {};
-  /* a study's own pictures with a ground of their own (a transparent one
-     would show paper through) */
-  const ownOf = (k) => OWN[k] || (OWN[k] = picsOf(k).filter((f) => !f.alpha && f.w && f.h));
-  const FEW = () => (phone() ? 4 : 5);
-  /* what a study can show: its board lead and its own. A study shown more
-     than once keeps to its own, since the lead is often one of them */
-  const candsFor = (S, k, taken) => {
-    const own = ownOf(k), lead = leadOf(k);
-    return ((S.multi && own.length) || !lead ? [] : [lead]).concat(own).filter((f) => !S.used.has(f.src) && !(taken && taken.has(f.src)));
+  const SHELVES = (window.XREF_SHELVES = window.XREF_SHELVES || {});
+  const SHELF_ORDER = ["grid", "spread", "sheet", "reel"];
+  const shelfIds = () => Object.keys(SHELVES).filter((id) => SHELVES[id] && typeof SHELVES[id].render === "function")
+    .sort((a, b) => (SHELF_ORDER.indexOf(a) + 1 || 99) - (SHELF_ORDER.indexOf(b) + 1 || 99));
+  const SHELF_LS = "crossref2.shelf";
+  let shelfPref = (() => {
+    const q = new URLSearchParams(location.search).get("shelf");
+    if (q) return q.toLowerCase();
+    try { return localStorage.getItem(SHELF_LS) || ""; } catch (e) { return ""; }
+  })();
+  const layoutId = () => { const ids = shelfIds(); return ids.includes(shelfPref) ? shelfPref : ids.includes("grid") ? "grid" : ids[0] || null; };
+  /* a choice remembered from an earlier visit goes into the address, so a
+     link copied now opens on it. One asked for by the address and not
+     loaded is left there for when it is */
+  const keepShelfParam = () => {
+    const id = layoutId(), u = new URL(location.href);
+    if (!id || u.searchParams.has("shelf") || id === "grid") return;
+    u.searchParams.set("shelf", id);
+    history.replaceState(history.state, "", u.pathname + u.search + u.hash);
   };
-  /* the one nearest the slot's shape that the slot would not stretch; the
-     board's own lead when it is close */
-  const pickFor = (S, k, want, fits, taken) => {
-    let best = null, bs = Infinity;
-    candsFor(S, k, taken).forEach((f) => {
-      if (fits && !fits(f)) return;
-      const s = Math.abs(Math.log(ratio(f) / want)) - (f.lead ? 0.3 : 0);
-      if (s < bs) { bs = s; best = f; }
-    });
-    return best;
+  /* what a layout is told about its entry, and nothing of the page's */
+  const entryInfo = (o) => {
+    const e = { kind: o.g.pre, id: o.key.slice(o.g.pre.length + 1), key: o.key, group: o.g.name, name: clean(nameOf(o)) };
+    const s = shelfSentence(o);
+    if (s && s.text) e.sentence = clean(s.text);
+    if (s && s.mark) e.mark = clean(s.mark);
+    if (s && s.label) e.label = clean(s.label);
+    return e;
   };
-  const shelfOrder = (o) => {
-    const ks = shelfStudies(o), lead = o.g.id === "lines" && o.line.lead;
-    return lead && ks.includes(lead) ? [lead].concat(ks.filter((k) => k !== lead)) : ks;
-  };
-  const coverH = (avail) => Math.round(avail * (phone() ? 0.6 : 0.7));
-  /* the picture a shelf opens on: its first study that fills the cover
-     without stretching, else the next that does */
-  const coverOf = (S, ks, W, Hc) => {
-    for (let i = 0; i < Math.min(ks.length, 8); i++) {
-      const f = pickFor(S, ks[i], W / Hc, (x) => honest(W, Hc, x));
-      if (f) return { i, k: ks[i], f };
-    }
-    return null;
-  };
-  /* a hero: the study's widest picture that stands near the stage's height
-     at half its pixels or less and still runs well past the edge */
-  const heroPick = (S, k) => {
-    let best = null; const lead = leadOf(k);
-    ownOf(k).concat(!S.multi && lead ? [lead] : []).forEach((f) => {
-      if (S.used.has(f.src)) return;
-      const H = Math.floor(Math.min(S.heroH, f.h / 2)), w = Math.floor(H * ratio(f));
-      if (H < S.heroH * 0.84 || w < S.W * 1.3) return;
-      const s = w * (f.lead ? 0.7 : 1);
-      if (!best || s > best.s) best = { f, H, w, s };
-    });
-    return best;
-  };
+  const shelfCtx = (S) => ({
+    entry: entryInfo(S.o),
+    studies: S.ks.slice(),
+    pics: (k) => picsOf(k),
+    lead: (k) => leadOf(k),
+    get width() { return S.layer.clientWidth || STAGE.clientWidth; },
+    get height() { return Math.max(0, (S.layer.clientHeight || innerHeight) - HEAD); },
+    scroller: S.layer,
+    head: HEAD,
+    get phone() { return phone(); },
+    open: (k, fromEl) => shelfOpen(S, k, fromEl),
+    hover: (k, at) => shelfHover(S, k, at),
+    esc, clean, D,
+  });
 
-  /* the blocks: what each wants of its pictures' shapes */
-  const NEEDN = { r2: 2, r3: 3, r4: 4, ts: 3, st: 3, full: 1 };
-  const WANTS = { r2: [[0.75, 1.5], [1.5, 1]], r3: [[1.5, 0.75, 1.33], [1, 1.5, 0.8]], r4: [[1, 1.5, 0.75, 1.5], [1.5, 0.8, 1.5, 1]] };
-  const PWANTS = { r2: [[0.8, 1.5], [1.5, 0.8]], r3: [[0.8, 1, 0.8], [0.8, 1, 0.8]], r4: [[0.8, 1, 0.8, 1], [1, 0.8, 1, 0.8]] };
-  const MINW = () => (phone() ? 92 : 110);
-  /* a row at one height: widths in proportion to the pictures' shapes,
-     summing to the stage. Capped in height, the tiles crop a little */
-  const solveRow = (S, t, ks, v) => {
-    const wants = (phone() ? PWANTS : WANTS)[t][v % 2];
-    const W = S.W, sw = wants.reduce((a, b) => a + b, 0);
-    let need = wants.map((x) => (W * x) / sw);
-    for (let pass = 0; pass < 3; pass++) {
-      const taken = new Set();
-      const fs = ks.map((k, i) => { const f = pickFor(S, k, wants[i], (x) => D.maxCss(x) >= need[i], taken); if (f) taken.add(f.src); return f; });
-      if (fs.some((f) => !f)) return null;
-      const R = fs.reduce((s, f) => s + ratio(f), 0);
-      const H = Math.floor(Math.min(W / R, S.rowMax));
-      const ws = fs.map((f) => (W * ratio(f)) / R);
-      if (ws.some((w) => w < MINW())) return null;
-      const bad = fs.map((f, i) => !honest(ws[i], H, f));
-      if (!bad.some(Boolean)) return { t, ks, fs, H, ws };
-      need = need.map((n, i) => (bad[i] ? Math.max(n, ws[i]) + 1 : n));
-    }
-    return null;
-  };
-  /* a tall picture beside a stack of two, solved so both sides are one
-     height: H = W / (tall's shape + the stack's) */
-  const solveTS = (S, t, ks) => {
-    const W = S.W;
-    let needT = W * 0.4, needS = W * 0.5;
-    for (let pass = 0; pass < 3; pass++) {
-      const taken = new Set();
-      const ft = pickFor(S, ks[0], 0.72, (x) => D.maxCss(x) >= needT, taken); if (!ft) return null; taken.add(ft.src);
-      const f1 = pickFor(S, ks[1], 1.5, (x) => D.maxCss(x) >= needS, taken); if (!f1) return null; taken.add(f1.src);
-      const f2 = pickFor(S, ks[2], 1.5, (x) => D.maxCss(x) >= needS, taken); if (!f2) return null;
-      const inv = 1 / ratio(f1) + 1 / ratio(f2);
-      const H0 = W / (ratio(ft) + 1 / inv);
-      const wt = H0 * ratio(ft), ws = W - wt;
-      const H = Math.floor(Math.min(H0, S.rowMax)), sc = H / H0;
-      const hs = [ws / ratio(f1), ws / ratio(f2)];
-      const okT = honest(wt, H, ft), ok1 = honest(ws, hs[0] * sc, f1), ok2 = honest(ws, hs[1] * sc, f2);
-      if (okT && ok1 && ok2 && Math.min(wt, ws) >= MINW()) return { t, ks, fs: [ft, f1, f2], H, wt, ws, hs };
-      if (!okT) needT = wt + 1;
-      if (!ok1 || !ok2) needS = ws + 1;
-    }
-    return null;
-  };
-  /* one picture across the width, cropped to a band */
-  const solveFull = (S, t, ks) => {
-    const W = S.W, H = Math.floor(Math.min(W / (phone() ? 1.3 : 1.85), S.avail * 0.66));
-    const f = pickFor(S, ks[0], W / H, (x) => honest(W, H, x));
-    return f ? { t: "full", ks: [ks[0]], fs: [f], H } : null;
-  };
-  const solveBlock = (S, t, ks, v) => (t === "ts" || t === "st" ? solveTS(S, t, ks) : t === "full" ? solveFull(S, t, ks) : solveRow(S, t, ks, v));
-  /* the last resort, when no picture a study has can fill a slot: it sits
-     at its honest size and the paper shows beside it. Only a study with a
-     single small picture comes to this */
-  const solveSolo = (S, k) => {
-    const c = candsFor(S, k).sort((a, b) => D.maxCss(b) - D.maxCss(a))[0]; if (!c) return null;
-    const w0 = Math.min(S.W, D.maxCss(c)), H = Math.floor(Math.min(w0 / ratio(c), S.rowMax));
-    return { t: "solo", ks: [k], fs: [c], H, w: Math.floor(Math.min(w0, H * ratio(c))) };
-  };
-
-  const planShelf = (S) => {
-    const ks = shelfOrder(S.o), W = S.W;
-    S.multi = ks.length < FEW();
-    const slots = ks.slice();
-    if (S.multi) {
-      const want = phone() ? 7 : 8;
-      for (let round = 1; slots.length < want && round < 16; round++) {
-        let added = false;
-        ks.forEach((k) => { if (slots.length < want && ownOf(k).length > round) { slots.push(k); added = true; } });
-        if (!added) break;
-      }
-    }
-    /* a shelf with no study (a figure only About holds) is its name on paper */
-    if (!slots.length) return [{ t: "cover", bare: true, ks: [], fs: [], H: 0 }];
-    const blocks = [], shown = new Set();
-    const use = (b) => { b.fs.forEach((f) => S.used.add(f.src)); b.ks.forEach((k) => shown.add(k)); blocks.push(b); };
-    let q = slots.slice();
-    /* heroes first, so the cover and the rows cannot spend the one picture
-       large enough: two on a long shelf, one on a short, each the study
-       whose picture runs furthest past the edge (a little in favour of the
-       nearer). The cover's study is never one */
-    const want = q.length - 1 >= 8 ? 2 : q.length >= 2 ? 1 : 0;
-    const heroes = [];
-    for (let n = 0; n < want; n++) {
-      let got = null;
-      q.forEach((k, i) => { if (!i) return; const h = heroPick(S, k); if (h && (!got || h.w - i * 30 > got.s)) got = { i, h, s: h.w - i * 30 }; });
-      if (!got) break;
-      heroes.push({ t: "hero", ks: [q[got.i]], fs: [got.h.f], H: got.h.H, w: got.h.w });
-      S.used.add(got.h.f.src); q.splice(got.i, 1);
-    }
-    let cv = coverOf(S, q, W, S.Hc);
-    if (!cv && heroes.length) {
-      /* no cover left once the heroes took theirs: the cover comes first */
-      heroes.forEach((h) => S.used.delete(h.fs[0].src)); heroes.length = 0; q = slots.slice();
-      cv = coverOf(S, q, W, S.Hc);
-    }
-    if (cv) { q.splice(cv.i, 1); use({ t: "cover", ks: [cv.k], fs: [cv.f], H: S.Hc }); }
-    else { const b = solveSolo(S, q.shift()); if (b) { b.t = "cover"; b.solo = true; use(b); } }
-    /* a short shelf brings its studies back, and taking out the cover and
-       the heroes could leave two of one study side by side in a row, with
-       the same caption twice (year 2024 set Robert Rodriguez beside
-       himself). The rest are dealt so that one study never follows
-       itself while another can go between (27 Sept review) */
-    if (S.multi && new Set(q).size > 1) {
-      const left = q.slice(), out = []; let prev = cv ? cv.k : null;
-      while (left.length) {
-        const n = {}; left.forEach((k) => { n[k] = (n[k] || 0) + 1; });
-        let at = -1;
-        left.forEach((k, i) => { if (k !== prev && (at < 0 || n[k] > n[left[at]])) at = i; });
-        if (at < 0) at = 0;
-        prev = left[at]; out.push(prev); left.splice(at, 1);
-      }
-      q = out;
-    }
-    heroes.forEach((h) => shown.add(h.ks[0]));
-    /* placed after the first row and after the third, or straight after the
-       cover when little else is left */
-    const heroAt = heroes.length === 2 ? [1, 3] : heroes.length === 1 ? [q.length <= 4 ? 0 : 1] : [];
-    const PAT = phone() ? ["r2", "ts", "full", "st", "r2", "r3"] : ["r3", "ts", "r4", "r2", "full", "st", "r3", "r4", "r2", "ts"];
-    let pi = 0, bi = 0, hi = 0, v = 0, guard = 0;
-    const heroNow = () => { while (hi < heroes.length && bi >= heroAt[hi]) { blocks.push(heroes[hi++]); bi++; } };
-    while (q.length && guard++ < 80) {
-      heroNow();
-      const left = q.length;
-      let t = PAT[pi++ % PAT.length];
-      if (NEEDN[t] > left) t = left === 1 ? "full" : left === 2 ? "r2" : left === 3 ? (phone() ? "ts" : "r3") : phone() ? "r2" : "r4";
-      /* never leave one study to the end that cannot fill a band alone:
-         take one more into this block, or one fewer */
-      if (left - NEEDN[t] === 1 && !solveFull(S, "full", [q[left - 1]])) t = { r2: "r3", r3: phone() ? "r2" : "r4", ts: phone() ? "r2" : "r4", st: phone() ? "r2" : "r4", r4: "r3", full: "r2" }[t];
-      let b = solveBlock(S, t, q.slice(0, NEEDN[t]), v++);
-      if (!b) for (const t2 of phone() ? ["r2", "ts", "full"] : ["r3", "r4", "ts", "r2", "full"]) {
-        if (t2 === t || NEEDN[t2] > left) continue;
-        b = solveBlock(S, t2, q.slice(0, NEEDN[t2]), v++); if (b) break;
-      }
-      /* nothing fills the width with it. A study already on the shelf is
-         left out rather than set alone on paper; only one not yet shown
-         keeps its honest size with the paper beside it */
-      if (!b && !shown.has(q[0])) b = solveSolo(S, q[0]);
-      q.splice(0, b ? b.ks.length : 1);
-      if (b) { use(b); bi++; }
-    }
-    bi = Infinity; heroNow();
-    return blocks;
-  };
-
-  /* ── what a picture is under the words on it ── */
-  const LN = 16;
-  const LC = document.createElement("canvas"); LC.width = LC.height = LN;
-  const LX = LC.getContext("2d", { willReadFrequently: true });
-  /* the picture as its box draws it (cropped to cover, centred), 16 by 16 */
-  const sampleBox = (box, im) => {
-    const iw = im.naturalWidth, ih = im.naturalHeight; if (!iw || !ih) return false;
-    const ba = box.offsetWidth / Math.max(1, box.offsetHeight), ia = iw / ih;
-    let sx = 0, sy = 0, sw = iw, sh = ih;
-    if (ia > ba) { sw = ih * ba; sx = (iw - sw) / 2; } else { sh = iw / ba; sy = (ih - sh) / 2; }
-    try {
-      LX.clearRect(0, 0, LN, LN); LX.drawImage(im, sx, sy, sw, sh, 0, 0, LN, LN);
-      const d = LX.getImageData(0, 0, LN, LN).data, g = new Float32Array(LN * LN);
-      for (let i = 0; i < LN * LN; i++) g[i] = (0.2126 * d[i * 4] + 0.7152 * d[i * 4 + 1] + 0.0722 * d[i * 4 + 2]) / 255;
-      box._lum = g; return true;
-    } catch (e) { return false; }
-  };
-  const lin = (v) => (v <= 0.04045 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4));
-  /* paper or ink over a region (fractions of the box): whichever holds
-     more contrast on average; a scrim when even that is thin, or when a
-     cell under the words fights it */
-  const inkOver = (g, q, force) => {
-    const a = clamp(Math.floor(q[0] * LN), 0, LN - 1), b = clamp(Math.ceil(q[2] * LN) - 1, a, LN - 1);
-    const c = clamp(Math.floor(q[1] * LN), 0, LN - 1), d = clamp(Math.ceil(q[3] * LN) - 1, c, LN - 1);
-    let s = 0, n = 0, lo = 1, hi = 0;
-    for (let y = c; y <= d; y++) for (let x = a; x <= b; x++) { const L = lin(g[y * LN + x]); s += L; n++; lo = Math.min(lo, L); hi = Math.max(hi, L); }
-    const m = s / n;
-    const light = force != null ? force : 1.05 / (m + 0.05) >= (m + 0.05) / 0.05;
-    const avg = light ? 1.05 / (m + 0.05) : (m + 0.05) / 0.05;
-    const worst = light ? 1.05 / (hi + 0.05) : (lo + 0.05) / 0.05;
-    return { light, scrim: avg < 4.5 || worst < 2.2 };
-  };
-  const regionOf = (node, box) => {
-    const r = node.getBoundingClientRect(), b = box.getBoundingClientRect();
-    if (!b.width || !b.height || !r.width) return null;
-    return [(r.left - b.left) / b.width, (r.top - b.top) / b.height, (r.right - b.left) / b.width, (r.bottom - b.top) / b.height];
-  };
-  const inkOn = (node, box, noScrim, force) => {
-    const q = box._lum && regionOf(node, box); if (!q) return null;
-    const v = inkOver(box._lum, q, force);
-    node.classList.toggle("lt", v.light); node.classList.toggle("scr", !noScrim && v.scrim); node.classList.add("inked");
-    return v;
-  };
-  /* the words over a picture: its caption, a hero's rule, and a cover's
-     name and lead, which take one ink together (the scrim under the lead
-     only; the name is large enough to hold) */
-  const paintOver = (box) => {
-    if (!box._lum) return;
-    const t = box._t;
-    const over = (t && t.over) || box._over;
-    if (over) {
-      /* a cover's name goes where the picture is calmest for it, the foot
-         or the head of the cover, whichever holds its ink over more of
-         the cells under it (it is hidden until now, so the move is unseen).
-         The Next cover at a shelf's foot chooses the same way (27 Sept
-         review) */
-      if (!over._placed) {
-        over._placed = true;
-        const q = regionOf(over, box), H = box.offsetHeight || 1, top = (phone() ? 14 : 18) / H;
-        if (q) {
-          const qt = [q[0], top, q[2], top + (q[3] - q[1])];
-          if (held(box._lum, qt) > held(box._lum, q) + 0.08) { over.classList.add("at-top"); if (t && t.over === over) t.cap.classList.add("at-foot"); }
-        }
-      }
-      /* a name this large crosses light and dark at once, so its ink is
-         the one that holds over more of it, not the one that suits the
-         average: the average set "Campaigns" in ink over a dark shop
-         front, and lost its first letters (27 Sept review) */
-      const q = regionOf(over, box), hb = q && heldBy(box._lum, q);
-      const v = inkOn(over, box, true, hb && hb.w !== hb.k ? hb.w > hb.k : null);
-      if (v) over.querySelectorAll(".sh-lead, .caps").forEach((n) => inkOn(n, box, false, v.light));
-    }
-    if (t) { inkOn(t.cap, box); if (t.rule) inkOn(t.rule, box, true); }
-  };
-  /* how much of a region holds a 3:1 contrast in paper (w) and in ink (k) */
-  const heldBy = (g, q) => {
-    const a = clamp(Math.floor(q[0] * LN), 0, LN - 1), b = clamp(Math.ceil(q[2] * LN) - 1, a, LN - 1);
-    const c = clamp(Math.floor(q[1] * LN), 0, LN - 1), d = clamp(Math.ceil(q[3] * LN) - 1, c, LN - 1);
-    let w = 0, k = 0, n = 0;
-    for (let y = c; y <= d; y++) for (let x = a; x <= b; x++) { const L = lin(g[y * LN + x]); n++; if (1.05 / (L + 0.05) >= 3) w++; if ((L + 0.05) / 0.05 >= 3) k++; }
-    return { w: w / n, k: k / n };
-  };
-  /* and for the better of the two */
-  const held = (g, q) => { const h = heldBy(g, q); return Math.max(h.w, h.k); };
-
-  /* ── the blocks, built ── */
-  /* the words are clamped inside their own span: clamped on the caption
-     itself, a third line showed through its padding (27 Sept review) */
-  const capHtml = (k) => '<span class="tl"><span class="t">' + esc(D.title(k)) + '</span> <span class="y">' + D.year(k) + "</span></span>";
-  const tileEl = (S, k, f, cls) => {
-    const a = el("a", "tu" + (cls ? " " + cls : "")); a.href = "#study/" + k; a.dataset.k = k; a.draggable = false;
-    const box = el("div", "tpic"); a.appendChild(box);
-    const cap = el("div", "tcap", capHtml(k)); a.appendChild(cap);
-    const t = { k, f, box, a, cap };
-    box._f = f; box._t = t; a._t = t;
-    S.tiles.push(t); S.units.push(a); S.boxes.push(box);
-    return a;
-  };
-  const flexOf = (a, n) => { a.style.flex = n.toFixed(3) + " 1 0px"; };
-  const coverEl = (S, b) => {
+  /* the frame: the running head, an empty body for the layout, the foot */
+  const frameShelf = (S) => {
     const o = S.o;
-    /* a study whose only picture is too small to fill the stage keeps its
-       honest size at the right edge, and its name sits on the paper
-       beside it, in ink */
-    const blk = el("div", "g-cover" + (b.bare ? " bare" : b.solo ? " solo" : "")); if (!b.bare) blk.style.height = b.H + "px";
-    const a = b.bare ? null : tileEl(S, b.ks[0], b.fs[0], "cov");
-    if (b.solo) a.style.width = b.w + "px";
-    if (a) blk.appendChild(a);
-    const tt = el("div", "g-title" + (b.bare || b.solo ? " inked" : ""));
-    if (b.solo) tt.style.right = b.w + (phone() ? 16 : 20) + "px";
-    const nm = el("h2", "sh-name" + (o.g.id === "years" || o.g.id === "figures" ? " num" : ""), esc(nameOf(o)));
-    tt.appendChild(nm);
-    const ld = shelfLead(o); if (ld) tt.appendChild(el("p", "sh-lead", ld));
-    blk.appendChild(tt);
-    if (a && !b.solo) a._t.over = tt;
-    S.cover = { blk, tt, nm, a, t: a && a._t };
-    S.units.push(tt);
-    return blk;
+    const bar = el("div", "sh-bar");
+    bar.appendChild(el("span", "sh-bar-k caps", esc(o.g.name)));
+    bar.appendChild(el("span", "sh-bar-t", esc(nameOf(o))));
+    const sw = el("span", "sh-sw"); bar.appendChild(sw);
+    const x = el("button", "sh-x", "Close"); x.type = "button"; x.addEventListener("click", (ev) => { ev.stopPropagation(); closeTo({ v: "rest" }); });
+    bar.appendChild(x);
+    const body = el("div", "sh-body");
+    const kids = [bar, body];
+    /* the foot: the next entry of the same kind, on paper, so a shelf never
+       ends in a wall */
+    const items = o.g.items, nx = items[(items.indexOf(o) + 1) % items.length];
+    S.foot = null;
+    if (nx && nx !== o) {
+      const a = el("a", "sh-foot"); a.href = "#" + nx.key; a.dataset.key = nx.key;
+      a.innerHTML = '<span class="caps">Next</span><span class="sh-foot-t' + (nx.g.id === "years" || nx.g.id === "figures" ? " num" : "") + '">' + esc(nameOf(nx)) + "</span>";
+      kids.push(a); S.foot = a;
+    }
+    S.layer.replaceChildren(...kids);
+    Object.assign(S, { bar, body, sw });
   };
-  const heroEl = (S, b) => {
-    const k = b.ks[0], f = b.fs[0];
-    const a = el("a", "tu hero"); a.href = "#study/" + k; a.dataset.k = k; a.draggable = false; a.style.height = b.H + "px";
-    const sc = el("div", "hx");
-    const box = el("div", "tpic"); box.style.width = b.w + "px"; box.style.height = b.H + "px";
-    sc.appendChild(box); a.appendChild(sc);
-    const cap = el("div", "tcap", capHtml(k)); a.appendChild(cap);
-    const rule = el("div", "hx-rule", "<i></i>"); a.appendChild(rule);
-    const t = { k, f, box, a, cap, sc, rule, hero: true, raf: 0 };
-    box._f = f; box._t = t; a._t = t;
-    S.tiles.push(t); S.units.push(a); S.boxes.push(box); S.heroes.push(t);
-    dragScroll(sc);
-    sc.addEventListener("scroll", () => { cancelAnimationFrame(t.raf); t.raf = requestAnimationFrame(() => heroMoved(t)); }, { passive: true });
-    /* from the keyboard: Tab reaches a hero, the arrows move it (27 Sept review) */
-    a.addEventListener("keydown", (ev) => {
-      if (ev.key !== "ArrowLeft" && ev.key !== "ArrowRight") return;
-      ev.preventDefault();
-      sc.scrollBy({ left: (ev.key === "ArrowRight" ? 1 : -1) * sc.clientWidth * 0.4, behavior: still() ? "auto" : "smooth" });
-    });
-    return a;
+  /* the switch: every layout that loaded, by its own word, the current
+     one underlined. Plain words, nothing else */
+  const drawSwitch = (S) => {
+    const ids = shelfIds();
+    S.sw.innerHTML = ids.map((id) => {
+      const u = new URL(location.href); u.searchParams.set("shelf", id);
+      return '<a href="' + D.esc(u.pathname + u.search + u.hash) + '" data-shelf="' + D.esc(id) + '"' + (id === S.lid ? ' class="on" aria-current="true"' : "") + ">" + esc(SHELVES[id].label || id) + "</a>";
+    }).join("");
   };
-  /* where the hero is: the rule's mark is the window onto the picture */
-  const heroMoved = (t) => {
-    const sc = t.sc, sw = sc.scrollWidth || 1;
-    const i = t.rule.firstChild;
-    i.style.left = (100 * sc.scrollLeft) / sw + "%"; i.style.width = (100 * sc.clientWidth) / sw + "%";
-    if (t.box._lum) { inkOn(t.cap, t.box); inkOn(t.rule, t.box, true); }
+  const unmountLayout = (S) => {
+    if (S.view) { try { S.view.destroy(); } catch (e) { /* the layout's own */ } }
+    S.view = null; S.hovK = null; S.hovAt = null;
+    if (S.fade) { S.fade.cancel(); S.fade = null; }
+    if (S.body) S.body.replaceChildren();
   };
-  /* a hero moves under a trackpad or a finger on its own; a mouse drags
-     it, with a little glide on letting go. A drag is never a click */
-  const dragScroll = (sc) => {
-    let id = null, x0 = 0, s0 = 0, moved = false, vx = 0, lx = 0, lt = 0, raf = 0;
-    sc.addEventListener("pointerdown", (ev) => {
-      if (ev.pointerType !== "mouse" || ev.button !== 0) return;
-      cancelAnimationFrame(raf); id = ev.pointerId; x0 = lx = ev.clientX; s0 = sc.scrollLeft; lt = performance.now(); moved = false; vx = 0;
-    });
-    sc.addEventListener("pointermove", (ev) => {
-      if (ev.pointerId !== id) return;
-      const dx = ev.clientX - x0;
-      if (!moved && Math.abs(dx) > 5) { moved = true; try { sc.setPointerCapture(id); } catch (e) { /* gone */ } sc.classList.add("grabbing"); }
-      if (!moved) return;
-      sc.scrollLeft = s0 - dx;
-      const now = performance.now(), dt = Math.max(1, now - lt);
-      vx = 0.75 * ((ev.clientX - lx) / dt) + 0.25 * vx; lx = ev.clientX; lt = now;
-    });
-    const end = (ev) => {
-      if (ev.pointerId !== id) return; id = null;
-      sc.classList.remove("grabbing");
-      if (!moved) return;
-      sc._drag = true; setTimeout(() => { sc._drag = false; }, 0);
-      if (still() || Math.abs(vx) < 0.05 || performance.now() - lt > 90) return;
-      let v = -vx * 16, last = performance.now();
-      const glide = (now) => { const d = Math.min(3, (now - last) / 16); last = now; sc.scrollLeft += v * d; v *= Math.pow(0.93, d); if (Math.abs(v) > 0.35) raf = requestAnimationFrame(glide); };
-      raf = requestAnimationFrame(glide);
+  const mountLayout = (S) => {
+    unmountLayout(S);
+    S.lid = layoutId(); S.stale = false;
+    S.W = S.layer.clientWidth; S.V = S.layer.clientHeight;
+    const put = (id) => {
+      S.body.dataset.layout = id;
+      S.ctx = shelfCtx(S);
+      try { S.view = SHELVES[id].render(S.body, S.ctx) || null; return true; }
+      catch (e) { console.warn("crossref2: the " + id + " shelf could not be set", e); unmountLayout(S); return false; }
     };
-    sc.addEventListener("pointerup", end); sc.addEventListener("pointercancel", end);
-    sc.addEventListener("click", (ev) => { if (sc._drag) { ev.preventDefault(); ev.stopPropagation(); sc._drag = false; } }, true);
+    /* a layout that throws gives way to the grid */
+    if (S.lid && !put(S.lid) && S.lid !== "grid" && SHELVES.grid) { S.lid = "grid"; put("grid"); }
+    drawSwitch(S); fitFoot(S);
+    S.headEl = S.body.querySelector("[data-head]");
+    pastCheck(S);
   };
-  const blockEl = (S, b) => {
-    if (b.t === "cover") return coverEl(S, b);
-    if (b.t === "hero") return heroEl(S, b);
-    const row = el("div", "g-row g-" + b.t); row.style.height = b.H + "px";
-    if (b.t === "ts" || b.t === "st") {
-      const tall = tileEl(S, b.ks[0], b.fs[0]); flexOf(tall, b.wt);
-      const st = el("div", "g-stack"); flexOf(st, b.ws);
-      [1, 2].forEach((i) => { const a = tileEl(S, b.ks[i], b.fs[i]); flexOf(a, b.hs[i - 1]); st.appendChild(a); });
-      row.appendChild(tall); row.appendChild(st);
-    } else if (b.t === "full") { const a = tileEl(S, b.ks[0], b.fs[0]); flexOf(a, 1); row.appendChild(a); }
-    else if (b.t === "solo") { const a = tileEl(S, b.ks[0], b.fs[0]); a.style.flex = "0 0 " + b.w + "px"; row.appendChild(a); }
-    else b.fs.forEach((f, j) => { const a = tileEl(S, b.ks[j], f); flexOf(a, b.ws[j]); row.appendChild(a); });
-    /* a study on two pictures that touch is captioned once, on the first
-       (a year of two studies set the same name and year side by side). In
-       a row only neighbours touch; beside a stack, all three do */
-    const seen = new Set(); let prev = null;
-    [...row.querySelectorAll(".tu")].forEach((a) => {
-      const k = a.dataset.k;
-      if (b.t === "ts" || b.t === "st" ? seen.has(k) : prev === k) a.classList.add("rep");
-      seen.add(k); prev = k;
-    });
-    return row;
+  /* the next entry's name keeps its size unless it would run past the edge */
+  const fitFoot = (S) => {
+    const t = S.foot && S.foot.querySelector(".sh-foot-t"); if (!t) return;
+    t.style.fontSize = ""; let fs = parseFloat(getComputedStyle(t).fontSize) || 64;
+    for (let i = 0; i < 24 && fs > 22 && t.scrollWidth > t.clientWidth + 1; i++) { fs -= 2; t.style.fontSize = fs + "px"; }
   };
-
+  /* the running head names the entry once the layout's own head (or a
+     third of the glass, for a layout without one) has gone under it */
+  const pastCheck = (S) => {
+    const h = S.headEl, lb = S.layer.getBoundingClientRect();
+    S.layer.classList.toggle("past", h && h.isConnected ? h.getBoundingClientRect().bottom < lb.top + HEAD + 4 : S.layer.scrollTop > S.layer.clientHeight * 0.33);
+    /* and a hairline under it once anything has gone under it, so a
+       sentence passing beneath never reads as part of the head */
+    S.layer.classList.toggle("moved", S.layer.scrollTop > 2);
+  };
   const buildShelf = (o, held) => {
     const layer = el("div", "shelf");
     layer.dataset.key = o.key;
     if (held) layer.style.visibility = "hidden";
     STAGE.appendChild(layer);
-    const S = { key: o.key, o, layer, ks: shelfStudies(o), tiles: [], units: [], boxes: [], heroes: [], io: null, W: 0, V: 0, visible: !held, clicked: null };
-    layoutShelf(S);
+    const S = { key: o.key, o, layer, ks: shelfOrder(o), view: null, lid: null, visible: !held, clicked: null, hovK: null, hovAt: null, fade: null };
+    frameShelf(S);
+    /* a shelf held behind a room is framed but not laid out: it loads
+       nothing until Close brings it back */
+    if (!held) mountLayout(S);
     layer.addEventListener("click", (ev) => shelfClick(S, ev));
-    layer.addEventListener("pointerover", (ev) => { if (ev.pointerType === "mouse") tileOver(S, ev.target.closest(".tu")); });
-    layer.addEventListener("pointerleave", () => tileOver(S, null));
     let sc = 0;
     layer.addEventListener("scroll", () => {
       cancelAnimationFrame(sc); sc = requestAnimationFrame(() => {
-        const cv = S.cover && S.cover.blk;
-        layer.classList.toggle("past", layer.scrollTop > (cv ? cv.offsetTop + cv.offsetHeight - HEAD - 24 : 120));
-        /* a scroll still gliding when a tile is clicked lands after the room
-           has opened; its wires belong to the shelf, so they are drawn only
-           while the shelf is the page (27 Sept review) */
+        pastCheck(S);
+        /* a scroll still gliding when a picture is clicked lands after the
+           room has opened; its wires belong to the shelf, so they are drawn
+           only while the shelf is the page (27 Sept review) */
         if (VIEW.v !== "shelf" || SH !== S) return;
-        if (S.hovTile) wireTile(S, S.hovTile); else if (hov) wireShelf(S, hov);
+        if (S.hovK) wireTile(S); else if (hov) wireShelf(S, hov);
       });
     }, { passive: true });
     return S;
   };
-  const layoutShelf = (S) => {
-    const o = S.o, layer = S.layer;
-    const W = layer.getBoundingClientRect().width || STAGE.clientWidth, V = layer.clientHeight || innerHeight;
-    Object.assign(S, { W, V, avail: V - HEAD, used: new Set(), tiles: [], units: [], boxes: [], heroes: [], cover: null, next: null, clicked: null });
-    S.Hc = coverH(S.avail); S.heroH = Math.round(S.avail * (phone() ? 0.64 : 0.96)); S.rowMax = Math.round(S.avail * 0.92);
-    /* one study: its name is on the cover, and only there */
-    layer.classList.toggle("one", S.ks.length === 1);
-    if (S.io) { S.io.disconnect(); S.io = null; }
-    const frag = document.createDocumentFragment();
-    /* the running head: what the shelf is and how many studies, its name
-       once the cover has gone by, and Close */
-    const bar = el("div", "sh-bar");
-    bar.appendChild(el("span", "sh-bar-k caps", "<span>" + esc(o.g.name) + '</span><span class="n">Work<b>' + S.ks.length + "</b></span>"));
-    bar.appendChild(el("span", "sh-bar-t", esc(nameOf(o))));
-    const x = el("button", "sh-x", "Close"); x.type = "button"; x.addEventListener("click", (ev) => { ev.stopPropagation(); closeTo({ v: "rest" }); });
-    bar.appendChild(x); frag.appendChild(bar);
-
-    const grid = el("div", "sh-grid");
-    planShelf(S).forEach((b) => grid.appendChild(blockEl(S, b)));
-    frag.appendChild(grid);
-
-    /* the foot: the next entry of the same kind, as the cover it opens on,
-       so a shelf never ends in a wall */
-    const items = o.g.items; const nx = items[(items.indexOf(o) + 1) % items.length];
-    if (nx && nx !== o) {
-      const nks = shelfOrder(nx);
-      const nc = coverOf({ used: new Set(), multi: nks.length < FEW() }, nks, W, S.Hc);
-      const Hn = Math.round(S.avail * (phone() ? 0.44 : 0.5));
-      const a = el("a", "sh-next g-next"); a.href = "#" + nx.key; a.dataset.key = nx.key; a.draggable = false;
-      const nnum = nx.g.id === "years" || nx.g.id === "figures";
-      const tt = el("div", "g-title", '<span class="caps">Next</span><span class="sh-next-t' + (nnum ? " num" : "") + '">' + esc(nameOf(nx)) + "</span>");
-      if (nc && honest(W, Hn, nc.f)) {
-        a.style.height = Hn + "px";
-        const box = el("div", "tpic"); box._f = nc.f; box._over = tt; a.appendChild(box);
-        a._box = box; a._f = nc.f; S.boxes.push(box);
-      } else a.classList.add("bare");
-      a.appendChild(tt);
-      frag.appendChild(a); S.units.push(a); S.next = { a, tt };
+  const destroyShelf = (S) => { if (!S) return; unmountLayout(S); S.layer.remove(); };
+  const setShelfLayout = (id) => {
+    if (!SHELVES[id] || typeof SHELVES[id].render !== "function") return;
+    shelfPref = id;
+    try { localStorage.setItem(SHELF_LS, id); } catch (e) { /* a private window */ }
+    const u = new URL(location.href); u.searchParams.set("shelf", id);
+    history.replaceState(history.state, "", u.pathname + u.search + u.hash);
+    if (!SH) return;
+    if (!SH.visible) { SH.stale = true; return; }
+    if (SH.lid === id) { drawSwitch(SH); return; }
+    WIRES.innerHTML = ""; hov = null;
+    SH.layer.scrollTop = 0; mountLayout(SH);
+    paint(SH.o.rel, SH.o);
+    shelfEnter(SH, { delay: 0 });
+  };
+  /* in and out: the layout's own when it has them, else the page fades
+     its body */
+  const shelfEnter = (S, o) => {
+    if (S.fade) { S.fade.cancel(); S.fade = null; }
+    if (S.foot) S.foot.getAnimations().forEach((a) => a.cancel());
+    if (S.view && S.view.enter) { try { S.view.enter(o || {}); } catch (e) { /* the layout's own */ } return; }
+    if (still()) return;
+    S.fade = S.body.animate([{ opacity: 0, transform: "translateY(14px)" }, { opacity: 1, transform: "none" }], { duration: 520, delay: (o && o.delay) || 0, easing: EASE, fill: "backwards" });
+  };
+  const shelfLeave = (S, keep) => {
+    if (S.foot) S.foot.animate([{ opacity: 1 }, { opacity: 0 }], { duration: still() ? 0 : 240, fill: "forwards" });
+    if (S.view && S.view.leave) { try { S.view.leave(keep || null); } catch (e) { /* the layout's own */ } return; }
+    if (S.fade) S.fade.cancel();
+    S.fade = S.body.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 300, easing: DROP, fill: "forwards" });
+  };
+  const shelfLight = (S, ks) => { if (S.view && S.view.light) { try { S.view.light(ks); } catch (e) { /* the layout's own */ } } };
+  const tileOf = (S, k) => {
+    if (!S || !S.view || !S.view.tileFor) return null;
+    try { const n = S.view.tileFor(k); return n && n.isConnected ? n : null; } catch (e) { return null; }
+  };
+  /* the picture an element of a layout shows, as a fragment: its own
+     (node._f, or data-f), else the one its image's file is, else what the
+     image itself says, else the study's board lead */
+  const PICS = new Map(); D.frags.forEach((f) => { if (f.kind === "pic") PICS.set(f.id, f); });
+  const picOfEl = (node, k) => {
+    if (!node || !node.isConnected) return null;
+    const ims = node.tagName === "IMG" ? [node] : [...node.querySelectorAll("img")];
+    const im = ims.filter((i) => i.complete && i.naturalWidth).pop() || ims[0] || null;
+    let f = node._f || null;
+    if (!f && node.dataset && node.dataset.f) f = PICS.get(node.dataset.f) || (node.dataset.f === "lead:" + k ? leadOf(k) : null);
+    if (!f && im) {
+      const s = im.currentSrc || im.src || "";
+      let p = ""; try { p = decodeURI(new URL(s, location.href).pathname); } catch (e) { /* not an address */ }
+      f = [leadOf(k)].concat(picsOf(k)).find((x) => x && [x.src, x.t384, x.t768].includes(p)) || null;
+      if (!f && im.naturalWidth) f = { id: null, k, src: p || s, w: im.naturalWidth, h: im.naturalHeight, alt: "" };
     }
-    layer.replaceChildren(frag);
-
-    /* the name over the cover: as large as it goes on one line, or two
-       when it is long; its lead under it, smaller until it fits */
-    if (S.cover) {
-      const { nm, tt, a } = S.cover;
-      const inset = phone() ? 16 : 20;
-      const C = S.cover.tt.getBoundingClientRect().width, Hc = a ? a.offsetHeight : S.avail * 0.6;
-      const num = o.g.id === "years" || o.g.id === "figures";
-      const nmax = Math.min(num ? 230 : 150, Hc * (num ? 0.42 : 0.3));
-      if (num) oneLine(nm, C, nmax, nmax, o.g.id === "years" ? -0.065 : -0.06);
-      else { nm.style.whiteSpace = "nowrap"; const one = oneLine(nm, C, nmax, nmax); if (one < 56) { nm.style.whiteSpace = ""; fitType(nm, C, 2 * Math.min(96, nmax) * 0.95, Math.min(96, nmax), 30); } }
-      const ld = tt.querySelector(".sh-lead");
-      if (ld) {
-        ld.style.maxWidth = Math.min(C, phone() ? C : 540) + "px";
-        /* four lines at most, smaller until it fits, else it is left out */
-        const room = Hc - inset - 44 - nm.offsetHeight - 14;
-        let fs = phone() ? 16 : 19; ld.style.fontSize = fs + "px";
-        const over = () => ld.offsetHeight > Math.min(room, fs * 1.22 * 4 + 16);
-        while (over() && fs > 13) { fs -= 1; ld.style.fontSize = fs + "px"; }
-        if (over()) ld.remove();
-      }
+    if (!f) f = leadOf(k) || heroOf(k);
+    return f ? { box: node, f } : null;
+  };
+  /* a study opened from a shelf: the picture clicked flies into its room */
+  const shelfOpen = (S, k, fromEl) => {
+    if (SH !== S || VIEW.v !== "shelf" || !D.study(k)) return;
+    const p = fromEl ? picOfEl(fromEl, k) : null;
+    S.clicked = { k, el: p ? p.box : null };
+    go({ v: "study", k, from: S.key }, { push: true, src: p && visRect(p.box) ? { box: p.box, f: p.f, target: "cover", shelf: true } : null });
+  };
+  const shelfClick = (S, ev) => {
+    if (ev.metaKey || ev.ctrlKey || ev.shiftKey || ev.button) return; /* a new tab is still a new tab */
+    const sw = ev.target.closest(".sh-sw a");
+    if (sw) { ev.preventDefault(); setShelfLayout(sw.dataset.shelf); return; }
+    const nx = ev.target.closest(".sh-foot");
+    if (nx) { ev.preventDefault(); go({ v: "shelf", key: nx.dataset.key }, { push: true }); return; }
+    /* a layout that leaves a study's link to the page: it opens in place,
+       from the picture inside it */
+    if (ev.defaultPrevented) return;
+    const a = ev.target.closest('a[href^="#study/"]');
+    if (a && S.body.contains(a)) {
+      ev.preventDefault();
+      const ims = a.querySelectorAll("img");
+      shelfOpen(S, decodeURIComponent(a.getAttribute("href").slice(7)), ims.length ? ims[ims.length - 1] : null);
     }
-    if (S.next && S.next.a._box) {
-      const n = S.next.tt.querySelector(".sh-next-t");
-      const C = W - 2 * (phone() ? 16 : 20);
-      const nh = Math.min(130, S.next.a.offsetHeight * 0.42);
-      oneLine(n, C, nh, nh, n.classList.contains("num") ? -0.06 : undefined);
-    }
-    /* a hero opens centred on its picture, so both of its edges are cut */
-    S.heroes.forEach((t) => { t.sc.scrollLeft = Math.max(0, (t.sc.scrollWidth - t.sc.clientWidth) / 2); heroMoved(t); });
-
-    /* pictures load as they near the view, the thumbnail first, and only
-       while the shelf is the page (one held behind a room waits) */
-    S.io = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { S.io.unobserve(e.target); loadTile(e.target); } }),
-      { root: layer, rootMargin: "0px 0px 50% 0px" });
-    S.watch = () => { if (S.io && !S.watching) { S.watching = true; S.boxes.forEach((b) => { if (!b._loaded) S.io.observe(b); }); } };
-    S.watching = false;
-    if (S.visible) S.watch();
-  };
-  /* the honest rung for the size the picture is drawn at under its crop,
-     after the rung below it, which is also the one sampled for its light */
-  const loadTile = (box) => {
-    const f = box._f; if (!f || box._loaded) return; box._loaded = true;
-    const w = box.offsetWidth || 300, h = box.offsetHeight || 200;
-    const want = D.rung(f, coverW(w, h, f));
-    const rungs = [f.t384, f.t768, f.src].filter(Boolean);
-    const quick = rungs.indexOf(want) > 0 ? rungs[rungs.indexOf(want) - 1] : null;
-    /* the words over it wait for its light; should the canvas refuse the
-       picture, they show in ink anyway */
-    const lit = (im) => {
-      if (box._lum) return;
-      if (sampleBox(box, im)) { paintOver(box); return; }
-      const t = box._t, over = (t && t.over) || box._over;
-      [t && t.cap, t && t.rule, over].forEach((n) => n && n.classList.add("inked"));
-    };
-    const add = (src, then) => { const im = el("img"); im.alt = ""; im.decoding = "async"; im.draggable = false; im.addEventListener("load", () => then(im), { once: true }); im.src = encodeURI(src); box.appendChild(im); return im; };
-    let pv = null;
-    if (quick) pv = add(quick, (im) => { box.classList.add("in"); lit(im); });
-    add(want, (im) => { box.classList.add("in"); lit(im); if (pv) setTimeout(() => pv.remove(), 400); });
-  };
-  const unitsInView = (S) => { const box = S.layer.getBoundingClientRect(); return S.units.filter((u) => rectIn(u.getBoundingClientRect(), box)); };
-  /* in: each picture opens upward in reading order, the words after */
-  const shelfIn = (S, delay, skip) => {
-    const us = unitsInView(S).map((u) => [u, u.getBoundingClientRect()]).sort((a, b) => a[1].top - b[1].top || a[1].left - b[1].left).map((x) => x[0]);
-    us.forEach((u, i) => {
-      if (u._an) u._an.cancel();
-      if (still()) return;
-      const words = u.classList.contains("g-title");
-      u._an = u.animate(words ? [{ opacity: 0, transform: "translateY(18px)" }, { opacity: 1, transform: "none" }] : [{ clipPath: "inset(100% 0 0 0)" }, { clipPath: "inset(0 0 0 0)" }],
-        { duration: words ? 560 : 640, delay: (delay || 0) + (words ? 240 : 0) + i * 45, easing: EASE, fill: "backwards" });
-    });
-    S.units.forEach((u) => { if (!us.includes(u) && u._an) { u._an.cancel(); u._an = null; } });
-    if (skip) skip.style.visibility = "hidden";
-  };
-  /* out: the others go to paper; the one flying keeps its place, empty */
-  const shelfOut = (S, keep) => {
-    const us = unitsInView(S);
-    us.forEach((u, i) => {
-      if (u._an) u._an.cancel();
-      const kept = keep && u.contains(keep);
-      if (kept) { keep.style.visibility = "hidden"; [...u.children].filter((c) => !c.contains(keep)).forEach((c) => c.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 200, fill: "forwards" })); u._kept = true; return; }
-      u._an = u.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 300, delay: i * 18, easing: DROP, fill: "forwards" });
-    });
-  };
-  const shelfReset = (S) => {
-    S.units.forEach((u) => { if (u._an) { u._an.cancel(); u._an = null; } if (u._kept) { [...u.children].forEach((c) => c.getAnimations().forEach((a) => a.cancel())); u._kept = false; } });
-    S.tiles.forEach((t) => { t.box.style.visibility = ""; });
   };
 
   /* hovering in a shelf: a picture lights what its study holds, wired to
-     it; an entry keeps the studies it touches, wired to them */
+     it; an entry sets solid what it touches (the layout's light), wired */
   const anchorOf = (box, clampTo) => {
     const r = box.getBoundingClientRect(), s = (clampTo || STAGE).getBoundingClientRect();
     const top = s.top + HEAD + 6; /* below the running head */
@@ -1643,69 +1360,49 @@
        was on the picture next door (27 Sept review) */
     return [Math.max(s.left + 2, r.left + 10), y];
   };
-  const wireTile = (S, u) => {
-    const k = u.dataset.k; const box = u.querySelector(".tpic"); if (!box) return;
-    const q = anchorOf(box, S.layer);
-    const me = WORK[k];
+  const wireTile = (S) => {
+    const k = S.hovK, node = S.hovAt && S.hovAt.isConnected ? S.hovAt : tileOf(S, k);
+    if (!node) { WIRES.innerHTML = ""; return; }
+    const q = anchorOf(node, S.layer), me = WORK[k];
     draw(lit.filter((x) => x !== me).map((x) => ({ x, q })).concat(me ? [{ x: me, q, me: true }] : []), { live: true });
   };
-  const tileOver = (S, u) => {
+  const shelfHover = (S, k, at) => {
     if (VIEW.v !== "shelf" || SH !== S) return;
-    if (u === S.hovTile) return;
-    S.hovTile = u || null;
-    if (!u) { stageNeutral(); return; }
-    const k = u.dataset.k;
+    if (!k || !D.study(k)) { if (S.hovK) { S.hovK = null; S.hovAt = null; stageNeutral(); } return; }
+    /* a picture under the pointer outranks an entry just left in the index,
+       whose neutral would otherwise land on it a beat later */
+    clearTimeout(restT); hov = null;
+    S.hovK = k; S.hovAt = at || null;
     paint(new Set([k]), WORK[k]);
-    wireTile(S, u);
+    wireTile(S);
   };
   const wireShelf = (S, o) => {
-    const box = S.layer.getBoundingClientRect();
-    const pairs = S.tiles.filter((t) => o.rel.has(t.k) && rectIn(t.box.getBoundingClientRect(), box)).map((t) => ({ x: o, q: anchorOf(t.box, S.layer), me: true }));
+    const lb = S.layer.getBoundingClientRect(), view = { top: lb.top + HEAD, bottom: lb.bottom };
+    const pairs = S.ks.filter((k) => o.rel.has(k)).map((k) => tileOf(S, k))
+      .filter((n) => n && rectIn(n.getBoundingClientRect(), view)).map((n) => ({ x: o, q: anchorOf(n, S.layer), me: true }));
     draw(pairs, { live: true });
-  };
-  const shelfClick = (S, ev) => {
-    if (ev.metaKey || ev.ctrlKey || ev.shiftKey || ev.button) return; /* a new tab is still a new tab */
-    const nx = ev.target.closest(".sh-next");
-    if (nx) {
-      ev.preventDefault();
-      /* the next shelf opens on this picture: it flies up into its cover */
-      const from = nx._box && nx._box.classList.contains("in") ? { box: nx._box, f: nx._f } : null;
-      go({ v: "shelf", key: nx.dataset.key }, { push: true, from });
-      return;
-    }
-    const u = ev.target.closest(".tu"); if (!u) return;
-    ev.preventDefault();
-    S.clicked = u._t || null;
-    go({ v: "study", k: u.dataset.k, from: S.key }, { push: true });
   };
 
   /* open a shelf over whatever the stage holds */
-  const openShelf = (o, how) => {
+  const openShelf = (o) => {
     const old = SH, oldRoom = RM, was = staged();
     const S = buildShelf(o); SH = S; RM = null;
     setStaged(true); lockEntry(o); cur = null;
     paint(o.rel, o);
+    keepShelfParam();
     const rise = !still() && !(phone() && !was);
     if (rise) S.layer.animate([{ clipPath: "inset(100% 0 0 0)" }, { clipPath: "inset(0 0 0 0)" }], { duration: 560, easing: EASE });
-    /* from the foot of the last shelf: its picture flies up into this cover */
-    let skip = null;
-    const fr = how && how.from, ct = S.cover && S.cover.t;
-    if (fr && ct && fr.box.isConnected && ct.f.src === fr.f.src) {
-      const flight = fly(fr.box, fr.f, ct.box, { ms: 640 });
-      if (flight) { skip = ct.box; fr.box.style.visibility = "hidden"; land(flight, ct.box, () => { ct.box.style.visibility = ""; }); }
-    }
-    shelfIn(S, rise ? 160 : phone() && !was ? 220 : 60, skip);
+    shelfEnter(S, { delay: rise ? 160 : phone() && !was ? 220 : 60 });
     setTimeout(() => {
-      if (old && old !== SH) { if (old.io) old.io.disconnect(); old.layer.remove(); }
+      if (old && old !== SH) destroyShelf(old);
       if (oldRoom) { oldRoom.room.destroy(); oldRoom.c.remove(); }
     }, rise ? 580 : 520);
   };
   /* a shelf held behind a room, for Close to return to */
   const holdShelf = (o) => {
     if (SH && SH.key === o.key) return;
-    if (SH) { if (SH.io) SH.io.disconnect(); SH.layer.remove(); }
-    /* built unseen, and it loads nothing until Close brings it back */
-    SH = buildShelf(o, true); SH.layer.style.visibility = "hidden";
+    if (SH) destroyShelf(SH);
+    SH = buildShelf(o, true);
   };
 
   /* ── a room ── */
@@ -1746,11 +1443,10 @@
        shelf), else its first on screen. It lands on the room's cover, so
        the study opens at its top; a tile showing another of the study's
        pictures gives way to the board's lead there as it lands */
-    let tileT = null;
     if (!src && SH && SH.visible && !prev) {
-      const list = SH.clicked && SH.clicked.k === k ? [SH.clicked] : SH.tiles.filter((t) => t.k === k);
-      tileT = list.find((t) => visRect(t.box)) || null;
-      if (tileT) src = { box: tileT.box, f: tileT.f, target: "cover" };
+      const node = SH.clicked && SH.clicked.k === k && SH.clicked.el && SH.clicked.el.isConnected ? SH.clicked.el : tileOf(SH, k);
+      const p = node && visRect(node) ? picOfEl(node, k) : null;
+      if (p) src = { box: p.box, f: p.f, target: "cover", shelf: true };
     }
     if (!src && !was) src = focusFace(k);
     if (src && phone() && !was) src = null; /* the sheet is still rising */
@@ -1778,7 +1474,7 @@
       c.style.visibility = "";
       c.animate([{ clipPath: "inset(100% 0 0 0)" }, { clipPath: "inset(0 0 0 0)" }], { duration: 520, delay: 40, easing: EASE, fill: "backwards" });
       room.el.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 360, delay: 330, easing: "ease", fill: "backwards" });
-      if (SH && SH.visible && tileT) shelfOut(SH, tileT.box);
+      if (SH && SH.visible && src.shelf) shelfLeave(SH, src.box);
       if (prev) prev.c.animate([{ opacity: 1, transform: "none" }, { opacity: 0, transform: "translateY(-24px)" }], { duration: 320, easing: DROP, fill: "forwards" });
       land(flight, to, () => { to.style.visibility = ""; restore.style.visibility = ""; reveal(); });
     } else {
@@ -1786,36 +1482,38 @@
       if (!was && phone()) { reveal(); return; }
       if (!still()) c.animate([{ clipPath: "inset(100% 0 0 0)" }, { clipPath: "inset(0 0 0 0)" }], { duration: 560, easing: EASE });
       if (prev) prev.c.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 300, fill: "forwards" });
-      if (SH && SH.visible) shelfOut(SH, null);
+      if (SH && SH.visible) shelfLeave(SH, null);
       revealT = setTimeout(reveal, still() ? 0 : 560);
     }
   };
-  /* back from a room to the shelf it came from: the cover flies home and
-     the other pictures rise again */
+  /* back from a room to the shelf it came from: the picture flies home and
+     the others rise again */
   const backToShelf = () => {
     const S = SH, R = RM; RM = null;
     R.c.style.pointerEvents = "none";
-    S.layer.style.visibility = ""; S.visible = true; S.watch();
-    shelfReset(S);
-    const t = (S.clicked && S.clicked.k === R.k ? S.clicked : null) || S.tiles.find((x) => x.k === R.k);
-    if (t) {
+    S.layer.style.visibility = ""; S.visible = true;
+    /* a shelf held behind a room is laid out only now, and so is one whose
+       layout was switched while it waited */
+    if (!S.view || S.stale || S.lid !== layoutId()) mountLayout(S);
+    const node = (S.clicked && S.clicked.k === R.k && S.clicked.el && S.clicked.el.isConnected ? S.clicked.el : null) || tileOf(S, R.k);
+    if (node) {
       /* bring its picture home into view, most of it, before it flies
          there. A hero keeps where it was scrolled sideways */
-      const lb = S.layer.getBoundingClientRect(), tb = t.a.getBoundingClientRect();
+      const lb = S.layer.getBoundingClientRect(), tb = node.getBoundingClientRect();
       const top = lb.top + HEAD, vh = lb.height - HEAD;
       const seen = Math.min(tb.bottom, lb.bottom) - Math.max(tb.top, top);
       if (seen < Math.min(tb.height, vh) * 0.8) S.layer.scrollTop += tb.top - top - Math.max(0, (vh - tb.height) / 2);
     }
-    lockEntry(S.o); paint(S.o.rel, S.o); clearLive();
+    lockEntry(S.o); paint(S.o.rel, S.o); clearLive(); pastCheck(S);
     /* it flies home from where the room shows it: the picture itself when
        the room has it in view, else the cover (the board's lead, which
-       gives way to the tile's own picture as it lands) */
+       gives way to the shelf's own picture as it lands) */
+    const tp = node ? picOfEl(node, R.k) : null;
     let from = R.room.cover, ff = leadOf(R.k);
-    if (t && !t.f.lead) { const e = R.room.find(t.f.id); if (e && e !== R.room.cover && visRect(e)) { from = e; ff = t.f; } }
-    const flight = t && from && ff && visRect(from) ? fly(from, ff, t.box, { ms: 540, fitB: ff.src !== t.f.src }) : null;
-    if (flight) { t.box.style.visibility = "hidden"; from.style.visibility = "hidden"; land(flight, null, () => { t.box.style.visibility = ""; }); }
-    shelfIn(S, 200, null);
-    if (flight) t.box.style.visibility = "hidden";
+    if (tp && !tp.f.lead && tp.f.id) { const e = R.room.find(tp.f.id); if (e && e !== R.room.cover && visRect(e)) { from = e; ff = tp.f; } }
+    const flight = tp && from && ff && visRect(from) && visRect(tp.box) ? fly(from, ff, tp.box, { ms: 540, fitB: ff.src !== tp.f.src }) : null;
+    shelfEnter(S, { back: true, delay: 200, keep: flight ? tp.box : null });
+    if (flight) { tp.box.style.visibility = "hidden"; from.style.visibility = "hidden"; land(flight, tp.box, () => { tp.box.style.visibility = ""; }); }
     /* the room's words go first, then its paper lowers off the shelf */
     R.room.el.animate([{ opacity: 1 }, { opacity: 0 }], { duration: still() ? 0 : 180, easing: "ease", fill: "forwards" });
     const lower = still() ? R.c.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 0, fill: "forwards" })
@@ -1835,7 +1533,7 @@
       node.animate([{ clipPath: "inset(0 0 0 0)" }, { clipPath: "inset(100% 0 0 0)" }], { duration: 460, easing: "cubic-bezier(0.4, 0, 0.6, 1)", fill: "forwards" }).finished.then(then);
     };
     if (R) { R.c.style.pointerEvents = "none"; drop(R.c, () => { R.room.destroy(); R.c.remove(); }); }
-    if (S) { if (S.io) S.io.disconnect(); if (S.visible) drop(S.layer, () => S.layer.remove()); else S.layer.remove(); }
+    if (S) { if (S.visible) drop(S.layer, () => destroyShelf(S)); else destroyShelf(S); }
   };
 
   /* the index as the room's spec sheet */
@@ -1903,16 +1601,17 @@
   const stageHover = (o) => {
     hov = o;
     if (VIEW.v === "shelf" && SH) {
-      SH.hovTile = null;
+      SH.hovK = null; SH.hovAt = null;
       paint(o.rel, o);
-      SH.layer.classList.add("dim");
-      SH.tiles.forEach((t) => t.a && t.a.classList.toggle("hit", o.rel.has(t.k)));
+      /* nothing on the shelf dims: its layout sets solid what the entry
+         touches (27 Sept, latest) */
+      shelfLight(SH, new Set(SH.ks.filter((k) => o.rel.has(k))));
       wireShelf(SH, o);
     } else if (VIEW.v === "study" && RM) pointAt(o);
   };
   const stageNeutral = () => {
     hov = null;
-    if (VIEW.v === "shelf" && SH) { SH.layer.classList.remove("dim"); paint(SH.o.rel, SH.o); WIRES.innerHTML = ""; }
+    if (VIEW.v === "shelf" && SH) { shelfLight(SH, null); paint(SH.o.rel, SH.o); WIRES.innerHTML = ""; }
     else if (VIEW.v === "study" && RM) { paintRoom(); LW = null; WIRES.innerHTML = ""; }
   };
 
@@ -2063,7 +1762,7 @@
   let sc = 0;
   const rewire = () => {
     if (!staged()) { wire(true); return; }
-    if (VIEW.v === "shelf" && SH) { if (SH.hovTile) wireTile(SH, SH.hovTile); else if (hov) wireShelf(SH, hov); }
+    if (VIEW.v === "shelf" && SH) { if (SH.hovK) wireTile(SH); else if (hov) wireShelf(SH, hov); }
     else if (VIEW.v === "study" && LW) drawLive();
   };
   IDX.addEventListener("scroll", () => { cancelAnimationFrame(sc); sc = requestAnimationFrame(rewire); }, { passive: true });
@@ -2074,10 +1773,14 @@
       fit();
       HTML.classList.toggle("sheet", staged() && phone());
       if (!staged()) render();
-      /* a shelf is laid out to its stage's width and height (a hero's is
-         the height's), so it is laid out again when either moves much */
-      if (SH && (Math.abs(SH.layer.getBoundingClientRect().width - SH.W) > 30 || Math.abs(SH.layer.clientHeight - SH.V) > 80)) {
-        const f = SH.layer.scrollTop / Math.max(1, SH.layer.scrollHeight); layoutShelf(SH); SH.layer.scrollTop = f * SH.layer.scrollHeight;
+      /* the shelf's layout hears of it; one that does not listen is set
+         afresh when the stage's width or height moves much */
+      if (SH && SH.visible && SH.view) {
+        if (SH.view.onResize) { try { SH.view.onResize(); } catch (e) { /* the layout's own */ } }
+        else if (Math.abs(SH.layer.clientWidth - SH.W) > 30 || Math.abs(SH.layer.clientHeight - SH.V) > 80) {
+          const f = SH.layer.scrollTop / Math.max(1, SH.layer.scrollHeight); mountLayout(SH); SH.layer.scrollTop = f * SH.layer.scrollHeight;
+        }
+        SH.W = SH.layer.clientWidth; SH.V = SH.layer.clientHeight; pastCheck(SH);
       }
       WIRES.innerHTML = "";
     });
@@ -2093,5 +1796,5 @@
     if (st.v !== "rest") apply(st, {});
   };
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(start); else start();
-  window.XREF = { ENTRIES, GROUPS, FIGS, KEYMAP, show, fit, go, setIndex, get ix() { return IX; }, get view() { return VIEW; }, get shelf() { return SH; }, get room() { return RM; } };
+  window.XREF = { ENTRIES, GROUPS, FIGS, KEYMAP, show, fit, go, setIndex, get ix() { return IX; }, get view() { return VIEW; }, get shelf() { return SH; }, get room() { return RM; }, shelves: SHELVES, get layout() { return SH ? SH.lid : layoutId(); }, setShelf: setShelfLayout };
 })();

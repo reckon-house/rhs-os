@@ -120,8 +120,10 @@
      study's and not a category's. The mark now sits on one line with the
      switch in A, B and C as well, which was always meant.
 
-     The shelf as an edge-to-edge grid (27 Sept 2026, latest). He looked
-     at the Digital shelf, framed pictures with air between them on the
+     The shelf as an edge-to-edge grid (27 Sept 2026, later; its name
+     over the cover and its Next cover were taken off the pictures in
+     "The shelf, pluggable" below, and the grid itself moved to
+     shelf-grid.js). He looked at the Digital shelf, framed pictures with air between them on the
      line's colour, and asked: "what if it's an edge to edge grid - no
      color or background showing? and maybe we mix some hero images in
      that are so large you have to scroll left/right inside the column to
@@ -212,11 +214,61 @@
        the picture next door. It ends inside the tile.
      - Tab reached a hero but the arrows did not move it. They do.
 
+     The shelf, pluggable, and the grid calmed (27 Sept 2026, latest). He
+     looked at the Systems shelf ("Systems" set huge in black over a busy
+     Sally OS screenshot, the line's sentence running across the
+     interface) and said it needs "some finesse work so it doesnt feel so
+     chaotic"; of the categories, "it's closer but not quite there
+     yet...do we do some options?"
+
+     So how a shelf sets its studies is now a file of its own, and several
+     can be compared on one page. Each registers on window.XREF_SHELVES
+     with a word for the switch; the contract (what the page hands a
+     layout, what it hands back) is at the top of crossref2.js. The page
+     keeps what every layout shares: the running head, the addresses,
+     Close and Escape, the flights into a room and home again, the
+     hairlines to the index, and the next entry at the foot. The running
+     head reads: the kind of entry, the entry's name once the layout's own
+     head has gone under it, the layouts by their words with the current
+     one underlined, and Close. The choice is kept in the address
+     (?shelf=grid) and in the browser, so it holds while he browses and a
+     link opens on it. The page asks for shelf-grid and shelf-spread,
+     each a .js and a .css (Sheet was half-built when the round was
+     stopped on 27 Sept for hands-on work, and Reel never started; add
+     their tags back when they exist); one that is not
+     there is left out of the switch and costs a 404 (which the browser
+     notes in its console; nothing of the page's own complains). A layout
+     that throws gives way to the grid. A shelf held behind a room is not
+     laid out until Close brings it back, so it still loads nothing.
+
+     The edge-to-edge grid above is shelf-grid.js, "Grid" in the switch.
+     How it picks and sizes pictures is unchanged; what is calmed:
+     - Nothing large sits on a picture. The shelf opens on a head on
+       paper at the running head's 20px margin: the entry's name at 64px
+       (40px on a phone), how many studies in the label voice at the edge
+       ("Work 6", as index D heads a group), and its sentence in grey
+       under it, with a figure's own figure or a tool's own name in ink
+       inside it. The only words on the pictures are the captions.
+     - The grid starts under the head, and its first picture is sized so
+       the head, it and the top of the next row show on the first screen.
+     - The next entry at the foot is on paper at the head's size, its
+       name where that shelf will put it.
+     - Faux Reel, whose only picture is too small to fill the stage, sits
+       at its honest size at the left edge under the head.
+     - An entry under the pointer in the index no longer dims the shelf:
+       the captions of the studies it touches are set solid, ink with
+       paper words, and nothing else changes.
+     Every shelf was opened at 1512x770, 1280x720, 1920x1080 and 390x844:
+     no picture is drawn past half its pixels, no name runs past the
+     edge, no em dash, and the page never scrolls sideways.
+
      The markup is only the frame; crossref2.js reads everything from
      fragments.js, and crossref2.css holds the look. -->
 <link rel="stylesheet" href="/lab/density/density.css">
 <link rel="stylesheet" href="/lab/density/study-panel.css">
 <link rel="stylesheet" href="/lab/density/crossref2.css">
+<link rel="stylesheet" href="/lab/density/shelf-grid.css" onerror="this.remove()">
+<link rel="stylesheet" href="/lab/density/shelf-spread.css" onerror="this.remove()">
 <script>if (innerWidth <= 760) document.documentElement.classList.add("stack");
 document.documentElement.dataset.ix = ((/[?&]index=([abcd])\b/i.exec(location.search) || [0, "d"])[1]).toLowerCase();</script>
 </head>
@@ -230,6 +282,8 @@ document.documentElement.dataset.ix = ((/[?&]index=([abcd])\b/i.exec(location.se
 <script src="/lab/density/fragments.js"></script>
 <script src="/lab/density/density.js"></script>
 <script src="/lab/density/study-panel.js"></script>
+<script src="/lab/density/shelf-grid.js" onerror="this.remove()"></script>
+<script src="/lab/density/shelf-spread.js" onerror="this.remove()"></script>
 <script src="/lab/density/crossref2.js"></script>
 </body>
 </html>
