@@ -1257,6 +1257,13 @@
      first, the honest rung once the pointer has stayed a beat */
   let timers = [];
   const picture = (f, w) => {
+    /* Faux Reel runs instead, in the still's own shape: its frames are
+       1600 wide, so it may be drawn up to 800, where the still stopped */
+    if (liveOf(f)) {
+      const rw = Math.floor(Math.min(w, 800)), rb = el("div", "pic");
+      rb.style.width = rw + "px"; rb.style.height = Math.round(rw / ratio(f)) + "px";
+      liveReel(f, rb); return rb;
+    }
     w = Math.floor(Math.min(w, D.maxCss(f))); const h = Math.round(w / ratio(f));
     const box = el("div", "pic" + (f.alpha ? " alpha" : "")); box.style.width = w + "px"; box.style.height = h + "px";
     const dpr = Math.min(2, window.devicePixelRatio || 1);
@@ -1427,10 +1434,48 @@
     }
     return null;
   };
+  /* ── Faux Reel runs (27 Sept, his "then for 'faux reel' let's make it
+     function vs just being static"). The study is a tool that cuts stills
+     fast enough to read as motion, and its only picture here was a still
+     of it; the board already lets its tile run. So wherever that picture
+     would stand (a shelf in any layout, the focus, its room's cover) the
+     product stands instead: <sizzle-reel>, from /lab/sizzle-reel.js,
+     playing its own default cut, the seven frames and five colours
+     src/data/sizzle-case-study.ts names (RANGE_IMAGES, RANGE_COLORS).
+     The frames are made 1600 wide for it (thumbs/reel/), so a reel across
+     the stage is still drawn at half its pixels. It pauses off screen and
+     holds still under reduced motion on its own. A layout asks with
+     window.XREF_LIVE(f) and mounts with XREF_LIVE(f, box) ── */
+  const LIVE = {
+    sizzle: {
+      frames: [
+        "nordstrom-personalization-system-design-woman-model-blue-floral-print-dress-black-white-geometric-strappy-heels-yellow-sofa-editorial",
+        "hill-country-bath-vanity-marble-globe-sconces-sage",
+        "nordstrom-content-framework-lockup-whats-now",
+        "hill-country-kitchen-island-pendants-marble-wide",
+        "hill-country-oakworks-outdoor-banner-whiskey-barrels-colorful-background-tree-texas-born-oakcraft",
+        "j-christianson-storefront-tree-stripe-window-mockup",
+        "capitan-boot-co-western-original-buffalo-silhouette-desert-landscape-mesa-mountains-sage-brush-terrain-branding-campaign",
+      ].map((n) => "/lab/density/thumbs/reel/" + n + "@1600.webp"),
+      colors: ["#0AA7CA", "#181B17", "#776549", "#F5EAE7", "#8A8784"],
+    },
+  };
+  const liveOf = (f) => (f && f.lead && LIVE[f.k] && window.customElements && customElements.get("sizzle-reel") ? LIVE[f.k] : null);
+  const liveReel = (f, box) => {
+    const L = liveOf(f); if (!L || !box) return L;
+    const r = document.createElement("sizzle-reel"); r.className = "live";
+    r.setAttribute("images", L.frames.join(", "));
+    r.setAttribute("colors", L.colors.join(", "));
+    box.appendChild(r); box.classList.add("in", "reel");
+    return r;
+  };
+  window.XREF_LIVE = liveReel;
+
   /* a picture cropped to a box, its rung chosen by the size it is drawn at
      under cover; the preview first, the honest file a beat later */
   const coverBox = (f, W, H) => {
     const box = el("div", "pic cov"); box.style.width = Math.round(W) + "px"; box.style.height = Math.round(H) + "px";
+    if (liveOf(f)) { liveReel(f, box); return box; }
     const want = D.rung(f, drawnOf(f, W, H)), quick = f.t768 || f.t384;
     const add = (src) => { const im = el("img"); im.alt = f.alt || ""; im.decoding = "async"; im.src = encodeURI(src); box.appendChild(im); return im; };
     if (quick && quick !== want) {
@@ -2403,6 +2448,7 @@
       hold: true,
     });
     RM = { k, from, c, room };
+    if (room.cover && liveOf(leadOf(k))) liveReel(leadOf(k), room.cover);
     const reveal = () => {
       clearTimeout(revealT);
       c.style.visibility = "";

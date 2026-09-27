@@ -36,6 +36,39 @@
     const own = (S.ctx.pics(k) || []).filter((f) => f.w && f.h && !f.alpha).sort((a, b) => b.w - a.w);
     return s.top || S.ctx.lead(k) || own[0] || null;
   };
+  /* ── heights (27 Sept, his "on these category sections can we try and
+     vary the heights of the images? i know they're all wide originally but
+     some of them can work vertically if resized correctly and it'll help
+     vary those sections some"). Every opener was cut 4:5 around its
+     subject and laid on a contact sheet: a spectral-residual pass found
+     the window holding most of what the eye goes to, and the eye kept it
+     or moved it (the two storefront windows, the kitchen and the bath to
+     their middles, the chalet between its stove and its glass). These
+     held. A laptop on a table does not: its screen gets cut. The number is
+     where the crop's middle sits across the picture, 0 to 1. It is the
+     study's own opener that was looked at, so it applies to that picture
+     only ── */
+  const TALL = {
+    "branding-graphics": 0.59, "neiman-marcus": 0.57, "nordstrom-framework": 0.48, "amber-shockey-co": 0.39,
+    "loved-by-nordstrom": 0.76, "capitan-boot-co": 0.56, "j-christianson": 0.52, "you-by-sally": 0.52,
+    "fairview-bedroom": 0.28, "big-bend": 0.47, "hill-country-kitchen": 0.47, "hill-country-bath": 0.52,
+    "black-white-type": 0.34, "hill-country-living": 0.64, "floor-and-decor": 0.33, "fairview-sitting": 0.52,
+    "fairview-entry": 0.28, "chalet": 0.38, "arc": 0.54, "robert-rodriguez": 0.515,
+  };
+  /* a tall one: 4:5, three fifths of the stage (a phone's whole width),
+     flush to its side with its credit in the paper beside it; only if the
+     crop is still drawn at half its pixels */
+  const tallBox = (S, f) => {
+    let w = S.ph ? S.W : Math.round(S.W * 0.6), h = Math.round(w * 1.25);
+    const maxH = Math.round(S.avail * (S.ph ? 0.72 : 0.9));
+    if (h > maxH) { h = maxH; w = Math.round(h * 0.8); }
+    return h <= f.h / 2 && w <= (f.h * 0.8) / 2 ? { w, h } : null;
+  };
+  /* where the crop sits, as object-position: its middle at fx */
+  const posOf = (f, w, h, fx) => {
+    const cw = (w / h) / ratio(f); if (cw >= 1) return "50% 50%";
+    return (Math.max(0, Math.min(1, (fx - cw / 2) / (1 - cw))) * 100).toFixed(1) + "% 50%";
+  };
   /* its box: the stage's width and its own shape, cropped to the glass if
      it is taller, and narrower if the file cannot fill the width */
   const boxOf = (S, f) => {
@@ -79,22 +112,39 @@
     const head = headEl(S);
     S.root.replaceChildren(head); S.units.push(head);
     fitName(S);
+    /* the rhythm: a tall one comes when its picture can stand tall and
+       one wide (then two, then one) has come since the last, the first
+       opener included (Apps has one picture that can stand, and it is
+       first), each tall on the other side from the one before, so no
+       shelf runs tall, wide, tall, wide */
+    let since = 1, need = 1, side = 0;
     S.ks.forEach((k, i) => {
       const f = openerOf(S, k); if (!f) return;
-      const { w, h } = boxOf(S, f);
-      const fig = el("figure", "xk-it" + (w < S.W - 2 ? " narrow" : "")); fig.dataset.k = k;
-      const box = el("div", "xk-pic" + (f.alpha ? " alpha" : "")); box.style.width = w + "px"; box.style.height = h + "px"; box._f = f;
-      fig.appendChild(box);
       const s = S.D.study(k) || {};
+      const live = !!(window.XREF_LIVE && window.XREF_LIVE(f));
+      const tb = !live && TALL[k] != null && f === s.top && since >= need ? tallBox(S, f) : null;
+      /* Faux Reel runs, so it takes the stage like a picture that can fill
+         it, at the reel's own 16:9 */
+      const { w, h } = tb || (live ? { w: S.W, h: Math.round(Math.min(S.W * 9 / 16, S.avail * 0.9)) } : boxOf(S, f));
+      const fig = el("figure", "xk-it" + (tb ? " tall " + (side ? "r" : "l") : w < S.W - 2 ? " narrow" : "")); fig.dataset.k = k;
+      const box = el("div", "xk-pic" + (f.alpha ? " alpha" : "")); box.style.width = w + "px"; box.style.height = h + "px"; box._f = f;
+      if (tb) box._pos = posOf(f, w, h, TALL[k]);
+      fig.appendChild(box);
       /* the study's own number, and the sections this entry sits in, each
-         a way straight to its place (27 Sept, the locators) */
+         a way straight to its place (27 Sept, the locators). Beside a tall
+         picture the credit stands in lines, as a side caption does */
       const locs = ctx.locs ? ctx.locs(k) : [];
-      fig.appendChild(el("figcaption", "xk-cap",
-        '<span class="xk-no">' + (ctx.num ? ctx.num(k) : two(i + 1)) + '</span><span class="xk-t">' + S.esc(S.D.title(k)) + '</span><span class="xk-y">' + (s.y || "") + "</span>" +
-        (locs.length ? '<span class="xk-locs">' + locs.map((l) => '<a class="xk-l" href="#study/' + S.esc(k) + '" data-at="' + S.esc(l.at) + '" title="' + S.esc(S.D.title(k)) + ", section " + l.s + '">§' + l.s + "</a>").join("") + "</span>" : "") +
-        (s.s ? '<span class="xk-d">' + S.esc(s.s) + "</span>" : "")));
+      const no = '<span class="xk-no">' + (ctx.num ? ctx.num(k) : two(i + 1)) + "</span>";
+      const t = '<span class="xk-t">' + S.esc(S.D.title(k)) + "</span>";
+      const y = '<span class="xk-y">' + (s.y || "") + "</span>";
+      const lc = locs.length ? '<span class="xk-locs">' + locs.map((l) => '<a class="xk-l" href="#study/' + S.esc(k) + '" data-at="' + S.esc(l.at) + '" title="' + S.esc(S.D.title(k)) + ", section " + l.s + '">§' + l.s + "</a>").join("") + "</span>" : "";
+      const d = s.s ? '<span class="xk-d">' + S.esc(s.s) + "</span>" : "";
+      fig.appendChild(el("figcaption", "xk-cap", tb
+        ? no + '<span class="xk-tl">' + t + '</span><span class="xk-ym">' + y + lc + "</span>" + d
+        : no + t + y + lc + d));
       S.root.appendChild(fig);
       S.items.push({ k, fig, box }); S.units.push(fig);
+      if (tb) { since = 0; need = need === 1 ? 2 : 1; side ^= 1; } else since++;
     });
     S.io = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { S.io.unobserve(e.target); load(e.target, S); } }),
       /* above as well as below: a shelf can be arrived at from its end,
@@ -109,12 +159,14 @@
      index does not fetch a dozen large files */
   const load = (box, S) => {
     const f = box._f; if (!f || box._loaded) return; box._loaded = true;
+    /* a picture that is a running thing on this page runs (Faux Reel) */
+    if (window.XREF_LIVE && window.XREF_LIVE(f, box)) return;
     const w = box.offsetWidth || 400, h = box.offsetHeight || 300;
     const need = Math.max(w, h * ratio(f)) * Math.min(2, window.devicePixelRatio || 1);
     const want = f.t384 && need <= 384 ? f.t384 : f.t768 && need <= 768 ? f.t768 : f.src;
     const rungs = [f.t384, f.t768, f.src].filter(Boolean);
     const quick = rungs.indexOf(want) > 0 ? rungs[rungs.indexOf(want) - 1] : null;
-    const add = (src, then) => { const im = el("img"); im.alt = f.alt || ""; im.decoding = "async"; im.draggable = false; im.addEventListener("load", () => then(im), { once: true }); im.src = encodeURI(src); box.appendChild(im); return im; };
+    const add = (src, then) => { const im = el("img"); im.alt = f.alt || ""; im.decoding = "async"; im.draggable = false; if (box._pos) im.style.objectPosition = box._pos; im.addEventListener("load", () => then(im), { once: true }); im.src = encodeURI(src); box.appendChild(im); return im; };
     let pv = null;
     if (quick) pv = add(quick, () => box.classList.add("in"));
     const honest = () => add(want, (im) => { im.classList.add("hi"); box.classList.add("in"); if (pv) setTimeout(() => pv.remove(), 400); });

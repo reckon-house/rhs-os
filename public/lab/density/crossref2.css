@@ -857,3 +857,7 @@ html[data-ix="e"]:not([data-tx="none"]) #idx .grp.ec { position: relative; isola
 html[data-tx="none"] #idx .stx { display: none; }
 /* its switch takes a line of its own, under Mark */
 .txsw { flex-basis: 100%; justify-content: flex-end; }
+
+/* ── Faux Reel, running (27 Sept): the product fills whatever box its
+   picture would have, over paper, in any layout, the focus and its room */
+sizzle-reel.live { position: absolute !important; inset: 0; width: 100% !important; height: 100% !important; aspect-ratio: auto !important; z-index: 1; }

@@ -469,6 +469,8 @@
      after the rung below it, which is also the one sampled for its light */
   const loadTile = (box) => {
     const f = box._f; if (!f || box._loaded) return; box._loaded = true;
+    /* a picture that is a running thing on this page runs (Faux Reel) */
+    if (window.XREF_LIVE && window.XREF_LIVE(f, box)) return;
     const w = box.offsetWidth || 300, h = box.offsetHeight || 200;
     const need = coverW(w, h, f) * Math.min(2, window.devicePixelRatio || 1);
     const want = f.t384 && need <= 384 ? f.t384 : f.t768 && need <= 768 ? f.t768 : f.src;
