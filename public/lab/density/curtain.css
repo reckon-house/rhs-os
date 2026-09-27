@@ -45,3 +45,6 @@
 .pt-3 .ptl { opacity: 0; transform: translate3d(0, -10px, 0); transition-duration: 0.22s, 0.24s; }
 .pt-3 .ptw { transition: none; clip-path: inset(0 0 100% 0); }
 .pt-3 .ptb { transition: clip-path 0.68s cubic-bezier(0.33, 0.28, 0.12, 1); clip-path: inset(0 0 100% 0); }
+/* in the page, over one column (27 Sept): crossref2's content column,
+   from the stage's left edge to the glass's right */
+.pt.ptc { left: var(--stl, 50%); }

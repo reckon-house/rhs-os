@@ -1595,9 +1595,13 @@
   /* what a hover shows. A line, a year or a capability shows the shelf a
      click on it opens, as it will be (27 Sept, his "on hover instead of
      loading this grid let's just load the stack - it's one less variable
-     and consistent with what the user will end up seeing anyways"). A
-     tool, a figure and About keep their sentences; a phone keeps its band */
-  const PREVIEWED = new Set(["lines", "years", "capabilities"]);
+     and consistent with what the user will end up seeing anyways"). Then
+     tools and figures too (27 Sept, later, his "in the 'Tools' section
+     when you hover the images it loads arent full width - in fact the
+     hover and the 'click' experience are different ... let's keep it
+     consistent"), and About with them, whose shelf is set the same way.
+     Every kind now; a phone keeps its band */
+  const PREVIEWED = new Set(["lines", "years", "capabilities", "tools", "figures", "about"]);
   const reelOf = (o) => (!phone() && PREVIEWED.has(o.g.id) && shelfIds().length ? o._sv || (o._sv = [{ t: "shelf", o }]) : o.reel());
   const itemOf = () => {
     const reel = cur ? reelOf(cur.o) : [];
@@ -2397,9 +2401,46 @@
       hold: true,
     });
     RM = { k, from, c, room };
+    const reveal = () => {
+      clearTimeout(revealT);
+      c.style.visibility = "";
+      if (SH && SH.visible && RM && RM.c === c) { SH.visible = false; SH.layer.style.visibility = "hidden"; }
+      if (prev) { prev.room.destroy(); prev.c.remove(); }
+    };
     /* opened from a locator: the room starts at that place, marked */
     if (how.at && room.find(how.at)) { room.scrollTo(how.at); room.mark([how.at]); }
-    c.addEventListener("scroll", () => { if (LW) { cancelAnimationFrame(LW.raf); LW.raf = requestAnimationFrame(drawLive); } }, { passive: true });
+    let rsc = 0;
+    c.addEventListener("scroll", () => { cancelAnimationFrame(rsc); rsc = requestAnimationFrame(() => { if (LW) drawLive(); else wireRoom(true); }); }, { passive: true });
+
+    /* opened from the index (27 Sept, his "if i click instead of the
+       transtion inside the content column the thumbnail image
+       'moves/animates' from the the left side to the right side and zooms
+       into place. can we remove that and just have the curtain type of
+       animation happen and load the case study on the content column?"):
+       no flight. The site's own curtain plays in the content column, the
+       study's name down a white panel that falls and a black one that
+       rises over it. At full black the room is put in place under it,
+       whatever the column showed goes, and the black lifts off the room
+       as its words rise. The index keeps working the whole time */
+    if (how.curtain && window.Curtain && window.Curtain.cover && !still() && !phone()) {
+      RM.curtain = true;
+      lockEntry(WORK[k]);
+      const s = D.study(k) || {};
+      window.Curtain.cover(D.title(k), s.s || "").then(() => {
+        /* a later click took the curtain over; it lifts it. A close, or a
+           step elsewhere, lifts it here */
+        if (!RM || RM.c !== c) { if (!RM || !RM.curtain) window.Curtain.lift(); return; }
+        setStaged(true); cur = null;
+        lockEntry(WORK[k]); paintRoom();
+        c.style.visibility = "";
+        if (SH && SH.visible) shelfLeave(SH, null);
+        reveal();
+        room.play({ delay: 140, settle: true });
+        window.Curtain.lift();
+        setTimeout(() => { if (RM && RM.c === c) roomWires(true); }, 260);
+      });
+      return;
+    }
 
     /* where the picture flies from: what was clicked, else the foot of the
        last room, else the study's tile on the shelf, else the focus */
@@ -2431,12 +2472,6 @@
     const flight = src && !still() ? fly(src.box, src.f, to) : null;
     /* what a picture flies to shows at once and holds still */
     if (flight) room.shown(to);
-    const reveal = () => {
-      clearTimeout(revealT);
-      c.style.visibility = "";
-      if (SH && SH.visible && RM && RM.c === c) { SH.visible = false; SH.layer.style.visibility = "hidden"; }
-      if (prev) { prev.room.destroy(); prev.c.remove(); }
-    };
     if (flight) {
       /* the room comes up on paper behind the picture in flight; its own
          cover waits under the flyer until the flyer lands on it */
@@ -2447,7 +2482,7 @@
       room.el.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 360, delay: 330, easing: "ease", fill: "backwards" });
       if (SH && SH.visible && src.shelf) shelfLeave(SH, src.box);
       if (prev) prev.c.animate([{ opacity: 1, transform: "none" }, { opacity: 0, transform: "translateY(-24px)" }], { duration: 320, easing: DROP, fill: "forwards" });
-      land(flight, to, () => { to.style.visibility = ""; restore.style.visibility = ""; reveal(); });
+      land(flight, to, () => { to.style.visibility = ""; restore.style.visibility = ""; reveal(); roomWires(true); });
       /* the words rise as the room's paper comes up behind the flight */
       room.play({ delay: 380 });
     } else {
@@ -2459,7 +2494,7 @@
       if (!still()) c.animate([{ clipPath: "inset(100% 0 0 0)" }, { clipPath: "inset(0 0 0 0)" }], { duration: 560, easing: EASE });
       if (prev) prev.c.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 300, fill: "forwards" });
       if (SH && SH.visible) shelfLeave(SH, null);
-      revealT = setTimeout(reveal, still() ? 0 : 560);
+      revealT = setTimeout(() => { reveal(); roomWires(true); }, still() ? 0 : 560);
     }
   };
   /* back from a room to the shelf it came from: the picture flies home and
@@ -2563,6 +2598,34 @@
     if (Math.abs(d) > c.clientHeight * 1.4) c.scrollTop = top - Math.sign(d) * near;
     c.scrollTo({ top, behavior: still() ? "auto" : "smooth" });
   };
+  /* the room wired to all it touches (27 Sept, his "can we have ALL the
+     curve lines going to all the other attributes that case study has -
+     does that make sense? in theory most case studies would have a BUNCH
+     of the curves indicator lines pointing to it"). Every entry the open
+     study lights sends a wire to one point on the room's edge, level with
+     the middle of its cover while the cover shows; its own entry's wire
+     is drawn in ink. The fan stays while an entry is pointed at, under
+     that entry's own wire to its place */
+  const roomNode = () => {
+    const s = RM.c.getBoundingClientRect();
+    const cv = RM.room.cover && RM.room.cover.getBoundingClientRect();
+    const mid = cv && cv.height ? cv.top + Math.min(cv.height / 2, 220) : s.top + 60;
+    return [s.left - 1, Math.max(s.top + 60, Math.min(s.bottom - 60, mid))];
+  };
+  const fanPairs = (except, inkOwn) => {
+    const q = roomNode(), own = WORK[RM.k];
+    const out = lit.filter((x) => x !== except && x !== own).map((x) => ({ x, q }));
+    if (own && own !== except) out.push({ x: own, q, me: inkOwn });
+    return out;
+  };
+  const wireRoom = (live) => {
+    if (!RM || VIEW.v !== "study" || LW || phone() || !staged()) return;
+    draw(fanPairs(null, true), live ? { live: true } : null);
+  };
+  /* once a room is in place: an entry pointed at while it came in keeps
+     its own wire (a click lands before the hover it began), else the fan
+     draws in */
+  const roomWires = (anim) => { if (!RM) return; if (LW) drawLive(); else wireRoom(!anim); };
   /* one live hairline, from an entry to the fragment it points at, kept
      on it while the room scrolls */
   let LW = null;
@@ -2573,15 +2636,15 @@
     const pic = e.classList.contains("sp-pic") || e.classList.contains("sp-pal");
     const y = Math.max(s.top + 10, Math.min(s.bottom - 10, r.top + (pic ? Math.min(r.height / 2, 40) : r.height / 2)));
     const x = Math.max(s.left + 3, r.left - 7);
-    draw([{ x: LW.o, q: [x, y], me: true }], { live: true });
+    draw(fanPairs(LW.o, false).concat([{ x: LW.o, q: [x, y], me: true }]), { live: true });
   };
   const clearLive = () => { LW = null; clearWires(); };
   const pointAt = (o) => {
     const k = RM.k;
-    if (!o.rel.has(k)) { paintRoom(); clearLive(); return; }
+    if (!o.rel.has(k)) { paintRoom(); clearLive(); wireRoom(true); return; }
     paint(new Set([k]), o);
     const ts = roomTargets(o, k);
-    if (!ts.length) { clearLive(); markEls([]); return; }
+    if (!ts.length) { clearLive(); markEls([]); wireRoom(true); return; }
     markEls(ts); scrollToEl(ts[0]);
     LW = { o, t: ts[0], raf: 0 }; drawLive();
   };
@@ -2602,7 +2665,7 @@
   const stageNeutral = () => {
     hov = null;
     if (VIEW.v === "shelf" && SH) { shelfLight(SH, null); paint(SH.o.rel, SH.o); clearWires(); }
-    else if (VIEW.v === "study" && RM) { paintRoom(); LW = null; clearWires(); }
+    else if (VIEW.v === "study" && RM) { paintRoom(); LW = null; wireRoom(true); }
   };
 
   /* ── addresses: one per depth, and the back button steps through them ── */
@@ -2698,7 +2761,7 @@
     if (lc && !(ev.metaKey || ev.ctrlKey || ev.shiftKey || ev.button)) {
       ev.preventDefault(); clearTimeout(intentT);
       const o2 = entryOf(ev.target);
-      go({ v: "study", k: lc.dataset.k, from: o2 && o2.g.id !== "work" ? o2.key : null }, { push: true, at: lc.dataset.at || null });
+      go({ v: "study", k: lc.dataset.k, from: o2 && o2.g.id !== "work" ? o2.key : null }, { push: true, at: lc.dataset.at || null, curtain: true });
       return;
     }
     const sw = ev.target.closest(".ixsw a");
@@ -2709,15 +2772,9 @@
     clearTimeout(intentT);
     /* on glass a tap is the hover; a second tap opens */
     if (phone() && !staged() && !(cur && cur.o === o)) { show(o, 0); return; }
-    /* a study in Work flies from its own picture in the index, when that
-       picture is loaded and in view */
-    let how = null;
-    if (o.g.id === "work") {
-      const th = o.a && o.a.querySelector(".th");
-      const view = phone() ? { top: 0, bottom: innerHeight } : IDX.getBoundingClientRect();
-      if (th && th.classList.contains("in") && rectIn(th.getBoundingClientRect(), view)) how = { src: { box: th, f: th._f, target: "cover" } };
-    }
-    open(o, how);
+    /* a study opens under the curtain in the content column; its picture
+       no longer flies over from the index (27 Sept, see openRoom) */
+    open(o, o.g.id === "work" ? { curtain: true } : null);
   });
   /* ── LEAVING (27 Sept): a full study, or the board through the mark,
      is left under the site's own curtain (curtain.js), the name of what
@@ -2780,7 +2837,7 @@
   const rewire = () => {
     if (!staged()) { wire(true); return; }
     if (VIEW.v === "shelf" && SH) { if (SH.hovK) wireTile(SH); else if (hov) wireShelf(SH, hov); }
-    else if (VIEW.v === "study" && LW) drawLive();
+    else if (VIEW.v === "study" && RM) { if (LW) drawLive(); else wireRoom(true); }
   };
   IDX.addEventListener("scroll", () => { cancelAnimationFrame(sc); sc = requestAnimationFrame(rewire); }, { passive: true });
   let rz = 0;
@@ -2800,6 +2857,8 @@
         SH.W = SH.layer.clientWidth; SH.V = SH.layer.clientHeight; pastCheck(SH);
       }
       clearWires();
+      /* a room keeps its fan */
+      if (VIEW.v === "study" && RM) { if (LW) drawLive(); else wireRoom(true); }
     });
   });
 
