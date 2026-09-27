@@ -2199,6 +2199,20 @@
     }
     open(o, how);
   });
+  /* ── LEAVING (27 Sept): a full study, or the board through the mark,
+     is left under the site's own curtain (curtain.js), the name of what
+     is arriving repeating down it; the page that arrives lifts it ── */
+  document.addEventListener("click", (ev) => {
+    if (ev.defaultPrevented || ev.metaKey || ev.ctrlKey || ev.shiftKey || ev.altKey || ev.button || !window.Curtain) return;
+    const a = ev.target.closest("a.sp-full, a#mark"); if (!a || !a.href) return;
+    let title = "Reckon*House", sub = "";
+    if (a.classList.contains("sp-full")) {
+      const k = (a.closest(".sp") || {}).dataset ? a.closest(".sp").dataset.k : null; const s = k && D.study(k);
+      if (s) { title = D.title(k); sub = s.s || ""; }
+    }
+    ev.preventDefault();
+    window.Curtain.go(a.href, title, sub);
+  });
   /* on glass, a sideways swipe on the focus steps it */
   let sx = null, sy = 0, swiped = false;
   FOCUS.addEventListener("touchstart", (ev) => { const t = ev.touches[0]; sx = t.clientX; sy = t.clientY; swiped = false; }, { passive: true });

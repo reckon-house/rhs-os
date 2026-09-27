@@ -1,0 +1,47 @@
+/* ── THE CURTAIN (27 Sept 2026): the site's own page transition ──────
+   Copied from board-shell.css (the .pt block, which is PressingTransition's
+   lifted into plain CSS), not re-derived: a white panel falls, a black one
+   rises over it, and the name of what is arriving repeats down both at the
+   same coordinates, so the type inverts along the moving edge. The page
+   that arrives lifts the black as beat three: the board reads the note in
+   its head, the Next app in src/app/layout.tsx. Only the rules the leaving
+   page needs are here; the reasons for each value are in board-shell.css. */
+/* the tokens are the site's, set on the curtain itself as
+   pressing-curtain.css sets them, so the lines this page lays down
+   register with the ones the arriving page draws */
+.pt { --paper: #FFFFFF; --ink: #000000; --gut: 50px; }
+@media (max-width: 760px) { .pt { --gut: 20px; } }
+.pt { position: fixed; inset: 0; z-index: 400; pointer-events: none; visibility: hidden;
+  font-family: "Avenir Next", "Helvetica Neue", Helvetica, Arial, sans-serif; -webkit-font-smoothing: antialiased; }
+.pt.pt-run { visibility: visible; pointer-events: auto; }
+.ptw, .ptb { position: absolute; inset: 0; overflow: hidden; }
+.ptstack { position: absolute; inset: 0; padding: var(--gut, 28px); display: flex; flex-direction: column; justify-content: center; }
+.ptl { display: block; white-space: nowrap; font-size: var(--ptfs, clamp(20px, 2.6vw, 38px)); font-weight: 600;
+  line-height: var(--ptlh, 1.18); letter-spacing: -0.05em; opacity: 0; transform: translate3d(0, 14px, 0);
+  transition: opacity 0.3s ease, transform 0.34s cubic-bezier(0.16, 1, 0.3, 1); transition-delay: var(--d, 0s); }
+.pt-run .ptl { will-change: transform, opacity; }
+.ptb .ptl { -webkit-text-stroke: 0.36px currentColor; }
+.pt-1 .ptl { opacity: 1; transform: translate3d(0, 0, 0); }
+@keyframes ptwait {
+  0% { opacity: 1; transform: translate3d(0, 0, 0); }
+  22% { opacity: 0; transform: translate3d(0, -12px, 0); }
+  23% { opacity: 0; transform: translate3d(0, 14px, 0); }
+  45% { opacity: 1; transform: translate3d(0, 0, 0); }
+  100% { opacity: 1; transform: translate3d(0, 0, 0); }
+}
+.pt-wait .ptl { animation: ptwait 1.8s var(--d, 0s) infinite both; transition: none; }
+.ptw .ptl { color: var(--ink, #000); }
+.ptw .ptl .sub { color: rgba(0, 0, 0, 0.42); }
+.ptstack.pt-nosub .ptl .sub { display: none; }
+.ptb .ptl { color: var(--paper, #fff); }
+.ptb .ptl .sub { color: rgba(255, 255, 255, 0.48); }
+.ptw { background: var(--paper, #fff); clip-path: inset(0 0 100% 0); }
+.ptb { background: var(--ink, #000); clip-path: inset(100% 0 0 0); }
+.pt-run .ptw, .pt-run .ptb { transition: clip-path 0.52s cubic-bezier(0.33, 0.28, 0.12, 1); }
+.pt-1 .ptw { clip-path: inset(0 0 0 0); }
+.pt-2 .ptb { clip-path: inset(0 0 0 0); }
+/* coming back to this page from the browser's history, the curtain the
+   page left under is lifted, in the site's own beat three */
+.pt-3 .ptl { opacity: 0; transform: translate3d(0, -10px, 0); transition-duration: 0.22s, 0.24s; }
+.pt-3 .ptw { transition: none; clip-path: inset(0 0 100% 0); }
+.pt-3 .ptb { transition: clip-path 0.68s cubic-bezier(0.33, 0.28, 0.12, 1); clip-path: inset(0 0 100% 0); }
