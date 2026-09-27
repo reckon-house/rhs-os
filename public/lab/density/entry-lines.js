@@ -32,19 +32,26 @@
 window.ENTRY_LINES = {
   /* the six lines, What I make (27 Sept, his "do the same pass for the
      lines too"): each shelf's head says the problem the line answers and
-     what was built, where the index keeps the board's short sentence */
+     what was built, where the index keeps the board's short sentence.
+     Then, reading them through, "should it be more strategic/a little
+     marketing/agency in nature vs being that specific and diving right
+     in? ... the digital version is closer": a line sits one altitude
+     above its studies, so it says what that kind of work has to do and
+     points at the work, and the specifics stay in the studies, the
+     figures and the tools. Plain words, not an agency's, and the five
+     open five different ways so the six do not read as a formula */
   /* what it answered: Ivy Park: "this page had to be the store, the lookbook and the campaign at the same time"; Nordstrom beauty: "New products launch weekly" */
   "line/digital": "A retail site has to be the store, the lookbook and the campaign at once, and stay current while new products land every week. These are the ones I designed and shipped, from Ivy Park's launch at Nordstrom to Jeffrey New York's first online store.",
-  /* what it answered: A.R.C.: "The apps for it ask you to type every item in by hand"; DSC: "a pile of texts, handwritten notes, emails, and a Google Sheet"; the board: "Native tools and AI products, built end to end" */
-  "line/app": "Home inventory apps make you type every item in, and a gym's bookings lived in texts and a spreadsheet. A.R.C. catalogs a home from the camera, and Dallas Sport Collective books from the AI you already use. With Sally Marketing OS and Faux Reel, all four were built end to end.",
-  /* what it answered: Sally OS: "that output breaks when the tools underneath it don't share context"; Nordstrom framework: "producing more digital content than the site had structure for" */
-  "line/systems": "Sally's marketing output broke where its tools didn't share context, and Nordstrom was publishing more content than its site had structure for. The answers were systems: one pipeline with a shared brain at Sally, four named buckets and three tile shapes at Nordstrom, and one booking engine at Dallas Sport Collective.",
-  /* what it answered: Robert Rodriguez: "the budget covered one day in the studio"; Neiman Marcus: "There was no location budget"; Jeffrey spring: "on a studio budget" */
-  "line/creative": "Several of these campaigns had less than they needed: one studio day for Robert Rodriguez, no location budget at Neiman Marcus or Jeffrey. The direction worked with what there was: one model in four setups, color blocks where a location would go, and foliage cropped big enough to stand in for a place.",
-  /* what it answered: Capitan Boot Co.: "needed a brand that could take the same wear"; J. Christianson: "the colors change with the setting"; the board: "Marks, type and patterns, on packaging, print and apparel" */
-  "line/branding": "A brand has to hold up where it goes: stamped into leather for Capitan Boot Co., changing color by setting for J. Christianson, layered across a table for Amber Shockey & Co. The marks, type and patterns here were made for the packaging, print and apparel they live on.",
-  /* what it answered: Hill Country kitchen: "The kitchen is the hub of the house"; Fairview entry: "The light through those doors comes first"; the board: "Rooms designed like products, down to the hardware" */
-  "line/interiors": "A room has to work for how it gets used: a kitchen that's the hub of the house, a chalet that looks out at the trees, an entry built around its light. Eight rooms are here, each designed like a product, down to the hardware.",
+  /* what it answered: A.R.C.: "your job turns into reviewing what it found"; DSC: "The AI only ever asks"; the board: "built end to end" */
+  "line/app": "The tools here take the tedious part off your hands, the typing, the sorting and the back-and-forth, and leave the decisions with you. I built them end to end, from A.R.C. to Sally Marketing OS.",
+  /* what it answered: Sally OS: "that output breaks when the tools underneath it don't share context"; Nordstrom framework: "it was organizing the teams before it reached a customer" */
+  "line/systems": "When tools and teams don't share what they know, the output breaks somewhere between them. Nordstrom's content framework and Sally Marketing OS are two of the systems I built so they do.",
+  /* what it answered: Robert Rodriguez: "shot in one day and run across social, email, the stores, and editorial"; Hill Country Oakworks: "The same idea runs on billboards, print, and digital" */
+  "line/creative": "A campaign has to carry one idea across social, email, the stores and editorial, sometimes from a single day in the studio. This work runs from Neiman Marcus's InSite in 2012 to the Robert Rodriguez campaign in 2024.",
+  /* what it answered: Capitan Boot Co.: "needed a brand that could take the same wear"; J. Christianson: "apparel, candles, hangtags, and print"; Amber Shockey & Co.: "from a single dish up to a full setting" */
+  "line/branding": "Wherever a brand lands, stamped into leather, printed on a hangtag or set across a whole table, it has to hold up. The marks, type and patterns here were made for that, from Capitan Boot Co. to Amber Shockey & Co.",
+  /* what it answered: Hill Country kitchen: "Every decision came back to how a family uses a kitchen day to day"; the board: "Rooms designed like products, down to the hardware" */
+  "line/interiors": "Every decision in a room comes back to how it gets used day to day, down to the hardware. Eight rooms are here, from a Hill Country kitchen to a 1968 chalet taken to the studs.",
 
   /* A.R.C.: "Perceptron's Mk1 model reads the physical world from footage
      ... picks up the spatial context a single photo misses. Sweep a room
