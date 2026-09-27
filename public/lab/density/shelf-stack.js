@@ -86,13 +86,16 @@
       S.root.appendChild(fig);
       S.items.push({ k, fig, box }); S.units.push(fig);
     });
-    S.io = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { S.io.unobserve(e.target); load(e.target); } }),
+    S.io = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { S.io.unobserve(e.target); load(e.target, S); } }),
       { root: ctx.scroller || null, rootMargin: "0px 0px 60% 0px" });
     S.items.forEach((t) => S.io.observe(t.box));
   };
   /* the honest rung for the width it is drawn at under its crop, after the
-     rung below it */
-  const load = (box) => {
+     rung below it. While the stack is only a hover's preview the honest
+     file waits a beat, and does not come at all once the pointer has
+     moved on and the preview is gone (27 Sept), so a sweep across the
+     index does not fetch a dozen large files */
+  const load = (box, S) => {
     const f = box._f; if (!f || box._loaded) return; box._loaded = true;
     const w = box.offsetWidth || 400, h = box.offsetHeight || 300;
     const need = Math.max(w, h * ratio(f)) * Math.min(2, window.devicePixelRatio || 1);
@@ -102,7 +105,9 @@
     const add = (src, then) => { const im = el("img"); im.alt = f.alt || ""; im.decoding = "async"; im.draggable = false; im.addEventListener("load", () => then(im), { once: true }); im.src = encodeURI(src); box.appendChild(im); return im; };
     let pv = null;
     if (quick) pv = add(quick, () => box.classList.add("in"));
-    add(want, (im) => { im.classList.add("hi"); box.classList.add("in"); if (pv) setTimeout(() => pv.remove(), 400); });
+    const honest = () => add(want, (im) => { im.classList.add("hi"); box.classList.add("in"); if (pv) setTimeout(() => pv.remove(), 400); });
+    if (quick && S && S.ctx && S.ctx.preview) setTimeout(() => { if (box.isConnected && !S.ctx.gone) honest(); }, 240);
+    else honest();
   };
 
   /* in: each opener unveils from the top in reading order, the head's

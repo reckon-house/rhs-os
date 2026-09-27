@@ -1108,6 +1108,15 @@
   /* ── the focus renderers: one thing, as large as it honestly goes ── */
   const V = {
     bleed(main, W, H, it) { const b = coverBox(it.f, W, H); b.classList.add("fillpic"); main.appendChild(b); },
+    /* the shelf the entry opens, built in the open half as the stage would
+       hold it: its running head, its layout, its foot. A click hands this
+       very shelf to the stage (promote), so nothing loads again, moves or
+       plays twice */
+    shelf(main, W, H, it) {
+      const P = buildShelf(it.o, false, { host: main, pv: true });
+      main.parentNode._pv = P;
+      shelfEnter(P, { delay: 0 });
+    },
     mosaic(main, W, H, it) {
       const wrap = el("div", "mos"); wrap.style.width = W + "px"; wrap.style.height = H + "px";
       tilesOf(it.tiles.length, W, H).forEach(([x, y, w, h], i) => {
@@ -1234,16 +1243,33 @@
   let cur = null; /* { o: entry, n: index in its reel } */
   let shownK = null;
   const layerOf = () => FOCUS.querySelector(".layer:not(.out)");
+  /* what a hover shows. A line, a year or a capability shows the shelf a
+     click on it opens, as it will be (27 Sept, his "on hover instead of
+     loading this grid let's just load the stack - it's one less variable
+     and consistent with what the user will end up seeing anyways"). A
+     tool, a figure and About keep their sentences; a phone keeps its band */
+  const PREVIEWED = new Set(["lines", "years", "capabilities"]);
+  const reelOf = (o) => (!phone() && PREVIEWED.has(o.g.id) && shelfIds().length ? o._sv || (o._sv = [{ t: "shelf", o }]) : o.reel());
   const itemOf = () => {
-    const reel = cur ? cur.o.reel() : [];
+    const reel = cur ? reelOf(cur.o) : [];
     return { reel, it: cur && reel.length ? reel[(cur.n % reel.length + reel.length) % reel.length] : { t: "rest" } };
   };
   const render = () => {
     let { reel, it } = itemOf();
     timers.forEach(clearTimeout); timers = [];
-    const old = layerOf(); if (old) { old.classList.add("out"); setTimeout(() => old.remove(), 200); }
+    const old = layerOf();
+    if (old) {
+      old.classList.add("out");
+      /* a preview the pointer has left loads nothing more, though it stays
+         on the glass through its fade */
+      if (old._pv && old._pv.pv) old._pv.gone = true;
+      /* a preview that became the shelf has left this layer; one that did
+         not goes with it */
+      setTimeout(() => { old.remove(); const P = old._pv; if (P && P.pv) destroyShelf(P); }, 200);
+    }
     if (it.t === "bleed" || it.t === "mosaic") it = resolveFill(it) || it.fallback || { t: "rest" };
-    const layer = el("div", "layer" + (it.t === "bleed" || it.t === "mosaic" ? " bleed" : "")); const main = el("div", "main"); const cap = el("div", "cap");
+    const full = it.t === "bleed" || it.t === "mosaic" || it.t === "shelf";
+    const layer = el("div", "layer" + (full ? " bleed" : "") + (it.t === "shelf" ? " pvl" : "")); const main = el("div", "main"); const cap = el("div", "cap");
     layer.appendChild(main); layer.appendChild(cap); FOCUS.appendChild(layer);
 
     /* a line no longer fills the open half with its colour (27 Sept): its
@@ -1356,7 +1382,7 @@
     paint(o ? o.rel : null, o); render();
   };
   const step = (d) => {
-    if (!cur) return; const n = cur.o.reel().length; if (n < 2) return;
+    if (!cur) return; const n = reelOf(cur.o).length; if (n < 2) return;
     cur = { o: cur.o, n: (cur.n + d + n) % n }; render();
   };
   const entryOf = (t) => { const a = t && t.closest && t.closest(".e"); return a ? ENTRIES[+a.dataset.i] : null; };
@@ -1531,8 +1557,12 @@
     scroller: S.layer,
     head: HEAD,
     get phone() { return phone(); },
-    open: (k, fromEl) => shelfOpen(S, k, fromEl),
-    hover: (k, at) => shelfHover(S, k, at),
+    /* a preview until a click makes it the shelf; a layout may load less
+       while it is only a preview */
+    get preview() { return !!S.pv; },
+    get gone() { return !!S.gone; },
+    open: (k, fromEl) => (S.pv ? pvOpen(S, k, fromEl) : shelfOpen(S, k, fromEl)),
+    hover: (k, at) => (S.pv ? pvHover(S, k, at) : shelfHover(S, k, at)),
     esc, clean, D,
   });
 
@@ -1544,6 +1574,7 @@
     bar.appendChild(el("span", "sh-bar-t", esc(nameOf(o))));
     const sw = el("span", "sh-sw"); bar.appendChild(sw);
     const x = el("button", "sh-x", "Close"); x.type = "button"; x.addEventListener("click", (ev) => { ev.stopPropagation(); closeTo({ v: "rest" }); });
+    if (S.pv) x.tabIndex = -1;
     bar.appendChild(x);
     const body = el("div", "sh-body");
     const kids = [bar, body];
@@ -1565,7 +1596,7 @@
     const ids = shelfIds();
     S.sw.innerHTML = ids.map((id) => {
       const u = new URL(location.href); u.searchParams.set("shelf", id);
-      return '<a href="' + D.esc(u.pathname + u.search + u.hash) + '" data-shelf="' + D.esc(id) + '"' + (id === S.lid ? ' class="on" aria-current="true"' : "") + ">" + esc(SHELVES[id].label || id) + "</a>";
+      return '<a href="' + D.esc(u.pathname + u.search + u.hash) + '" data-shelf="' + D.esc(id) + '"' + (S.pv ? ' tabindex="-1"' : "") + (id === S.lid ? ' class="on" aria-current="true"' : "") + ">" + esc(SHELVES[id].label || id) + "</a>";
     }).join("");
   };
   const unmountLayout = (S) => {
@@ -1605,12 +1636,14 @@
        sentence passing beneath never reads as part of the head */
     S.layer.classList.toggle("moved", S.layer.scrollTop > 2);
   };
-  const buildShelf = (o, held) => {
-    const layer = el("div", "shelf");
+  const buildShelf = (o, held, opt) => {
+    opt = opt || {};
+    const layer = el("div", "shelf" + (opt.pv ? " pv" : ""));
     layer.dataset.key = o.key;
     if (held) layer.style.visibility = "hidden";
-    STAGE.appendChild(layer);
-    const S = { key: o.key, o, layer, ks: shelfOrder(o), view: null, lid: null, visible: !held, clicked: null, hovK: null, hovAt: null, fade: null };
+    (opt.host || STAGE).appendChild(layer);
+    const S = { key: o.key, o, layer, ks: shelfOrder(o), view: null, lid: null, visible: !held, clicked: null, hovK: null, hovAt: null, fade: null,
+      pv: !!opt.pv, host: opt.host ? opt.host.parentNode : null };
     frameShelf(S);
     /* a shelf held behind a room is framed but not laid out: it loads
        nothing until Close brings it back */
@@ -1620,6 +1653,8 @@
     layer.addEventListener("scroll", () => {
       cancelAnimationFrame(sc); sc = requestAnimationFrame(() => {
         pastCheck(S);
+        /* a preview keeps a picture's wires on it as it scrolls */
+        if (S.pv) { if (S.hovK) wireTile(S); return; }
         /* a scroll still gliding when a picture is clicked lands after the
            room has opened; its wires belong to the shelf, so they are drawn
            only while the shelf is the page (27 Sept review) */
@@ -1703,7 +1738,7 @@
     if (a && S.body.contains(a)) {
       ev.preventDefault();
       const ims = a.querySelectorAll("img");
-      shelfOpen(S, decodeURIComponent(a.getAttribute("href").slice(7)), ims.length ? ims[ims.length - 1] : null);
+      (S.pv ? pvOpen : shelfOpen)(S, decodeURIComponent(a.getAttribute("href").slice(7)), ims.length ? ims[ims.length - 1] : null);
     }
   };
 
@@ -1740,13 +1775,57 @@
     draw(pairs, { live: true });
   };
 
+  /* ── the preview: the shelf a hover shows. A picture under the pointer
+     lights what its study holds, wired to it, as on the shelf; the pointer
+     leaving it gives the entry back its own light and fan ── */
+  const pvHover = (S, k, at) => {
+    if (!S.pv || staged() || !cur || cur.o !== S.o) return;
+    if (!k || !D.study(k)) { if (S.hovK) { S.hovK = null; S.hovAt = null; paint(S.o.rel, S.o); wire(true); } return; }
+    clearTimeout(restT);
+    S.hovK = k; S.hovAt = at || null;
+    paint(new Set([k]), WORK[k]);
+    wireTile(S);
+  };
+  /* a picture clicked in a preview: the preview becomes the shelf, and the
+     picture flies from it into its room, as from any shelf. Close comes
+     back to that shelf, as it was */
+  const pvOpen = (S, k, fromEl) => {
+    if (!S.pv || staged() || !D.study(k)) return;
+    go({ v: "shelf", key: S.key }, { push: true });
+    if (SH === S) shelfOpen(S, k, fromEl);
+  };
+  const pvOf = (o) => { const l = layerOf(); const P = l && l._pv; return P && P.pv && P.o === o && !phone() ? P : null; };
+  /* the preview moves to the stage as it is: the same element, its layout,
+     its loaded pictures and where it was scrolled. Only its running head's
+     own controls arrive */
+  const promote = (P) => {
+    const top = P.layer.scrollTop;
+    P.pv = false; P.visible = true;
+    if (P.host && P.host._pv === P) P.host._pv = null;
+    STAGE.appendChild(P.layer);
+    P.layer.scrollTop = top;
+    P.layer.classList.remove("pv");
+    P.bar.querySelectorAll("[tabindex]").forEach((n) => n.removeAttribute("tabindex"));
+    pastCheck(P);
+    return P;
+  };
+
   /* open a shelf over whatever the stage holds */
   const openShelf = (o) => {
     const old = SH, oldRoom = RM, was = staged();
-    const S = buildShelf(o); SH = S; RM = null;
+    const P = !was ? pvOf(o) : null;
+    const S = P ? promote(P) : buildShelf(o); SH = S; RM = null;
     setStaged(true); lockEntry(o); cur = null;
     paint(o.rel, o);
     keepShelfParam();
+    /* from its preview, the shelf is already on the glass: nothing rises */
+    if (P) {
+      setTimeout(() => {
+        if (old && old !== SH) destroyShelf(old);
+        if (oldRoom) { oldRoom.room.destroy(); oldRoom.c.remove(); }
+      }, 520);
+      return;
+    }
     const rise = !still() && !(phone() && !was);
     if (rise) S.layer.animate([{ clipPath: "inset(100% 0 0 0)" }, { clipPath: "inset(0 0 0 0)" }], { duration: 560, easing: EASE });
     shelfEnter(S, { delay: rise ? 160 : phone() && !was ? 220 : 60 });
@@ -2087,6 +2166,7 @@
      on the focus opens what the entry holds */
   FOCUS.addEventListener("click", (ev) => {
     if (swiped) { swiped = false; return; }
+    if (ev.defaultPrevented) return; /* a preview's picture, already opening */
     if (ev.target.closest("a") || staged()) return;
     const cp = ev.target.closest(".cp");
     if (cp && cp._f) {
@@ -2099,6 +2179,8 @@
   let wheelAcc = 0, wheelAt = 0;
   FOCUS.addEventListener("wheel", (ev) => {
     if (phone() || !cur || staged()) return;
+    /* a preview scrolls, as its shelf will */
+    const lp = layerOf(); if (lp && lp._pv) return;
     ev.preventDefault();
     const now = performance.now();
     if (now - wheelAt > 260) wheelAcc = 0;

@@ -647,3 +647,11 @@ html.anim .layer.bleed:not(.out) .mos .tile img { animation: settle 1.1s var(--e
 .layer.dark .rest .prac { color: rgba(255, 255, 255, 0.46); }
 .layer.dark .rest .links a { color: var(--paper); border-bottom-color: rgba(255, 255, 255, 0.28); transition: border-color 0.2s ease; }
 .layer.dark .rest .links a:hover { border-bottom-color: var(--paper); }
+
+/* ── THE PREVIEW (27 Sept): a line, a year or a capability shows its
+   shelf on hover, built in the open half exactly as the stage will hold
+   it. Its running head shows only the kicker until a click makes it the
+   shelf; then the switch and Close arrive ── */
+.layer.pvl .main { position: absolute; inset: 0; max-width: none; }
+.sh-sw, .sh-x { transition: opacity 0.3s ease 0.08s; }
+.shelf.pv .sh-sw, .shelf.pv .sh-x { opacity: 0; pointer-events: none; transition: none; }
