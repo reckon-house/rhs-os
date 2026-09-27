@@ -80,39 +80,47 @@ html[data-mark="dim"] .e.me .t, html[data-mark="dim"] .grp.run .e.me, html[data-
 
 /* ── THE INK MARK (27 Sept, the default) ─────────────────────────────
    His call: "everything going dim is difficult - how do we highlight in
-   a different way? ... the black highlight behind it". Nothing recedes
-   now. What a hovered entry shares a study with is set in an ink band,
-   the way a locked entry always was, and the entry itself is ringed.
-   The band widens sideways with shadows, never with padding, so no word
-   moves when the marks come and go; on a run of entries it breaks with
-   the line (box-decoration-break), and between stacked rows a hairline
-   of paper keeps each band its own. */
-html[data-mark="ink"] body.x .e.on { background: var(--ink); color: var(--paper);
-  box-shadow: 0.2em 0 0 var(--ink), -0.2em 0 0 var(--ink);
-  -webkit-box-decoration-break: clone; box-decoration-break: clone; }
-html[data-mark="ink"] body.x .e.on:not(.w):not(.wd) { box-shadow: 0.2em 0 0 var(--ink), -0.2em 0 0 var(--ink); }
+   a different way? ... the black highlight behind it". Nothing recedes.
+   What a hovered entry shares a study with is set in an ink band; a run
+   of capabilities, tools or figures is set bold instead (the mix), so a
+   broad hover does not turn half the index black.
+
+   27 Sept, later: "remove the outline/box and the bars on each side of
+   selected words to clean it up", then "add animations ... so things
+   dont just 'pop' into place". So there is no ring on the hovered entry
+   and no outline on a picture, and the band is a background that sweeps
+   in from the left and leaves to the right rather than appearing. The
+   side bars were the old band's shadows: an entry run inline now gets
+   its hair of overhang as padding, given back by an equal negative
+   margin and set at all times, so a band arriving never moves a word; a
+   row set as a block is banded to the width of its column. */
+html[data-mark="ink"] .e {
+  background-image: linear-gradient(var(--ink), var(--ink)); background-repeat: no-repeat;
+  background-size: 0% 100%; background-position: 100% 0;
+  -webkit-box-decoration-break: clone; box-decoration-break: clone;
+  transition: background-size 0.26s cubic-bezier(0.45, 0, 0.2, 1), color 0.18s ease 0.04s, -webkit-text-stroke-width 0.22s ease; }
+html[data-mark="ink"] .grp:is(.run, .wall, .inline, .word) .e, html[data-mark="ink"] .erun .e, html[data-mark="ink"] .e.bf { padding-inline: 0.2em; margin-inline: -0.2em; }
+html[data-mark="ink"] body.x .e.on, html[data-mark="ink"] .e.lock { background-size: 100% 100%; background-position: 0 0; color: var(--paper); text-shadow: none; }
 /* rows that stack (Work, About, the line names) keep a sliver of paper
    under each band, scaled to the type, so a run of them reads as marks,
    not as one black block */
-html[data-mark="ink"] body.x .grp:not(.run):not(.wall):not(.inline):not(.word) .e.on { box-shadow: inset 0 -0.09em 0 var(--paper), 0.2em 0 0 var(--ink), -0.2em 0 0 var(--ink); }
-html[data-mark="ink"] body.x .e.on.w { box-shadow: inset 0 -1px 0 var(--paper), 0.2em 0 0 var(--ink), -0.2em 0 0 var(--ink); }
+html[data-mark="ink"] body.x .grp:not(.run):not(.wall):not(.inline):not(.word) .e.on { box-shadow: inset 0 -0.09em 0 var(--paper); }
+html[data-mark="ink"] body.x .e.on.w { box-shadow: inset 0 -1px 0 var(--paper); }
 html[data-mark="ink"] body.x .e.on .y { color: rgba(255, 255, 255, 0.62); }
-html[data-mark="ink"] body.x .e.on .th, html[data-mark="ink"] body.x .strip .th.hit { outline: 2px solid var(--ink); outline-offset: 1px; }
-html[data-mark="ink"] body.x .e.me { outline: 1px solid var(--ink); outline-offset: 0.3em; }
-/* THE MIX (27 Sept, his pick after seeing ink everywhere): bands where
-   entries stand on their own (Work, Years, About, the lines), bold where
-   they run on (capabilities, tools, figures), so a broad hover like a
-   whole line no longer turns half the index black. The bold is a hair
-   of stroke on the letters, not a heavier weight, because a heavier
-   weight is wider and would push the rest of the run along. The hovered
-   entry keeps its band wherever it is, so the source stays plain. */
-html[data-mark="ink"] body.x .grp[data-g="capabilities"] .e.on:not(.me),
-html[data-mark="ink"] body.x .grp[data-g="tools"] .e.on:not(.me),
-html[data-mark="ink"] body.x .grp[data-g="figures"] .e.on:not(.me) {
-  background: none; color: var(--ink); box-shadow: none; -webkit-text-stroke: 0.045em currentColor; text-shadow: var(--halo); }
+/* THE MIX: a run is set bold where it lights, the hovered entry banded.
+   The bold is a hair of stroke on the letters, not a heavier weight,
+   because a heavier weight is wider and would push the rest of the run
+   along; it thickens in as the band would sweep. #idx is here so no band
+   rule can outrank it and leave its bars behind */
+html[data-mark="ink"] body.x #idx .grp[data-g="capabilities"] .e.on:not(.me):not(.lock),
+html[data-mark="ink"] body.x #idx .grp[data-g="tools"] .e.on:not(.me):not(.lock),
+html[data-mark="ink"] body.x #idx .grp[data-g="figures"] .e.on:not(.me):not(.lock) {
+  background-size: 0% 100%; background-position: 100% 0; color: var(--ink); box-shadow: none;
+  -webkit-text-stroke: 0.045em currentColor; text-shadow: var(--halo); }
 .e.cur .t { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 0.2em; }
 /* what the stage holds open: set solid, in ink, whatever its kind */
-.e.lock { background: var(--ink); color: var(--paper) !important; box-shadow: 0 0 0 0.18em var(--ink); }
+.e.lock { color: var(--paper) !important; }
+html:not([data-mark="ink"]) .e.lock { background: var(--ink); box-shadow: 0 0 0 0.18em var(--ink); }
 .e.lock .y { color: rgba(255, 255, 255, 0.6) !important; }
 .e.lock .t { text-decoration: none; }
 .e.lock .th { opacity: 1 !important; }
@@ -175,7 +183,7 @@ body.staged .e:not(.on):hover .t, body.staged .grp.run .e:not(.on):hover, body.s
 [data-ix="c"] .grp[data-g="work"] .e.lock { background: none; box-shadow: none; color: var(--ink) !important; }
 [data-ix="c"] .grp[data-g="work"] .e.lock .tc { color: var(--paper); }
 [data-ix="c"] .grp[data-g="work"] .e.lock .tc .t { background: var(--ink); box-shadow: 0 0 0 0.2em var(--ink); }
-[data-ix="c"] .grp[data-g="work"] .e.lock .th { outline: 2px solid var(--ink); outline-offset: 2px; }
+
 [data-ix="c"] .fine .grp[data-g="figures"] .e { font-weight: 600; }
 
 /* ── D: the first version's columns with a contents page's scale. Four
@@ -439,6 +447,7 @@ html.stack[data-ix="d"] .grp.run .items { line-height: 1.6; }
 
 @media (prefers-reduced-motion: reduce) {
   #field, .layer, .cp .pic, .rise { transition: none; animation: none; }
+  #idx .e, #idx .e .t, #idx .e .er, #idx .pips i { transition: none !important; }
 }
 
 /* ════════════════════════════════════════════════════════════════════
@@ -461,8 +470,9 @@ html.stack[data-ix="d"] .grp.run .items { line-height: 1.6; }
 [data-ix="e"] .eb:nth-of-type(2) { margin: 0 0 58px; }
 [data-ix="e"] .eb:nth-of-type(3) { margin: 0 0 66px; }
 [data-ix="e"] .grp.ec { grid-column: span var(--span, 1); margin: 0; }
-[data-ix="e"] .grp h2.eh { display: flex; justify-content: space-between; align-items: baseline; margin: 0 0 14px; padding: 0 0 7px;
-  border-bottom: 1px solid var(--ink); color: var(--ink); font-size: 9.5px; font-weight: 600; letter-spacing: 0.09em; }
+[data-ix="e"] .grp h2.eh { display: flex; justify-content: space-between; align-items: baseline; margin: 0 0 14px; padding: 0 0 8px;
+  border-bottom: 0; background: linear-gradient(var(--ink), var(--ink)) no-repeat 0 100% / 100% 1px;
+  color: var(--ink); font-size: 9.5px; font-weight: 600; letter-spacing: 0.09em; }
 [data-ix="e"] .eh b { font-weight: 700; margin-right: 0.8em; }
 [data-ix="e"] .eh .n { color: var(--grey); }
 [data-ix="e"] .e .dk { display: block; font-size: 10.5px; font-weight: 500; line-height: 1.4; letter-spacing: -0.003em; color: var(--grey); }
@@ -500,7 +510,7 @@ html.stack[data-ix="d"] .grp.run .items { line-height: 1.6; }
 [data-ix="e"] .e.ey { display: flex; align-items: baseline; gap: 9px; padding: 0 0 2px; }
 [data-ix="e"] .e.ey .t { font-size: 21px; font-weight: 700; letter-spacing: -0.045em; line-height: 1.08; font-variant-numeric: tabular-nums; }
 [data-ix="e"] .e.ey .pips { display: inline-flex; flex-wrap: wrap; gap: 2px; }
-[data-ix="e"] .e.ey .pips i { width: 6px; height: 6px; background: rgba(0, 0, 0, 0.2); transition: background-color 0.2s ease; }
+[data-ix="e"] .e.ey .pips i { width: 6px; height: 6px; background: rgba(0, 0, 0, 0.2); transition: background-color 0.18s ease calc(var(--d, 0) * 32ms); }
 html[data-ix="e"] body.x .e.ey.on .pips i { background: var(--ink); }
 
 /* 04: About, each section with its first sentence */
@@ -538,24 +548,28 @@ html[data-ix="e"] body.x .e.ey.on .pips i { background: var(--ink); }
 [data-ix="e"] .e.etool .bar i { position: absolute; left: 0; top: -1px; height: 3px; background: var(--ink); }
 
 /* the ink mark in E: an entry that stands on its own is banded on its
-   name, not across its picture and sentence; the runs stay bold. #idx is
-   in each selector because the stacked-rows band rule above carries
-   four :not()s and outranked these, drawing its side bars down the
-   whole of a feature */
-html[data-ix="e"][data-mark="ink"] body.x #idx .grp.ec .e.on:is(.el, .ef, .ew, .ey, .ea, .efig, .ecap, .etool) {
-  background: none; box-shadow: none; color: var(--ink); -webkit-text-stroke: 0; text-shadow: var(--halo); }
-html[data-ix="e"][data-mark="ink"] body.x #idx .grp.ec .e.on:is(.el, .ef, .ey, .ea, .efig, .ecap, .etool) .t,
-html[data-ix="e"][data-mark="ink"] body.x #idx .grp.ec .e.on.ew .er {
-  background: var(--ink); color: var(--paper); box-shadow: 0.2em 0 0 var(--ink), -0.2em 0 0 var(--ink);
-  -webkit-box-decoration-break: clone; box-decoration-break: clone; text-shadow: none; }
-html[data-ix="e"][data-mark="ink"] body.x #idx .grp.ec .e.on.ew .ld { border-color: rgba(255, 255, 255, 0.5); }
-html[data-ix="e"][data-mark="ink"] body.x #idx .grp.ec .e.on.ew .y { color: rgba(255, 255, 255, 0.62); }
-html[data-ix="e"][data-mark="ink"] body.x #idx .grp.ec .e.on.etool .bar i { background: var(--ink); }
+   name (a row on its row), never across its picture and sentence, with
+   the same sweep; the runs stay bold. #idx is in each selector so the
+   band rules above cannot outrank these */
+html[data-mark="ink"][data-ix="e"] #idx .grp.ec .e:is(.el, .ef, .ew, .ey, .ea, .efig, .ecap, .etool) {
+  background-image: none; box-shadow: none; padding-inline: 0; margin-inline: 0; color: var(--ink); -webkit-text-stroke: 0; }
+html[data-mark="ink"][data-ix="e"] #idx .grp.ec .e:is(.el, .ef, .ey, .ea, .efig, .ecap, .etool) .t,
+html[data-mark="ink"][data-ix="e"] #idx .grp.ec .e.ew .er {
+  background-image: linear-gradient(var(--ink), var(--ink)); background-repeat: no-repeat;
+  background-size: 0% 100%; background-position: 100% 0;
+  -webkit-box-decoration-break: clone; box-decoration-break: clone;
+  transition: background-size 0.26s cubic-bezier(0.45, 0, 0.2, 1), color 0.18s ease 0.04s; }
+html[data-mark="ink"][data-ix="e"] #idx .grp.ec .e:is(.el, .ef, .ey, .ea, .efig, .ecap, .etool) .t { padding-inline: 0.2em; margin-inline: -0.2em; }
+html[data-mark="ink"][data-ix="e"] body.x #idx .grp.ec .e.on:is(.el, .ef, .ey, .ea, .efig, .ecap, .etool) .t,
+html[data-mark="ink"][data-ix="e"] body.x #idx .grp.ec .e.on.ew .er,
+html[data-mark="ink"][data-ix="e"] #idx .grp.ec .e.lock:is(.el, .ef, .ey, .ea, .efig, .ecap, .etool) .t,
+html[data-mark="ink"][data-ix="e"] #idx .grp.ec .e.lock.ew .er {
+  background-size: 100% 100%; background-position: 0 0; color: var(--paper); text-shadow: none; }
 html[data-ix="e"] #idx .grp.ec .e.lock:is(.el, .ef, .ew, .ey, .ea, .efig, .ecap, .etool) { background: none !important; box-shadow: none !important; color: var(--ink) !important; }
-html[data-ix="e"] #idx .grp.ec .e.lock:is(.el, .ef, .ey, .ea, .efig, .ecap, .etool) .t, html[data-ix="e"] #idx .grp.ec .e.lock.ew .er {
-  background: var(--ink); color: var(--paper); box-shadow: 0.2em 0 0 var(--ink), -0.2em 0 0 var(--ink); text-shadow: none; }
 html[data-ix="e"] #idx .grp.ec .e.lock .dk, html[data-ix="e"] #idx .grp.ec .e.lock .cr, html[data-ix="e"] #idx .grp.ec .e.lock .kk { color: var(--grey) !important; }
-html[data-ix="e"] #idx .grp.ec .e.lock.ew .ld { border-color: rgba(255, 255, 255, 0.5); }
+html[data-ix="e"] #idx .grp.ec .e.ew .ld { transition: border-color 0.2s ease; }
+html[data-ix="e"] body.x #idx .grp.ec .e.on.ew .ld, html[data-ix="e"] #idx .grp.ec .e.lock.ew .ld { border-color: rgba(255, 255, 255, 0.5); }
+html[data-ix="e"] body.x #idx .grp.ec .e.on.ew .y, html[data-ix="e"] #idx .grp.ec .e.lock.ew .y { color: rgba(255, 255, 255, 0.62); }
 
 /* E on a phone: two columns, no rules, the features in the lines' order */
 html.stack[data-ix="e"] .vr { display: none; }
@@ -573,3 +587,58 @@ html.stack[data-ix="e"] .erun.c4 { columns: 2; }
 #focus .fig .figpic { display: flex; flex-direction: column; align-items: flex-end; margin: 0 0 30px; }
 #focus .fig .figpic .cc { margin: 9px 0 0; font-size: 12px; font-weight: 600; letter-spacing: -0.01em; }
 #focus .fig .figpic .cc .y { color: var(--grey); font-weight: 500; }
+
+/* ── MOTION (27 Sept, his "subtle micro animations will help bring this
+   to life") ─────────────────────────────────────────────────────────
+   Nothing pops. Only under html.anim, which reduced motion never sets:
+   - each group of the index rises and fades in the first time it is in
+     view, a beat after the one before (crossref2.js, watchSeen);
+   - in E the gutter rules draw down the page, each section's rule of ink
+     draws across as its section arrives, the tools' bars grow to their
+     counts and the capabilities step in;
+   - a year's squares fill one after another when it lights;
+   - a picture in the index settles as it loads;
+   - in the open half the figure, the words and the caption lift in
+     after the picture, a few hundredths of a second apart. */
+html.anim #idx .grp { transition: opacity 0.5s ease, transform 0.65s var(--ease); }
+html.anim #idx .grp:not(.seen) { opacity: 0; transform: translateY(12px); }
+html.anim[data-ix="e"] .vr { transform-origin: 50% 0; animation: drawdown 1.2s var(--ease) 0.15s both; }
+@keyframes drawdown { from { transform: scaleY(0); } }
+html.anim[data-ix="e"] .grp.ec h2.eh { transition: background-size 0.9s var(--ease) 0.12s; }
+html.anim[data-ix="e"] .grp.ec:not(.seen) h2.eh { background-size: 0% 1px; }
+html.anim[data-ix="e"] .e.etool .bar i { transform-origin: 0 50%; transition: transform 0.9s var(--ease) calc(0.25s + var(--d, 0) * 70ms); }
+html.anim[data-ix="e"] .grp.ec:not(.seen) .e.etool .bar i { transform: scaleX(0); }
+html.anim[data-ix="e"] .e.ecap { transition: opacity 0.5s ease calc(0.15s + var(--d, 0) * 60ms), transform 0.6s var(--ease) calc(0.15s + var(--d, 0) * 60ms), background-size 0.26s cubic-bezier(0.45, 0, 0.2, 1); }
+html.anim[data-ix="e"] .grp.ec:not(.seen) .e.ecap { opacity: 0; transform: translateX(-8px); }
+html.anim #idx .th img { transform: scale(1.05); transition: opacity 0.45s ease, transform 1s var(--ease); }
+html.anim #idx .th.in img { transform: none; }
+html.anim .layer:not(.out) :is(.say, .lk, .fig .big, .fig .sent, .fig .lbl, .figpic) { animation: lift 0.5s var(--ease) both; }
+html.anim .layer:not(.out) .fig .big { animation-delay: 0.04s; }
+html.anim .layer:not(.out) :is(.fig .sent, .fig .lbl) { animation-delay: 0.1s; }
+html.anim .layer:not(.out) .cap { animation: lift 0.5s var(--ease) 0.14s both; }
+@keyframes lift { from { opacity: 0; transform: translateY(10px); } }
+
+/* ── THE OPEN HALF, FILLED (27 Sept, his "more filled in, big editorial
+   feeling to balance the feel of the TOC"). A study's picture runs to
+   the edges of the half, top to foot and out to the window's edge, with
+   its credit on a strip of paper under it; a line, a year or a
+   capability is a mosaic of its studies, butted, no gutters. The index
+   stays dense and small; this is its opposite. ── */
+.layer.bleed { position: fixed; top: 0; right: 0; bottom: 0; left: var(--stl); align-items: stretch; justify-content: flex-start; }
+.layer.bleed .main { width: 100%; }
+.layer.bleed .cap { margin: 0; padding: 16px var(--m) 0 20px; }
+.pic.cov { overflow: hidden; }
+.pic.cov img { object-fit: cover; }
+.pic.cov img.hi { opacity: 0; transition: opacity 0.3s ease; }
+.pic.cov img.hi.in { opacity: 1; }
+.mos { position: relative; }
+.mos .tile { position: absolute; overflow: hidden; }
+.mos .tile .tc { position: absolute; left: 14px; bottom: 12px; right: 14px; color: #fff; font-size: 11.5px; font-weight: 600; letter-spacing: -0.005em;
+  text-shadow: 0 1px 12px rgba(0, 0, 0, 0.5), 0 0 2px rgba(0, 0, 0, 0.25); pointer-events: none; }
+.mos .tile .tc .y { color: rgba(255, 255, 255, 0.72); font-weight: 500; }
+html.anim .layer.bleed:not(.out) .fillpic { animation: unveil 0.6s var(--ease) both; }
+html.anim .layer.bleed:not(.out) .fillpic img { animation: settle 1.2s var(--ease) both; }
+html.anim .layer.bleed:not(.out) .mos .tile { animation: unveil 0.55s var(--ease) both; animation-delay: calc(var(--i, 0) * 60ms); }
+html.anim .layer.bleed:not(.out) .mos .tile img { animation: settle 1.1s var(--ease) both; animation-delay: calc(var(--i, 0) * 60ms); }
+@keyframes unveil { from { clip-path: inset(0 0 100% 0); } to { clip-path: inset(0 0 0 0); } }
+@keyframes settle { from { transform: scale(1.06); } }

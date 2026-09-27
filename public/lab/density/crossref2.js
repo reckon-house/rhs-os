@@ -275,6 +275,9 @@
   /* ── the reels: what an entry can put in focus, best first. Pictures
      come four at a time as a cluster ── */
   const chunk = (list, n) => { const out = []; for (let i = 0; i < list.length; i += n) out.push(list.slice(i, i + n)); return out; };
+  /* a cluster of two or more becomes a mosaic filling the half, keeping
+     the cluster to fall back on */
+  const fill = (c, title) => (c.pics && c.pics.length >= 2 ? { t: "mosaic", pics: c.pics, title: title || null, k: c.k, fallback: c } : c);
   const facesOf = (ks) => ks.map((k) => (faceOf(k) ? { f: faceOf(k), k } : null)).filter(Boolean);
   const clusters = (pics, multi) => chunk(pics, 4).map((p) => ({ t: "cluster", pics: p, multi, k: multi ? null : p[0].k }));
   const studyReel = (k) => {
@@ -285,28 +288,36 @@
     const rest = face && face.lead ? own.slice(1) : own.filter((f) => f !== face);
     const first = rest.filter((f) => !f.alpha).slice(0, 3);
     const later = rest.filter((f) => !first.includes(f));
-    if (face) out.push({ t: "cluster", pics: [face].concat(first).map((f) => ({ f, k })), multi: false, k });
+    /* the open half filled (27 Sept, his "more filled in, big editorial
+       feeling to balance the feel of the TOC"): the study's picture to
+       the edges of the half first, then its next pictures butted in a
+       mosaic. Each is resolved at the size of the glass when it shows,
+       and gives way to the cluster when no picture has the pixels */
+    const pool = [face].concat(own).filter((f, i, a) => f && !f.alpha && a.indexOf(f) === i);
+    const clu = face ? { t: "cluster", pics: [face].concat(first).map((f) => ({ f, k })), multi: false, k } : null;
+    if (face) out.push({ t: "bleed", k, pool, fallback: clu });
     else if (s && s.fact) out.push({ t: "text", text: s.fact, grey: s.rest, k });
+    if (first.length >= 2) out.push({ t: "mosaic", pics: first.map((f) => ({ f, k })), k, fallback: clu && { t: "cluster", pics: first.map((f) => ({ f, k })), multi: false, k } });
     fr.filter((f) => f.kind === "line" && f.weight === "display").forEach((f) => out.push({ t: "text", text: f.text, k }));
     fr.filter((f) => f.kind === "num").forEach((f) => out.push({ t: "fig", fig: f.value, label: f.label, sub: f.sub, k }));
     fr.filter((f) => f.kind === "chart").forEach((f) => out.push({ t: "chart", f, hl: f.callout, k }));
     fr.filter((f) => f.kind === "steps").forEach((f) => out.push({ t: "steps", f, k }));
     fr.filter((f) => f.kind === "palette").slice(0, 1).forEach((f) => out.push({ t: "palette", f, k }));
-    return out.concat(clusters(later.map((f) => ({ f, k })), false));
+    return out.concat(clusters(later.map((f) => ({ f, k })), false).map((c) => fill(c)));
   };
-  const lineReel = (l) => chunk(facesOf(l.studies.filter((k) => D.study(k))), 4).map((pics) => ({ t: "linefield", line: l, pics }));
+  const lineReel = (l) => chunk(facesOf(l.studies.filter((k) => D.study(k))), 4).map((pics) => ({ t: "mosaic", pics, title: l.name, sub: l.sentence, fallback: { t: "linefield", line: l, pics } }));
   const yearReel = (y, rel) => {
     const ks = byRank([...rel]); let pics = facesOf(ks);
     /* a year with one or two rooms fills its cluster with their pictures */
     if (pics.length < 3) ks.forEach((k) => picsOf(k).slice(1).filter((f) => !f.alpha).forEach((f) => { if (pics.length < 4) pics.push({ f, k }); }));
-    return chunk(pics, 4).map((p) => ({ t: "yearfield", y, rel, pics: p }));
+    return chunk(pics, 4).map((p) => ({ t: "mosaic", pics: p, title: String(y), fallback: { t: "yearfield", y, rel, pics: p } }));
   };
   const capReel = (v, rel) => {
     const pool = [...rel].flatMap((k) => picsOf(k));
     const hits = D.search(v, pool).filter((r) => r.score >= 3 && D.tokens(v).some((t) => new RegExp("\\b" + reEsc(t)).test((r.f.alt || "").toLowerCase())));
     const pics = hits.slice(0, 16).map((r) => ({ f: r.f, k: r.f.k }));
     const shown = new Set(pics.map((p) => p.k));
-    return clusters(pics.concat(facesOf(byRank([...rel]).filter((k) => !shown.has(k)))), true);
+    return clusters(pics.concat(facesOf(byRank([...rel]).filter((k) => !shown.has(k)))), true).map((c) => fill(c, v));
   };
   const toolReel = (v, rel) => {
     const texts = namedIn(v, rel).slice(0, 12);
@@ -426,6 +437,27 @@
     const im = el("img"); im.alt = ""; im.decoding = "async"; im.src = encodeURI(D.rung(f, drawn));
     im.addEventListener("load", () => s.classList.add("in"), { once: true });
     s.appendChild(im);
+  };
+  /* ── MOTION (27 Sept): his "add animations ... so things dont just
+     'pop' into place". Each group of the index settles in (a short rise
+     and fade) the first time it comes into view, a beat after the one
+     before it, and E's rules and bars draw as their section arrives. A
+     group that the observer never reports (a hidden tab) is shown anyway
+     after two seconds, so nothing can stay invisible ── */
+  let sio = null, seenT = 0;
+  HTML.classList.toggle("anim", !still());
+  const watchSeen = () => {
+    if (sio) sio.disconnect(); clearTimeout(seenT);
+    const groups = [...IDX.querySelectorAll(".grp")];
+    if (still()) { groups.forEach((g) => g.classList.add("seen")); return; }
+    sio = new IntersectionObserver((es) => {
+      let n = 0;
+      es.forEach((e) => { if (!e.isIntersecting) return; sio.unobserve(e.target);
+        e.target.style.transitionDelay = (n++ * 70) + "ms"; e.target.classList.add("seen");
+        setTimeout(() => { e.target.style.transitionDelay = ""; }, 900 + n * 70); });
+    }, { root: phone() ? null : IDX, rootMargin: "0px 0px -6% 0px" });
+    groups.forEach((g) => { if (!g.classList.contains("seen")) sio.observe(g); });
+    seenT = setTimeout(() => groups.forEach((g) => g.classList.add("seen")), 2000);
   };
   const watchThumbs = () => {
     if (tio) tio.disconnect();
@@ -588,7 +620,7 @@
       a.innerHTML = '<span class="er"><span class="t">' + esc(o.label) + '</span><span class="ld"></span><span class="y we">' + D.year(o.k) + "</span></span>" + credit;
     } else if (mode === "Eyear") {
       a.classList.add("ey");
-      a.innerHTML = '<span class="t">' + esc(o.label) + '</span><span class="pips" aria-hidden="true">' + "<i></i>".repeat(o.rel.size) + "</span>";
+      a.innerHTML = '<span class="t">' + esc(o.label) + '</span><span class="pips" aria-hidden="true">' + [...Array(o.rel.size)].map((_, j) => '<i style="--d:' + j + '"></i>').join("") + "</span>";
     } else if (mode === "Eabout") {
       a.classList.add("ea");
       a.innerHTML = '<span class="t">' + esc(o.label) + '</span><span class="dk">' + esc(o.about.lede || "") + "</span>";
@@ -664,8 +696,8 @@
 
     /* 06 Capabilities, 07 Tools: the five most used, then the rest */
     const tc = topBy("capabilities"), tt = topBy("tools");
-    const cl = el("div", "ecaps"); tc.forEach((o) => cl.appendChild(entryEl(o, "Ecap")));
-    const tl = el("div", "etools"); tt.forEach((o) => tl.appendChild(entryEl(o, "Etool")));
+    const cl = el("div", "ecaps"); tc.forEach((o, i) => { const a = entryEl(o, "Ecap"); a.style.setProperty("--d", i); cl.appendChild(a); });
+    const tl = el("div", "etools"); tt.forEach((o, i) => { const a = entryEl(o, "Etool"); a.style.setProperty("--d", i); tl.appendChild(a); });
     band(cellE("capabilities", 2, [headE("06", "capabilities"), cl, runE(G.capabilities.items.filter((o) => !tc.includes(o)), "c2")]),
       cellE("tools", 2, [headE("07", "tools"), tl, runE(G.tools.items.filter((o) => !tt.includes(o)), "c2")]));
     return wrap;
@@ -792,7 +824,7 @@
     if (stack) { if (MARK.parentNode !== document.body) document.body.insertBefore(MARK, FOCUS); }
     else if (top && top.firstChild !== MARK) top.insertBefore(MARK, top.firstChild);
     sizeIndex();
-    if (fresh || stack !== was || !tio) watchThumbs();
+    if (fresh || stack !== was || !tio) { watchThumbs(); watchSeen(); }
   };
 
   /* ── the cross-reference: how what shares a study is marked. Ink, a
@@ -984,8 +1016,77 @@
   };
   const greyHl = (text, s) => '<span class="g">' + hl(text, s).replace("<mark>", '</span><span class="h">').replace("</mark>", '</span><span class="g">') + "</span>";
 
+  /* ── THE OPEN HALF, FILLED (27 Sept). A picture fills the half only if
+     it has the pixels: its drawn width under cover, max(width, height x
+     its ratio), is no more than half its own. The size is the half's own
+     at the moment it shows, less a strip for the caption; a phone keeps
+     the band it has ── */
+  const drawnOf = (f, W, H) => Math.max(W, H * ratio(f));
+  const honestAt = (f, W, H) => !!f && !f.alpha && f.w / 2 >= drawnOf(f, W, H) * 0.985;
+  const FILLCAP = 58;
+  const fillWH = () => ({ W: STAGE.clientWidth, H: innerHeight - FILLCAP });
+  /* the tiles of a mosaic: two side by side, three as one tall beside two
+     stacked, four as a square of four; widths follow the pictures a little */
+  const tilesOf = (n, W, H) => {
+    if (n === 2) { const a = Math.round(W * 0.56); return [[0, 0, a, H], [a, 0, W - a, H]]; }
+    if (n === 3) { const a = Math.round(W * 0.58), h = Math.round(H / 2); return [[0, 0, a, H], [a, 0, W - a, h], [a, h, W - a, H - h]]; }
+    const a = Math.round(W / 2), h = Math.round(H * 0.54); return [[0, 0, a, h], [a, 0, W - a, h], [0, h, a, H - h], [a, h, W - a, H - h]];
+  };
+  const resolveFill = (it) => {
+    if (phone()) return null;
+    const { W, H } = fillWH(); if (W < 300 || H < 300) return null;
+    if (it.t === "bleed") {
+      /* the study's own picture first if it has the pixels, else its largest that does */
+      const pool = it.pool.slice(0, 1).concat(it.pool.slice(1).sort((a, b) => b.w - a.w));
+      const f = pool.find((x) => honestAt(x, W, H));
+      return f ? { t: "bleed", f, k: it.k } : null;
+    }
+    /* a mosaic: each tile its picture, or another of the same study that
+       has the pixels, or it leaves; under two tiles it is a cluster again */
+    let pics = it.pics.slice(0, 4);
+    for (let n = pics.length; n >= 2; n--) {
+      const T = tilesOf(n, W, H), out = [];
+      pics.slice(0, n).forEach((p, i) => {
+        const t = T[i]; if (!t) return;
+        const f = [p.f].concat(p.k ? picsOf(p.k).filter((x) => !x.alpha).sort((a, b) => b.w - a.w) : []).find((x) => honestAt(x, t[2], t[3]));
+        if (f) out.push({ f, k: p.k || f.k });
+      });
+      if (out.length === n) return { t: "mosaic", tiles: out, title: it.title, sub: it.sub, k: it.k };
+      if (out.length >= 2) pics = out;
+    }
+    return null;
+  };
+  /* a picture cropped to a box, its rung chosen by the size it is drawn at
+     under cover; the preview first, the honest file a beat later */
+  const coverBox = (f, W, H) => {
+    const box = el("div", "pic cov"); box.style.width = Math.round(W) + "px"; box.style.height = Math.round(H) + "px";
+    const want = D.rung(f, drawnOf(f, W, H)), quick = f.t768 || f.t384;
+    const add = (src) => { const im = el("img"); im.alt = f.alt || ""; im.decoding = "async"; im.src = encodeURI(src); box.appendChild(im); return im; };
+    if (quick && quick !== want) {
+      const pv = add(quick);
+      timers.push(setTimeout(() => {
+        if (!box.isConnected) return;
+        const im = add(want); im.classList.add("hi");
+        im.addEventListener("load", () => { im.classList.add("in"); setTimeout(() => pv.remove(), 320); }, { once: true });
+      }, 220));
+    } else add(want);
+    return box;
+  };
+
   /* ── the focus renderers: one thing, as large as it honestly goes ── */
   const V = {
+    bleed(main, W, H, it) { const b = coverBox(it.f, W, H); b.classList.add("fillpic"); main.appendChild(b); },
+    mosaic(main, W, H, it) {
+      const wrap = el("div", "mos"); wrap.style.width = W + "px"; wrap.style.height = H + "px";
+      tilesOf(it.tiles.length, W, H).forEach(([x, y, w, h], i) => {
+        const p = it.tiles[i];
+        const t = el("div", "tile"); t.style.cssText = "left:" + x + "px;top:" + y + "px;width:" + w + "px;height:" + h + "px;--i:" + i;
+        t.appendChild(coverBox(p.f, w, h));
+        if (!it.k && p.k && D.study(p.k)) t.appendChild(el("div", "tc", '<span class="t">' + esc(D.title(p.k)) + '</span> <span class="y">' + D.year(p.k) + "</span>"));
+        t.dataset.k = p.k || ""; wrap.appendChild(t);
+      });
+      main.appendChild(wrap);
+    },
     rest(main, W, H) {
       const st = DATA.statement || {};
       const wrap = el("div", "rest");
@@ -1106,10 +1207,11 @@
     return { reel, it: cur && reel.length ? reel[(cur.n % reel.length + reel.length) % reel.length] : { t: "rest" } };
   };
   const render = () => {
-    const { reel, it } = itemOf();
+    let { reel, it } = itemOf();
     timers.forEach(clearTimeout); timers = [];
     const old = layerOf(); if (old) { old.classList.add("out"); setTimeout(() => old.remove(), 200); }
-    const layer = el("div", "layer"); const main = el("div", "main"); const cap = el("div", "cap");
+    if (it.t === "bleed" || it.t === "mosaic") it = resolveFill(it) || it.fallback || { t: "rest" };
+    const layer = el("div", "layer" + (it.t === "bleed" || it.t === "mosaic" ? " bleed" : "")); const main = el("div", "main"); const cap = el("div", "cap");
     layer.appendChild(main); layer.appendChild(cap); FOCUS.appendChild(layer);
 
     /* a line no longer fills the open half with its colour (27 Sept): its
@@ -1135,6 +1237,7 @@
       const x = aboutOf(it.sent);
       if (x) left = '<span class="who">About<span class="g">' + esc(x.a.name) + "</span></span>";
     }
+    if (it.t === "mosaic" && it.title && !k) left = '<span class="who">' + esc(it.title) + (it.sub ? '<span class="g">' + esc(it.sub) + "</span>" : "") + "</span>";
     let act = "";
     if (cur && reel.length > 1) act = '<span class="caps">' + ((cur.n % reel.length + reel.length) % reel.length + 1) + "/" + reel.length + "</span>";
     if (left || act) cap.innerHTML = '<div class="l">' + left + "</div>" + (act ? '<div class="act">' + act + "</div>" : "");
