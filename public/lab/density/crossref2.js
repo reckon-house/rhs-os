@@ -631,6 +631,18 @@
     const picked = FEATURED_CAPS.map((k) => KEYMAP.get(k)).filter((o) => o && o.g && o.g.id === "capabilities");
     return picked.concat(topBy("capabilities").filter((o) => !picked.includes(o))).slice(0, TOPN);
   };
+  /* and the five tools set large, AI first, the same way (his "yes, AI
+     tools first"). Their bars are sized against each other, not against
+     the most-listed tool, so a chart of five AI tools does not read as
+     five tools barely used */
+  const FEATURED_TOOLS = ["tool/claude-code", "tool/claude", "tool/gemini", "tool/openai", "tool/supabase-pgvector"];
+  let toolMax = 0;
+  const featuredTools = () => {
+    const picked = FEATURED_TOOLS.map((k) => KEYMAP.get(k)).filter((o) => o && o.g && o.g.id === "tools");
+    const list = picked.concat(topBy("tools").filter((o) => !picked.includes(o))).slice(0, TOPN);
+    toolMax = Math.max(1, ...list.map((o) => o.rel.size));
+    return list;
+  };
   const entryE = (o, mode, a) => {
     const g = o.g.id;
     if (mode === "Eline") {
@@ -672,7 +684,7 @@
       a.classList.add("ecap");
       a.innerHTML = '<span class="t">' + esc(o.label) + '</span><sup class="cnt">' + o.rel.size + "</sup>";
     } else if (mode === "Etool") {
-      const max = Math.max(...G.tools.items.map((x) => x.rel.size));
+      const max = toolMax || Math.max(...G.tools.items.map((x) => x.rel.size));
       a.classList.add("etool");
       a.innerHTML = '<span class="er"><span class="t">' + esc(o.label) + '</span><span class="cnt">' + o.rel.size + '</span></span><span class="bar" aria-hidden="true"><i style="width:' +
         (o.rel.size / max * 100).toFixed(1) + '%"></i></span>';
@@ -738,7 +750,7 @@
     const big = G.figures.items.filter((o) => BIGFIG.includes(o.label)).sort((x, y) => BIGFIG.indexOf(x.label) - BIGFIG.indexOf(y.label));
     const bl = el("div", "ebig"); big.forEach((o, i) => { const a = entryEl(o, "Efig"); a.style.setProperty("--i", i); bl.appendChild(a); });
     put(cellE("figures", 1, [headE("05", "figures"), bl, runE(G.figures.items.filter((o) => !big.includes(o)))]));
-    const tc = featuredCaps(), tt = topBy("tools");
+    const tc = featuredCaps(), tt = featuredTools();
     const cl = el("div", "ecaps"); tc.forEach((o, i) => { const a = entryEl(o, "Ecap"); a.style.setProperty("--d", i); cl.appendChild(a); });
     put(cellE("capabilities", 1, [headE("06", "capabilities"), cl, runE(G.capabilities.items.filter((o) => !tc.includes(o)))]));
     const tl = el("div", "etools"); tt.forEach((o, i) => { const a = entryEl(o, "Etool"); a.style.setProperty("--d", i); tl.appendChild(a); });
