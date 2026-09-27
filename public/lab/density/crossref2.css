@@ -846,14 +846,14 @@ html.stack[data-ix="f"] .fbody { display: block; }
 html.stack[data-ix="f"] .grp.findex { margin: 36px 0 0; padding: 0; border: 0; }
 html.stack[data-ix="f"] .fcols { columns: 2; }
 
-/* ── the texture under the index (27 Sept, a lever pull): set in type on a
-   canvas by crossref2.js, still while the index scrolls over it. On a desk
-   it fills the paper half; stacked, the whole page, under everything */
-#texture { position: fixed; left: 0; top: 0; width: var(--stl); height: 100%; z-index: 1; pointer-events: none;
-  /* clear under the mark and the switches, rising in over the column heads */
-  -webkit-mask-image: linear-gradient(to bottom, transparent 64px, #000 132px); mask-image: linear-gradient(to bottom, transparent 64px, #000 132px); }
-html[data-tx="none"] #texture { display: none; }
-html.stack #texture { width: 100%; z-index: -1; }
-html.stack:not([data-tx="none"]) body { background: transparent; }
+/* ── the texture, one to a section (27 Sept, a lever pull): set in type on
+   a canvas inside each of E's sections by crossref2.js, exactly the
+   section's measure, half a line over and under, never into a gutter.
+   Behind everything in the section: a lit cell's grey still covers it */
+/* a section is its own layer, so the canvas stays over the paper even
+   stacked on a phone, where the index is not a layer of its own */
+html[data-ix="e"]:not([data-tx="none"]) #idx .grp.ec { position: relative; isolation: isolate; }
+#idx .grp.ec > .stx { position: absolute; left: 0; top: -8px; width: 100%; height: calc(100% + 16px); z-index: -1; pointer-events: none; }
+html[data-tx="none"] #idx .stx { display: none; }
 /* its switch takes a line of its own, under Mark */
 .txsw { flex-basis: 100%; justify-content: flex-end; }

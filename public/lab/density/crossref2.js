@@ -336,7 +336,10 @@
   const ENTRIES = [];
   const GROUPS = [
     { id: "work", name: "Work", mode: "list", pre: "study" },
-    { id: "lines", name: "Lines", mode: "list", pre: "line" },
+    /* "Lines" is the house's word; his "which we should probably title
+       something more user friendly" (27 Sept). His own verb, from the
+       lede beside it: "I make things across brand, product, and place" */
+    { id: "lines", name: "What I make", mode: "list", pre: "line" },
     { id: "about", name: "About", mode: "list", pre: "about" },
     { id: "years", name: "Years", mode: "run", pre: "year" },
     { id: "capabilities", name: "Capabilities", mode: "run", pre: "cap" },
@@ -749,7 +752,7 @@
     const lines = el("div", "elines"); G.lines.items.forEach((o) => lines.appendChild(entryEl(o, "Eline")));
     put(cellE("lines", 1, [headE("01", "lines"), lines], "c-lines"), 0);
     G.work.items.filter((o) => LEAD_OF[o.k]).sort((x, y) => LEAD_OF[x.k].i - LEAD_OF[y.k].i)
-      .forEach((o, i) => put(cellE("work", 1, [entryEl(o, "Efeat")], "c-feat"), 1 + (i % 3)));
+      .forEach((o, i) => { const c = cellE("work", 1, [entryEl(o, "Efeat")], "c-feat"); c.dataset.tx = "lead-" + LEAD_OF[o.k].l.tag; put(c, 1 + (i % 3)); });
 
     /* the rest, packed where there is room */
     /* the list counts down by the studies' numbers, so the column reads
@@ -897,7 +900,7 @@
     top.appendChild(sw);
     /* E's second switch: how an entry takes the ink */
     if (IX === "e") top.appendChild(el("div", "ixsw mksw caps", '<span class="ixl">Mark</span>' + MKS.map((x) => '<a href="?mark=' + x + '" data-mk="' + x + '"' + (x === MK ? ' class="on" aria-current="true"' : "") + ">" + x + "</a>").join("")));
-    /* and its third: the texture under the index */
+    /* and its third: the texture, one to a section */
     if (IX === "e") top.appendChild(el("div", "ixsw txsw caps", '<span class="ixl">Texture</span>' + TXS.map((x) => '<a href="?texture=' + x + '" data-tx="' + x + '"' + (x === TX ? ' class="on" aria-current="true"' : "") + ">" + x + "</a>").join("")));
     IDX.appendChild(top);
     LAYOUT[IX]().filter(Boolean).forEach((n) => IDX.appendChild(n));
@@ -905,6 +908,7 @@
        first version's mark did, so the other three run to the top */
     const cols = IX === "d" && IDX.querySelector(".dcols");
     if (cols) cols.insertBefore(top, cols.firstChild);
+    wireTextures();
   };
   const setIndex = (x) => {
     if (x === IX || !IXS.includes(x)) return;
@@ -998,7 +1002,6 @@
     else if (top && top.firstChild !== MARK) top.insertBefore(MARK, top.firstChild);
     sizeIndex();
     if (fresh || stack !== was || !tio) { watchThumbs(); watchSeen(); }
-    if (!txKey) drawTexture(); else { clearTimeout(txT); txT = setTimeout(drawTexture, 90); }
   };
 
   /* ── the cross-reference: how what shares a study is marked. Ink, a
@@ -1033,42 +1036,52 @@
     IDX.querySelectorAll(".mksw a").forEach((a) => { const on = a.dataset.mk === x; a.classList.toggle("on", on); if (on) a.setAttribute("aria-current", "true"); else a.removeAttribute("aria-current"); });
   };
 
-  /* ── the texture under the index (27 Sept, his "what if we tried a super
+  /* ── the texture, one to a section (27 Sept). The first pass laid one
+     texture under the whole index, from his "what if we tried a super
      subtle texture in the background of the nav panels? ... ascii type
      design...not colored like what i attached but the patterns
-     themselves"). The three he attached were all typed: a grid of full
-     stops, a wall of base64, a grid of plus signs. So the texture is set
-     in type too, on one grid of 6 by 12 cells (10px mono), anchored where
-     the index's first column and first line start, and drawn once into a
-     canvas that stays still while the index scrolls over it:
-     - none, the default: paper, as it was;
-     - dots: a full stop on every other cell, a 12px square grid;
-     - plus: a plus on every fourth cell of every other line, 24px square;
-     - ascii: every cell, the studies' own sentences in base64, as his
-       reference was code in base64 (nothing is written: his words,
-       encoded);
-     - field: every cell, a character picked by how dark a slow field is
-       there, from a space up to a hash, so the paper has weather.
-     All of it ink at a few percent, under the hairlines, and switched
-     like the mark: ?texture=, or the row under Mark, kept in
-     localStorage. ── */
-  const TXS = ["none", "dots", "plus", "ascii", "field"], TX_LS = "crossref2.texture";
+     themselves" (he attached a grid of full stops, a wall of base64 and a
+     grid of plus signs, all typed). Then his "i was kinda thinking each
+     section was unique - lines is one ..., ivy park has one, capabilities
+     has one, arc, etc, etc. probably a little more subtle for all and
+     just contain it to that specific section, no spilling out of the
+     left and right into the gutters". So each of E's sections carries a
+     pattern of its own, set in type (10px mono, on cells 6 wide and 12
+     tall) and drawn into a canvas inside the section: exactly its
+     measure, half a line over and under, centred so both edges keep the
+     same margin, never into a gutter. Each pattern is picked for what
+     its section holds:
+     - What I make (the six lines): the house's asterisk;
+     - Digital's lead, Ivy Park: a screen's scan lines;
+     - Apps' lead, A.R.C.: its own sentences in base64, an app being code;
+     - Systems' lead, Sally OS: registration crosses;
+     - Campaigns' lead, Robert Rodriguez: polka dots on a half drop, after
+       the dress in its hero picture;
+     - Branding's lead, Amber Shockey Co.: a trellis, the way a repeat
+       pattern is built;
+     - Interiors' lead, the Hill Country kitchen: a drawing's hatch for a
+       cut wall;
+     - Work: full stops on a 12px grid, the quietest, for the longest list;
+     - Years: tally marks;
+     - About: weather, a character a cell from a slow noise field;
+     - Figures: their own numbers, set as a ledger;
+     - Capabilities: cross stitch;
+     - Tools: the marks code is made of.
+     All ink at a few percent, fainter than the first pass. Switched by
+     ?texture= or the row under Mark (none, the default, or on), and kept
+     in localStorage. ── */
+  const TXS = ["none", "on"], TX_LS = "crossref2.texture";
   const QTX = (new URLSearchParams(location.search).get("texture") || "").toLowerCase();
   const lsTx = () => { try { return localStorage.getItem(TX_LS); } catch (e) { return null; } };
   let TX = TXS.includes(QTX) ? QTX : TXS.includes(lsTx()) ? lsTx() : "none";
   HTML.dataset.tx = TX;
-  const TEXTURE = el("canvas"); TEXTURE.id = "texture"; TEXTURE.setAttribute("aria-hidden", "true");
-  document.body.insertBefore(TEXTURE, document.body.firstChild);
-  let B64 = "";
-  const base64 = () => {
-    if (B64) return B64;
-    const s = D.frags.filter((f) => f.kind === "line").map((f) => f.text).join(" ").slice(0, 60000);
+  const toB64 = (s) => {
     const u = new TextEncoder().encode(s); let bin = "";
     for (let i = 0; i < u.length; i += 8192) bin += String.fromCharCode.apply(null, u.subarray(i, i + 8192));
-    return (B64 = btoa(bin));
+    return btoa(bin);
   };
-  /* the field: value noise in two octaves, on a fixed seed, so the
-     weather is the same on every visit */
+  /* the weather: value noise in two octaves, on a fixed seed, so it is the
+     same on every visit */
   const hash2 = (x, y) => { let h = Math.imul(x, 374761393) + Math.imul(y, 668265263) ^ 0x5bd1e995; h = Math.imul(h ^ (h >>> 13), 1274126177); return ((h ^ (h >>> 16)) >>> 0) / 4294967295; };
   const ease3 = (t) => t * t * (3 - 2 * t);
   const noise = (x, y) => {
@@ -1076,46 +1089,84 @@
     const a = hash2(xi, yi), b = hash2(xi + 1, yi), c = hash2(xi, yi + 1), d = hash2(xi + 1, yi + 1);
     return a + (b - a) * xf + (c - a) * yf + (a - b - c + d) * xf * yf;
   };
-  const RAMP = " .:-=+*#";
-  const TX_ALPHA = { dots: 0.22, plus: 0.16, ascii: 0.045, field: 0.07 };
+  const RAMP = " .:-=+*#", CODE = "{}[]<>();=/";
   const mod = (a, n) => ((a % n) + n) % n;
-  /* drawn again only when the texture or its box has changed, and while
-     a window is being dragged, once it rests */
-  let txKey = "", txT = 0;
-  const drawTexture = () => {
-    clearTimeout(txT);
-    const r = TEXTURE.getBoundingClientRect();
+  /* a lead study's own sentences, and the figures' own numbers */
+  const WORDS64 = new Map();
+  const words64 = (sec) => {
+    const a = sec.querySelector(".e[data-i]"), o = a && ENTRIES[+a.dataset.i]; if (!o || !o.k) return "";
+    if (!WORDS64.has(o.k)) WORDS64.set(o.k, toB64(D.byStudy(o.k).filter((f) => f.kind === "line").map((f) => f.text).join(" ").slice(0, 6000)));
+    return WORDS64.get(o.k);
+  };
+  const ledger = () => G.figures.items.map((o) => (o.label.replace(/,/g, "").match(/\d+(?:\.\d+)?/) || [])[0]).filter(Boolean);
+  /* a pattern is a lattice (one mark every p pixels, the lattice centred
+     in the box, every other row shifted half a step for a half drop), or
+     a character, or none, for each 6 by 12 cell */
+  const PAT = {
+    lines: { a: 0.09, p: [24, 24], ch: "*" },
+    "lead-digital": { a: 0.05, cell: (i, j) => (mod(j, 2) ? null : "-") },
+    "lead-app": { a: 0.025, text: words64 },
+    "lead-systems": { a: 0.08, p: [24, 24], ch: "+" },
+    "lead-creative": { a: 0.055, p: [18, 18], half: true, ch: "•" },
+    "lead-branding": { a: 0.03, cell: (i, j) => (mod(i + j, 2) ? "\\" : "/") },
+    "lead-interiors": { a: 0.05, cell: (i, j) => (mod(i + j, 4) ? null : "/") },
+    work: { a: 0.11, p: [12, 12], ch: "." },
+    years: { a: 0.045, cell: (i, j) => (mod(j, 2) || mod(i, 5) === 4 ? null : "|") },
+    about: { a: 0.04, field: true },
+    figures: { a: 0.03, ledger: true },
+    capabilities: { a: 0.06, p: [12, 24], half: true, ch: "x" },
+    tools: { a: 0.045, cell: (i, j) => (hash2(i + 11, j + 101) < 0.2 ? CODE[Math.floor(hash2(i + 7, j + 3) * CODE.length) % CODE.length] : null) },
+  };
+  const PADV = 8;
+  const drawSec = (sec) => {
+    let cv = sec.querySelector(":scope > canvas.stx");
+    const pat = PAT[sec.dataset.tx || sec.dataset.g];
+    if (TX === "none" || !pat) { if (cv) cv.remove(); return; }
+    if (!cv) { cv = el("canvas", "stx"); cv.setAttribute("aria-hidden", "true"); sec.insertBefore(cv, sec.firstChild); }
+    const W = sec.clientWidth, H = sec.clientHeight + PADV * 2;
     const dpr = Math.min(2, window.devicePixelRatio || 1);
-    const cs = getComputedStyle(HTML);
-    const CW = 6, LH = 12;
-    /* the grid's origin is where the index's type starts */
-    const ax = parseFloat(cs.getPropertyValue("--m")) || 0, ay = phone() ? 0 : parseFloat(cs.getPropertyValue("--top")) || 0;
-    const key = [TX, Math.round(r.width), Math.round(r.height), ax, ay, dpr].join();
-    if (key === txKey) return;
-    txKey = key;
-    if (TX === "none" || !r.width || !r.height) { TEXTURE.width = TEXTURE.height = 0; return; }
-    TEXTURE.width = Math.round(r.width * dpr); TEXTURE.height = Math.round(r.height * dpr);
-    const g = TEXTURE.getContext("2d");
-    g.setTransform(dpr, 0, 0, dpr, 0, 0);
-    const i0 = -Math.ceil(ax / CW), i1 = Math.ceil((r.width - ax) / CW), j0 = -Math.ceil(ay / LH), j1 = Math.ceil((r.height - ay) / LH);
-    g.font = "10px " + (cs.getPropertyValue("--mono").trim() || "monospace");
-    g.textAlign = "center"; g.textBaseline = "middle"; g.fillStyle = "#000"; g.globalAlpha = TX_ALPHA[TX];
-    /* dots and plus sit on the grid's crossings; letters sit in its cells */
-    const on = (i, j, ch) => g.fillText(ch, ax + i * CW, ay + j * LH);
-    const cell = (i, j, ch) => g.fillText(ch, ax + i * CW + CW / 2, ay + j * LH + LH / 2);
-    const b = TX === "ascii" ? base64() : "", cols = i1 - i0 + 1;
-    for (let j = j0; j <= j1; j++) for (let i = i0; i <= i1; i++) {
-      if (TX === "dots") { if (!mod(i, 2)) on(i, j, "."); }
-      else if (TX === "plus") { if (!mod(i, 4) && !mod(j, 2)) on(i, j, "+"); }
-      else if (TX === "ascii") cell(i, j, b[((j - j0) * cols + (i - i0)) % b.length]);
-      else {
-        const x = ax + i * CW, y = ay + j * LH;
-        const n = 0.65 * noise(x / 150, y / 150) + 0.35 * noise(x / 55 + 17, y / 55 + 31);
-        const v = Math.max(0, Math.min(1, (n - 0.38) / 0.62));
-        const ch = RAMP[Math.min(RAMP.length - 1, Math.floor(Math.pow(v, 1.5) * RAMP.length))];
-        if (ch !== " ") cell(i, j, ch);
-      }
+    const key = W + "," + H + "," + dpr; if (cv._k === key) return; cv._k = key;
+    if (!W || !H) return;
+    cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr);
+    const g = cv.getContext("2d"); g.setTransform(dpr, 0, 0, dpr, 0, 0);
+    g.font = "10px " + (getComputedStyle(HTML).getPropertyValue("--mono").trim() || "monospace");
+    g.textAlign = "center"; g.textBaseline = "middle"; g.fillStyle = "#000"; g.globalAlpha = pat.a;
+    if (pat.p) {
+      const [px, py] = pat.p, half = pat.half ? px / 2 : 0;
+      const nx = Math.max(1, Math.floor((W - 6 - half) / px) + 1), ny = Math.max(1, Math.floor((H - 12) / py) + 1);
+      const x0 = (W - (nx - 1) * px - half) / 2, y0 = (H - (ny - 1) * py) / 2;
+      for (let l = 0; l < ny; l++) for (let k = 0; k < nx; k++) g.fillText(pat.ch, x0 + k * px + (l % 2 ? half : 0), y0 + l * py);
+      return;
     }
+    const CW = 6, LH = 12, cols = Math.floor(W / CW), rows = Math.floor(H / LH);
+    const ox = (W - cols * CW) / 2 + CW / 2, oy = (H - rows * LH) / 2 + LH / 2;
+    const put = (i, j, ch) => { if (ch && ch !== " ") g.fillText(ch, ox + i * CW, oy + j * LH); };
+    if (pat.text) {
+      const s = pat.text(sec); if (!s) return;
+      for (let j = 0; j < rows; j++) for (let i = 0; i < cols; i++) put(i, j, s[(j * cols + i) % s.length]);
+    } else if (pat.ledger) {
+      const nums = ledger(); if (!nums.length) return;
+      for (let j = 0; j < rows; j++) {
+        let row = "", k = j * 3; while (row.length < cols) row += nums[k++ % nums.length].padStart(7, " ");
+        for (let i = 0; i < cols; i++) put(i, j, row[i]);
+      }
+    } else if (pat.field) {
+      for (let j = 0; j < rows; j++) for (let i = 0; i < cols; i++) {
+        const x = i * CW, y = j * LH;
+        const n = 0.65 * noise(x / 70 + 5, y / 70 + 9) + 0.35 * noise(x / 28 + 17, y / 28 + 31);
+        const v = Math.max(0, Math.min(1, (n - 0.38) / 0.62));
+        put(i, j, RAMP[Math.min(RAMP.length - 1, Math.floor(Math.pow(v, 1.5) * RAMP.length))]);
+      }
+    } else for (let j = 0; j < rows; j++) for (let i = 0; i < cols; i++) put(i, j, pat.cell(i, j));
+  };
+  /* each section is drawn when it is built, and again whenever its size
+     moves (a column narrows, a font arrives) */
+  let txRO = null;
+  const wireTextures = () => {
+    if (txRO) txRO.disconnect();
+    const secs = [...IDX.querySelectorAll(".grp.ec")];
+    if (TX !== "none" && !txRO && "ResizeObserver" in window) txRO = new ResizeObserver((es) => es.forEach((e) => drawSec(e.target)));
+    secs.forEach((s) => { drawSec(s); if (TX !== "none" && txRO) txRO.observe(s); });
   };
   const setTexture = (x) => {
     if (!TXS.includes(x) || x === TX) return;
@@ -1124,7 +1175,7 @@
     const u = new URL(location.href); u.searchParams.set("texture", x);
     history.replaceState(history.state, "", u.pathname + u.search + u.hash);
     IDX.querySelectorAll(".txsw a").forEach((a) => { const on = a.dataset.tx === x; a.classList.toggle("on", on); if (on) a.setAttribute("aria-current", "true"); else a.removeAttribute("aria-current"); });
-    drawTexture();
+    wireTextures();
   };
   const meets = (a, b) => { for (const k of a) if (b.has(k)) return true; return false; };
   let lit = [], painted = [null, null];
