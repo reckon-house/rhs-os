@@ -135,6 +135,8 @@
   const WIRES_BACK = $("#wiresBack");
   const clearWires = () => { WIRES.innerHTML = ""; if (WIRES_BACK) WIRES_BACK.innerHTML = ""; };
   const EASE = "cubic-bezier(0.2, 0.7, 0.2, 1)";
+  /* the site's exit curve: leaving is quicker than arriving (reveal.module.css) */
+  const EXIT = "cubic-bezier(0.4, 0, 0.7, 1)";
   const DROP = "cubic-bezier(0.5, 0, 0.75, 0)";
   const still = () => matchMedia("(prefers-reduced-motion: reduce)").matches;
   const ratio = (f) => f.w / f.h;
@@ -1999,8 +2001,9 @@
     const flight = tp && from && ff && visRect(from) && visRect(tp.box) ? fly(from, ff, tp.box, { ms: 540, fitB: ff.src !== tp.f.src }) : null;
     shelfEnter(S, { back: true, delay: 200, keep: flight ? tp.box : null });
     if (flight) { tp.box.style.visibility = "hidden"; from.style.visibility = "hidden"; land(flight, tp.box, () => { tp.box.style.visibility = ""; }); }
-    /* the room's words go first, then its paper lowers off the shelf */
-    R.room.el.animate([{ opacity: 1 }, { opacity: 0 }], { duration: still() ? 0 : 180, easing: "ease", fill: "forwards" });
+    /* the room's words go first, lifting away on the site's exit curve,
+       then its paper lowers off the shelf */
+    R.room.el.animate([{ opacity: 1, transform: "none" }, { opacity: 0, transform: "translateY(-12px)" }], { duration: still() ? 0 : 300, easing: EXIT, fill: "forwards" });
     const lower = still() ? R.c.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 0, fill: "forwards" })
       : R.c.animate([{ clipPath: "inset(0 0 0 0)" }, { clipPath: "inset(100% 0 0 0)" }], { duration: 480, delay: 90, easing: "cubic-bezier(0.4, 0, 0.6, 1)", fill: "forwards" });
     lower.finished.then(() => { R.room.destroy(); R.c.remove(); });
@@ -2017,7 +2020,11 @@
       if (still() || phone()) { setTimeout(then, phone() ? 520 : 0); return; }
       node.animate([{ clipPath: "inset(0 0 0 0)" }, { clipPath: "inset(100% 0 0 0)" }], { duration: 460, easing: "cubic-bezier(0.4, 0, 0.6, 1)", fill: "forwards" }).finished.then(then);
     };
-    if (R) { R.c.style.pointerEvents = "none"; drop(R.c, () => { R.room.destroy(); R.c.remove(); }); }
+    if (R) {
+      R.c.style.pointerEvents = "none";
+      if (!still() && !phone()) R.room.el.animate([{ opacity: 1, transform: "none" }, { opacity: 0, transform: "translateY(-12px)" }], { duration: 300, easing: EXIT, fill: "forwards" });
+      drop(R.c, () => { R.room.destroy(); R.c.remove(); });
+    }
     if (S) { if (S.visible) drop(S.layer, () => destroyShelf(S)); else destroyShelf(S); }
   };
 
