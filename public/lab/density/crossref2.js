@@ -440,7 +440,7 @@
   /* a line in two tones, as a study's lead is: its first sentence ink */
   const twoTone = (t) => { const m = /[.!?]\s+(?=[A-Z])/.exec(t); return m ? esc(t.slice(0, m.index + 1)) + ' <span class="g">' + esc(t.slice(m.index + m[0].length)) + "</span>" : esc(t); };
 
-  const IXS = ["a", "b", "c", "d", "e"];
+  const IXS = ["a", "b", "c", "d", "e", "f"];
   let IX = (new URLSearchParams(location.search).get("index") || "d").toLowerCase();
   if (!IXS.includes(IX)) IX = "d";
   HTML.dataset.ix = IX;
@@ -495,6 +495,7 @@
     const a = el("a", "e"); a.href = "#" + o.key; a.dataset.i = o.i; o.a = a;
     const g = o.g.id;
     if (mode && mode[0] === "E") return entryE(o, mode, a);
+    if (mode && mode[0] === "F") return entryF(o, mode, a);
     if (g === "work") {
       a.classList.add("w");
       /* D pictures only its features; the other studies are words */
@@ -792,6 +793,80 @@
     let c = best ? best.code : 0;
     rest.forEach((b) => { const ci = best ? c % m : cols.indexOf(cols.reduce((x, y) => (y.offsetHeight < x.offsetHeight - 1 ? y : x), cols[0])); c = Math.floor(c / m); cols[ci].appendChild(b); });
   };
+  /* ════════════════════════════════════════════════════════════════════
+     INDEX F, THE BACK OF THE BOOK (27 Sept 2026, a lever pull). His
+     "i want to keep 'pulling the lever'", with a catalogue's picture
+     index (numbers and pages in columns), a magazine's A to Z index
+     (a legend of kinds, each name with its page), 1/1 Studio's numbered
+     index and Exe's related row beside it; and his own reading of the
+     page, "a table of contents and an index mixed into one".
+
+     So F is both, as a book has them: the contents first, the thirty
+     studies counting down by number with their year and discipline; then
+     the index, every line, capability, tool, figure and About section
+     from A to Z under its letter, marked by kind with a shape (no
+     colour), each with its locators the way a book gives page numbers:
+     a study's number, or its number and section (26.02) where the index
+     knows the place. A locator opens the study there; a name opens its
+     shelf, as everywhere. Years are the contents' own column.
+     ════════════════════════════════════════════════════════════════════ */
+  const KIND = { lines: ["\u25C6", "Line"], capabilities: ["\u25CF", "Capability"], tools: ["\u25CB", "Tool"], figures: ["\u25A0", "Figure"], about: ["\u25B2", "About"] };
+  /* an entry's locators: each of its studies once, oldest first, at the
+     sections the index knows, else the study alone */
+  const locatorsF = (o) => {
+    if (!o.rel) return [];
+    const ks = [...o.rel].filter((k) => D.study(k)).sort((a, b) => D.num(a).localeCompare(D.num(b)));
+    const out = [];
+    ks.forEach((k) => {
+      const ls = ["capabilities", "tools", "figures"].includes(o.g.id) ? locsOf(o, k) : [];
+      if (ls.length) ls.forEach((l) => out.push({ k, at: l.at, t: D.num(k) + "." + l.s }));
+      else out.push({ k, at: null, t: D.num(k) });
+    });
+    return out;
+  };
+  const entryF = (o, mode, a) => {
+    if (mode === "Fwork") {
+      const s = D.study(o.k) || {};
+      a.classList.add("w", "fw");
+      a.innerHTML = '<span class="fn">' + D.num(o.k) + '</span><span class="fy">' + D.year(o.k) + '</span><span class="fx"><span class="t">' + esc(o.label) + "</span>" +
+        (s.s ? '<span class="fd">' + esc(s.s) + "</span>" : "") + "</span>";
+      return a;
+    }
+    const kind = KIND[o.g.id] || ["", ""];
+    a.classList.add("ft");
+    const ls = locatorsF(o);
+    a.innerHTML = '<span class="fk" title="' + kind[1] + '">' + kind[0] + '</span><span class="fx"><span class="t">' + esc(nameOf(o)) + "</span>" +
+      (ls.length ? '<span class="fl">' + ls.map((l) => '<span class="floc" data-k="' + D.esc(l.k) + '"' + (l.at ? ' data-at="' + D.esc(l.at) + '"' : "") + ' title="' + esc(D.title(l.k)) + '">' + l.t + "</span>").join(", ") + "</span>" : "") + "</span>";
+    return a;
+  };
+  const headF = (n, name, count) => el("h2", "fh", "<span><b>" + n + "</b>" + esc(name) + '</span><span class="n">' + count + "</span>");
+  const buildF = () => {
+    const wrap = el("div", "fg");
+    wrap.appendChild(el("div", "flegend caps", Object.values(KIND).map(([m, n]) => "<span><i>" + m + "</i>" + n + "</span>").join("")));
+    const body = el("div", "fbody");
+    /* 01 Contents: the studies, counting down by number */
+    const con = el("section", "grp fcon"); con.dataset.g = "work";
+    con.appendChild(headF("01", "Contents", G.work.items.length));
+    const rows = el("div", "frows");
+    G.work.items.slice().sort((x, y) => D.num(y.k).localeCompare(D.num(x.k))).forEach((o) => rows.appendChild(entryEl(o, "Fwork")));
+    con.appendChild(rows); body.appendChild(con);
+    /* 02 Index: everything else, A to Z, under its letter */
+    const terms = ["lines", "capabilities", "tools", "figures", "about"].flatMap((g) => G[g].items);
+    const sortKey = (o) => clean(nameOf(o)).toLowerCase().replace(/^[^a-z0-9]+/, "");
+    terms.sort((x, y) => sortKey(x).localeCompare(sortKey(y), "en", { numeric: true }));
+    const idx = el("section", "grp findex"); idx.dataset.g = "index";
+    idx.appendChild(headF("02", "Index", terms.length));
+    const cols = el("div", "fcols");
+    let letter = null, block = null;
+    terms.forEach((o) => {
+      const c = sortKey(o).charAt(0); const L = /[a-z]/.test(c) ? c.toUpperCase() : "0\u20139";
+      if (L !== letter) { letter = L; block = el("div", "fblock"); block.appendChild(el("div", "flh", L)); cols.appendChild(block); }
+      block.appendChild(entryEl(o, "Fterm"));
+    });
+    idx.appendChild(cols); body.appendChild(idx);
+    wrap.appendChild(body);
+    return wrap;
+  };
   const LAYOUT = {
     a: () => [section("lines", "row"), section("work", "sheet"), section("figures", "wall"),
       block("fine", [section("about", "list"), section("years", "run"), section("capabilities", "run"), section("tools", "run")])],
@@ -802,6 +877,7 @@
     d: () => [block("dcols", [section("lines", "dline"), section("work", "dwork"), section("about", "list"), section("years", "run"),
       section("capabilities", "run"), section("tools", "run"), section("figures", "dfig")])],
     e: () => [buildE()],
+    f: () => [buildF()],
   };
   const buildIndex = () => {
     THUMBS = []; STRIPS = [];
@@ -832,7 +908,7 @@
     history.replaceState(history.state, "", u.pathname + u.search + u.hash);
     buildIndex(); fit(true);
     paint(painted[0], painted[1]);
-    if (locked) locked.a.classList.add("lock");
+    if (locked && locked.a) locked.a.classList.add("lock");
     clearWires();
     if (!staged()) requestAnimationFrame(() => wire());
   };
@@ -960,6 +1036,8 @@
        study with Digital, so the names went solid black and said nothing */
     const lineMe = !!me && me.g && me.g.id === "lines";
     ENTRIES.forEach((x) => {
+      /* an entry a version does not set (F leaves years to its contents) */
+      if (!x.a) return;
       const on = !!rel && (x === me || (meets(x.rel, rel) && !(lineMe && x.g && x.g.id === "lines")));
       x.a.classList.toggle("on", on); x.a.classList.toggle("me", !!me && x === me);
       if (on && x !== me) lit.push(x);
@@ -969,12 +1047,12 @@
     GROUPS.forEach((g) => {
       if (!g.count) return;
       if (!rel) { g.count.textContent = g.items.length; return; }
-      const n = g.items.filter((x) => x.a.classList.contains("on")).length;
+      const n = g.items.filter((x) => x.a && x.a.classList.contains("on")).length;
       g.count.innerHTML = "<b>" + n + "</b>/" + g.items.length;
     });
   };
   let locked = null;
-  const lockEntry = (o) => { if (locked) locked.a.classList.remove("lock"); locked = o || null; if (locked) locked.a.classList.add("lock"); };
+  const lockEntry = (o) => { if (locked && locked.a) locked.a.classList.remove("lock"); locked = o || null; if (locked && locked.a) locked.a.classList.add("lock"); };
 
   /* ── type: Avenir Next, tracked in as it grows (his call, 27 Sept) ── */
   const track = (px) => (px >= 150 ? -0.06 : px >= 90 ? -0.055 : px >= 54 ? -0.05 : px >= 34 ? -0.042 : px >= 21 ? -0.03 : -0.012);
@@ -1386,7 +1464,7 @@
        saved $3M" read as Nordstrom beauty, 2018), so it is credited to
        its About section instead (27 Sept) */
     const k = it.k && D.study(it.k) && !it.about ? it.k : null;
-    G.work.items.forEach((x) => x.a.classList.toggle("cur", !!cur && !!k && x.rel.has(k) && x !== cur.o));
+    G.work.items.forEach((x) => { if (x.a) x.a.classList.toggle("cur", !!cur && !!k && x.rel.has(k) && x !== cur.o); });
     shownK = k;
     let left = "";
     if (k) {
@@ -1416,6 +1494,7 @@
      picture, a year after its name, a frame's edge. An entry the index
      has scrolled out of view sends none */
   const endOf = (x) => {
+    if (!x.a) return null;
     const t = x.a.querySelector(".we") || x.a.querySelector(".t"); const rs = (t || x.a).getClientRects(); const b = rs[rs.length - 1];
     if (!b || !b.width) return null;
     const y = b.top + b.height / 2;
@@ -2439,6 +2518,15 @@
   FOCUS.addEventListener("pointerleave", (ev) => { if (ev.pointerType === "mouse" && !IDX.contains(ev.relatedTarget) && !staged()) goRest(); });
 
   IDX.addEventListener("click", (ev) => {
+    /* a locator in index F: the study, at the place, with the entry's
+       shelf held behind it for Close */
+    const lc = ev.target.closest(".floc");
+    if (lc && !(ev.metaKey || ev.ctrlKey || ev.shiftKey || ev.button)) {
+      ev.preventDefault(); clearTimeout(intentT);
+      const o2 = entryOf(ev.target);
+      go({ v: "study", k: lc.dataset.k, from: o2 && o2.g.id !== "work" ? o2.key : null }, { push: true, at: lc.dataset.at || null });
+      return;
+    }
     const sw = ev.target.closest(".ixsw a");
     if (sw && !(ev.metaKey || ev.ctrlKey || ev.shiftKey || ev.button)) { ev.preventDefault(); if (sw.dataset.mk) setMark(sw.dataset.mk); else setIndex(sw.dataset.ix); return; }
     const o = entryOf(ev.target); if (!o) return;
@@ -2451,7 +2539,7 @@
        picture is loaded and in view */
     let how = null;
     if (o.g.id === "work") {
-      const th = o.a.querySelector(".th");
+      const th = o.a && o.a.querySelector(".th");
       const view = phone() ? { top: 0, bottom: innerHeight } : IDX.getBoundingClientRect();
       if (th && th.classList.contains("in") && rectIn(th.getBoundingClientRect(), view)) how = { src: { box: th, f: th._f, target: "cover" } };
     }

@@ -795,3 +795,53 @@ html.anim .layer.bleed:not(.out) .mos .tile img { animation: settle 1.1s var(--e
 .layer .folio b { margin-left: 0.45em; font-weight: 700; color: var(--paper); font-variant-numeric: tabular-nums; }
 .layer:not(.dark) .folio { display: none; }
 html.anim .layer.dark:not(.out) .folio { animation: lift 0.6s var(--ease) 0.25s both; }
+
+/* ════════════════════════════════════════════════════════════════════
+   INDEX F, THE BACK OF THE BOOK (27 Sept 2026, a lever pull). The
+   contents in the first column, the catalogue's numbered rows; the index
+   across the other three, a magazine's A to Z with a legend of kinds and
+   each name's locators after it, the way a book gives its pages. What F
+   is and why is above buildF in crossref2.js.
+   ════════════════════════════════════════════════════════════════════ */
+[data-ix="f"] #idx { --eg: 20px; }
+[data-ix="f"] .ixtop { margin: 0 0 14px; }
+[data-ix="f"] .flegend { display: flex; flex-wrap: wrap; gap: 4px 16px; margin: 0 0 22px; color: var(--grey); font-size: 9px; }
+[data-ix="f"] .flegend i { margin-right: 5px; font-style: normal; color: var(--ink); }
+[data-ix="f"] .fbody { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 3fr); column-gap: var(--eg); align-items: start; }
+[data-ix="f"] .grp.fcon, [data-ix="f"] .grp.findex { margin: 0; }
+[data-ix="f"] .grp.findex { padding-left: var(--eg); border-left: 1px solid var(--hair); margin-left: calc(var(--eg) / -2); }
+[data-ix="f"] .grp h2.fh { display: flex; justify-content: space-between; align-items: baseline; margin: 0 0 4px; padding: 0 0 8px;
+  border-bottom: 0; background: linear-gradient(var(--ink), var(--ink)) no-repeat 0 100% / 100% 1px; color: var(--ink); font-size: 9.5px; font-weight: 600; letter-spacing: 0.09em; }
+[data-ix="f"] .fh b { font-weight: 700; margin-right: 0.8em; }
+[data-ix="f"] .fh .n { color: var(--grey); }
+/* the contents: number, year, the study and its discipline, ruled */
+[data-ix="f"] .e.fw { display: grid; grid-template-columns: 2.2em 2.9em minmax(0, 1fr); align-items: first baseline; padding: 6px 0 7px; border-bottom: 1px solid var(--hair); }
+[data-ix="f"] .e.fw .fn { font-size: 10px; font-weight: 700; letter-spacing: 0.04em; font-variant-numeric: tabular-nums; }
+[data-ix="f"] .e.fw .fy { font-size: 10px; font-weight: 500; color: var(--grey); font-variant-numeric: tabular-nums; }
+[data-ix="f"] .e.fw .t { font-size: 12px; font-weight: 600; letter-spacing: -0.012em; line-height: 1.25; }
+[data-ix="f"] .e.fw .fd { display: block; margin-top: 2px; font-size: 10px; font-weight: 500; line-height: 1.3; color: var(--grey); }
+/* the index: three columns with a rule in each gutter, a letter over its
+   names, a shape for the kind, the locators after the name */
+[data-ix="f"] .fcols { columns: 3; column-gap: var(--eg); column-rule: 1px solid var(--hair); }
+[data-ix="f"] .fblock { margin: 0 0 6px; }
+[data-ix="f"] .flh { margin: 10px 0 5px; padding: 0 0 4px; border-bottom: 1px solid var(--ink); font-size: 15px; font-weight: 700; letter-spacing: -0.03em; line-height: 1; break-after: avoid; }
+[data-ix="f"] .fblock:first-child .flh { margin-top: 6px; }
+[data-ix="f"] .e.ft { display: grid; grid-template-columns: 1.15em minmax(0, 1fr); align-items: first baseline; padding: 2px 0 3px; break-inside: avoid; }
+[data-ix="f"] .e.ft .fk { font-size: 8px; color: var(--ink); line-height: 1; }
+[data-ix="f"] .e.ft .t { font-size: 11.5px; font-weight: 600; letter-spacing: -0.01em; line-height: 1.25; }
+[data-ix="f"] .e.ft .fl { display: block; margin-top: 1px; font-size: 9.5px; font-weight: 500; line-height: 1.35; letter-spacing: 0.02em; color: var(--grey); font-variant-numeric: tabular-nums; }
+[data-ix="f"] .floc { cursor: pointer; transition: color 0.15s ease; }
+[data-ix="f"] .floc:hover { color: var(--ink); text-decoration: underline; text-underline-offset: 0.2em; }
+/* marks in F: the grey of E's default, on the name, the words ink; the
+   black band and its white words stand down */
+html[data-ix="f"] #idx .e { background-image: none !important; box-shadow: none !important; padding-inline: 0 !important; margin-inline: 0 !important; -webkit-text-stroke: 0 !important; text-shadow: none !important; }
+html[data-ix="f"] #idx .e.on, html[data-ix="f"] #idx .e.lock { color: var(--ink) !important; }
+html[data-ix="f"] #idx .e :is(.fy, .fd, .fl) { color: var(--grey) !important; }
+html[data-ix="f"] #idx .e .t { background-image: linear-gradient(#ECECEC, #ECECEC); background-repeat: no-repeat; background-size: 0% 100%; background-position: 100% 0;
+  padding: 0.1em 0.25em 0.12em; margin: -0.1em -0.25em -0.12em; -webkit-box-decoration-break: clone; box-decoration-break: clone;
+  transition: background-size 0.3s cubic-bezier(0.45, 0, 0.2, 1); }
+html[data-ix="f"] body.x #idx .e.on .t, html[data-ix="f"] #idx .e.lock .t { background-size: 100% 100%; background-position: 0 0; }
+/* F on a phone: contents, then the index in two columns */
+html.stack[data-ix="f"] .fbody { display: block; }
+html.stack[data-ix="f"] .grp.findex { margin: 36px 0 0; padding: 0; border: 0; }
+html.stack[data-ix="f"] .fcols { columns: 2; }
