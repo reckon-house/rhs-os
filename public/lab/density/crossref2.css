@@ -592,8 +592,11 @@ html[data-ix="e"]:is([data-mk="cell"], [data-mk="bar"]) #idx .grp.ec .e.lock:is(
 html[data-mark="ink"][data-ix="e"] body.x #idx .grp.ec .e.on:is(.ecap, .etool, .efig):not(.me):not(.lock) { -webkit-text-stroke: 0; text-shadow: none; }
 html[data-ix="e"] #idx .grp.ec .e.lock:is(.el, .ef, .ew, .ey, .ea, .efig, .ecap, .etool) { background: none !important; box-shadow: none !important; color: var(--ink) !important; }
 html[data-ix="e"] #idx .grp.ec .e.lock .dk, html[data-ix="e"] #idx .grp.ec .e.lock .cr, html[data-ix="e"] #idx .grp.ec .e.lock .kk { color: var(--grey) !important; }
-/* where the mark leaves the words ink, a held entry's year stays grey */
+/* where the mark leaves the words ink, a year stays grey, lit or held:
+   the black band's white year was left on the grey (his "the years turn
+   white and arent legible on the light grey") */
 html[data-ix="e"]:is([data-mk="grey"], [data-mk="node"]) #idx .grp.ec .e.lock .y { color: var(--grey) !important; }
+html[data-ix="e"]:is([data-mk="grey"], [data-mk="node"]) body.x #idx .grp.ec .e.on .y { color: var(--grey); }
 
 /* CELL, the default: the band fills the entry's cell of the grid, out to
    the rules either side, so the gutter is its padding. It sweeps in from
