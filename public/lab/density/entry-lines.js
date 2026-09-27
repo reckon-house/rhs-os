@@ -30,6 +30,22 @@
 
    To change a line, change the words; to take one away, delete it. */
 window.ENTRY_LINES = {
+  /* the six lines, What I make (27 Sept, his "do the same pass for the
+     lines too"): each shelf's head says the problem the line answers and
+     what was built, where the index keeps the board's short sentence */
+  /* what it answered: Ivy Park: "this page had to be the store, the lookbook and the campaign at the same time"; Nordstrom beauty: "New products launch weekly" */
+  "line/digital": "A retail site has to be the store, the lookbook and the campaign at once, and stay current while new products land every week. These are the ones I designed and shipped, from Ivy Park's launch at Nordstrom to Jeffrey New York's first online store.",
+  /* what it answered: A.R.C.: "The apps for it ask you to type every item in by hand"; DSC: "a pile of texts, handwritten notes, emails, and a Google Sheet"; the board: "Native tools and AI products, built end to end" */
+  "line/app": "Home inventory apps make you type every item in, and a gym's bookings lived in texts and a spreadsheet. A.R.C. catalogs a home from the camera, and Dallas Sport Collective books from the AI you already use. With Sally Marketing OS and Faux Reel, all four were built end to end.",
+  /* what it answered: Sally OS: "that output breaks when the tools underneath it don't share context"; Nordstrom framework: "producing more digital content than the site had structure for" */
+  "line/systems": "Sally's marketing output broke where its tools didn't share context, and Nordstrom was publishing more content than its site had structure for. The answers were systems: one pipeline with a shared brain at Sally, four named buckets and three tile shapes at Nordstrom, and one booking engine at Dallas Sport Collective.",
+  /* what it answered: Robert Rodriguez: "the budget covered one day in the studio"; Neiman Marcus: "There was no location budget"; Jeffrey spring: "on a studio budget" */
+  "line/creative": "Several of these campaigns had less than they needed: one studio day for Robert Rodriguez, no location budget at Neiman Marcus or Jeffrey. The direction worked with what there was: one model in four setups, color blocks where a location would go, and foliage cropped big enough to stand in for a place.",
+  /* what it answered: Capitan Boot Co.: "needed a brand that could take the same wear"; J. Christianson: "the colors change with the setting"; the board: "Marks, type and patterns, on packaging, print and apparel" */
+  "line/branding": "A brand has to hold up where it goes: stamped into leather for Capitan Boot Co., changing color by setting for J. Christianson, layered across a table for Amber Shockey & Co. The marks, type and patterns here were made for the packaging, print and apparel they live on.",
+  /* what it answered: Hill Country kitchen: "The kitchen is the hub of the house"; Fairview entry: "The light through those doors comes first"; the board: "Rooms designed like products, down to the hardware" */
+  "line/interiors": "A room has to work for how it gets used: a kitchen that's the hub of the house, a chalet that looks out at the trees, an entry built around its light. Eight rooms are here, each designed like a product, down to the hardware.",
+
   /* A.R.C.: "Perceptron's Mk1 model reads the physical world from footage
      ... picks up the spatial context a single photo misses. Sweep a room
      with your phone and Mk1 reads the whole thing." */
@@ -75,7 +91,8 @@ window.ENTRY_LINES = {
      every breakpoint, so one picture works many ways" */
   /* what it answered: Nordstrom personalization: "Nordstrom needed personalized content for millions of customers, and it couldn't look like a machine had made it" */
   "tool/asset-library": "Nordstrom needed personalized content for millions of customers, and it couldn't look machine-made. The asset library's pictures went into three tile shapes that resize for every breakpoint, so one picture works many ways.",
-  "tool/autocad": "AutoCAD is where the drawings for the interiors get made. It's used in all eight of them, the Hill Country house, the Fairview and the Mountain View chalet among them.",
+  /* what it answered: his note, 27 Sept: "autocad is indutry standard" */
+  "tool/autocad": "AutoCAD is the industry standard for drawings, so it's where every room here gets drawn. It's in all eight interiors projects, from the Hill Country house to the Mountain View chalet.",
   /* Various design: "a film camera for the photography"; "one 4x6 film
      photograph blown up to fill a storefront window" */
   "tool/camera": "For the early design work, the photography came from a film camera. One of its 4x6 prints was blown up to fill a storefront window.",
@@ -135,7 +152,8 @@ window.ENTRY_LINES = {
   "tool/model-context-protocol": "Athletes at Dallas Sport Collective book from the AI they already use, but that AI only ever asks. Its MCP server gives it eleven tools that read the real records, and anything it books waits as a request for the owner to approve.",
   /* Sally OS: "The asset hub, the associate site, and the scoreboard are
      Next.js on Vercel." DSC: "Next.js on Vercel" */
-  "tool/next-js": "Next.js is a framework for websites and web apps. Sally Marketing OS's asset hub, associate site and scoreboard are built on it, and so is Dallas Sport Collective.",
+  /* what it answered: his note, 27 Sept: "next.js and vercel being so flexible of a modern hostion application option" */
+  "tool/next-js": "A marketing site, a booking platform and an internal asset hub are very different builds, and Next.js is flexible enough to be the base for all of them. It runs Dallas Sport Collective and Sally Marketing OS's asset hub, associate site and scoreboard.",
   /* Nordstrom beauty: "Built to stay current without a team rebuilding the
      pages every week." */
   /* what it answered: About: "At Nordstrom the new CMS saved $3M over four years" */
@@ -187,7 +205,8 @@ window.ENTRY_LINES = {
   /* what it answered: Sally OS: "that output breaks when the tools underneath it don't share context" */
   "tool/supabase-pgvector": "Sally's output broke when its tools didn't share context, and what they knew was spread across documents, product photography and video. With pgvector, Sally Marketing OS keeps one index over all three, so one search covers text and pictures.",
   "tool/typescript": "TypeScript is JavaScript with types. It's part of Faux Reel, which builds a sizzle reel out of still photographs.",
-  "tool/vercel": "Vercel hosts websites and apps. A.R.C. is deployed on it, and so are Dallas Sport Collective and the Sally Marketing OS asset hub, associate site and scoreboard.",
+  /* what it answered: his note, 27 Sept: "next.js and vercel being so flexible of a modern hostion application option" */
+  "tool/vercel": "Every app here needs a place to run, and Vercel is the flexible, modern option for hosting one. A.R.C., Dallas Sport Collective and Sally Marketing OS's asset hub, associate site and scoreboard all deploy on it.",
   /* Sally OS: Gemini "reads Sally's internal knowledge base on the first
      message, so every conversation opens with the brand guidelines,
      campaign history, product catalogs ... already loaded"; "That takes a
