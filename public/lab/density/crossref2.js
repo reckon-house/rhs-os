@@ -2229,8 +2229,10 @@
     if (SH !== S || VIEW.v !== "shelf" || !D.study(k)) return;
     const p = fromEl ? picOfEl(fromEl, k) : null;
     S.clicked = { k, el: p ? p.box : null };
-    /* a locator opens the study at its place: no flight, the room scrolls there */
-    go({ v: "study", k, from: S.key }, { push: true, at: at || null, src: !at && p && visRect(p.box) ? { box: p.box, f: p.f, target: "cover", shelf: true } : null });
+    /* the study comes in under the curtain, at its place when a locator
+       was clicked (27 Sept, his "yes, use the curtain there too"); the
+       tile is kept so Close can fly the picture home to it */
+    go({ v: "study", k, from: S.key }, { push: true, at: at || null, curtain: true });
   };
   const shelfClick = (S, ev) => {
     if (ev.metaKey || ev.ctrlKey || ev.shiftKey || ev.button) return; /* a new tab is still a new tab */
@@ -2395,7 +2397,7 @@
     const nk = order.length > 1 ? order[(i + 1) % order.length] : null;
     const room = SP.render(c, k, {
       next: nk ? { k: nk, t: D.title(nk) } : null,
-      onNext: (x) => go({ v: "study", k: x, from }, { push: true, via: "next" }),
+      onNext: (x) => go({ v: "study", k: x, from }, { push: true, via: "next", curtain: true }),
       onClose: () => closeTo(parentOf(VIEW)),
       /* its words wait to rise until the room is on stage (play, below) */
       hold: true,
@@ -2421,8 +2423,12 @@
        study's name down a white panel that falls and a black one that
        rises over it. At full black the room is put in place under it,
        whatever the column showed goes, and the black lifts off the room
-       as its words rise. The index keeps working the whole time */
-    if (how.curtain && window.Curtain && window.Curtain.cover && !still() && !phone()) {
+       as its words rise. The index keeps working the whole time. Then
+       every other way in as well, his "yes, use the curtain there too":
+       a shelf's picture or locator, Next, the focus, back and forward.
+       Only an address opened cold, a phone and reduced motion keep the
+       old ways, so a picture flies only home to its tile on Close */
+    if (how.curtain !== false && window.Curtain && window.Curtain.cover && !still() && !phone()) {
       RM.curtain = true;
       lockEntry(WORK[k]);
       const s = D.study(k) || {};
@@ -2720,7 +2726,7 @@
     if (o.g.id === "work") {
       if (VIEW.v === "study" && RM && RM.k === o.k) return;
       const from = VIEW.v === "shelf" ? VIEW.key : VIEW.v === "study" ? VIEW.from : null;
-      go({ v: "study", k: o.k, from }, Object.assign({ push: true }, how || {}));
+      go({ v: "study", k: o.k, from }, Object.assign({ push: true, curtain: true }, how || {}));
       return;
     }
     if (VIEW.v === "shelf" && VIEW.key === o.key) { closeTo({ v: "rest" }); return; }
@@ -2806,7 +2812,7 @@
     const cp = ev.target.closest(".cp");
     if (cp && cp._f) {
       const from = null;
-      go({ v: "study", k: cp.dataset.k, from }, { push: true, src: { box: cp._box, f: cp._f, target: cp._f.lead ? "cover" : cp._f.id } });
+      go({ v: "study", k: cp.dataset.k, from }, { push: true, curtain: true });
       return;
     }
     if (cur) open(cur.o);
@@ -2869,7 +2875,9 @@
     const st = history.state && history.state.v ? (history.state.v === "study" ? { v: "study", k: history.state.k, from: history.state.from } : history.state.v === "shelf" ? { v: "shelf", key: history.state.key } : { v: "rest" }) : parse(location.hash);
     if (keyOf(st) !== decodeURIComponent(location.hash.replace(/^#/, ""))) Object.assign(st, parse(location.hash));
     history.replaceState({ v: st.v, key: st.key || null, k: st.k || null, from: st.from || null, back: history.state ? history.state.back : undefined }, "", keyOf(st) ? "#" + keyOf(st) : location.pathname + location.search);
-    if (st.v !== "rest") apply(st, {});
+    /* an address opened cold rises as it did: the page's own arrival is
+       the curtain there */
+    if (st.v !== "rest") apply(st, { curtain: false });
   };
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(start); else start();
   window.XREF = { ENTRIES, GROUPS, FIGS, KEYMAP, show, fit, go, setIndex, get ix() { return IX; }, get view() { return VIEW; }, get shelf() { return SH; }, get room() { return RM; }, shelves: SHELVES, get layout() { return SH ? SH.lid : layoutId(); }, setShelf: setShelfLayout };
