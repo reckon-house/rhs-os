@@ -19,9 +19,12 @@
      INDEX, IN THREE HIERARCHIES below. It scrolls in its own half now,
      its pictures load as they near the view, and a study clicked in
      Work flies from its own picture there into the room.
-   - Index D, the default (27 Sept, later). The first version's four
-     columns of small type, fitted to one screen by measuring, with a type
-     scale and a few pictures set into them; see INDEX D below.
+   - Index D (27 Sept, later), the default until E. The first version's
+     four columns of small type, fitted to one screen by measuring, with a
+     type scale and a few pictures set into them; see INDEX D below.
+   - Index E, the default since F (27 Sept, latest). His "i still think
+     i prefer E", after the back of the book was set beside it. The
+     page with no ?index opens on E; the others are a letter away.
    - No category colour (27 Sept, later). The lines lost their squares,
      their coloured words and their coloured grounds, in every version and
      on every depth. A line is a word now. A study's own palette inside
@@ -441,8 +444,8 @@
   const twoTone = (t) => { const m = /[.!?]\s+(?=[A-Z])/.exec(t); return m ? esc(t.slice(0, m.index + 1)) + ' <span class="g">' + esc(t.slice(m.index + m[0].length)) + "</span>" : esc(t); };
 
   const IXS = ["a", "b", "c", "d", "e", "f"];
-  let IX = (new URLSearchParams(location.search).get("index") || "d").toLowerCase();
-  if (!IXS.includes(IX)) IX = "d";
+  let IX = (new URLSearchParams(location.search).get("index") || "e").toLowerCase();
+  if (!IXS.includes(IX)) IX = "e";
   HTML.dataset.ix = IX;
   let THUMBS = [], STRIPS = [], tio = null;
 
