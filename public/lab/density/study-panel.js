@@ -55,6 +55,23 @@
      lists side by side, the palette as swatches with the hex under
      each. Then Next and Full study.
 
+   The half split (27 Sept, later). His words, with the copy boxed on the
+   right of a line down the middle: "split the copy so it's half split
+   and not slightly past half", and on the pictures, "let's hero more of
+   the images...when we put them next to each other and dont break up the
+   case studies they become really text heavy". So from 560px up the room
+   is two halves. Running copy (paragraphs, a figure's sentence, a spec
+   value) lives in the right half; the left half holds what labels it
+   (the kicker, a column's title, a spec label) or a picture set beside
+   the copy. Display type (the title, heads, decks, pull quotes) still
+   hangs from the left margin across both. A band leads with its first
+   figure across the page and stacks the rest down the right half, as he
+   roughed it in the canvas. A picture that can fill the room honestly is
+   a hero, a row of its own, edge to edge, never halved into a pair; and
+   a picture that closes a long stretch of text moves to the middle of
+   it, so a section reads words, picture, words. The cover keeps nine
+   tenths of the glass ("let's retain more of the original height").
+
    Rules it keeps: nothing on the page is written here (labels like
    "Next", "Full study" and "Close" are the only words of its own); no em
    dash reaches the page; no picture shows wider than half its pixels
@@ -257,12 +274,16 @@
      edge, transparent and opaque kept apart) ── */
   const partition = (list, W, V, g) => {
     const n = list.length, T = W * 0.45, Vc = V * 0.84;
+    /* a hero: honest across the whole room and not so tall that the glass
+       would crop most of it. It never shares a row */
+    const hero = (f) => f.w / 2 >= W - 0.5 && W / ratio(f) <= Vc * 1.15;
     const cost = (a, b) => {
       const ps = list.slice(a, b), m = ps.length;
       const R = ps.reduce((s, f) => s + ratio(f), 0);
       const h = (W - g * (m - 1)) / R;
       const H = Math.min(h, Math.min(...ps.map((f) => f.h / 2)), Vc);
       let c = Math.pow(Math.log(H / T), 2) + 1.2 * (1 - H / h);
+      if (m > 1 && ps.some(hero)) c += 4;
       if (m === 1 && ratio(ps[0]) < 0.9) c += 0.5;
       if (m === 3) c += 0.12;
       if (m === 4) c += 0.4;
@@ -341,6 +362,8 @@
       const frag = document.createDocumentFragment();
       const g = Math.max(5, Math.round(W * 0.011));
       const C = W - 2 * margin(W);
+      /* the width of one half of the split: the copy's measure */
+      const half = (C - gutter(W)) / 2;
       const figs = { used: new Set(), n: 0, take(f) {
         const s2 = pickFig(f); if (!s2) return null;
         const key = s2.toLowerCase(); if (this.used.has(key) || this.n >= 2) return null;
@@ -349,7 +372,7 @@
       /* the room's one black field goes to its stats when it has three or
          more; otherwise to the first group of figures it meets */
       const statsFirst = M.secs.some((x) => x.items.filter((i) => i.t === "num").length >= 3);
-      let airSide = 0, asideSide = 0, pulled = 0, lede = false, blackDone = false;
+      let airSide = 0, pulled = 0, lede = false, blackDone = false;
       const blackOr = (node) => {
         if (blackDone) return node;
         blackDone = true;
@@ -418,7 +441,7 @@
       if (M.openPics.length) frag.appendChild(picGroup(M.openPics, "sp-plates sp-first"));
       M.secs.forEach((sec) => {
         figs.n = 0; lede = !sec.open;
-        const blocks = asideUp(shape(sec.items, figs));
+        const blocks = spread(asideUp(shape(sec.items, figs)));
         if (sec.open) { blocks.forEach((b) => frag.appendChild(blockEl(b))); return; }
         const se = el("section", "sp-sec");
         /* the label as the study writes it, in small grey caps, over the head */
@@ -514,7 +537,11 @@
         partition(list, W, V, g).forEach((ps) => {
           const row = el("div", "sp-row n" + ps.length);
           row.style.setProperty("--g", g + "px");
-          ps.forEach((f) => { const b = picBox(f); row.appendChild(b); watch(b); });
+          /* each picture grows by its share of the row's ratios. Raw
+             ratios under one (a lone tall screen) grew only that fraction
+             of the row, so a 267px plate drew at 119 */
+          const sum = ps.reduce((a, f) => a + ratio(f), 0);
+          ps.forEach((f) => { const b = picBox(f); b.style.setProperty("--r", (ratio(f) / sum).toFixed(5)); row.appendChild(b); watch(b); });
           const air = AIR[airSide++ % AIR.length];
           /* a single picture keeps its own words as a caption, under it,
              or beside it when the picture leaves room on one side */
@@ -553,8 +580,8 @@
             for (let j = out.length - 2; j >= 0 && runs.length < 3 && out[j].t === "run" && out[j].col && runs[0].col; j--) runs.unshift(out[j]);
             /* only beside text that stands about as tall as the picture:
                a tall screen next to one short line is mostly a hole */
-            const pw = Math.min(f.w / 2, C * (runs.length > 1 ? 0.4 : 0.44), V * 0.8 * ratio(f));
-            if (pw / ratio(f) > Math.max(textH(runs, C - pw - 30) * 1.9, V * 0.42)) { out.push(b); return; }
+            const pw = Math.min(f.w / 2, half, V * 0.8 * ratio(f));
+            if (pw / ratio(f) > Math.max(textH(runs, half) * 1.9, V * 0.42)) { out.push(b); return; }
             out.splice(out.length - runs.length, runs.length);
             out.push({ t: "aside", runs, f });
             if (b.list.length > 1) out.push({ t: "pics", list: b.list.slice(1) });
@@ -562,6 +589,23 @@
           }
           out.push(b);
         });
+        return out;
+      }
+      /* a picture group that closes two or more runs of text moves up to
+         the paragraph end nearest their middle, so a long section is not
+         a wall of words and then a gallery. Nothing else moves */
+      function spread(blocks) {
+        const out = blocks.slice();
+        const len = (r) => r.parts.reduce((a, p) => a + (p.t === "p" ? p.lines.reduce((c, f) => c + f.text.length + 1, 0) : 150 * p.list.length), 0);
+        for (let i = 0; i < out.length; i++) {
+          if (out[i].t !== "pics") continue;
+          let j = i; while (j > 0 && out[j - 1].t === "run") j--;
+          const runs = out.slice(j, i); if (runs.length < 2) continue;
+          const total = runs.reduce((a, r) => a + len(r), 0); if (total < 700) continue;
+          let acc = 0, at = 1, best = Infinity;
+          for (let q = 0; q < runs.length - 1; q++) { acc += len(runs[q]); const d = Math.abs(acc - total / 2); if (d < best) { best = d; at = q + 1; } }
+          const [b] = out.splice(i, 1); out.splice(j + at, 0, b);
+        }
         return out;
       }
       function runEl(run) {
@@ -583,7 +627,8 @@
         switch (b.t) {
           case "run": return runEl(b);
           case "aside": {
-            const a = el("div", "sp-aside " + (asideSide++ % 2 ? "l" : "r"));
+            /* the picture in the left half, the copy in the right */
+            const a = el("div", "sp-aside");
             const pb = picBox(b.f, "sp-apic"); watch(pb);
             const pw = el("div", "sp-aw"); pw.appendChild(pb); a.appendChild(pw);
             const at = el("div", "sp-at");
@@ -657,6 +702,8 @@
     /* ── layout: everything that depends on the panel's size and the
        fonts, done after they settle and again on resize ── */
     function margin(W) { return Math.round(Math.min(44, Math.max(16, W * 0.046))); }
+    /* the gutter between the halves, as the CSS sets --gc */
+    function gutter(W) { return Math.min(36, Math.max(20, W * 0.034)); }
     const layout = () => {
       if (dead || !parts) return;
       const W = root.clientWidth, V = container.clientHeight || window.innerHeight;
@@ -666,10 +713,11 @@
       root.style.setProperty("--vh", V + "px");
 
       /* the cover: edge to edge if the lead can honestly fill it, cropped
-         to 0.62 of the glass (so the lead shows on arrival) if it is taller; else at its own
-         honest size, with air */
+         to nine tenths of the glass if it is taller (it was 0.62, so the
+         title showed on arrival; he asked for more of the picture); else
+         at its own honest size, with air */
       if (parts.coverBox) {
-        const f = parts.lead, r = ratio(f), hon = f.w / 2, capH = Math.max(260, Math.round(V * 0.62));
+        const f = parts.lead, r = ratio(f), hon = f.w / 2, capH = Math.max(260, Math.round(V * 0.9));
         const box = parts.coverBox, frame = parts.coverFrame;
         let side = false;
         if (hon >= W - 0.5) {
@@ -696,8 +744,9 @@
       /* rows: as wide as the panel if every picture can fill it; else at
          the width their pixels allow, set in turn against the text
          column, the right margin and the left, so the page keeps moving */
-      const wide = W >= 560, gc = Math.min(36, Math.max(20, W * 0.034));
-      const tx = wide ? m + (C - gc) * 0.3 + gc : m, tw = W - m - tx;
+      const wide = W >= 560, gc = gutter(W);
+      /* the copy's column: the right half, from just past the middle */
+      const tx = wide ? m + (C - gc) * 0.5 + gc : m, tw = W - m - tx;
       parts.rows.forEach((R) => {
         const n = R.ps.length, g = parseFloat(R.row.style.getPropertyValue("--g")) || 8;
         const sum = R.ps.reduce((s, f) => s + ratio(f), 0);
@@ -719,13 +768,16 @@
           const side = !wide ? null : right >= 190 ? "r" : left >= 190 ? "l" : null;
           R.one.classList.toggle("side", !!side);
           R.cap.style.left = R.cap.style.width = R.cap.style.marginLeft = R.cap.style.maxWidth = "";
-          if (side === "r") { R.cap.style.left = Math.round(ml + w + gs) + "px"; R.cap.style.width = Math.min(250, Math.floor(right - gs)) + "px"; }
+          /* a picture in the left half keeps its words in the right one,
+             on the copy's line */
+          if (side === "r" && ml + w + gs <= tx) { R.cap.style.left = Math.round(tx) + "px"; R.cap.style.width = Math.min(250, Math.floor(tw)) + "px"; }
+          else if (side === "r") { R.cap.style.left = Math.round(ml + w + gs) + "px"; R.cap.style.width = Math.min(250, Math.floor(right - gs)) + "px"; }
           else if (side === "l") { const cw = Math.min(250, Math.floor(left - gs)); R.cap.style.left = Math.round(ml - gs - cw) + "px"; R.cap.style.width = cw + "px"; }
           else { R.cap.style.marginLeft = Math.max(m, Math.round(ml)) + "px"; R.cap.style.maxWidth = Math.max(240, Math.min(C, Math.floor(w))) + "px"; }
         }
       });
       parts.asides.forEach((A) => {
-        const f = A.f, pw = Math.floor(Math.min(f.w / 2, C * (A.runs.length > 1 ? 0.4 : 0.44), V * 0.8 * ratio(f)));
+        const f = A.f, pw = Math.floor(Math.min(f.w / 2, (C - gc) / 2, V * 0.8 * ratio(f)));
         A.a.style.setProperty("--pw", pw + "px");
       });
       /* keep what is already loaded asking for the right rung */
@@ -761,12 +813,12 @@
         const avail = n.parentNode.clientWidth || W; const w100 = n.scrollWidth || 1;
         n.style.fontSize = Math.floor(Math.max(28, Math.min(cap, (avail / w100) * 100 * 0.985))) + "px";
       });
-      /* figures side by side share a size so they read as a set; a band of
-         three leads with its first figure alone, larger */
+      /* figures in a set share a size; a band leads with its first figure
+         alone, larger, across the page */
       const groups = new Map();
       parts.figs.forEach((x) => {
         const gr = x.group; if (!gr.classList.contains("sp-numg") && !gr.classList.contains("sp-band") && !gr.classList.contains("sp-figs")) return;
-        if (gr.classList.contains("sp-band") && gr.classList.contains("n3") && x.cell === gr.firstElementChild) return;
+        if (gr.classList.contains("sp-band") && !gr.classList.contains("sp-stack") && x.cell === gr.firstElementChild) return;
         if (!groups.has(gr)) groups.set(gr, []); groups.get(gr).push(x);
       });
       groups.forEach((list) => { if (list.length < 2 && !list[0].group.classList.contains("sp-numg")) return; const min = Math.min(...list.map((x) => parseFloat(x.n.style.fontSize))); list.forEach((x) => { x.n.style.fontSize = min + "px"; }); });

@@ -99,8 +99,11 @@
 .sp-lede { max-width: 25em; margin-bottom: 0.85em; font-size: clamp(18px, 2.8cqw, 21.5px); font-weight: 400; letter-spacing: -0.016em; line-height: 1.44; }
 .sp-col { margin-bottom: 0.6em; font-size: 15.5px; font-weight: 700; letter-spacing: -0.022em; line-height: 1.22; }
 
+/* two halves from 560px up: what labels a passage on the left, the copy
+   itself on the right, starting just past the middle (27 Sept: "split
+   the copy so it's half split and not slightly past half"; it was 3 to 7) */
 @container sp (min-width: 560px) {
-  .sp-grid { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 7fr); column-gap: var(--gc); align-items: start; }
+  .sp-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); column-gap: var(--gc); align-items: start; }
   .sp-open { padding-left: 0; padding-right: 0; }
   .sp-rail { grid-column: 1; }
   .sp-text { grid-column: 2; }
@@ -123,12 +126,13 @@
 .sp-figs { display: grid; gap: 28px 24px; margin: 2.1em 0 2.2em; }
 .sp-figs:first-child { margin-top: 0.4em; }
 .sp-figs:last-child { margin-bottom: 0; }
+/* a band leads with its first figure across the page; the others step
+   down the right half, where the copy runs (his canvas rough, 27 Sept).
+   Figures inside the copy stack, one to a line, in its half */
 @container sp (min-width: 560px) {
-  .sp-band.n2, .sp-band.n4 { grid-template-columns: 1fr 1fr; align-items: start; }
-  .sp-band.n3 { grid-template-columns: 1fr 1fr; align-items: start; }
-  .sp-band.n3 > :first-child { grid-column: 1 / -1; }
-  .sp-band.sp-stack { grid-template-columns: 1fr; }
-  .sp-figs.n2, .sp-figs.n3 { grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: start; }
+  .sp-band { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); column-gap: var(--gc); align-items: start; }
+  .sp-band > * { grid-column: 2; }
+  .sp-band > :first-child, .sp-band.sp-stack > * { grid-column: 1 / -1; }
 }
 
 /* the black field: the room's one loud figure block. White figures, the
@@ -163,11 +167,11 @@
 .sp-in-aside { padding: 0; }
 .sp-in-aside.sp-hasc { margin: 0; }
 .sp-in-aside + .sp-in-aside { margin-top: clamp(26px, 4.6cqw, 40px); }
+/* the picture hangs from the left margin in the left half, as wide as
+   its pixels allow up to the half; the copy runs in the right half */
 @container sp (min-width: 560px) {
-  .sp-aside { display: grid; grid-template-columns: var(--pw) minmax(0, 1fr); column-gap: clamp(22px, 4cqw, 40px); align-items: start; }
-  .sp-aside.r { grid-template-columns: minmax(0, 1fr) var(--pw); }
-  .sp-aside.r .sp-aw { order: 2; }
-  .sp-aw { position: sticky; top: 44px; width: auto; margin: 0; }
+  .sp-aside { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); column-gap: var(--gc); align-items: start; }
+  .sp-aw { position: sticky; top: 44px; margin: 0; }
   .sp-aside .sp-at { min-width: 0; }
   .sp-aside .sp-in-aside { display: block; padding: 0; }
   .sp-aside .sp-in-aside .sp-col { position: static; }
@@ -236,7 +240,7 @@
 .sp-spec { margin: clamp(90px, 16cqw, 160px) var(--m) 0; padding-top: 12px; border-top: 1px solid var(--hair); }
 .sp-spec-h { margin-bottom: clamp(26px, 5cqw, 44px); font-size: 12px; font-weight: 600; letter-spacing: -0.004em; line-height: 1.3; }
 .sp-tb { border-bottom: 1px solid var(--hair); }
-.sp-tr { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 7fr); column-gap: var(--gc); padding: 11px 0 12px; border-top: 1px solid var(--hair); align-items: baseline; }
+.sp-tr { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); column-gap: var(--gc); padding: 11px 0 12px; border-top: 1px solid var(--hair); align-items: baseline; }
 .sp-tr dt { padding-top: 0.15em; font-size: 10.5px; font-weight: 600; letter-spacing: 0.08em; line-height: 1.4; text-transform: uppercase; color: var(--grey); overflow-wrap: anywhere; }
 .sp-tr dd { font-size: 14.5px; font-weight: 500; letter-spacing: -0.008em; line-height: 1.45; }
 .sp-tcols { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px var(--gc); margin-top: clamp(34px, 6cqw, 54px); }
