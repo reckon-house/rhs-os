@@ -1052,28 +1052,34 @@
      same margin, never into a gutter. Each pattern is picked for what
      its section holds:
      - What I make (the six lines): the house's asterisk;
-     - Digital's lead, Ivy Park: a screen's scan lines;
+     - Digital's lead, Ivy Park: this page's own source, as an editor
+       shows it, indented and cut off at the edge, a site being code;
      - Apps' lead, A.R.C.: its own sentences in base64, an app being code;
      - Systems' lead, Sally OS: registration crosses;
      - Campaigns' lead, Robert Rodriguez: polka dots on a half drop, after
        the dress in its hero picture;
-     - Branding's lead, Amber Shockey Co.: a trellis, the way a repeat
-       pattern is built;
-     - Interiors' lead, the Hill Country kitchen: a drawing's hatch for a
-       cut wall;
+     - Branding's lead, Amber Shockey Co.: a floret in a half-drop
+       repeat, the way a tableware pattern is built;
+     - Interiors' lead, the Hill Country kitchen: tiles in brackets, laid
+       in a running bond;
      - Work: full stops on a 12px grid, the quietest, for the longest list;
-     - Years: tally marks;
+     - Years: the years themselves, in binary;
      - About: weather, a character a cell from a slow noise field;
      - Figures: their own numbers, set as a ledger;
      - Capabilities: cross stitch;
      - Tools: the marks code is made of.
-     All ink at a few percent, fainter than the first pass. Switched by
-     ?texture= or the row under Mark (none, the default, or on), and kept
-     in localStorage. ── */
-  const TXS = ["none", "on"], TX_LS = "crossref2.texture";
+     All ink at a few percent, fainter than the first pass. Then his
+     "make it the default so it's always on" and "let's pick something
+     different for Ivy Park and the long lines - maybe some sort of ascii
+     code type of look mixed into some of them?": the patterns drawn as
+     long lines (scan lines, a trellis, a hatch, tally marks) became the
+     four above, two of them code. On by default; ?texture=none or the
+     row under Mark turns it off, kept in localStorage under a new key so
+     a "none" from the first round does not hide it. ── */
+  const TXS = ["none", "on"], TX_LS = "crossref2.texture2";
   const QTX = (new URLSearchParams(location.search).get("texture") || "").toLowerCase();
   const lsTx = () => { try { return localStorage.getItem(TX_LS); } catch (e) { return null; } };
-  let TX = TXS.includes(QTX) ? QTX : TXS.includes(lsTx()) ? lsTx() : "none";
+  let TX = TXS.includes(QTX) ? QTX : TXS.includes(lsTx()) ? lsTx() : "on";
   HTML.dataset.tx = TX;
   const toB64 = (s) => {
     const u = new TextEncoder().encode(s); let bin = "";
@@ -1099,19 +1105,27 @@
     return WORDS64.get(o.k);
   };
   const ledger = () => G.figures.items.map((o) => (o.label.replace(/,/g, "").match(/\d+(?:\.\d+)?/) || [])[0]).filter(Boolean);
+  /* this page's own source: the functions that build and draw E, their
+     comments taken out, blank lines closed up, indents kept */
+  let SRC = null;
+  const source = () => SRC || (SRC = [buildE, packE, drawSec, cellE, headE, runE].map(String).join("\n")
+    .replace(/\/\*[\s\S]*?\*\//g, "").split("\n").map((l) => l.replace(/\s+$/, "")).filter((l) => l.trim()));
+  const binYears = () => G.years.items.map((o) => parseInt(o.label, 10)).filter((y) => y > 0).map((y) => y.toString(2));
+  /* a floret, five cells by three, for the half-drop repeat */
+  const FLORET = ["  o  ", "o . o", "  o  "];
   /* a pattern is a lattice (one mark every p pixels, the lattice centred
      in the box, every other row shifted half a step for a half drop), or
      a character, or none, for each 6 by 12 cell */
   const PAT = {
     lines: { a: 0.09, p: [24, 24], ch: "*" },
-    "lead-digital": { a: 0.05, cell: (i, j) => (mod(j, 2) ? null : "-") },
+    "lead-digital": { a: 0.04, code: true },
     "lead-app": { a: 0.025, text: words64 },
     "lead-systems": { a: 0.08, p: [24, 24], ch: "+" },
     "lead-creative": { a: 0.055, p: [18, 18], half: true, ch: "•" },
-    "lead-branding": { a: 0.03, cell: (i, j) => (mod(i + j, 2) ? "\\" : "/") },
-    "lead-interiors": { a: 0.05, cell: (i, j) => (mod(i + j, 4) ? null : "/") },
+    "lead-branding": { a: 0.06, cell: (i, j) => { const c = Math.floor(i / 8), r = mod(j - (mod(c, 2) ? 2 : 0), 4), k = mod(i, 8); return r < 3 && k < 5 ? FLORET[r][k] : null; } },
+    "lead-interiors": { a: 0.04, cell: (i, j) => "[  ]"[mod(i + (mod(j, 2) ? 2 : 0), 4)] },
     work: { a: 0.11, p: [12, 12], ch: "." },
-    years: { a: 0.045, cell: (i, j) => (mod(j, 2) || mod(i, 5) === 4 ? null : "|") },
+    years: { a: 0.04, binary: true },
     about: { a: 0.04, field: true },
     figures: { a: 0.03, ledger: true },
     capabilities: { a: 0.06, p: [12, 24], half: true, ch: "x" },
@@ -1148,6 +1162,15 @@
       const nums = ledger(); if (!nums.length) return;
       for (let j = 0; j < rows; j++) {
         let row = "", k = j * 3; while (row.length < cols) row += nums[k++ % nums.length].padStart(7, " ");
+        for (let i = 0; i < cols; i++) put(i, j, row[i]);
+      }
+    } else if (pat.code) {
+      const src = source();
+      for (let j = 0; j < rows; j++) { const l = src[(j + 3) % src.length]; for (let i = 0; i < cols && i < l.length; i++) put(i, j, l[i]); }
+    } else if (pat.binary) {
+      const bins = binYears(); if (!bins.length) return;
+      for (let j = 0; j < rows; j += 2) {
+        let row = "", k = j / 2; while (row.length < cols) row += bins[k++ % bins.length] + " ";
         for (let i = 0; i < cols; i++) put(i, j, row[i]);
       }
     } else if (pat.field) {
