@@ -881,11 +881,15 @@
        padding, so the words never move and never crowd its edges;
      - bar: the band on the words, as before, given room to breathe;
      - node: no band. A square sits on the column's rule beside the entry,
-       a point on an axis, and a rule of ink draws under its name.
-     The runs of capabilities, tools and figures stay bold in all three. */
-  const MKS = ["cell", "bar", "node"], MK_LS = "crossref2.mark";
+       a point on an axis, and a rule of ink draws under its name;
+     - grey, the default since his "could we try the cell in a grey AND
+       keep the node? but maybe the node is a circle vs a square?" (27
+       Sept): the cell's fill in a light grey, the words staying ink, and
+       a circle of ink on the rule at the row's left edge.
+     The runs of capabilities, tools and figures stay bold in all four. */
+  const MKS = ["grey", "cell", "bar", "node"], MK_LS = "crossref2.mark";
   const lsMk = () => { try { return localStorage.getItem(MK_LS); } catch (e) { return null; } };
-  let MK = MKS.includes(QMARK) ? QMARK : QMARK === "ink" ? "bar" : MKS.includes(lsMk()) ? lsMk() : "cell";
+  let MK = MKS.includes(QMARK) ? QMARK : QMARK === "ink" ? "bar" : MKS.includes(lsMk()) ? lsMk() : "grey";
   HTML.dataset.mk = MK;
   const setMark = (x) => {
     if (!MKS.includes(x) || x === MK) return;
