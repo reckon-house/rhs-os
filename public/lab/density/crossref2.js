@@ -1167,6 +1167,16 @@
       const say = el("div", "say", esc(st.ink) + (st.grey ? ' <span class="g">' + esc(st.grey) + "</span>" : "")); wrap.appendChild(say);
       if (DATA.links) wrap.appendChild(el("div", "links", DATA.links.map((l) => '<a href="' + D.esc(l.v) + '">' + esc(l.k) + "</a>").join("")));
       main.appendChild(wrap);
+      /* the folio (27 Sept, the editorial pass): the half at rest is the
+         cover, so its head carries the index's own counts, as a cover
+         carries its lines. Counted here, never typed */
+      const ys = DATA.studies.map((x) => +x.y).filter(Boolean);
+      const lay = main.parentNode;
+      if (lay && !phone() && ys.length) {
+        const f = el("div", "caps folio", ["work", "lines", "figures"].map((id) => "<span>" + esc(G[id].name) + " <b>" + G[id].items.length + "</b></span>").join("") +
+          "<span>" + Math.min(...ys) + "\u2013" + Math.max(...ys) + "</span>");
+        lay.appendChild(f);
+      }
       fitType(say, Math.min(W, phone() ? W : 600), Math.max(80, H - 150), phone() ? 28 : 36, 19);
     },
     pic(main, W, H, it) { main.appendChild(picture(it.f, Math.min(W, H * ratio(it.f)))); main.firstChild.classList.add("rise"); },

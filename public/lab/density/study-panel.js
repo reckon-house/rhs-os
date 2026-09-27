@@ -142,11 +142,16 @@
   const esc = (s) => D.esc(clean(s));
   /* a line written "ink | grey" is one sentence in two halves */
   const halves = (t) => { const s = String(t || ""); const i = s.indexOf(" | "); return i < 0 ? [s, ""] : [s.slice(0, i), s.slice(i + 3)]; };
+  /* a section's label as the study writes it, "SECTION 02: PROBLEM
+     STATEMENT", read as its number and its name, so the room can number
+     its sections the way the index numbers its own ("01 LINES") */
+  const secLabel = (t) => { const m = /^\s*section\s+(\d+)\s*[:.]\s*(.+)$/i.exec(String(t || "")); return m ? { n: m[1].padStart(2, "0"), name: m[2].trim() } : { n: "", name: String(t || "").trim() }; };
   const inkGrey = (t) => { const [a, b] = halves(t); return esc(a) + (b ? ' <span class="sp-g">' + esc(b) + "</span>" : ""); };
   /* a pressing headline carries its halves (ink, held); the room sets the
      held line grey, as the study page does */
   const inkGreyF = (f) => (f.held ? esc(f.ink) + ' <span class="sp-g">' + esc(f.held) + "</span>" : inkGrey(f.text));
   const ratio = (f) => f.w / f.h;
+  const two = (n) => String(n).padStart(2, "0");
 
   /* ── MOTION (27 Sept, his "polish design and animation pass - text and
      image animations similar to what the live site has. easing on things,
@@ -494,6 +499,26 @@
     const onScroll = () => { if (!parT) parT = requestAnimationFrame(drift); };
     if (mo) container.addEventListener("scroll", onScroll, { passive: true });
 
+    /* the running head (27 Sept, the editorial pass): once the title has
+       gone it names the section the reader is in, numbered as the index
+       numbers its own, and a rule of ink along its hairline shows how
+       far through the room they are */
+    let trT = 0, curSec;
+    const track = () => {
+      trT = 0; if (dead) return;
+      const max = container.scrollHeight - container.clientHeight;
+      root.style.setProperty("--pg", max > 0 ? Math.min(1, container.scrollTop / max).toFixed(4) : "0");
+      const line = container.getBoundingClientRect().top + 64;
+      let now = null;
+      for (const se of root.querySelectorAll(".sp-sec")) { if (se.getBoundingClientRect().top <= line) now = se; else break; }
+      if (now === curSec) return;
+      curSec = now;
+      const slot = root.querySelector(".sp-bar-s");
+      if (slot) slot.innerHTML = now && now._lab ? (now._lab.n ? "<b>" + esc(now._lab.n) + "</b>" : "") + esc(now._lab.name) : "";
+    };
+    const onTrack = () => { if (!trT) trT = requestAnimationFrame(track); };
+    container.addEventListener("scroll", onTrack, { passive: true });
+
     const ids = [];
     const tag = (node, f) => { if (f && f.id) { node.dataset.f = f.id; ids.push(f.id); } return node; };
     const picBox = (f, cls) => {
@@ -524,7 +549,7 @@
       /* the room's one black field goes to its stats when it has three or
          more; otherwise to the first group of figures it meets */
       const statsFirst = M.secs.some((x) => x.items.filter((i) => i.t === "num").length >= 3);
-      let airSide = 0, pulled = 0, lede = false, blackDone = false;
+      let airSide = 0, pulled = 0, lede = false, blackDone = false, figNo = 0;
       const blackOr = (node) => {
         if (blackDone) return node;
         blackDone = true;
@@ -538,7 +563,7 @@
          Close. Set in white with difference, so it reads on any picture */
       const bar = el("div", "sp-bar");
       const barIn = el("div", "sp-bar-in");
-      barIn.appendChild(el("span", "sp-bar-t", esc(D.title(k))));
+      barIn.appendChild(el("span", "sp-bar-t", esc(D.title(k)) + '<span class="sp-bar-s"></span>'));
       if (o.onClose) { const x = el("button", "sp-x", "Close"); x.type = "button"; x.addEventListener("click", () => o.onClose()); barIn.appendChild(x); }
       bar.appendChild(barIn); frag.appendChild(bar);
 
@@ -597,7 +622,8 @@
         if (sec.open) { blocks.forEach((b) => frag.appendChild(blockEl(b))); return; }
         const se = el("section", "sp-sec");
         /* the label as the study writes it, in small grey caps, over the head */
-        se.appendChild(el("div", "sp-kick sp-caps", esc(sec.head.label || "")));
+        const lab = secLabel(sec.head.label); se._lab = lab;
+        se.appendChild(el("div", "sp-kick sp-caps", (lab.n ? "<b>" + esc(lab.n) + "</b>" : "") + "<span>" + esc(lab.name) + "</span>"));
         /* a head that is only the opening words of the sentence right under
            it (Faux Reel's "The reel up top is") would read twice; the
            sentence carries it, under the label (27 Sept review) */
@@ -700,7 +726,7 @@
           let one = null, cap = null;
           if (ps.length === 1 && ps[0].alt) {
             one = el("div", "sp-one"); one.appendChild(row);
-            cap = el("p", "sp-cap", esc(ps[0].alt)); one.appendChild(cap);
+            cap = el("p", "sp-cap", '<span class="sp-fno">' + two(++figNo) + "</span>" + esc(ps[0].alt)); one.appendChild(cap);
             wrap.appendChild(one);
           } else wrap.appendChild(row);
           P.rows.push({ row, ps, air, one, cap });
@@ -1059,6 +1085,7 @@
       if (io) io.disconnect(); if (ro) ro.disconnect(); if (headIO) headIO.disconnect(); if (rio) rio.disconnect();
       if (lenis) { cancelAnimationFrame(lraf); lenis.destroy(); lenis = null; }
       container.removeEventListener("scroll", onScroll); cancelAnimationFrame(parT); clearTimeout(holdT);
+      container.removeEventListener("scroll", onTrack); cancelAnimationFrame(trT);
       clearTimeout(fontsT); cancelAnimationFrame(rzT);
       root.remove();
     }
