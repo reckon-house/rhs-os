@@ -1571,6 +1571,18 @@
         return Object.assign({ text: para, mark: o.fig.s }, col ? { label: col } : {});
       }
       if (it.label) return it.sub ? { label: it.label, text: it.sub } : { label: it.label };
+      /* a figure from a chart or a timeline had no sentence at all, so its
+         shelf opened on a bare number. It reads the chart instead: its
+         title over its own bars, or the timeline over its steps */
+      if (it.t === "chart" && it.f) {
+        const bars = (it.f.bars || []).map((x) => x.label + ": " + x.value + ".").join(" ");
+        const call = it.f.callout ? " " + it.f.callout + (it.f.suffix ? " " + it.f.suffix : "") + "." : "";
+        return { label: it.f.title, text: (bars + call).trim(), mark: o.fig.s };
+      }
+      if (it.t === "steps" && it.f) {
+        const st = (it.f.steps || []).map((x) => x.title + (x.note ? ", " + x.note : "") + ".").join(" ");
+        return { label: it.f.title, text: ((it.f.duration ? it.f.duration + ". " : "") + st).trim(), mark: o.fig.s };
+      }
     }
     return null;
   };
