@@ -405,7 +405,7 @@
   /* the figures set large: the biggest claims, from four studies */
   const BIGFIG = ["$3M", "2,000+ stores", "$49,630", "95%"];
 
-  const IXS = ["a", "b", "c", "d"];
+  const IXS = ["a", "b", "c", "d", "e"];
   let IX = (new URLSearchParams(location.search).get("index") || "d").toLowerCase();
   if (!IXS.includes(IX)) IX = "d";
   HTML.dataset.ix = IX;
@@ -438,6 +438,7 @@
   const entryEl = (o, mode) => {
     const a = el("a", "e"); a.href = "#" + o.key; a.dataset.i = o.i; o.a = a;
     const g = o.g.id;
+    if (mode && mode[0] === "E") return entryE(o, mode, a);
     if (g === "work") {
       a.classList.add("w");
       /* D pictures only its features; the other studies are words */
@@ -515,6 +516,160 @@
     sec.appendChild(box); return sec;
   };
   const block = (cls, kids) => { const d = el("div", cls); kids.filter(Boolean).forEach((k) => d.appendChild(k)); return d; };
+
+  /* ════════════════════════════════════════════════════════════════════
+     INDEX E, THE CONTENTS PAGE (27 Sept 2026, latest). He sent magazine
+     contents pages (big numbers over titles, pictures under them, vertical
+     rules between the columns, a dense list beside an airy feature) and
+     asked to push the index: "a little more spacing in some spots to vary
+     things - maybe vertical grid lines? maybe a few variations within
+     each smaller section too? the 'mind' concept had some of that".
+
+     So E is set as a contents page on a four-column grid, with a hairline
+     rule in every gutter from top to foot, and numbered sections the way a
+     magazine numbers its own ("01 LINES"):
+     - 01 Lines: the six lines large down the first column, each with its
+       sentence; beside them, across the other three columns, each line's
+       lead study as a feature: the line over it, its year set large where
+       a magazine sets the page number, its name, its picture at the
+       column's width, its sentence and its discipline under.
+     - 02 Work: the other twenty-four as a contents list, each name run to
+       its year by a leader of dots, its discipline under it in grey.
+     - 03 Years: each year large with a square for every study made in it,
+       so the column is also a chart of the practice by year.
+     - 04 About: the four sections, each with its first sentence.
+     - 05 Figures: four figures set large, each with the sentence it comes
+       from; the rest run on.
+     - 06 Capabilities: the five the most studies list, a size up with
+       their counts; the rest run on.
+     - 07 Tools: the five the most studies list as a short bar chart; the
+       rest run on.
+     Every section has a rich setting and a dense one, the air falls in
+     different places, and nothing is typed: the sentences are the
+     studies', the lines' and About's own. The feature's type and picture
+     are one entry, so it lights, locks and wires like any other.
+     ════════════════════════════════════════════════════════════════════ */
+  const LEAD_OF = {}; (DATA.lines || []).forEach((l, i) => { if (D.study(l.lead) && !LEAD_OF[l.lead]) LEAD_OF[l.lead] = { l, i }; });
+  const two = (n) => String(n).padStart(2, "0");
+  /* the sentence a figure comes from, the figure in ink inside it */
+  const figSource = (fig) => {
+    const src = fig.src.find((x) => x.item.sent) || fig.src[0]; const it = src.item;
+    const credit = it.about ? ((aboutOf(it.sent || "") || {}).a || {}).name || "About" : it.k ? D.title(it.k) + " " + D.year(it.k) : "";
+    if (it.sent) {
+      const i = it.sent.indexOf(fig.s);
+      const html = i < 0 ? esc(it.sent) : esc(it.sent.slice(0, i)) + "<b>" + esc(fig.s) + "</b>" + esc(it.sent.slice(i + fig.s.length));
+      return { html, credit };
+    }
+    return { label: it.label || "", html: esc(it.sub || ""), credit };
+  };
+  const TOPN = 5;
+  const topBy = (id) => G[id].items.slice().sort((x, y) => y.rel.size - x.rel.size || x.label.localeCompare(y.label)).slice(0, TOPN);
+  const entryE = (o, mode, a) => {
+    const g = o.g.id;
+    if (mode === "Eline") {
+      const l = o.line, i = (DATA.lines || []).indexOf(l);
+      a.classList.add("el");
+      a.innerHTML = '<span class="kk caps"><span>' + two(i + 1) + '</span><span class="cnt">' + l.studies.filter((k) => D.study(k)).length + "</span></span>" +
+        '<span class="t">' + esc(o.label) + '</span><span class="dk">' + esc(l.sentence) + "</span>";
+    } else if (mode === "Efeat") {
+      const s = D.study(o.k), L = LEAD_OF[o.k];
+      a.classList.add("w", "ef");
+      a.innerHTML = '<span class="kk caps">' + esc(L ? L.l.name : "") + '</span><span class="fy">' + D.year(o.k) + '</span><span class="t">' + esc(o.label) + "</span>";
+      const th = thumb(o.k, "fth");
+      if (th) { th.style.setProperty("--r", Math.max(0.78, Math.min(1.5, ratio(th._f))).toFixed(3)); a.appendChild(th); }
+      if (s && s.fact) a.appendChild(el("span", "dk", esc(s.fact)));
+      if (s && s.s) a.appendChild(el("span", "cr caps", esc(s.s)));
+    } else if (mode === "Ework") {
+      const s = D.study(o.k);
+      a.classList.add("w", "ew");
+      /* a room's name already carries its discipline ("Hill Country home,
+         kitchen"), so its credit would say it twice */
+      const credit = s && s.s && D.title(o.k) === s.t ? '<span class="cr">' + esc(s.s) + "</span>" : "";
+      a.innerHTML = '<span class="er"><span class="t">' + esc(o.label) + '</span><span class="ld"></span><span class="y we">' + D.year(o.k) + "</span></span>" + credit;
+    } else if (mode === "Eyear") {
+      a.classList.add("ey");
+      a.innerHTML = '<span class="t">' + esc(o.label) + '</span><span class="pips" aria-hidden="true">' + "<i></i>".repeat(o.rel.size) + "</span>";
+    } else if (mode === "Eabout") {
+      a.classList.add("ea");
+      a.innerHTML = '<span class="t">' + esc(o.label) + '</span><span class="dk">' + esc(o.about.lede || "") + "</span>";
+    } else if (mode === "Efig") {
+      const m = /^([~$]?[\d][\d,.]*[%+MKx]*)(.*)$/.exec(clean(o.label)) || [0, clean(o.label), ""];
+      const src = figSource(o.fig);
+      a.classList.add("fig", "efig");
+      a.innerHTML = '<span class="t"><span class="fn">' + D.esc(m[1]) + "</span>" + (m[2] ? '<span class="fu">' + D.esc(m[2]) + "</span>" : "") + "</span>" +
+        (src.label ? '<span class="kk caps">' + esc(src.label) + "</span>" : "") + (src.html ? '<span class="dk">' + src.html + "</span>" : "") +
+        (src.credit ? '<span class="cr caps">' + esc(src.credit) + "</span>" : "");
+    } else if (mode === "Ecap") {
+      a.classList.add("ecap");
+      a.innerHTML = '<span class="t">' + esc(o.label) + '</span><sup class="cnt">' + o.rel.size + "</sup>";
+    } else if (mode === "Etool") {
+      const max = Math.max(...G.tools.items.map((x) => x.rel.size));
+      a.classList.add("etool");
+      a.innerHTML = '<span class="er"><span class="t">' + esc(o.label) + '</span><span class="cnt">' + o.rel.size + '</span></span><span class="bar" aria-hidden="true"><i style="width:' +
+        (o.rel.size / max * 100).toFixed(1) + '%"></i></span>';
+    } else {
+      a.innerHTML = '<span class="t">' + esc(o.label) + "</span>";
+      if (g === "figures") a.classList.add("fig");
+    }
+    return a;
+  };
+  const headE = (n, id, name) => {
+    const g = G[id];
+    const h = el("h2", "eh", '<span><b>' + n + "</b>" + esc(name || g.name) + '</span><span class="n">' + g.items.length + "</span>");
+    g.count = h.querySelector(".n");
+    return h;
+  };
+  /* a run of entries set on as text, a middle dot between */
+  const runE = (items, cls) => {
+    const box = el("div", "erun" + (cls ? " " + cls : ""));
+    items.forEach((o, j) => {
+      const a = entryEl(o, "Erun"); if (o.label.length <= 22) a.classList.add("nw");
+      const it = el("span", "it"); it.appendChild(a);
+      if (j < items.length - 1) it.appendChild(el("span", "sep", "·"));
+      box.appendChild(it); box.appendChild(document.createTextNode(" "));
+    });
+    return box;
+  };
+  /* a section of the contents: a group's entries, set by E, spanning some
+     of the four columns */
+  const cellE = (id, span, kids, cls) => {
+    const c = el("section", "grp ec" + (cls ? " " + cls : "")); c.dataset.g = id; c.style.setProperty("--span", span);
+    kids.filter(Boolean).forEach((k) => c.appendChild(k)); return c;
+  };
+  const buildE = () => {
+    const wrap = el("div", "eg");
+    ["vr1", "vr2", "vr3"].forEach((v) => wrap.appendChild(el("i", "vr " + v)));
+    const band = (...cells) => { const b = el("div", "eb"); cells.forEach((c) => b.appendChild(c)); wrap.appendChild(b); return b; };
+
+    /* 01 Lines: the lines, and each one's lead study as a feature */
+    const lines = el("div", "elines"); G.lines.items.forEach((o) => lines.appendChild(entryEl(o, "Eline")));
+    const feats = G.work.items.filter((o) => LEAD_OF[o.k]).sort((x, y) => LEAD_OF[x.k].i - LEAD_OF[y.k].i);
+    const fbox = el("div", "efeat");
+    const stacks = [0, 1, 2].map(() => { const st = el("div", "fstack"); fbox.appendChild(st); return st; });
+    feats.forEach((o, i) => { const a = entryEl(o, "Efeat"); a.style.order = i; stacks[i % 3].appendChild(a); });
+    const c1 = cellE("lines", 4, [headE("01", "lines"), block("e1", [lines, fbox])], "c-lines");
+    band(c1);
+
+    /* 02 Work, 03 Years, 04 About */
+    const rest = G.work.items.filter((o) => !LEAD_OF[o.k]);
+    const wl = el("div", "elist"); rest.forEach((o) => wl.appendChild(entryEl(o, "Ework")));
+    const yl = el("div", "eyears"); G.years.items.forEach((o) => yl.appendChild(entryEl(o, "Eyear")));
+    const al = el("div", "eabout"); G.about.items.forEach((o) => al.appendChild(entryEl(o, "Eabout")));
+    band(cellE("work", 2, [headE("02", "work"), wl]), cellE("years", 1, [headE("03", "years"), yl]), cellE("about", 1, [headE("04", "about"), al]));
+
+    /* 05 Figures: four large, the rest run on */
+    const big = G.figures.items.filter((o) => BIGFIG.includes(o.label)).sort((x, y) => BIGFIG.indexOf(x.label) - BIGFIG.indexOf(y.label));
+    const bl = el("div", "ebig"); big.forEach((o) => bl.appendChild(entryEl(o, "Efig")));
+    band(cellE("figures", 4, [headE("05", "figures"), bl, runE(G.figures.items.filter((o) => !big.includes(o)), "c4")]));
+
+    /* 06 Capabilities, 07 Tools: the five most used, then the rest */
+    const tc = topBy("capabilities"), tt = topBy("tools");
+    const cl = el("div", "ecaps"); tc.forEach((o) => cl.appendChild(entryEl(o, "Ecap")));
+    const tl = el("div", "etools"); tt.forEach((o) => tl.appendChild(entryEl(o, "Etool")));
+    band(cellE("capabilities", 2, [headE("06", "capabilities"), cl, runE(G.capabilities.items.filter((o) => !tc.includes(o)), "c2")]),
+      cellE("tools", 2, [headE("07", "tools"), tl, runE(G.tools.items.filter((o) => !tt.includes(o)), "c2")]));
+    return wrap;
+  };
   const LAYOUT = {
     a: () => [section("lines", "row"), section("work", "sheet"), section("figures", "wall"),
       block("fine", [section("about", "list"), section("years", "run"), section("capabilities", "run"), section("tools", "run")])],
@@ -524,6 +679,7 @@
       block("fine", [section("about", "list"), section("years", "run"), section("figures", "run"), section("capabilities", "run"), section("tools", "run")])],
     d: () => [block("dcols", [section("lines", "dline"), section("work", "dwork"), section("about", "list"), section("years", "run"),
       section("capabilities", "run"), section("tools", "run"), section("figures", "dfig")])],
+    e: () => [buildE()],
   };
   const buildIndex = () => {
     THUMBS = []; STRIPS = [];
@@ -590,11 +746,23 @@
     HTML.classList.add("dscroll");
     root.setProperty("--fs", "11.25px"); lines();
   };
+  /* E: the list type is fixed; the lines' names are sized so the longest
+     fills its column beside nothing, as the contents page's largest words */
+  const fitE = () => {
+    const root = HTML.style;
+    root.setProperty("--fs", phone() ? "12px" : "11px");
+    const ls = [...IDX.querySelectorAll(".e.el")]; if (!ls.length) return;
+    root.setProperty("--fl", "100px");
+    const w = Math.max(...ls.map((a) => a.querySelector(".t").offsetWidth));
+    const room = ls[0].clientWidth;
+    root.setProperty("--fl", Math.floor(Math.min(phone() ? 34 : 34, (room / w) * 100 * 0.97) * 4) / 4 + "px");
+  };
   const sizeIndex = () => {
     const root = HTML.style;
     root.removeProperty("--ts"); root.removeProperty("--lw"); root.removeProperty("--gc");
     root.removeProperty("--fs"); root.removeProperty("--fl"); root.removeProperty("--cols");
-    if (IX === "d") fitD();
+    if (IX === "e") fitE();
+    else if (IX === "d") fitD();
     else if (IX === "a") {
       const strips = [...IDX.querySelectorAll(".strip")]; if (!strips.length) return;
       const n = Math.max(...strips.map((s) => s.children.length));

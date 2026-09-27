@@ -440,3 +440,131 @@ html.stack[data-ix="d"] .grp.run .items { line-height: 1.6; }
 @media (prefers-reduced-motion: reduce) {
   #field, .layer, .cp .pic, .rise { transition: none; animation: none; }
 }
+
+/* ════════════════════════════════════════════════════════════════════
+   INDEX E, THE CONTENTS PAGE (27 Sept 2026, latest). His magazine
+   contents pages: a four-column grid with a hairline rule in every gutter
+   from top to foot, numbered sections over a rule of ink, big numbers
+   over names, pictures under them, dense lists beside airy features. The
+   air falls in different places on purpose. What each section holds and
+   why is above buildE in crossref2.js.
+   ════════════════════════════════════════════════════════════════════ */
+[data-ix="e"] #idx { --eg: 20px; }
+[data-ix="e"] .ixtop { margin: 0 0 26px; }
+[data-ix="e"] .eg { position: relative; }
+[data-ix="e"] .vr { position: absolute; top: 0; bottom: 0; width: 1px; background: var(--hair); pointer-events: none; }
+[data-ix="e"] .vr1 { left: calc((100% - 3 * var(--eg)) / 4 + var(--eg) / 2); }
+[data-ix="e"] .vr2 { left: calc((100% - 3 * var(--eg)) / 2 + var(--eg) * 1.5); }
+[data-ix="e"] .vr3 { left: calc((100% - 3 * var(--eg)) * 3 / 4 + var(--eg) * 2.5); }
+[data-ix="e"] .eb { position: relative; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); column-gap: var(--eg); align-items: start; }
+[data-ix="e"] .eb:nth-of-type(1) { margin: 0 0 78px; }
+[data-ix="e"] .eb:nth-of-type(2) { margin: 0 0 58px; }
+[data-ix="e"] .eb:nth-of-type(3) { margin: 0 0 66px; }
+[data-ix="e"] .grp.ec { grid-column: span var(--span, 1); margin: 0; }
+[data-ix="e"] .grp h2.eh { display: flex; justify-content: space-between; align-items: baseline; margin: 0 0 14px; padding: 0 0 7px;
+  border-bottom: 1px solid var(--ink); color: var(--ink); font-size: 9.5px; font-weight: 600; letter-spacing: 0.09em; }
+[data-ix="e"] .eh b { font-weight: 700; margin-right: 0.8em; }
+[data-ix="e"] .eh .n { color: var(--grey); }
+[data-ix="e"] .e .dk { display: block; font-size: 10.5px; font-weight: 500; line-height: 1.4; letter-spacing: -0.003em; color: var(--grey); }
+[data-ix="e"] .e .cr { display: block; color: var(--grey); }
+[data-ix="e"] .e .cr.caps { font-size: 8.5px; }
+
+/* 01: the lines down the first column, their lead studies across the rest */
+[data-ix="e"] .e1 { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); column-gap: var(--eg); align-items: start; }
+[data-ix="e"] .elines { grid-column: 1; }
+[data-ix="e"] .e.el { display: block; padding: 0 0 19px; }
+[data-ix="e"] .e.el .kk { display: flex; justify-content: space-between; margin: 0 0 3px; color: var(--grey); }
+[data-ix="e"] .e.el .t { display: inline-block; margin-left: -0.04em; font-size: var(--fl, 28px); font-weight: 700; letter-spacing: -0.05em; line-height: 1; white-space: nowrap; }
+[data-ix="e"] .e.el .dk { margin: 6px 0 0; }
+[data-ix="e"] .efeat { grid-column: 2 / span 3; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); column-gap: var(--eg); align-items: start; }
+[data-ix="e"] .fstack { display: flex; flex-direction: column; gap: 40px; }
+[data-ix="e"] .fstack:nth-child(2) { padding-top: 54px; }
+[data-ix="e"] .fstack:nth-child(3) { padding-top: 20px; }
+[data-ix="e"] .e.ef { display: block; }
+[data-ix="e"] .e.ef .kk { display: block; margin: 0 0 9px; padding: 0 0 5px; border-bottom: 1px solid var(--hair); color: var(--grey); }
+[data-ix="e"] .e.ef .fy { display: block; margin: 0 0 5px -0.035em; font-size: 31px; font-weight: 700; letter-spacing: -0.05em; line-height: 0.92; font-variant-numeric: tabular-nums; }
+[data-ix="e"] .e.ef .t { font-size: 13px; font-weight: 600; letter-spacing: -0.02em; line-height: 1.2; }
+[data-ix="e"] .e.ef .th.fth { width: 100%; height: auto; aspect-ratio: var(--r, 1.4); margin: 10px 0 9px; }
+[data-ix="e"] .e.ef .cr { margin: 7px 0 0; }
+
+/* 02: the rest of the work as a contents list, a leader of dots to the year */
+[data-ix="e"] .elist { columns: 2; column-gap: var(--eg); }
+[data-ix="e"] .e.ew { display: block; break-inside: avoid; padding: 0 0 7px; }
+[data-ix="e"] .e.ew .er { display: flex; align-items: last baseline; }
+[data-ix="e"] .e.ew .t { flex: 0 1 auto; }
+[data-ix="e"] .e.ew .ld { flex: 1 1 auto; min-width: 10px; height: 0; margin: 0 4px; border-bottom: 1px dotted rgba(0, 0, 0, 0.32); transform: translateY(-0.3em); }
+[data-ix="e"] .e.ew .y { flex: none; }
+[data-ix="e"] .e.ew .cr { margin: 1px 0 0; font-size: 9.5px; line-height: 1.3; }
+
+/* 03: the years large, a square for each study, so the column is a chart */
+[data-ix="e"] .e.ey { display: flex; align-items: baseline; gap: 9px; padding: 0 0 2px; }
+[data-ix="e"] .e.ey .t { font-size: 21px; font-weight: 700; letter-spacing: -0.045em; line-height: 1.08; font-variant-numeric: tabular-nums; }
+[data-ix="e"] .e.ey .pips { display: inline-flex; flex-wrap: wrap; gap: 2px; }
+[data-ix="e"] .e.ey .pips i { width: 6px; height: 6px; background: rgba(0, 0, 0, 0.2); transition: background-color 0.2s ease; }
+html[data-ix="e"] body.x .e.ey.on .pips i { background: var(--ink); }
+
+/* 04: About, each section with its first sentence */
+[data-ix="e"] .e.ea { display: block; padding: 0 0 13px; }
+[data-ix="e"] .e.ea .t { font-size: 12.5px; font-weight: 600; letter-spacing: -0.015em; }
+[data-ix="e"] .e.ea .dk { margin: 3px 0 0; }
+
+/* 05: four figures large with the sentence each comes from, the rest run on */
+[data-ix="e"] .ebig { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); column-gap: var(--eg); align-items: start; margin: 0 0 26px; }
+[data-ix="e"] .e.efig { display: block; }
+[data-ix="e"] .e.efig .fn { margin-left: -0.035em; font-size: 34px; font-weight: 700; letter-spacing: -0.05em; line-height: 1; }
+[data-ix="e"] .e.efig .fu { margin-left: 0.25em; font-size: 12.5px; font-weight: 600; letter-spacing: -0.015em; }
+[data-ix="e"] .e.efig .kk { display: block; margin: 9px 0 0; color: var(--ink); }
+[data-ix="e"] .e.efig .dk { margin: 7px 0 0; }
+[data-ix="e"] .e.efig .dk b { font-weight: 600; color: var(--ink); }
+[data-ix="e"] .e.efig .cr { margin: 7px 0 0; }
+
+/* the runs, set in the grid's own columns so the rules fall in the gutters */
+[data-ix="e"] .erun { line-height: 1.5; font-weight: 500; }
+[data-ix="e"] .erun .e { display: inline; }
+[data-ix="e"] .erun.c4 { columns: 4; column-gap: var(--eg); }
+[data-ix="e"] .erun.c2 { columns: 2; column-gap: var(--eg); }
+
+/* 06: the five capabilities the most studies list, a size up */
+[data-ix="e"] .ecaps { columns: 2; column-gap: var(--eg); margin: 0 0 16px; }
+[data-ix="e"] .e.ecap { display: block; break-inside: avoid; padding: 0 0 5px; font-size: 15px; font-weight: 600; letter-spacing: -0.025em; line-height: 1.18; }
+[data-ix="e"] .e.ecap .cnt { position: relative; top: -0.55em; margin-left: 3px; font-size: 9px; font-weight: 600; letter-spacing: 0; vertical-align: baseline; color: var(--grey); }
+
+/* 07: the five tools the most studies list, as a short bar chart */
+[data-ix="e"] .etools { columns: 2; column-gap: var(--eg); margin: 0 0 16px; }
+[data-ix="e"] .e.etool { display: block; break-inside: avoid; padding: 0 0 10px; }
+[data-ix="e"] .e.etool .er { display: flex; justify-content: space-between; align-items: baseline; font-weight: 600; }
+[data-ix="e"] .e.etool .cnt { font-size: 10px; color: var(--grey); font-variant-numeric: tabular-nums; }
+[data-ix="e"] .e.etool .bar { display: block; position: relative; height: 1px; margin: 4px 0 0; background: var(--hair); }
+[data-ix="e"] .e.etool .bar i { position: absolute; left: 0; top: -1px; height: 3px; background: var(--ink); }
+
+/* the ink mark in E: an entry that stands on its own is banded on its
+   name, not across its picture and sentence; the runs stay bold. #idx is
+   in each selector because the stacked-rows band rule above carries
+   four :not()s and outranked these, drawing its side bars down the
+   whole of a feature */
+html[data-ix="e"][data-mark="ink"] body.x #idx .grp.ec .e.on:is(.el, .ef, .ew, .ey, .ea, .efig, .ecap, .etool) {
+  background: none; box-shadow: none; color: var(--ink); -webkit-text-stroke: 0; text-shadow: var(--halo); }
+html[data-ix="e"][data-mark="ink"] body.x #idx .grp.ec .e.on:is(.el, .ef, .ey, .ea, .efig, .ecap, .etool) .t,
+html[data-ix="e"][data-mark="ink"] body.x #idx .grp.ec .e.on.ew .er {
+  background: var(--ink); color: var(--paper); box-shadow: 0.2em 0 0 var(--ink), -0.2em 0 0 var(--ink);
+  -webkit-box-decoration-break: clone; box-decoration-break: clone; text-shadow: none; }
+html[data-ix="e"][data-mark="ink"] body.x #idx .grp.ec .e.on.ew .ld { border-color: rgba(255, 255, 255, 0.5); }
+html[data-ix="e"][data-mark="ink"] body.x #idx .grp.ec .e.on.ew .y { color: rgba(255, 255, 255, 0.62); }
+html[data-ix="e"][data-mark="ink"] body.x #idx .grp.ec .e.on.etool .bar i { background: var(--ink); }
+html[data-ix="e"] #idx .grp.ec .e.lock:is(.el, .ef, .ew, .ey, .ea, .efig, .ecap, .etool) { background: none !important; box-shadow: none !important; color: var(--ink) !important; }
+html[data-ix="e"] #idx .grp.ec .e.lock:is(.el, .ef, .ey, .ea, .efig, .ecap, .etool) .t, html[data-ix="e"] #idx .grp.ec .e.lock.ew .er {
+  background: var(--ink); color: var(--paper); box-shadow: 0.2em 0 0 var(--ink), -0.2em 0 0 var(--ink); text-shadow: none; }
+html[data-ix="e"] #idx .grp.ec .e.lock .dk, html[data-ix="e"] #idx .grp.ec .e.lock .cr, html[data-ix="e"] #idx .grp.ec .e.lock .kk { color: var(--grey) !important; }
+html[data-ix="e"] #idx .grp.ec .e.lock.ew .ld { border-color: rgba(255, 255, 255, 0.5); }
+
+/* E on a phone: two columns, no rules, the features in the lines' order */
+html.stack[data-ix="e"] .vr { display: none; }
+html.stack[data-ix="e"] .eb { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 40px; }
+html.stack[data-ix="e"] .grp.ec { grid-column: span min(var(--span, 1), 2); }
+html.stack[data-ix="e"] .e1 { display: block; }
+html.stack[data-ix="e"] .elines { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: var(--eg); margin: 0 0 30px; }
+html.stack[data-ix="e"] .efeat { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: var(--eg); row-gap: 34px; }
+html.stack[data-ix="e"] .fstack { display: contents; }
+html.stack[data-ix="e"] .elist { columns: 1; }
+html.stack[data-ix="e"] .ebig { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 26px; }
+html.stack[data-ix="e"] .erun.c4 { columns: 2; }
