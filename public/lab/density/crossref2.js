@@ -897,6 +897,8 @@
     top.appendChild(sw);
     /* E's second switch: how an entry takes the ink */
     if (IX === "e") top.appendChild(el("div", "ixsw mksw caps", '<span class="ixl">Mark</span>' + MKS.map((x) => '<a href="?mark=' + x + '" data-mk="' + x + '"' + (x === MK ? ' class="on" aria-current="true"' : "") + ">" + x + "</a>").join("")));
+    /* and its third: the texture under the index */
+    if (IX === "e") top.appendChild(el("div", "ixsw txsw caps", '<span class="ixl">Texture</span>' + TXS.map((x) => '<a href="?texture=' + x + '" data-tx="' + x + '"' + (x === TX ? ' class="on" aria-current="true"' : "") + ">" + x + "</a>").join("")));
     IDX.appendChild(top);
     LAYOUT[IX]().filter(Boolean).forEach((n) => IDX.appendChild(n));
     /* in D the mark and the switch head the first column only, as the
@@ -996,6 +998,7 @@
     else if (top && top.firstChild !== MARK) top.insertBefore(MARK, top.firstChild);
     sizeIndex();
     if (fresh || stack !== was || !tio) { watchThumbs(); watchSeen(); }
+    if (!txKey) drawTexture(); else { clearTimeout(txT); txT = setTimeout(drawTexture, 90); }
   };
 
   /* ── the cross-reference: how what shares a study is marked. Ink, a
@@ -1028,6 +1031,100 @@
     const u = new URL(location.href); u.searchParams.set("mark", x);
     history.replaceState(history.state, "", u.pathname + u.search + u.hash);
     IDX.querySelectorAll(".mksw a").forEach((a) => { const on = a.dataset.mk === x; a.classList.toggle("on", on); if (on) a.setAttribute("aria-current", "true"); else a.removeAttribute("aria-current"); });
+  };
+
+  /* ── the texture under the index (27 Sept, his "what if we tried a super
+     subtle texture in the background of the nav panels? ... ascii type
+     design...not colored like what i attached but the patterns
+     themselves"). The three he attached were all typed: a grid of full
+     stops, a wall of base64, a grid of plus signs. So the texture is set
+     in type too, on one grid of 6 by 12 cells (10px mono), anchored where
+     the index's first column and first line start, and drawn once into a
+     canvas that stays still while the index scrolls over it:
+     - none, the default: paper, as it was;
+     - dots: a full stop on every other cell, a 12px square grid;
+     - plus: a plus on every fourth cell of every other line, 24px square;
+     - ascii: every cell, the studies' own sentences in base64, as his
+       reference was code in base64 (nothing is written: his words,
+       encoded);
+     - field: every cell, a character picked by how dark a slow field is
+       there, from a space up to a hash, so the paper has weather.
+     All of it ink at a few percent, under the hairlines, and switched
+     like the mark: ?texture=, or the row under Mark, kept in
+     localStorage. ── */
+  const TXS = ["none", "dots", "plus", "ascii", "field"], TX_LS = "crossref2.texture";
+  const QTX = (new URLSearchParams(location.search).get("texture") || "").toLowerCase();
+  const lsTx = () => { try { return localStorage.getItem(TX_LS); } catch (e) { return null; } };
+  let TX = TXS.includes(QTX) ? QTX : TXS.includes(lsTx()) ? lsTx() : "none";
+  HTML.dataset.tx = TX;
+  const TEXTURE = el("canvas"); TEXTURE.id = "texture"; TEXTURE.setAttribute("aria-hidden", "true");
+  document.body.insertBefore(TEXTURE, document.body.firstChild);
+  let B64 = "";
+  const base64 = () => {
+    if (B64) return B64;
+    const s = D.frags.filter((f) => f.kind === "line").map((f) => f.text).join(" ").slice(0, 60000);
+    const u = new TextEncoder().encode(s); let bin = "";
+    for (let i = 0; i < u.length; i += 8192) bin += String.fromCharCode.apply(null, u.subarray(i, i + 8192));
+    return (B64 = btoa(bin));
+  };
+  /* the field: value noise in two octaves, on a fixed seed, so the
+     weather is the same on every visit */
+  const hash2 = (x, y) => { let h = Math.imul(x, 374761393) + Math.imul(y, 668265263) ^ 0x5bd1e995; h = Math.imul(h ^ (h >>> 13), 1274126177); return ((h ^ (h >>> 16)) >>> 0) / 4294967295; };
+  const ease3 = (t) => t * t * (3 - 2 * t);
+  const noise = (x, y) => {
+    const xi = Math.floor(x), yi = Math.floor(y), xf = ease3(x - xi), yf = ease3(y - yi);
+    const a = hash2(xi, yi), b = hash2(xi + 1, yi), c = hash2(xi, yi + 1), d = hash2(xi + 1, yi + 1);
+    return a + (b - a) * xf + (c - a) * yf + (a - b - c + d) * xf * yf;
+  };
+  const RAMP = " .:-=+*#";
+  const TX_ALPHA = { dots: 0.22, plus: 0.16, ascii: 0.045, field: 0.07 };
+  const mod = (a, n) => ((a % n) + n) % n;
+  /* drawn again only when the texture or its box has changed, and while
+     a window is being dragged, once it rests */
+  let txKey = "", txT = 0;
+  const drawTexture = () => {
+    clearTimeout(txT);
+    const r = TEXTURE.getBoundingClientRect();
+    const dpr = Math.min(2, window.devicePixelRatio || 1);
+    const cs = getComputedStyle(HTML);
+    const CW = 6, LH = 12;
+    /* the grid's origin is where the index's type starts */
+    const ax = parseFloat(cs.getPropertyValue("--m")) || 0, ay = phone() ? 0 : parseFloat(cs.getPropertyValue("--top")) || 0;
+    const key = [TX, Math.round(r.width), Math.round(r.height), ax, ay, dpr].join();
+    if (key === txKey) return;
+    txKey = key;
+    if (TX === "none" || !r.width || !r.height) { TEXTURE.width = TEXTURE.height = 0; return; }
+    TEXTURE.width = Math.round(r.width * dpr); TEXTURE.height = Math.round(r.height * dpr);
+    const g = TEXTURE.getContext("2d");
+    g.setTransform(dpr, 0, 0, dpr, 0, 0);
+    const i0 = -Math.ceil(ax / CW), i1 = Math.ceil((r.width - ax) / CW), j0 = -Math.ceil(ay / LH), j1 = Math.ceil((r.height - ay) / LH);
+    g.font = "10px " + (cs.getPropertyValue("--mono").trim() || "monospace");
+    g.textAlign = "center"; g.textBaseline = "middle"; g.fillStyle = "#000"; g.globalAlpha = TX_ALPHA[TX];
+    /* dots and plus sit on the grid's crossings; letters sit in its cells */
+    const on = (i, j, ch) => g.fillText(ch, ax + i * CW, ay + j * LH);
+    const cell = (i, j, ch) => g.fillText(ch, ax + i * CW + CW / 2, ay + j * LH + LH / 2);
+    const b = TX === "ascii" ? base64() : "", cols = i1 - i0 + 1;
+    for (let j = j0; j <= j1; j++) for (let i = i0; i <= i1; i++) {
+      if (TX === "dots") { if (!mod(i, 2)) on(i, j, "."); }
+      else if (TX === "plus") { if (!mod(i, 4) && !mod(j, 2)) on(i, j, "+"); }
+      else if (TX === "ascii") cell(i, j, b[((j - j0) * cols + (i - i0)) % b.length]);
+      else {
+        const x = ax + i * CW, y = ay + j * LH;
+        const n = 0.65 * noise(x / 150, y / 150) + 0.35 * noise(x / 55 + 17, y / 55 + 31);
+        const v = Math.max(0, Math.min(1, (n - 0.38) / 0.62));
+        const ch = RAMP[Math.min(RAMP.length - 1, Math.floor(Math.pow(v, 1.5) * RAMP.length))];
+        if (ch !== " ") cell(i, j, ch);
+      }
+    }
+  };
+  const setTexture = (x) => {
+    if (!TXS.includes(x) || x === TX) return;
+    TX = x; HTML.dataset.tx = x;
+    try { localStorage.setItem(TX_LS, x); } catch (e) { /* private window */ }
+    const u = new URL(location.href); u.searchParams.set("texture", x);
+    history.replaceState(history.state, "", u.pathname + u.search + u.hash);
+    IDX.querySelectorAll(".txsw a").forEach((a) => { const on = a.dataset.tx === x; a.classList.toggle("on", on); if (on) a.setAttribute("aria-current", "true"); else a.removeAttribute("aria-current"); });
+    drawTexture();
   };
   const meets = (a, b) => { for (const k of a) if (b.has(k)) return true; return false; };
   let lit = [], painted = [null, null];
@@ -2531,7 +2628,7 @@
       return;
     }
     const sw = ev.target.closest(".ixsw a");
-    if (sw && !(ev.metaKey || ev.ctrlKey || ev.shiftKey || ev.button)) { ev.preventDefault(); if (sw.dataset.mk) setMark(sw.dataset.mk); else setIndex(sw.dataset.ix); return; }
+    if (sw && !(ev.metaKey || ev.ctrlKey || ev.shiftKey || ev.button)) { ev.preventDefault(); if (sw.dataset.mk) setMark(sw.dataset.mk); else if (sw.dataset.tx) setTexture(sw.dataset.tx); else setIndex(sw.dataset.ix); return; }
     const o = entryOf(ev.target); if (!o) return;
     if (ev.metaKey || ev.ctrlKey || ev.shiftKey || ev.button) return; /* a new tab is still a new tab */
     ev.preventDefault();
