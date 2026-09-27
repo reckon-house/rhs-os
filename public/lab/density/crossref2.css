@@ -127,7 +127,7 @@ html:not([data-mark="ink"]) .e.lock { background: var(--ink); box-shadow: 0 0 0 
 body.staged .e:not(.on):hover .t, body.staged .grp.run .e:not(.on):hover, body.staged .grp.wall .e:not(.on):hover { text-decoration: underline; text-decoration-color: var(--faint); text-underline-offset: 0.2em; }
 
 /* the switch, on the mark's line: four letters */
-.ixtop { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; margin: 0 0 30px; }
+.ixtop { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 8px 16px; margin: 0 0 30px; }
 .ixtop #mark { margin: 0; }
 .ixsw { display: flex; align-items: baseline; gap: 14px; margin: 0 0 0 auto; color: var(--grey); font-size: 12px; }
 .ixsw .ixl { margin-right: 4px; color: var(--faint); }
@@ -447,7 +447,7 @@ html.stack[data-ix="d"] .grp.run .items { line-height: 1.6; }
 
 @media (prefers-reduced-motion: reduce) {
   #field, .layer, .cp .pic, .rise { transition: none; animation: none; }
-  #idx .e, #idx .e .t, #idx .e .er, #idx .pips i { transition: none !important; }
+  #idx .e, #idx .e .t, #idx .e .er, #idx .e .nr, #idx .pips i, #idx .e::before, #idx .e .nr::before, #idx .e .er::before { transition: none !important; }
 }
 
 /* ════════════════════════════════════════════════════════════════════
@@ -459,6 +459,10 @@ html.stack[data-ix="d"] .grp.run .items { line-height: 1.6; }
    why is above buildE in crossref2.js.
    ════════════════════════════════════════════════════════════════════ */
 [data-ix="e"] #idx { --eg: 20px; }
+/* E's index keeps fourteen pixels either side of its columns unclipped,
+   the columns where they were, so a mark in the first or last column can
+   stand out as far as the others do past the rules */
+html:not(.stack)[data-ix="e"] #idx { left: calc(var(--m) - 14px); width: calc(var(--idxw) + 28px); padding-left: 14px; padding-right: 14px; }
 [data-ix="e"] .ixtop { margin: 0 0 26px; }
 [data-ix="e"] .eg { position: relative; }
 [data-ix="e"] .vr { position: absolute; top: 0; bottom: 0; width: 1px; background: var(--hair); pointer-events: none; }
@@ -544,29 +548,89 @@ html[data-ix="e"] body.x .e.ey.on .pips i { background: var(--ink); }
 [data-ix="e"] .e.etool .bar { display: block; position: relative; height: 1px; margin: 4px 0 0; background: var(--hair); }
 [data-ix="e"] .e.etool .bar i { position: absolute; left: 0; top: -1px; height: 3px; background: var(--ink); }
 
-/* the ink mark in E: an entry that stands on its own is banded on its
-   name (a row on its row), never across its picture and sentence, with
-   the same sweep; the runs stay bold. #idx is in each selector so the
-   band rules above cannot outrank these */
+/* ── THE MARK IN E (27 Sept, later): three settings, on the switch by
+   the index's (html[data-mk]). His words on the old band: "the black bars
+   behind the text are nice but the padding is so tight it looks off ...
+   is there another treatment ... editorial meets tech/system design?"
+   An entry that stands on its own is marked on its name's own row (.nr,
+   or .er where the name runs to a count or a year; a year and a
+   capability are the row themselves), never across its picture and
+   sentence. The runs stay bold in all three. #idx is in each selector
+   so the band rules above cannot outrank these. ── */
 html[data-mark="ink"][data-ix="e"] #idx .grp.ec .e:is(.el, .ef, .ew, .ey, .ea, .efig, .ecap, .etool) {
   background-image: none; box-shadow: none; padding-inline: 0; margin-inline: 0; color: var(--ink); -webkit-text-stroke: 0; }
-html[data-mark="ink"][data-ix="e"] #idx .grp.ec .e:is(.el, .ef, .ey, .ea, .efig, .ecap, .etool) .t,
-html[data-mark="ink"][data-ix="e"] #idx .grp.ec .e.ew .er {
+[data-ix="e"] .e.el .nr { display: block; font-size: var(--fl, 28px); line-height: 1; }
+[data-ix="e"] .e:is(.ef, .ea, .efig) .nr { display: block; }
+/* how far a band stands above and below its row, by the row's size */
+[data-ix="e"] .e.el { --pb: 0.2em; }
+[data-ix="e"] .e.efig { --pb: 5px; }
+[data-ix="e"] .e.ef { --pb: 5px; }
+[data-ix="e"] .e:is(.ea, .ew, .etool, .ey, .ecap) { --pb: 3px; }
+/* the text a mark turns to paper, and its greys to a light grey */
+html[data-ix="e"]:is([data-mk="cell"], [data-mk="bar"]) #idx .grp.ec .e.ew .ld { transition: border-color 0.2s ease 0.06s; }
+html[data-ix="e"]:is([data-mk="cell"], [data-mk="bar"]) #idx .grp.ec .e :is(.nr, .er, .cnt, .y) { transition: color 0.2s ease 0.06s; }
+html[data-ix="e"]:is([data-mk="cell"], [data-mk="bar"]) body.x #idx .grp.ec .e.on.ew .ld, html[data-ix="e"]:is([data-mk="cell"], [data-mk="bar"]) #idx .grp.ec .e.lock.ew .ld { border-color: rgba(255, 255, 255, 0.5); }
+html[data-ix="e"]:is([data-mk="cell"], [data-mk="bar"]) body.x #idx .grp.ec .e.on:is(.ew, .etool, .ecap) :is(.y, .cnt),
+html[data-ix="e"]:is([data-mk="cell"], [data-mk="bar"]) #idx .grp.ec .e.lock:is(.ew, .etool, .ecap) :is(.y, .cnt) { color: rgba(255, 255, 255, 0.62); }
+/* the mix (a hair of stroke and a paper halo) is for the runs; a top
+   capability, tool or figure standing on its own takes the mark instead */
+html[data-mark="ink"][data-ix="e"] body.x #idx .grp.ec .e.on:is(.ecap, .etool, .efig):not(.me):not(.lock) { -webkit-text-stroke: 0; text-shadow: none; }
+html[data-ix="e"] #idx .grp.ec .e.lock:is(.el, .ef, .ew, .ey, .ea, .efig, .ecap, .etool) { background: none !important; box-shadow: none !important; color: var(--ink) !important; }
+html[data-ix="e"] #idx .grp.ec .e.lock .dk, html[data-ix="e"] #idx .grp.ec .e.lock .cr, html[data-ix="e"] #idx .grp.ec .e.lock .kk { color: var(--grey) !important; }
+
+/* CELL, the default: the band fills the entry's cell of the grid, out to
+   the rules either side, so the gutter is its padding. It sweeps in from
+   the left and leaves to the right; the words turn a beat after */
+html[data-mk="cell"][data-ix="e"] #idx .grp.ec :is(.e .nr, .e .er, .e.ey, .e.ecap) { position: relative; z-index: 0; }
+html[data-mk="cell"][data-ix="e"] #idx .grp.ec :is(.e:is(.el, .ef, .ea, .efig) .nr, .e:is(.ew, .etool) .er, .e.ey, .e.ecap)::before {
+  content: ""; position: absolute; z-index: -1; top: calc(-1 * var(--pb)); bottom: calc(-1 * var(--pb)); left: calc(var(--eg) / -2 + 0.5px); right: calc(var(--eg) / -2 + 0.5px);
+  background: var(--ink); transform: scaleX(0); transform-origin: 100% 50%; transition: transform 0.36s cubic-bezier(0.45, 0, 0.2, 1); pointer-events: none; }
+html[data-mk="cell"][data-ix="e"] body.x #idx .grp.ec :is(.e.on:is(.el, .ef, .ea, .efig) .nr, .e.on:is(.ew, .etool) .er, .e.on.ey, .e.on.ecap)::before,
+html[data-mk="cell"][data-ix="e"] #idx .grp.ec :is(.e.lock:is(.el, .ef, .ea, .efig) .nr, .e.lock:is(.ew, .etool) .er, .e.lock.ey, .e.lock.ecap)::before { transform: scaleX(1); transform-origin: 0 50%; }
+html[data-mk="cell"][data-ix="e"] body.x #idx .grp.ec :is(.e.on:is(.el, .ef, .ea, .efig) .nr, .e.on:is(.ew, .etool) .er, .e.on.ey .t, .e.on.ecap .t),
+html[data-mk="cell"][data-ix="e"] #idx .grp.ec :is(.e.lock:is(.el, .ef, .ea, .efig) .nr, .e.lock:is(.ew, .etool) .er, .e.lock.ey .t, .e.lock.ecap .t) { color: var(--paper); }
+html[data-mk="cell"][data-ix="e"] #idx .grp.ec .e:is(.ey, .ecap) .t { transition: color 0.2s ease 0.06s; }
+html[data-mk="cell"][data-ix="e"] body.x #idx .grp.ec .e.on.ey .pips i, html[data-mk="cell"][data-ix="e"] #idx .grp.ec .e.lock.ey .pips i { background: var(--paper); }
+/* a line's name gets air above and below, so its number and its
+   sentence never touch a band */
+[data-ix="e"] .e.el .kk { margin-bottom: 8px; }
+[data-ix="e"] .e.el .dk { margin-top: 10px; }
+
+/* BAR: the band on the words, as before, with room around them. It
+   stands out a quarter of the type either side and a fifth above and
+   below, given back by margins so a band arriving never moves a word */
+html[data-mk="bar"][data-ix="e"] #idx .grp.ec .e:is(.el, .ef, .ey, .ea, .efig, .ecap, .etool) .t,
+html[data-mk="bar"][data-ix="e"] #idx .grp.ec .e.ew .er {
   background-image: linear-gradient(var(--ink), var(--ink)); background-repeat: no-repeat;
   background-size: 0% 100%; background-position: 100% 0;
   -webkit-box-decoration-break: clone; box-decoration-break: clone;
-  transition: background-size 0.26s cubic-bezier(0.45, 0, 0.2, 1), color 0.18s ease 0.04s; }
-html[data-mark="ink"][data-ix="e"] #idx .grp.ec .e:is(.el, .ef, .ey, .ea, .efig, .ecap, .etool) .t { padding-inline: 0.2em; margin-inline: -0.2em; }
-html[data-mark="ink"][data-ix="e"] body.x #idx .grp.ec .e.on:is(.el, .ef, .ey, .ea, .efig, .ecap, .etool) .t,
-html[data-mark="ink"][data-ix="e"] body.x #idx .grp.ec .e.on.ew .er,
-html[data-mark="ink"][data-ix="e"] #idx .grp.ec .e.lock:is(.el, .ef, .ey, .ea, .efig, .ecap, .etool) .t,
-html[data-mark="ink"][data-ix="e"] #idx .grp.ec .e.lock.ew .er {
+  transition: background-size 0.3s cubic-bezier(0.45, 0, 0.2, 1), color 0.18s ease 0.05s; }
+html[data-mk="bar"][data-ix="e"] #idx .grp.ec .e:is(.el, .ef, .ey, .ea, .efig, .ecap, .etool) .t { padding: 0.14em 0.28em 0.16em; margin: -0.14em -0.28em -0.16em; }
+html[data-mk="bar"][data-ix="e"] #idx .grp.ec .e.ew .er { padding: 2px 5px; margin: -2px -5px; }
+/* a large figure's name is its number, set larger than the entry: the
+   band is sized on the number's box, not the entry's small type */
+html[data-mk="bar"][data-ix="e"] #idx .grp.ec .e.efig .t { display: inline-block; line-height: 1; padding: 5px 8px 6px; margin: -5px -8px -6px; }
+html[data-mk="bar"][data-ix="e"] body.x #idx .grp.ec .e.on:is(.el, .ef, .ey, .ea, .efig, .ecap, .etool) .t,
+html[data-mk="bar"][data-ix="e"] body.x #idx .grp.ec .e.on.ew .er,
+html[data-mk="bar"][data-ix="e"] #idx .grp.ec .e.lock:is(.el, .ef, .ey, .ea, .efig, .ecap, .etool) .t,
+html[data-mk="bar"][data-ix="e"] #idx .grp.ec .e.lock.ew .er {
   background-size: 100% 100%; background-position: 0 0; color: var(--paper); text-shadow: none; }
-html[data-ix="e"] #idx .grp.ec .e.lock:is(.el, .ef, .ew, .ey, .ea, .efig, .ecap, .etool) { background: none !important; box-shadow: none !important; color: var(--ink) !important; }
-html[data-ix="e"] #idx .grp.ec .e.lock .dk, html[data-ix="e"] #idx .grp.ec .e.lock .cr, html[data-ix="e"] #idx .grp.ec .e.lock .kk { color: var(--grey) !important; }
-html[data-ix="e"] #idx .grp.ec .e.ew .ld { transition: border-color 0.2s ease; }
-html[data-ix="e"] body.x #idx .grp.ec .e.on.ew .ld, html[data-ix="e"] #idx .grp.ec .e.lock.ew .ld { border-color: rgba(255, 255, 255, 0.5); }
-html[data-ix="e"] body.x #idx .grp.ec .e.on.ew .y, html[data-ix="e"] #idx .grp.ec .e.lock.ew .y { color: rgba(255, 255, 255, 0.62); }
+html[data-mk="bar"][data-ix="e"] body.x #idx .grp.ec .e.on.ey .pips i { background: var(--ink); }
+
+/* NODE: no band. A square sits on the column's rule beside the entry, a
+   point on an axis, and a rule of ink draws under its name */
+html[data-mk="node"][data-ix="e"] #idx .grp.ec :is(.e .nr, .e .er, .e.ey, .e.ecap) { position: relative; }
+html[data-mk="node"][data-ix="e"] #idx .grp.ec :is(.e:is(.el, .ef, .ea, .efig) .nr, .e:is(.ew, .etool) .er, .e.ey, .e.ecap)::before {
+  content: ""; position: absolute; top: 50%; left: calc(var(--eg) / -2 - 3.5px); width: 7px; height: 7px; margin-top: -3.5px;
+  background: var(--ink); transform: scale(0) rotate(45deg); transition: transform 0.34s cubic-bezier(0.2, 0.7, 0.2, 1); pointer-events: none; }
+html[data-mk="node"][data-ix="e"] body.x #idx .grp.ec :is(.e.on:is(.el, .ef, .ea, .efig) .nr, .e.on:is(.ew, .etool) .er, .e.on.ey, .e.on.ecap)::before,
+html[data-mk="node"][data-ix="e"] #idx .grp.ec :is(.e.lock:is(.el, .ef, .ea, .efig) .nr, .e.lock:is(.ew, .etool) .er, .e.lock.ey, .e.lock.ecap)::before { transform: none; }
+html[data-mk="node"][data-ix="e"] #idx .grp.ec .e:is(.el, .ef, .ey, .ea, .efig, .ecap, .etool, .ew) .t {
+  background-image: linear-gradient(var(--ink), var(--ink)); background-repeat: no-repeat; background-size: 0% 2px; background-position: 100% 100%;
+  -webkit-box-decoration-break: clone; box-decoration-break: clone; transition: background-size 0.34s cubic-bezier(0.45, 0, 0.2, 1) 0.04s; }
+html[data-mk="node"][data-ix="e"] #idx .grp.ec .e.el .t { background-size: 0% 0.085em; }
+html[data-mk="node"][data-ix="e"] body.x #idx .grp.ec .e.on .t, html[data-mk="node"][data-ix="e"] #idx .grp.ec .e.lock .t { background-size: 100% 2px; background-position: 0 100%; }
+html[data-mk="node"][data-ix="e"] body.x #idx .grp.ec .e.on.el .t, html[data-mk="node"][data-ix="e"] #idx .grp.ec .e.lock.el .t { background-size: 100% 0.085em; }
 
 /* E on a phone: the same blocks as one column, in reading order (each
    carries its place in style.order), the lines two across, no rules */

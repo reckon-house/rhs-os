@@ -602,11 +602,12 @@
       const l = o.line, i = (DATA.lines || []).indexOf(l);
       a.classList.add("el");
       a.innerHTML = '<span class="kk caps"><span>' + two(i + 1) + '</span><span class="cnt">' + l.studies.filter((k) => D.study(k)).length + "</span></span>" +
-        '<span class="t">' + esc(o.label) + '</span><span class="dk">' + esc(l.sentence) + "</span>";
+        '<span class="nr"><span class="t">' + esc(o.label) + '</span></span><span class="dk">' + esc(l.sentence) + "</span>";
     } else if (mode === "Efeat") {
       const s = D.study(o.k), L = LEAD_OF[o.k];
       a.classList.add("w", "ef");
-      a.innerHTML = '<span class="kk caps">' + esc(L ? L.l.name : "") + '</span><span class="fy">' + D.year(o.k) + '</span><span class="t">' + esc(o.label) + "</span>";
+      /* .nr is the name's own row, so a mark can fill the cell around it */
+      a.innerHTML = '<span class="kk caps">' + esc(L ? L.l.name : "") + '</span><span class="fy">' + D.year(o.k) + '</span><span class="nr"><span class="t">' + esc(o.label) + "</span></span>";
       const th = thumb(o.k, "fth");
       if (th) { th.style.setProperty("--r", Math.max(0.78, Math.min(1.5, ratio(th._f))).toFixed(3)); a.appendChild(th); }
       if (s && s.fact) a.appendChild(el("span", "dk", esc(s.fact)));
@@ -623,12 +624,12 @@
       a.innerHTML = '<span class="t">' + esc(o.label) + '</span><span class="pips" aria-hidden="true">' + [...Array(o.rel.size)].map((_, j) => '<i style="--d:' + j + '"></i>').join("") + "</span>";
     } else if (mode === "Eabout") {
       a.classList.add("ea");
-      a.innerHTML = '<span class="t">' + esc(o.label) + '</span><span class="dk">' + esc(o.about.lede || "") + "</span>";
+      a.innerHTML = '<span class="nr"><span class="t">' + esc(o.label) + '</span></span><span class="dk">' + esc(o.about.lede || "") + "</span>";
     } else if (mode === "Efig") {
       const m = /^([~$]?[\d][\d,.]*[%+MKx]*)(.*)$/.exec(clean(o.label)) || [0, clean(o.label), ""];
       const src = figSource(o.fig);
       a.classList.add("fig", "efig");
-      a.innerHTML = '<span class="t"><span class="fn">' + D.esc(m[1]) + "</span>" + (m[2] ? '<span class="fu">' + D.esc(m[2]) + "</span>" : "") + "</span>" +
+      a.innerHTML = '<span class="nr"><span class="t"><span class="fn">' + D.esc(m[1]) + "</span>" + (m[2] ? '<span class="fu">' + D.esc(m[2]) + "</span>" : "") + "</span></span>" +
         (src.label ? '<span class="kk caps">' + esc(src.label) + "</span>" : "") + (src.html ? '<span class="dk">' + src.html + "</span>" : "") +
         (src.credit ? '<span class="cr caps">' + esc(src.credit) + "</span>" : "");
     } else if (mode === "Ecap") {
@@ -758,6 +759,8 @@
     const top = el("div", "ixtop");
     if (markIn) top.appendChild(MARK);
     top.appendChild(sw);
+    /* E's second switch: how an entry takes the ink */
+    if (IX === "e") top.appendChild(el("div", "ixsw mksw caps", '<span class="ixl">Mark</span>' + MKS.map((x) => '<a href="?mark=' + x + '" data-mk="' + x + '"' + (x === MK ? ' class="on" aria-current="true"' : "") + ">" + x + "</a>").join("")));
     IDX.appendChild(top);
     LAYOUT[IX]().filter(Boolean).forEach((n) => IDX.appendChild(n));
     /* in D the mark and the switch head the first column only, as the
@@ -861,8 +864,31 @@
 
   /* ── the cross-reference: how what shares a study is marked. Ink, a
      black band, is the default (27 Sept); ?mark=dim keeps the old grey ── */
-  const MARKMODE = new URLSearchParams(location.search).get("mark") === "dim" ? "dim" : "ink";
+  const QMARK = (new URLSearchParams(location.search).get("mark") || "").toLowerCase();
+  const MARKMODE = QMARK === "dim" ? "dim" : "ink";
   HTML.dataset.mark = MARKMODE;
+  /* how E's entries take the ink (27 Sept, his "the black bars behind the
+     text are nice but the padding is so tight it looks off ... editorial
+     meets tech/system design?"). Three settings on a switch by the index's:
+     - cell, the default: the band fills the entry's cell of the grid, rule
+       to rule, the way a system marks a selected row. The gutter is its
+       padding, so the words never move and never crowd its edges;
+     - bar: the band on the words, as before, given room to breathe;
+     - node: no band. A square sits on the column's rule beside the entry,
+       a point on an axis, and a rule of ink draws under its name.
+     The runs of capabilities, tools and figures stay bold in all three. */
+  const MKS = ["cell", "bar", "node"], MK_LS = "crossref2.mark";
+  const lsMk = () => { try { return localStorage.getItem(MK_LS); } catch (e) { return null; } };
+  let MK = MKS.includes(QMARK) ? QMARK : QMARK === "ink" ? "bar" : MKS.includes(lsMk()) ? lsMk() : "cell";
+  HTML.dataset.mk = MK;
+  const setMark = (x) => {
+    if (!MKS.includes(x) || x === MK) return;
+    MK = x; HTML.dataset.mk = x;
+    try { localStorage.setItem(MK_LS, x); } catch (e) { /* private window */ }
+    const u = new URL(location.href); u.searchParams.set("mark", x);
+    history.replaceState(history.state, "", u.pathname + u.search + u.hash);
+    IDX.querySelectorAll(".mksw a").forEach((a) => { const on = a.dataset.mk === x; a.classList.toggle("on", on); if (on) a.setAttribute("aria-current", "true"); else a.removeAttribute("aria-current"); });
+  };
   const meets = (a, b) => { for (const k of a) if (b.has(k)) return true; return false; };
   let lit = [], painted = [null, null];
   const paint = (rel, me) => {
@@ -2138,7 +2164,7 @@
 
   IDX.addEventListener("click", (ev) => {
     const sw = ev.target.closest(".ixsw a");
-    if (sw && !(ev.metaKey || ev.ctrlKey || ev.shiftKey || ev.button)) { ev.preventDefault(); setIndex(sw.dataset.ix); return; }
+    if (sw && !(ev.metaKey || ev.ctrlKey || ev.shiftKey || ev.button)) { ev.preventDefault(); if (sw.dataset.mk) setMark(sw.dataset.mk); else setIndex(sw.dataset.ix); return; }
     const o = entryOf(ev.target); if (!o) return;
     if (ev.metaKey || ev.ctrlKey || ev.shiftKey || ev.button) return; /* a new tab is still a new tab */
     ev.preventDefault();
