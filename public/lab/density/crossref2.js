@@ -621,15 +621,21 @@
     if (fresh || stack !== was || !tio) watchThumbs();
   };
 
-  /* ── the cross-reference: what shares a study stays in ink ── */
+  /* ── the cross-reference: how what shares a study is marked. Ink, a
+     black band, is the default (27 Sept); ?mark=dim keeps the old grey ── */
+  const MARKMODE = new URLSearchParams(location.search).get("mark") === "dim" ? "dim" : "ink";
+  HTML.dataset.mark = MARKMODE;
   const meets = (a, b) => { for (const k of a) if (b.has(k)) return true; return false; };
   let lit = [], painted = [null, null];
   const paint = (rel, me) => {
     painted = [rel, me];
     document.body.classList.toggle("x", !!rel);
     lit = [];
+    /* a line never lights the other lines: every one of them shares a
+       study with Digital, so the names went solid black and said nothing */
+    const lineMe = !!me && me.g && me.g.id === "lines";
     ENTRIES.forEach((x) => {
-      const on = !!rel && (x === me || meets(x.rel, rel));
+      const on = !!rel && (x === me || (meets(x.rel, rel) && !(lineMe && x.g && x.g.id === "lines")));
       x.a.classList.toggle("on", on); x.a.classList.toggle("me", !!me && x === me);
       if (on && x !== me) lit.push(x);
     });
@@ -990,7 +996,9 @@
     const r = m.getBoundingClientRect();
     const q = [r.left - 12, r.top + r.height / 2];
     const shown = shownK ? G.work.items.find((x) => x.rel.has(shownK) && x !== cur.o) : null;
-    const pairs = lit.filter((x) => x !== shown).map((x) => ({ x, q }));
+    /* with the ink mark the bands already say what is related, so only
+       the hovered entry is wired to what it shows */
+    const pairs = MARKMODE === "dim" ? lit.filter((x) => x !== shown).map((x) => ({ x, q })) : [];
     if (shown) pairs.push({ x: shown, q, me: true });
     pairs.push({ x: cur.o, q, me: true });
     draw(pairs, live === true ? { live: true } : null);
@@ -1364,7 +1372,7 @@
     const k = S.hovK, node = S.hovAt && S.hovAt.isConnected ? S.hovAt : tileOf(S, k);
     if (!node) { WIRES.innerHTML = ""; return; }
     const q = anchorOf(node, S.layer), me = WORK[k];
-    draw(lit.filter((x) => x !== me).map((x) => ({ x, q })).concat(me ? [{ x: me, q, me: true }] : []), { live: true });
+    draw((MARKMODE === "dim" ? lit.filter((x) => x !== me).map((x) => ({ x, q })) : []).concat(me ? [{ x: me, q, me: true }] : []), { live: true });
   };
   const shelfHover = (S, k, at) => {
     if (VIEW.v !== "shelf" || SH !== S) return;

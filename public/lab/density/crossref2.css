@@ -60,7 +60,7 @@ body { overflow: hidden; }
 .grp.run .e, .grp.wall .e, .grp.inline .e, .grp.word .e { display: inline; }
 .grp .e.nw { white-space: nowrap; }
 .grp .sep { color: rgba(0, 0, 0, 0.3); margin: 0 0 0 0.3em; transition: color 0.2s ease; }
-body.x .grp .sep { color: var(--faint); }
+html[data-mark="dim"] body.x .grp .sep { color: var(--faint); }
 .e.fig { font-variant-numeric: tabular-nums; }
 
 /* a board picture in the index: small, cropped to its box, never drawn
@@ -69,13 +69,36 @@ body.x .grp .sep { color: var(--faint); }
 .th img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 0.35s ease; }
 .th.in img { opacity: 1; }
 
-/* the cross-reference: what shares a study stays in ink, and so do its pictures */
-body.x .e { color: var(--faint); }
-body.x .e .y { color: var(--faint); }
-body.x .e:not(.on) .th, body.x .strip .th:not(.hit) { opacity: 0.16; }
-body.x .e.on { color: var(--ink); }
-body.x .e.on .y { color: var(--grey); }
-.e.me .t, .grp.run .e.me, .grp.wall .e.me { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 0.2em; }
+/* the cross-reference, the old way (?mark=dim): what shares a study
+   stays in ink and everything else goes grey, pictures too */
+html[data-mark="dim"] body.x .e { color: var(--faint); }
+html[data-mark="dim"] body.x .e .y { color: var(--faint); }
+html[data-mark="dim"] body.x .e:not(.on) .th, html[data-mark="dim"] body.x .strip .th:not(.hit) { opacity: 0.16; }
+html[data-mark="dim"] body.x .e.on { color: var(--ink); }
+html[data-mark="dim"] body.x .e.on .y { color: var(--grey); }
+html[data-mark="dim"] .e.me .t, html[data-mark="dim"] .grp.run .e.me, html[data-mark="dim"] .grp.wall .e.me { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 0.2em; }
+
+/* ── THE INK MARK (27 Sept, the default) ─────────────────────────────
+   His call: "everything going dim is difficult - how do we highlight in
+   a different way? ... the black highlight behind it". Nothing recedes
+   now. What a hovered entry shares a study with is set in an ink band,
+   the way a locked entry always was, and the entry itself is ringed.
+   The band widens sideways with shadows, never with padding, so no word
+   moves when the marks come and go; on a run of entries it breaks with
+   the line (box-decoration-break), and between stacked rows a hairline
+   of paper keeps each band its own. */
+html[data-mark="ink"] body.x .e.on { background: var(--ink); color: var(--paper);
+  box-shadow: 0.2em 0 0 var(--ink), -0.2em 0 0 var(--ink);
+  -webkit-box-decoration-break: clone; box-decoration-break: clone; }
+html[data-mark="ink"] body.x .e.on:not(.w):not(.wd) { box-shadow: 0.2em 0 0 var(--ink), -0.2em 0 0 var(--ink); }
+/* rows that stack (Work, About, the line names) keep a sliver of paper
+   under each band, scaled to the type, so a run of them reads as marks,
+   not as one black block */
+html[data-mark="ink"] body.x .grp:not(.run):not(.wall):not(.inline):not(.word) .e.on { box-shadow: inset 0 -0.09em 0 var(--paper), 0.2em 0 0 var(--ink), -0.2em 0 0 var(--ink); }
+html[data-mark="ink"] body.x .e.on.w { box-shadow: inset 0 -1px 0 var(--paper), 0.2em 0 0 var(--ink), -0.2em 0 0 var(--ink); }
+html[data-mark="ink"] body.x .e.on .y { color: rgba(255, 255, 255, 0.62); }
+html[data-mark="ink"] body.x .e.on .th, html[data-mark="ink"] body.x .strip .th.hit { outline: 2px solid var(--ink); outline-offset: 1px; }
+html[data-mark="ink"] body.x .e.me { outline: 1px solid var(--ink); outline-offset: 0.3em; }
 .e.cur .t { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 0.2em; }
 /* what the stage holds open: set solid, in ink, whatever its kind */
 .e.lock { background: var(--ink); color: var(--paper) !important; box-shadow: 0 0 0 0.18em var(--ink); }
