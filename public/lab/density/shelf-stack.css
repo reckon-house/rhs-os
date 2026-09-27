@@ -55,7 +55,11 @@
 @media (prefers-reduced-motion: reduce) { .xk-pic img, .xk-t { transition: none !important; } }
 
 /* a line's head (27 Sept): one run, its name in ink and its sentence in
-   grey at one size, as a study's lead is set (study-panel.css .sp-stand);
-   the size is set on the shelf as --stand */
-.xk-stand { flex: 1 1 auto; min-width: 0; max-width: 23em; margin: 0; font-size: var(--stand, 23px); font-weight: 600; letter-spacing: -0.03em; line-height: 1.18; text-wrap: pretty; }
+   grey at one size, as a study's lead is set, at the homepage intro's
+   size and weight (crossref2.css .say: 700, 1.02); the size and its
+   tracking are set on the shelf as --stand and --stand-tr */
+.xk-stand { flex: 1 1 auto; min-width: 0; max-width: 17em; margin: 0; font-size: var(--stand, 35px); font-weight: 700; letter-spacing: var(--stand-tr, -0.042em); line-height: 1.02; text-wrap: pretty; }
+/* on a phone the run takes the whole measure and the count goes under it */
+.xk.ph .xk-hl { flex-wrap: wrap; row-gap: 14px; }
+.xk.ph .xk-stand { flex-basis: 100%; }
 .xk-stand .g { color: var(--grey); }

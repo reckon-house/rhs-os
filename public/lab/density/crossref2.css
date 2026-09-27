@@ -864,5 +864,7 @@ sizzle-reel.live { position: absolute !important; inset: 0; width: 100% !importa
 
 /* the Next panel for a line: the run its head is set in (shelf-stack.css
    .xk-stand), at the shelf's --stand, so the scroll into it lands true */
-.sh-foot-t.stand, html.stack .sh-foot-t.stand { max-width: 23em; margin: 0; font-size: var(--stand, 23px); font-weight: 600; letter-spacing: -0.03em; line-height: 1.18; text-wrap: pretty; }
+.sh-foot-t.stand, html.stack .sh-foot-t.stand { max-width: 17em; margin: 0; font-size: var(--stand, 35px); font-weight: 700; letter-spacing: var(--stand-tr, -0.042em); line-height: 1.02; text-wrap: pretty; }
+html.stack .sh-foot-hl:has(.stand) { flex-wrap: wrap; row-gap: 14px; }
+html.stack .sh-foot-t.stand { flex-basis: 100%; }
 .sh-foot-t.stand .g { color: var(--grey); }

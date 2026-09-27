@@ -131,8 +131,14 @@
     Object.assign(S, { W: ctx.width, avail: ctx.height, ph: !!ctx.phone, items: [], units: [] });
     /* the size a line's run is set at, on the shelf itself, so the Next
        panel at the foot sets the next line's run at the same size and the
-       scroll into it lands true: the room's clamp(19px, 3.2cqw, 26px) */
-    if (ctx.scroller) ctx.scroller.style.setProperty("--stand", Math.max(19, Math.min(26, S.W * 0.032)).toFixed(1) + "px");
+       scroll into it lands true. It is the homepage intro's (27 Sept, his
+       "make the font larger - same size as the homepage intro copy"): the
+       statement at rest fits to at most 36px on a desk and 28 on a phone,
+       so it stands at 35 and 27, tracked by crossref2's track() */
+    if (ctx.scroller) {
+      ctx.scroller.style.setProperty("--stand", (S.ph ? 27 : 35) + "px");
+      ctx.scroller.style.setProperty("--stand-tr", (S.ph ? -0.03 : -0.042) + "em");
+    }
     S.root.classList.toggle("ph", S.ph);
     const head = headEl(S);
     S.root.replaceChildren(head); S.units.push(head);
