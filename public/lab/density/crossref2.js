@@ -1534,13 +1534,42 @@
      About's lede, the sentence that names a tool (the tool marked in it),
      the sentence a figure sits in (the figure marked), or a table
      figure's label and its note */
+  /* a sentence's paragraph from that sentence on, while it stays about two
+     lines long; and the title of the column it sits in, when it sits in one */
+  const PARAS = new Map();
+  D.frags.forEach((f) => { if (f.kind === "line" && f.pi != null) { const key = f.k + "|" + f.si + "|" + f.pi; if (!PARAS.has(key)) PARAS.set(key, []); PARAS.get(key).push(f); } });
+  const paraFrom = (f) => {
+    const list = PARAS.get(f.k + "|" + f.si + "|" + f.pi) || [f];
+    let i = list.indexOf(f); if (i < 0) return f.text;
+    let out = list[i].text;
+    for (i++; i < list.length && (out + " " + list[i].text).length <= 280; i++) out += " " + list[i].text;
+    return out;
+  };
+  const colTitle = (f) => {
+    let best = null;
+    for (const x of D.byStudy(f.k)) {
+      if (x.si !== f.si || x.kind !== "line" || x.weight !== "head" || x.where === "section-header" || !(x.pi < f.pi)) continue;
+      if (!best || x.pi > best.pi) best = x;
+    }
+    return best ? clean(best.text).replace(/[.:]\s*$/, "") : null;
+  };
   const shelfSentence = (o) => {
     if (o.g.id === "lines") return { text: o.line.sentence };
     if (o.g.id === "about") return { text: o.about.lede };
     if (o.g.id === "tools") { const t = namedIn(o.v, o.rel).find((x) => !x.label); return t ? { text: t.text, mark: t.hl } : null; }
     if (o.g.id === "figures") {
       const src = o.fig.src[0]; if (!src) return null; const it = src.item;
-      if (it.sent) return { text: it.sent, mark: o.fig.s };
+      /* a figure's sentence alone read like a fragment of a spec ("Four
+         photographs, a typeface family, and a color field."). His "it's
+         not very homepage friendly context": so it carries on with the
+         sentences after it in its paragraph, to about two lines' worth,
+         under the title of the column it sits in ("The System"). All his
+         own words, only more of them (27 Sept) */
+      if (it.sent) {
+        const para = paraFrom(src.f);
+        const col = colTitle(src.f);
+        return Object.assign({ text: para, mark: o.fig.s }, col ? { label: col } : {});
+      }
       if (it.label) return it.sub ? { label: it.label, text: it.sub } : { label: it.label };
     }
     return null;
@@ -1625,12 +1654,21 @@
     const body = el("div", "sh-body");
     const kids = [bar, body];
     /* the foot: the next entry of the same kind, on paper, so a shelf never
-       ends in a wall */
+       ends in a wall. Since 27 Sept (his "instead of clicking 'next' ...
+       can the user just keep scrolling maybe?") it is a glass tall and set
+       as that entry's own shelf opens, its name, count, column and
+       sentence where the stack will put them; a rule beside Next fills as
+       it comes up, and reaching its end carries on into that shelf */
     const items = o.g.items, nx = items[(items.indexOf(o) + 1) % items.length];
     S.foot = null;
     if (nx && nx !== o) {
       const a = el("a", "sh-foot"); a.href = "#" + nx.key; a.dataset.key = nx.key;
-      a.innerHTML = '<span class="caps">Next</span><span class="sh-foot-t' + (nx.g.id === "years" || nx.g.id === "figures" ? " num" : "") + '">' + esc(nameOf(nx)) + "</span>";
+      const ns = shelfSentence(nx), n = shelfOrder(nx).length;
+      a.innerHTML = '<span class="sh-foot-k caps"><span>Next</span><i></i></span>' +
+        '<span class="sh-foot-hl"><span class="sh-foot-t' + (nx.g.id === "years" || nx.g.id === "figures" ? " num" : "") + '">' + esc(nameOf(nx)) + "</span>" +
+        (n ? '<span class="sh-foot-n caps">Work<b>' + n + "</b></span>" : "") + "</span>" +
+        (ns && ns.label ? '<span class="sh-foot-l caps">' + esc(clean(ns.label)) + "</span>" : "") +
+        (ns && ns.text ? '<span class="sh-foot-s">' + esc(clean(ns.text)) + "</span>" : "");
       kids.push(a); S.foot = a;
     }
     S.layer.replaceChildren(...kids);
@@ -1667,11 +1705,24 @@
     S.headEl = S.body.querySelector("[data-head]");
     pastCheck(S);
   };
-  /* the next entry's name keeps its size unless it would run past the edge */
+  /* the next entry's name is fitted as the stack fits its own (two lines
+     at most, never past the edge), so it lands where it will stand */
   const fitFoot = (S) => {
     const t = S.foot && S.foot.querySelector(".sh-foot-t"); if (!t) return;
     t.style.fontSize = ""; let fs = parseFloat(getComputedStyle(t).fontSize) || 64;
-    for (let i = 0; i < 24 && fs > 22 && t.scrollWidth > t.clientWidth + 1; i++) { fs -= 2; t.style.fontSize = fs + "px"; }
+    const over = () => t.scrollWidth > t.clientWidth + 1 || t.offsetHeight > fs * 2.05;
+    for (let i = 0; i < 24 && fs > 22 && over(); i++) { fs -= 2; t.style.fontSize = fs + "px"; }
+  };
+  /* how far the next entry has come up, and at the end of it, its shelf */
+  const footScroll = (S) => {
+    const f = S.foot; if (!f || !f.isConnected || S.pv) return;
+    const lb = S.layer.getBoundingClientRect(), fb = f.getBoundingClientRect();
+    f.style.setProperty("--fp", Math.max(0, Math.min(1, (lb.bottom - fb.top) / Math.max(1, fb.height))).toFixed(3));
+    const atEnd = S.layer.scrollTop + S.layer.clientHeight >= S.layer.scrollHeight - 2;
+    if (atEnd && fb.top <= lb.top + HEAD + 12 && !S.contd && VIEW.v === "shelf" && SH === S && S.visible) {
+      S.contd = true;
+      go({ v: "shelf", key: f.dataset.key }, { push: true, via: "scroll" });
+    }
   };
   /* the running head names the entry once the layout's own head (or a
      third of the glass, for a layout without one) has gone under it */
@@ -1699,6 +1750,7 @@
     layer.addEventListener("scroll", () => {
       cancelAnimationFrame(sc); sc = requestAnimationFrame(() => {
         pastCheck(S);
+        footScroll(S);
         /* a preview keeps a picture's wires on it as it scrolls */
         if (S.pv) { if (S.hovK) wireTile(S); return; }
         /* a scroll still gliding when a picture is clicked lands after the
@@ -1857,7 +1909,7 @@
   };
 
   /* open a shelf over whatever the stage holds */
-  const openShelf = (o) => {
+  const openShelf = (o, how) => {
     const old = SH, oldRoom = RM, was = staged();
     const P = !was ? pvOf(o) : null;
     const S = P ? promote(P) : buildShelf(o); SH = S; RM = null;
@@ -1870,6 +1922,15 @@
         if (old && old !== SH) destroyShelf(old);
         if (oldRoom) { oldRoom.room.destroy(); oldRoom.c.remove(); }
       }, 520);
+      return;
+    }
+    /* carried on from the foot of the shelf before: its name is already
+       where that foot left it, so the shelf only has to appear, and only
+       its pictures arrive */
+    if (how && how.via === "scroll" && old && old.visible && !oldRoom) {
+      if (!still()) S.layer.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 200, easing: "ease" });
+      shelfEnter(S, { delay: 0, keep: S.body.querySelector("header") });
+      setTimeout(() => { if (old && old !== SH) destroyShelf(old); }, 240);
       return;
     }
     const rise = !still() && !(phone() && !was);

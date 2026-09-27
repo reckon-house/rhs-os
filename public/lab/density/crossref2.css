@@ -369,12 +369,23 @@ body.staged #stage { pointer-events: auto; }
 .sh-x:hover { opacity: 0.6; }
 .sh-x:focus-visible { outline: 1px solid currentColor; outline-offset: 3px; }
 .sh-body { position: relative; }
-/* the foot: the next entry, on paper */
-.sh-foot { display: block; padding: 30px 20px 64px; color: inherit; cursor: pointer; -webkit-user-drag: none; -webkit-tap-highlight-color: transparent; }
-.sh-foot .caps { display: block; color: var(--grey); }
-.sh-foot-t { display: block; margin: 14px 0 0 -0.045em; font-size: 64px; font-weight: 700; letter-spacing: -0.05em; line-height: 0.98; text-wrap: balance;
-  transition: color 0.2s ease; }
+/* the foot: the next entry, on paper, a glass tall, set as the stack sets
+   a shelf's own head (.xk-head in shelf-stack.css; its values copied, so
+   the name lands where it will stand) */
+.sh-foot { position: relative; display: block; min-height: calc(100% - 44px); padding: 30px 20px 64px; color: inherit; cursor: pointer;
+  -webkit-user-drag: none; -webkit-tap-highlight-color: transparent; }
+/* Next, and a rule beside it that fills as the next entry comes up */
+.sh-foot-k { position: absolute; left: 20px; right: 20px; top: 2px; display: flex; align-items: center; gap: 12px; color: var(--grey); }
+.sh-foot-k i { position: relative; flex: 1 1 auto; height: 1px; background: var(--hair); }
+.sh-foot-k i::after { content: ""; position: absolute; inset: 0; background: var(--ink); transform: scaleX(var(--fp, 0)); transform-origin: 0 50%; }
+.sh-foot-hl { display: flex; align-items: baseline; justify-content: space-between; gap: 24px; }
+.sh-foot-t { flex: 1 1 auto; min-width: 0; margin: 0 0 0 -0.045em; font-size: 64px; font-weight: 700; letter-spacing: -0.05em; line-height: 0.98; transition: color 0.2s ease; }
 .sh-foot-t.num { font-variant-numeric: tabular-nums; }
+.sh-foot-n { flex: none; color: var(--grey); white-space: nowrap; }
+.sh-foot-n b { margin-left: 0.5em; font-weight: 600; color: var(--ink); font-variant-numeric: tabular-nums; }
+.sh-foot-l { display: block; margin: 18px 0 0; color: var(--ink); }
+.sh-foot-s { display: block; max-width: 31em; margin: 16px 0 0; font-size: 19px; font-weight: 500; letter-spacing: -0.012em; line-height: 1.3; color: var(--grey); text-wrap: pretty; }
+.sh-foot-l + .sh-foot-s { margin-top: 5px; }
 .sh-foot:hover .sh-foot-t { color: var(--grey); }
 .sh-foot:focus-visible { outline: 1px solid var(--ink); outline-offset: -6px; }
 
@@ -428,7 +439,9 @@ html.stack .roomc { border-left: 0; }
 html.stack .sh-bar { gap: 14px; padding: 27px 16px 0; }
 html.stack .sh-sw { gap: 12px; }
 html.stack .sh-foot { padding: 24px 16px 48px; }
+html.stack .sh-foot-k { left: 16px; right: 16px; }
 html.stack .sh-foot-t { font-size: 40px; letter-spacing: -0.045em; }
+html.stack .sh-foot-s { font-size: 16px; margin-top: 12px; }
 
 /* D on a phone: one column that reads down, the lines two abreast, Work
    one list, the runs full width */
