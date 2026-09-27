@@ -1,0 +1,39 @@
+/* ── A SHELF AS A STACK OF OPENERS (27 Sept 2026) ────────────────────
+   shelf-stack.js sets each study's opening picture across the stage, one
+   over the next, a strip of paper under each with its credit. The head
+   is the grid's, so the layouts share one voice. */
+.xk { position: relative; }
+.xk-head { padding: 30px 20px 30px; }
+.xk-hl { display: flex; align-items: baseline; justify-content: space-between; gap: 24px; }
+.xk-name { flex: 1 1 auto; min-width: 0; margin: 0 0 0 -0.045em; font-size: 64px; font-weight: 700; letter-spacing: -0.05em; line-height: 0.98; }
+.xk-name.num { font-variant-numeric: tabular-nums; }
+.xk-n { flex: none; color: var(--grey); white-space: nowrap; }
+.xk-n b { margin-left: 0.5em; font-weight: 600; color: var(--ink); font-variant-numeric: tabular-nums; }
+.xk-sent { max-width: 31em; margin: 16px 0 0; font-size: 19px; font-weight: 500; letter-spacing: -0.012em; line-height: 1.3; color: var(--grey); text-wrap: pretty; }
+.xk-lbl { margin: 18px 0 0; color: var(--ink); }
+.xk-lbl + .xk-sent { margin-top: 5px; }
+
+/* an opener: the picture across the stage, its credit on paper under it */
+.xk-it { margin: 0; cursor: pointer; }
+.xk-pic { position: relative; overflow: hidden; background: #e8e4e0; }
+.xk-pic.alpha { background: var(--cream); }
+.xk-pic img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transform: scale(1.001); transition: transform 1.1s var(--ease); }
+.xk-pic.alpha img { object-fit: contain; }
+.xk-pic img.hi { opacity: 0; transition: opacity 0.4s ease, transform 1.1s var(--ease); }
+.xk-pic.in img.hi { opacity: 1; }
+.xk-it:hover .xk-pic img { transform: scale(1.018); }
+.xk-it.narrow .xk-pic { margin: 0 20px; }
+.xk-cap { display: flex; align-items: baseline; gap: 12px; padding: 13px 20px 34px; font-size: 13px; font-weight: 600; letter-spacing: -0.012em; line-height: 1.3; }
+.xk-no { flex: none; font-size: 10px; font-weight: 600; letter-spacing: 0.08em; color: var(--grey); font-variant-numeric: tabular-nums; }
+.xk-t { transition: background-size 0.26s cubic-bezier(0.45, 0, 0.2, 1), color 0.18s ease 0.04s;
+  background-image: linear-gradient(var(--ink), var(--ink)); background-repeat: no-repeat; background-size: 0% 100%; background-position: 100% 0;
+  padding-inline: 0.2em; margin-inline: -0.2em; -webkit-box-decoration-break: clone; box-decoration-break: clone; }
+.xk-y { color: var(--grey); font-weight: 500; font-variant-numeric: tabular-nums; }
+.xk-d { margin-left: auto; text-align: right; color: var(--grey); font-weight: 500; }
+.xk-it.hit .xk-t { background-size: 100% 100%; background-position: 0 0; color: var(--paper); }
+.xk.ph .xk-head { padding: 24px 16px 24px; }
+.xk.ph .xk-name { font-size: 40px; letter-spacing: -0.045em; }
+.xk.ph .xk-sent { font-size: 16px; margin-top: 12px; }
+.xk.ph .xk-cap { flex-wrap: wrap; padding: 11px 16px 28px; }
+.xk.ph .xk-d { margin-left: 0; flex-basis: 100%; text-align: left; }
+@media (prefers-reduced-motion: reduce) { .xk-pic img, .xk-t { transition: none !important; } }

@@ -99,7 +99,19 @@ for (const s of Object.values(H.studies)) {
     const t384 = s.frames[0], full = t384.replace("@384", "");
     if (fs.existsSync(path.join(ROOT, "public", full))) lead = { src: full, t384, t768: s.r768 ? t384.replace("@384", "@768") : null, w: s.nat[0], h: s.nat[1] };
   }
-  studies.push({ k, h: s.h, t: s.t, s: s.s, y: s.y, tags: s.tags, fact: s.fact, rest: s.rest, palette: s.palette, fill: s.fill, ink: s.ink, lead });
+  /* the picture the study opens on: its hero section's (a carousel's first
+     slide), which is what sits at the top of the study's own page. The
+     Stack shelf sets these one over another (27 Sept, his "stacked the
+     heros ... pulled the big nice images from the top of each case study") */
+  let top = null;
+  const hs = study.sections.find((x) => x.type === "hero" || x.type === "hero-carousel");
+  if (hs) {
+    const slide = hs.slides && hs.slides[0];
+    const src = hs.image || hs.src || (slide && (slide.src || slide.image)) || null;
+    const d = src && imageDimensions[src];
+    if (d) top = { src, w: d[0], h: d[1], alt: clean(hs.alt || (slide && slide.alt) || ""), alpha: hasAlpha(path.join(ROOT, "public", src)), ...thumbs(src, k, s.h, d[0]) };
+  }
+  studies.push({ k, h: s.h, t: s.t, s: s.s, y: s.y, tags: s.tags, fact: s.fact, rest: s.rest, palette: s.palette, fill: s.fill, ink: s.ink, lead, top });
 
   /* every picture it names, once, with the first words written for it */
   const seen = new Map();

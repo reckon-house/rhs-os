@@ -1215,8 +1215,13 @@
     layer.appendChild(main); layer.appendChild(cap); FOCUS.appendChild(layer);
 
     /* a line no longer fills the open half with its colour (27 Sept): its
-       studies and its name sit on paper, in ink, like everything else */
-    FIELD.classList.remove("on");
+       studies and its name sit on paper, in ink, like everything else.
+       At rest the half is black and his statement is set light on it (27
+       Sept, his "let's try making this black with lighter text"): the
+       field rises under it, and falls away when anything is hovered */
+    const dark = it.t === "rest" && !phone() && !document.body.classList.contains("staged");
+    if (dark) { FIELD.style.setProperty("--fc", "var(--ink)"); FIELD.classList.add("on"); layer.classList.add("dark"); }
+    else FIELD.classList.remove("on");
 
     /* the caption first, so the thing itself gets whatever height is left.
        A cluster of one study names it here; a cluster of several names
@@ -1451,22 +1456,27 @@
      ════════════════════════════════════════════════════════════════════ */
   const HEAD = 44; /* the running head: paper, on the index's top line */
   const SHELVES = (window.XREF_SHELVES = window.XREF_SHELVES || {});
-  const SHELF_ORDER = ["grid", "spread", "sheet", "reel"];
+  /* Stack first and the default since 27 Sept (his "instead of grids
+     what if we stacked the heros"); the grid stays one click away */
+  const SHELF_ORDER = ["stack", "grid", "spread", "sheet", "reel"];
+  const SHELF_DEF = "stack";
   const shelfIds = () => Object.keys(SHELVES).filter((id) => SHELVES[id] && typeof SHELVES[id].render === "function")
     .sort((a, b) => (SHELF_ORDER.indexOf(a) + 1 || 99) - (SHELF_ORDER.indexOf(b) + 1 || 99));
-  const SHELF_LS = "crossref2.shelf";
+  /* a new key when the default changed, so a choice remembered from
+     before (the grid, mostly) does not hide the new default */
+  const SHELF_LS = "crossref2.shelf.2";
   let shelfPref = (() => {
     const q = new URLSearchParams(location.search).get("shelf");
     if (q) return q.toLowerCase();
     try { return localStorage.getItem(SHELF_LS) || ""; } catch (e) { return ""; }
   })();
-  const layoutId = () => { const ids = shelfIds(); return ids.includes(shelfPref) ? shelfPref : ids.includes("grid") ? "grid" : ids[0] || null; };
+  const layoutId = () => { const ids = shelfIds(); return ids.includes(shelfPref) ? shelfPref : ids.includes(SHELF_DEF) ? SHELF_DEF : ids.includes("grid") ? "grid" : ids[0] || null; };
   /* a choice remembered from an earlier visit goes into the address, so a
      link copied now opens on it. One asked for by the address and not
      loaded is left there for when it is */
   const keepShelfParam = () => {
     const id = layoutId(), u = new URL(location.href);
-    if (!id || u.searchParams.has("shelf") || id === "grid") return;
+    if (!id || u.searchParams.has("shelf") || id === SHELF_DEF) return;
     u.searchParams.set("shelf", id);
     history.replaceState(history.state, "", u.pathname + u.search + u.hash);
   };
