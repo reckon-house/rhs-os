@@ -382,8 +382,10 @@
     if (o.keep) { const k = S.units.find((u) => u.contains(o.keep)); if (k) [...k.children].filter((c) => !c.contains(o.keep)).forEach((c) => c.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 360, delay: (o.delay || 0) + 280, easing: "ease", fill: "backwards" })); }
     us.forEach((u, i) => {
       const pic = u.classList.contains("xs-fig");
-      u._an = u.animate(pic ? [{ opacity: 0, clipPath: "inset(0 0 100% 0)" }, { opacity: 1, clipPath: "inset(0 0 0 0)" }] : [{ opacity: 0, transform: "translateY(12px)" }, { opacity: 1, transform: "none" }],
-        { duration: pic ? 620 : 520, delay: (o.delay || 0) + (pic ? 120 : 40) + i * 55, easing: EASE, fill: "backwards" });
+      /* the page's motion family, when it has one for a shelf */
+      const fx = window.XREF_IN && window.XREF_IN(!pic);
+      u._an = u.animate(fx ? fx.kf : pic ? [{ opacity: 0, clipPath: "inset(0 0 100% 0)" }, { opacity: 1, clipPath: "inset(0 0 0 0)" }] : [{ opacity: 0, transform: "translateY(12px)" }, { opacity: 1, transform: "none" }],
+        { duration: fx ? fx.dur : pic ? 620 : 520, delay: (o.delay || 0) + (pic ? 120 : 40) + i * 55 * (fx && fx.step || 1), easing: fx ? fx.ease : EASE, fill: "backwards" });
     });
   };
   /* out: the rest go to paper; the one flying keeps its place, empty */

@@ -171,6 +171,23 @@
      The finished state is the resting CSS: only a room with motion
      allowed (.mo) is given start states, and reduced motion gets none. */
   const MOTION = () => !matchMedia("(prefers-reduced-motion: reduce)").matches;
+  /* ── six ways in (27 Sept, his "maybe we take a moment and put together
+     5-6 different animations options for the text, images, etc. since
+     we're more of an editorial interface interactive TOC - what type of
+     animations would work better - fit more style wise?"). The same
+     reveals, the same moments; what a block does when its turn comes is
+     the family's, chosen on the page as html[data-motion]:
+     - rise: the live site's (above), words out of their masks;
+     - set: a line is set left to right as if typed, a picture opens from a
+       slit like a shutter, a rule draws at a typesetter's pace;
+     - wipe: the index's own mark, a band sweeping over a line and off it
+       with the words under it (ink on display type, the grey cell on
+       text), a picture uncovered from under an ink panel;
+     - focus: out of a blur, a picture settling from a little closer;
+     - cut: hard cuts a line at a time in Faux Reel's rhythm, a picture
+       after a blink of ink;
+     - scrub: no clock at all, everything as far along as the scroll is */
+  const FAM = () => document.documentElement.dataset.motion || "rise";
   const RV_KINDS = [
     ["mask", ".sp-title, .sp-stand, .sp-h, .sp-deck, .sp-pq, .sp-closing p, .sp-fn, .sp-next-t, .sp-dur, .sp-col, .sp-card h3"],
     ["lines", ".sp-p"],
@@ -363,7 +380,7 @@
     const root = el("article", "sp sp-enter"); root.dataset.k = k;
     container.appendChild(root);
     try { container.scrollTop = 0; } catch (e) { /* a container that cannot scroll */ }
-    const room = { el: root, cover: null, scroller: container, ids: [], destroy, find, mark, scrollTo, play, shown, lenis: null };
+    const room = { el: root, cover: null, scroller: container, ids: [], destroy, find, mark, scrollTo, play, shown, replay, lenis: null };
     if (!M) return room;
 
     let io = null, ro = null, headIO = null, fontsT = 0, dead = false;
@@ -425,8 +442,10 @@
       if (!e._rv || e._rvd) return; e._rvd = true;
       if (rio) rio.unobserve(e);
       const k = e._rv;
-      if (instant) { e.classList.add("rv-go", "rv-now"); return; }
+      const fam = FAM();
+      if (instant || fam === "scrub") { e.classList.add("rv-go", "rv-now"); return; }
       const base = slot();
+      if ((k === "mask" || k === "lines") && fam !== "rise") { splitFam(e, k, base, fam); return; }
       if (k === "mask" || k === "lines") {
         const words = splitWords(e); e.classList.add("rv-split");
         /* a line is the words that share a top; a display block also
@@ -448,12 +467,80 @@
       e.style.setProperty("--d", base + "ms");
       requestAnimationFrame(() => requestAnimationFrame(() => e.classList.add("rv-go")));
     };
+    /* the other families' text: words grouped into their lines, each line
+       given its turn, a band laid over a line where the family wipes or
+       blinks. The words give themselves back once it has played */
+    const band = (e, ln, x0, lw, delay, kind, dur) => {
+      const h = Math.max(...ln.words.map((w) => w.offsetHeight)) || 16;
+      const b = el("i", "rvband rvb-" + kind);
+      b.style.cssText = "left:" + (x0 - 3) + "px;top:" + ln.top + "px;width:" + (lw + 6) + "px;height:" + h + "px";
+      b.style.setProperty("--d", Math.max(0, Math.round(delay)) + "ms");
+      if (dur) b.style.setProperty("--bd", dur + "ms");
+      e.appendChild(b);
+    };
+    const splitFam = (e, k, base, fam) => {
+      if ((fam === "wipe" || fam === "cut") && getComputedStyle(e).position === "static") { e.style.position = "relative"; e._rvpos = true; }
+      const words = splitWords(e); e.classList.add("rv-split");
+      const lines = []; let cur = null;
+      words.forEach((w) => { const t = w.offsetTop; if (!cur || Math.abs(t - cur.top) > 3) { cur = { top: t, words: [] }; lines.push(cur); } cur.words.push(w); });
+      /* the band is the words' own colour: solid over display type, a tint
+         of it over text, so a field's white type gets a white band */
+      const disp = k === "mask";
+      let end = 0;
+      lines.forEach((ln, li) => {
+        const x0 = Math.min(...ln.words.map((w) => w.offsetLeft));
+        const x1 = Math.max(...ln.words.map((w) => w.offsetLeft + w.offsetWidth));
+        const lw = Math.max(1, x1 - x0);
+        if (fam === "set") {
+          const LD = disp ? 520 : 400, start = base + li * (disp ? 110 : 85);
+          ln.words.forEach((w) => {
+            const a = (w.offsetLeft - x0) / lw, b = (w.offsetLeft + w.offsetWidth - x0) / lw;
+            w.style.setProperty("--d", Math.round(start + a * LD) + "ms");
+            w.style.setProperty("--wd", Math.max(30, Math.round((b - a) * LD)) + "ms");
+          });
+          end = Math.max(end, start + LD);
+        } else if (fam === "focus") {
+          const start = base + li * (disp ? 70 : 55);
+          ln.words.forEach((w, wi) => w.style.setProperty("--d", (start + wi * (disp ? 22 : 6)) + "ms"));
+          end = Math.max(end, start + 1100);
+        } else if (fam === "cut") {
+          const start = base + li * (disp ? 110 : 75);
+          if (disp) band(e, ln, x0, lw, start, "ink", 0);
+          ln.words.forEach((w) => w.style.setProperty("--d", (start + (disp ? 90 : 0)) + "ms"));
+          end = Math.max(end, start + 120);
+        } else {
+          const DUR = disp ? 760 : 600, start = base + li * (disp ? 95 : 70);
+          band(e, ln, x0, lw, start, disp ? "ink" : "grey", DUR);
+          ln.words.forEach((w) => w.style.setProperty("--d", Math.round(start + DUR * 0.5) + "ms"));
+          end = Math.max(end, start + DUR);
+        }
+      });
+      requestAnimationFrame(() => requestAnimationFrame(() => e.classList.add("rv-go")));
+      setTimeout(() => {
+        if (dead || !e.isConnected) return;
+        e.querySelectorAll(":scope > .rvband").forEach((b) => b.remove());
+        if (e._rvpos) { e.style.position = ""; e._rvpos = false; }
+        if (k === "lines") { unsplit(e); e.classList.remove("rv-split"); }
+      }, end + 900);
+    };
     const armReveals = (showAbove) => {
       if (rio) rio.disconnect(); rio = null;
       if (!mo) return;
       const els = [...root.querySelectorAll(RVSEL)];
       const vb = container.getBoundingClientRect().bottom;
       els.forEach((e) => { e._rv = kindOf(e); e._rvd = false; e.classList.add("rv", "rv-" + e._rv); });
+      /* scrub has no turns: every block rests finished and the scroll
+         carries it (the driver below) */
+      if (FAM() === "scrub") {
+        els.forEach((e) => {
+          go(e, true);
+          if (e._rv !== "mask" || e.querySelector(".rvw")) return;
+          const words = splitWords(e); e.classList.add("rv-split");
+          let li = -1, top = -1e9;
+          words.forEach((w) => { const t = w.offsetTop; if (Math.abs(t - top) > 3) { li++; top = t; } w.style.setProperty("--li", li); });
+        });
+        scrubList(); scrub(); return;
+      }
       /* after a rebuild, what the reader has already passed stays put */
       if (showAbove) els.forEach((e) => { if (e.getBoundingClientRect().top < vb) go(e, true); });
       if (!("IntersectionObserver" in window)) { els.forEach((e) => go(e, true)); return; }
@@ -498,6 +585,40 @@
     };
     const onScroll = () => { if (!parT) parT = requestAnimationFrame(drift); };
     if (mo) container.addEventListener("scroll", onScroll, { passive: true });
+
+    /* scrub: how far each block has come up the glass, as --p, from its
+       top at the foot of the view (0) to four tenths of the way up (1).
+       Measured in layout, so the transforms it drives never feed back */
+    let scT = 0, scEls = [];
+    const layTop = (e) => { let y = 0, n = e; while (n && n !== root) { y += n.offsetTop; n = n.offsetParent; } return y; };
+    function scrubList() {
+      if (FAM() !== "scrub" || !mo) { scEls = []; return; }
+      const at = root.getBoundingClientRect().top - container.getBoundingClientRect().top + container.scrollTop;
+      scEls = [...root.querySelectorAll(".rv")].map((e) => ({ e, top: at + layTop(e), h: e.offsetHeight, p: null }));
+    }
+    function scrub() {
+      scT = 0; if (dead || !scEls.length) return;
+      const st = container.scrollTop, vh = container.clientHeight || 800, vb = st + vh;
+      scEls.forEach((x) => {
+        if (x.top > vb + 80 || x.top + x.h < st - 80) return;
+        const p = Math.max(0, Math.min(1, (vb - x.top) / (vh * 0.42)));
+        if (x.p == null || Math.abs(p - x.p) > 0.004) { x.p = p; x.e.style.setProperty("--p", p.toFixed(3)); }
+      });
+    }
+    const onScrub = () => { if (!scT) scT = requestAnimationFrame(scrub); };
+    if (mo) container.addEventListener("scroll", onScrub, { passive: true });
+    /* the family changed on the page: what has played plays again */
+    function replay() {
+      if (dead || !mo) return;
+      root.querySelectorAll(".rvband").forEach((b) => b.remove());
+      root.querySelectorAll(".rv").forEach((e) => {
+        if (e._still) return;
+        e.classList.remove("rv-go", "rv-now", "rv-split"); e._rvd = false; e.style.removeProperty("--p");
+        if (e._rvpos) { e.style.position = ""; e._rvpos = false; }
+        if (e.querySelector(".rvw")) unsplit(e);
+      });
+      armReveals(false);
+    }
 
     /* the running head (27 Sept, the editorial pass): once the title has
        gone it names the section the reader is in, numbered as the index
@@ -971,6 +1092,7 @@
 
       fitType(W);
       if (mo) drift();
+      if (mo) { scrubList(); scrub(); }
     };
 
     /* the largest size at which a block of type keeps to a number of lines */
@@ -1089,6 +1211,7 @@
       if (io) io.disconnect(); if (ro) ro.disconnect(); if (headIO) headIO.disconnect(); if (rio) rio.disconnect();
       if (lenis) { cancelAnimationFrame(lraf); lenis.destroy(); lenis = null; }
       container.removeEventListener("scroll", onScroll); cancelAnimationFrame(parT); clearTimeout(holdT);
+      container.removeEventListener("scroll", onScrub); cancelAnimationFrame(scT);
       container.removeEventListener("scroll", onTrack); cancelAnimationFrame(trT);
       clearTimeout(fontsT); cancelAnimationFrame(rzT);
       root.remove();

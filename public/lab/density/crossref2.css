@@ -868,3 +868,5 @@ sizzle-reel.live { position: absolute !important; inset: 0; width: 100% !importa
 html.stack .sh-foot-hl:has(.stand) { flex-wrap: wrap; row-gap: 14px; }
 html.stack .sh-foot-t.stand { flex-basis: 100%; }
 .sh-foot-t.stand .g { color: var(--grey); }
+/* the fourth switch row, Motion, sits under Texture */
+.mosw { flex-basis: 100%; justify-content: flex-end; }

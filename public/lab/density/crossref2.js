@@ -905,6 +905,8 @@
     if (IX === "e") top.appendChild(el("div", "ixsw mksw caps", '<span class="ixl">Mark</span>' + MKS.map((x) => '<a href="?mark=' + x + '" data-mk="' + x + '"' + (x === MK ? ' class="on" aria-current="true"' : "") + ">" + x + "</a>").join("")));
     /* and its third: the texture, one to a section */
     if (IX === "e") top.appendChild(el("div", "ixsw txsw caps", '<span class="ixl">Texture</span>' + TXS.map((x) => '<a href="?texture=' + x + '" data-tx="' + x + '"' + (x === TX ? ' class="on" aria-current="true"' : "") + ">" + x + "</a>").join("")));
+    /* and its fourth: how a room and a shelf come in (MOTS below) */
+    if (IX === "e") top.appendChild(el("div", "ixsw mosw caps", '<span class="ixl">Motion</span>' + MOTS.map((x) => '<a href="?motion=' + x + '" data-mo="' + x + '"' + (x === MOT ? ' class="on" aria-current="true"' : "") + ">" + x + "</a>").join("")));
     IDX.appendChild(top);
     LAYOUT[IX]().filter(Boolean).forEach((n) => IDX.appendChild(n));
     /* in D the mark and the switch head the first column only, as the
@@ -1202,6 +1204,50 @@
     history.replaceState(history.state, "", u.pathname + u.search + u.hash);
     IDX.querySelectorAll(".txsw a").forEach((a) => { const on = a.dataset.tx === x; a.classList.toggle("on", on); if (on) a.setAttribute("aria-current", "true"); else a.removeAttribute("aria-current"); });
     wireTextures();
+  };
+  /* ── MOTION (27 Sept, his "maybe before we do we do some animation
+     explorations? ... put together 5-6 different animations options for
+     the text, images, etc. since we're more of an editorial interface
+     interactive TOC - what type of animations would work better - fit
+     more style wise?"). Six families on one switch, the room's in
+     study-panel.js (above FAM) and css, a shelf's pictures here in
+     XREF_IN. Rise, the live site's, stays the default; ?motion= or the
+     row under Texture changes it, kept in localStorage. Choosing one,
+     or the one already chosen, plays what is on screen again ── */
+  const MOTS = ["rise", "set", "wipe", "focus", "cut", "scrub"], MOT_LS = "crossref2.motion";
+  const QMO = (new URLSearchParams(location.search).get("motion") || "").toLowerCase();
+  const lsMo = () => { try { return localStorage.getItem(MOT_LS); } catch (e) { return null; } };
+  let MOT = MOTS.includes(QMO) ? QMO : MOTS.includes(lsMo()) ? lsMo() : "rise";
+  HTML.dataset.motion = MOT;
+  const setMotion = (x) => {
+    if (!MOTS.includes(x)) return;
+    if (x !== MOT) {
+      MOT = x; HTML.dataset.motion = x;
+      try { localStorage.setItem(MOT_LS, x); } catch (e) { /* private window */ }
+      const u = new URL(location.href); u.searchParams.set("motion", x);
+      history.replaceState(history.state, "", u.pathname + u.search + u.hash);
+      IDX.querySelectorAll(".mosw a").forEach((a) => { const on = a.dataset.mo === x; a.classList.toggle("on", on); if (on) a.setAttribute("aria-current", "true"); else a.removeAttribute("aria-current"); });
+    }
+    if (VIEW.v === "study" && RM && RM.room && RM.room.replay) RM.room.replay();
+    else if (SH && SH.visible) shelfEnter(SH, {});
+  };
+  /* a shelf's opener and its head, in the family's terms; null keeps the
+     layout's own (rise, and scrub, which has no clock to give a shelf) */
+  window.XREF_IN = (words) => {
+    const IN = "cubic-bezier(0.45, 0, 0.2, 1)";
+    switch (MOT) {
+      case "set": return words
+        ? { kf: [{ clipPath: "inset(-20% 100% -20% 0)" }, { clipPath: "inset(-20% 0 -20% 0)" }], dur: 560, ease: "linear" }
+        : { kf: [{ clipPath: "inset(50% 0 50% 0)" }, { clipPath: "inset(0 0 0 0)" }], dur: 800, ease: "cubic-bezier(0.7, 0, 0.15, 1)" };
+      case "wipe": return words
+        ? { kf: [{ clipPath: "inset(-20% 100% -20% 0)" }, { clipPath: "inset(-20% 0 -20% 0)" }], dur: 420, ease: IN }
+        : { kf: [{ clipPath: "inset(0 100% 0 0)" }, { clipPath: "inset(0 0 0 0)" }], dur: 640, ease: IN };
+      case "focus": return words
+        ? { kf: [{ opacity: 0, filter: "blur(6px)" }, { opacity: 1, filter: "blur(0px)" }], dur: 800, ease: "ease-out" }
+        : { kf: [{ opacity: 0, filter: "blur(14px)", transform: "scale(1.04)" }, { opacity: 1, filter: "blur(0px)", transform: "none" }], dur: 1000, ease: "cubic-bezier(0.16, 1, 0.3, 1)" };
+      case "cut": return { kf: [{ opacity: 0 }, { opacity: 1 }], dur: 90, ease: "steps(1, end)", step: 1.6 };
+      default: return null;
+    }
   };
   const meets = (a, b) => { for (const k of a) if (b.has(k)) return true; return false; };
   let lit = [], painted = [null, null];
@@ -2825,7 +2871,7 @@
       return;
     }
     const sw = ev.target.closest(".ixsw a");
-    if (sw && !(ev.metaKey || ev.ctrlKey || ev.shiftKey || ev.button)) { ev.preventDefault(); if (sw.dataset.mk) setMark(sw.dataset.mk); else if (sw.dataset.tx) setTexture(sw.dataset.tx); else setIndex(sw.dataset.ix); return; }
+    if (sw && !(ev.metaKey || ev.ctrlKey || ev.shiftKey || ev.button)) { ev.preventDefault(); if (sw.dataset.mk) setMark(sw.dataset.mk); else if (sw.dataset.tx) setTexture(sw.dataset.tx); else if (sw.dataset.mo) setMotion(sw.dataset.mo); else setIndex(sw.dataset.ix); return; }
     const o = entryOf(ev.target); if (!o) return;
     if (ev.metaKey || ev.ctrlKey || ev.shiftKey || ev.button) return; /* a new tab is still a new tab */
     ev.preventDefault();

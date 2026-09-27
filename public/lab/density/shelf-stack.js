@@ -212,8 +212,10 @@
     const box = S.ctx.scroller.getBoundingClientRect();
     S.units.filter((u) => !(o.keep && u.contains(o.keep)) && rectIn(u.getBoundingClientRect(), box)).forEach((u, i) => {
       const words = u.classList.contains("xk-head");
-      u._an = u.animate(words ? [{ opacity: 0, transform: "translateY(14px)" }, { opacity: 1, transform: "none" }] : [{ clipPath: "inset(0 0 100% 0)" }, { clipPath: "inset(0 0 0 0)" }],
-        { duration: words ? 520 : 700, delay: (o.delay || 0) + (words ? 120 : 80) + i * 70, easing: EASE, fill: "backwards" });
+      /* the page's motion family, when it has one for a shelf */
+      const fx = window.XREF_IN && window.XREF_IN(words);
+      u._an = u.animate(fx ? fx.kf : words ? [{ opacity: 0, transform: "translateY(14px)" }, { opacity: 1, transform: "none" }] : [{ clipPath: "inset(0 0 100% 0)" }, { clipPath: "inset(0 0 0 0)" }],
+        { duration: fx ? fx.dur : words ? 520 : 700, delay: (o.delay || 0) + (words ? 120 : 80) + i * 70 * (fx && fx.step || 1), easing: fx ? fx.ease : EASE, fill: "backwards" });
     });
   };
   const leave = (S, keep) => {

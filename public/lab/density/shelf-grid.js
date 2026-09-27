@@ -504,8 +504,10 @@
       .map((u) => [u, u.getBoundingClientRect()]).sort((a, b) => a[1].top - b[1].top || a[1].left - b[1].left).map((x) => x[0]);
     us.forEach((u, i) => {
       const words = u.classList.contains("xg-head");
-      u._an = u.animate(words ? [{ opacity: 0, transform: "translateY(14px)" }, { opacity: 1, transform: "none" }] : [{ clipPath: "inset(100% 0 0 0)" }, { clipPath: "inset(0 0 0 0)" }],
-        { duration: words ? 520 : 640, delay: (o.delay || 0) + (words ? 120 : 60) + i * 45, easing: EASE, fill: "backwards" });
+      /* the page's motion family, when it has one for a shelf */
+      const fx = window.XREF_IN && window.XREF_IN(words);
+      u._an = u.animate(fx ? fx.kf : words ? [{ opacity: 0, transform: "translateY(14px)" }, { opacity: 1, transform: "none" }] : [{ clipPath: "inset(100% 0 0 0)" }, { clipPath: "inset(0 0 0 0)" }],
+        { duration: fx ? fx.dur : words ? 520 : 640, delay: (o.delay || 0) + (words ? 120 : 60) + i * 45 * (fx && fx.step || 1), easing: fx ? fx.ease : EASE, fill: "backwards" });
     });
   };
   /* out: the others go to paper; the one flying keeps its place, empty */
