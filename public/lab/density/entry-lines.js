@@ -188,8 +188,16 @@ window.ENTRY_LINES = {
      "the full trainer roster and the program menu"; "the part I find the
      most fun: an MCP server with eleven tools" */
   "fig/six-trainers": "Dallas Sport Collective is six trainers in North Texas, out of Celina and McKinney. I built its marketing site, its booking platform and an MCP server, so athletes can book from their AI.",
-  "fig/eleven-programs": "Dallas Sport Collective runs eleven programs, from NFL Combine prep to prenatal fitness. The site lays out the full program menu next to the trainer roster.",
-  "fig/seven-days": "Dallas Sport Collective is open seven days a week, out of Celina and McKinney, with a Frisco headquarters on the way. Athletes can book from the site or from the AI they already use.",
+  /* a figure tied back to what the work solved (27 Sept, his "for
+     'figures' - to make them really make sense can we relate them back to
+     what the project solved or did"). Sources: "the schedule underneath it
+     all was a pile of texts, handwritten notes, emails, and a Google Sheet
+     nobody fully trusted"; "one deterministic engine that checks trainer
+     availability, double-bookings, floor capacity"; "The owner side is
+     built for one person on the gym floor"; "approving each request with
+     one tap" */
+  "fig/eleven-programs": "Dallas Sport Collective runs eleven programs, from NFL Combine prep to prenatal fitness, and the schedule for all of them lived in texts, notes and a spreadsheet. I built the booking platform they run on now, where one engine checks every trainer's time and the floor before anything gets booked.",
+  "fig/seven-days": "Dallas Sport Collective is open seven days a week across two locations, and one person on the gym floor runs the schedule. Athletes book from the app or from the AI they already use, and the owner approves each request with one tap.",
   "fig/eleven-tools": "Dallas Sport Collective's MCP server has eleven tools, and it's the part of the project I find the most fun. It lets an athlete ask the AI they already use to book a session.",
   /* A.R.C. */
   "fig/300-000-items": "The average American household holds around 300,000 items. Most homeowners have never added up what they're worth, and A.R.C. does that from the camera.",
@@ -201,7 +209,10 @@ window.ENTRY_LINES = {
   /* "Done properly for an average home, that takes 40+ hours. Hardly anyone
      finishes."; "So a whole house becomes a room-by-room scan that takes minutes." */
   "fig/40-hours": "A proper home inventory by hand takes 40+ hours for an average home, and hardly anyone finishes. A.R.C. turns it into a scan, room by room.",
-  "fig/thirteen-categories": "A.R.C. sorts everything it finds into thirteen categories, from furniture and artwork to jewelry and documents. It does that in the same pass that identifies and values each item.",
+  /* "The categories are set up the way insurance claims are."; "Each one
+     maps to a standard personal property claim classification."; "none of
+     it asks you to know any insurance terminology" */
+  "fig/thirteen-categories": "A.R.C. sorts everything it finds into thirteen categories, from furniture and artwork to jewelry and documents. They match the standard classes of a personal property claim, so the list is ready to use without anyone learning insurance terms.",
   "fig/five-years": "Five years after a policy is set, a home might be $50,000 short, and there's no way to know until something goes wrong. A.R.C. shows that gap as a dollar amount.",
   /* "You set the coverage amount when you buy the policy and it tends to
      sit there. Meanwhile the stuff inside the house keeps changing" */
