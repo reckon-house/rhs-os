@@ -428,7 +428,12 @@
      ════════════════════════════════════════════════════════════════════ */
   const FEAT = new Set((DATA.lines || []).map((l) => l.lead).filter((k) => D.study(k)));
   /* the figures set large: the biggest claims, from four studies */
-  const BIGFIG = ["$3M", "2,000+ stores", "$49,630", "95%"];
+  /* the four figures set large, AI first (27 Sept, his "make the four big
+     figures AI first too"): the marketing brain's scale, the deck that
+     went from half a day to three minutes, the home A.R.C. documents in
+     about thirty, then Nordstrom's $3M as the one proof from before the
+     AI work. The rest run on in the Figures run */
+  const BIGFIG = ["2,000+ stores", "three minutes", "~30 minutes", "$3M"];
   /* the homepage lines (entry-lines.js): one line per entry, written for
      this page, used in place of a sentence pulled from a study */
   const LINES = window.ENTRY_LINES || {};
