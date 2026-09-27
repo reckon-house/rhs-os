@@ -118,8 +118,35 @@
     return out.sort((a, b) => b.score - a.score);
   };
 
+  /* ── the reference system (27 Sept 2026, his "yes, try the locators and
+     see also", with a catalogue's picture index beside it: "ABB. 6
+     S. 21"). Every study has a number, oldest first, so a new study
+     takes the next one and nothing renumbers. A place inside a study is
+     its number and the section it sits in, 26.03, the way a catalogue
+     gives a figure and its page. A section's number is the study's own
+     ("SECTION 03: ..."); whatever comes before the first is 01 ── */
+  const NUM = new Map();
+  DATA.studies.map((s, i) => [s, i]).sort((a, b) => (a[0].y || 0) - (b[0].y || 0) || a[1] - b[1])
+    .forEach(([s], i) => NUM.set(s.k, String(i + 1).padStart(2, "0")));
+  const SEC = new Map();
+  (() => {
+    let k = null, cur = "01", count = 1;
+    FR.forEach((f) => {
+      if (f.k !== k) { k = f.k; cur = "01"; count = 1; }
+      if (f.kind === "line" && f.weight === "head" && f.where === "section-header") {
+        count++;
+        const m = /^\s*section\s+(\d+)/i.exec(String(f.label || ""));
+        cur = m ? m[1].padStart(2, "0") : String(count).padStart(2, "0");
+      }
+      SEC.set(f.id, cur);
+    });
+  })();
+  const num = (k) => NUM.get(k) || "";
+  const secOf = (f) => (f && SEC.get(f.id)) || "01";
+  const loc = (f) => (f ? num(f.k) + "." + secOf(f) : "");
+
   window.D = {
-    data: DATA, frags: FR, studies: DATA.studies, study: (k) => STUDY[k], lines: LINE,
+    data: DATA, frags: FR, studies: DATA.studies, study: (k) => STUDY[k], lines: LINE, num, secOf, loc,
     byKind: (kind) => FR.filter((f) => f.kind === kind),
     byStudy: (k) => FR.filter((f) => f.k === k),
     title, year, href, words, search, tokens,

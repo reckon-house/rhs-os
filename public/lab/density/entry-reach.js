@@ -103,4 +103,35 @@
     "tool/illustrator": ["nordstrom-framework", "loved-by-nordstrom", "arc"],
     "tool/indesign": ["j-christianson", "black-white-type"],
   };
+
+  /* ── SEE ALSO (27 Sept, his "yes, try the locators and see also"). An
+     index's cross-references: an entry names the ones worth reading
+     next. These are chosen, AI first where the work is; every other
+     entry is given the ones that share the most of its studies (the
+     page computes those), up to four in all. ── */
+  window.ENTRY_SEE = {
+    "tool/claude-code": ["cap/engineering-ai-assisted", "tool/claude", "cap/full-stack-engineering"],
+    "cap/engineering-ai-assisted": ["tool/claude-code", "cap/ai-integration", "cap/full-stack-engineering"],
+    "tool/claude": ["tool/claude-code", "cap/ai-strategy", "tool/gemini"],
+    "tool/gemini": ["tool/claude", "tool/supabase-pgvector", "tool/perplexity"],
+    "tool/openai": ["tool/openai-vision-api", "tool/perceptron-mk1", "tool/claude"],
+    "tool/openai-vision-api": ["tool/perceptron-mk1", "tool/openai", "cap/ai-integration"],
+    "tool/perceptron-mk1": ["tool/openai-vision-api", "cap/ai-integration", "fig/30-minutes"],
+    "tool/perplexity": ["fig/two-week", "tool/gemini", "tool/claude"],
+    "tool/supabase-pgvector": ["tool/supabase", "tool/gemini"],
+    "tool/supabase": ["tool/supabase-pgvector", "tool/vercel", "tool/python"],
+    "tool/model-context-protocol": ["tool/claude-chatgpt", "cap/ai-integration", "tool/oauth-2-0"],
+    "tool/claude-chatgpt": ["tool/model-context-protocol", "cap/ai-integration"],
+    "cap/ai-strategy": ["cap/ai-integration", "tool/claude", "cap/product-management"],
+    "cap/ai-integration": ["cap/ai-strategy", "tool/model-context-protocol", "tool/perceptron-mk1"],
+    "fig/2-000-stores": ["cap/ai-strategy", "fig/three-minutes", "fig/four-months"],
+    "fig/three-minutes": ["fig/four-channels", "fig/two-week", "cap/ai-strategy"],
+    "fig/four-channels": ["fig/three-minutes", "cap/copywriting"],
+    "fig/two-week": ["tool/perplexity", "fig/three-minutes"],
+    "fig/four-months": ["cap/ai-strategy", "tool/claude-code", "fig/2-000-stores"],
+    "fig/30-minutes": ["fig/8-12-hours", "tool/perceptron-mk1", "tool/openai-vision-api"],
+    "fig/8-12-hours": ["fig/30-minutes", "fig/40-hours"],
+    "cap/interior-design": ["cap/finish-selection", "cap/material-selection", "tool/sketchup"],
+    "cap/finish-selection": ["cap/finish-coordination", "cap/material-selection", "cap/fixture-selection"],
+  };
 })();

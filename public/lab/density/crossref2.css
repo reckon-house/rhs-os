@@ -520,7 +520,13 @@ html:not(.stack)[data-ix="e"] #idx { left: calc(var(--m) - 14px); width: calc(va
 [data-ix="e"] .e.ew .t { flex: 0 1 auto; }
 [data-ix="e"] .e.ew .ld { flex: 1 1 auto; min-width: 10px; height: 0; margin: 0 4px; border-bottom: 1px dotted rgba(0, 0, 0, 0.32); transform: translateY(-0.3em); }
 [data-ix="e"] .e.ew .y { flex: none; }
-[data-ix="e"] .e.ew .cr { margin: 1px 0 0; font-size: 9.5px; line-height: 1.3; }
+[data-ix="e"] .e.ew .cr { margin: 1px 0 0 2.1em; font-size: 9.5px; line-height: 1.3; }
+/* the reference system: a study's number, tabular, in the margin of its
+   row and at the end of a feature's line name */
+[data-ix="e"] .e .wn { flex: none; font-size: 9.5px; font-weight: 600; letter-spacing: 0.04em; color: var(--grey); font-variant-numeric: tabular-nums; }
+[data-ix="e"] .e.ew .wn { width: 2.1em; padding-top: 0.15em; align-self: first baseline; }
+[data-ix="e"] .e.ef .kk { display: flex; justify-content: space-between; align-items: baseline; }
+[data-ix="e"] .e.ef .kk .wn { color: var(--ink); }
 
 /* 03: the years large, a square for each study, so the column is a chart */
 [data-ix="e"] .e.ey { display: flex; align-items: baseline; gap: 9px; padding: 0 0 2px; }

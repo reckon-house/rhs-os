@@ -33,6 +33,19 @@
   padding-inline: 0.2em; margin-inline: -0.2em; -webkit-box-decoration-break: clone; box-decoration-break: clone; }
 .xk-y { color: var(--grey); font-weight: 500; font-variant-numeric: tabular-nums; }
 .xk-d { margin-left: auto; text-align: right; color: var(--grey); font-weight: 500; }
+/* the reference system: the study's number in ink, its sections after
+   the year as small links, the way a catalogue gives a figure a page */
+.xk-no { color: var(--ink); }
+.xk-locs { display: inline-flex; gap: 8px; }
+.xk-l { font-size: 11px; font-weight: 600; letter-spacing: 0.02em; color: var(--grey); font-variant-numeric: tabular-nums; border-bottom: 1px solid var(--hair); transition: color 0.2s ease, border-color 0.2s ease; }
+.xk-l:hover { color: var(--ink); border-bottom-color: var(--ink); }
+/* see also: the index's cross-references, under the entry's own line */
+.xk-see { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 10px; margin: 20px 0 0; font-size: 14px; font-weight: 600; letter-spacing: -0.012em; }
+.xk-sl { margin-right: 4px; color: var(--grey); }
+.xk-sd { color: var(--grey2, rgba(0, 0, 0, 0.3)); }
+.xk-see a { color: var(--ink); border-bottom: 1px solid var(--hair); transition: border-color 0.2s ease; }
+.xk-see a:hover { border-bottom-color: var(--ink); }
+.xk.ph .xk-see { font-size: 13px; }
 .xk-it.hit .xk-t { background-size: 100% 100%; background-position: 0 0; color: var(--paper); }
 .xk.ph .xk-head { padding: 24px 16px 24px; }
 .xk.ph .xk-name { font-size: 40px; letter-spacing: -0.045em; }

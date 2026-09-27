@@ -514,7 +514,7 @@
       if (now === curSec) return;
       curSec = now;
       const slot = root.querySelector(".sp-bar-s");
-      if (slot) slot.innerHTML = now && now._lab ? (now._lab.n ? "<b>" + esc(now._lab.n) + "</b>" : "") + esc(now._lab.name) : "";
+      if (slot) slot.innerHTML = now && now._lab ? (now._lab.n ? "<b>" + esc(now._lab.loc || now._lab.n) + "</b>" : "") + esc(now._lab.name) : "";
     };
     const onTrack = () => { if (!trT) trT = requestAnimationFrame(track); };
     container.addEventListener("scroll", onTrack, { passive: true });
@@ -588,7 +588,8 @@
 
       /* the kicker: the discipline, its year lighter, then its lines */
       const meta = el("div", "sp-meta");
-      meta.appendChild(el("div", "sp-kk", esc(s.s) + '<span class="y">' + esc(s.y) + "</span>"));
+      /* the study's number leads its kicker, as it leads its row in the index */
+      meta.appendChild(el("div", "sp-kk", (D.num ? '<span class="sp-no">' + esc(D.num(k)) + "</span>" : "") + esc(s.s) + '<span class="y">' + esc(s.y) + "</span>"));
       const lines = (D.data.lines || []).filter((l) => (s.tags || []).includes(l.tag));
       if (lines.length) meta.appendChild(el("div", "sp-lines", lines.map((l) => '<span class="sp-line"><i style="background:' + l.color + '"></i>' + esc(l.name) + "</span>").join("")));
 
@@ -623,7 +624,10 @@
         const se = el("section", "sp-sec");
         /* the label as the study writes it, in small grey caps, over the head */
         const lab = secLabel(sec.head.label); se._lab = lab;
-        se.appendChild(el("div", "sp-kick sp-caps", (lab.n ? "<b>" + esc(lab.n) + "</b>" : "") + "<span>" + esc(lab.name) + "</span>"));
+        /* the section's full place, study and section (26.03), the same
+           locator the index gives it (27 Sept) */
+        if (lab.n && D.num) lab.loc = D.num(k) + "." + lab.n;
+        se.appendChild(el("div", "sp-kick sp-caps", (lab.n ? "<b>" + esc(lab.loc || lab.n) + "</b>" : "") + "<span>" + esc(lab.name) + "</span>"));
         /* a head that is only the opening words of the sentence right under
            it (Faux Reel's "The reel up top is") would read twice; the
            sentence carries it, under the label (27 Sept review) */

@@ -614,7 +614,8 @@
   const boldIn = (t, s) => { const i = t.indexOf(s); return i < 0 ? esc(t) : esc(t.slice(0, i)) + "<b>" + esc(s) + "</b>" + esc(t.slice(i + s.length)); };
   const figSource = (fig, key) => {
     const src = fig.src.find((x) => x.item.sent) || fig.src[0]; const it = src.item;
-    const credit = it.about ? ((aboutOf(it.sent || "") || {}).a || {}).name || "About" : it.k ? D.title(it.k) + " " + D.year(it.k) : "";
+    /* the credit carries the figure's place, study and section: 26.03 */
+    const credit = it.about ? ((aboutOf(it.sent || "") || {}).a || {}).name || "About" : it.k ? D.title(it.k) + " " + D.year(it.k) + (src.f && src.f.k === it.k ? "  " + D.loc(src.f) : "") : "";
     if (key && LINES[key]) return { html: boldIn(LINES[key], fig.s), credit };
     if (it.sent) {
       const i = it.sent.indexOf(fig.s);
@@ -660,7 +661,7 @@
       const s = D.study(o.k), L = LEAD_OF[o.k];
       a.classList.add("w", "ef");
       /* .nr is the name's own row, so a mark can fill the cell around it */
-      a.innerHTML = '<span class="kk caps">' + esc(L ? L.l.name : "") + '</span><span class="fy">' + mk(D.year(o.k)) + '</span><span class="nr"><span class="t">' + esc(o.label) + "</span></span>";
+      a.innerHTML = '<span class="kk caps"><span>' + esc(L ? L.l.name : "") + '</span><span class="wn">' + D.num(o.k) + '</span></span><span class="fy">' + mk(D.year(o.k)) + '</span><span class="nr"><span class="t">' + esc(o.label) + "</span></span>";
       const th = thumb(o.k, "fth");
       if (th) { th.style.setProperty("--r", Math.max(0.78, Math.min(1.5, ratio(th._f))).toFixed(3)); a.appendChild(th); }
       if (s && s.fact) a.appendChild(el("span", "dk", esc(s.fact)));
@@ -671,7 +672,8 @@
       /* a room's name already carries its discipline ("Hill Country home,
          kitchen"), so its credit would say it twice */
       const credit = s && s.s && D.title(o.k) === s.t ? '<span class="cr">' + esc(s.s) + "</span>" : "";
-      a.innerHTML = '<span class="er"><span class="t">' + esc(o.label) + '</span><span class="ld"></span><span class="y we">' + D.year(o.k) + "</span></span>" + credit;
+      /* the study's number leads its row, as a figure's does in a picture index */
+      a.innerHTML = '<span class="er"><span class="wn">' + D.num(o.k) + '</span><span class="t">' + esc(o.label) + '</span><span class="ld"></span><span class="y we">' + D.year(o.k) + "</span></span>" + credit;
     } else if (mode === "Eyear") {
       a.classList.add("ey");
       a.innerHTML = '<span class="t">' + mk(esc(o.label)) + '</span><span class="pips" aria-hidden="true">' + [...Array(o.rel.size)].map((_, j) => '<i style="--d:' + j + '"></i>').join("") + "</span>";
@@ -746,7 +748,9 @@
       .forEach((o, i) => put(cellE("work", 1, [entryEl(o, "Efeat")], "c-feat"), 1 + (i % 3)));
 
     /* the rest, packed where there is room */
-    const wl = el("div", "elist"); G.work.items.filter((o) => !LEAD_OF[o.k]).forEach((o) => wl.appendChild(entryEl(o, "Ework")));
+    /* the list counts down by the studies' numbers, so the column reads
+       as a picture index does (27 Sept, the locators) */
+    const wl = el("div", "elist"); G.work.items.filter((o) => !LEAD_OF[o.k]).sort((x, y) => D.num(y.k).localeCompare(D.num(x.k))).forEach((o) => wl.appendChild(entryEl(o, "Ework")));
     put(cellE("work", 1, [headE("02", "work"), wl]));
     const yl = el("div", "eyears"); G.years.items.forEach((o, i) => { const a = entryEl(o, "Eyear"); a.style.setProperty("--i", i); yl.appendChild(a); });
     put(cellE("years", 1, [headE("03", "years"), yl]));
@@ -1682,8 +1686,48 @@
     if (s && s.mark) e.mark = clean(s.mark);
     if (s && s.label) e.label = clean(s.label);
     if (s && s.lead) e.lead = true;
+    const see = seeAlso(o); if (see.length) e.see = see.map((x) => ({ key: x.key, name: clean(nameOf(x)) }));
     return e;
   };
+  /* ── the reference system (27 Sept): where in a study an entry is, and
+     what to read next. A place is the section a fragment that names the
+     entry sits in (D.secOf); an entry only listed in a study's title
+     block has the study's number and no section ── */
+  const locFrags = (o, k) => {
+    switch (o.g.id) {
+      case "capabilities": case "tools": {
+        const vs = (o.vs || [o.v]).map((v) => v.toLowerCase());
+        /* a name may be written with a possessive inside it: "Perceptron's Mk1" */
+        const pat = (v) => v.split(/\s+/).map(reEsc).join("(?:['\u2019]s)?\\s+");
+        const re = new RegExp("(^|[^A-Za-z0-9])(" + (o.vs || [o.v]).map(pat).join("|") + ")(?![A-Za-z])", "i");
+        return D.byStudy(k).filter((f) => (f.kind === "line" && re.test(f.text)) || (f.kind === "tool" && vs.includes(f.value.toLowerCase())));
+      }
+      case "figures": return o.fig.src.map((x) => x.f).filter((f, i, a) => f && f.k === k && a.indexOf(f) === i);
+      default: return [];
+    }
+  };
+  const locsOf = (o, k) => {
+    const out = [], seen = new Set();
+    locFrags(o, k).filter((f) => f.kind !== "tool").sort((a, b) => FIDX.get(a) - FIDX.get(b)).forEach((f) => {
+      const sec = D.secOf(f); if (seen.has(sec)) return; seen.add(sec);
+      out.push({ s: sec, at: f.id });
+    });
+    return out.sort((a, b) => a.s.localeCompare(b.s));
+  };
+  const SEE = window.ENTRY_SEE || {};
+  const seeAlso = (o) => {
+    const out = [];
+    (SEE[o.key] || []).forEach((key) => { const x = KEYMAP.get(key); if (x && x !== o && !out.includes(x)) out.push(x); });
+    if (["capabilities", "tools", "figures"].includes(o.g.id) && o.rel && o.rel.size && out.length < 4) {
+      /* the entries that share the most of its studies, for their size */
+      const J = (x) => { let i = 0; o.rel.forEach((k) => { if (x.rel.has(k)) i++; }); return i ? i / (o.rel.size + x.rel.size - i) : 0; };
+      G.capabilities.items.concat(G.tools.items).filter((x) => x !== o && !out.includes(x)).map((x) => [x, J(x)])
+        .filter(([, j]) => j >= 0.34).sort((a, b) => b[1] - a[1] || b[0].rel.size - a[0].rel.size || a[0].label.localeCompare(b[0].label))
+        .slice(0, 4 - out.length).forEach(([x]) => out.push(x));
+    }
+    return out.slice(0, 4);
+  };
+
   const shelfCtx = (S) => ({
     entry: entryInfo(S.o),
     studies: S.ks.slice(),
@@ -1698,7 +1742,10 @@
        while it is only a preview */
     get preview() { return !!S.pv; },
     get gone() { return !!S.gone; },
-    open: (k, fromEl) => (S.pv ? pvOpen(S, k, fromEl) : shelfOpen(S, k, fromEl)),
+    open: (k, fromEl, at) => (S.pv ? pvOpen(S, k, fromEl, at) : shelfOpen(S, k, fromEl, at)),
+    /* the reference system: a study's number, and where in it this entry is */
+    num: (k) => D.num(k),
+    locs: (k) => locsOf(S.o, k),
     hover: (k, at) => (S.pv ? pvHover(S, k, at) : shelfHover(S, k, at)),
     esc, clean, D,
   });
@@ -1921,14 +1968,17 @@
     return f ? { box: node, f } : null;
   };
   /* a study opened from a shelf: the picture clicked flies into its room */
-  const shelfOpen = (S, k, fromEl) => {
+  const shelfOpen = (S, k, fromEl, at) => {
     if (SH !== S || VIEW.v !== "shelf" || !D.study(k)) return;
     const p = fromEl ? picOfEl(fromEl, k) : null;
     S.clicked = { k, el: p ? p.box : null };
-    go({ v: "study", k, from: S.key }, { push: true, src: p && visRect(p.box) ? { box: p.box, f: p.f, target: "cover", shelf: true } : null });
+    /* a locator opens the study at its place: no flight, the room scrolls there */
+    go({ v: "study", k, from: S.key }, { push: true, at: at || null, src: !at && p && visRect(p.box) ? { box: p.box, f: p.f, target: "cover", shelf: true } : null });
   };
   const shelfClick = (S, ev) => {
     if (ev.metaKey || ev.ctrlKey || ev.shiftKey || ev.button) return; /* a new tab is still a new tab */
+    const sa = ev.target.closest("a[data-see]");
+    if (sa && S.layer.contains(sa)) { ev.preventDefault(); go({ v: "shelf", key: sa.dataset.see }, { push: true }); return; }
     const sw = ev.target.closest(".sh-sw a");
     if (sw) { ev.preventDefault(); setShelfLayout(sw.dataset.shelf); return; }
     const nx = ev.target.closest(".sh-foot");
@@ -1991,10 +2041,10 @@
   /* a picture clicked in a preview: the preview becomes the shelf, and the
      picture flies from it into its room, as from any shelf. Close comes
      back to that shelf, as it was */
-  const pvOpen = (S, k, fromEl) => {
+  const pvOpen = (S, k, fromEl, at) => {
     if (!S.pv || staged() || !D.study(k)) return;
     go({ v: "shelf", key: S.key }, { push: true });
-    if (SH === S) shelfOpen(S, k, fromEl);
+    if (SH === S) shelfOpen(S, k, fromEl, at);
   };
   const pvOf = (o) => { const l = layerOf(); const P = l && l._pv; return P && P.pv && P.o === o && !phone() ? P : null; };
   /* the preview moves to the stage as it is: the same element, its layout,
@@ -2094,6 +2144,8 @@
       hold: true,
     });
     RM = { k, from, c, room };
+    /* opened from a locator: the room starts at that place, marked */
+    if (how.at && room.find(how.at)) { room.scrollTo(how.at); room.mark([how.at]); }
     c.addEventListener("scroll", () => { if (LW) { cancelAnimationFrame(LW.raf); LW.raf = requestAnimationFrame(drawLive); } }, { passive: true });
 
     /* where the picture flies from: what was clicked, else the foot of the

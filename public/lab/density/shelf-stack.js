@@ -58,6 +58,9 @@
     /* a homepage line (entry-lines.js) is set two-tone, as a study's lead:
        its first sentence ink, the rest grey */
     if (e.sentence) h.appendChild(el("p", "xk-sent" + (e.lead ? " lead" : ""), e.lead ? twoTone(S, e.sentence) : S.esc(e.sentence)));
+    /* an index's cross-references: the entries worth reading next */
+    if (e.see && e.see.length) h.appendChild(el("p", "xk-see", '<span class="xk-sl caps">See also</span>' +
+      e.see.map((x) => '<a href="#' + S.esc(x.key) + '" data-see="' + S.esc(x.key) + '">' + S.esc(x.name) + "</a>").join('<span class="xk-sd">·</span>')));
     S.nm = nm;
     return h;
   };
@@ -83,8 +86,12 @@
       const box = el("div", "xk-pic" + (f.alpha ? " alpha" : "")); box.style.width = w + "px"; box.style.height = h + "px"; box._f = f;
       fig.appendChild(box);
       const s = S.D.study(k) || {};
+      /* the study's own number, and the sections this entry sits in, each
+         a way straight to its place (27 Sept, the locators) */
+      const locs = ctx.locs ? ctx.locs(k) : [];
       fig.appendChild(el("figcaption", "xk-cap",
-        '<span class="xk-no">' + two(i + 1) + '</span><span class="xk-t">' + S.esc(S.D.title(k)) + '</span><span class="xk-y">' + (s.y || "") + "</span>" +
+        '<span class="xk-no">' + (ctx.num ? ctx.num(k) : two(i + 1)) + '</span><span class="xk-t">' + S.esc(S.D.title(k)) + '</span><span class="xk-y">' + (s.y || "") + "</span>" +
+        (locs.length ? '<span class="xk-locs">' + locs.map((l) => '<a class="xk-l" href="#study/' + S.esc(k) + '" data-at="' + S.esc(l.at) + '" title="' + S.esc(S.D.title(k)) + ", section " + l.s + '">§' + l.s + "</a>").join("") + "</span>" : "") +
         (s.s ? '<span class="xk-d">' + S.esc(s.s) + "</span>" : "")));
       S.root.appendChild(fig);
       S.items.push({ k, fig, box }); S.units.push(fig);
@@ -146,6 +153,9 @@
       if (ev.defaultPrevented || ev.metaKey || ev.ctrlKey || ev.shiftKey || ev.button) return;
       const fig = ev.target.closest(".xk-it"); if (!fig || !S.root.contains(fig)) return;
       ev.preventDefault();
+      /* a locator opens the study at its section, without a flight */
+      const l = ev.target.closest("a.xk-l");
+      if (l) { ctx.open(fig.dataset.k, null, l.dataset.at); return; }
       ctx.open(fig.dataset.k, fig.querySelector(".xk-pic"));
     });
     S.root.addEventListener("pointerover", (ev) => {

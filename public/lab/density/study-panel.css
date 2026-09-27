@@ -97,6 +97,7 @@
 .sp-meta { margin-bottom: 22px; font-size: 12px; font-weight: 600; line-height: 1.45; letter-spacing: -0.004em; }
 .sp-kk { color: var(--grey); }
 .sp-kk .y { color: var(--grey2); margin-left: 0.35em; font-variant-numeric: tabular-nums; }
+.sp-kk .sp-no { margin-right: 0.7em; color: var(--ink); font-variant-numeric: tabular-nums; }
 .sp-lines { display: flex; flex-wrap: wrap; gap: 2px 14px; margin-top: 6px; }
 .sp-line { white-space: nowrap; }
 .sp-line i { display: inline-block; width: 0.62em; height: 0.62em; margin-right: 0.45em; vertical-align: 0.02em; }
