@@ -367,6 +367,13 @@
   [...FIGS.values()].filter((g) => !bare(g.s) && !FIG_SKIP.has(g.s)).sort((a, b) => a.order - b.order).forEach((g) => add("figures", { label: g.s, fig: g, rel: g.rel,
     make: () => g.src.map((x) => x.item) }, slug(g.s)));
   ENTRIES.forEach((o) => (o.alias || []).forEach((k) => { if (!KEYMAP.has(k)) KEYMAP.set(k, o); }));
+  /* where each entry reaches beyond the studies' own lists (entry-reach.js,
+     his "lean towards OVER doing it rather than under"): studies are only
+     ever added, before anything counts, ranks or marks by them */
+  Object.entries(window.ENTRY_REACH || {}).forEach(([key, ks]) => {
+    const o = KEYMAP.get(key); if (!o || !o.rel) return;
+    (ks || []).forEach((k) => { if (D.study(k)) o.rel.add(k); });
+  });
 
   /* ════════════════════════════════════════════════════════════════════
      THE INDEX, IN THREE HIERARCHIES (27 Sept 2026). He looked at the
