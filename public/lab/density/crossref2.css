@@ -109,7 +109,7 @@ html[data-mark="ink"] body.x .e.me { outline: 1px solid var(--ink); outline-offs
 html[data-mark="ink"] body.x .grp[data-g="capabilities"] .e.on:not(.me),
 html[data-mark="ink"] body.x .grp[data-g="tools"] .e.on:not(.me),
 html[data-mark="ink"] body.x .grp[data-g="figures"] .e.on:not(.me) {
-  background: none; color: var(--ink); box-shadow: none; -webkit-text-stroke: 0.045em currentColor; }
+  background: none; color: var(--ink); box-shadow: none; -webkit-text-stroke: 0.045em currentColor; text-shadow: var(--halo); }
 .e.cur .t { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 0.2em; }
 /* what the stage holds open: set solid, in ink, whatever its kind */
 .e.lock { background: var(--ink); color: var(--paper) !important; box-shadow: 0 0 0 0.18em var(--ink); }
@@ -217,13 +217,25 @@ html.dscroll[data-ix="d"] #idx { display: block; overflow-y: auto; padding-botto
 html.dscroll[data-ix="d"] .dcols { overflow: visible; column-fill: balance; }
 
 /* ── the wires: from each related entry to the thing in focus ── */
-#wires { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 6; pointer-events: none; }
-#wires path { fill: none; stroke: var(--ink); stroke-width: 0.6; opacity: 0.13; }
-#wires path.me { opacity: 0.9; stroke-width: 0.8; transition: stroke-dashoffset 0.45s var(--ease); }
-#wires circle { fill: var(--ink); }
-#wires g { opacity: 0; transition: opacity 0.35s ease; }
-#wires g.in, #wires g.live { opacity: 1; }
-#wires g.live { transition: none; }
+/* the same wires twice (27 Sept): #wiresBack under the index, clipped to
+   the index and its gutter, where the words' paper halos let a wire pass
+   behind them; #wires over the stage, clipped to the stage, so a wire
+   into a shelf or a room lands on the picture */
+#wires, #wiresBack { position: fixed; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+#wires { z-index: 6; clip-path: inset(0 0 0 var(--stl)); }
+#wiresBack { z-index: 2; clip-path: inset(0 calc(100% - var(--stl)) 0 0); }
+#wires path, #wiresBack path { fill: none; stroke: var(--ink); stroke-width: 0.6; opacity: 0.13; }
+#wires path.me, #wiresBack path.me { opacity: 0.55; stroke-width: 0.8; transition: stroke-dashoffset 0.45s var(--ease); }
+#wires circle, #wiresBack circle { fill: var(--ink); }
+#wires g, #wiresBack g { opacity: 0; transition: opacity 0.35s ease; }
+#wires g.in, #wires g.live, #wiresBack g.in, #wiresBack g.live { opacity: 1; }
+#wires g.live, #wiresBack g.live { transition: none; }
+/* the halo: a hair of paper around every letter in the index, the way a
+   map sets its labels over its roads. It is invisible on paper and only
+   shows as a wire breaking where it passes a word */
+:root { --halo: -1px 0 var(--paper), 1px 0 var(--paper), 0 -1px var(--paper), 0 1px var(--paper), -1px -1px var(--paper), 1px 1px var(--paper), -1px 1px var(--paper), 1px -1px var(--paper), 0 0 3px var(--paper); }
+#idx { text-shadow: var(--halo); }
+.e.lock, html[data-mark="ink"] body.x .e.on { text-shadow: none; }
 
 /* ── the open half at hover ── */
 #field { position: fixed; top: 0; right: 0; bottom: 0; left: var(--stl); z-index: 1; background: var(--fc, var(--paper));
@@ -370,7 +382,7 @@ html.stack .ixtop #mark { margin: 0; }
 html.stack #focus { position: sticky; top: 0; left: auto; right: auto; bottom: auto; height: min(46svh, 400px); margin: 0; padding: 12px var(--m) 14px;
   background: var(--paper); border-bottom: 1px solid var(--hair); transition: opacity 0.28s ease; }
 html.stack .layer { inset: 12px var(--m) 14px; }
-html.stack #field, html.stack #wires { display: none; }
+html.stack #field, html.stack #wires, html.stack #wiresBack { display: none; }
 html.stack #idx { position: static; width: auto; max-width: 900px; margin: 24px var(--m) 48px; padding: 0; overflow: visible; }
 html.stack .grp { margin: 0 0 34px; }
 html.stack .grp.list .e { padding: 0.14em 0; }

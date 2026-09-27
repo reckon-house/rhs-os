@@ -128,6 +128,12 @@
   const HTML = document.documentElement;
   const phone = () => HTML.classList.contains("stack");
   const IDX = $("#idx"), MARK = $("#mark"), FOCUS = $("#focus"), FIELD = $("#field"), WIRES = $("#wires"), STAGE = $("#stage");
+  /* the wires are drawn twice: behind the index, where the words wear a
+     halo of paper so a wire passes under them instead of striking them
+     out, and over the stage, clipped to it, so a wire into a shelf or a
+     room still lands on the picture (27 Sept) */
+  const WIRES_BACK = $("#wiresBack");
+  const clearWires = () => { WIRES.innerHTML = ""; if (WIRES_BACK) WIRES_BACK.innerHTML = ""; };
   const EASE = "cubic-bezier(0.2, 0.7, 0.2, 1)";
   const DROP = "cubic-bezier(0.5, 0, 0.75, 0)";
   const still = () => matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -547,7 +553,7 @@
     buildIndex(); fit(true);
     paint(painted[0], painted[1]);
     if (locked) locked.a.classList.add("lock");
-    WIRES.innerHTML = "";
+    clearWires();
     if (!staged()) requestAnimationFrame(() => wire());
   };
 
@@ -966,11 +972,17 @@
     if (!phone()) { const r = IDX.getBoundingClientRect(); if (y < r.top + 6 || y > r.bottom - 6) return null; }
     return [b.right + 3, y];
   };
-  const pathD = (p, q) => { const mx = (p[0] + q[0]) / 2; return "M" + p[0].toFixed(1) + " " + p[1].toFixed(1) + " C" + mx.toFixed(1) + " " + p[1].toFixed(1) + " " + mx.toFixed(1) + " " + q[1].toFixed(1) + " " + q[0].toFixed(1) + " " + q[1].toFixed(1); };
+  /* each wire leaves its entry level and bends early, so it crosses the
+     columns on a slant rather than riding along a row of words, where the
+     bits showing between them read as dashes (27 Sept) */
+  const pathD = (p, q) => {
+    const d = Math.max(24, Math.min(90, (q[0] - p[0]) * 0.22));
+    return "M" + p[0].toFixed(1) + " " + p[1].toFixed(1) + " C" + (p[0] + d).toFixed(1) + " " + p[1].toFixed(1) + " " + (q[0] - d * 1.6).toFixed(1) + " " + q[1].toFixed(1) + " " + q[0].toFixed(1) + " " + q[1].toFixed(1);
+  };
   /* pairs: [{ x: entry, q: [x, y], me }]; dots at each end on the stage.
      Every ground is paper now (27 Sept), so a wire is ink all the way */
   const draw = (pairs, o) => {
-    WIRES.innerHTML = "";
+    clearWires();
     if (phone() || !pairs.length) return null;
     const g = document.createElementNS(NS, "g");
     const dots = new Map();
@@ -983,23 +995,26 @@
     });
     dots.forEach((q) => { const d = document.createElementNS(NS, "circle"); d.setAttribute("cx", q[0]); d.setAttribute("cy", q[1]); d.setAttribute("r", 2.2); g.appendChild(d); });
     WIRES.appendChild(g);
-    if (o && o.live) { g.classList.add("live"); return g; }
-    g.querySelectorAll("path.me").forEach((pth) => { const L = pth.getTotalLength(); pth.style.strokeDasharray = L; pth.style.strokeDashoffset = L; });
-    requestAnimationFrame(() => requestAnimationFrame(() => { g.classList.add("in"); g.querySelectorAll("path.me").forEach((pth) => { pth.style.strokeDashoffset = 0; }); }));
+    const back = WIRES_BACK ? g.cloneNode(true) : null;
+    if (back) WIRES_BACK.appendChild(back);
+    const both = back ? [g, back] : [g];
+    if (o && o.live) { both.forEach((x) => x.classList.add("live")); return g; }
+    both.forEach((x) => x.querySelectorAll("path.me").forEach((pth) => { const L = pth.getTotalLength(); pth.style.strokeDasharray = L; pth.style.strokeDashoffset = L; }));
+    requestAnimationFrame(() => requestAnimationFrame(() => both.forEach((x) => { x.classList.add("in"); x.querySelectorAll("path.me").forEach((pth) => { pth.style.strokeDashoffset = 0; }); })));
     return g;
   };
   const wire = (live) => {
     if (staged()) return;
-    if (phone() || !cur) { WIRES.innerHTML = ""; return; }
+    if (phone() || !cur) { clearWires(); return; }
     const layer = layerOf(); if (!layer) return;
     const m = layer.querySelector(".main"); if (!m) return;
     const r = m.getBoundingClientRect();
     const q = [r.left - 12, r.top + r.height / 2];
     const shown = shownK ? G.work.items.find((x) => x.rel.has(shownK) && x !== cur.o) : null;
-    /* with the ink mark the bands say what is related and the ring says
-       which entry is speaking, so no wire is drawn at all: a single one
-       still crossed three columns and read as a strikethrough (27 Sept) */
-    if (MARKMODE !== "dim") { WIRES.innerHTML = ""; return; }
+    /* every related entry is wired again (27 Sept, his "i do kinda miss
+       the curved lines that mapped back to the words"). They pass behind
+       the index now, so crossing a column no longer reads as a
+       strikethrough */
     const pairs = lit.filter((x) => x !== shown).map((x) => ({ x, q }));
     if (shown) pairs.push({ x: shown, q, me: true });
     pairs.push({ x: cur.o, q, me: true });
@@ -1030,7 +1045,7 @@
   const setStaged = (on) => {
     document.body.classList.toggle("staged", on);
     HTML.classList.toggle("sheet", on && phone());
-    if (on) { FIELD.classList.remove("on"); WIRES.innerHTML = ""; }
+    if (on) { FIELD.classList.remove("on"); clearWires(); }
   };
   const keyOf = (st) => (st.v === "shelf" ? st.key : st.v === "study" ? "study/" + st.k : "");
   const parentOf = (st) => (st.v === "study" && st.from && KEYMAP.has(st.from) ? { v: "shelf", key: st.from } : { v: "rest" });
@@ -1292,7 +1307,7 @@
     if (!SH) return;
     if (!SH.visible) { SH.stale = true; return; }
     if (SH.lid === id) { drawSwitch(SH); return; }
-    WIRES.innerHTML = ""; hov = null;
+    clearWires(); hov = null;
     SH.layer.scrollTop = 0; mountLayout(SH);
     paint(SH.o.rel, SH.o);
     shelfEnter(SH, { delay: 0 });
@@ -1372,9 +1387,8 @@
   };
   const wireTile = (S) => {
     const k = S.hovK, node = S.hovAt && S.hovAt.isConnected ? S.hovAt : tileOf(S, k);
-    if (!node) { WIRES.innerHTML = ""; return; }
+    if (!node) { clearWires(); return; }
     const q = anchorOf(node, S.layer), me = WORK[k];
-    if (MARKMODE !== "dim") { WIRES.innerHTML = ""; return; }
     draw(lit.filter((x) => x !== me).map((x) => ({ x, q })).concat(me ? [{ x: me, q, me: true }] : []), { live: true });
   };
   const shelfHover = (S, k, at) => {
@@ -1596,7 +1610,7 @@
     const x = Math.max(s.left + 3, r.left - 7);
     draw([{ x: LW.o, q: [x, y], me: true }], { live: true });
   };
-  const clearLive = () => { LW = null; WIRES.innerHTML = ""; };
+  const clearLive = () => { LW = null; clearWires(); };
   const pointAt = (o) => {
     const k = RM.k;
     if (!o.rel.has(k)) { paintRoom(); clearLive(); return; }
@@ -1622,8 +1636,8 @@
   };
   const stageNeutral = () => {
     hov = null;
-    if (VIEW.v === "shelf" && SH) { shelfLight(SH, null); paint(SH.o.rel, SH.o); WIRES.innerHTML = ""; }
-    else if (VIEW.v === "study" && RM) { paintRoom(); LW = null; WIRES.innerHTML = ""; }
+    if (VIEW.v === "shelf" && SH) { shelfLight(SH, null); paint(SH.o.rel, SH.o); clearWires(); }
+    else if (VIEW.v === "study" && RM) { paintRoom(); LW = null; clearWires(); }
   };
 
   /* ── addresses: one per depth, and the back button steps through them ── */
@@ -1793,7 +1807,7 @@
         }
         SH.W = SH.layer.clientWidth; SH.V = SH.layer.clientHeight; pastCheck(SH);
       }
-      WIRES.innerHTML = "";
+      clearWires();
     });
   });
 
