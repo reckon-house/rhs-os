@@ -148,6 +148,55 @@
   const inkGreyF = (f) => (f.held ? esc(f.ink) + ' <span class="sp-g">' + esc(f.held) + "</span>" : inkGrey(f.text));
   const ratio = (f) => f.w / f.h;
 
+  /* ── MOTION (27 Sept, his "polish design and animation pass - text and
+     image animations similar to what the live site has. easing on things,
+     lenis scroll maybe on the case studies ... load and unload
+     animation, etc. really bring this to life"). The live site's own
+     vocabulary, its values copied, not re-derived (src/components/fx,
+     SmoothScroll.tsx, RisingPlate.tsx, ledger-arrival.ts):
+     - Lenis on the room's own scroller with the site's settings;
+     - type rises through a mask, no fade: display type on the headline
+       curve over 1.2s, 6ms a character; paragraphs a line at a time, 45ms
+       apart, over 0.7s; a room-wide queue starts each block at least 90ms
+       after the one before;
+     - a picture wipes up out of its own frame over 0.9s while the image
+       settles from 1.06; a picture across the room drifts against the
+       scroll by a tenth of its height, where its pixels allow;
+     - a rule draws in from the left over 0.66s and its words follow.
+     The finished state is the resting CSS: only a room with motion
+     allowed (.mo) is given start states, and reduced motion gets none. */
+  const MOTION = () => !matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const RV_KINDS = [
+    ["mask", ".sp-title, .sp-stand, .sp-h, .sp-deck, .sp-pq, .sp-closing p, .sp-fn, .sp-next-t, .sp-dur, .sp-col, .sp-card h3"],
+    ["lines", ".sp-p"],
+    ["pic", ".sp-pic:not(.sp-cpic)"],
+    ["field", ".sp-black, .sp-field"],
+    ["rule", ".sp-kick, .sp-open, .sp-run.sp-hasc, .sp-foot, .sp-spec, .sp-card, .sp-tcol, .sp-tr, .sp-nr"],
+    ["fade", ".sp-cap, .sp-fs, .sp-nl, .sp-ns, .sp-meta, .sp-spec-h, .sp-tcol > .sp-caps, .sp-tcol ul, .sp-palw, .sp-bar2, .sp-stl li, .sp-full, .sp-next > .sp-caps, .sp-fcap, .sp-bcap, .sp-card p, .sp-tr dd, .sp-tr dt"],
+  ];
+  /* words into masks: each word an inline-block clipped to its own line,
+     its inside rising into it. Text nodes are split where they are, so a
+     span that carries a fragment's id stays the same element */
+  const splitWords = (node) => {
+    const words = [];
+    const walk = (n) => [...n.childNodes].forEach((c) => {
+      if (c.nodeType === 3) {
+        const parts = c.nodeValue.split(/(\s+)/).filter(Boolean); if (!parts.length) return;
+        const frag = document.createDocumentFragment();
+        parts.forEach((p) => {
+          if (/^\s+$/.test(p)) { frag.appendChild(document.createTextNode(p)); return; }
+          const w = document.createElement("span"); w.className = "rvw";
+          const i = document.createElement("span"); i.className = "rvi"; i.textContent = p;
+          w.appendChild(i); frag.appendChild(w); words.push(w);
+        });
+        c.replaceWith(frag);
+      } else if (c.nodeType === 1 && !c.classList.contains("rvw")) walk(c);
+    });
+    walk(node);
+    return words;
+  };
+  const unsplit = (node) => { node.querySelectorAll(".rvw").forEach((w) => w.replaceWith(document.createTextNode(w.textContent))); node.normalize(); };
+
   /* ── figures inside his sentences: the same pattern the Cross-reference
      reads its Figures column with. Digits with whatever unit sits on
      them; a number word with a time unit; a number word of four or more
@@ -309,7 +358,7 @@
     const root = el("article", "sp sp-enter"); root.dataset.k = k;
     container.appendChild(root);
     try { container.scrollTop = 0; } catch (e) { /* a container that cannot scroll */ }
-    const room = { el: root, cover: null, scroller: container, ids: [], destroy, find, mark, scrollTo };
+    const room = { el: root, cover: null, scroller: container, ids: [], destroy, find, mark, scrollTo, play, shown, lenis: null };
     if (!M) return room;
 
     let io = null, ro = null, headIO = null, fontsT = 0, dead = false;
@@ -341,6 +390,109 @@
         { root: container, rootMargin: "40% 0px 60% 0px" });
       pending.forEach((_, b) => io.observe(b));
     };
+
+    /* ── motion (MOTION above). Lenis owns the room's scroller with the
+       live site's settings; every other write to its scroll goes through
+       setScroll so Lenis does not undo it ── */
+    const mo = MOTION() && !o.still;
+    if (mo) root.classList.add("mo");
+    let lenis = null, lraf = 0;
+    if (mo && window.Lenis) {
+      try {
+        lenis = new window.Lenis({ wrapper: container, content: root, smoothWheel: true, duration: 1.65, easing: (t) => 1 - Math.pow(1 - t, 6), wheelMultiplier: 0.65, touchMultiplier: 1.4 });
+        const tick = (t) => { lenis.raf(t); lraf = requestAnimationFrame(tick); };
+        lraf = requestAnimationFrame(tick);
+      } catch (e) { lenis = null; }
+    }
+    room.lenis = lenis;
+    const setScroll = (y) => { if (lenis) lenis.scrollTo(y, { immediate: true, force: true }); else container.scrollTop = y; };
+
+    /* the reveals: each block waits under its start state until it is a
+       fifth in view, then takes its turn in the queue */
+    let rio = null, playing = false, qAt = 0, holdT = 0;
+    const RVSEL = RV_KINDS.map(([k, s]) => s).join(", ");
+    const kindOf = (e) => { for (const [k, s] of RV_KINDS) if (e.matches(s)) return k; return null; };
+    /* the queue orders what arrives together; a fast scroll never makes
+       anything wait more than a third of a second for its turn */
+    const slot = () => { const now = performance.now(); const t = Math.max(now, Math.min(qAt + 90, now + 320)); qAt = t; return t - now; };
+    const EZT = "cubic-bezier(0.16, 1, 0.3, 1)";
+    const go = (e, instant) => {
+      if (!e._rv || e._rvd) return; e._rvd = true;
+      if (rio) rio.unobserve(e);
+      const k = e._rv;
+      if (instant) { e.classList.add("rv-go", "rv-now"); return; }
+      const base = slot();
+      if (k === "mask" || k === "lines") {
+        const words = splitWords(e); e.classList.add("rv-split");
+        /* a line is the words that share a top; a display block also
+           staggers by character, as the site's headlines do */
+        let line = -1, lastTop = -1e9, chars = 0, maxD = 0;
+        const total = e.textContent.length || 1, per = Math.min(6, 420 / total);
+        words.forEach((w) => {
+          const t = w.offsetTop; if (Math.abs(t - lastTop) > 3) { line++; lastTop = t; }
+          const d = base + line * 45 + (k === "mask" ? Math.round(chars * per) : 0);
+          chars += w.textContent.length + 1; maxD = Math.max(maxD, d);
+          w.style.setProperty("--d", d + "ms");
+        });
+        requestAnimationFrame(() => requestAnimationFrame(() => e.classList.add("rv-go")));
+        /* a paragraph gives its words back once it has risen, so the
+           marks and the reading are plain text again */
+        if (k === "lines") setTimeout(() => { if (!dead && e.isConnected) { unsplit(e); e.classList.remove("rv-split"); } }, maxD + 820);
+        return;
+      }
+      e.style.setProperty("--d", base + "ms");
+      requestAnimationFrame(() => requestAnimationFrame(() => e.classList.add("rv-go")));
+    };
+    const armReveals = (showAbove) => {
+      if (rio) rio.disconnect(); rio = null;
+      if (!mo) return;
+      const els = [...root.querySelectorAll(RVSEL)];
+      const vb = container.getBoundingClientRect().bottom;
+      els.forEach((e) => { e._rv = kindOf(e); e._rvd = false; e.classList.add("rv", "rv-" + e._rv); });
+      /* after a rebuild, what the reader has already passed stays put */
+      if (showAbove) els.forEach((e) => { if (e.getBoundingClientRect().top < vb) go(e, true); });
+      if (!("IntersectionObserver" in window)) { els.forEach((e) => go(e, true)); return; }
+      rio = new IntersectionObserver((es) => es.forEach((en) => {
+        if (!playing || !en.isIntersecting) return;
+        if (en.intersectionRatio >= 0.2 || en.boundingClientRect.height > container.clientHeight * 0.6 || en.boundingClientRect.top < container.getBoundingClientRect().top + container.clientHeight * 0.5) go(en.target);
+      }), { root: container, rootMargin: "0px 0px -6% 0px", threshold: [0, 0.2] });
+      els.forEach((e) => { if (!e._rvd) rio.observe(e); });
+    };
+    /* the caller says when the room is on screen: after a picture has
+       flown into it, or as its paper rises. A caller that never says
+       plays it at once */
+    function play(p) {
+      p = p || {};
+      clearTimeout(holdT);
+      holdT = setTimeout(() => {
+        if (dead || playing) return;
+        playing = true; qAt = performance.now();
+        if (p.settle && parts && parts.coverBox) parts.coverBox.classList.add("settle");
+        root.classList.add("sp-on-stage");
+        if (rio) { const list = [...root.querySelectorAll(".rv")].filter((e) => !e._rvd); rio.disconnect(); list.forEach((e) => rio.observe(e)); }
+      }, Math.max(0, p.delay || 0));
+    }
+    /* an element a picture is flying to shows at once, and holds still */
+    function shown(e) {
+      if (!e) return;
+      const box = e.closest(".sp-pic") || e;
+      go(box, true); box._still = true; box.classList.remove("par");
+    }
+
+    /* the drift: a picture across the room is drawn a tenth taller and
+       moves up through that tenth as it crosses the glass */
+    let parT = 0;
+    const drift = () => {
+      parT = 0; if (dead || !mo) return;
+      const cr = container.getBoundingClientRect();
+      root.querySelectorAll(".sp-pic.par").forEach((b) => {
+        const r = b.getBoundingClientRect(); if (r.bottom < cr.top || r.top > cr.bottom) return;
+        const k = Math.max(0, Math.min(1, (cr.bottom - r.top) / (cr.height + r.height)));
+        b.style.setProperty("--py", (-0.1 * r.height * k).toFixed(1) + "px");
+      });
+    };
+    const onScroll = () => { if (!parT) parT = requestAnimationFrame(drift); };
+    if (mo) container.addEventListener("scroll", onScroll, { passive: true });
 
     const ids = [];
     const tag = (node, f) => { if (f && f.id) { node.dataset.f = f.id; ids.push(f.id); } return node; };
@@ -762,6 +914,10 @@
         }
         R.row.classList.toggle("bleed", w >= W - 0.5);
         R.row.style.width = Math.floor(w) + "px"; R.row.style.marginLeft = Math.round(ml) + "px";
+        /* a lone picture across the room drifts, when a tenth more of it
+           is still honest */
+        const pb = R.row.firstElementChild;
+        if (pb) pb.classList.toggle("par", mo && n === 1 && w >= W - 0.5 && R.ps[0].w / 2 >= 1.1 * w && !pb._still);
         if (R.cap) {
           const gs = Math.max(18, Math.round(W * 0.03));
           const right = W - m - (ml + w), left = ml - m;
@@ -784,6 +940,7 @@
       root.querySelectorAll(".sp-pic img").forEach((im) => { const w = im.parentNode.offsetWidth; if (w) im.sizes = w + "px"; });
 
       fitType(W);
+      if (mo) drift();
     };
 
     /* the largest size at which a block of type keeps to a number of lines */
@@ -836,6 +993,8 @@
     build();
     startIO();
     layout();
+    armReveals(false);
+    if (!o.hold) play({ settle: true, delay: 40 });
     if (document.fonts && document.fonts.ready) {
       Promise.all(["700 100px 'Avenir Next'", "600 20px 'Avenir Next'", "500 15px 'Avenir Next'", "800 100px 'Avenir Next'"].map((f) => document.fonts.load(f).catch(() => null)))
         .then(() => document.fonts.ready).then(() => { if (!dead) layout(); });
@@ -863,7 +1022,8 @@
             const anchor = firstInView();
             if (io) io.disconnect();
             build(); startIO(); layout(); watchTitle(); markAgain();
-            if (anchor) { const e2 = find(anchor.id); if (e2) container.scrollTop += e2.getBoundingClientRect().top - container.getBoundingClientRect().top - anchor.off; }
+            if (anchor) { const e2 = find(anchor.id); if (e2) setScroll(container.scrollTop + e2.getBoundingClientRect().top - container.getBoundingClientRect().top - anchor.off); }
+            armReveals(true);
           } else layout();
         });
       });
@@ -890,12 +1050,15 @@
     function scrollTo(id, o2) {
       const e = find(id); if (!e) return false;
       const top = e.getBoundingClientRect().top - container.getBoundingClientRect().top + container.scrollTop - Math.round(container.clientHeight * 0.18);
-      container.scrollTo({ top: Math.max(0, top), behavior: o2 && o2.smooth ? "smooth" : "auto" });
+      if (lenis) { lenis.resize(); lenis.scrollTo(Math.max(0, top), { immediate: !(o2 && o2.smooth), force: true }); }
+      else container.scrollTo({ top: Math.max(0, top), behavior: o2 && o2.smooth ? "smooth" : "auto" });
       return true;
     }
     function destroy() {
       dead = true;
-      if (io) io.disconnect(); if (ro) ro.disconnect(); if (headIO) headIO.disconnect();
+      if (io) io.disconnect(); if (ro) ro.disconnect(); if (headIO) headIO.disconnect(); if (rio) rio.disconnect();
+      if (lenis) { cancelAnimationFrame(lraf); lenis.destroy(); lenis = null; }
+      container.removeEventListener("scroll", onScroll); cancelAnimationFrame(parT); clearTimeout(holdT);
       clearTimeout(fontsT); cancelAnimationFrame(rzT);
       root.remove();
     }

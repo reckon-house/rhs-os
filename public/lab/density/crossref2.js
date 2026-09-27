@@ -1890,6 +1890,8 @@
       next: nk ? { k: nk, t: D.title(nk) } : null,
       onNext: (x) => go({ v: "study", k: x, from }, { push: true, via: "next" }),
       onClose: () => closeTo(parentOf(VIEW)),
+      /* its words wait to rise until the room is on stage (play, below) */
+      hold: true,
     });
     RM = { k, from, c, room };
     c.addEventListener("scroll", () => { if (LW) { cancelAnimationFrame(LW.raf); LW.raf = requestAnimationFrame(drawLive); } }, { passive: true });
@@ -1922,6 +1924,8 @@
     setStaged(true); cur = null;
     lockEntry(WORK[k]); paintRoom();
     const flight = src && !still() ? fly(src.box, src.f, to) : null;
+    /* what a picture flies to shows at once and holds still */
+    if (flight) room.shown(to);
     const reveal = () => {
       clearTimeout(revealT);
       c.style.visibility = "";
@@ -1939,8 +1943,13 @@
       if (SH && SH.visible && src.shelf) shelfLeave(SH, src.box);
       if (prev) prev.c.animate([{ opacity: 1, transform: "none" }, { opacity: 0, transform: "translateY(-24px)" }], { duration: 320, easing: DROP, fill: "forwards" });
       land(flight, to, () => { to.style.visibility = ""; restore.style.visibility = ""; reveal(); });
+      /* the words rise as the room's paper comes up behind the flight */
+      room.play({ delay: 380 });
     } else {
       c.style.visibility = "";
+      /* no flight: the cover settles as the paper rises, and the words
+         come up a beat behind it */
+      room.play({ delay: phone() && !was ? 200 : 240, settle: true });
       if (!was && phone()) { reveal(); return; }
       if (!still()) c.animate([{ clipPath: "inset(100% 0 0 0)" }, { clipPath: "inset(0 0 0 0)" }], { duration: 560, easing: EASE });
       if (prev) prev.c.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 300, fill: "forwards" });
@@ -2032,6 +2041,15 @@
     const c = RM.c;
     const top = e === RM.room.cover ? 0 : Math.max(0, e.getBoundingClientRect().top - c.getBoundingClientRect().top + c.scrollTop - Math.round(c.clientHeight * 0.2));
     const d = top - c.scrollTop, near = c.clientHeight * 0.5;
+    /* the room's scroll is Lenis's when it has one: a write past it would
+       be undone */
+    const L = RM.room.lenis;
+    if (L) {
+      L.resize();
+      if (Math.abs(d) > c.clientHeight * 1.4) L.scrollTo(top - Math.sign(d) * near, { immediate: true, force: true });
+      L.scrollTo(top, { duration: 1.1, force: true });
+      return;
+    }
     if (Math.abs(d) > c.clientHeight * 1.4) c.scrollTop = top - Math.sign(d) * near;
     c.scrollTo({ top, behavior: still() ? "auto" : "smooth" });
   };

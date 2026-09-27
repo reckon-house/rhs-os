@@ -279,3 +279,64 @@
   .sp-enter .sp-head, .sp-enter .sp-open { animation: none; }
   .sp-pic img { transition: none; }
 }
+
+/* ── MOTION (27 Sept): the live site's reveals, set out in study-panel.js
+   above MOTION. Only a room with motion allowed (.mo) has start states;
+   each block leaves its start state when it is given .rv-go, and .rv-now
+   skips the travel. The curves: the headline curve for type, the wipe
+   curve for pictures and fields, the house curve for rules ── */
+.sp.mo { --ez-t: cubic-bezier(0.16, 1, 0.3, 1); --ez-w: cubic-bezier(0.22, 1, 0.36, 1); --ez-r: cubic-bezier(0.2, 0.7, 0.2, 1); }
+.sp.mo.sp-enter .sp-head, .sp.mo.sp-enter .sp-open { animation: none; }
+.sp.mo .rv-now, .sp.mo .rv-now *, .sp.mo .rv-now::before { transition: none !important; }
+
+/* type through a mask: each word clipped to its line, rising into it */
+.sp.mo .rv:is(.rv-mask, .rv-lines):not(.rv-go) { opacity: 0; }
+.sp.mo .rv-mask { --dur: 1.2s; }
+.sp.mo .rv-lines { --dur: 0.7s; }
+.sp.mo .rv-split .rvw { display: inline-block; clip-path: inset(-0.3em -0.2em -0.3em -0.2em); }
+.sp.mo .rv-split .rvi { display: inline-block; transform: translateY(128%); }
+.sp.mo .rv-split.rv-go .rvi { transform: none; transition: transform var(--dur) var(--ez-t) var(--d, 0ms); }
+/* a mark on a head that stays split underlines its words */
+.sp .sp-on .rvw .rvi { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 0.2em; }
+
+/* a picture unveils down its frame while the image settles. The clip is
+   on the image, not the frame: a frame clipped away is one the
+   IntersectionObserver never sees arrive, so it never revealed */
+.sp.mo .rv-pic:not(.alpha) { background-color: transparent; }
+.sp.mo .rv-pic img { scale: 1.06; transition: opacity 0.45s ease, scale 1.6s var(--ez-t) var(--d, 0ms), clip-path 0.9s var(--ez-w) var(--d, 0ms); }
+.sp.mo .rv-pic:not(.rv-go) img { clip-path: inset(0 0 100% 0); }
+.sp.mo .rv-pic.rv-go img { scale: 1; }
+/* the drift: a tenth taller, moved up through it by the scroll */
+.sp.mo .sp-pic.par img { bottom: auto; height: 110%; translate: 0 var(--py, 0px); }
+/* the cover settles once the room is on stage, when nothing flew to it */
+@keyframes sp-settle { from { scale: 1.07; } }
+.sp.mo .sp-cpic.settle img { animation: sp-settle 1.8s var(--ez-t) both; }
+
+/* a field of colour unveils down, like a picture: a sheet of paper over
+   it draws back to its foot (again, the field itself is not clipped) */
+.sp.mo .rv-field { position: relative; }
+.sp.mo .rv-field::after { content: ""; position: absolute; left: 0; right: 0; top: -1px; bottom: -1px; z-index: 2; background: var(--paper);
+  transform-origin: 50% 100%; transition: transform 0.9s var(--ez-w) var(--d, 0ms); pointer-events: none; }
+.sp.mo .rv-field.rv-go::after { transform: scaleY(0); }
+
+/* a rule draws in from the left; the words it heads follow */
+.sp.mo .rv-rule { position: relative; border-top-color: transparent !important; }
+.sp.mo .rv-rule::before { content: ""; position: absolute; left: 0; right: 0; top: -1px; height: 1px; background: var(--rc, var(--hair));
+  transform: scaleX(0); transform-origin: 0 50%; transition: transform 0.66s var(--ez-r) var(--d, 0ms); pointer-events: none; }
+.sp.mo .rv-rule.rv-go::before { transform: none; }
+.sp.mo :is(.sp-kick, .sp-foot) { --rc: var(--ink); }
+.sp.mo .sp-black .sp-nr { --rc: rgba(255, 255, 255, 0.16); }
+.sp.mo .sp-kick.rv { transition: color 0.5s ease calc(var(--d, 0ms) + 0.12s); }
+.sp.mo .sp-kick.rv:not(.rv-go) { color: transparent; }
+.sp.mo .sp-nr.rv > * { transition: opacity 0.5s ease calc(var(--d, 0ms) + 0.12s); }
+.sp.mo .sp-nr.rv:not(.rv-go) > * { opacity: 0; }
+
+/* small type lifts in; a chart's bars grow after their words */
+.sp.mo .rv-fade { transition: opacity 0.7s ease var(--d, 0ms), transform 0.7s var(--ez-t) var(--d, 0ms); }
+.sp.mo .rv-fade:not(.rv-go) { opacity: 0; transform: translateY(10px); }
+.sp.mo .sp-bar2.rv i { transform-origin: 0 50%; transition: transform 0.9s var(--ez-r) calc(var(--d, 0ms) + 0.1s); }
+.sp.mo .sp-bar2.rv:not(.rv-go) i { transform: scaleX(0); }
+@media (prefers-reduced-motion: reduce) {
+  .sp .rvi { transform: none !important; }
+  .sp .sp-pic img { scale: 1 !important; translate: none !important; animation: none !important; }
+}
