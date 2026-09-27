@@ -444,7 +444,10 @@
      this page, used in place of a sentence pulled from a study */
   const LINES = window.ENTRY_LINES || {};
   /* a line in two tones, as a study's lead is: its first sentence ink */
-  const twoTone = (t) => { const m = /[.!?]\s+(?=[A-Z])/.exec(t); return m ? esc(t.slice(0, m.index + 1)) + ' <span class="g">' + esc(t.slice(m.index + m[0].length)) + "</span>" : esc(t); };
+  /* a sentence ends on a period after a small letter, a figure or a
+     bracket, so an initial or an acronym ("J. Christianson", "A.R.C.")
+     does not end the ink half early */
+  const twoTone = (t) => { const m = /[a-z0-9%)"'\u2019\u201d][.!?]\s+(?=[A-Z])/.exec(t); return m ? esc(t.slice(0, m.index + 2)) + ' <span class="g">' + esc(t.slice(m.index + m[0].length)) + "</span>" : esc(t); };
 
   const IXS = ["a", "b", "c", "d", "e", "f"];
   let IX = (new URLSearchParams(location.search).get("index") || "e").toLowerCase();

@@ -17,21 +17,24 @@
    no outcome, number or reason a study does not state. Keys are the
    entry's address without the # (fig/…, tool/…, cap/…, line/…).
 
-   A figure's line ties the number back to what the work solved (27 Sept,
-   his "for 'figures' - to make them really make sense can we relate them
-   back to what the project solved or did, ya know? that extra bit of
-   context really sells it"): the ink sentence says what the number was a
-   problem of, the grey one what was built and what changed, each from
-   the study's own words, quoted in a comment above the line. A figure
-   whose study says no problem (a timeline, a career fact) stays plain.
-   The rule is kept in CLAUDE.md too, so new work gets the same.
+   A line ties its entry back to what the work solved (27 Sept, his "for
+   'figures' - to make them really make sense can we relate them back to
+   what the project solved or did, ya know? that extra bit of context
+   really sells it", then "do the same pass for tools and capabilities"):
+   the ink sentence says the problem (what a number measured, what a tool
+   was up against, what a project asked of a skill), the grey one what was
+   built and what changed, each from the study's own words, quoted in a
+   comment above the line. An entry whose study names no problem (a build
+   timeline, a career fact, a tool only listed) stays plain. The rule is
+   kept in CLAUDE.md too, so new work gets the same.
 
    To change a line, change the words; to take one away, delete it. */
 window.ENTRY_LINES = {
   /* A.R.C.: "Perceptron's Mk1 model reads the physical world from footage
      ... picks up the spatial context a single photo misses. Sweep a room
      with your phone and Mk1 reads the whole thing." */
-  "tool/perceptron-mk1": "Mk1 is Perceptron's model for reading the physical world from video. I used it in A.R.C. so you can sweep a room with your phone and it catches what a single photo misses.",
+  /* what it answered: A.R.C.: "picks up the spatial context a single photo misses"; "Video scanning runs on Perceptron's Mk1 model: sweep a room and the model reasons across the footage in real time" */
+  "tool/perceptron-mk1": "A single photo misses a lot of what's around it, so A.R.C.'s video scan runs on Perceptron's Mk1. Sweep a room with your phone and it reasons across the footage in real time.",
 
   /* Robert Rodriguez x Neiman's: shot in one day; run across social,
      email, the stores and editorial; "Every piece in the campaign is some
@@ -70,37 +73,45 @@ window.ENTRY_LINES = {
   "tool/adobe-creative-suite": "Adobe's design apps show up across the interiors work, from the Fairview suite to the Mountain View chalet.",
   /* Nordstrom personalization: "built on three tile shapes. They resize for
      every breakpoint, so one picture works many ways" */
-  "tool/asset-library": "Nordstrom's asset library is one of the tools behind its personalized homepage. The content there is built on three tile shapes that resize for every breakpoint, so one picture works many ways.",
+  /* what it answered: Nordstrom personalization: "Nordstrom needed personalized content for millions of customers, and it couldn't look like a machine had made it" */
+  "tool/asset-library": "Nordstrom needed personalized content for millions of customers, and it couldn't look machine-made. The asset library's pictures went into three tile shapes that resize for every breakpoint, so one picture works many ways.",
   "tool/autocad": "AutoCAD is where the drawings for the interiors get made. It's used in all eight of them, the Hill Country house, the Fairview and the Mountain View chalet among them.",
   /* Various design: "a film camera for the photography"; "one 4x6 film
      photograph blown up to fill a storefront window" */
   "tool/camera": "For the early design work, the photography came from a film camera. One of its 4x6 prints was blown up to fill a storefront window.",
   /* Robert Rodriguez: "The whole campaign is four photographs from one day" */
-  "tool/capture-one": "Capture One is software for shooting and editing photographs. It was used on the Robert Rodriguez campaign for Neiman Marcus, which all came from one day in the studio.",
+  /* what it answered: Robert Rodriguez: "the budget covered one day in the studio" */
+  "tool/capture-one": "The Robert Rodriguez campaign for Neiman Marcus had one day in the studio to make every picture. The shoot ran through Capture One, software for shooting and editing photographs.",
   /* Sally OS: "Claude runs the chat and gets the reasoning jobs: turning
      competitive signals into recommendations, drafting the campaign brief
      from raw intel, writing copy in the brand voice." */
-  "tool/claude": "Claude is Anthropic's AI model. In Sally Marketing OS it does the reasoning, turning competitor signals into recommendations, drafting campaign briefs and writing copy in the brand voice.",
+  /* what it answered: Sally OS: "Competitive intelligence feeds strategy, strategy produces briefs"; "Claude runs the chat and gets the reasoning jobs" */
+  "tool/claude": "Sally's campaigns start as raw competitive intel, and in Sally Marketing OS Claude gets the reasoning jobs. It turns the signals into recommendations, drafts the brief and writes copy in the brand voice.",
   /* DSC: "paste one URL into the AI they already use, Claude, ChatGPT or
      Gemini, and ask it what's on their schedule, which trainer fits a goal,
      or to book Friday at 10am" */
-  "tool/claude-chatgpt": "Dallas Sport Collective's athletes can book through Claude or ChatGPT. They paste one link into the AI they already use and ask what's on their schedule, which trainer fits a goal, or to book a time.",
+  /* what it answered: DSC: "An athlete never has to open the app"; "paste one URL into the AI they already use" */
+  "tool/claude-chatgpt": "Dallas Sport Collective's athletes already use Claude or ChatGPT, so booking a session doesn't need another app. They paste one link into it and ask what's on their schedule, which trainer fits a goal, or to book Friday at 10am.",
   /* A.R.C.: "Claude Code was my main environment the whole way through."
      Sally OS: "my development environment for all of it". About: "This site
      runs in Claude Code." */
-  "tool/claude-code": "Claude Code is Anthropic's coding agent, and it's where I build. It was the main environment for A.R.C. and Sally Marketing OS, Faux Reel took a day in it, and this site runs in it too.",
+  /* what it answered: A.R.C.: "Claude Code was my main environment the whole way through"; Faux Reel: "The build took a day with Claude Code"; About: "It's the CMS, the design tool and the build environment at once" */
+  "tool/claude-code": "Claude Code is Anthropic's coding agent, and it's where I build: A.R.C. end to end, Sally Marketing OS, and Faux Reel in a single day. This site runs in it too, as the CMS, the design tool and the build environment at once.",
   /* Faux Reel: "runs on a timer ... with CSS animation and no video file
      anywhere"; "The finished web component weighs 4.8KB gzipped" */
-  "tool/css": "Faux Reel's motion runs on CSS animation. Stills are cut on a timer, with no video file anywhere, and the whole web component weighs 4.8KB.",
+  /* what it answered: Faux Reel: "A sizzle reel is usually footage"; "with CSS animation and no video file anywhere" */
+  "tool/css": "A sizzle reel normally needs a video file. Faux Reel's motion is CSS animation instead, stills cut on a timer in one container, and the whole web component weighs 4.8KB.",
   /* Ivy Park: components the CMS "didn't have: parallax modules, animated
      polygon masks, full-bleed video that played on scroll ... So they got
      built"; they "powered other launches for two years" */
   "tool/custom-components": "Some pages needed things Nordstrom's CMS didn't have yet, so they got built. For Ivy Park that meant parallax, animated masks and video on scroll, and those components powered other launches for two years.",
   /* Loved by Nordstrom's own lead */
-  "tool/editorial-systems": "Loved by Nordstrom was a year of emerging-brand merchandising, in stores and online. It was built around one heart icon borrowed from Instagram.",
+  /* what it answered: Loved by Nordstrom: "a Nordstrom mandate to lift smaller designer labels"; "merchandising had a dial they could turn without touching the design" */
+  "tool/editorial-systems": "Nordstrom wanted its smaller designer labels lifted in stores and online at once, so the campaign became an editorial system around one heart icon. Liked sat on the day-to-day tiles and Loved on the heroes, a dial merchandising could turn without touching the design.",
   /* About: "writes and designs the emails, web assets and signage, and
      delivers them into Figma through a plugin I wrote" */
-  "tool/figma": "Figma is where screens get designed and shared. The Cosmo Prof refresh was made in it, and Sally Marketing OS delivers its emails, web assets and signage into Figma through a plugin I wrote.",
+  /* what it answered: About: "writes and designs the emails, web assets and signage, and delivers them into Figma through a plugin I wrote" */
+  "tool/figma": "Sally Marketing OS writes and designs the emails, web assets and signage, then delivers them into Figma through a plugin I wrote. The Cosmo Prof refresh was designed there too.",
   /* West Texas: "a family trip through Big Bend and the desert around
      Marfa"; "A few of these later became the backdrops for the Capitan
      Boot Co. campaign" */
@@ -109,38 +120,49 @@ window.ENTRY_LINES = {
      "Grunge compositing and hand-drawn type for the pop artist" */
   "tool/hand-rendering": "Some of the early design work is drawn by hand, wherever a piece called for it. The hand-drawn type for the pop artist is one.",
   /* Nordstrom beauty: "where every story is shoppable" */
-  "tool/html-css-js": "HTML, CSS and JavaScript are the web's building blocks, and they're in the code for Ivy Park and Nordstrom's beauty hub. The beauty hub is built so every story can be shopped.",
-  "tool/illustrator": "Illustrator is Adobe's drawing app, for logos, type and patterns. It runs through the brand work, from the early posters and logos to Capitan Boot Co., J. Christianson and the Robert Rodriguez campaign.",
-  "tool/indesign": "InDesign handles layout, anything with pages and type. It's behind the print and editorial work, from Neiman Marcus's editorial hub to the Hill Country Oakworks campaign.",
+  /* what it answered: Ivy Park: "this page had to be the store, the lookbook and the campaign at the same time" */
+  "tool/html-css-js": "Ivy Park's page had to be the store, the lookbook and the campaign at once, with parallax, polygon masks and video playing on scroll. It was built in HTML, CSS and JavaScript, and so was Nordstrom's beauty hub.",
+  /* what it answered: Capitan Boot Co.: "every mark had to come through that and still read"; "the bull skull lockup is drawn on a geometric grid" */
+  "tool/illustrator": "Capitan Boot Co.'s marks had to be stamped into leather, stitched and embossed and still read, so the bull skull lockup was drawn in Illustrator on a geometric grid. It's the drawing app behind the brand work, from the early logos to J. Christianson.",
+  /* what it answered: Hill Country Oakworks: "The campaign had to work on a roadside billboard and on a phone screen"; "sized for each" */
+  "tool/indesign": "Hill Country Oakworks' campaign had to hold up on a roadside billboard and on a phone screen, and InDesign sized the same idea for each. Neiman Marcus's editorial hub, made to feel like a magazine, was laid out in it too.",
   /* Jeffrey NYC: "every interaction from wireframe to checkout was prototyped" */
-  "tool/invision": "InVision makes clickable prototypes. For Jeffrey New York's first online store, every interaction from wireframe to checkout was prototyped.",
+  /* what it answered: Jeffrey New York: "Jeffrey had never sold online. The store itself was closer to a gallery than a shop"; "every interaction from wireframe to checkout was prototyped" */
+  "tool/invision": "Jeffrey New York had never sold online, and its store felt more like a gallery than a shop. Every interaction on its first site, from wireframe to checkout, was prototyped in InVision before it was built.",
   /* DSC: "an MCP server with eleven tools"; "The same trainer data feeds
      the MCP server, so a connected AI describes a coach from the actual record" */
-  "tool/model-context-protocol": "Model Context Protocol is the open standard that lets an AI use outside tools. Dallas Sport Collective's MCP server has eleven of them and reads the real trainer records, so a connected AI describes a coach from the actual data.",
+  /* what it answered: DSC: "The AI only ever asks"; "a write only ever creates a pending request the owner has to approve" */
+  "tool/model-context-protocol": "Athletes at Dallas Sport Collective book from the AI they already use, but that AI only ever asks. Its MCP server gives it eleven tools that read the real records, and anything it books waits as a request for the owner to approve.",
   /* Sally OS: "The asset hub, the associate site, and the scoreboard are
      Next.js on Vercel." DSC: "Next.js on Vercel" */
   "tool/next-js": "Next.js is a framework for websites and web apps. Sally Marketing OS's asset hub, associate site and scoreboard are built on it, and so is Dallas Sport Collective.",
   /* Nordstrom beauty: "Built to stay current without a team rebuilding the
      pages every week." */
-  "tool/nordstrom-cms": "Nordstrom's content management system is where its site pages get built, and three of these projects live in it. The beauty hub was set up so the pages stay current without a team rebuilding them every week.",
+  /* what it answered: About: "At Nordstrom the new CMS saved $3M over four years" */
+  "tool/nordstrom-cms": "At Nordstrom I worked with engineering to roll out a new CMS, and it saved $3M over four years. Three of these projects live in it, Ivy Park and the beauty hub among them.",
   /* DSC: "OAuth 2.0 consent with short-lived tokens" */
-  "tool/oauth-2-0": "OAuth 2.0 is how one app gets permission to act for you in another. Dallas Sport Collective uses it for consent, with short-lived tokens.",
+  /* what it answered: DSC: "Connecting runs through an OAuth consent screen with short-lived, rotating tokens, and access revokes from the dashboard in one tap" */
+  "tool/oauth-2-0": "Letting an outside AI into a gym's schedule needs permission that can be taken back. Dallas Sport Collective's connection runs through an OAuth 2.0 consent screen with short-lived, rotating tokens, and access revokes from the dashboard in one tap.",
   /* Sally OS: "OpenAI's GPT-Image-2 for studio photography"; "Two passes
      through OpenAI's GPT-Image-2." */
-  "tool/openai": "OpenAI makes the GPT models and their image tools. In A.R.C. its Vision API reads photographs, and in Sally Marketing OS its GPT-Image-2 does the studio photography.",
+  /* what it answered: A.R.C.: "The apps for it ask you to type every item in by hand" */
+  "tool/openai": "Home inventory apps make you type every item in, so A.R.C. uses OpenAI's Vision API to read the photographs instead. Sally Marketing OS gets its studio photography from GPT-Image-2.",
   /* A.R.C.: "returns a structured read: what the object is, what it is
      made of, its style, its condition, and a rough era or manufacture period" */
-  "tool/openai-vision-api": "The OpenAI Vision API reads a photograph and describes what's in it. In A.R.C. it returns what an object is, what it's made of, its style, its condition and roughly when it was made.",
+  /* what it answered: A.R.C.: "so the valuation has enough detail to be accurate" */
+  "tool/openai-vision-api": "A replacement value needs more than an object's name, so A.R.C. asks the OpenAI Vision API for the rest. From one photograph it returns what the thing is, what it's made of, its style, its condition and roughly how old it is.",
   /* Sally OS: "Perplexity is the live layer: industry news, competitor
      announcements, shifts in social sentiment ... pulled from the web as
      they happen." */
-  "tool/perplexity": "Perplexity is an AI that searches the live web. It's the live layer in Sally Marketing OS, pulling industry news, competitor announcements and shifts in social sentiment as they happen.",
+  /* what it answered: Sally OS: "A question that used to mean a research request and a two-week turnaround" */
+  "tool/perplexity": "A research question at Sally used to mean a request and a two-week turnaround. Perplexity is the live layer in Sally Marketing OS now, pulling industry news, competitor announcements and shifts in social sentiment as they happen.",
   /* Loved by Nordstrom: "The template used whatever photography a brand
      had already licensed"; "a 1080-square social post scaled up to a
      1440-wide hero with no new art direction, just a crop spec" */
   "tool/photography-licensing": "Loved by Nordstrom's template used whatever photography a brand had already licensed. A 1080-square social post could become a 1440-wide hero with no new art direction, just a crop spec.",
   /* the most-listed tool: twelve studies */
-  "tool/photoshop": "Photoshop is Adobe's photo editor, and it's in more of these projects than any other tool. They run from the early posters and album covers to Cosmo Prof, You By Sally and the Robert Rodriguez campaign.",
+  /* what it answered: Robert Rodriguez: "the photographs layered over each other so the same few pictures could carry a whole look" */
+  "tool/photoshop": "With one studio day for the Robert Rodriguez campaign, the photographs were layered over each other in Photoshop so a few could carry the whole look. It's in more of these projects than any other tool, back to the early posters and album covers.",
   "tool/playwright": "Playwright drives a real browser from code. Faux Reel, the tool that turns still photographs into a sizzle reel, uses it.",
   /* Sally OS: "a single-page app in plain HTML and JavaScript, no framework
      and no build step, on a Python server, hosted on Railway" */
@@ -155,20 +177,23 @@ window.ENTRY_LINES = {
   "tool/streamlit": "Streamlit turns Python into a web app. It's A.R.C.'s frontend, on a Python backend deployed on Vercel.",
   /* Jeffrey Spring: "shot entirely in the studio"; "foliage doing the work
      of a location". You By Sally: "Real people instead of models" */
-  "tool/studio-photography": "Jeffrey's spring campaign was shot entirely in the studio, with foliage doing the work of a location. You By Sally's campaign is studio work too, shot with real people.",
+  /* what it answered: Jeffrey spring: "Jeffrey needed a spring campaign that looked like it had been shot on location, on a studio budget" */
+  "tool/studio-photography": "Jeffrey needed a spring campaign that looked like location work on a studio budget. The whole thing was made indoors, with monstera leaves and palm fronds cropped big enough to stand in for a place.",
   /* Sally OS: "An admin review dashboard updates live over Supabase Realtime." */
   "tool/supabase": "Supabase is a database platform built on Postgres. It holds the data for A.R.C., and in Sally Marketing OS an admin dashboard updates live over it.",
   /* Sally OS: "pgvector for a single embedding index that covers documents,
      product photography, and video scenes at once, so one search runs
      across text and pictures" */
-  "tool/supabase-pgvector": "pgvector adds AI search to a Postgres database. In Sally Marketing OS one index covers documents, product photography and video scenes, so one search runs across text and pictures.",
+  /* what it answered: Sally OS: "that output breaks when the tools underneath it don't share context" */
+  "tool/supabase-pgvector": "Sally's output broke when its tools didn't share context, and what they knew was spread across documents, product photography and video. With pgvector, Sally Marketing OS keeps one index over all three, so one search covers text and pictures.",
   "tool/typescript": "TypeScript is JavaScript with types. It's part of Faux Reel, which builds a sizzle reel out of still photographs.",
   "tool/vercel": "Vercel hosts websites and apps. A.R.C. is deployed on it, and so are Dallas Sport Collective and the Sally Marketing OS asset hub, associate site and scoreboard.",
   /* Sally OS: Gemini "reads Sally's internal knowledge base on the first
      message, so every conversation opens with the brand guidelines,
      campaign history, product catalogs ... already loaded"; "That takes a
      million-token context window, which Gemini has." */
-  "tool/gemini": "Gemini is Google's AI model, and it can hold a million tokens at once. In Sally Marketing OS it reads the whole knowledge base on the first message, so every conversation starts with the brand guidelines, campaign history and product data already loaded.",
+  /* what it answered: Sally OS: "That takes a million-token context window, which Gemini has" */
+  "tool/gemini": "Sally's knowledge base is too big for most models to hold at once, and Gemini holds a million tokens. In Sally Marketing OS it reads the whole thing on the first message, so every conversation opens with the brand guidelines, campaign history and product data already loaded.",
 
   /* ── FIGURES (drafted 27 Sept). What the number is, where it comes from,
      and a way into the study. Figures that share one sentence in a study
@@ -302,76 +327,132 @@ window.ENTRY_LINES = {
      are the studies that list it. Since his "lean towards OVER doing it",
      entry-reach.js widens where each reaches, so the lines keep to
      examples and scope that hold, not counts. ── */
-  "cap/ai-integration": "AI is built into A.R.C., Sally Marketing OS and Dallas Sport Collective. At the gym, athletes book from whichever AI they already use, and the owner approves with a tap.",
-  "cap/ai-strategy": "AI strategy runs through A.R.C., Dallas Sport Collective and, most of all, Sally Marketing OS. It knows the brand, reads the market and the customers, and has started proposing campaigns on its own.",
+  /* what it answered: DSC: "a pile of texts, handwritten notes, emails, and a Google Sheet nobody fully trusted"; "the AI they already use" */
+  "cap/ai-integration": "Dallas Sport Collective's athletes were already using AI, while the gym's schedule lived in texts, notes and a spreadsheet. Now they book through the AI they use, one engine checks every request, and the owner approves with a tap.",
+  /* what it answered: Sally OS: "I rebuilt each piece with AI and connected them into a single pipeline" */
+  "cap/ai-strategy": "Sally ships thousands of assets a month, and the output broke wherever its tools didn't share context. The strategy was to rebuild each tool with AI and connect them into one pipeline, and Sally Marketing OS now proposes campaigns on its own.",
   "cap/album-art": "Album covers are part of about ten years of design work for musicians, friends and a handful of brands. Each one has its own look, made to fit that client.",
-  "cap/apparel-graphics": "Apparel graphics run from Capitan Boot Co.'s badges, built to be stamped, stitched and embossed, to the early design work and J. Christianson's fashion line.",
-  "cap/art-direction": "Art direction runs through the campaign and editorial work, from Neiman Marcus's editorial hub in 2012 to the Robert Rodriguez campaign in 2024.",
-  "cap/art-selection": "Choosing the art is part of every room here, from the Hill Country house to the Fairview and the Mountain View chalet.",
-  "cap/brand-design": "Brand design runs through this work, from Nordstrom.com's names, icons and custom lockups to Capitan Boot Co.'s marks and J. Christianson's four-circle logo.",
-  "cap/brand-development": "Brand development here runs from J. Christianson, built from the name outward, to Capitan Boot Co., Amber Shockey & Co. and A.R.C.",
-  "cap/brand-identity": "Brand identities here include Capitan Boot Co., made to be stamped into leather and still read, and J. Christianson, built from the name outward. A.R.C.'s came with the app, which I designed and built.",
-  "cap/brand-system": "Jeffrey New York's first online store came with a whole brand system: the brand, the site and the way it told stories. You By Sally's campaign ran on one grid, from a bio page to a retail sign.",
-  "cap/campaign-design": "Campaigns here run from the Ivy Park launch at Nordstrom to Hill Country Oakworks' billboards and the Robert Rodriguez spring campaign at Neiman Marcus.",
-  "cap/campaign-direction": "You By Sally's campaign used real people instead of models, oversized swatches, and one grid that runs from a bio page to a retail sign.",
+  /* what it answered: Capitan Boot Co.: "Stamps blur and embossing flattens out, so every mark had to come through that and still read" */
+  "cap/apparel-graphics": "Capitan Boot Co.'s badges go onto boots and apparel, where a stamp blurs and embossing flattens out, so each one was drawn to come through and still read. J. Christianson's tree drawing runs on its apparel in four seasonal colorways.",
+  /* what it answered: Neiman Marcus: "There was no location budget, so graphic color blocks stood in for the places a bigger production would have flown to" */
+  "cap/art-direction": "Neiman Marcus's InSite had no location budget, so graphic color blocks stood in for the places a bigger production would have flown to. Twelve years later the Robert Rodriguez campaign had one studio day, and one model in four setups carried it.",
+  /* what it answered: Hill Country living: "an original painting by Dwight D. Eisenhower hangs with landscape pieces in gilded frames" */
+  "cap/art-selection": "The Hill Country living room's limestone wall carries an original painting by Dwight D. Eisenhower, hung with landscape pieces in gilded frames. In the Fairview entry, a slatted wood geometric and a dark abstract flank the bench.",
+  /* what it answered: Nordstrom framework: "A custom icon and a typographic mark sourced for each one, and names that sound like a magazine's sections" */
+  "cap/brand-design": "Nordstrom was publishing more content than its site had structure for, so each section of the new framework got a name, an icon and a typographic mark of its own. Capitan Boot Co. and J. Christianson got whole brands, down to the logos.",
+  /* what it answered: J. Christianson: "the brand started from nothing: the name first, then the mark, the palette, the type, and the product graphics" */
+  "cap/brand-development": "J. Christianson started from nothing, so the brand was built from the name outward: the mark, the palette, the type, then the product graphics. A.R.C.'s brand was made in the last two weeks of its build, with the marketing site and the launch.",
+  /* what it answered: Capitan Boot Co.: "needed a brand that could take the same wear"; "Every piece works stamped, stitched, embroidered, or printed" */
+  "cap/brand-identity": "Capitan Boot Co. makes Western boots and needed a brand that could take the same wear. Its logo, badges and lockups work stamped, stitched, embroidered or printed, and still read.",
+  /* what it answered: Jeffrey New York: "Modular grids so the layouts could change with the season, a type hierarchy that stayed sharp everywhere it showed up" */
+  "cap/brand-system": "Jeffrey New York had never sold online, and its store felt like a gallery, so its first site was built as a system. Modular grids change with the season, and a type hierarchy stays sharp everywhere it shows up.",
+  /* what it answered: Hill Country Oakworks: "look like a heritage brand at both sizes"; "It pulls from mid-century poster design" */
+  "cap/campaign-design": "Hill Country Oakworks' campaign had to read as a heritage brand on a roadside billboard and on a phone screen. It borrows from mid-century posters, with warm color blocking and an oak silhouette, and the same idea runs at every size.",
+  /* what it answered: You By Sally: "the brief was to make it something you would choose on purpose"; "real people instead of models, and the rest of the campaign came off those portraits" */
+  "cap/campaign-direction": "You By Sally's brief was to take hair color off the drugstore shelf and make it something you'd choose on purpose. The campaign was cast with real people instead of models, and everything else came off their portraits.",
   /* Amber Shockey & Co.: "three collections in"; "Each one is built to
      layer, from a single accent dish to the whole table." */
-  "cap/colorway-development": "Colorways run through the brand work, from J. Christianson's tree drawing in four colorways to Amber Shockey & Co.'s tableware and A.R.C.'s palette.",
+  /* what it answered: Amber Shockey & Co.: "each runs in several colorways, so the same set can go minimal or maximal"; "every new collection has to sit next to the ones before it" */
+  "cap/colorway-development": "Amber Shockey & Co.'s sets have to go minimal or maximal depending on what they're paired with, so every collection runs in several colorways. Each new one also has to sit next to the collections before it.",
   "cap/construction-documentation": "Every room here goes to construction with full documents behind it. AutoCAD and SketchUp are in all eight.",
-  "cap/content-strategy": "The content strategy for Nordstrom.com came down to four buckets that sort the homepage, email and landing pages.",
-  "cap/copywriting": "The words are part of the work, from the Ivy Park launch to Sally Marketing OS, which writes copy in the brand voice.",
-  "cap/creative-direction": "Creative direction ties the campaign work together, from the Ivy Park launch and a year of Loved by Nordstrom to Cosmo Prof's digital refresh.",
-  "cap/design-systems": "Design systems show up from Nordstrom's three tile shapes to Sally Marketing OS. The tiles resize for every breakpoint, so one picture works many ways.",
-  "cap/digital-design": "Cosmo Prof's refresh brought new photography, simpler navigation and shoppable pieces built for working stylists. You By Sally's campaign carried its grid onto digital pages.",
+  /* what it answered: Nordstrom framework: "all hitting email and the site at the same time with nothing sorting them"; "it was organizing the teams before it reached a customer" */
+  "cap/content-strategy": "Nordstrom's brand launches, seasonal pushes, occasion guides and new arrivals were all landing at once, with nothing sorting them. The strategy came down to four named buckets for the homepage, email and landing pages, and it was organizing the teams before it reached a customer.",
+  /* what it answered: Ivy Park: "The photography was supplied ... and everything else was open: typography, layout, copy, animation, interaction" */
+  "cap/copywriting": "Ivy Park's photography came supplied, and everything else was open, the copy included. Sally Marketing OS writes in the brand voice now, turning one brief into four channels of social in about a minute.",
+  /* what it answered: Robert Rodriguez: "felt current and still kept the brand's romantic side, and the budget covered one day in the studio"; "'80s mall glam meets high fashion" */
+  "cap/creative-direction": "Neiman Marcus wanted a Robert Rodriguez campaign that felt current and kept the brand's romantic side, on one day in the studio. The answer was '80s mall glam meeting high fashion, run across social, email, the stores and editorial.",
+  /* what it answered: Nordstrom personalization: "The rules were strict enough to run at that scale, and the pages still came out different from each other" */
+  "cap/design-systems": "Nordstrom needed personalized content for millions of customers that didn't look machine-made. The system was three tile shapes that resize and restack across phone and desktop, strict enough to run at that scale while every page still came out different.",
+  /* what it answered: Cosmo Prof: "The job was new visual direction and clearer product discovery" */
+  "cap/digital-design": "Cosmo Prof's stylists needed clearer product discovery on a dated site. The new homepage has tabbed recommendations personalized to each stylist, shoppable video you can buy from while it plays, and a header cut back so the content gets the screen.",
   "cap/digital-strategy": "Jeffrey New York was closer to a gallery than a shop, so its first online store changes with the season and runs a story ahead of every sale.",
-  "cap/ecommerce-design": "Jeffrey New York's first online store was built from zero, and every interaction from wireframe to checkout was prototyped.",
-  "cap/editorial-design": "InSite, Neiman Marcus's digital editorial hub, was built to feel like a magazine and sell like a store.",
+  /* what it answered: Jeffrey New York: "the job was to get that feeling onto a screen"; "product pages that opened on the photography, navigation organized around the edit instead of by category" */
+  "cap/ecommerce-design": "Jeffrey had never sold online, and the job was to get the feeling of an edited gallery onto a screen. Its first store opens product pages on the photography and organizes navigation around the edit instead of by category.",
+  /* what it answered: Neiman Marcus: "The mandate was to make the website feel like a magazine and sell product like a store" */
+  "cap/editorial-design": "Neiman Marcus wanted InSite to feel like a magazine and sell like a store at the same time. Designer names ran as big as the photographs, and sometimes the type broke the grid, trusting the shopper would still find the price.",
   /* Nordstrom beauty: "The answer was a set of templates the products
      could rotate through." */
-  "cap/editorial-templates": "Editorial templates let Nordstrom's pages change without being rebuilt. In the beauty hub every story is shoppable, and the products rotate through a set of templates.",
-  "cap/email-web-templates": "Email and web templates carry much of this work, from Jeffrey's spring campaign to Loved by Nordstrom and Sally Marketing OS.",
-  "cap/engineering": "I engineer what I design here: A.R.C., Sally Marketing OS, Dallas Sport Collective and Faux Reel. Faux Reel's whole web component weighs 4.8KB.",
-  "cap/engineering-ai-assisted": "A.R.C., Sally Marketing OS and Faux Reel were all built with Claude Code, the AI coding agent I work in. Faux Reel took a day.",
-  "cap/experience-design": "The Ivy Park launch was designed as an experience, with parallax, animated polygon masks and full-bleed video that played on scroll.",
-  "cap/exterior-direction": "Mountain View is a 1968 Pacific Northwest chalet, taken to the studs and rebuilt inside and out.",
-  "cap/finish-coordination": "Finishes are coordinated across every room here. Floor & Decor named the studio Designer of the Quarter for three bathrooms that share one material kit.",
-  "cap/finish-selection": "Finish selection is part of every room here, from the Fairview's charcoal violet walls and antiqued brass to the Hill Country kitchen's unlacquered brass.",
-  "cap/fixture-selection": "Fixtures are chosen for every room, like the Hill Country kitchen's unlacquered brass on the pulls, the knobs and the faucet.",
+  /* what it answered: Nordstrom beauty: "Beauty content ages fast"; "built so merchandising could swap products without touching the layout" */
+  "cap/editorial-templates": "Beauty content goes stale fast, with launches every week and trends turning with the season. Nordstrom's beauty hub answered with three story templates the products rotate through, so merchandising can swap them without touching the layout.",
+  /* what it answered: Jeffrey spring: "The whole thing was one kit that ran on email, the homepage and social" */
+  "cap/email-web-templates": "Jeffrey's spring campaign had to run on email, the homepage and social from one studio shoot, so it was built as one kit. At PetSmart, new email templates and site patterns helped lift creative output 30%.",
+  /* what it answered: DSC: "flows through one deterministic engine that checks trainer availability, double-bookings, floor capacity, allowed durations, and cancellation rules" */
+  "cap/engineering": "Dallas Sport Collective's bookings come in by voice, from an athlete's AI or by a tap, and each one has to respect trainer hours, double-bookings, floor capacity and cancellation rules. One deterministic engine checks all of it, so the AI only ever asks.",
+  /* what it answered: A.R.C.: "Claude Code was my main environment the whole way through"; Faux Reel: "most of it spent finessing the timing" */
+  "cap/engineering-ai-assisted": "A.R.C. went from concept to live product in ten weeks with one person building it, in Claude Code the whole way through. Faux Reel took a day in it, most of that spent on the timing.",
+  /* what it answered: Ivy Park: "The polygon showed up during concepting as a way to break the rectangular grid the photography came in" */
+  "cap/experience-design": "Ivy Park's supplied photography came in rectangles, and the polygon showed up in concepting as a way to break that grid. Angled, rotated and animated on scroll, it ran from the hero through the product carousels into the email headers.",
+  /* what it answered: Mountain View: "an exterior that disappeared on cloudy days"; "Exterior repainted warm gray with white railings. New lighting on the patio and stairs at night" */
+  "cap/exterior-direction": "The Mountain View chalet's exterior disappeared on cloudy days. It was repainted a warm gray with white railings, with new lighting on the patio and stairs for the nights.",
+  /* what it answered: Floor & Decor: "the kit every project pulled from, and each one used it differently" */
+  "cap/finish-coordination": "Three bathrooms in three different styles all pulled from one material kit: marble, dolomite, white oak and classic tile. Each room stands on its own, and Floor & Decor named the studio Designer of the Quarter for them.",
+  /* what it answered: Fairview suite: "The layers work together because the tonal range stays narrow: blues, grays, warm metals" */
+  "cap/finish-selection": "The Fairview suite piles on velvet, linen, bouclé and faux fur, and the layers work together because the finishes keep a narrow range: blues, grays and warm metals. Brass sits at every furniture base and fixture.",
+  /* what it answered: Hill Country bath: "Two rooms from the kitchen, and softer than it"; "swaps the brass for polished nickel" */
+  "cap/fixture-selection": "The Hill Country bath is softer than the kitchen two rooms away, and its fixtures are part of why: polished nickel instead of brass. Globe sconces sit at both vanities, with wall-mounted cross-handle faucets.",
   "cap/fixture-sourcing": "Fixtures are sourced for every room, from a hammered copper clawfoot tub in the Fairview suite to the Mountain View chalet's sputnik chandelier.",
-  "cap/full-stack-engineering": "A.R.C., Sally Marketing OS, Dallas Sport Collective and Faux Reel are built end to end, from the database to the screen.",
-  "cap/furniture-curation": "Furniture is curated for every room, from mid-century pieces with Western details in the Hill Country living room to the Fairview's chairs facing the fire.",
-  "cap/go-to-market-strategy": "Launches here include Ivy Park at Nordstrom, Jeffrey New York's first online store and A.R.C., whose go-to-market was part of the build.",
-  "cap/graphic-design": "Graphic design runs from the early album covers and gig posters to J. Christianson's tree drawing, in four colorways for the whole line.",
+  /* what it answered: DSC: "The founder needed two things at once: a brand that matched where the gym was headed, and a back office that could keep up" */
+  "cap/full-stack-engineering": "Dallas Sport Collective's founder needed a brand that matched where the gym was headed and a back office that could keep up. Both came as one build, from the database to the screen: a marketing site, an athlete app, an owner console and an MCP server.",
+  /* what it answered: Mountain View: "Furniture kept simple on purpose so it doesn't compete with what's outside the glass" */
+  "cap/furniture-curation": "The Mountain View chalet looks out through its glass onto the tree canopy, so the furniture was kept simple enough not to compete. There's a tufted gray sofa, a woven bench, a walnut dining set and a ladder shelf against painted stone.",
+  /* what it answered: A.R.C.: "Weeks 9-10 were the brand identity and visual system, the marketing site, and the go-to-market work, and then launch" */
+  "cap/go-to-market-strategy": "The last two weeks of A.R.C.'s ten-week build were the brand, the marketing site and the go-to-market. Ivy Park's launch at Nordstrom went from concept to live in six weeks.",
+  /* what it answered: J. Christianson: "A tree silhouette does the rest, drawn once and run in four seasonal colorways over a striped field in the brand colors" */
+  "cap/graphic-design": "J. Christianson needed product graphics for a whole line, and one tree drawing covers it. It runs in four seasonal colorways over a striped field in the brand colors, on apparel, candles, hangtags and print.",
   /* About and Floor & Decor: Designer of the Quarter, 2023 */
-  "cap/interior-design": "Eight of these projects are rooms, from a 1968 chalet taken to the studs to a Hill Country kitchen built from four materials. Floor & Decor named the studio Designer of the Quarter in 2023.",
-  "cap/logo-design": "The logos here range from five made for five clients in the early work to J. Christianson's four-circle mark, which changes color by where it goes.",
-  "cap/logo-system": "Some of these logos work as systems, like Capitan Boot Co.'s logo, type and badges, or J. Christianson's mark that changes color by where it goes.",
-  "cap/material-selection": "Material selection runs through every room here. Floor & Decor's three bathrooms share one kit: marble, dolomite, white oak and classic tile.",
-  "cap/material-specification": "Every room here is specified material by material, like the Hill Country living room's limestone fireplace wall and reclaimed pine.",
-  "cap/naming": "Names are part of the work too, from J. Christianson, built from the name outward, to A.R.C. and Faux Reel.",
-  "cap/pattern-design": "Patterns run through Amber Shockey & Co.'s tableware and through Black & white type, where they fill the letterforms.",
+  /* what it answered: Mountain View: "hadn't been rethought since the '90s"; Hill Country kitchen: "The mix of periods is on purpose" */
+  "cap/interior-design": "A 1968 chalet hadn't been rethought since the '90s, and a Hill Country kitchen mixes three periods on purpose. Eight rooms are here, each worked out down to the hardware, and Floor & Decor named the studio Designer of the Quarter in 2023.",
+  /* what it answered: J. Christianson: "so the one mark can change palette and still be recognized" */
+  "cap/logo-design": "J. Christianson's logo had to change palette with the setting and still be recognized, so it's four circles in a tight grid that keep their shape while the colors move. The early work has five more logos, for five clients.",
+  /* what it answered: Capitan Boot Co.: "on a hangtag or across a banner"; "a primary logo, secondary badges, typographic lockups, and a set of illustrations" */
+  "cap/logo-system": "Capitan Boot Co.'s marks had to read on a hangtag and across a banner, so the identity is a system: a primary logo, secondary badges, typographic lockups and a bull skull drawn on a geometric grid. Northwest Regular and Oldman Regular are the type pairing.",
+  /* what it answered: Fairview sitting room: "The palette is four materials: stone, velvet, brass, and warm oak, and no accent colors" */
+  "cap/material-selection": "The Fairview sitting room is formal, a little glam and comfortable to sit in, on four materials alone: stone, velvet, brass and warm oak. There are no accent colors and no television, and the chairs face the fire.",
+  /* what it answered: Hill Country living: "a floor-to-ceiling limestone fireplace wall. Reclaimed 1950s pine on the floor, exposed beams overhead, brass fixtures" */
+  "cap/material-specification": "The Hill Country living room is specified down to its surfaces: a floor-to-ceiling limestone fireplace wall, reclaimed 1950s pine underfoot, exposed beams overhead and brass fixtures. Every piece of furniture was chosen for how it will age.",
+  /* what it answered: Nordstrom framework: "names that sound like a magazine's sections" */
+  "cap/naming": "Nordstrom's content needed sorting into sections a customer could follow. Each got a name that sounds like a magazine's: What's Now, On Our List, Where to Wear and Wear to Where.",
+  /* what it answered: Amber Shockey & Co.: "a hero pattern, a secondary, and an accent, made to layer from a single dish up to a full setting" */
+  "cap/pattern-design": "Every Amber Shockey & Co. collection has to layer from one accent dish to a full table, so each has a hero pattern, a secondary and an accent. Each sets something structured against something organic.",
   /* Various design: "Grunge compositing and hand-drawn type for the pop
      artist"; Robert Rodriguez: "four photographs from one day, layered
      over each other" */
-  "cap/photo-compositing": "Compositing goes back to the grunge work for a pop artist in the early design days. In the Robert Rodriguez campaign, four photographs are layered over each other.",
-  "cap/photo-direction": "Neiman Marcus's editorial hub ran on studio-shot photography, next to the layouts and the runway typography.",
+  /* what it answered: Robert Rodriguez: "the photographs layered over each other so the same few pictures could carry a whole look" */
+  "cap/photo-compositing": "The Robert Rodriguez campaign had one studio day, so its photographs were layered over each other until a few could carry the whole look. Compositing goes back to the early work, in the grunge pieces for a pop artist.",
+  /* what it answered: Capitan Boot Co.: "with no props, no stand-ins, and no styling beyond what was already there" */
+  "cap/photo-direction": "Capitan Boot Co.'s campaign was shot in West Texas with no props, no stand-ins and no styling beyond what was already there. The pictures come from the landscape the boots are made for.",
   "cap/photography": "Some of the photography started as personal work. Photographs from a family trip through West Texas later became the backdrops for the Capitan Boot Co. campaign.",
   /* Cosmo Prof: "The templates set photography, type and layout once." */
-  "cap/photography-direction": "Cosmo Prof's refresh brought new photography, and its templates set the photography, type and layout once.",
-  "cap/poster-design": "Posters and prints run from the early gig posters to Black & white type's lithographs and Hill Country Oakworks' billboards.",
-  "cap/product-applications": "The brands here go onto real products: Capitan Boot Co.'s boots and leather, Amber Shockey & Co.'s tableware, J. Christianson's fashion and home goods.",
-  "cap/product-design": "Products here run from Amber Shockey & Co.'s tableware to A.R.C., Sally Marketing OS and Faux Reel.",
-  "cap/product-management": "A.R.C., Sally Marketing OS, Dallas Sport Collective and Faux Reel are each managed as products. A.R.C. went from concept to live in ten weeks.",
-  "cap/product-photography-direction": "Nordstrom's personalized homepage needed product photography that could work many ways. Three tile shapes resize for every breakpoint, so one picture works across them.",
-  "cap/retail-signage": "Signage takes this work into stores, from You By Sally's grid to Loved by Nordstrom's in-store tiles and Sally Marketing OS's shelf talkers.",
-  "cap/space-planning": "Every room here is planned around how it gets used. The Hill Country kitchen's layout gives it eight feet of usable counter, with the open shelving facing the dining side.",
-  "cap/story-development": "Story runs through the digital work, from Neiman Marcus's InSite to Jeffrey New York, which runs a story ahead of every sale.",
-  "cap/typography": "Typography runs through the brand and editorial work, from Neiman Marcus's runway type to Black & white type's letterforms.",
-  "cap/typography-design": "Type is the subject of Black & white type, six patterns and three lithographs in black ink on white paper. The Robert Rodriguez campaign uses one typeface family across every piece.",
-  "cap/ux-architecture": "Jeffrey New York's first online store was mapped from wireframe to checkout, with every interaction prototyped.",
+  /* what it answered: Cosmo Prof: "The site was functional but dated"; "Started with photography: high-contrast lighting, defined shadows, cleaner compositions" */
+  "cap/photography-direction": "Cosmo Prof's site was functional but dated, and the refresh started with the photography: high-contrast lighting, defined shadows and cleaner compositions. The same templates now carry promotions, brand campaigns and education.",
+  /* what it answered: Black & white type: "With no color to lean on, tone comes from spacing" */
+  "cap/poster-design": "Black & white type took color, photography and gradients off the table to see how far six patterns could go in print. Three lithographs came out of it, with tone set by spacing: a packed fill reads dark and an open one light.",
+  /* what it answered: Amber Shockey & Co.: "made to layer from a single dish up to a full setting" */
+  "cap/product-applications": "Amber Shockey & Co.'s patterns have to work on a single accent dish and across a whole table. J. Christianson's tree drawing went onto apparel, candles, hangtags and print.",
+  /* what it answered: A.R.C.: "The apps for it ask you to type every item in by hand"; "shows the gap as a dollar amount" */
+  "cap/product-design": "Home inventory apps ask you to type every item in by hand, so about 60% of homeowners never catalog what they own. A.R.C. works from the camera instead, and it shows the gap between what you own and what your policy covers in dollars.",
+  /* what it answered: A.R.C.: "Concept Validation, 2 wks. Architecture, 2 wks. Interface Design + Build, 2 wks. Financial Layer, 2 wks. Brand + Go-to-Market, 2 wks" */
+  "cap/product-management": "A.R.C. ran on a plan of five two-week steps: validation, architecture, the interface, the financial layer, then the brand and go-to-market. It went from concept to live product in ten weeks.",
+  /* what it answered: Nordstrom personalization: "Deliberate contrast, precise angles, no styling props, so each image worked on its own as a story hero or stacked into a grid as ecomm" */
+  "cap/product-photography-direction": "Nordstrom's personalized pages needed product photographs that worked alone as a story hero and stacked in a grid as ecomm. So they were shot with deliberate contrast, precise angles and no styling props.",
+  /* what it answered: About: "writes and designs the emails, web assets and signage"; You By Sally: "clean grids that ran on mobile, desktop and in-store signage" */
+  "cap/retail-signage": "Sally's campaigns have to reach 2,000+ stores, and Sally Marketing OS designs the signage along with the emails and web assets. You By Sally's oversized swatches ran from mobile to in-store signs on one grid.",
+  /* what it answered: Fairview entry: "The light through those doors comes first. Everything else in the room is sized and placed to let it through" */
+  "cap/space-planning": "The Fairview entry is two stories tall, and the light through its floor-to-ceiling French doors comes first. Everything else in the room is sized and placed to let it through.",
+  /* what it answered: Neiman Marcus: "Every piece started with the story"; "The concept came first, then the shoot, then the styling and the layout" */
+  "cap/story-development": "Neiman Marcus wanted a site that read like a magazine, so every piece started with the story: designer spotlights, seasonal trend stories and ways-to-wear features. The concept came first, then the shoot, then the styling and the layout.",
+  /* what it answered: Jeffrey spring: "The type followed the same idea, condensed, stretched and layered for rhythm across three dress stories" */
+  "cap/typography": "Jeffrey's spring campaign ran three dress stories, JW Anderson, Valentino and Simone Rocha, and the type gave them one rhythm. It's condensed, stretched and layered, the way the foliage is cropped big.",
+  /* what it answered: Black & white type: "The amount of paper left around a letter sets the mood of the whole print" */
+  "cap/typography-design": "Black & white type asked how much range a few patterns could get out of letterforms once color was off the table. The shapes fill the letters, spill outside them and sit behind them, and the paper left around each letter sets the mood of the print.",
+  /* what it answered: Jeffrey New York: "The work started with the buying team: how the floor was laid out, how pieces got grouped" */
+  "cap/ux-architecture": "The work on Jeffrey's first online store started with how the buying team laid out the floor and grouped pieces. The site's navigation follows the edit instead of the category, and every interaction from wireframe to checkout was prototyped.",
   /* Nordstrom beauty: "built as its own component so it could move to
      eye, cheek, or nail" */
-  "cap/ux-design": "Nordstrom's beauty hub makes every story shoppable. One product story was built as its own component, so it could move to eye, cheek or nail.",
-  "cap/visual-design": "Nordstrom's beauty hub is where the stories and the products share a page. Its templates let the products rotate through without the pages being rebuilt.",
-  "cap/web-design": "I designed Dallas Sport Collective's marketing site, with the full trainer roster and program menu, on top of its booking platform.",
+  /* what it answered: Nordstrom beauty: "drag across a color gradient to preview shades on their own face. Pick a color, see it on, buy without leaving the modal" */
+  "cap/ux-design": "Nordstrom's beauty hub let a customer try a shade before buying: upload a photo or pull their Style Profile selfie, then drag across a color gradient to see it on their own face. They could pick one, see it on and buy without leaving the modal.",
+  /* what it answered: Cosmo Prof: "it needed to match the professionals using it"; "Typography moved to Jost, and the palette put soft neutrals against sharp black" */
+  "cap/visual-design": "Cosmo Prof's dated site needed to look like the professionals using it. The type moved to Jost, and the palette set soft neutrals against sharp black.",
+  /* what it answered: DSC: "black and white, big condensed type, photography of actual members training" */
+  "cap/web-design": "Dallas Sport Collective needed a brand that matched where the gym was headed, and the site carries it: black and white, big condensed type and photography of actual members training. The full trainer roster and program menu sit on it, over the booking platform.",
 };

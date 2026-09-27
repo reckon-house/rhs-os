@@ -86,7 +86,8 @@
     return { w: Math.round(w), h: Math.round(h) };
   };
 
-  const twoTone = (S, t) => { const m = /[.!?]\s+(?=[A-Z])/.exec(t); return m ? S.esc(t.slice(0, m.index + 1)) + ' <span class="g">' + S.esc(t.slice(m.index + m[0].length)) + "</span>" : S.esc(t); };
+  /* the same sentence end as the page's: not after an initial */
+  const twoTone = (S, t) => { const m = /[a-z0-9%)"'\u2019\u201d][.!?]\s+(?=[A-Z])/.exec(t); return m ? S.esc(t.slice(0, m.index + 2)) + ' <span class="g">' + S.esc(t.slice(m.index + m[0].length)) + "</span>" : S.esc(t); };
   const headEl = (S) => {
     const e = S.ctx.entry || {};
     const h = el("header", "xk-head");
