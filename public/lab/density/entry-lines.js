@@ -28,31 +28,14 @@
    timeline, a career fact, a tool only listed) stays plain. The rule is
    kept in CLAUDE.md too, so new work gets the same.
 
+   The six lines (What I make) have no line here on purpose: their shelves
+   keep the board's short sentence, "Native tools and AI products, built
+   end to end." (27 Sept, a problem-first pass on them was tried, then his
+   "actually i think them being shorter they way they were at first is
+   better").
+
    To change a line, change the words; to take one away, delete it. */
 window.ENTRY_LINES = {
-  /* the six lines, What I make (27 Sept, his "do the same pass for the
-     lines too"): each shelf's head says the problem the line answers and
-     what was built, where the index keeps the board's short sentence.
-     Then, reading them through, "should it be more strategic/a little
-     marketing/agency in nature vs being that specific and diving right
-     in? ... the digital version is closer": a line sits one altitude
-     above its studies, so it says what that kind of work has to do and
-     points at the work, and the specifics stay in the studies, the
-     figures and the tools. Plain words, not an agency's, and the five
-     open five different ways so the six do not read as a formula */
-  /* what it answered: Ivy Park: "this page had to be the store, the lookbook and the campaign at the same time"; Nordstrom beauty: "New products launch weekly" */
-  "line/digital": "A retail site has to be the store, the lookbook and the campaign at once, and stay current while new products land every week. These are the ones I designed and shipped, from Ivy Park's launch at Nordstrom to Jeffrey New York's first online store.",
-  /* what it answered: A.R.C.: "your job turns into reviewing what it found"; DSC: "The AI only ever asks"; the board: "built end to end" */
-  "line/app": "The tools here take the tedious part off your hands, the typing, the sorting and the back-and-forth, and leave the decisions with you. I built them end to end, from A.R.C. to Sally Marketing OS.",
-  /* what it answered: Sally OS: "that output breaks when the tools underneath it don't share context"; Nordstrom framework: "it was organizing the teams before it reached a customer" */
-  "line/systems": "When tools and teams don't share what they know, the output breaks somewhere between them. Nordstrom's content framework and Sally Marketing OS are two of the systems I built so they do.",
-  /* what it answered: Robert Rodriguez: "shot in one day and run across social, email, the stores, and editorial"; Hill Country Oakworks: "The same idea runs on billboards, print, and digital" */
-  "line/creative": "A campaign has to carry one idea across social, email, the stores and editorial, sometimes from a single day in the studio. This work runs from Neiman Marcus's InSite in 2012 to the Robert Rodriguez campaign in 2024.",
-  /* what it answered: Capitan Boot Co.: "needed a brand that could take the same wear"; J. Christianson: "apparel, candles, hangtags, and print"; Amber Shockey & Co.: "from a single dish up to a full setting" */
-  "line/branding": "Wherever a brand lands, stamped into leather, printed on a hangtag or set across a whole table, it has to hold up. The marks, type and patterns here were made for that, from Capitan Boot Co. to Amber Shockey & Co.",
-  /* what it answered: Hill Country kitchen: "Every decision came back to how a family uses a kitchen day to day"; the board: "Rooms designed like products, down to the hardware" */
-  "line/interiors": "Every decision in a room comes back to how it gets used day to day, down to the hardware. Eight rooms are here, from a Hill Country kitchen to a 1968 chalet taken to the studs.",
-
   /* A.R.C.: "Perceptron's Mk1 model reads the physical world from footage
      ... picks up the spatial context a single photo misses. Sweep a room
      with your phone and Mk1 reads the whole thing." */
