@@ -30,8 +30,13 @@
   const two = (n) => String(n).padStart(2, "0");
 
   /* the opener: the study's top picture, else its board picture, else its
-     largest; never a transparent one when another will do */
+     largest; never a transparent one when another will do. A.R.C. opens on
+     its board picture, the phone on grey, not its top one on wood (27
+     Sept, his "let's not use this image for ARC - let's use the one
+     that's grey/blue in the phone") */
+  const ON_LEAD = new Set(["arc"]);
   const openerOf = (S, k) => {
+    if (ON_LEAD.has(k) && S.ctx.lead(k)) return S.ctx.lead(k);
     const s = S.D.study(k) || {};
     const own = (S.ctx.pics(k) || []).filter((f) => f.w && f.h && !f.alpha).sort((a, b) => b.w - a.w);
     return s.top || S.ctx.lead(k) || own[0] || null;
@@ -46,23 +51,26 @@
      their middles, the chalet between its stove and its glass). These
      held. A laptop on a table does not: its screen gets cut. The number is
      where the crop's middle sits across the picture, 0 to 1. It is the
-     study's own opener that was looked at, so it applies to that picture
-     only ── */
+     opener that was looked at (the top picture, or A.R.C.'s board one),
+     so it applies to that picture only.
+     Then his "for the verticals instead of doing this side by side i think
+     for it to feel more heroic we do the verticals full bleed in the column
+     with the project text below": a tall one takes the stage's whole width
+     like any opener, as tall as 4:5 or the glass allows, its credit under
+     it ── */
   const TALL = {
     "branding-graphics": 0.59, "neiman-marcus": 0.57, "nordstrom-framework": 0.48, "amber-shockey-co": 0.39,
     "loved-by-nordstrom": 0.76, "capitan-boot-co": 0.56, "j-christianson": 0.52, "you-by-sally": 0.52,
     "fairview-bedroom": 0.28, "big-bend": 0.47, "hill-country-kitchen": 0.47, "hill-country-bath": 0.52,
     "black-white-type": 0.34, "hill-country-living": 0.64, "floor-and-decor": 0.33, "fairview-sitting": 0.52,
-    "fairview-entry": 0.28, "chalet": 0.38, "arc": 0.54, "robert-rodriguez": 0.515,
+    "fairview-entry": 0.28, "chalet": 0.38, "arc": 0.5, "robert-rodriguez": 0.515,
   };
-  /* a tall one: 4:5, three fifths of the stage (a phone's whole width),
-     flush to its side with its credit in the paper beside it; only if the
-     crop is still drawn at half its pixels */
+  /* a tall one: the stage's whole width, 4:5 or the height of the glass
+     under the running head, whichever is less (a phone keeps its 0.72);
+     only if the crop is still drawn at half its pixels */
   const tallBox = (S, f) => {
-    let w = S.ph ? S.W : Math.round(S.W * 0.6), h = Math.round(w * 1.25);
-    const maxH = Math.round(S.avail * (S.ph ? 0.72 : 0.9));
-    if (h > maxH) { h = maxH; w = Math.round(h * 0.8); }
-    return h <= f.h / 2 && w <= (f.h * 0.8) / 2 ? { w, h } : null;
+    const w = S.W, h = Math.round(Math.min(w * 1.25, S.avail * (S.ph ? 0.72 : 1)));
+    return Math.max(w / f.w, h / f.h) <= 0.5 ? { w, h } : null;
   };
   /* where the crop sits, as object-position: its middle at fx */
   const posOf = (f, w, h, fx) => {
@@ -115,36 +123,33 @@
     /* the rhythm: a tall one comes when its picture can stand tall and
        one wide (then two, then one) has come since the last, the first
        opener included (Apps has one picture that can stand, and it is
-       first), each tall on the other side from the one before, so no
-       shelf runs tall, wide, tall, wide */
-    let since = 1, need = 1, side = 0;
+       first), so no shelf runs tall, wide, tall, wide */
+    let since = 1, need = 1;
     S.ks.forEach((k, i) => {
       const f = openerOf(S, k); if (!f) return;
       const s = S.D.study(k) || {};
       const live = !!(window.XREF_LIVE && window.XREF_LIVE(f));
-      const tb = !live && TALL[k] != null && f === s.top && since >= need ? tallBox(S, f) : null;
+      const judged = ON_LEAD.has(k) ? S.ctx.lead(k) : s.top;
+      const tb = !live && TALL[k] != null && f === judged && since >= need ? tallBox(S, f) : null;
       /* Faux Reel runs, so it takes the stage like a picture that can fill
          it, at the reel's own 16:9 */
       const { w, h } = tb || (live ? { w: S.W, h: Math.round(Math.min(S.W * 9 / 16, S.avail * 0.9)) } : boxOf(S, f));
-      const fig = el("figure", "xk-it" + (tb ? " tall " + (side ? "r" : "l") : w < S.W - 2 ? " narrow" : "")); fig.dataset.k = k;
+      const fig = el("figure", "xk-it" + (tb ? " tall" : w < S.W - 2 ? " narrow" : "")); fig.dataset.k = k;
       const box = el("div", "xk-pic" + (f.alpha ? " alpha" : "")); box.style.width = w + "px"; box.style.height = h + "px"; box._f = f;
       if (tb) box._pos = posOf(f, w, h, TALL[k]);
       fig.appendChild(box);
       /* the study's own number, and the sections this entry sits in, each
-         a way straight to its place (27 Sept, the locators). Beside a tall
-         picture the credit stands in lines, as a side caption does */
+         a way straight to its place (27 Sept, the locators) */
       const locs = ctx.locs ? ctx.locs(k) : [];
       const no = '<span class="xk-no">' + (ctx.num ? ctx.num(k) : two(i + 1)) + "</span>";
       const t = '<span class="xk-t">' + S.esc(S.D.title(k)) + "</span>";
       const y = '<span class="xk-y">' + (s.y || "") + "</span>";
       const lc = locs.length ? '<span class="xk-locs">' + locs.map((l) => '<a class="xk-l" href="#study/' + S.esc(k) + '" data-at="' + S.esc(l.at) + '" title="' + S.esc(S.D.title(k)) + ", section " + l.s + '">§' + l.s + "</a>").join("") + "</span>" : "";
       const d = s.s ? '<span class="xk-d">' + S.esc(s.s) + "</span>" : "";
-      fig.appendChild(el("figcaption", "xk-cap", tb
-        ? no + '<span class="xk-tl">' + t + '</span><span class="xk-ym">' + y + lc + "</span>" + d
-        : no + t + y + lc + d));
+      fig.appendChild(el("figcaption", "xk-cap", no + t + y + lc + d));
       S.root.appendChild(fig);
       S.items.push({ k, fig, box }); S.units.push(fig);
-      if (tb) { since = 0; need = need === 1 ? 2 : 1; side ^= 1; } else since++;
+      if (tb) { since = 0; need = need === 1 ? 2 : 1; } else since++;
     });
     S.io = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { S.io.unobserve(e.target); load(e.target, S); } }),
       /* above as well as below: a shelf can be arrived at from its end,

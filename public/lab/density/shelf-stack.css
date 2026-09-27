@@ -53,21 +53,3 @@
 .xk.ph .xk-cap { flex-wrap: wrap; padding: 11px 16px 28px; }
 .xk.ph .xk-d { margin-left: 0; flex-basis: 100%; text-align: left; }
 @media (prefers-reduced-motion: reduce) { .xk-pic img, .xk-t { transition: none !important; } }
-
-/* a tall opener (27 Sept, his "vary the heights"): 4:5, three fifths of
-   the stage, flush to its side, its credit standing in lines in the paper
-   beside it and level with its foot; the next tall takes the other side */
-.xk-it.tall { display: flex; align-items: flex-end; padding-bottom: 34px; }
-.xk-it.tall.r { flex-direction: row-reverse; }
-.xk-it.tall .xk-pic { flex: none; }
-.xk-it.tall .xk-cap { flex: 1 1 0; min-width: 0; display: block; padding: 0 20px 2px; }
-.xk-it.tall.r .xk-cap { text-align: right; }
-.xk-it.tall .xk-no { display: block; margin: 0 0 8px; }
-.xk-it.tall .xk-tl { display: block; margin: 0 0 4px; font-size: 15px; }
-.xk-it.tall .xk-ym { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; }
-.xk-it.tall.r .xk-ym { justify-content: flex-end; }
-.xk-it.tall .xk-d { display: block; margin: 8px 0 0; text-align: inherit; }
-/* on a phone it is the whole width, and its credit goes back under it */
-.xk.ph .xk-it.tall { display: block; padding-bottom: 0; }
-.xk.ph .xk-it.tall .xk-cap { display: block; padding: 11px 16px 28px; text-align: left; }
-.xk.ph .xk-it.tall .xk-ym { justify-content: flex-start; }
