@@ -12,6 +12,9 @@
 .xk-sent { max-width: 31em; margin: 16px 0 0; font-size: 19px; font-weight: 500; letter-spacing: -0.012em; line-height: 1.3; color: var(--grey); text-wrap: pretty; }
 .xk-lbl { margin: 18px 0 0; color: var(--ink); }
 .xk-lbl + .xk-sent { margin-top: 5px; }
+/* a homepage line: ink, then grey */
+.xk-sent.lead { color: var(--ink); }
+.xk-sent.lead .g { color: var(--grey); }
 
 /* an opener: the picture across the stage, its credit on paper under it */
 .xk-it { margin: 0; cursor: pointer; }

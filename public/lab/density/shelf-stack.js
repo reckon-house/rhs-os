@@ -45,6 +45,7 @@
     return { w: Math.round(w), h: Math.round(h) };
   };
 
+  const twoTone = (S, t) => { const m = /[.!?]\s+(?=[A-Z])/.exec(t); return m ? S.esc(t.slice(0, m.index + 1)) + ' <span class="g">' + S.esc(t.slice(m.index + m[0].length)) + "</span>" : S.esc(t); };
   const headEl = (S) => {
     const e = S.ctx.entry || {};
     const h = el("header", "xk-head");
@@ -54,7 +55,9 @@
     if (S.ks.length) top.appendChild(el("span", "xk-n caps", "Work<b>" + S.ks.length + "</b>"));
     h.appendChild(top);
     if (e.label) h.appendChild(el("p", "xk-lbl caps", S.esc(e.label)));
-    if (e.sentence) h.appendChild(el("p", "xk-sent", S.esc(e.sentence)));
+    /* a homepage line (entry-lines.js) is set two-tone, as a study's lead:
+       its first sentence ink, the rest grey */
+    if (e.sentence) h.appendChild(el("p", "xk-sent" + (e.lead ? " lead" : ""), e.lead ? twoTone(S, e.sentence) : S.esc(e.sentence)));
     S.nm = nm;
     return h;
   };

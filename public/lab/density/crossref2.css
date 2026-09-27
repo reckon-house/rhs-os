@@ -386,6 +386,8 @@ body.staged #stage { pointer-events: auto; }
 .sh-foot-l { display: block; margin: 18px 0 0; color: var(--ink); }
 .sh-foot-s { display: block; max-width: 31em; margin: 16px 0 0; font-size: 19px; font-weight: 500; letter-spacing: -0.012em; line-height: 1.3; color: var(--grey); text-wrap: pretty; }
 .sh-foot-l + .sh-foot-s { margin-top: 5px; }
+.sh-foot-s.lead { color: var(--ink); }
+.sh-foot-s.lead .g { color: var(--grey); }
 .sh-foot:hover .sh-foot-t { color: var(--grey); }
 .sh-foot:focus-visible { outline: 1px solid var(--ink); outline-offset: -6px; }
 

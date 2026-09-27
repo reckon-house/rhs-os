@@ -422,12 +422,11 @@
   const FEAT = new Set((DATA.lines || []).map((l) => l.lead).filter((k) => D.study(k)));
   /* the figures set large: the biggest claims, from four studies */
   const BIGFIG = ["$3M", "2,000+ stores", "$49,630", "95%"];
-  /* a figure whose own words were only a stat's label gets one plain line.
-     DRAFTED 27 Sept for his edit, from the study's own copy (the A.R.C.
-     dashboard's alt text); change the words here, the figure stays bold */
-  const FIG_NOTES = {
-    "$49,630": "A.R.C.'s whole-home dashboard shows $49,630 documented across 8 rooms and 73 items.",
-  };
+  /* the homepage lines (entry-lines.js): one line per entry, written for
+     this page, used in place of a sentence pulled from a study */
+  const LINES = window.ENTRY_LINES || {};
+  /* a line in two tones, as a study's lead is: its first sentence ink */
+  const twoTone = (t) => { const m = /[.!?]\s+(?=[A-Z])/.exec(t); return m ? esc(t.slice(0, m.index + 1)) + ' <span class="g">' + esc(t.slice(m.index + m[0].length)) + "</span>" : esc(t); };
 
   const IXS = ["a", "b", "c", "d", "e"];
   let IX = (new URLSearchParams(location.search).get("index") || "d").toLowerCase();
@@ -601,10 +600,10 @@
   const mk = (html) => '<span class="mk"><span class="mi">' + html + "</span></span>";
   /* the sentence a figure comes from, the figure in ink inside it */
   const boldIn = (t, s) => { const i = t.indexOf(s); return i < 0 ? esc(t) : esc(t.slice(0, i)) + "<b>" + esc(s) + "</b>" + esc(t.slice(i + s.length)); };
-  const figSource = (fig) => {
+  const figSource = (fig, key) => {
     const src = fig.src.find((x) => x.item.sent) || fig.src[0]; const it = src.item;
     const credit = it.about ? ((aboutOf(it.sent || "") || {}).a || {}).name || "About" : it.k ? D.title(it.k) + " " + D.year(it.k) : "";
-    if (FIG_NOTES[fig.s]) return { html: boldIn(FIG_NOTES[fig.s], fig.s), credit };
+    if (key && LINES[key]) return { html: boldIn(LINES[key], fig.s), credit };
     if (it.sent) {
       const i = it.sent.indexOf(fig.s);
       const html = i < 0 ? esc(it.sent) : esc(it.sent.slice(0, i)) + "<b>" + esc(fig.s) + "</b>" + esc(it.sent.slice(i + fig.s.length));
@@ -646,7 +645,7 @@
       a.innerHTML = '<span class="nr"><span class="t">' + esc(o.label) + '</span></span><span class="dk">' + esc(o.about.lede || "") + "</span>";
     } else if (mode === "Efig") {
       const m = /^([~$]?[\d][\d,.]*[%+MKx]*)(.*)$/.exec(clean(o.label)) || [0, clean(o.label), ""];
-      const src = figSource(o.fig);
+      const src = figSource(o.fig, o.key);
       a.classList.add("fig", "efig");
       a.innerHTML = '<span class="nr"><span class="t"><span class="fn">' + mk(D.esc(m[1])) + "</span>" + (m[2] ? '<span class="fu">' + D.esc(m[2]) + "</span>" : "") + "</span></span>" +
         (src.label ? '<span class="kk caps">' + esc(src.label) + "</span>" : "") + (src.html ? '<span class="dk">' + src.html + "</span>" : "") +
@@ -1567,11 +1566,12 @@
     return best ? clean(best.text).replace(/[.:]\s*$/, "") : null;
   };
   const shelfSentence = (o) => {
+    /* a line written for this page outranks anything pulled from a study */
+    if (LINES[o.key]) return { text: LINES[o.key], lead: true, mark: o.fig ? o.fig.s : null };
     if (o.g.id === "lines") return { text: o.line.sentence };
     if (o.g.id === "about") return { text: o.about.lede };
     if (o.g.id === "tools") { const t = namedIn(o.v, o.rel).find((x) => !x.label); return t ? { text: t.text, mark: t.hl } : null; }
     if (o.g.id === "figures") {
-      if (FIG_NOTES[o.fig.s]) return { text: FIG_NOTES[o.fig.s], mark: o.fig.s };
       const src = o.fig.src[0]; if (!src) return null; const it = src.item;
       /* a figure's sentence alone read like a fragment of a spec ("Four
          photographs, a typeface family, and a color field."). His "it's
@@ -1646,6 +1646,7 @@
     if (s && s.text) e.sentence = clean(s.text);
     if (s && s.mark) e.mark = clean(s.mark);
     if (s && s.label) e.label = clean(s.label);
+    if (s && s.lead) e.lead = true;
     return e;
   };
   const shelfCtx = (S) => ({
@@ -1694,7 +1695,7 @@
         '<span class="sh-foot-hl"><span class="sh-foot-t' + (nx.g.id === "years" || nx.g.id === "figures" ? " num" : "") + '">' + esc(nameOf(nx)) + "</span>" +
         (n ? '<span class="sh-foot-n caps">Work<b>' + n + "</b></span>" : "") + "</span>" +
         (ns && ns.label ? '<span class="sh-foot-l caps">' + esc(clean(ns.label)) + "</span>" : "") +
-        (ns && ns.text ? '<span class="sh-foot-s">' + esc(clean(ns.text)) + "</span>" : "");
+        (ns && ns.text ? '<span class="sh-foot-s' + (ns.lead ? " lead" : "") + '">' + (ns.lead ? twoTone(clean(ns.text)) : esc(clean(ns.text))) + "</span>" : "");
       kids.push(a); S.foot = a;
     }
     S.layer.replaceChildren(...kids);
