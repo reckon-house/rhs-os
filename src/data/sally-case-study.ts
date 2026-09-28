@@ -5,7 +5,7 @@ export const sallyCaseStudy: CaseStudy = {
   title: "Sally Beauty Marketing OS",
   category: { label: "Digital", href: "/category/digital" },
   subtitle:
-    "Sally Beauty's marketing and ecommerce brain, which I actively design, build, and maintain from inside the team. | It knows the brand, reads the market, the customers, and the results, and it has started proposing campaigns on its own.",
+    "I design, build, and maintain the Sally Beauty Marketing OS from inside the team that uses it. | It knows the brand, reads the market, the customers, and the results, and has started proposing campaigns on its own.",
   field: "Marketing Technology\nAI Strategy\nEnterprise Tools",
   author: "Jeremy Prasatik",
   published: "2025",
@@ -69,16 +69,16 @@ export const sallyCaseStudy: CaseStudy = {
         "AI Strategy",
       ],
       summary: [
-        { label: "Built", value: "A portal with eight apps, an AI strategist with 21 tools, an asset hub, a store-associate site, a Figma plugin, and a scoreboard. Six deployed applications, still growing" },
+        { label: "Built", value: "Six deployed applications, still growing: a portal with eight apps, an AI strategist with 21 tools, an asset hub, a store-associate site, a Figma plugin, and a scoreboard" },
         { label: "Scope", value: "Design and full-stack, brand to backend, in about four months, from inside the marketing team" },
         { label: "Stack", value: "Python and vanilla JS on Railway, Next.js apps on Vercel, Supabase with pgvector, five AI providers routed per task" },
-        { label: "Angle", value: "It reads live signals and proposes campaigns on its own now, and Approve turns a proposal into real work." },
+        { label: "Angle", value: "The Marketing OS now reads live signals and proposes campaigns on its own, and one click on Approve turns a proposal into production requests." },
       ],
       title: "Sally Beauty\nMarketing OS",
       subtitle:
-        "Sally Beauty's marketing and ecommerce brain, which I actively design, build, and maintain from inside the team. | It knows the brand, reads the market, the customers, and the results, and it has started proposing campaigns on its own.",
+        "I design, build, and maintain the Sally Beauty Marketing OS from inside the team that uses it. | It knows the brand, reads the market, the customers, and the results, and has started proposing campaigns on its own.",
       abstract:
-        "Retail marketing runs on cycles: seasonal plans, promotional calendars, campaign briefs, asset production, store execution. Sally ships thousands of assets per month across digital, email, social, and physical stores, and that output breaks when the tools underneath it don't share context.\n\nI rebuilt each piece with AI and connected them into a single pipeline. Competitive intelligence feeds strategy, strategy produces briefs, briefs connect to assets, assets flow to stores, and purchase data feeds back into the next cycle.\n\nFour months in, it is six deployed applications with a shared brain, and the system now reads the market and the customers on its own and proposes the campaigns.",
+        "Retail marketing runs on cycles: seasonal plans, promotional calendars, campaign briefs, asset production, store execution. Sally ships thousands of assets per month across digital, email, social, and physical stores, and that output breaks when the tools underneath it don't share context.\n\nI rebuilt each of those tools with AI and connected them into a single pipeline. Competitive intelligence feeds strategy, strategy produces briefs, briefs connect to assets, assets flow to stores, and purchase data feeds back into the next cycle.\n\nFour months in, the Marketing OS is six deployed applications sharing one brain. It now reads the market and the customers on its own and proposes campaigns.",
     },
 
         // ── HERO ──
@@ -109,7 +109,7 @@ export const sallyCaseStudy: CaseStudy = {
         captions: [
           "Marketing OS",
           "Dashboard grid overview",
-          "Every app, one screen",
+          "Five platforms on one screen",
         ],
         instruction: "Scroll. It fills the mat, then travels the frame",
         choreo: { zoom: true },
@@ -120,14 +120,14 @@ export const sallyCaseStudy: CaseStudy = {
       id: "problem-header",
       type: "section-header",
       label: "SECTION 02: PROBLEM STATEMENT",
-      title: "Every piece of it lived",
+      title: "Sally's marketing tools and files each lived",
       // The study's one crossing, in the BRIEF form (pin + crossing): this
       // header carries method columns, and PRESSING.md §7 reserves the
       // standalone staging for headers whose copy is short. Every header
       // in this study carries columns, so the choice was which beat, and
       // the opening diagnosis is the one everything below answers.
       pressing: {
-        mark: { n: "02", name: "Five Problems" },
+        mark: { n: "02", name: "Disconnected Tools" },
         heldLine: "somewhere different.",
         choreo: { pin: true, crossing: true },
       },
@@ -138,7 +138,7 @@ export const sallyCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "Competitive intel lived in someone's browser tabs, brand guidelines in a PDF nobody opened, campaign briefs in email threads, and assets on shared drives with names that drifted every quarter. None of those tools talked to each other, and the volume made every gap worse.",
+        "Competitive intel sat in someone's browser tabs, brand guidelines in a PDF nobody opened, campaign briefs in email threads, and assets on shared drives with names that drifted every quarter. None of those tools talked to each other, and the volume made every gap worse.",
       group: { name: "problem" },
     },
     {
@@ -147,7 +147,7 @@ export const sallyCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "The scale is thousands of SKUs across hair color, hair care, styling, and professional tools, 2,000+ stores with regional variation, and dozens of campaigns running at once across digital, email, social, and in-store.",
+        "Sally carries thousands of SKUs across hair color, hair care, styling, and professional tools. It has 2,000+ stores with regional variation and runs dozens of campaigns at once across digital, email, social, and in-store.",
       group: { name: "problem" },
     },
     {
@@ -157,17 +157,17 @@ export const sallyCaseStudy: CaseStudy = {
         {
           title: "Competitive Intel",
           content:
-            "It was all manual. Someone tracked Ulta's promotions in a spreadsheet, someone else watched Sephora's social on their phone, and Target Beauty's pricing changes came up in meetings as anecdotes. The information was all there, spread across people and formats, and nobody had pulled it together.\n\nSo every planning cycle started from scratch. The same questions came up again, competitors kept surprising the team, and by the time an opportunity was clear it was too late to act on it.",
+            "Tracking competitors was all manual. Someone tracked Ulta's promotions in a spreadsheet, someone else watched Sephora's social on their phone, and Target Beauty's pricing changes came up in meetings as anecdotes. The information was all there, spread across people and formats, and nobody had pulled it together.\n\nSo every planning cycle started from scratch. The same questions came up again, competitors kept surprising the team, and by the time an opportunity was clear it was too late to act on it.",
         },
         {
           title: "Campaign Briefs",
           content:
-        "Campaign briefs were Word files. They went out to a distribution list, got edited in parallel, and within days nobody was sure which version was current. The brief that reached design rarely matched the one that left strategy.\n\nAssets got made against old direction, revisions piled up, and a lot of the production timeline went to getting everyone back on the same page.",
+        "Campaign briefs were Word files. They went out to a distribution list, got edited in parallel, and within days nobody was sure which version was current. The brief that reached design rarely matched the one that left strategy.\n\nAssets got made against out-of-date briefs and revisions piled up. Getting everyone back on the same page took a lot of the production timeline.",
         },
         {
           title: "The Shared Drive",
           content:
-        "Asset management meant shared drives. Thousands of images, organized by whoever uploaded them, named however that person remembered to name them, tagged inconsistently or not at all. Finding the right file for a channel meant knowing where someone had put it, and that knowledge left when they did.\n\nThe cost was hours: searching, recreating, reformatting, and double-checking files that should have been a click away.",
+        "Asset management meant thousands of images on shared drives, organized by whoever uploaded them, named however that person remembered to name them, and tagged inconsistently or not at all. Finding the right file for a channel meant knowing where someone had put it, and that knowledge left when they did.\n\nThe shared drives cost the team hours: searching, recreating, reformatting, and double-checking files that should have been a click away.",
         },
       ],
       group: { name: "problem" },
@@ -188,7 +188,7 @@ export const sallyCaseStudy: CaseStudy = {
       label: "SECTION 03: INTELLIGENCE / TRENDS FEED",
       title: "Three AI models watch",
       pressing: {
-        mark: { n: "03", name: "Real-Time" },
+        mark: { n: "03", name: "Trends Feed" },
         heldLine: "14 industry publications.",
         choreo: { pin: true },
       },
@@ -198,7 +198,7 @@ export const sallyCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "Competitor social channels, pricing shifts and category trends too. Every trend that comes in gets a \"Sally's Take\": an AI-written read that checks the signal against the brand positioning, the active briefs, and the internal knowledge base, and says whether it's worth acting on.",
+        "The Trends Feed uses Claude, Gemini and Perplexity to track competitor social channels, pricing shifts and category trends. Every signal that comes in gets a \"Sally's Take\": an AI-written read that checks it against the brand positioning, the active briefs, and the internal knowledge base, and says whether it's worth acting on.",
     },
     {
       id: "trends-footnote",
@@ -206,7 +206,7 @@ export const sallyCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "Each Take comes with a one-click path to a new brief. That click is where the rest of the pipeline starts.",
+        "Each Sally's Take is one click from a new brief, and from the brief the work moves on to assets and stores.",
     },
     {
       id: "trends-engines",
@@ -215,17 +215,17 @@ export const sallyCaseStudy: CaseStudy = {
         {
           title: "Claude Opus: The Strategist",
           content:
-            "Claude runs the chat and gets the reasoning jobs: turning competitive signals into recommendations, drafting the campaign brief from raw intel, writing copy in the brand voice.\n\nPrompt caching keeps it fast. The brand guidelines, tone rules, and competitive positioning are the same on every call, so they load from cache instead of being processed again each time.",
+            "Claude runs the chat and gets the reasoning jobs: turning competitive signals into recommendations, drafting the campaign brief from raw intel, writing copy in the brand voice.\n\nPrompt caching keeps Claude fast. The brand guidelines, tone rules, and competitive positioning are the same on every call, so they load from cache instead of being processed again each time.",
         },
         {
           title: "Gemini 2.5 Pro: The Librarian",
           content:
-            "Gemini reads Sally's internal knowledge base on the first message, so every conversation opens with the brand guidelines, campaign history, product catalogs, regional variations, and performance data already loaded, before anyone has typed a word.\n\nThat takes a million-token context window, which Gemini has. The whole institutional memory of the marketing team fits in a session, and nobody has to hunt through a shared drive or ask a colleague for the file.",
+            "Gemini loads Sally's internal knowledge base at the start of every conversation: the brand guidelines, campaign history, product catalogs, regional variations, and performance data.\n\nLoading Sally's knowledge base takes a million-token context window, which Gemini has. The marketing team's whole institutional memory fits in one session, and nobody has to hunt through a shared drive or ask a colleague for the file.",
         },
         {
           title: "Perplexity Sonar Pro: The Researcher",
           content:
-            "Live web search for competitive intelligence, trends, and current market data. It triggers on its own when a competitor comes up: mention Ulta, Sephora, or Target Beauty and it pulls current pricing, promotions, social activity, and press coverage into the conversation without a separate search.\n\nA question that used to mean a research request and a two-week turnaround gets answered in the same conversation where the strategy is being written.",
+            "Perplexity runs live web search for competitive intelligence, trends, and current market data. It triggers on its own when a competitor comes up: mention Ulta, Sephora, or Target Beauty and it pulls current pricing, promotions, social activity, and press coverage into the conversation without a separate search.\n\nA question that used to mean a research request and a two-week turnaround gets answered in the same conversation where the strategy is being written.",
         },
       ],
     },
@@ -246,7 +246,7 @@ export const sallyCaseStudy: CaseStudy = {
     {
       id: "trends-synthesis-headline",
       type: "editorial-headline",
-      text: "A competitor launches something,\nand the feed writes\nSally's Take on it.",
+      text: "A competitor launches something,\nand the feed writes\nSally's Take on it",
     },
     {
       id: "trends-pair-2",
@@ -304,8 +304,8 @@ export const sallyCaseStudy: CaseStudy = {
       id: "trends-to-jim-demo",
       type: "product-demo",
       demo: "trends-to-jim",
-      title: "The full arc · Feed to briefed work",
-      note: "The whole chain in one take: the feed flags a competitor's move, Sally's Take reads it against the brand corpus, and Brainstorm This hands it to Jim. Three moves later, one prompt drafts the campaign play: two finished billboards on real photography, a second model arguing against the claim, and Approve opens four channel requests.",
+      title: "The full arc · Feed to channel requests",
+      note: "This demo runs the whole chain: the feed flags a competitor's move, Sally's Take reads it against the brand corpus, and the Brainstorm This button hands it to Jim, the AI strategy partner in Brand Brain. Three moves later, one prompt drafts a campaign with two finished billboards on real photography. A second model argues against the campaign's claim, and pressing Approve opens four production requests, one per channel.",
     },
 
     // ── BRAND BRAIN / JIM - grouped in ECE6E1 container ──
@@ -317,7 +317,7 @@ export const sallyCaseStudy: CaseStudy = {
       id: "brain-header",
       type: "section-header",
       label: "SECTION 04: BRAND BRAIN / JIM",
-      title: "It answers with the context\na new hire takes months to pick up.",
+      title: "Jim answers with the context\na new hire takes months to pick up.",
       pressing: {
         mark: { n: "04", name: "AI Strategy Partner" },
         choreo: { pin: true },
@@ -329,7 +329,7 @@ export const sallyCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "An AI system trained on Sally's complete brand architecture: voice guidelines, visual standards, competitive positioning, campaign history, performance data, and a rule set that shapes how it thinks before it responds.",
+        "Jim is trained on Sally's complete brand architecture: voice guidelines, visual standards, competitive positioning, campaign history, performance data, and a rule set that shapes how he thinks before he responds.",
       group: { name: "brand-brain" },
     },
     {
@@ -338,7 +338,7 @@ export const sallyCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "Brand Brain ingests and indexes the whole corpus, market research included.",
+        "Brand Brain ingests and indexes the whole brand corpus, market research included.",
       group: { name: "brand-brain" },
     },
     {
@@ -348,17 +348,17 @@ export const sallyCaseStudy: CaseStudy = {
         {
           title: "Claude: Long-Form Writing",
           content:
-            "The long documents come from Claude, the strategy memos and competitive analyses. It takes in the whole context (brand guidelines, performance history, competitive data) and writes the document.\n\nThese documents go to leadership, so they have to ship without heavy editing.",
+            "Claude writes the long documents: the strategy memos and competitive analyses. It takes in the brand guidelines, performance history and competitive data before it writes.\n\nClaude's documents go to leadership, so they have to ship without heavy editing.",
         },
         {
           title: "Gemini: The Visual Layer",
           content:
-            "Gemini handles the visual side, the part a text-only model can't see: product imagery analysis, sorting social content into categories, clustering trends across competitor activity. When a competitor changes how it merchandises, Gemini picks up the pattern across store imagery.",
+            "Gemini handles the visual side: product imagery analysis, sorting social content into categories, clustering competitor trends. When a rival changes how it merchandises, Gemini picks up the pattern across store imagery.",
         },
         {
           title: "Perplexity: Live Data",
           content:
-            "Perplexity is the live layer: industry news, competitor announcements, shifts in social sentiment, regulatory changes, pulled from the web as they happen.",
+            "Inside Brand Brain, Perplexity pulls regulatory changes and shifts in social sentiment from the web as they happen.",
         },
       ],
       group: { name: "brand-brain" },
@@ -403,13 +403,13 @@ export const sallyCaseStudy: CaseStudy = {
       type: "product-demo",
       demo: "jim-chat",
       title: "Brand Brain · Jim",
-      note: "A strategist pushes back on the tagline. Jim answers out of the brand corpus, works out which persona the objection belongs to, then generates the homepage card off the line it lands on.",
+      note: "A strategist pushes back on the tagline. Jim answers from the brand corpus, works out which persona the objection belongs to, then generates the homepage card from the line he settles on.",
     },
 
     {
       id: "brain-brief-editorial",
       type: "editorial-headline",
-      text: "The AI works out the strategy\nand writes the brief.\nThe team approves it.",
+      text: "Brand Brain works out the strategy\nand writes the brief,\nthen the team approves it",
       group: { name: "brand-brain" },
     },
     {
@@ -441,14 +441,14 @@ export const sallyCaseStudy: CaseStudy = {
       type: "product-demo",
       demo: "requests-email",
       title: "From brief to email",
-      note: "Open the August board, take COLORfest's CRM channel, press Create Email. The email assembles out of the product's own component library, so what lands on screen is what an email developer receives.",
+      note: "Open the August campaign board, take COLORfest's CRM request, and press Create Email. The email assembles out of the Marketing OS's own component library, so what lands on screen is what an email developer receives.",
     },
     {
       id: "brain-figma-demo",
       type: "product-demo",
       demo: "figma-build",
       title: "From email to Figma",
-      note: "One press builds all four emails. The plugin clones an artboard per request, places every image, writes that slot's copy behind it, and fills the headers last. Images go first because the plugin finds each section band by anchoring on the image rects, then walks the text nodes from there.",
+      note: "The Figma plugin builds the four requested emails in one press. It clones an artboard per request, places each image and then that image's copy, and fills the headers last. Images go first because the plugin uses each image's position to find its section, and the text follows from there.",
     },
 
     // ── INTELLIGENCE PIPELINE SANKEY ──
@@ -502,10 +502,10 @@ export const sallyCaseStudy: CaseStudy = {
       id: "thinks-header",
       type: "section-header",
       label: "SECTION 05: CAMPAIGNS",
-      title: "It proposes",
+      title: "Jim now proposes campaigns",
       pressing: {
-        mark: { n: "05", name: "It Proposes" },
-        heldLine: "the work now",
+        mark: { n: "05", name: "Proposed Campaigns" },
+        heldLine: "before anyone asks for them.",
       },
     },
     {
@@ -513,7 +513,7 @@ export const sallyCaseStudy: CaseStudy = {
       type: "text",
       size: "xl",
       content:
-        "The newest app in the rail is called Campaigns, and nobody types into it. On a schedule, Jim reads four live feeds at once: the market scan, the daily signals, what customers are saying, and what people are searching for. He grounds all of it against the product catalog and the asset library, then proposes three to five plays. Each one names the signal that triggered it, argues the reasoning, and arrives with the campaign already drafted: billboard, email, and SMS, rendered with real photography and real SKUs.",
+        "The newest app in the portal is called Campaigns, and nobody types into it. On a schedule, Jim reads four live feeds at once: the market scan, the daily signals, what customers are saying, and what people are searching for. He grounds all of it against the product catalog and the asset library, then proposes three to five plays. Each one names the signal that triggered it, argues its case, and arrives with the campaign already drafted: billboard, email, and SMS, rendered with real photography and SKUs.",
     },
     {
       id: "thinks-footnote",
@@ -521,12 +521,12 @@ export const sallyCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "Approve writes real production requests into the same queue the humans use, one per channel, so a play the team likes becomes work in one click. Pass dismisses it with a reason and Jim learns from that too. A second model, given fresh context, critiques every play before a person sees it, and its verdict rides along with the proposal so a human decides. The first live scan proposed a competitive intercept, a seasonal demand play built on real search volume, and a play built around a customer's own words.",
+        "The Approve button writes real production requests into the same queue the team uses, one per channel, so a play they like becomes work in one click. The Pass button dismisses a proposal with a reason, and Jim learns from that too. A second model, given fresh context, critiques every play before anyone sees it, and its verdict rides along with the proposal so a person decides. The first live scan proposed a competitive intercept, a seasonal demand play built on real search volume, and a play built around a customer's own words.",
     },
     {
       id: "thinks-editorial",
       type: "editorial-headline",
-      text: "Four months ago\nthis was a spreadsheet\nand a group chat.",
+      text: "Four months ago\nthis was a spreadsheet\nand a group chat",
     },
 
     // ── ASSET HUB ──
@@ -546,7 +546,7 @@ export const sallyCaseStudy: CaseStudy = {
       id: "asset-header",
       type: "section-header",
       label: "SECTION 06: ASSET HUB",
-      title: "The DAM they had was bloated",
+      title: "Sally's old asset library was bloated,",
       pressing: {
         mark: { n: "06", name: "Digital Asset Management" },
         heldLine: "and nobody wanted to use it.",
@@ -558,7 +558,7 @@ export const sallyCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "The two things the team actually needed from it, tagging and search, didn't work well, so I built this one from the ground up.",
+        "The team needed two things from the old library, tagging and search, and neither worked well, so I built the Asset Hub from the ground up.",
     },
     {
       id: "asset-footnote",
@@ -566,7 +566,7 @@ export const sallyCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "AI tags every image on upload, with nobody cataloging anything by hand, and search ranks across those tags, the titles, the brands, and the AI descriptions. The right asset comes up in seconds.",
+        "AI tags every image on upload, so nobody catalogs anything by hand. The right asset comes up in search in seconds.",
     },
     {
       id: "asset-columns-1",
@@ -575,17 +575,17 @@ export const sallyCaseStudy: CaseStudy = {
         {
           title: "AI Auto-Tagging",
           content:
-            "Claude looks at every uploaded image and returns a description, tags, product category, dominant colors, campaign suggestions, and a confidence score. It tells lifestyle shots from product shots, and any asset can be re-tagged with one click, on its own or in a batch.\n\nAI tags and manual tags are tracked separately, so there is a record of what it tagged and what a person corrected, and the corrections improve the next round of tagging.",
+            "Claude looks at every uploaded image and returns a description, tags, product category, dominant colors, campaign suggestions, and a confidence score. It tells lifestyle shots from product shots, and any asset can be re-tagged with one click, one at a time or in a batch.\n\nAI tags and manual tags are tracked separately, so there is a record of what Claude tagged and what a person corrected, and the corrections improve the next round of tagging.",
         },
         {
           title: "AI Studio Photography",
           content:
-            "Two passes through OpenAI's GPT-Image-2. The first strips the background to pure white and leaves the product alone. The second lights it like a studio shot, working from a reference photograph: white cyclorama sweep with a warm-to-cool gradient, directional key light with specular highlights, fill, rim, contact shadow.\n\nThe team uses it for product pages and social.",
+            "The studio photography tool makes two passes through OpenAI's GPT-Image-2. The first strips the background to pure white and leaves the product alone. The second lights it like a studio shot, working from a reference photograph: white cyclorama sweep with a warm-to-cool gradient, directional key light with specular highlights, fill, rim, contact shadow.\n\nThe team uses the results for product pages and social.",
         },
         {
           title: "Search Architecture",
           content:
-            "Postgres full-text search with tsvector and websearch_to_tsquery, GIN indexes on the FTS column and the AI-tags JSONB. Relevance is weighted: full text at 2.0x, tag match at 1.5x, title at 1.0x, brand at 0.9x, AI description at 0.8x.\n\nSearch runs as you type with a 300ms debounce, infinite scroll at 24 per page, and an ILIKE fallback across every text field.",
+            "The Asset Hub uses Postgres full-text search with tsvector and websearch_to_tsquery, and GIN indexes on the FTS column and the AI-tags JSONB. Relevance is weighted: full text at 2.0x, tag match at 1.5x, title at 1.0x, brand at 0.9x, AI description at 0.8x.\n\nSearch runs as you type with a 300ms debounce, infinite scroll at 24 per page, and an ILIKE fallback across every text field.",
         },
       ],
     },
@@ -619,17 +619,17 @@ export const sallyCaseStudy: CaseStudy = {
         {
           title: "Vendor Upload Portal",
           content:
-            "A public upload form with no login. The vendor enters name, email, company, product name, SKU, brand, asset type, and confirms usage rights. An admin review dashboard updates live over Supabase Realtime.\n\nApprove pushes the asset into the library and kicks off AI tagging. Reject sends the vendor a reason.",
+            "Vendors get a public upload form with no login. The vendor enters name, email, company, product name, SKU, brand, asset type, and confirms usage rights. An admin review dashboard updates live over Supabase Realtime.\n\nApproving an upload pushes the asset into the library and kicks off AI tagging, and rejecting one sends the vendor a reason.",
         },
         {
           title: "Workflow & Collections",
           content:
-            "Campaign templates with configurable stages, and jobs with a destination, priority, due date, and assignee. Review is per asset, so you can approve some and reject others in the same job, each with its own note. Status runs Draft, In Review, Approved, Sent, Completed.\n\nCollections have names, descriptions, and cover images. Batch-select from the library, drag to reorder, and toggle public or private with a shareable link that needs no login.",
+            "Campaign templates come with configurable stages, and every job has a destination, priority, due date, and assignee. Review is per asset, so you can approve some and reject others in the same job, each with its own note. Statuses run Draft, In Review, Approved, Sent, Completed.\n\nA collection gets a name, a description, and a cover image. You add assets from the library in batches, drag them to reorder, and toggle the collection public or private, with a shareable link that needs no login.",
         },
         {
-          title: "Embedded Architecture",
+          title: "Embedding & File Handling",
           content:
-            "It runs inside the portal in an iframe with its own sidebar stripped, syncing routes over postMessage, with search and filters passed through as URL params.\n\nOn upload it reads dimensions, DPI, and color space, writes a compressed JPEG for fast loading, and makes the ecommerce PNG at 1000x1500 or 1500x1000 on white. PDFs get a branded thumbnail.",
+            "The Asset Hub runs inside the portal in an iframe with its own sidebar stripped, syncing routes over postMessage, with search and filters passed through as URL params.\n\nOn upload, the hub reads dimensions, DPI, and color space, writes a compressed JPEG for fast loading, and makes the ecommerce PNG at 1000x1500 or 1500x1000 on white. PDFs get a branded thumbnail.",
         },
       ],
     },
@@ -669,9 +669,9 @@ export const sallyCaseStudy: CaseStudy = {
       id: "utilities-header",
       type: "section-header",
       label: "SECTION 07: UTILITIES MARKETPLACE",
-      title: "Ten apps, each one for a job",
+      title: "Ten tools each handle a job",
       pressing: {
-        mark: { n: "07", name: "A Growing Library of" },
+        mark: { n: "07", name: "A Growing Library" },
         heldLine: "that used to take hours.",
         choreo: { pin: true },
       },
@@ -681,7 +681,7 @@ export const sallyCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "All of them built inside the marketing team. Click a card and the tool loads inline, with no onboarding, no separate login, no IT ticket. The marketplace grows every month as the team finds the next thing worth automating.",
+        "Every tool in the Utilities Marketplace was built inside the marketing team. Click a card and the tool loads inline, without onboarding, a separate login or an IT ticket. The marketplace grows every month as the team finds the next thing worth automating.",
     },
     {
       id: "utilities-footnote",
@@ -689,7 +689,7 @@ export const sallyCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "Each tool is its own app, hosted on its own and loaded in an iframe. The tool list is a JavaScript array, so registering a new one takes minutes, and a Streamlit app, a Next.js dashboard, and a static PDF generator all register the same way. It's designed so anyone on the team can build a tool, deploy it, and share it without engineering support.",
+        "Each tool is hosted separately and loaded in an iframe. The tool list is a JavaScript array, so registering a new one takes minutes, and a Streamlit app, a Next.js dashboard, and a static PDF generator all register the same way. The marketplace is designed so anyone on the team can build a tool, deploy it, and share it without engineering support.",
     },
     {
       id: "utilities-columns-1",
@@ -708,7 +708,7 @@ export const sallyCaseStudy: CaseStudy = {
         {
           title: "Exec Deck Builder",
           content:
-            "Builds the executive deck from the campaign brief: pulls the brand template, fills in the key metrics, exports a PPTX. Half a day of a designer's time, down to one click and three minutes.",
+            "The deck builder turns the campaign brief into the executive deck: it pulls the brand template, fills in the key metrics, and exports a PPTX. The job went from half a day of a designer's time to one click and three minutes.",
         },
       ],
     },
@@ -729,12 +729,12 @@ export const sallyCaseStudy: CaseStudy = {
         {
           title: "Image Compliance Scanner",
           content:
-            "Scans creative against the brand guidelines before it ships: logo placement, color accuracy, fonts, legal disclaimers. The problems it catches used to turn up in legal review, weeks after production wrapped.",
+            "The scanner checks logo placement, color accuracy, fonts, and legal disclaimers against the brand guidelines before creative ships. The problems it catches used to turn up in legal review, weeks after production wrapped.",
         },
         {
           title: "Social Copy Generator",
           content:
-            "Writes the social copy from the campaign brief in the brand voice, character-counted and formatted for Instagram, TikTok, Facebook, and X, hashtags included. It takes about a minute to turn one brief into four channels.",
+            "The generator writes social copy from the campaign brief in the brand voice, character-counted and formatted for Instagram, TikTok, Facebook, and X, hashtags included. It takes about a minute to turn one brief into four channels.",
         },
         {
           title: "SKU Lookup & Enrichment",
@@ -760,7 +760,7 @@ export const sallyCaseStudy: CaseStudy = {
         {
           title: "Competitor Ad Tracker",
           content:
-            "Captures competitor advertising across digital channels (display ads, promoted social posts, email campaigns) and files it into a searchable library. The team can look up what Ulta, Sephora, and Target ran last quarter without anyone taking screenshots.",
+            "The tracker captures competitor advertising across digital channels (display ads, promoted social posts, email campaigns) and files it into a searchable library. The team can look up what Ulta, Sephora, and Target ran last quarter without anyone taking screenshots.",
         },
       ],
     },
@@ -777,7 +777,7 @@ export const sallyCaseStudy: CaseStudy = {
       id: "closing-header",
       type: "section-header",
       label: "SECTION 08: CLOSING",
-      title: "The team that needed it could not\nwait for a vendor evaluation.",
+      title: "The team that needed the Marketing OS\ncould not wait for a vendor evaluation.",
       pressing: { mark: { n: "08", name: "What Shipped" } },
     },
     {
@@ -785,7 +785,7 @@ export const sallyCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "Six applications built by one person in four months, in daily use, and Sally's IT team is now moving them onto the company's own cloud.",
+        "Six applications are in daily use, and Sally's IT team is now moving them onto the company's own cloud.",
     },
     {
       id: "closing-footnote",
@@ -793,7 +793,7 @@ export const sallyCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "I designed, engineered, and deployed every one of them, working alongside AI tools throughout, and I still maintain them from inside the team that uses them.",
+        "I designed, engineered, and deployed all six by myself, working alongside AI tools throughout.",
     },
     {
       id: "closing-columns",
@@ -802,17 +802,17 @@ export const sallyCaseStudy: CaseStudy = {
         {
           title: "Inside the Team",
           content:
-            "I use these workflows every day, so there was no requirements document to write and nobody to translate it. When something was slow I could see it and change it, and the time between spotting a problem and shipping the fix went from months to days.\n\nThe saving is context as much as cost: there is no spec to drift when the person who needs the tool is the one building it.",
+            "I use Sally's marketing workflows every day, so there was no requirements document to write and nobody to translate it.\n\nWhen something was slow I could see it and change it, and the time between spotting a problem and shipping the fix went from months to days.",
         },
         {
           title: "AI as Engineering Partner",
           content:
-            "Claude Code was my development environment for all of it. I describe what the thing should do, read the code it writes, test it against the team's real workflows, talk through what's off, and deploy.\n\nThe judgment calls are still mine. The data model depends on knowing how a marketing team actually works, and the architecture depends on knowing the problem. The AI handles the part that used to be slow: turning a clear description into working code.",
+            "Claude Code was my development environment for all of it. I describe what a tool should do, read the code it writes, test it against the team's real workflows, talk through what's off, and deploy.\n\nThe judgment calls are still mine: the data model comes from knowing how a marketing team works, and the architecture from knowing the problem. The AI handles the part that used to be slow: turning a clear description into working code.",
         },
         {
           title: "The Stack",
           content:
-            "The portal is a single-page app in plain HTML and JavaScript, no framework and no build step, on a Python server, hosted on Railway. It is deliberately boring underneath so it can change fast on top.\n\nThe asset hub, the associate site, and the scoreboard are Next.js on Vercel. Supabase holds all of it, with pgvector for a single embedding index that covers documents, product photography, and video scenes at once, so one search runs across text and pictures.\n\nFive AI providers, each routed to what it is best at: Claude for reasoning, strategy, and copy; Gemini for embeddings and grounded research; Perplexity for live web search; OpenAI's GPT-Image-2 for studio photography; a vision model for video. There is no gateway. Each call site names its model, and the strategy lane and the copy lane run different Claude models on purpose.",
+            "The portal is a single-page app in plain HTML and JavaScript on a Python server, hosted on Railway. It has no framework and no build step on purpose, so it can change fast.\n\nThe asset hub, the associate site, and the scoreboard are Next.js on Vercel. Supabase holds all of it, with pgvector for a single embedding index that covers documents, product photography, and video scenes at once, so one search runs across text and pictures.\n\nThe Marketing OS uses five AI providers, each routed to what it is best at: Claude for reasoning, strategy, and copy; Gemini for embeddings and grounded research; Perplexity for live web search; OpenAI's GPT-Image-2 for studio photography; a vision model for video. Nothing sits between the code and the providers. Each part of the app names the model it calls, and strategy work and copywriting run on different Claude models on purpose.",
         },
       ],
     },
@@ -840,7 +840,7 @@ export const sallyCaseStudy: CaseStudy = {
       ],
       links: [],
       content:
-        "Everything shares data, context, and a design language. A signal the scanner catches in the morning can be a proposed campaign by the afternoon and a production request by the end of the day, with the same brand voice and the same product data at every step, out to 2,000+ stores.\n\nThe marketing team ships thousands of assets a month through it, and the people at Sally have a name for it: the marketing and ecommerce brain.",
+        "Every app in the Marketing OS shares data, context, and a design language. A signal caught in the morning can be a proposed campaign by the afternoon and a production request by the end of the day, with the same brand voice and the same product data at every step.\n\nThe people at Sally call the Marketing OS their marketing and ecommerce brain.",
     },
   ],
 };
