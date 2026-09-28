@@ -2755,7 +2755,11 @@
      that entry's own wire to its place */
   const roomNode = () => {
     const s = RM.c.getBoundingClientRect();
-    const cv = RM.room.cover && RM.room.cover.getBoundingClientRect();
+    /* the cover when it shows; a room that opens on its title (the live
+       site's cover, study-panel.js) has its picture a glass or two down,
+       so the wires meet the title until the picture comes up */
+    let cv = RM.room.cover && RM.room.cover.getBoundingClientRect();
+    if (!cv || !cv.height || cv.top > s.bottom - 60 || cv.bottom < s.top + 60) { const t = RM.room.el.querySelector(".sp-ct"); if (t) cv = t.getBoundingClientRect(); }
     const mid = cv && cv.height ? cv.top + Math.min(cv.height / 2, 220) : s.top + 60;
     return [s.left - 1, Math.max(s.top + 60, Math.min(s.bottom - 60, mid))];
   };

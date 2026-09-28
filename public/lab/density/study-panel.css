@@ -637,3 +637,25 @@ html[data-motion="scrub"] .sp.mo .sp-bar2.rv i { transform: scaleX(var(--p, 1));
 .sp-pchl { display: grid; grid-template-columns: repeat(var(--n, 5), minmax(0, 1fr)); gap: clamp(6px, 1.4cqw, 12px); margin: 10px 0 0 28px; font-size: 10.5px; font-weight: 500; line-height: 1.4; color: var(--grey); font-variant-numeric: tabular-nums; }
 .sp-pchl b { display: block; font-weight: 700; color: var(--ink); letter-spacing: 0.02em; }
 .sp-pchk { margin: 18px 0 0 28px; }
+
+/* ── THE COVER, as the live site opens a study (27 Sept; PressingCover
+   and RisingPlate, their numbers kept, in the room's own units: a glass
+   is the room's height, --vh). The room opens on a held glass with the
+   title at its foot; the section is 2.1 glasses and the 0.96 the
+   picture climbs through, and the picture pulls itself up by that 0.96
+   so the room is no longer for it. Room for the drivers in
+   study-panel.js, coverLay and choreo ── */
+.sp-cvw { position: relative; height: calc(var(--vh, 100vh) * 3.06); }
+.sp-cvs { position: sticky; top: 0; height: var(--vh, 100vh); overflow: hidden; }
+.sp-ct { position: absolute; left: var(--m); right: var(--m); bottom: 28px; z-index: 1; margin: 0 0 0 -0.04em; font-weight: 700; letter-spacing: -0.045em; line-height: 0.84; text-wrap: initial; }
+.sp-ct .rln { display: block; overflow: hidden; padding-bottom: 0.22em; margin-bottom: -0.22em; }
+.sp-ct .rlnI { display: block; will-change: transform; }
+.sp-cst { position: absolute; top: 22%; left: var(--m); right: var(--m); z-index: 2; margin: 0; max-width: 21em;
+  font-size: clamp(24px, 3.2cqw, 44px); font-weight: 600; letter-spacing: -0.05em; line-height: 1.18; }
+.sp-cst .csW { display: inline-block; will-change: transform; }
+@container sp (max-width: 559px) { .sp-cst { font-size: clamp(19px, 5.4cqw, 30px); } }
+.sp-riser { position: relative; z-index: 3; isolation: isolate; margin-top: calc(var(--vh, 100vh) * -0.96); }
+.sp-riser .sp-cpic { transform-origin: 50% 50%; will-change: transform; background-color: transparent; }
+/* a pair's pictures: a tenth taller, moved by the scroll, the neighbours
+   against each other (the live PressingPlatesPair) */
+.sp.mo .sp-pic.par2 img { bottom: auto; height: 110%; translate: 0 var(--py, 0px); }

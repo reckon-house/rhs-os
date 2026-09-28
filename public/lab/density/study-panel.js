@@ -189,7 +189,7 @@
      - scrub: no clock at all, everything as far along as the scroll is */
   const FAM = () => document.documentElement.dataset.motion || "rise";
   const RV_KINDS = [
-    ["mask", ".sp-title, .sp-stand, .sp-h, .sp-deck, .sp-pq, .sp-closing p, .sp-fn, .sp-next-t, .sp-dur, .sp-col, .sp-card h3"],
+    ["mask", ".sp-title, .sp-stand:not(.sp-cst), .sp-h, .sp-deck, .sp-pq, .sp-closing p, .sp-fn, .sp-next-t, .sp-dur, .sp-col, .sp-card h3"],
     ["lines", ".sp-p"],
     ["pic", ".sp-pic:not(.sp-cpic)"],
     ["field", ".sp-black, .sp-field, .sp-pc, .sp-pb, .sp-povb, .sp-pcy, .sp-pchg"],
@@ -565,6 +565,14 @@
        setScroll so Lenis does not undo it ── */
     const mo = MOTION() && !o.still;
     if (mo) root.classList.add("mo");
+    /* the live site's scroll (27 Sept, his "can we add the scaling,
+       parallax and other effects we have live? ... as many as we can so
+       they feel really immersive like the live version", and "yes make
+       wipe the default and start the port!"). With motion the room opens
+       as a study opens on the site; ?scroll=page keeps the page as it
+       was, for comparing */
+    const CH = mo && (new URLSearchParams(location.search).get("scroll") || "live") !== "page";
+    if (CH) root.classList.add("ch");
     let lenis = null, lraf = 0;
     if (mo && window.Lenis) {
       try {
@@ -707,7 +715,7 @@
       holdT = setTimeout(() => {
         if (dead || playing) return;
         playing = true; qAt = performance.now();
-        if (p.settle && parts && parts.coverBox) parts.coverBox.classList.add("settle");
+        if (p.settle && parts && parts.coverBox && !CH) parts.coverBox.classList.add("settle");
         root.classList.add("sp-on-stage");
         if (rio) { const list = [...root.querySelectorAll(".rv")].filter((e) => !e._rvd); rio.disconnect(); list.forEach((e) => rio.observe(e)); }
       }, Math.max(0, p.delay || 0));
@@ -725,14 +733,80 @@
     const drift = () => {
       parT = 0; if (dead || !mo) return;
       const cr = container.getBoundingClientRect();
-      root.querySelectorAll(".sp-pic.par").forEach((b) => {
+      root.querySelectorAll(".sp-pic.par, .sp-pic.par2").forEach((b) => {
         const r = b.getBoundingClientRect(); if (r.bottom < cr.top || r.top > cr.bottom) return;
-        const k = Math.max(0, Math.min(1, (cr.bottom - r.top) / (cr.height + r.height)));
+        let k = Math.max(0, Math.min(1, (cr.bottom - r.top) / (cr.height + r.height)));
+        if (b.classList.contains("par2") && b.classList.contains("odd")) k = 1 - k;
         b.style.setProperty("--py", (-0.1 * r.height * k).toFixed(1) + "px");
       });
     };
     const onScroll = () => { if (!parT) parT = requestAnimationFrame(drift); };
     if (mo) container.addEventListener("scroll", onScroll, { passive: true });
+
+    /* the cover's type: the title as large as the live cover sets it
+       (13.5% of the column, 84 to 205px; 15.5%, 42 to 96px, narrow), then
+       down until its widest word keeps to the line; cut into its lines,
+       each in a mask. The subtitle's words each a box of their own,
+       knowing the line they sit on */
+    const coverLay = (W) => {
+      const h1 = parts.ctitle, st = parts.cstand, m = margin(W), box = W - 2 * m;
+      h1.textContent = h1.dataset.t;
+      let fs = W < 560 ? Math.max(42, Math.min(96, W * 0.155)) : Math.max(84, Math.min(205, W * 0.135));
+      h1.style.fontSize = fs + "px";
+      const pr = document.createElement("span"); pr.style.cssText = "position:absolute;visibility:hidden;white-space:nowrap"; h1.appendChild(pr);
+      let wid = 1; h1.dataset.t.split(/\s+/).forEach((w) => { pr.textContent = w; wid = Math.max(wid, pr.offsetWidth); }); pr.remove();
+      if (wid > box) { fs = Math.floor(fs * (box / wid) * 0.99); h1.style.fontSize = fs + "px"; }
+      h1.innerHTML = h1.dataset.t.split(/\s+/).map((w) => '<span class="rw">' + esc(w) + "</span>").join(" ");
+      const lines = []; let top = null;
+      h1.querySelectorAll(".rw").forEach((w) => { const y = Math.round(w.offsetTop); if (top === null || Math.abs(y - top) > 3) { lines.push([]); top = y; } lines[lines.length - 1].push(w.textContent); });
+      h1.innerHTML = lines.map((l) => '<span class="rln"><span class="rlnI">' + l.map(esc).join(" ") + "</span></span>").join(" ");
+      if (!st) { parts.cwords = []; return; }
+      st.innerHTML = st.dataset.h;
+      const ws = [];
+      const walk = (n) => [...n.childNodes].forEach((c) => {
+        if (c.nodeType === 3) {
+          const fr = document.createDocumentFragment();
+          c.nodeValue.split(/(\s+)/).filter(Boolean).forEach((x) => { if (/^\s+$/.test(x)) fr.appendChild(document.createTextNode(x)); else { const w = document.createElement("span"); w.className = "csW"; w.textContent = x; fr.appendChild(w); ws.push(w); } });
+          c.replaceWith(fr);
+        } else if (c.nodeType === 1) walk(c);
+      });
+      walk(st);
+      let li = -1, ty = null; ws.forEach((w) => { const y = Math.round(w.offsetTop); if (ty === null || Math.abs(y - ty) > 3) { li++; ty = y; } w._li = li; });
+      parts.cwords = ws;
+    };
+    /* the scroll through the cover and the climb, the live numbers:
+       the lines go out over 0.55 of the sequence each, 0.1 apart, the
+       bottom first; the subtitle starts at 0.3, travels 0.86 of the glass
+       over 0.55, dragging 13px a line; the held glass creeps up 0.08 of
+       what is scrolled; the picture grows from 0.95 as it crosses the
+       glass and its 44px corners square off when it fills the room */
+    let chT = 0;
+    const smooth = (k) => k * k * (3 - 2 * k), c01 = (k) => (k < 0 ? 0 : k > 1 ? 1 : k);
+    function choreo() {
+      chT = 0; if (dead || !parts || !parts.cvw) return;
+      const cr = container.getBoundingClientRect(), H = container.clientHeight || 800;
+      const r = parts.cvw.getBoundingClientRect(), top = r.top - cr.top;
+      const p = c01(-top / Math.max(1, r.height - H - H * 0.96));
+      const lines = parts.cvw.querySelectorAll(".rlnI"), n = lines.length;
+      lines.forEach((inner, i) => {
+        const k = smooth(c01((p - (n - 1 - i) * 0.1) / 0.55));
+        const tr = inner._tr || (inner._tr = (inner.parentElement.offsetHeight / Math.max(1, inner.offsetHeight)) * 100 + 8);
+        inner.style.transform = k ? "translateY(" + (k * tr).toFixed(1) + "%)" : "";
+      });
+      const q = c01((p - 0.3) / 0.55), settle = Math.pow(1 - q, 1.7), rise = (1 - q) * 0.86 * H;
+      (parts.cwords || []).forEach((w) => { w.style.transform = "translateY(" + (rise + settle * w._li * 13).toFixed(1) + "px)"; });
+      const sc = -top, span = Math.max(1, r.height - H);
+      const dr = sc > 0 ? Math.round(-Math.min(sc, span) * 0.08 * 10) / 10 : 0;
+      parts.cvs.style.transform = dr ? "translate3d(0," + dr + "px,0)" : "";
+      const B = parts.coverBox;
+      if (B) {
+        const pp = c01((H - (parts.coverFrame.getBoundingClientRect().top - cr.top)) / H);
+        B.style.transform = "scale(" + (0.95 + 0.05 * pp).toFixed(4) + ")";
+        B.style.borderRadius = (B.offsetWidth >= root.clientWidth - 1 ? Math.round(44 * (1 - pp)) : 44) + "px";
+      }
+    }
+    const onChoreo = () => { if (!chT) chT = requestAnimationFrame(choreo); };
+    if (CH) container.addEventListener("scroll", onChoreo, { passive: true });
 
     /* scrub: how far each block has come up the glass, as --p, from its
        top at the foot of the view (0) to four tenths of the way up (1).
@@ -888,8 +962,24 @@
       if (o.onClose) { const x = el("button", "sp-x", "Close"); x.type = "button"; x.addEventListener("click", () => o.onClose()); barIn.appendChild(x); }
       bar.appendChild(barIn); frag.appendChild(bar);
 
-      /* the cover */
-      const cv = el("figure", "sp-cover");
+      /* the cover, as the live site opens a study (PressingCover and
+         RisingPlate, their numbers kept): the room opens on its title as
+         large as the column holds it, at the foot of a held glass. The
+         reader's scroll takes its lines down out of their masks, the
+         bottom one first, while the subtitle rises into its seat, its
+         lower lines dragging a little; then the cover picture climbs
+         over the held glass and grows to its edges */
+      if (CH) {
+        const cvw = el("section", "sp-cvw"), cvs = el("div", "sp-cvs");
+        const h1 = el("h1", "sp-title sp-ct", esc(D.title(k))); h1.dataset.t = h1.textContent; cvs.appendChild(h1);
+        let st = null;
+        if (M.stand) st = tag(el("p", "sp-stand sp-cst", inkGrey(M.stand.text)), M.stand);
+        else if (s.fact) st = el("p", "sp-stand sp-cst", esc(s.fact) + (s.rest ? ' <span class="sp-g">' + esc(s.rest) + "</span>" : ""));
+        if (st) { st.dataset.h = st.innerHTML; cvs.appendChild(st); }
+        cvw.appendChild(cvs); frag.appendChild(cvw);
+        Object.assign(P, { title: h1, ctitle: h1, cstand: st, cvw, cvs });
+      }
+      const cv = el("figure", "sp-cover" + (CH ? " sp-riser" : ""));
       if (M.lead) {
         const lf = { src: M.lead.src, w: M.lead.w, h: M.lead.h, t384: M.lead.t384, t768: M.lead.t768, alt: s.t };
         const box = el("div", "sp-pic sp-cpic"); box._f = lf;
@@ -900,12 +990,15 @@
       }
       frag.appendChild(cv);
 
-      /* the title, the subtitle, and the quiet facts */
-      const head = el("header", "sp-head");
-      const h1 = el("h1", "sp-title", esc(D.title(k))); head.appendChild(h1); P.title = h1;
-      if (M.stand) head.appendChild(tag(el("p", "sp-stand", inkGrey(M.stand.text)), M.stand));
-      else if (s.fact) head.appendChild(el("p", "sp-stand", esc(s.fact) + (s.rest ? ' <span class="sp-g">' + esc(s.rest) + "</span>" : "")));
-      frag.appendChild(head);
+      /* the title, the subtitle, and the quiet facts (held in the cover
+         above when the room moves as the site does) */
+      if (!CH) {
+        const head = el("header", "sp-head");
+        const h1 = el("h1", "sp-title", esc(D.title(k))); head.appendChild(h1); P.title = h1;
+        if (M.stand) head.appendChild(tag(el("p", "sp-stand", inkGrey(M.stand.text)), M.stand));
+        else if (s.fact) head.appendChild(el("p", "sp-stand", esc(s.fact) + (s.rest ? ' <span class="sp-g">' + esc(s.rest) + "</span>" : "")));
+        frag.appendChild(head);
+      }
 
       /* the kicker: the discipline, its year lighter, then its lines */
       const meta = el("div", "sp-meta");
@@ -1315,7 +1408,7 @@
              enough, the cover sets to the right and the kicker (the
              discipline, the year, the lines) moves into the hole at its
              foot, the way a magazine opener sets its standfirst */
-          side = W >= 560 && C - w >= 200;
+          side = !CH && W >= 560 && C - w >= 200;
         }
         frame.classList.toggle("side", side);
         const home = side ? parts.coverSide : parts.rail;
@@ -1349,6 +1442,11 @@
            is still honest */
         const pb = R.row.firstElementChild;
         if (pb) pb.classList.toggle("par", mo && n === 1 && w >= W - 0.5 && R.ps[0].w / 2 >= 1.1 * w && !pb._still);
+        /* a pair or more, as the live site's plates pair: each a tenth
+           taller and the neighbours drifting against each other, where a
+           tenth more is still honest */
+        const rowH = (Math.floor(w) - g * (n - 1)) / sum;
+        [...R.row.children].forEach((b, i) => { b.classList.toggle("par2", CH && n > 1 && R.ps[i].h / 2 >= 1.1 * rowH && !b._still); b.classList.toggle("odd", i % 2 === 1); });
         if (R.cap) {
           const gs = Math.max(18, Math.round(W * 0.03));
           const right = W - m - (ml + w), left = ml - m;
@@ -1371,6 +1469,7 @@
       root.querySelectorAll(".sp-pic img").forEach((im) => { const w = im.parentNode.offsetWidth; if (w) im.sizes = w + "px"; });
 
       fitType(W);
+      if (parts.cvw) coverLay(W);
       /* the fill's copy of the words, made once they are sized */
       parts.knocks.forEach((K) => {
         const c = K.a.cloneNode(true);
@@ -1381,6 +1480,7 @@
       if (mo) drift();
       if (mo) { scrubList(); scrub(); }
       knockTick();
+      if (CH) choreo();
     };
 
     /* the largest size at which a block of type keeps to a number of lines */
@@ -1404,7 +1504,7 @@
     };
     const fitType = (W) => {
       /* the title: big, but under the cover, never over it in weight */
-      if (parts.title) {
+      if (parts.title && !parts.ctitle) {
         const t = parts.title, len = t.textContent.length;
         fitLines(t, Math.max(34, W * 0.07), Math.min(104, W * (len <= 12 ? 0.135 : 0.108)), len > 26 ? 3 : 2);
       }
@@ -1546,6 +1646,7 @@
     }
     function destroy() {
       dead = true; ROOMS.delete(relook);
+      container.removeEventListener("scroll", onChoreo); cancelAnimationFrame(chT);
       if (parts && parts.stops) parts.stops.forEach((f) => f());
       container.removeEventListener("scroll", onKnock); cancelAnimationFrame(knT);
       if (io) io.disconnect(); if (ro) ro.disconnect(); if (headIO) headIO.disconnect(); if (rio) rio.disconnect();
