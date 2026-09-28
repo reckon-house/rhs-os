@@ -356,14 +356,16 @@
      is its hex and its RGB. Which picture goes with which colour is
      measured from the pictures themselves (the one with the most pixels
      nearest that colour), once, when the room is built ── */
-  const PALS = ["swatch", "overlay", "paired", "blocks", "cycle", "chart"], PAL_LS = "crossref2.pal";
+  const PALS = ["blocks", "swatch", "overlay", "paired", "cycle", "chart"], PAL_LS = "crossref2.pal2";
   (() => {
     const q = (new URLSearchParams(location.search).get("pal") || "").toLowerCase();
     let v = PALS.includes(q) ? q : null;
     if (!v) { try { v = localStorage.getItem(PAL_LS); } catch (e) { /* a private window */ } }
-    document.documentElement.dataset.pal = PALS.includes(v) ? v : "swatch";
+    document.documentElement.dataset.pal = PALS.includes(v) ? v : "blocks";
   })();
-  const PAL = () => { const v = document.documentElement.dataset.pal; return PALS.includes(v) ? v : "swatch"; };
+  /* blocks, his pick ("i like blocks for the palette"), is the default,
+     under a new localStorage key so an earlier pick does not hide it */
+  const PAL = () => { const v = document.documentElement.dataset.pal; return PALS.includes(v) ? v : "blocks"; };
   const setPal = (x) => {
     if (!PALS.includes(x)) return;
     document.documentElement.dataset.pal = x;
@@ -415,6 +417,51 @@
     return pr;
   };
 
+  /* ── the palette's names (27 Sept, his "let's replace the hex with a
+     'name'", then "if they dont let's make basic ones up / or, clever
+     ones"). A colour takes the name its own study gives it in its
+     src/data file, matched by hex (twelve studies name theirs); the rest
+     are drafts written here for his edit, plain colour words, a few taken
+     from the study itself (Robert's "Blazer Pink" and "Polka Dot Cream"
+     from its own picture, Sally's hair colours, the kitchen's sage and
+     marble). An empty name shows the hex ── */
+  const PAL_OWN = {
+    "amber-shockey-co": { "#1F4D78": "Cobalt", "#D87A82": "Blush", "#8E3F40": "Burgundy", "#1F2434": "Charcoal", "#ECE6D5": "Cream" },
+    "arc": { "#B1BC94": "Primary", "#000000": "Ground", "#F1F0EE": "Cream", "#C4A265": "Warm Register", "#4A463A": "Olive", "#BAA383": "Oak Tan" },
+    "capitan-boot-co": { "#EFEAD9": "Cream", "#C4B594": "Tan", "#5A5945": "Olive", "#2A2A1A": "Dark Olive" },
+    "cosmo-prof": { "#F8F6F2": "Cream", "#F4D9DC": "Blush", "#DBC5C8": "Stone", "#E5D6C9": "Sand", "#000000": "Black" },
+    "dsc": { "#000000": "Ground", "#141414": "Ink", "#8E8E8E": "Steel", "#E6E6E6": "Mist", "#FFFFFF": "Paper" },
+    "fairview-entry": { "#E7DFD2": "Limestone Cream", "#1F1E1B": "Black Iron", "#A87A45": "Antiqued Brass", "#C0A47C": "White Oak", "#4B4A52": "Vintage Indigo" },
+    "fairview-sitting": { "#B4ACA0": "Stone Grey", "#3F3E37": "Charcoal Velvet", "#A87A45": "Antiqued Brass", "#A67E55": "Warm Oak", "#ECE6D5": "Cream" },
+    "hill-country-living": { "#E5DDC9": "Limestone Cream", "#9B6F47": "Reclaimed Pine", "#8B4F32": "Cognac Leather", "#4A4540": "Charcoal Tweed", "#A87A45": "Antiqued Brass" },
+    "hill-country-oak": { "#ECE2C5": "Cream", "#ECC265": "Mustard", "#DA8849": "Burnt Orange", "#D45E3D": "Brick", "#8FB7A0": "Teal", "#3B2F1F": "Charcoal Brown" },
+    "ivy-park": { "#18A6CC": "Signal", "#8E9499": "Neutral", "#0E0E0E": "Ground" },
+    "jeffrey-ecommerce": { "#1A1A1A": "Charcoal", "#F5F2ED": "Cream", "#FFFF40": "Brand Yellow", "#8C8578": "Soft Gray" },
+    "jeffrey-spring": { "#F5F2EC": "Studio White", "#A8B8C8": "Striped Blue", "#E8C4B8": "Blush", "#3E5A39": "Monstera", "#1A1A18": "Soft Black" },
+    "you-by-sally": { "#E91E63": "Hot Pink", "#00B8D4": "Cyan", "#141414": "Black", "#F5F2ED": "Cream" },
+  };
+  const PAL_DRAFT = {
+    "branding-graphics": { "#DCDDDD": "Paper Grey", "#380F03": "Oxblood", "#9DB3AD": "Sage Mist", "#A89B8F": "Taupe", "#BBCFC9": "Sea Glass" },
+    "neiman-marcus": { "#DCD9D2": "Linen", "#9EA7AF": "Slate Blue", "#DCD3C9": "Oat", "#B8C1C4": "Fog", "#84868C": "Pewter" },
+    "nordstrom-personalization": { "#DEDBDA": "Chalk", "#3E4412": "Moss", "#C6C6CB": "Silver", "#615D24": "Olive", "#D7C572": "Straw" },
+    "ivy-park": { "#1B1B1B": "Jet", "#605D5C": "Graphite", "#363D45": "Slate", "#B4B4B4": "Concrete", "#B9B9B9": "Ash" },
+    "nordstrom-framework": { "#E5DCD3": "Bone", "#6E706E": "Graphite", "#918C88": "Stone", "#61605E": "Pewter", "#403934": "Espresso" },
+    "loved-by-nordstrom": { "#DAD7D2": "Porcelain", "#605C66": "Dusk", "#BBAA8B": "Camel", "#AF987F": "Toffee", "#CAC4BE": "Oyster" },
+    "j-christianson": { "#DCA23D": "Marigold", "#2D2B27": "Soot", "#E5D443": "Lemon", "#593D19": "Walnut", "#B6B548": "Chartreuse" },
+    "nordstrom-beauty": { "#787878": "Graphite", "#848486": "Steel", "#2E2E2E": "Charcoal", "#ADA5A1": "Greige", "#C5C1C0": "Pearl" },
+    "fairview-bedroom": { "#282923": "Black Olive", "#58635A": "Sage", "#3D4039": "Loden", "#565C48": "Moss", "#657765": "Fern" },
+    "big-bend": { "#9AA0A2": "Haze", "#4D402C": "Mesquite", "#645138": "Canyon", "#292B22": "Creosote", "#7F95A1": "Sky" },
+    "hill-country-kitchen": { "#35412B": "Deep Sage", "#585D3E": "Sage", "#C1B7A9": "Marble", "#A99D8E": "Stone", "#372810": "Umber" },
+    "hill-country-bath": { "#959085": "Sage Grey", "#B0ACAD": "Marble", "#8F8577": "Putty", "#605C5B": "Iron", "#A39D90": "Stone" },
+    "black-white-type": { "#C1C1C1": "Silver", "#515151": "Lead", "#D9D9D9": "Newsprint", "#838383": "Pewter", "#4B4744": "Soot" },
+    "floor-and-decor": { "#C0C1C3": "Concrete", "#A3A4A6": "Steel", "#5F6363": "Slate", "#D4DBE5": "Ice", "#817D78": "Driftwood" },
+    "chalet": { "#CCC4C1": "Birch", "#AEA4A2": "Ash", "#BDACA0": "Sand", "#764226": "Rust", "#667C72": "Pine" },
+    "robert-rodriguez": { "#E0552F": "Vermilion", "#F09A3E": "Marigold", "#E8637A": "Blazer Pink", "#F5EAE7": "Polka Dot Cream", "#241C18": "Espresso" },
+    "sally-os": { "#D2C6C7": "Mauve", "#C8C8C9": "Platinum", "#C18E7C": "Rose Gold", "#C08861": "Caramel", "#2C312F": "Soft Black" },
+    "sizzle": { "#0AA7CA": "Cyan", "#181B17": "Ink", "#776549": "Bronze", "#F5EAE7": "Cream", "#8A8784": "Graphite" },
+  };
+  const palName = (k, hex) => { const h = String(hex).toUpperCase(); return (PAL_OWN[k] && PAL_OWN[k][h]) || (PAL_DRAFT[k] && PAL_DRAFT[k][h]) || ""; };
+
   /* ── compose: a study's fragments, in its own reading order, sorted into
      the parts of a room. Nothing is dropped except the Author fact (it is
      him on every study) and the picture the cover already shows ── */
@@ -424,7 +471,7 @@
     const M = { k, s, lead: s.lead || null, dup: null, stand: null, abs: [], facts: [], tools: [], palette: null, secs: [], pool: [] };
     let sec = { open: true, head: null, items: [] }; M.secs.push(sec);
     for (const f of D.byStudy(k)) {
-      if (f.kind === "palette") { if (!M.palette) M.palette = f; continue; }
+      if (f.kind === "palette") { if (!M.palette) M.palette = Object.assign({}, f, { colors: (f.colors || []).map((c) => Object.assign({}, c, { name: c.name || palName(k, c.hex) })) }); continue; }
       if (f.kind === "fact") { if (f.label !== "Author") M.facts.push(f); continue; }
       if (f.kind === "tool") { M.tools.push(f); continue; }
       if (f.kind === "pic") {
@@ -1142,7 +1189,7 @@
       /* ── the builders ── */
       /* the palette as a moment of its own, before the title block */
       function palSection(pl) {
-        const cols = M.palette.colors.map((c) => ({ hex: String(c.hex).toUpperCase(), rgb: hexRgb(c.hex), ink: D.ink(c.hex), L: lstar(c.hex) }));
+        const cols = M.palette.colors.map((c) => ({ hex: String(c.hex).toUpperCase(), name: c.name || "", rgb: hexRgb(c.hex), ink: D.ink(c.hex), L: lstar(c.hex) }));
         const n = cols.length;
         const seen = new Set();
         const pics = [M.lead].concat(D.byStudy(k).filter((f) => f.kind === "pic")).filter((f) => f && !f.alpha && f.src && !seen.has(f.src) && seen.add(f.src));
@@ -1169,7 +1216,7 @@
         } else if (pl === "blocks") {
           const w = el("div", "sp-pbk n" + n);
           cols.forEach((c, i) => {
-            const bk = el("div", "sp-pb", "<b>" + c.hex + '</b><span class="sp-pbm">HEX ' + c.hex.slice(1) + "<br>" + rgbT(c) + "</span>"); bk.style.background = c.hex; bk.style.color = c.ink;
+            const bk = el("div", "sp-pb", "<b>" + esc(c.name || c.hex) + '</b><span class="sp-pbm">HEX ' + c.hex.slice(1) + "<br>" + rgbT(c) + "</span>"); bk.style.background = c.hex; bk.style.color = c.ink;
             const b = pic(i, "sp-pbp"); if (b) bk.appendChild(b);
             w.appendChild(bk);
           });
