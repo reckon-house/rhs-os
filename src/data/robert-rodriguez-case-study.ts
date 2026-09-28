@@ -24,7 +24,7 @@ export const robertRodriguezCaseStudy: CaseStudy = {
   slug: "robert-rodriguez",
   title: "Robert Rodriguez x Neiman’s",
   category: { label: "Creative", href: "/category/creative" },
-  subtitle: "A spring campaign for Neiman Marcus, shot in one day and run across social, email, the stores, and editorial. | ’80s mall glam meets high fashion.",
+  subtitle: "A spring campaign for Neiman Marcus, shot in one day and run across social, email, the stores, and editorial. | The campaign mixes ’80s mall glam with high fashion.",
   field: "Campaign Design Art Direction Photo Compositing",
   author: "Jeremy Prasatik",
   published: "2024",
@@ -44,7 +44,7 @@ export const robertRodriguezCaseStudy: CaseStudy = {
       // the break must be explicit or × and Neiman's rise together.
       title: "Robert\nRodriguez\nx\nNeiman’s",
       subtitle:
-        "A spring campaign for Neiman Marcus, shot in one day and run across social, email, the stores, and editorial. | ’80s mall glam meets high fashion.",
+        "A spring campaign for Neiman Marcus, shot in one day and run across social, email, the stores, and editorial. | The campaign mixes ’80s mall glam with high fashion.",
       field: "Campaign Design Art Direction Photo Compositing",
       author: "Jeremy Prasatik",
       published: "2024",
@@ -73,7 +73,7 @@ export const robertRodriguezCaseStudy: CaseStudy = {
       id: "hero",
       type: "hero",
       image: `${IMG}/neiman-marcus-robert-rodriguez-woman-cream-polka-dot-dress-pink-blazer-orange-yellow-backdrop-storefront-window-display-campaign.jpg`,
-      alt: "Robert Rodriguez Spring — storefront window campaign display",
+      alt: "Robert Rodriguez Spring, storefront window campaign display",
       pressing: { choreo: { rise: true } },
     },
 
@@ -82,7 +82,7 @@ export const robertRodriguezCaseStudy: CaseStudy = {
       id: "editorial-hero-1",
       type: "hero",
       image: `${IMG}/neiman-marcus-robert-rodriguez-woman-model-pink-blazer-cream-polka-dot-dress-orange-red-backdrop-editorial-campaign.jpg`,
-      alt: "Robert Rodriguez — pink blazer editorial campaign composite",
+      alt: "Robert Rodriguez, pink blazer editorial campaign composite",
       inline: true,
       // No bw flag: the prototype's .bw rule is EMPTY on purpose — its own
       // comment says photography runs full color; the starkness lives in
@@ -104,7 +104,7 @@ export const robertRodriguezCaseStudy: CaseStudy = {
       id: "brief-header",
       type: "section-header",
       label: "SECTION 02: THE BRIEF",
-      title: "One shoot day stretched into",
+      title: "One model and four setups stretched into",
       group: { name: "brief" },
       pressing: {
         mark: { n: "03", name: "The Brief" },
@@ -117,7 +117,7 @@ export const robertRodriguezCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "Neiman Marcus wanted a spring campaign for Robert Rodriguez that felt current and still kept the brand's romantic side, and the budget covered one day in the studio.",
+        "Neiman Marcus wanted the Robert Rodriguez campaign to feel current and still keep the brand's romantic side.",
       group: { name: "brief" },
     },
     {
@@ -126,7 +126,7 @@ export const robertRodriguezCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "One model, four setups, and the photographs layered over each other so the same few pictures could carry a whole look.",
+        "The campaign's budget covered one day in the studio. The photographs from the four setups were layered over each other so the same few pictures could carry a whole look.",
       group: { name: "brief" },
     },
     {
@@ -138,17 +138,17 @@ export const robertRodriguezCaseStudy: CaseStudy = {
         {
           title: "The Reference.",
           content:
-            "Mall portrait studios. Glamour Shots. The oversaturated close-up with a soft-focus background and a fan going somewhere off camera. The look of a whole decade of mall glam.\n\nThe brief was to take that energy seriously, the confidence, the color, the full unironic glamour, and rebuild it with contemporary craft.",
+            "Glamour Shots and the other mall portrait studios were the campaign's starting point, with their oversaturated close-ups, soft-focus backgrounds, and a fan going somewhere off camera.\n\nThe brief was to take mall glam seriously, without irony, and rebuild its confidence and color with contemporary craft.",
         },
         {
           title: "The Technique.",
           content:
-            "Double exposures. Two frames from the same shoot layered together, one tight, one wide, and the overlap makes a third picture that neither frame has on its own. A close-up bleeds into a full-length, a gesture turns into a texture.\n\nMesh color fields replaced the airbrushed backdrops, smooth washes shifting from coral to orange to pink, with the warmth of the reference and none of the noise.",
+            "Two frames from the same shoot, one tight and one wide, were layered as a double exposure, so the overlap made a third picture that neither frame had on its own.\n\nSmooth mesh color fields replaced the mall studios' airbrushed backdrops and kept their warmth.",
         },
         {
           title: "The System.",
           content:
-            "Four photographs, a typeface family, and a color field. Every piece in the campaign is some mix of those three, and each combination looks a little different from the last.",
+            "Four photographs, one typeface family, and a color field make up the campaign. Every piece is some mix of those three, and each combination looks a little different from the last.",
         },
       ],
     },
@@ -160,11 +160,11 @@ export const robertRodriguezCaseStudy: CaseStudy = {
       native: true,
       left: {
         src: `${IMG}/neiman-marcus-robert-rodriguez-woman-pink-blazer-beige-polka-dot-dress-orange-background-editorial-portrait.jpg`,
-        alt: "Robert Rodriguez — polka dot dress, orange backdrop",
+        alt: "Robert Rodriguez, polka dot dress, orange backdrop",
       },
       right: {
         src: `${IMG}/neiman-marcus-robert-rodriguez-woman-pink-blazer-cream-polka-dot-ruffle-dress-orange-background-editorial-portrait.jpg`,
-        alt: "Robert Rodriguez — polka dot ruffle dress, orange backdrop",
+        alt: "Robert Rodriguez, polka dot ruffle dress, orange backdrop",
       },
       pressing: {
         // One string per image; \n separates the caption's two mono spans.
@@ -193,7 +193,7 @@ export const robertRodriguezCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "Social got tight crops, email got the headers, the stores got the color fields at full strength, and the editorial spreads gave the double exposures room to run wide.",
+        "Social got tight crops, email got the header images, the stores got the color fields at full strength, and the editorial spreads gave the double exposures room to run wide.",
     },
     {
       id: "deploy-footnote",
@@ -201,7 +201,7 @@ export const robertRodriguezCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "The storefront window ran the composites at large format. The color fields were drawn as gradients, so they scale to any size. A three-foot print is as smooth as a phone screen.",
+        "The storefront window ran the composites at large format.",
     },
 
     // ── COMPOSITE PAIR — pinned so the gradient plate can climb it ──
@@ -211,11 +211,11 @@ export const robertRodriguezCaseStudy: CaseStudy = {
       native: true,
       left: {
         src: `${IMG}/neiman-marcus-robert-rodriguez-woman-curly-blonde-hair-yellow-blazer-coral-pink-top-red-lipstick-studio-portrait.jpg`,
-        alt: "Robert Rodriguez — yellow blazer studio portrait",
+        alt: "Robert Rodriguez, yellow blazer studio portrait",
       },
       right: {
         src: `${IMG}/neiman-marcus-robert-rodriguez-woman-yellow-lime-blazer-white-cropped-pants-nude-heels-studio-lookbook-portrait.jpg`,
-        alt: "Robert Rodriguez — yellow blazer lookbook portrait",
+        alt: "Robert Rodriguez, yellow blazer lookbook portrait",
       },
       pressing: {
         captions: ["Yellow blazer, studio\nSpring 2024", "Lookbook"],
@@ -228,7 +228,7 @@ export const robertRodriguezCaseStudy: CaseStudy = {
       id: "storefront-hero",
       type: "hero",
       image: `${IMG}/neiman-marcus-robert-rodriguez-woman-yellow-blazer-white-pants-coral-heels-curly-hair-pink-orange-gradient-studio-editorial-portrait.jpg`,
-      alt: "Robert Rodriguez — double-exposure editorial portrait",
+      alt: "Robert Rodriguez, double-exposure editorial portrait",
       inline: true,
       pressing: { choreo: { rise: true } },
     },
@@ -237,7 +237,7 @@ export const robertRodriguezCaseStudy: CaseStudy = {
     {
       id: "headline-glam",
       type: "editorial-headline",
-      text: "The mall studio,\nrebuilt for\nthe runway",
+      text: "Glamour Shots,\nrebuilt for\nNeiman Marcus",
       pressing: {
         choreo: { quotePoster: true },
         indent: 1,
@@ -267,7 +267,7 @@ export const robertRodriguezCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "The type was chosen for this campaign specifically. Archer Book for body copy, warm rounded serifs that match the softness of the photography.",
+        "The typeface, Archer, was chosen just for the Robert Rodriguez campaign. Archer Book sets the body copy in warm, rounded serifs that match the softness of the photography.",
       group: { name: "brand" },
     },
     // The old footnote's second paragraph (the logo treatment) now lives
@@ -278,7 +278,7 @@ export const robertRodriguezCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "The palette is coral, orange, and pink. As flat blocks they clash; with smooth transitions between them they work.",
+        "The palette is coral, orange, and pink. The three colors clash as flat blocks and hold together when each one fades into the next.",
       group: { name: "brand" },
     },
 
@@ -299,7 +299,7 @@ export const robertRodriguezCaseStudy: CaseStudy = {
       id: "brand-image-2",
       type: "image",
       src: `${IMG}/robert-rodriguez-logo-typography-gradient-orange-pink-coral-color-palette-branding-design.jpg`,
-      alt: "Robert Rodriguez — logo in Archer Hairline over Book on a mesh colour field",
+      alt: "Robert Rodriguez, logo in Archer Hairline over Book on a mesh color field",
       aspect: "native",
       pressing: {
         choreo: { zoom: true },
@@ -317,7 +317,7 @@ export const robertRodriguezCaseStudy: CaseStudy = {
       id: "lookbook-hero",
       type: "hero",
       image: `${IMG}/neiman-marcus-robert-rodriguez-woman-yellow-blazer-white-pants-pink-curly-hair-colorful-gradient-overlay-portrait-concrete-wall-gallery.jpg`,
-      alt: "Robert Rodriguez — gallery installation with gradient overlay composite",
+      alt: "Robert Rodriguez, gallery installation with gradient overlay composite",
       inline: true,
       pressing: { choreo: { rise: true } },
     },
@@ -327,10 +327,10 @@ export const robertRodriguezCaseStudy: CaseStudy = {
       id: "closing-header",
       type: "section-header",
       label: "SECTION 06: CLOSING",
-      title: "One day in the studio,",
+      title: "Every color field was drawn",
       pressing: {
         mark: { n: "09", name: "Closing" },
-        heldLine: "a season on every channel.",
+        heldLine: "as a gradient.",
       },
     },
     {
@@ -340,7 +340,7 @@ export const robertRodriguezCaseStudy: CaseStudy = {
       stack: ["Adobe Photoshop", "Adobe Illustrator", "Capture One"],
       links: [{ label: "Neiman Marcus", url: "https://www.neimanmarcus.com" }],
       content:
-        "The whole campaign is four photographs from one day, layered over each other and set on gradients.",
+        "The gradients scale to any size, so a three-foot print is as smooth as a phone screen.",
     },
   ],
 };
