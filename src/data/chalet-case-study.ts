@@ -7,7 +7,7 @@ export const chaletCaseStudy: CaseStudy = {
   title: "Mountain View Chalet",
   category: { label: "Interiors", href: "/category/interiors" },
   subtitle:
-    "A 1968 Pacific Northwest chalet, taken to the studs and rebuilt inside and out. | Cabin bones, mid-century furniture, and 16-foot glass doors framing the tree line.",
+    "A 1968 Pacific Northwest chalet, taken down to the studs and rebuilt inside and out. | The house keeps its cabin bones, with mid-century furniture and 16-foot glass doors framing the tree line.",
   field: "Interior Design\nExterior Direction\nFinish Selection\nFurniture Curation\nFixture Sourcing",
   author: "Jeremy Prasatik",
   published: "2023",
@@ -39,20 +39,20 @@ export const chaletCaseStudy: CaseStudy = {
       },
       title: "Mountain View\nChalet",
       subtitle:
-        "A 1968 Pacific Northwest chalet, taken to the studs and rebuilt inside and out. | Cabin bones, mid-century furniture, and 16-foot glass doors framing the tree line.",
+        "A 1968 Pacific Northwest chalet, taken down to the studs and rebuilt inside and out. | The house keeps its cabin bones, with mid-century furniture and 16-foot glass doors framing the tree line.",
       field: "Interior Design  Exterior Direction  Finish Selection  Furniture Curation  Fixture Sourcing",
       author: "Jeremy Prasatik",
       published: "2023",
       status: "Complete",
       classification: ["Interior Design", "Exterior Direction", "Finish Selection", "Furniture Curation", "Fixture Sourcing"],
       summary: [
-        { label: "Built", value: "1968 PNW chalet rebuilt to the studs. Exterior, interior, furnishings" },
+        { label: "Built", value: "1968 PNW chalet rebuilt from the studs up: exterior, interior, and furnishings" },
         { label: "Scope", value: "Interior design, exterior direction, finish selection, furniture and fixture sourcing" },
         { label: "Materials", value: "Reclaimed PNW pine, painted stone, warm gray siding, 16-foot glass doors, walnut, Malm fireplace, sputnik chandelier" },
-        { label: "Angle", value: "Rebuilt around the tree line, with 16-foot glass doors on the main wall and furniture kept plain so it doesn't compete with the view." },
+        { label: "Angle", value: "The chalet was rebuilt around the tree line, with 16-foot glass doors on the main wall and furniture kept plain so it doesn't compete with the view." },
       ],
       abstract:
-        "A 1968 Pacific Northwest chalet that hadn't been rethought since the '90s. Blue carpet, dated railings, an exterior that disappeared on cloudy days. The structure was sound. Everything else needed to go.\n\nTook it down to the studs. Exterior repainted warm gray with white railings. New lighting on the patio and stairs at night. Reclaimed PNW pine in mixed plank widths across the main level, a Malm fireplace, a sputnik chandelier overhead, and 16-foot sliding glass doors on the main wall, so the tree canopy is what you look at from every seat in the room.\n\nFurniture kept simple on purpose so it doesn't compete with what's outside the glass: tufted gray sofa, woven bench, walnut dining set, a leaning ladder shelf against painted stone. The original footprint gained over 400 square feet.",
+        "The Mountain View chalet was built in 1968 in the Pacific Northwest and hadn't been rethought since the '90s. Before the rebuild, the house had blue carpet, dated railings, and an exterior that disappeared on cloudy days. The structure was sound, and everything else needed to go.\n\nThe house was taken down to the studs. The exterior was repainted warm gray with white railings, and new fixtures light the patio and stairs at night. Inside, the main level now has reclaimed PNW pine floors in mixed plank widths, a Malm fireplace, a sputnik chandelier overhead, and 16-foot sliding glass doors on the main wall, so the tree canopy is what you look at from every seat in the room.\n\nThe furniture is kept simple on purpose so it doesn't compete with what's outside the glass: a tufted gray sofa, a woven bench, a walnut dining set, and a leaning ladder shelf against painted stone. The chalet's original footprint gained over 400 square feet.",
     },
 
         // ── HERO — the iconic interior shot: A-frame ceiling, sputnik chandelier,
@@ -74,10 +74,10 @@ export const chaletCaseStudy: CaseStudy = {
       id: "studs-header",
       type: "section-header",
       label: "SECTION 02: DOWN TO THE STUDS",
-      title: "The house has an outline against",
+      title: "The chalet no longer disappears",
       pressing: {
         mark: { n: "02", name: "Warm Gray" },
-        heldLine: "the evergreens even when it is overcast.",
+        heldLine: "against the evergreens on cloudy days.",
         choreo: { pin: true },
       },
     },
@@ -86,7 +86,7 @@ export const chaletCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "Warm gray on the siding, white on the railings.",
+        "Warm gray went on the siding and white on the railings.",
     },
     {
       id: "studs-footnote",
@@ -94,7 +94,7 @@ export const chaletCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "New lighting on the patio and the stairs at night, and string lights over the stone patio off the side. The stairs run down from the deck to that patio, and the front approach climbs a rocky grade to the door.",
+        "The stairs run down from the deck to a stone patio off the side of the house, and both are lit at night now, with string lights over the patio. At the front of the chalet, the way up to the door climbs a rocky slope.",
     },
 
     // ── Front exterior — the zoom. The section argues that the exterior
@@ -168,7 +168,7 @@ export const chaletCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "The A-frame ceiling is wood plank all the way up, with a triangular window under the peak that frames the tops of the trees. There's a skylight too.",
+        "The A-frame ceiling is wood plank all the way up. A triangular window under the peak frames the tops of the trees, and there's a skylight too.",
     },
     {
       id: "interior-footnote",
@@ -176,7 +176,7 @@ export const chaletCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "The tufted gray sofa sits against the painted stone wall, with an antler mount above it and the walnut ladder shelf leaning next to it, books and a speaker on the rungs. A leather sling chair and a walnut coffee table under the skylight. The kitchen is white shaker cabinets and subway tile around an exposed wood beam column, and the same pine runs through it.",
+        "The tufted gray sofa sits against the painted stone wall under an antler mount, and the walnut ladder shelf leans beside it, holding books and a speaker. A leather sling chair and a walnut coffee table are under the skylight. The kitchen has white shaker cabinets and subway tile around an exposed wood beam column, and the main level's reclaimed pine floor runs through it too.",
     },
 
     // ── A-frame ceiling shot, standalone (the showpiece looking up at the
@@ -295,7 +295,7 @@ export const chaletCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "Every choice is plotted between the two. The structural moves land in the middle.",
+        "The 16-foot doors, the A-frame, and the warm gray exterior land in the middle of the chart: cabin form at mid-century proportions.",
     },
     {
       id: "blend-footnote",
@@ -303,7 +303,7 @@ export const chaletCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "Reclaimed pine, exposed beams, painted stone, and the antlers are the cabin end. The sputnik, the Malm, the walnut dining set, and the leather sling chair are the mid-century end. The 16-foot doors, the A-frame, and the warm gray exterior sit between them: cabin form at mid-century proportions.",
+        "Reclaimed pine, exposed beams, painted stone, and the antlers sit at the cabin end of the chart. The sputnik chandelier, the Malm fireplace, the walnut dining set, and the leather sling chair are at the mid-century end.",
     },
     {
       id: "blend-chart",
@@ -317,10 +317,10 @@ export const chaletCaseStudy: CaseStudy = {
       id: "closing-header",
       type: "section-header",
       label: "SECTION 05: CLOSING",
-      title: "Over 400 square feet",
+      title: "The rebuild added over 400 square feet",
       pressing: {
         mark: { n: "05", name: "400 Square Feet" },
-        heldLine: "bigger than it was.",
+        heldLine: "to the original footprint.",
       },
     },
     {
@@ -328,7 +328,7 @@ export const chaletCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "Most of it came from reworking the deck line and pulling more of the main level out toward the trees.",
+        "Most of the chalet's new space came from reworking the deck line and pulling more of the main level out toward the trees.",
     },
     {
       id: "closing",
@@ -337,7 +337,7 @@ export const chaletCaseStudy: CaseStudy = {
       stack: ["AutoCAD", "SketchUp", "Adobe Creative Suite"],
       links: [],
       content:
-        "A 1968 chalet taken down to the studs and rebuilt, over 400 square feet larger than it started.",
+        "The 1968 structure was sound, so the rebuild kept it. The blue carpet and the dated railings went, along with everything else.",
     },
   ],
 };
