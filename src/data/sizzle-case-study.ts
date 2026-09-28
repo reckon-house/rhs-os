@@ -31,7 +31,7 @@ export const sizzleCaseStudy: CaseStudy = {
   title: "Faux Reel",
   category: { label: "Digital", href: "/category/digital" },
   subtitle:
-    "A tool that turns still photographs into a sizzle reel. | No video in it, just stills cut fast enough to look like motion.",
+    "A tool that turns still photographs into a sizzle reel. | Faux Reel has no video in it, just stills cut fast enough to look like motion.",
   field: "Product\nMotion",
   author: "Jeremy Prasatik",
   published: "2026",
@@ -49,7 +49,7 @@ export const sizzleCaseStudy: CaseStudy = {
       type: "meta",
       title: "Faux\nReel",
       subtitle:
-        "A tool that turns still photographs into a sizzle reel. | No video in it, just stills cut fast enough to look like motion.",
+        "A tool that turns still photographs into a sizzle reel. | Faux Reel has no video in it, just stills cut fast enough to look like motion.",
       reel: {
         caption: "Live · 7 frames · 2026",
         colors: ["#0AA7CA", "#181B17", "#776549", "#F5EAE7", "#8A8784"],
@@ -71,11 +71,11 @@ export const sizzleCaseStudy: CaseStudy = {
       links: [{ label: "Source", url: "https://github.com/reckon-house/faux-reel" }],
       summary: [
         { label: "Built", value: "In a day, with Claude Code" },
-        { label: "Ships", value: "React component, a 4.8KB web component, and a GIF/MP4 exporter" },
-        { label: "Try it", value: "Section 02 takes your own images, and nothing uploads or saves" },
+        { label: "Ships", value: "A React component, a 4.8KB web component, and a GIF/MP4 exporter" },
+        { label: "Try it", value: "Section 02 takes your own images, and nothing is uploaded or saved" },
       ],
       abstract:
-        "A sizzle reel is usually footage: shot, edited, rendered, hosted. Faux Reel skips the footage and keeps the edit. It runs a stack of still photographs through fourteen transition types: wipes, blinks, a burn, a lens pinch, and a title card that assembles itself. All of it runs on a timer tuned so the eye reads motion, in one container, with CSS animation and no video file anywhere.\n\nIt dawned on me one night that I could do this in code instead of opening an editor, so I figured I would give it a try, and it turned out pretty well. Once I got the hang of it, it actually felt faster, and it left me with something I can edit and keep fresh. The build took a day with Claude Code, most of it spent finessing the timing so the stills feel like motion and not a slideshow. The finished web component weighs 4.8KB gzipped, smaller than any one of the photographs it plays.\n\nNone of this is a screenshot or a mockup. The reel up top is running live, and the lab below it is where you load your own photos: it pulls a five-color palette out of them and rebuilds the reel to match. If you want a file instead of a live embed, the same code exports the whole thing as a looping GIF or an MP4.",
+        "A sizzle reel is usually video that gets shot, edited, rendered and hosted. Faux Reel skips the footage and runs a stack of still photographs through fourteen transition types: wipes, blinks, a burn, a lens pinch, and a title card that assembles itself. The whole reel runs in one box on the page, with CSS animation and no video file anywhere.\n\nIt dawned on me one night that I could make a sizzle reel in code instead of opening an editor, so I figured I would give it a try, and it turned out pretty well. Once I got the hang of it, working in code actually felt faster, and it left me with a reel I can edit and keep fresh. Faux Reel took a day to build with Claude Code, most of it spent finessing the timing so the stills feel like motion and not a slideshow. The finished web component weighs 4.8KB gzipped, smaller than any one of the photographs it plays.\n\nNone of the reels on this page is a screenshot or a mockup. The reel up top is running live, and the lab below it is where you load your own photos: it pulls a five-color palette out of them and rebuilds the reel to match. If you want a file instead of a live embed, the same code exports the whole thing as a looping GIF or an MP4.",
     },
 
     // ── THE WALL, WHERE A HERO WOULD BE ──
@@ -101,8 +101,8 @@ export const sizzleCaseStudy: CaseStudy = {
       label: "SECTION 02: THE LAB",
       title: "Drop in your own photos",
       pressing: {
-        mark: { n: "02", name: "Load your" },
-        heldLine: "and it rebuilds around them.",
+        mark: { n: "02", name: "Your photos" },
+        heldLine: "and the reel rebuilds around them.",
       },
     },
     {
@@ -110,7 +110,7 @@ export const sizzleCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "The default cut is seven frames, one from each of seven projects, and it takes up to eight of yours. Each beat gets a chip below, and clicking one freezes the reel on it.",
+        "Faux Reel plays seven frames by default, and it takes up to eight of yours. Each beat gets a chip under the reel, and clicking one freezes playback on that beat.",
     },
     {
       id: "lab",
@@ -125,10 +125,10 @@ export const sizzleCaseStudy: CaseStudy = {
       id: "end-header",
       type: "section-header",
       label: "SECTION 03: UNDER THE CUT",
-      title: "The photo swaps while",
+      title: "The reel swaps photos",
       pressing: {
-        mark: { n: "03", name: "Why stills" },
-        heldLine: "the screen is covered.",
+        mark: { n: "03", name: "The swap" },
+        heldLine: "behind a color blink or a lens pinch.",
       },
     },
     {
@@ -136,16 +136,16 @@ export const sizzleCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "When the reel blinks a color frame or the lens pinches shut, that is the cover. Every cut has to land on a new image, or the blink looks like a glitch. Titles cut in hard, no fade, and each frame sits for a beat before the next one.",
+        "Every cut has to land on a new image, or the color blink looks like a glitch. Titles come in hard with no fade, and each frame sits for a beat before the next one.",
     },
     {
       id: "file-stats",
       type: "stats-summary",
       items: [
-        { value: "14", label: "Transition types", sublabel: "Wipes, blinks, burn, pinch, and four kinds of type" },
+        { value: "14", label: "Transition types", sublabel: "Wipes, blinks, a burn, a pinch, and four type animations" },
         { value: "4.8KB", label: "Web component", sublabel: "Gzipped, no dependencies, works on any page" },
         { value: "20fps", label: "Deterministic export", sublabel: "131 frames stepped on a frozen clock" },
-        { value: "0", label: "Video files", sublabel: "1.3MB as GIF, 0.2MB as MP4, nothing hosted" },
+        { value: "0", label: "Video files", sublabel: "The live reel runs on CSS animation with nothing hosted. Exports run 1.3MB as a GIF or 0.2MB as an MP4." },
       ],
     },
 
@@ -154,10 +154,10 @@ export const sizzleCaseStudy: CaseStudy = {
       id: "closing-header",
       type: "section-header",
       label: "SECTION 04: CLOSING",
-      title: "The reel up top is",
+      title: "Faux Reel's code is",
       pressing: {
-        mark: { n: "04", name: "On the page" },
-        heldLine: "the component itself.",
+        mark: { n: "04", name: "The code" },
+        heldLine: "MIT-licensed and on GitHub.",
       },
     },
     {
@@ -170,7 +170,7 @@ export const sizzleCaseStudy: CaseStudy = {
         { label: "See the projects the reel is cut from", url: "/" },
       ],
       content:
-        "The reel up top is the component itself, running where it was made and cut from seven of the projects around it. The code is MIT-licensed. If you need a deck or a portfolio to move, grab it and skip the shoot.",
+        "The reel at the top of this page is Faux Reel itself, cut from seven of the projects here and running on the site where I made it. If you need a deck or a portfolio that moves, grab the code.",
     },
   ],
 };
