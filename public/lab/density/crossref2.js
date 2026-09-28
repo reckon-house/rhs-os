@@ -1168,23 +1168,23 @@
      mark: the stars, the plus signs, the brackets, the code */
   const TCW = 4.5, TLH = 8, TFONT = 6.5;
   const PAT = {
-    lines: { a: 0.11, ch: "*", fill: 0.4 },
+    lines: { a: 0.095, ch: "*", fill: 0.5 },
     "lead-digital": { a: 0.075, code: true },
     "lead-app": { a: 0.055, text: words64 },
-    "lead-systems": { a: 0.11, ch: "+", fill: 0.4 },
-    "lead-creative": { a: 0.1, ch: "\u2022", fill: 0.38 },
+    "lead-systems": { a: 0.095, ch: "+", fill: 0.5 },
+    "lead-creative": { a: 0.085, ch: "\u2022", fill: 0.48 },
     "lead-branding": { a: 0.1, cell: (i, j) => { const c = Math.floor(i / 6), r = mod(j - (mod(c, 2) ? 2 : 0), 4), k = mod(i, 6); return r < 3 && k < 5 ? FLORET[r][k] : null; } },
     "lead-interiors": { a: 0.075, cell: (i, j) => "[  ]"[mod(i + (mod(j, 2) ? 2 : 0), 4)] },
-    work: { a: 0.13, ch: ".", fill: 0.55 },
+    work: { a: 0.12, ch: ".", fill: 0.62 },
     years: { a: 0.065, binary: true },
     about: { a: 0.075, field: true },
     figures: { a: 0.055, ledger: true },
-    capabilities: { a: 0.1, ch: "x", fill: 0.36 },
-    tools: { a: 0.08, cell: (i, j) => (hash2(i + 11, j + 101) < 0.34 ? CODE[Math.floor(hash2(i + 7, j + 3) * CODE.length) % CODE.length] : null) },
+    capabilities: { a: 0.085, ch: "x", fill: 0.46 },
+    tools: { a: 0.07, cell: (i, j) => (hash2(i + 11, j + 101) < 0.62 ? CODE[Math.floor(hash2(i + 7, j + 3) * CODE.length) % CODE.length] : null) },
   };
   const PADV = 8;
   /* four strengths of the same mark, by the noise under it */
-  const LEVELS = [0.4, 0.68, 0.96, 1.25];
+  const LEVELS = [0.72, 0.88, 1.04, 1.2];
   const drawSec = (sec) => {
     let cv = sec.querySelector(":scope > canvas.stx");
     const key0 = sec.dataset.tx || sec.dataset.g, pat = PAT[key0];
@@ -1216,7 +1216,7 @@
          row or column of them lines up into a pattern */
       for (let j = 0; j < rows; j++) for (let i = 0; i < cols; i++) {
         const x = ox + i * TCW, y = oy + j * TLH;
-        if (hash2(i + seed, j + 3 * seed) >= pat.fill * (0.6 + 0.6 * weather(x, y))) continue;
+        if (hash2(i + seed, j + 3 * seed) >= pat.fill) continue;
         const jx = (hash2(i * 3 + 1, j * 7 + seed) - 0.5) * 2.2, jy = (hash2(i * 5 + seed, j * 3 + 2) - 0.5) * 3;
         buckets[Math.min(LEVELS.length - 1, Math.floor(weather(x, y) * LEVELS.length))].push(pat.ch, x + jx, y + jy);
       }
@@ -1225,13 +1225,11 @@
       for (let j = 0; j < rows; j++) for (let i = 0; i < cols; i++) put(i, j, t[(j * cols + i) % t.length]);
     } else if (pat.ledger) {
       const nums = ledger(); if (!nums.length) return;
-      for (let j = 0; j < rows; j++) {
-        let row = "", k = j * 3; while (row.length < cols) row += nums[k++ % nums.length].padStart(7, " ");
-        for (let i = 0; i < cols; i++) put(i, j, row[i]);
-      }
+      const run = nums.join(" ");
+      for (let j = 0; j < rows; j++) for (let i = 0; i < cols; i++) put(i, j, run[(j * cols + i + j * 7) % run.length]);
     } else if (pat.code) {
-      const src = source();
-      for (let j = 0; j < rows; j++) { const l = src[(j + 3) % src.length]; for (let i = 0; i < cols && i < l.length; i++) put(i, j, l[i]); }
+      const run = source().map((l) => l.trim()).join(" ");
+      for (let j = 0; j < rows; j++) for (let i = 0; i < cols; i++) put(i, j, run[(j * cols + i) % run.length]);
     } else if (pat.binary) {
       const bins = binYears(); if (!bins.length) return;
       for (let j = 0; j < rows; j++) {
@@ -1240,8 +1238,8 @@
       }
     } else if (pat.field) {
       for (let j = 0; j < rows; j++) for (let i = 0; i < cols; i++) {
-        const v = Math.max(0, Math.min(1, (weather(ox + i * TCW, oy + j * TLH) - 0.3) / 0.7));
-        put(i, j, RAMP[Math.min(RAMP.length - 1, Math.floor(Math.pow(v, 1.3) * RAMP.length))]);
+        const v = Math.max(0, Math.min(1, (weather(ox + i * TCW, oy + j * TLH) - 0.2) / 0.8));
+        put(i, j, RAMP[1 + Math.min(RAMP.length - 2, Math.floor(v * (RAMP.length - 1)))]);
       }
     } else for (let j = 0; j < rows; j++) for (let i = 0; i < cols; i++) {
       /* a drawn figure (the florets, the brackets): thinned where the
@@ -1249,7 +1247,6 @@
          did not take evenly */
       const ch = pat.cell(i, j); if (!ch || ch === " ") continue;
       const x = ox + i * TCW, y = oy + j * TLH, w = weather(x, y);
-      if (hash2(i + 5 * seed, j + seed) > 0.45 + 0.75 * w) continue;
       buckets[Math.min(LEVELS.length - 1, Math.floor(w * LEVELS.length))].push(ch, x + (hash2(i * 3, j * 5 + seed) - 0.5) * 1.4, y + (hash2(i * 7 + seed, j) - 0.5) * 1.8);
     }
     buckets.forEach((b, l) => {
