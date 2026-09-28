@@ -1211,13 +1211,15 @@
      interactive TOC - what type of animations would work better - fit
      more style wise?"). Six families on one switch, the room's in
      study-panel.js (above FAM) and css, a shelf's pictures here in
-     XREF_IN. Rise, the live site's, stays the default; ?motion= or the
-     row under Texture changes it, kept in localStorage. Choosing one,
-     or the one already chosen, plays what is on screen again ── */
-  const MOTS = ["rise", "set", "wipe", "focus", "cut", "scrub"], MOT_LS = "crossref2.motion";
+     XREF_IN. Wipe is the default since his pick ("wipe is awesome!",
+     27 Sept), under a new localStorage key so an earlier pick from the
+     six does not hide it; ?motion= or the row under Texture changes it.
+     Choosing one, or the one already chosen, plays what is on screen
+     again ── */
+  const MOTS = ["rise", "set", "wipe", "focus", "cut", "scrub"], MOT_LS = "crossref2.motion2";
   const QMO = (new URLSearchParams(location.search).get("motion") || "").toLowerCase();
   const lsMo = () => { try { return localStorage.getItem(MOT_LS); } catch (e) { return null; } };
-  let MOT = MOTS.includes(QMO) ? QMO : MOTS.includes(lsMo()) ? lsMo() : "rise";
+  let MOT = MOTS.includes(QMO) ? QMO : MOTS.includes(lsMo()) ? lsMo() : "wipe";
   HTML.dataset.motion = MOT;
   const setMotion = (x) => {
     if (!MOTS.includes(x)) return;
