@@ -870,3 +870,19 @@ html.stack .sh-foot-t.stand { flex-basis: 100%; }
 .sh-foot-t.stand .g { color: var(--grey); }
 /* the fourth switch row, Motion, sits under Texture */
 .mosw { flex-basis: 100%; justify-content: flex-end; }
+
+/* ── THE HOME (27 Sept, his "when a user hits the homepage we should
+   allow them to keep scrolling on the right into the work vs it being a
+   deadend"). On a desk the half at rest scrolls, in the stage's own box,
+   so its foot lands where the first line's shelf sets its head. The
+   statement is its first glass, set where it stood; the foot is on
+   paper, and its paper reaches up to the running head's line, so the
+   last of the black has gone when it carries on ── */
+.layer.home { position: fixed; top: 0; right: 0; bottom: 0; left: var(--stl); display: block; overflow-x: hidden; overflow-y: auto;
+  overscroll-behavior: contain; scrollbar-width: none; }
+.layer.home::-webkit-scrollbar { display: none; }
+.layer.home .main { max-width: none; }
+.hm-cover { position: relative; box-sizing: border-box; display: flex; flex-direction: column; justify-content: flex-end; align-items: flex-start;
+  height: 100vh; height: 100dvh; padding: var(--m) var(--m) var(--m) calc(var(--gut) / 2); }
+.layer.home .folio { top: var(--m); left: calc(var(--gut) / 2); right: var(--m); }
+.hm-foot { min-height: calc(100vh - 44px); min-height: calc(100dvh - 44px); background: var(--paper); color: var(--ink); box-shadow: 0 -44px 0 var(--paper); }

@@ -1558,17 +1558,16 @@
          grey, one size and one weight */
       const say = el("div", "say", esc(st.ink) + (st.grey ? ' <span class="g">' + esc(st.grey) + "</span>" : "")); wrap.appendChild(say);
       if (DATA.links) wrap.appendChild(el("div", "links", DATA.links.map((l) => '<a href="' + D.esc(l.v) + '">' + esc(l.k) + "</a>").join("")));
-      main.appendChild(wrap);
       /* the folio (27 Sept, the editorial pass): the half at rest is the
          cover, so its head carries the index's own counts, as a cover
          carries its lines. Counted here, never typed */
       const ys = DATA.studies.map((x) => +x.y).filter(Boolean);
       const lay = main.parentNode;
-      if (lay && !phone() && ys.length) {
-        const f = el("div", "caps folio", ["work", "lines", "figures"].map((id) => "<span>" + esc(G[id].name) + " <b>" + G[id].items.length + "</b></span>").join("") +
-          "<span>" + Math.min(...ys) + "\u2013" + Math.max(...ys) + "</span>");
-        lay.appendChild(f);
-      }
+      const f = lay && !phone() && ys.length ? el("div", "caps folio", ["work", "lines", "figures"].map((id) => "<span>" + esc(G[id].name) + " <b>" + G[id].items.length + "</b></span>").join("") +
+        "<span>" + Math.min(...ys) + "\u2013" + Math.max(...ys) + "</span>") : null;
+      /* on a desk, the home: the cover, then the work (homeBuild) */
+      if (lay && !phone()) homeBuild(lay, main, wrap, f);
+      else { main.appendChild(wrap); if (f) lay.appendChild(f); }
       fitType(say, Math.min(W, phone() ? W : 600), Math.max(80, H - 150), phone() ? 28 : 36, 19);
     },
     pic(main, W, H, it) { main.appendChild(picture(it.f, Math.min(W, H * ratio(it.f)))); main.firstChild.classList.add("rise"); },
@@ -2090,6 +2089,67 @@
     esc, clean, D,
   });
 
+  /* a foot's words: the entry's name, count, column and sentence, set
+     where its shelf will put them. A line comes as the one run its head
+     is set in (the stack's .xk-stand), so the scroll into it lands on the
+     same words. A shelf's foot carries the next entry under "Next"; the
+     home's carries the first line under the name of the lines */
+  const footEl = (nx, label) => {
+    const a = el("a", "sh-foot"); a.href = "#" + nx.key; a.dataset.key = nx.key;
+    const ns = shelfSentence(nx), n = shelfOrder(nx).length;
+    const run = nx.g.id === "lines" && ns && ns.text;
+    a.innerHTML = '<span class="sh-foot-k caps"><span>' + esc(label || "Next") + '</span><i></i></span>' +
+      '<span class="sh-foot-hl">' + (run
+        ? '<span class="sh-foot-t stand">' + esc(nameOf(nx)) + '. <span class="g">' + esc(clean(ns.text)) + "</span></span>"
+        : '<span class="sh-foot-t' + (nx.g.id === "years" || nx.g.id === "figures" ? " num" : "") + '">' + esc(nameOf(nx)) + "</span>") +
+      (n ? '<span class="sh-foot-n caps">Work<b>' + n + "</b></span>" : "") + "</span>" +
+      (!run && ns && ns.label ? '<span class="sh-foot-l caps">' + esc(clean(ns.label)) + "</span>" : "") +
+      (!run && ns && ns.text ? '<span class="sh-foot-s' + (ns.lead ? " lead" : "") + '">' + (ns.lead ? twoTone(clean(ns.text)) : esc(clean(ns.text))) + "</span>" : "");
+    return a;
+  };
+
+  /* ── the home (27 Sept, his "when a user hits the homepage we should
+     allow them to keep scrolling on the right into the work vs it being a
+     deadend"). On a desk the half at rest scrolls: the statement is its
+     first glass, and under it, on paper and a glass tall, the first line
+     comes up as its shelf will open, the way a shelf's foot brings up the
+     next. Reaching the end carries on into that shelf, and the shelves
+     carry on from there, line after line. Scrolling back up out of the
+     first shelf comes back here at the end; Close comes back to the top.
+     Where it stands is kept across the hovers that rebuild it ── */
+  let homeY = 0, homeAt = null;
+  const homeBuild = (lay, main, wrap, folio) => {
+    const first = G.lines && G.lines.items[0];
+    lay.classList.add("home");
+    const cover = el("div", "hm-cover");
+    if (folio) cover.appendChild(folio);
+    cover.appendChild(wrap);
+    main.appendChild(cover);
+    if (!first) return;
+    const foot = footEl(first, G.lines.name); foot.classList.add("hm-foot");
+    main.appendChild(foot);
+    let armed = true, t = 0;
+    const check = () => {
+      t = 0;
+      if (!lay.isConnected || lay.classList.contains("out") || staged()) return;
+      homeY = lay.scrollTop;
+      const lb = lay.getBoundingClientRect(), fb = foot.getBoundingClientRect();
+      foot.style.setProperty("--fp", Math.max(0, Math.min(1, (lb.bottom - fb.top) / Math.max(1, fb.height))).toFixed(3));
+      /* back from below, it waits until the reader has scrolled up off the foot */
+      if (!armed && fb.top > lb.top + HEAD + 60) armed = true;
+      const atEnd = lay.scrollTop + lay.clientHeight >= lay.scrollHeight - 2;
+      if (armed && atEnd && fb.top <= lb.top + HEAD + 12) { armed = false; go({ v: "shelf", key: first.key }, { push: true, via: "scroll", home: true }); }
+    };
+    lay.addEventListener("scroll", () => { if (!t) t = requestAnimationFrame(check); }, { passive: true });
+    foot.addEventListener("click", (ev) => {
+      if (ev.metaKey || ev.ctrlKey || ev.shiftKey || ev.button) return;
+      ev.preventDefault(); go({ v: "shelf", key: first.key }, { push: true });
+    });
+    if (homeAt === "end") { lay.scrollTop = lay.scrollHeight; armed = false; homeAt = null; }
+    else lay.scrollTop = homeY;
+    check();
+  };
+
   /* the frame: the running head, an empty body for the layout, the foot */
   const frameShelf = (S) => {
     const o = S.o;
@@ -2110,21 +2170,7 @@
        it comes up, and reaching its end carries on into that shelf */
     const items = o.g.items, nx = items[(items.indexOf(o) + 1) % items.length];
     S.foot = null;
-    if (nx && nx !== o) {
-      const a = el("a", "sh-foot"); a.href = "#" + nx.key; a.dataset.key = nx.key;
-      const ns = shelfSentence(nx), n = shelfOrder(nx).length;
-      /* a line comes as the one run its head is set in (the stack's
-         .xk-stand), so the scroll into it lands on the same words */
-      const run = nx.g.id === "lines" && ns && ns.text;
-      a.innerHTML = '<span class="sh-foot-k caps"><span>Next</span><i></i></span>' +
-        '<span class="sh-foot-hl">' + (run
-          ? '<span class="sh-foot-t stand">' + esc(nameOf(nx)) + '. <span class="g">' + esc(clean(ns.text)) + "</span></span>"
-          : '<span class="sh-foot-t' + (nx.g.id === "years" || nx.g.id === "figures" ? " num" : "") + '">' + esc(nameOf(nx)) + "</span>") +
-        (n ? '<span class="sh-foot-n caps">Work<b>' + n + "</b></span>" : "") + "</span>" +
-        (!run && ns && ns.label ? '<span class="sh-foot-l caps">' + esc(clean(ns.label)) + "</span>" : "") +
-        (!run && ns && ns.text ? '<span class="sh-foot-s' + (ns.lead ? " lead" : "") + '">' + (ns.lead ? twoTone(clean(ns.text)) : esc(clean(ns.text))) + "</span>" : "");
-      kids.push(a); S.foot = a;
-    }
+    if (nx && nx !== o) { const a = footEl(nx); kids.push(a); S.foot = a; }
     S.layer.replaceChildren(...kids);
     Object.assign(S, { bar, body, sw });
   };
@@ -2187,7 +2233,8 @@
      carrying on, to the end of the one before, through the history */
   let backUp = null;
   const carryBack = (S) => {
-    if (!S.back || S.gone2 || VIEW.v !== "shelf" || SH !== S || !S.visible || S.pv) return;
+    /* an empty back is the home, carried on from its foot */
+    if (S.back == null || S.gone2 || VIEW.v !== "shelf" || SH !== S || !S.visible || S.pv) return;
     const hs = history.state; if (!hs || hs.key !== S.key || hs.back !== S.back) return;
     S.gone2 = true; backUp = S.back;
     history.back();
@@ -2416,7 +2463,7 @@
     const S = P ? promote(P) : buildShelf(o); SH = S; RM = null;
     /* reached by carrying on from the shelf before: the way back up */
     const hs = history.state;
-    S.back = hs && hs.v === "shelf" && hs.key === o.key && hs.via === "scroll" && hs.back ? hs.back : null;
+    S.back = hs && hs.v === "shelf" && hs.key === o.key && hs.via === "scroll" && typeof hs.back === "string" ? hs.back : null;
     setStaged(true); lockEntry(o); cur = null;
     paint(o.rel, o);
     keepShelfParam();
@@ -2431,7 +2478,7 @@
     /* carried on from the foot of the shelf before: its name is already
        where that foot left it, so the shelf only has to appear, and only
        its pictures arrive */
-    if (how && how.via === "scroll" && old && old.visible && !oldRoom) {
+    if (how && how.via === "scroll" && ((old && old.visible && !oldRoom) || how.home)) {
       if (!still()) S.layer.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 200, easing: "ease" });
       shelfEnter(S, { delay: 0, keep: S.body.querySelector("header") });
       setTimeout(() => { if (old && old !== SH) destroyShelf(old); }, 240);
@@ -2628,8 +2675,12 @@
     lower.finished.then(() => { R.room.destroy(); R.c.remove(); });
   };
   /* all the way back to rest */
-  const closeStage = () => {
+  const closeStage = (how) => {
     const S = SH, R = RM; SH = null; RM = null;
+    /* back up out of the first shelf, the home comes back at its end and
+       the shelf only fades; any other way back, the home is at its top */
+    const up = !!(how && how.via === "scroll-up");
+    if (!up) homeY = 0;
     lockEntry(null); clearLive(); cur = null;
     const was = staged();
     setStaged(false);
@@ -2644,6 +2695,7 @@
       if (!still() && !phone()) R.room.el.animate([{ opacity: 1, transform: "none" }, { opacity: 0, transform: "translateY(-12px)" }], { duration: 300, easing: EXIT, fill: "forwards" });
       drop(R.c, () => { R.room.destroy(); R.c.remove(); });
     }
+    if (S && up && S.visible && !still()) { S.layer.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 200, easing: "ease", fill: "forwards" }).finished.then(() => destroyShelf(S)); return; }
     if (S) { if (S.visible) drop(S.layer, () => destroyShelf(S)); else destroyShelf(S); }
   };
 
@@ -2775,7 +2827,7 @@
     how = how || {};
     cutFlights();
     VIEW = st; hov = null;
-    if (st.v === "rest") { closeStage(); return; }
+    if (st.v === "rest") { closeStage(how); return; }
     if (st.v === "shelf") {
       const o = KEYMAP.get(st.key);
       if (!o) { VIEW = { v: "rest" }; closeStage(); return; }
@@ -2806,8 +2858,10 @@
   addEventListener("popstate", (ev) => {
     const s = ev.state;
     const st = s && s.v ? (s.v === "study" ? { v: "study", k: s.k, from: s.from } : s.v === "shelf" ? { v: "shelf", key: s.key } : { v: "rest" }) : parse(location.hash);
-    const up = backUp && st.v === "shelf" && st.key === backUp; backUp = null;
-    apply(st, up ? { via: "scroll-up" } : {});
+    const up = backUp && st.v === "shelf" && st.key === backUp;
+    const home = backUp === "" && st.v === "rest"; backUp = null;
+    if (home) homeAt = "end";
+    apply(st, up || home ? { via: "scroll-up" } : {});
   });
 
   /* what a click on an entry opens */
