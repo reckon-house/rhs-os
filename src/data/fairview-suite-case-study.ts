@@ -7,7 +7,7 @@ export const fairviewSuiteCaseStudy: CaseStudy = {
   title: "The Fairview: Primary Suite",
   category: { label: "Interiors", href: "/category/interiors" },
   subtitle:
-    "The Fairview suite, bedroom and bath, 600 square feet. | Charcoal violet walls, crystal chandeliers, a hammered copper clawfoot tub.",
+    "The Fairview's primary suite fits a bedroom and a bath into 600 square feet. | The suite has charcoal violet walls, crystal chandeliers, and a hammered copper clawfoot tub.",
   field: "Interior Design\nFinish Selection\nFurniture Curation",
   author: "Jeremy Prasatik",
   published: "2022",
@@ -49,7 +49,7 @@ export const fairviewSuiteCaseStudy: CaseStudy = {
       },
       title: "The Fairview\nPrimary Suite",
       subtitle:
-        "The Fairview suite, bedroom and bath, 600 square feet. | Charcoal violet walls, crystal chandeliers, a hammered copper clawfoot tub.",
+        "The Fairview's primary suite fits a bedroom and a bath into 600 square feet. | The suite has charcoal violet walls, crystal chandeliers, and a hammered copper clawfoot tub.",
       field: "Interior Design  Finish Selection  Furniture Curation",
       author: "Jeremy Prasatik",
       published: "2022",
@@ -64,10 +64,10 @@ export const fairviewSuiteCaseStudy: CaseStudy = {
         { label: "Built", value: "600 sq ft primary suite and ensuite, vaulted to fourteen feet" },
         { label: "Scope", value: "Interior design, finish selection, fixture sourcing, furniture curation" },
         { label: "Materials", value: "Charcoal violet walls, velvet, bouclé, brass, hammered copper tub, charcoal hex tile" },
-        { label: "Angle", value: "Dark and warm in the bedroom, and the same palette through the bath." },
+        { label: "Angle", value: "The bath carries the bedroom's dark, warm palette through the double doors." },
       ],
       abstract:
-        "The suite is one mood on every surface. Charcoal violet on every wall, a vaulted ceiling with exposed wood beams, and floor-to-ceiling steel-framed windows looking out onto the property's tree canopy.\n\nThe palette is dark and warm. A velvet headboard, a linen sofa, a bouclé ottoman, faux fur throws, brass at every furniture base and fixture, and a cast stone fireplace on the far wall. The layers work together because the tonal range stays narrow: blues, grays, warm metals.\n\nThe ensuite continues through double doors, with charcoal hexagon tile floor to ceiling, a hammered copper clawfoot tub under a crystal chandelier, and brass fixtures throughout.",
+        "Every wall in the Fairview's primary bedroom is painted charcoal violet, and the vaulted ceiling has exposed wood beams. Floor-to-ceiling steel-framed windows look out onto the property's tree canopy.\n\nThe suite's palette is dark and warm. The bedroom has a velvet headboard, a linen sofa, a bouclé ottoman, faux fur throws, brass at every furniture base and fixture, and a cast stone fireplace on the far wall. The layers work together because the tonal range stays narrow: blues, grays, warm metals.\n\nDouble doors open into the ensuite, which has charcoal hexagon tile floor to ceiling, a hammered copper clawfoot tub under a crystal chandelier, and brass fixtures throughout.",
     },
 
         // ── HERO ──
@@ -84,10 +84,10 @@ export const fairviewSuiteCaseStudy: CaseStudy = {
       id: "room-header",
       type: "section-header",
       label: "SECTION 02: THE ROOM",
-      title: "One color on every wall,",
+      title: "The charcoal violet walls",
       pressing: {
         mark: { n: "02", name: "One Color" },
-        heldLine: "and it shifts with the light.",
+        heldLine: "shift from cool to warm in the window light.",
         // The headline is the whole claim of the section, so it holds while
         // the column travels up beside it. Paint first, then the fourteen
         // foot vault and the furniture layers arriving under it as evidence.
@@ -100,7 +100,7 @@ export const fairviewSuiteCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "Cool to warm through the steel-framed windows. Everything else in the room was chosen to go with it.",
+        "Everything else in the room was chosen to go with the wall color.",
       group: { name: "room" },
     },
     {
@@ -109,7 +109,7 @@ export const fairviewSuiteCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "The vaulted ceiling peaks at fourteen feet, with exposed wood beams along the ridge. The brass and crystal chandelier is scaled big enough that it doesn't get lost up there. Below it: bed against the window wall, sofa at the foot of the bed, swivel chair and ottoman in the reading corner, cast stone fireplace on the opposite wall.",
+        "The vaulted ceiling peaks at fourteen feet, with exposed wood beams along the ridge. The brass and crystal chandelier is scaled big enough that it doesn't get lost up there. Under the chandelier, the bed sits against the window wall, and the cast stone fireplace is on the opposite wall. The reading corner has a swivel chair and ottoman.",
       group: { name: "room" },
     },
 
@@ -133,13 +133,13 @@ export const fairviewSuiteCaseStudy: CaseStudy = {
       id: "furniture-header",
       type: "section-header",
       label: "SECTION 03: FURNITURE / MATERIALS",
-      title: "Every piece was picked for texture",
+      title: "Texture came first and shape second",
       // This study's one crossing, on its MIDDLE header. The three Fairview
       // rooms cross at three different points — entry first, sitting
       // second, suite third — so the set never reads as one template.
       pressing: {
-        mark: { n: "03", name: "Three Decades" },
-        heldLine: "first and shape second.",
+        mark: { n: "03", name: "Texture" },
+        heldLine: "for every piece of furniture in the suite.",
         // `pin` alongside `crossing`: the crossing already holds its headline
         // for 220dvh, so the flag changes nothing on the page. Saying it in
         // the data names the hold, which is what the audit reads.
@@ -151,7 +151,7 @@ export const fairviewSuiteCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "Glamorous, and still a room you can live in.",
+        "The bedroom is glamorous, and it's still a room you can live in.",
     },
     {
       id: "furniture-footnote",
@@ -159,7 +159,7 @@ export const fairviewSuiteCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "A charcoal velvet sofa at the foot of the bed. A swivel chair with a brass base and channel tufting, a bouclé ottoman on turned legs, faux fur throws across the bed, a solid marble pedestal side table, hammered brass vessels on the floor.",
+        "A charcoal velvet sofa sits at the foot of the bed. The swivel chair has a brass base and channel tufting, the bouclé ottoman stands on turned legs, and the side table is a solid marble pedestal. Faux fur throws lie across the bed, and hammered brass vessels sit on the floor.",
     },
 
     // ── Detail pair — held so the full room can climb across it. Moved
@@ -179,7 +179,7 @@ export const fairviewSuiteCaseStudy: CaseStudy = {
         alt: "Marble pedestal side table, brass swivel chair base, charcoal velvet upholstery",
       },
       pressing: {
-        captions: ["Throw and velvet chair\nSteel-frame windows", "Marble side table, brass"],
+        captions: ["Throw and velvet chair\nSteel-frame windows", "Marble side table, brass chair base"],
         choreo: { pin: true },
       },
     },
@@ -215,7 +215,7 @@ export const fairviewSuiteCaseStudy: CaseStudy = {
       pressing: {
         plate: "04",
         captions: [
-          "Through the double doors",
+          "The ensuite from the bedroom",
           "Copper clawfoot tub",
           "Charcoal hex tile",
         ],
@@ -229,10 +229,10 @@ export const fairviewSuiteCaseStudy: CaseStudy = {
       id: "ensuite-header",
       type: "section-header",
       label: "SECTION 04: THE ENSUITE",
-      title: "Charcoal hex tile takes over",
+      title: "The bath swaps the violet paint",
       pressing: {
         mark: { n: "04", name: "The Ensuite" },
-        heldLine: "from the violet paint.",
+        heldLine: "for charcoal hex tile.",
         // Held because the zoom just handed the second room over at full
         // size. Keeping the headline put while the tile and tub copy runs
         // past it reads as one suite continuing, not a new study starting.
@@ -244,7 +244,7 @@ export const fairviewSuiteCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "A hammered copper clawfoot tub sits under a second crystal chandelier, and every fixture is brass.",
+        "The tub in the ensuite is hammered copper inside and matte black outside, and it stands on cast iron claw feet.",
     },
     {
       id: "ensuite-footnote",
@@ -252,7 +252,7 @@ export const fairviewSuiteCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "The tub has a hammered copper inside, a matte black outside, and cast iron claw feet. It faces the glass shower across a half-wall of hex tile. The chandelier over it is smaller than the bedroom's and from the same family, and the tile runs floor to ceiling on every wall of the wet area.",
+        "The copper tub faces the glass shower across a half-wall of hex tile. The crystal chandelier over the tub is smaller than the bedroom's. The charcoal tile runs floor to ceiling on every wall of the wet area.",
     },
 
     // ── Bath details ──
@@ -283,7 +283,7 @@ export const fairviewSuiteCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "Crystal chandeliers in both rooms, and a palette narrow enough that neither one looks out of place.",
+        "The palette is narrow enough that neither the copper tub nor the bouclé ottoman looks out of place.",
     },
     {
       id: "closing",
@@ -297,7 +297,7 @@ export const fairviewSuiteCaseStudy: CaseStudy = {
       stack: ["AutoCAD", "SketchUp", "Adobe Creative Suite"],
       links: [],
       content:
-        "Blues, grays, and warm metal, from the velvet headboard to the claw feet on the tub.",
+        "Both crystal chandeliers, in the bedroom and the bath, come from the same family.",
     },
   ],
 };
