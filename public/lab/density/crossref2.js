@@ -1132,28 +1132,38 @@
   const binYears = () => G.years.items.map((o) => parseInt(o.label, 10)).filter((y) => y > 0).map((y) => y.toString(2));
   /* a floret, five cells by three, for the half-drop repeat */
   const FLORET = ["  o  ", "o . o", "  o  "];
-  /* a pattern is a lattice (one mark every p pixels, the lattice centred
-     in the box, every other row shifted half a step for a half drop), or
-     a character, or none, for each 6 by 12 cell */
+  /* the texture (27 Sept, his "can we make these patterns for more
+     dense, texture like behind each section in the TOC? right now
+     they're reading pattern vs tactile"). Every pattern is set on a fine
+     grid of small marks, 7px on cells 4.5 by 8 (they were 10px marks,
+     the lattices one every 12 to 24px), and a slow two-octave noise,
+     seeded per section, lifts and lowers them, so a section reads as a
+     surface with a grain rather than a repeat. A lattice keeps its one
+     mark and scatters it, thicker where the noise rises; the patterns
+     made of words keep their words, finer. Each section keeps its own
+     mark: the stars, the plus signs, the brackets, the code */
+  const TCW = 4.5, TLH = 8, TFONT = 6.5;
   const PAT = {
-    lines: { a: 0.09, p: [24, 24], ch: "*" },
-    "lead-digital": { a: 0.04, code: true },
-    "lead-app": { a: 0.025, text: words64 },
-    "lead-systems": { a: 0.08, p: [24, 24], ch: "+" },
-    "lead-creative": { a: 0.055, p: [18, 18], half: true, ch: "•" },
-    "lead-branding": { a: 0.06, cell: (i, j) => { const c = Math.floor(i / 8), r = mod(j - (mod(c, 2) ? 2 : 0), 4), k = mod(i, 8); return r < 3 && k < 5 ? FLORET[r][k] : null; } },
-    "lead-interiors": { a: 0.04, cell: (i, j) => "[  ]"[mod(i + (mod(j, 2) ? 2 : 0), 4)] },
-    work: { a: 0.11, p: [12, 12], ch: "." },
-    years: { a: 0.04, binary: true },
-    about: { a: 0.04, field: true },
-    figures: { a: 0.03, ledger: true },
-    capabilities: { a: 0.06, p: [12, 24], half: true, ch: "x" },
-    tools: { a: 0.045, cell: (i, j) => (hash2(i + 11, j + 101) < 0.2 ? CODE[Math.floor(hash2(i + 7, j + 3) * CODE.length) % CODE.length] : null) },
+    lines: { a: 0.11, ch: "*", fill: 0.4 },
+    "lead-digital": { a: 0.075, code: true },
+    "lead-app": { a: 0.055, text: words64 },
+    "lead-systems": { a: 0.11, ch: "+", fill: 0.4 },
+    "lead-creative": { a: 0.1, ch: "\u2022", fill: 0.38 },
+    "lead-branding": { a: 0.1, cell: (i, j) => { const c = Math.floor(i / 6), r = mod(j - (mod(c, 2) ? 2 : 0), 4), k = mod(i, 6); return r < 3 && k < 5 ? FLORET[r][k] : null; } },
+    "lead-interiors": { a: 0.075, cell: (i, j) => "[  ]"[mod(i + (mod(j, 2) ? 2 : 0), 4)] },
+    work: { a: 0.13, ch: ".", fill: 0.55 },
+    years: { a: 0.065, binary: true },
+    about: { a: 0.075, field: true },
+    figures: { a: 0.055, ledger: true },
+    capabilities: { a: 0.1, ch: "x", fill: 0.36 },
+    tools: { a: 0.08, cell: (i, j) => (hash2(i + 11, j + 101) < 0.34 ? CODE[Math.floor(hash2(i + 7, j + 3) * CODE.length) % CODE.length] : null) },
   };
   const PADV = 8;
+  /* four strengths of the same mark, by the noise under it */
+  const LEVELS = [0.4, 0.68, 0.96, 1.25];
   const drawSec = (sec) => {
     let cv = sec.querySelector(":scope > canvas.stx");
-    const pat = PAT[sec.dataset.tx || sec.dataset.g];
+    const key0 = sec.dataset.tx || sec.dataset.g, pat = PAT[key0];
     if (TX === "none" || !pat) { if (cv) cv.remove(); return; }
     if (!cv) { cv = el("canvas", "stx"); cv.setAttribute("aria-hidden", "true"); sec.insertBefore(cv, sec.firstChild); }
     const W = sec.clientWidth, H = sec.clientHeight + PADV * 2;
@@ -1162,21 +1172,33 @@
     if (!W || !H) return;
     cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr);
     const g = cv.getContext("2d"); g.setTransform(dpr, 0, 0, dpr, 0, 0);
-    g.font = "10px " + (getComputedStyle(HTML).getPropertyValue("--mono").trim() || "monospace");
-    g.textAlign = "center"; g.textBaseline = "middle"; g.fillStyle = "#000"; g.globalAlpha = pat.a;
-    if (pat.p) {
-      const [px, py] = pat.p, half = pat.half ? px / 2 : 0;
-      const nx = Math.max(1, Math.floor((W - 6 - half) / px) + 1), ny = Math.max(1, Math.floor((H - 12) / py) + 1);
-      const x0 = (W - (nx - 1) * px - half) / 2, y0 = (H - (ny - 1) * py) / 2;
-      for (let l = 0; l < ny; l++) for (let k = 0; k < nx; k++) g.fillText(pat.ch, x0 + k * px + (l % 2 ? half : 0), y0 + l * py);
-      return;
-    }
-    const CW = 6, LH = 12, cols = Math.floor(W / CW), rows = Math.floor(H / LH);
-    const ox = (W - cols * CW) / 2 + CW / 2, oy = (H - rows * LH) / 2 + LH / 2;
-    const put = (i, j, ch) => { if (ch && ch !== " ") g.fillText(ch, ox + i * CW, oy + j * LH); };
-    if (pat.text) {
-      const s = pat.text(sec); if (!s) return;
-      for (let j = 0; j < rows; j++) for (let i = 0; i < cols; i++) put(i, j, s[(j * cols + i) % s.length]);
+    g.font = TFONT + "px " + (getComputedStyle(HTML).getPropertyValue("--mono").trim() || "monospace");
+    g.textAlign = "center"; g.textBaseline = "middle"; g.fillStyle = "#000";
+    /* the section's own weather: a seed from its name */
+    let seed = 0; for (const c of key0) seed = (seed * 31 + c.charCodeAt(0)) % 997;
+    const wx = 3 + seed * 0.37, wy = 7 + seed * 0.53;
+    const weather = (x, y) => Math.max(0, Math.min(1, 0.62 * noise(x / 84 + wx, y / 84 + wy) + 0.38 * noise(x / 26 + wy, y / 26 + wx)));
+    const cols = Math.floor(W / TCW), rows = Math.floor(H / TLH);
+    const ox = (W - cols * TCW) / 2 + TCW / 2, oy = (H - rows * TLH) / 2 + TLH / 2;
+    const buckets = LEVELS.map(() => []);
+    const put = (i, j, ch) => {
+      if (!ch || ch === " ") return;
+      const x = ox + i * TCW, y = oy + j * TLH;
+      buckets[Math.min(LEVELS.length - 1, Math.floor(weather(x, y) * LEVELS.length))].push(ch, x, y);
+    };
+    if (pat.ch) {
+      /* scattered evenly, the noise moving its strength more than its
+         count, and each mark knocked a pixel or so off the grid, so no
+         row or column of them lines up into a pattern */
+      for (let j = 0; j < rows; j++) for (let i = 0; i < cols; i++) {
+        const x = ox + i * TCW, y = oy + j * TLH;
+        if (hash2(i + seed, j + 3 * seed) >= pat.fill * (0.6 + 0.6 * weather(x, y))) continue;
+        const jx = (hash2(i * 3 + 1, j * 7 + seed) - 0.5) * 2.2, jy = (hash2(i * 5 + seed, j * 3 + 2) - 0.5) * 3;
+        buckets[Math.min(LEVELS.length - 1, Math.floor(weather(x, y) * LEVELS.length))].push(pat.ch, x + jx, y + jy);
+      }
+    } else if (pat.text) {
+      const t = pat.text(sec); if (!t) return;
+      for (let j = 0; j < rows; j++) for (let i = 0; i < cols; i++) put(i, j, t[(j * cols + i) % t.length]);
     } else if (pat.ledger) {
       const nums = ledger(); if (!nums.length) return;
       for (let j = 0; j < rows; j++) {
@@ -1188,18 +1210,29 @@
       for (let j = 0; j < rows; j++) { const l = src[(j + 3) % src.length]; for (let i = 0; i < cols && i < l.length; i++) put(i, j, l[i]); }
     } else if (pat.binary) {
       const bins = binYears(); if (!bins.length) return;
-      for (let j = 0; j < rows; j += 2) {
-        let row = "", k = j / 2; while (row.length < cols) row += bins[k++ % bins.length] + " ";
+      for (let j = 0; j < rows; j++) {
+        let row = "", k = j; while (row.length < cols) row += bins[k++ % bins.length] + " ";
         for (let i = 0; i < cols; i++) put(i, j, row[i]);
       }
     } else if (pat.field) {
       for (let j = 0; j < rows; j++) for (let i = 0; i < cols; i++) {
-        const x = i * CW, y = j * LH;
-        const n = 0.65 * noise(x / 70 + 5, y / 70 + 9) + 0.35 * noise(x / 28 + 17, y / 28 + 31);
-        const v = Math.max(0, Math.min(1, (n - 0.38) / 0.62));
-        put(i, j, RAMP[Math.min(RAMP.length - 1, Math.floor(Math.pow(v, 1.5) * RAMP.length))]);
+        const v = Math.max(0, Math.min(1, (weather(ox + i * TCW, oy + j * TLH) - 0.3) / 0.7));
+        put(i, j, RAMP[Math.min(RAMP.length - 1, Math.floor(Math.pow(v, 1.3) * RAMP.length))]);
       }
-    } else for (let j = 0; j < rows; j++) for (let i = 0; i < cols; i++) put(i, j, pat.cell(i, j));
+    } else for (let j = 0; j < rows; j++) for (let i = 0; i < cols; i++) {
+      /* a drawn figure (the florets, the brackets): thinned where the
+         noise is low and each mark nudged off the grid, like a print that
+         did not take evenly */
+      const ch = pat.cell(i, j); if (!ch || ch === " ") continue;
+      const x = ox + i * TCW, y = oy + j * TLH, w = weather(x, y);
+      if (hash2(i + 5 * seed, j + seed) > 0.45 + 0.75 * w) continue;
+      buckets[Math.min(LEVELS.length - 1, Math.floor(w * LEVELS.length))].push(ch, x + (hash2(i * 3, j * 5 + seed) - 0.5) * 1.4, y + (hash2(i * 7 + seed, j) - 0.5) * 1.8);
+    }
+    buckets.forEach((b, l) => {
+      if (!b.length) return;
+      g.globalAlpha = Math.min(0.5, pat.a * LEVELS[l]);
+      for (let q = 0; q < b.length; q += 3) g.fillText(b[q], b[q + 1], b[q + 2]);
+    });
   };
   /* each section is drawn when it is built, and again whenever its size
      moves (a column narrows, a font arrives) */
