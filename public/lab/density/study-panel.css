@@ -694,19 +694,26 @@ html[data-motion="scrub"] .sp.mo .sp-bar2.rv i { transform: scaleX(var(--p, 1));
    ground's own ink */
 .sp-brk.lk-combo { box-sizing: border-box; min-height: calc(var(--vh, 100vh) * 0.72); display: flex; flex-direction: column;
   padding: clamp(40px, 8cqw, 76px) var(--m) clamp(18px, 3.4cqw, 28px); }
-.sp-brk.lk-combo::before { content: ""; display: block; flex: none; height: 3px; margin-bottom: clamp(24px, 4.6cqw, 40px); background: currentColor; }
+/* the top rule as thin as the section's others (his "i think we can make
+   this line thin like the others too", 27 Sept; it was 3px, full ink) */
+.sp-brk.lk-combo::before { content: ""; display: block; flex: none; height: 1px; margin-bottom: clamp(24px, 4.6cqw, 40px); background: color-mix(in srgb, currentColor 24%, transparent); }
 .sp-brk.lk-combo :is(.sp-bcap, .sp-fcap) { margin-top: auto; padding-top: 14px; border-top: 1px solid color-mix(in srgb, currentColor 24%, transparent); }
 .sp-brk.lk-combo .sp-qmark { color: currentColor; }
 .sp-pull.lk-combo .sp-pq { max-width: 13em; margin-bottom: clamp(40px, 8cqw, 72px); }
 .sp-brk-f.lk-combo :is(.sp-band, .sp-nums, .sp-numg) { display: block; margin: 0; }
 .sp-brk-f.lk-combo .sp-nums { margin-bottom: clamp(40px, 8cqw, 72px); }
 .sp-brk-f.lk-combo .sp-band { margin-bottom: clamp(40px, 8cqw, 72px); }
-.sp-brk-f.lk-combo .sp-fm { display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px var(--gc); padding: clamp(16px, 3cqw, 24px) 0 clamp(20px, 3.6cqw, 30px); }
+/* a figure and its sentence start on one line, their tops meeting at the
+   cap height, each trimmed to its letters (his "let's top align the
+   headline with the sub copy"); the figures stand further apart ("and
+   then let's give more space between the two"), 27 Sept */
+.sp-brk-f.lk-combo .sp-fm { display: grid; grid-template-columns: minmax(0, 1fr); gap: 14px var(--gc); align-items: start; padding: clamp(32px, 6.4cqw, 60px) 0; }
+.sp-brk-f.lk-combo :is(.sp-fn, .sp-fs, .sp-nl) { text-box: trim-both cap alphabetic; }
 .sp-brk-f.lk-combo .sp-fm:first-child { padding-top: 0; }
 .sp-brk-f.lk-combo .sp-fm + .sp-fm { border-top: 1px solid rgba(255, 255, 255, 0.2); }
 .sp-brk-f.lk-combo .sp-fs { margin: 0; }
 @container sp (min-width: 560px) {
-  .sp-brk-f.lk-combo .sp-fm { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: end; }
+  .sp-brk-f.lk-combo .sp-fm { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: start; }
   .sp-brk-f.lk-combo .sp-fm > .sp-fn { grid-row: 1 / span 3; min-width: 0; }
   .sp-brk-f.lk-combo .sp-fm > :not(.sp-fn) { grid-column: 2; }
 }
