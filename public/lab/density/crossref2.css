@@ -931,3 +931,12 @@ html[data-ix="e"] #idx :is(.e.el .t, .e.ef .t, .e.ey .t, .e.efig .fn) { font-wei
 html.stack .sh-foot-s { font-size: 14px; }
 .sh-foot-n, .sh-foot-k, .sh-foot-l { font-size: 8.5px; font-weight: 700; letter-spacing: 0.2em; }
 .sh-foot-n b { font-weight: 700; }
+
+/* the index's small type, as the rooms' (27 Sept, the same pass): every
+   small-caps label (a section's head, a card's kicker, a credit) in the
+   rooms' label, 8.5px bold tracked 0.2em; an entry's grey sentence in
+   the rooms' small size, 12px regular. The index's big words were set
+   in demi with his tweaks */
+html[data-ix="e"] #idx .grp h2.eh { font-size: 8.5px; font-weight: 700; letter-spacing: 0.2em; }
+html[data-ix="e"] #idx .e .kk.caps, html[data-ix="e"] #idx .e .cr.caps { font-size: 8.5px; font-weight: 700; letter-spacing: 0.2em; }
+html[data-ix="e"] #idx .e .dk { font-size: 12px; font-weight: 400; line-height: 1.45; }
