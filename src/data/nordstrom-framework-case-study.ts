@@ -7,7 +7,7 @@ export const nordstromFrameworkCaseStudy: CaseStudy = {
   title: "Nordstrom Content Framework",
   category: { label: "Digital", href: "/category/digital" },
   subtitle:
-    "A content framework for Nordstrom.com, built from scratch: names, icons, custom lockups, and a place for everything. | Four buckets sort the homepage, email, and landing pages the way a magazine sorts its sections.",
+    "A content framework for Nordstrom.com, built from scratch with its own names, icons, and typographic marks. | Four buckets sort the stories on the homepage, in email, and on landing pages.",
   field: "Content Strategy\nBrand Design\nNaming\nEcommerce Design",
   author: "Jeremy Prasatik",
   published: "2016",
@@ -35,7 +35,7 @@ export const nordstromFrameworkCaseStudy: CaseStudy = {
       },
       title: "Nordstrom\nContent Framework",
       subtitle:
-        "A content framework for Nordstrom.com, built from scratch: names, icons, custom lockups, and a place for everything. | Four buckets sort the homepage, email, and landing pages the way a magazine sorts its sections.",
+        "A content framework for Nordstrom.com, built from scratch with its own names, icons, and typographic marks. | Four buckets sort the stories on the homepage, in email, and on landing pages.",
       field: "Content Strategy  Brand Design  Naming",
       author: "Jeremy Prasatik",
       published: "2016",
@@ -44,11 +44,11 @@ export const nordstromFrameworkCaseStudy: CaseStudy = {
       summary: [
         { label: "Built", value: "A content framework from scratch: four named buckets, each with its own typographic mark and icon." },
         { label: "Scope", value: "Content strategy, brand design, naming, design systems." },
-        { label: "Tools", value: "Custom-sourced typefaces, an icon set, and the four names." },
-        { label: "Angle", value: "Sort a store's worth of stories the way a magazine sorts its sections." },
+        { label: "Tools", value: "Sourced typefaces and a custom icon set." },
+        { label: "Angle", value: "Sort a store's worth of stories into sections, the way a magazine does." },
       ],
       abstract:
-        "Nordstrom was producing more digital content than the site had structure for. Brand launches, seasonal pushes, occasion guides, new arrivals, all hitting email and the site at the same time with nothing sorting them. Customers got the whole pile and no way through it.\n\nConcepted a content framework that sorted it into named buckets, each with its own identity. \"What's Now\" for trending brands and arrivals. \"On Our List\" for seasonal picks. \"Where to Wear\" and \"Wear to Where\" for occasion dressing from opposite directions. A custom icon and a typographic mark sourced for each one, and names that sound like a magazine's sections.\n\nPitched it to merchandising, marketing, and editorial, and it was organizing the teams before it reached a customer. Once it shipped it ran homepage modules, email sections, and dedicated landing pages. Engagement lifted 22% over two years.",
+        "Nordstrom was producing more digital content than the site had structure for. Brand launches, seasonal pushes, occasion guides, and new arrivals all hit email and the site at the same time, with nothing sorting them. Customers got the whole pile and no way through it.\n\nConcepted a content framework that sorted Nordstrom's stories into four named buckets: \"What's Now,\" \"On Our List,\" and two for occasion dressing, \"Where to Wear\" and \"Wear to Where.\" Each bucket got a custom icon and a typographic mark of its own.\n\nPitched the framework to merchandising, marketing, and editorial, and once it shipped it ran homepage modules, email sections, and dedicated landing pages. Engagement lifted 22% over two years.",
     },
 
         // ── HERO ──
@@ -67,10 +67,10 @@ export const nordstromFrameworkCaseStudy: CaseStudy = {
       id: "problem-header",
       type: "section-header",
       label: "SECTION 02: THE PROBLEM",
-      title: "Nothing on the page said",
+      title: "Nothing on Nordstrom's homepage",
       pressing: {
         mark: { n: "02", name: "All at Once" },
-        heldLine: "which story was which.",
+        heldLine: "said which story was which.",
         // Holds while the column travels, and reserves the room the
         // homepage plate below needs to climb. Fitting for a brief whose
         // subject is a page carrying too much at once.
@@ -82,7 +82,7 @@ export const nordstromFrameworkCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "Merchandising, marketing and editorial each pushed their own, all onto the same homepage.",
+        "The merchandising, marketing and editorial teams each pushed their own stories onto the same homepage.",
     },
     {
       id: "problem-footnote",
@@ -90,7 +90,7 @@ export const nordstromFrameworkCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "Email ran on its own cadence and landing pages on another. The only thing tying any of it together was the date on the calendar.",
+        "Nordstrom's email ran on its own cadence and its landing pages on another, and the only thing tying any of it together was the date on the calendar.",
     },
 
     // Visual beat showing the volume of modules. Climbs the problem brief:
@@ -112,7 +112,7 @@ export const nordstromFrameworkCaseStudy: CaseStudy = {
       id: "framework-header",
       type: "section-header",
       label: "SECTION 03: THE FRAMEWORK",
-      title: "Four buckets, and every story",
+      title: "Every story had to land",
       // The study's one crossing, on the move that solved the problem.
       //
       // Pinned as well as crossing, which is PRESSING.md's brief form of
@@ -121,7 +121,7 @@ export const nordstromFrameworkCaseStudy: CaseStudy = {
       // rather than sharing one screen with it.
       pressing: {
         mark: { n: "03", name: "Four Buckets" },
-        heldLine: "had to land in one of them.",
+        heldLine: "in one of four buckets.",
         choreo: { pin: true, crossing: true },
       },
     },
@@ -130,7 +130,7 @@ export const nordstromFrameworkCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "What's Now for arrivals and trending brands, On Our List for seasonal picks and staples. Where to Wear and Wear to Where both cover occasion dressing, one starting from the event and the other from the outfit.",
+        "The What's Now bucket was for new arrivals and trending brands, and On Our List for seasonal picks and staples. The Where to Wear and Wear to Where buckets both covered occasion dressing, one starting from the event and the other from the outfit.",
     },
     {
       id: "framework-footnote",
@@ -138,14 +138,14 @@ export const nordstromFrameworkCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "Each name got a custom icon and a typographic mark of its own. Sourced a different typeface for every lockup, so no two of them share a face.",
+        "Sourced a different typeface for every bucket's typographic mark.",
     },
 
     // Editorial palate cleanser
     {
       id: "headline-language",
       type: "editorial-headline",
-      text: "It reads like\na magazine",
+      text: "The bucket names\nsound like a magazine's sections",
     },
 
     // ── The 3 lockups, DEALT ─────────────────────────────────────────
@@ -222,10 +222,10 @@ export const nordstromFrameworkCaseStudy: CaseStudy = {
       id: "application-header",
       type: "section-header",
       label: "SECTION 04: APPLICATION",
-      title: "Each one carried the matching",
+      title: "Every homepage module and email section",
       pressing: {
         mark: { n: "04", name: "Homepage, Email" },
-        heldLine: "lockup and icon.",
+        heldLine: "carried its bucket's lockup and icon.",
         // Pins for the headline alone. Three surfaces get named in the
         // column and the landing page below answers all three, so the
         // title should still be on screen when the reader reaches it.
@@ -238,7 +238,7 @@ export const nordstromFrameworkCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "Homepage modules, dedicated email sections, and whole landing pages built around a single bucket, so a customer could tell what they were looking at anywhere it showed up.",
+        "Whole landing pages on Nordstrom.com were built around a single bucket, so a customer could tell what they were looking at.",
     },
     {
       id: "application-footnote",
@@ -246,7 +246,7 @@ export const nordstromFrameworkCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "Planning meetings used the bucket names before any of it reached a customer. Content calendars mapped stories to buckets at the brief stage, and campaigns that used to be one-offs got planned as part of a category.",
+        "Content calendars mapped stories to buckets at the brief stage, and campaigns that used to be one-offs got planned as part of a category.",
     },
 
     // Tall application hero
@@ -271,7 +271,7 @@ export const nordstromFrameworkCaseStudy: CaseStudy = {
       alt: "A phone lying on a silver turntable showing the On Our List story, the bucket's script lockup over the editorial photograph",
       aspect: "native",
       pressing: {
-        caption: "On Our List, in the wild",
+        caption: "On Our List, on a phone",
         plateWidth: 760,
         choreo: { rise: true },
       },
@@ -332,7 +332,7 @@ export const nordstromFrameworkCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "Icons evolved, typography got refreshed, buckets got renamed. The four-bucket structure underneath stayed the same.",
+        "The icons, the typography and the bucket names all changed over time, but the four-bucket structure stayed the same.",
     },
     {
       id: "closing",
@@ -341,7 +341,7 @@ export const nordstromFrameworkCaseStudy: CaseStudy = {
       stack: [],
       links: [],
       content:
-        "It started as a pitch across three teams and ended up as the way everyone who touched digital content talked about the work.",
+        "The bucket names showed up in Nordstrom's planning meetings before the framework reached a customer, and they ended up being how everyone who touched digital content talked about the work.",
     },
   ],
 };
