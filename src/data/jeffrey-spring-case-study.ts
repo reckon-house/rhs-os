@@ -7,7 +7,7 @@ export const jeffreySpringCaseStudy: CaseStudy = {
   title: "Jeffrey Spring Campaign.",
   category: { label: "Creative", href: "/category/creative" },
   subtitle:
-    "A spring campaign for Jeffrey, shot entirely in the studio. | High fashion on a studio budget, with foliage doing the work of a location.",
+    "A spring campaign for Jeffrey, shot entirely in the studio. | The look was high fashion on a studio budget, with foliage doing the work of a location.",
   field: "Art Direction\nCampaign Design\nEmail & Web Templates",
   author: "Jeremy Prasatik",
   published: "2017",
@@ -38,20 +38,20 @@ export const jeffreySpringCaseStudy: CaseStudy = {
       },
       title: "Jeffrey Spring\nCampaign.",
       subtitle:
-        "A spring campaign for Jeffrey, shot entirely in the studio. | High fashion on a studio budget, with foliage doing the work of a location.",
+        "A spring campaign for Jeffrey, shot entirely in the studio. | The look was high fashion on a studio budget, with foliage doing the work of a location.",
       field: "Art Direction  Campaign Design  Email & Web Templates",
       author: "Jeremy Prasatik",
       published: "2017",
       status: "Live",
       classification: ["Art Direction", "Campaign Design", "Email & Web Templates"],
       summary: [
-        { label: "Built", value: "Spring campaign for email, homepage and social. Three dress stories: JW Anderson, Valentino, Simone Rocha" },
+        { label: "Built", value: "Spring campaign for email, homepage and social. Three designer stories: JW Anderson, Valentino, Simone Rocha" },
         { label: "Scope", value: "Art direction, campaign design, email and web templates" },
         { label: "Tools", value: "Photoshop, InDesign, studio photography. Color floods, extreme crops" },
-        { label: "Angle", value: "Monstera and palm fronds cropped big enough to pass for architecture, so a white studio could pass for somewhere far away." },
+        { label: "Angle", value: "Monstera and palm fronds were cropped big enough to look like architecture, so a white studio could pass for a location." },
       ],
       abstract:
-        "Jeffrey needed a spring campaign that looked like it had been shot on location, on a studio budget.\n\nIt was shot in the studio, start to finish. Monstera leaves and palm fronds were cropped big and used as graphic elements, more like architecture than greenery, and color floods and extreme crops made the compositions feel bigger than the room they were shot in.\n\nThe type followed the same idea, condensed, stretched and layered for rhythm across three dress stories: JW Anderson, Valentino, Simone Rocha. The whole thing was one kit that ran on email, the homepage and social.",
+        "Jeffrey needed a spring campaign that looked like it had been shot on location, on a studio budget.\n\nEvery photograph was taken in the studio, start to finish. Monstera leaves and palm fronds were cropped big and used as graphic elements, more like architecture than greenery. Color floods and extreme crops made the compositions feel bigger than the room they were shot in.\n\nThe type got the same graphic treatment, condensed, stretched and layered for rhythm across three designer stories: JW Anderson, Valentino and Simone Rocha. One kit covered email, the homepage and social.",
     },
 
         // ── HERO ──
@@ -147,7 +147,7 @@ export const jeffreySpringCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "JW Anderson, Valentino and Simone Rocha, on the one template.",
+        "JW Anderson, Valentino and Simone Rocha all ran on the one template.",
     },
     {
       id: "stories-footnote",
@@ -155,7 +155,7 @@ export const jeffreySpringCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "The pairs below are the dress shot next to the phone template it went into. The type reads at phone size, the leaves still frame the dress, and the desktop version underneath is the same layout with more room.",
+        "Each pair below puts a dress shot next to the phone template it went into. The type reads at phone size, the leaves still frame the dress, and the Simone Rocha desktop homepage underneath is the same layout with more room.",
     },
 
     // ── Breathing room below the footnote before the 4-grid begins.
@@ -182,7 +182,7 @@ export const jeffreySpringCaseStudy: CaseStudy = {
       },
       right: {
         src: `${IMG}/jeffrey-spring-campaign-simone-rocha-floral-dress-monstera-frame.jpg`,
-        alt: "Simone Rocha black floral dress framed by extreme-cropped monstera leaves on a studio white",
+        alt: "Simone Rocha black floral dress framed by extreme-cropped monstera leaves on studio white",
       },
     },
 
@@ -245,7 +245,7 @@ export const jeffreySpringCaseStudy: CaseStudy = {
       native: true,
       left: {
         src: `${IMG}/jeffrey-spring-campaign-palm-frond-texture-detail.jpg`,
-        alt: "Palm frond texture detail with sharp blade structure shot on white studio backdrop, the second material in the foliage kit",
+        alt: "Palm frond texture detail with sharp blade structure shot on a white studio backdrop, the second material in the foliage kit",
       },
       right: {
         src: `${IMG}/jeffrey-spring-campaign-monstera-leaf-graphic-detail.jpg`,
@@ -281,9 +281,9 @@ export const jeffreySpringCaseStudy: CaseStudy = {
       label: "SECTION 03: MARKS & MATERIALS",
       title: "Five colors, four weights,\nmonstera and palm.",
       introText:
-        "That is the whole kit, and it ran across all three designer stories with no set change between them.",
+        "The whole kit ran across all three designer stories with no set change between them.",
       philosophyText:
-        "Studio white for the ground, monstera green for the architecture, soft black for the type and for the dresses that dropped into the set. The dresses bring the seasonal accent: striped blue for JW Anderson, blush florals for Simone Rocha, whatever Valentino was sending that week.\n\nThe type is one family, Avenir Next, italic Heavy for the Jeffrey wordmark and Medium, Demi Bold and Heavy for everything else. The foliage got treated like a material. Two leaves shot once on white, then composed into every dress story in post.",
+        "Studio white was the background, monstera green was for the leaf frames, and soft black was for the type and the dresses that dropped into the set. The dresses brought the seasonal accent: striped blue for JW Anderson, blush florals for Simone Rocha, whatever Valentino was sending that week.\n\nAvenir Next was the only typeface. The foliage was treated like a material, with a monstera leaf and a palm frond shot once on white and then composed into every designer story in post-production.",
       colors: [
         { name: "Studio White", hex: "#F5F2EC", description: "Ground, paper" },
         { name: "Striped Blue", hex: "#A8B8C8", description: "JW Anderson accent" },
@@ -297,7 +297,7 @@ export const jeffreySpringCaseStudy: CaseStudy = {
           sampleText: "JEFFREY",
           role: "Wordmark",
           description:
-            "Italic Heavy for the wordmark, set wide, with the Atlanta/New York tagline small alongside it. It is the only italic in the campaign.",
+            "The wordmark is set wide in italic Heavy, with the Atlanta/New York tagline small alongside it. No other type in the campaign is italic.",
           family: "'Avenir Next', 'Helvetica Neue', sans-serif",
           weight: 800,
           italic: true,
@@ -307,7 +307,7 @@ export const jeffreySpringCaseStudy: CaseStudy = {
           sampleText: "AVENIR NEXT MEDIUM",
           role: "Letter-spaced display",
           description:
-            "Set in uppercase with wide letter-spacing for the designer names and the IN SEASON BOLD headline. Light enough that the dress and the leaves come first.",
+            "The designer names and the IN SEASON BOLD headline use Medium, in uppercase with wide letter-spacing. The weight is light enough that the dress and the leaves come first.",
           family: "'Avenir Next', 'Helvetica Neue', sans-serif",
           weight: 500,
         },
@@ -315,7 +315,7 @@ export const jeffreySpringCaseStudy: CaseStudy = {
           name: "Avenir Next Demi Bold",
           role: "Subhead & emphasis",
           description:
-            "One step heavier, for subheads, callouts and the SHOP NOW button.",
+            "Subheads, callouts and the SHOP NOW button use Demi Bold, one step heavier than Medium.",
           family: "'Avenir Next', 'Helvetica Neue', sans-serif",
           weight: 600,
         },
@@ -323,7 +323,7 @@ export const jeffreySpringCaseStudy: CaseStudy = {
           name: "Avenir Next Heavy",
           role: "Headline weight",
           description:
-            "The heaviest upright weight, used sparingly for headline moments inside the templates.",
+            "Heavy, the boldest upright weight, is kept for the occasional headline inside the templates.",
           family: "'Avenir Next', 'Helvetica Neue', sans-serif",
           weight: 800,
         },
@@ -342,10 +342,10 @@ export const jeffreySpringCaseStudy: CaseStudy = {
       id: "closing-header",
       type: "section-header",
       label: "SECTION 04: CLOSING",
-      title: "A new dress every week,",
+      title: "A new dress came in every week,",
       pressing: {
         mark: { n: "03", name: "Every Week" },
-        heldLine: "the rest stayed put.",
+        heldLine: "and everything else stayed put.",
       },
     },
     {
@@ -353,7 +353,7 @@ export const jeffreySpringCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "Three designer stories in three formats: email, the homepage and social.",
+        "Each designer story ran in three formats: email, the homepage and social.",
     },
     {
       id: "closing",
@@ -362,7 +362,7 @@ export const jeffreySpringCaseStudy: CaseStudy = {
       stack: ["Photoshop", "InDesign", "Studio photography"],
       links: [],
       content:
-        "That was the whole season, shot in the studio.",
+        "",
     },
   ],
 };
