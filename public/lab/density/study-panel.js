@@ -283,15 +283,22 @@
      - air: small type in a tall page of paper, the study's colour one
        small square;
      - fill: the live site's knockout. The section holds still while the
-       fill rises under the words and turns them over at its edge ── */
-  const LOOKS = ["field", "pull", "takeover", "icons", "repeat", "air", "fill"], LOOK_LS = "crossref2.look";
+       fill rises under the words and turns them over at its edge;
+     - combo, the default since his "i like pull but i think it needs more
+       air (maybe not AS tall as air but close) and maybe we put it on a
+       solid background? and when we use it as a quote maybe we use the
+       icons? so it's kinda of a combo of the 3": pull's rules and pulled
+       figures, most of air's height, on the field's solid ground, the
+       quote under the drawn mark. A new localStorage key, so a pick from
+       the first seven does not hide it ── */
+  const LOOKS = ["combo", "field", "pull", "takeover", "icons", "repeat", "air", "fill"], LOOK_LS = "crossref2.look2";
   (() => {
     const q = (new URLSearchParams(location.search).get("look") || "").toLowerCase();
     let v = LOOKS.includes(q) ? q : null;
     if (!v) { try { v = localStorage.getItem(LOOK_LS); } catch (e) { /* a private window */ } }
-    document.documentElement.dataset.brk = LOOKS.includes(v) ? v : "field";
+    document.documentElement.dataset.brk = LOOKS.includes(v) ? v : "combo";
   })();
-  const LOOK = () => { const v = document.documentElement.dataset.brk; return LOOKS.includes(v) ? v : "field"; };
+  const LOOK = () => { const v = document.documentElement.dataset.brk; return LOOKS.includes(v) ? v : "combo"; };
   const ROOMS = new Set();
   const setLook = (x) => {
     if (!LOOKS.includes(x)) return;
@@ -926,7 +933,7 @@
         if (blackDone) return node;
         blackDone = true;
         const lk = LOOK();
-        const dark = lk === "field" || lk === "takeover" || lk === "repeat";
+        const dark = lk === "field" || lk === "takeover" || lk === "repeat" || lk === "combo";
         const b = el("div", (dark ? "sp-black " : "") + "sp-brk sp-brk-f lk-" + lk);
         b.style.setProperty("--fill", s.fill || "#000");
         /* a fill too light to read on paper draws in ink */
@@ -1336,11 +1343,11 @@
           case "pull": {
             const first = pulled++ === 0;
             const lk = first ? LOOK() : null;
-            const onFill = lk === "field" || lk === "takeover" || lk === "repeat";
+            const onFill = lk === "field" || lk === "takeover" || lk === "repeat" || lk === "combo";
             const q = el("blockquote", "sp-pull" + (onFill ? " sp-field" : "") + (first ? " sp-brk sp-brk-q lk-" + lk : ""));
             if (first) { q.style.setProperty("--fill", s.fill || "#000"); q.style.setProperty("--fink", s.ink || D.ink(s.fill || "#000")); }
             if (lk === "repeat") q.insertAdjacentHTML("beforeend", wallHtml(halves(b.f.text)[0], 6));
-            if (lk === "icons") q.insertAdjacentHTML("beforeend", '<div class="sp-ico sp-qmark" aria-hidden="true"><svg viewBox="0 0 120 92" width="120" height="92"><path d="M0 92V56C0 22 16 4 48 0l5 13C35 18 27 29 26 46h24v46H0Zm70 0V56C70 22 86 4 118 0l5 13c-18 5-26 16-27 33h24v46H70Z"/></svg></div>');
+            if (lk === "icons" || lk === "combo") q.insertAdjacentHTML("beforeend", '<div class="sp-ico sp-qmark" aria-hidden="true"><svg viewBox="0 0 120 92" width="120" height="92"><path d="M0 92V56C0 22 16 4 48 0l5 13C35 18 27 29 26 46h24v46H0Zm70 0V56C70 22 86 4 118 0l5 13c-18 5-26 16-27 33h24v46H70Z"/></svg></div>');
             if (lk === "air") q.insertAdjacentHTML("beforeend", '<i class="sp-dot" aria-hidden="true"></i>');
             const t = el("p", "sp-pq", inkGrey(b.f.text)); q.appendChild(t); P.pulls.push(t);
             if (first) q.appendChild(el("div", "sp-fcap", esc(D.title(k)) + '<span class="y">' + esc(s.y) + "</span>" + lookRow()));
@@ -1543,7 +1550,7 @@
         if (lk === "air") { q.style.fontSize = ""; return; }
         /* takeover: as large as the words will go in most of a glass */
         if (lk === "takeover") { fitBox(q, Math.max(22, W * 0.3), (container.clientHeight || 800) * 0.62); return; }
-        if (lk === "pull") { fitLines(q, 22, Math.min(62, W * 0.066), 5); return; }
+        if (lk === "pull" || lk === "combo") { fitLines(q, 22, Math.min(62, W * 0.066), 5); return; }
         fitLines(q, 22, Math.min(96, W * (len < 50 ? 0.1 : len < 80 ? 0.082 : 0.068)), len < 50 ? 3 : 4);
       });
       /* figures: one line each, as large as their cell allows, at three
@@ -1554,7 +1561,7 @@
            a pulled figure a size under the field's */
         const brk = n.closest(".sp-brk");
         const cap = brk && brk.classList.contains("lk-takeover") ? W * 2 : brk && brk.classList.contains("lk-air") ? Math.min(64, W * 0.09)
-          : brk && (brk.classList.contains("lk-pull") || brk.classList.contains("lk-icons")) ? Math.min(150, W * 0.19)
+          : brk && (brk.classList.contains("lk-pull") || brk.classList.contains("lk-combo") || brk.classList.contains("lk-icons")) ? Math.min(150, W * 0.19)
           : n.closest(".sp-black, .lk-fill") ? Math.min(300, W * 0.36) : n.closest(".sp-band, .sp-numg, .sp-chart") ? Math.min(210, W * 0.24) : Math.min(96, W * 0.125);
         n.style.fontSize = "100px"; n.style.whiteSpace = "nowrap";
         /* takeover sets each word on a line of its own, the widest word
@@ -1569,7 +1576,7 @@
           return;
         }
         /* a pulled figure keeps to its own column */
-        const avail = (brk && brk.classList.contains("lk-pull") ? n.clientWidth : n.parentNode.clientWidth) || W; const w100 = n.scrollWidth || 1;
+        const avail = (brk && (brk.classList.contains("lk-pull") || brk.classList.contains("lk-combo")) ? n.clientWidth : n.parentNode.clientWidth) || W; const w100 = n.scrollWidth || 1;
         n.style.fontSize = Math.floor(Math.max(28, Math.min(cap, (avail / w100) * 100 * 0.985))) + "px";
       });
       /* figures in a set share a size; a band leads with its first figure

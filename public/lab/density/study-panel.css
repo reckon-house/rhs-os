@@ -683,3 +683,30 @@ html[data-motion="scrub"] .sp.mo .sp-bar2.rv i { transform: scaleX(var(--p, 1));
 }
 /* feature cards in a held section's column stack, one to a line */
 .sp-bcol > .sp-cards { margin: clamp(30px, 5.4cqw, 48px) 0 0; grid-template-columns: minmax(0, 1fr); }
+
+/* COMBO, the default look since his "i like pull but i think it needs
+   more air (maybe not AS tall as air but close) and maybe we put it on a
+   solid background? and when we use it as a quote maybe we use the
+   icons? so it's kinda of a combo of the 3" (27 Sept): pull's rule and
+   pulled figures, most of air's height (0.72 of a glass to air's 0.86),
+   on the field's solid ground (black for the figures, the study's fill
+   for the quote), the quote under the drawn mark. The rules are the
+   ground's own ink */
+.sp-brk.lk-combo { box-sizing: border-box; min-height: calc(var(--vh, 100vh) * 0.72); display: flex; flex-direction: column;
+  padding: clamp(40px, 8cqw, 76px) var(--m) clamp(18px, 3.4cqw, 28px); }
+.sp-brk.lk-combo::before { content: ""; display: block; flex: none; height: 3px; margin-bottom: clamp(24px, 4.6cqw, 40px); background: currentColor; }
+.sp-brk.lk-combo :is(.sp-bcap, .sp-fcap) { margin-top: auto; padding-top: 14px; border-top: 1px solid color-mix(in srgb, currentColor 24%, transparent); }
+.sp-brk.lk-combo .sp-qmark { color: currentColor; }
+.sp-pull.lk-combo .sp-pq { max-width: 13em; margin-bottom: clamp(40px, 8cqw, 72px); }
+.sp-brk-f.lk-combo :is(.sp-band, .sp-nums, .sp-numg) { display: block; margin: 0; }
+.sp-brk-f.lk-combo .sp-nums { margin-bottom: clamp(40px, 8cqw, 72px); }
+.sp-brk-f.lk-combo .sp-band { margin-bottom: clamp(40px, 8cqw, 72px); }
+.sp-brk-f.lk-combo .sp-fm { display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px var(--gc); padding: clamp(16px, 3cqw, 24px) 0 clamp(20px, 3.6cqw, 30px); }
+.sp-brk-f.lk-combo .sp-fm:first-child { padding-top: 0; }
+.sp-brk-f.lk-combo .sp-fm + .sp-fm { border-top: 1px solid rgba(255, 255, 255, 0.2); }
+.sp-brk-f.lk-combo .sp-fs { margin: 0; }
+@container sp (min-width: 560px) {
+  .sp-brk-f.lk-combo .sp-fm { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: end; }
+  .sp-brk-f.lk-combo .sp-fm > .sp-fn { grid-row: 1 / span 3; min-width: 0; }
+  .sp-brk-f.lk-combo .sp-fm > :not(.sp-fn) { grid-column: 2; }
+}
