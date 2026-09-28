@@ -466,3 +466,111 @@ html[data-motion="scrub"] .sp.mo .rv-field::after { transform-origin: 50% 0; tra
 html[data-motion="scrub"] .sp.mo .rv-rule::before { transform: scaleX(var(--p, 1)); }
 html[data-motion="scrub"] .sp.mo .rv-fade { opacity: var(--p, 1); transform: translateY(calc((1 - var(--p, 1)) * 10px)); }
 html[data-motion="scrub"] .sp.mo .sp-bar2.rv i { transform: scaleX(var(--p, 1)); }
+
+/* ── THE BREAK SECTIONS' LOOKS (27 Sept): the black field of figures and
+   the first pull quote, in seven looks chosen on a small row in the
+   sections themselves. What each is for is set out in study-panel.js,
+   above LOOKS ── */
+.sp-brk { position: relative; }
+.sp-bcap, .sp-fcap { display: flex; flex-wrap: wrap; align-items: baseline; row-gap: 8px; }
+.sp-looks { display: flex; flex-wrap: wrap; gap: 4px 12px; margin-left: auto; padding-left: 24px; font-size: 9.5px; color: inherit; }
+.sp-looks button { padding: 0; border: 0; background: none; font: inherit; letter-spacing: inherit; text-transform: inherit; color: inherit; opacity: 0.5; cursor: pointer; }
+.sp-looks button:hover, .sp-looks button.on { opacity: 1; }
+.sp-looks button.on { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 0.3em; }
+/* on paper, the captions are the room's grey */
+.sp-brk:not(.sp-black):not(.sp-field) :is(.sp-bcap, .sp-fcap) { color: var(--grey); opacity: 1; }
+.sp-brk:not(.sp-black):not(.sp-field) :is(.sp-bcap, .sp-fcap) .y { color: var(--grey2); opacity: 1; }
+
+/* PULL: a magazine's pull quote on paper, between an ink rule and a
+   hairline, its mark hung in the study's colour; a figure pulled out the
+   same way, its sentence beside it */
+.sp-pull.lk-pull { margin-left: var(--m); margin-right: var(--m); padding: clamp(20px, 3.6cqw, 32px) 0 clamp(16px, 2.8cqw, 24px); border-top: 3px solid var(--ink); border-bottom: 1px solid var(--hair); }
+.sp-pull.lk-pull .sp-pq { max-width: 13em; }
+.sp-pull.lk-pull .sp-pq::before { content: "\201C"; display: block; height: 0.52em; margin: 0 0 0.1em -0.05em; font-size: 1.8em; line-height: 0.9; color: var(--fill); }
+.sp-pull.lk-pull .sp-fcap { margin-top: clamp(28px, 5.6cqw, 50px); }
+.sp-brk-f.lk-pull { margin: clamp(56px, 11cqw, 104px) var(--m) 0; }
+.sp-brk-f.lk-pull :is(.sp-band, .sp-nums, .sp-numg) { display: block; margin: 0; }
+.sp-brk-f.lk-pull .sp-fm { display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px var(--gc); padding: clamp(16px, 3cqw, 24px) 0 clamp(20px, 3.6cqw, 30px); border-top: 3px solid var(--ink); }
+.sp-brk-f.lk-pull .sp-fm + .sp-fm { border-top: 1px solid var(--hair); }
+.sp-brk-f.lk-pull .sp-fs { margin: 0; }
+.sp-brk-f.lk-pull .sp-bcap { margin-top: 14px; }
+@container sp (min-width: 560px) {
+  .sp-brk-f.lk-pull .sp-fm { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: end; }
+  .sp-brk-f.lk-pull .sp-fm > .sp-fn { grid-row: 1 / span 3; min-width: 0; }
+  .sp-brk-f.lk-pull .sp-fm > :not(.sp-fn) { grid-column: 2; }
+}
+
+/* TAKEOVER: a glass tall, the words as large as it holds them, each
+   figure to the edges */
+.sp-brk.lk-takeover { box-sizing: border-box; min-height: var(--vh, 100vh); display: flex; flex-direction: column; justify-content: space-between; }
+.sp-pull.lk-takeover { padding-top: clamp(40px, 8cqw, 80px); }
+.sp-pull.lk-takeover .sp-pq { max-width: none; line-height: 0.86; letter-spacing: -0.058em; }
+.sp-brk-f.lk-takeover :is(.sp-band, .sp-numg) { display: block; }
+.sp-brk-f.lk-takeover .sp-fm + .sp-fm { margin-top: clamp(44px, 9cqw, 90px); }
+.sp-brk-f.lk-takeover .sp-fn { line-height: 0.8; letter-spacing: -0.065em; margin-left: -0.055em; text-wrap: balance; }
+
+/* ICONS: on paper, each figure over a drawing of what it counts, in the
+   study's colour (in ink when the colour is too light to read); the
+   quote under a mark drawn the same way */
+.sp-brk-f.lk-icons { margin: clamp(56px, 11cqw, 104px) var(--m) 0; padding-top: 14px; border-top: 1px solid var(--ink); }
+.sp-brk-f.lk-icons :is(.sp-band, .sp-numg) { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr)); gap: clamp(40px, 8cqw, 72px) var(--gc); margin: 0; }
+.sp-brk-f.lk-icons .sp-nums { margin: 0; }
+.sp-brk-f.lk-icons .sp-band > * { grid-column: auto !important; }
+.sp-brk-f.lk-icons .sp-bcap { margin-top: clamp(36px, 7cqw, 64px); }
+.sp-ico { margin-bottom: 20px; color: var(--dotc, var(--ink)); line-height: 0; }
+.sp-picto { display: block; max-width: 100%; height: auto; }
+.sp-picto rect, .sp-picto circle { fill: currentColor; }
+.sp-picto circle.off { opacity: 0.16; }
+.sp-pull.lk-icons { margin-left: var(--m); margin-right: var(--m); padding: 0; }
+.sp-qmark { width: clamp(52px, 9cqw, 88px); margin-bottom: clamp(18px, 3.4cqw, 28px); color: var(--fill); }
+.sp-qmark svg { display: block; width: 100%; height: auto; fill: currentColor; }
+.sp-pull.lk-icons .sp-fcap { margin-top: clamp(28px, 5.6cqw, 50px); }
+
+/* REPEAT: the words again and again in outline down the field, over
+   the words themselves in solid */
+.sp-wall { display: flex; flex-direction: column; margin: 0 calc(-1 * var(--m)) clamp(28px, 5.4cqw, 50px); overflow: hidden; pointer-events: none; user-select: none; }
+.sp-wl { display: block; padding-left: var(--m); white-space: nowrap; font-size: clamp(40px, 9.6cqw, 96px); font-weight: 800; letter-spacing: -0.05em; line-height: 0.9;
+  color: transparent; -webkit-text-stroke: 1px var(--wc, #fff); opacity: 0.7; }
+/* the outline's colour is the field's ink: its own colour is transparent */
+.sp-black .sp-wall { --wc: #fff; }
+.sp-field .sp-wall { --wc: var(--fink); }
+.sp-black.lk-repeat .sp-wall { margin-top: calc(-0.6 * clamp(34px, 6.4cqw, 58px)); }
+
+/* AIR: small type in a tall page of paper, the study's colour one small
+   square in its corner */
+.sp-brk.lk-air { box-sizing: border-box; min-height: calc(var(--vh, 100vh) * 0.86); margin: clamp(64px, 13cqw, 128px) var(--m) 0; padding: 0 0 clamp(18px, 3.4cqw, 28px);
+  display: flex; flex-direction: column; justify-content: flex-end; border-top: 1px solid var(--hair); }
+.sp-dot { position: absolute; left: 0; top: 16px; width: 12px; height: 12px; background: var(--fill); }
+.sp-pull.lk-air .sp-pq { max-width: 15em; font-size: clamp(22px, 3.3cqw, 30px); font-weight: 600; letter-spacing: -0.03em; line-height: 1.16; }
+.sp-brk-f.lk-air :is(.sp-band, .sp-numg) { display: grid; grid-template-columns: minmax(0, 1fr); gap: clamp(40px, 8cqw, 72px) 0; margin: 0; }
+.sp-brk-f.lk-air .sp-nums { margin: 0; }
+.sp-brk-f.lk-air .sp-band > * { grid-column: auto !important; }
+.sp-brk.lk-air :is(.sp-bcap, .sp-fcap) { margin-top: clamp(40px, 8cqw, 72px); }
+@container sp (min-width: 560px) {
+  .sp-pull.lk-air .sp-pq, .sp-brk-f.lk-air :is(.sp-band, .sp-nums) { margin-left: calc(50% + var(--gc) / 2); }
+}
+
+/* FILL: the live site's knockout (PressingQuote). The section two and a
+   half glasses tall, a screen held in it, the fill rising at the
+   screen's foot as the reader goes on; a copy of the words in the fill's
+   own ink shows only where the fill has reached, so the type turns over
+   along its edge. A copy and a clip rather than the live site's blend,
+   so it holds on any fill, not only black on white */
+.sp-brk.lk-fill { height: calc(var(--vh, 100vh) * 2.4); margin-left: 0; margin-right: 0; padding: 0; }
+.sp-brk-f.lk-fill { margin-top: clamp(56px, 11cqw, 104px); }
+.sp-kscr { position: sticky; top: 0; height: var(--vh, 100vh); overflow: hidden; display: grid; background: var(--paper); isolation: isolate; }
+.sp-kf { position: absolute; left: 0; right: 0; bottom: 0; height: var(--fh, 0%); z-index: 0; }
+.sp-kin { grid-area: 1 / 1; position: relative; z-index: 1; min-width: 0; padding: clamp(56px, 11cqw, 104px) var(--m) clamp(22px, 4cqw, 34px); color: var(--ink); }
+.sp-kinr { display: flex; flex-direction: column; min-height: 100%; transform: translateY(var(--kt, 0px)); }
+.sp-kinr > :is(.sp-pq, .sp-band, .sp-nums) { margin-top: auto; margin-bottom: auto; }
+.sp-kin :is(.sp-band, .sp-nums) { margin-left: 0; margin-right: 0; }
+.sp-kinv { z-index: 2; clip-path: inset(calc(100% - var(--fh, 0%)) 0 0 0); pointer-events: none; }
+/* and the ink words stop at the edge, so no dark fringe shows round the
+   copy's letters */
+.sp-kin:not(.sp-kinv) { clip-path: inset(0 0 var(--fh, 0%) 0); }
+.sp-klooks { position: absolute; right: var(--m); bottom: clamp(22px, 4cqw, 34px); z-index: 3; margin: 0; color: #fff; mix-blend-mode: difference; }
+.sp-kinv * { color: inherit !important; }
+.sp-kinv :is(.sp-g, .sp-fs, .sp-ns, .y) { opacity: 0.62; }
+.sp-kin :is(.sp-bcap, .sp-fcap) { opacity: 1; }
+.sp:not(.mo) .sp-brk.lk-fill { height: auto; }
+.sp:not(.mo) .sp-kscr { position: relative; height: auto; min-height: var(--vh, 100vh); }

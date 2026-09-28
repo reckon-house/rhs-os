@@ -261,6 +261,71 @@
     return i < 0 ? esc(text) : esc(text.slice(0, i)) + "<b>" + esc(fig) + "</b>" + esc(text.slice(i + fig.length));
   };
 
+  /* ── the break sections (27 Sept): the black field of figures and the
+     first pull quote on the study's fill, the two places a room changes
+     ground. His "these type of sections in the case studies feel a
+     little off - i like having something different worked in to break
+     things up but maybe we do some concepts on these too? maybe 5 or 6
+     options - pulled quote style maybe? maybe the fonts are
+     takeover/large? maybe we use icons? graphic repeating words? more
+     negative space?". Seven looks, chosen on a small row in the sections
+     themselves (the index's switches came off the same day), kept in
+     html[data-brk] and localStorage, ?look= for an address:
+     - field: as they were, the black field and the study's fill;
+     - pull: a magazine's pull quote on paper, between rules, the mark
+       hung in the study's colour; a figure pulled out the same way;
+     - takeover: the words as large as a glass tall will hold them;
+     - icons: each figure drawn as what it counts (a hundred dots with
+       its share filled, that many weeks as squares, that many stores as
+       dots), in the study's colour;
+     - repeat: the words repeated down the field in outline, one line
+       solid, the curtain's device;
+     - air: small type in a tall page of paper, the study's colour one
+       small square;
+     - fill: the live site's knockout. The section holds still while the
+       fill rises under the words and turns them over at its edge ── */
+  const LOOKS = ["field", "pull", "takeover", "icons", "repeat", "air", "fill"], LOOK_LS = "crossref2.look";
+  (() => {
+    const q = (new URLSearchParams(location.search).get("look") || "").toLowerCase();
+    let v = LOOKS.includes(q) ? q : null;
+    if (!v) { try { v = localStorage.getItem(LOOK_LS); } catch (e) { /* a private window */ } }
+    document.documentElement.dataset.brk = LOOKS.includes(v) ? v : "field";
+  })();
+  const LOOK = () => { const v = document.documentElement.dataset.brk; return LOOKS.includes(v) ? v : "field"; };
+  const ROOMS = new Set();
+  const setLook = (x) => {
+    if (!LOOKS.includes(x)) return;
+    document.documentElement.dataset.brk = x;
+    try { localStorage.setItem(LOOK_LS, x); } catch (e) { /* a private window */ }
+    ROOMS.forEach((f) => f());
+  };
+  const lookRow = () => '<div class="sp-looks caps">' + LOOKS.map((x) => '<button type="button" data-look="' + x + '"' + (x === LOOK() ? ' class="on" aria-pressed="true"' : ' aria-pressed="false"') + ">" + x + "</button>").join("") + "</div>";
+  /* a figure drawn as what it counts */
+  const picto = (fig, text) => {
+    const f = String(fig || ""), lf = f.toLowerCase();
+    const m = /(\d[\d,]*(?:\.\d+)?)/.exec(f);
+    let n = m ? parseFloat(m[1].replace(/,/g, "")) : null;
+    if (n == null) { const w = /\b(one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|thirteen|fourteen|fifteen|twenty|thirty)\b/.exec(lf); if (w) n = w[1] === "one" ? 1 : NUMW[w[1]]; }
+    const svg = (w, h, body) => '<svg class="sp-picto" viewBox="0 0 ' + w + " " + h + '" width="' + w + '" height="' + h + '" aria-hidden="true">' + body + "</svg>";
+    const dots = (total, on, per, c) => {
+      let b = ""; const r = c * 0.34;
+      for (let i = 0; i < total; i++) { const x = (i % per) * c + c / 2, y = Math.floor(i / per) * c + c / 2; b += '<circle cx="' + x.toFixed(1) + '" cy="' + y.toFixed(1) + '" r="' + r.toFixed(2) + '"' + (i < on ? "" : ' class="off"') + "/>"; }
+      return svg(per * c, Math.ceil(total / per) * c, b);
+    };
+    if (/%/.test(f) && n != null) return dots(100, Math.round(n), 10, 13);
+    if (/\b(weeks?|days?|months?|years?|hours?|minutes?)\b/.test(lf) && n) {
+      const k = Math.min(Math.round(n), 60), per = Math.min(k, 12), c = k <= 8 ? 44 : 24; let b = "";
+      const gp = Math.round(c * 0.22);
+      for (let i = 0; i < k; i++) b += '<rect x="' + ((i % per) * c) + '" y="' + (Math.floor(i / per) * c) + '" width="' + (c - gp) + '" height="' + (c - gp) + '"/>';
+      return svg(per * c - gp, Math.ceil(k / per) * c - gp, b);
+    }
+    if (n && n >= 2 && !/\$|\dx\b|\bx\d/i.test(f)) { const k = Math.min(Math.round(n), 2400), per = Math.ceil(Math.sqrt(k * 2.4)), c = k > 400 ? 6 : k > 100 ? 9 : 14; return dots(k, k, per, c); }
+    return svg(22, 22, '<rect width="22" height="22"/>');
+  };
+  /* the wall: the words again and again in outline, over the words
+     themselves in solid */
+  const wallHtml = (words, rows) => { const line = (words + "   ").repeat(5); let h = ""; for (let i = 0; i < rows; i++) h += '<span class="sp-wl">' + esc(line) + "</span>"; return '<div class="sp-wall" aria-hidden="true">' + h + "</div>"; };
+
   /* ── compose: a study's fragments, in its own reading order, sorted into
      the parts of a room. Nothing is dropped except the Author fact (it is
      him on every study) and the picture the cover already shows ── */
@@ -529,6 +594,7 @@
       const els = [...root.querySelectorAll(RVSEL)];
       const vb = container.getBoundingClientRect().bottom;
       els.forEach((e) => { e._rv = kindOf(e); e._rvd = false; e.classList.add("rv", "rv-" + e._rv); });
+      els.forEach((e) => { if (e.closest(".lk-fill")) go(e, true); });
       /* scrub has no turns: every block rests finished and the scroll
          carries it (the driver below) */
       if (FAM() === "scrub") {
@@ -607,6 +673,26 @@
     }
     const onScrub = () => { if (!scT) scT = requestAnimationFrame(scrub); };
     if (mo) container.addEventListener("scroll", onScrub, { passive: true });
+
+    /* the fill look's knockout, as the live site's quote drives its own:
+       how far through the section the reader is, eased, is how high the
+       fill stands; the words drift up a little as it comes. Without
+       motion it stands full */
+    let knT = 0;
+    function knockTick() {
+      knT = 0; if (dead || !parts || !parts.knocks.length) return;
+      const cr = container.getBoundingClientRect(), H = container.clientHeight || 800;
+      parts.knocks.forEach((K) => {
+        if (!mo) { K.sec.style.setProperty("--fh", "100%"); return; }
+        const r = K.sec.getBoundingClientRect();
+        const p = Math.max(0, Math.min(1, (cr.top - r.top) / Math.max(1, r.height - H)));
+        const e = 1 - Math.pow(1 - p, 1.4);
+        K.sec.style.setProperty("--fh", (e * 100).toFixed(2) + "%");
+        K.sec.style.setProperty("--kt", (-e * 34).toFixed(1) + "px");
+      });
+    }
+    const onKnock = () => { if (!knT) knT = requestAnimationFrame(knockTick); };
+    container.addEventListener("scroll", onKnock, { passive: true });
     /* the family changed on the page: what has played plays again */
     function replay() {
       if (dead || !mo) return;
@@ -660,7 +746,7 @@
       const V = container.clientHeight || window.innerHeight || 800;
       builtW = W;
       ids.length = 0; pending.clear();
-      const P = { rows: [], asides: [], figs: [], title: null, pulls: [], coverBox: null, coverFrame: null };
+      const P = { rows: [], asides: [], figs: [], title: null, pulls: [], coverBox: null, coverFrame: null, knocks: [] };
       const s = M.s;
       const frag = document.createDocumentFragment();
       const g = Math.max(5, Math.round(W * 0.011));
@@ -679,9 +765,35 @@
       const blackOr = (node) => {
         if (blackDone) return node;
         blackDone = true;
-        const b = el("div", "sp-black"); b.appendChild(node);
-        b.appendChild(el("div", "sp-bcap", esc(D.title(k)) + '<span class="y">' + esc(s.y) + "</span>"));
-        return b;
+        const lk = LOOK();
+        const dark = lk === "field" || lk === "takeover" || lk === "repeat";
+        const b = el("div", (dark ? "sp-black " : "") + "sp-brk sp-brk-f lk-" + lk);
+        b.style.setProperty("--fill", s.fill || "#000");
+        /* a fill too light to read on paper draws in ink */
+        b.style.setProperty("--dotc", /^#?f/i.test(String(D.ink(s.fill || "#000"))) ? "var(--fill)" : "var(--ink)");
+        if (lk === "air") b.insertAdjacentHTML("beforeend", '<i class="sp-dot" aria-hidden="true"></i>');
+        const cells = [...node.querySelectorAll(".sp-fm")];
+        if (lk === "icons") cells.forEach((c) => { const n = c.querySelector(".sp-fn"), t = c.querySelector(".sp-fs, .sp-nl"); c.insertAdjacentHTML("afterbegin", '<div class="sp-ico">' + picto(n ? n.textContent : "", t ? t.textContent : "") + "</div>"); });
+        if (lk === "repeat") b.insertAdjacentHTML("beforeend", wallHtml(cells.map((c) => c.querySelector(".sp-fn").textContent).join("   "), 5));
+        b.appendChild(node);
+        b.appendChild(el("div", "sp-bcap", esc(D.title(k)) + '<span class="y">' + esc(s.y) + "</span>" + lookRow()));
+        return lk === "fill" ? knock(b, "#000", "#fff") : b;
+      };
+      /* the fill: the section a few glasses tall, a screen held still in
+         it, the fill rising at its foot and a copy of the words in the
+         fill's own ink shown only where the fill has reached */
+      const knock = (sec, fill, ink) => {
+        const scr = el("div", "sp-kscr");
+        const a = el("div", "sp-kin"), inn = el("div", "sp-kinr");
+        [...sec.childNodes].forEach((c) => inn.appendChild(c)); a.appendChild(inn);
+        const f = el("div", "sp-kf"); f.style.background = fill;
+        const bb = el("div", "sp-kin sp-kinv"); bb.setAttribute("aria-hidden", "true"); bb.style.color = ink;
+        scr.appendChild(f); scr.appendChild(a); scr.appendChild(bb);
+        /* the looks' row stays on top of both, readable on either ground */
+        const lr = inn.querySelector(".sp-looks"); if (lr) { lr.classList.add("sp-klooks"); scr.appendChild(lr); }
+        sec.appendChild(scr);
+        P.knocks.push({ sec, a: inn, b: bb, ink });
+        return sec;
       };
       const AIR = ["t", "r", "l"];
 
@@ -950,11 +1062,17 @@
           case "deck": return tag(el("p", "sp-deck" + (b.f.text.length <= 52 && b.f.text.indexOf(" | ") < 0 ? " sp-short" : ""), inkGrey(b.f.text)), b.f);
           case "pull": {
             const first = pulled++ === 0;
-            const q = el("blockquote", "sp-pull" + (first ? " sp-field" : ""));
+            const lk = first ? LOOK() : null;
+            const onFill = lk === "field" || lk === "takeover" || lk === "repeat";
+            const q = el("blockquote", "sp-pull" + (onFill ? " sp-field" : "") + (first ? " sp-brk sp-brk-q lk-" + lk : ""));
             if (first) { q.style.setProperty("--fill", s.fill || "#000"); q.style.setProperty("--fink", s.ink || D.ink(s.fill || "#000")); }
+            if (lk === "repeat") q.insertAdjacentHTML("beforeend", wallHtml(halves(b.f.text)[0], 6));
+            if (lk === "icons") q.insertAdjacentHTML("beforeend", '<div class="sp-ico sp-qmark" aria-hidden="true"><svg viewBox="0 0 120 92" width="120" height="92"><path d="M0 92V56C0 22 16 4 48 0l5 13C35 18 27 29 26 46h24v46H0Zm70 0V56C70 22 86 4 118 0l5 13c-18 5-26 16-27 33h24v46H70Z"/></svg></div>');
+            if (lk === "air") q.insertAdjacentHTML("beforeend", '<i class="sp-dot" aria-hidden="true"></i>');
             const t = el("p", "sp-pq", inkGrey(b.f.text)); q.appendChild(t); P.pulls.push(t);
-            if (first) q.appendChild(el("div", "sp-fcap", esc(D.title(k)) + '<span class="y">' + esc(s.y) + "</span>"));
-            return tag(q, b.f);
+            if (first) q.appendChild(el("div", "sp-fcap", esc(D.title(k)) + '<span class="y">' + esc(s.y) + "</span>" + lookRow()));
+            tag(q, b.f);
+            return lk === "fill" ? knock(q, s.fill || "#000", s.ink || D.ink(s.fill || "#000")) : q;
           }
           case "closing": {
             const c = el("div", "sp-closing");
@@ -1096,8 +1214,16 @@
       root.querySelectorAll(".sp-pic img").forEach((im) => { const w = im.parentNode.offsetWidth; if (w) im.sizes = w + "px"; });
 
       fitType(W);
+      /* the fill's copy of the words, made once they are sized */
+      parts.knocks.forEach((K) => {
+        const c = K.a.cloneNode(true);
+        c.querySelectorAll("[data-f]").forEach((x) => x.removeAttribute("data-f"));
+        c.querySelectorAll(".sp-looks").forEach((x) => x.remove());
+        K.b.replaceChildren(c);
+      });
       if (mo) drift();
       if (mo) { scrubList(); scrub(); }
+      knockTick();
     };
 
     /* the largest size at which a block of type keeps to a number of lines */
@@ -1111,20 +1237,53 @@
       }
       node.style.fontSize = Math.floor(best * 2) / 2 + "px";
     };
+    const fitBox = (node, hi, maxH) => {
+      let lo = 22, best = lo;
+      for (let i = 0; i < 12; i++) {
+        const mid = (lo + hi) / 2; node.style.fontSize = mid + "px";
+        if (node.scrollWidth <= node.clientWidth + 1 && node.offsetHeight <= maxH) { best = mid; lo = mid; } else hi = mid;
+      }
+      node.style.fontSize = Math.floor(best) + "px";
+    };
     const fitType = (W) => {
       /* the title: big, but under the cover, never over it in weight */
       if (parts.title) {
         const t = parts.title, len = t.textContent.length;
         fitLines(t, Math.max(34, W * 0.07), Math.min(104, W * (len <= 12 ? 0.135 : 0.108)), len > 26 ? 3 : 2);
       }
-      parts.pulls.forEach((q) => { const len = q.textContent.length; fitLines(q, 22, Math.min(96, W * (len < 50 ? 0.1 : len < 80 ? 0.082 : 0.068)), len < 50 ? 3 : 4); });
+      parts.pulls.forEach((q) => {
+        const len = q.textContent.length, lk = q.closest(".sp-brk") ? LOOK() : null;
+        /* air sets its quote small, by the CSS alone */
+        if (lk === "air") { q.style.fontSize = ""; return; }
+        /* takeover: as large as the words will go in most of a glass */
+        if (lk === "takeover") { fitBox(q, Math.max(22, W * 0.3), (container.clientHeight || 800) * 0.62); return; }
+        if (lk === "pull") { fitLines(q, 22, Math.min(62, W * 0.066), 5); return; }
+        fitLines(q, 22, Math.min(96, W * (len < 50 ? 0.1 : len < 80 ? 0.082 : 0.068)), len < 50 ? 3 : 4);
+      });
       /* figures: one line each, as large as their cell allows, at three
          scales: the black field loudest, a band on paper next, a figure
          inside the text column quietest */
       parts.figs.forEach(({ n }) => {
-        const cap = n.closest(".sp-black") ? Math.min(300, W * 0.36) : n.closest(".sp-band, .sp-numg, .sp-chart") ? Math.min(210, W * 0.24) : Math.min(96, W * 0.125);
+        /* the break section's looks: takeover to the edges, air small,
+           a pulled figure a size under the field's */
+        const brk = n.closest(".sp-brk");
+        const cap = brk && brk.classList.contains("lk-takeover") ? W * 2 : brk && brk.classList.contains("lk-air") ? Math.min(64, W * 0.09)
+          : brk && (brk.classList.contains("lk-pull") || brk.classList.contains("lk-icons")) ? Math.min(150, W * 0.19)
+          : n.closest(".sp-black, .lk-fill") ? Math.min(300, W * 0.36) : n.closest(".sp-band, .sp-numg, .sp-chart") ? Math.min(210, W * 0.24) : Math.min(96, W * 0.125);
         n.style.fontSize = "100px"; n.style.whiteSpace = "nowrap";
-        const avail = n.parentNode.clientWidth || W; const w100 = n.scrollWidth || 1;
+        /* takeover sets each word on a line of its own, the widest word
+           to the edges. It measures the words themselves: the box's
+           scrollWidth, which the others read, is never less than the box,
+           so a short figure there never grows past about 100px */
+        if (brk && brk.classList.contains("lk-takeover")) {
+          n.style.whiteSpace = "normal";
+          const pr = document.createElement("span"); pr.style.cssText = "position:absolute;visibility:hidden;white-space:nowrap"; n.appendChild(pr);
+          let wid = 1; n.textContent.trim().split(/\s+/).forEach((w) => { pr.textContent = w; wid = Math.max(wid, pr.offsetWidth); }); pr.remove();
+          n.style.fontSize = Math.floor(((n.parentNode.clientWidth || W) / wid) * 100 * 0.97) + "px";
+          return;
+        }
+        /* a pulled figure keeps to its own column */
+        const avail = (brk && brk.classList.contains("lk-pull") ? n.clientWidth : n.parentNode.clientWidth) || W; const w100 = n.scrollWidth || 1;
         n.style.fontSize = Math.floor(Math.max(28, Math.min(cap, (avail / w100) * 100 * 0.985))) + "px";
       });
       /* figures in a set share a size; a band leads with its first figure
@@ -1132,6 +1291,7 @@
       const groups = new Map();
       parts.figs.forEach((x) => {
         const gr = x.group; if (!gr.classList.contains("sp-numg") && !gr.classList.contains("sp-band") && !gr.classList.contains("sp-figs")) return;
+        if (gr.closest(".lk-takeover")) return;
         if (gr.classList.contains("sp-band") && !gr.classList.contains("sp-stack") && x.cell === gr.firstElementChild) return;
         if (!groups.has(gr)) groups.set(gr, []); groups.get(gr).push(x);
       });
@@ -1166,6 +1326,21 @@
     };
     watchTitle();
 
+    /* a new look for the break sections: the room is set again where the
+       reader is, as a new width sets it */
+    const relook = () => {
+      if (dead) return;
+      const anchor = firstInView();
+      if (io) io.disconnect();
+      build(); startIO(); layout(); watchTitle(); markAgain();
+      if (anchor) { const e2 = find(anchor.id); if (e2) setScroll(container.scrollTop + e2.getBoundingClientRect().top - container.getBoundingClientRect().top - anchor.off); }
+      armReveals(true);
+    };
+    ROOMS.add(relook);
+    root.addEventListener("click", (ev) => {
+      const b = ev.target.closest(".sp-looks [data-look]"); if (!b) return;
+      ev.preventDefault(); ev.stopPropagation(); setLook(b.dataset.look);
+    });
     /* a new width: small changes relayout; a real change rebuilds the rows
        and keeps the reader where they were */
     let rzT = 0;
@@ -1212,7 +1387,8 @@
       return true;
     }
     function destroy() {
-      dead = true;
+      dead = true; ROOMS.delete(relook);
+      container.removeEventListener("scroll", onKnock); cancelAnimationFrame(knT);
       if (io) io.disconnect(); if (ro) ro.disconnect(); if (headIO) headIO.disconnect(); if (rio) rio.disconnect();
       if (lenis) { cancelAnimationFrame(lraf); lenis.destroy(); lenis = null; }
       container.removeEventListener("scroll", onScroll); cancelAnimationFrame(parT); clearTimeout(holdT);
@@ -1224,5 +1400,5 @@
     return room;
   }
 
-  window.StudyPanel = { render, cover };
+  window.StudyPanel = { render, cover, setLook, looks: LOOKS };
 })();
