@@ -27,6 +27,14 @@
       { k: "sp-small", label: "Captions", sel: ".sp .sp-cap|.sp .sp-meta|.sp .sp-bcap|.sp .sp-fcap|.sp .sp-spec-h", props: { weight: 400, size: 12 } },
       { k: "sp-label", label: "Labels", sel: ".sp .sp-caps|.sp .sp-kick|.sp .sp-nl|.sp .sp-tr dt", props: { weight: 500, size: 10.5, tracking: 0.08 } },
     ] },
+    /* a shelf and its foot move together, so carrying on still lands */
+    { g: "Shelf", items: [
+      { k: "sh-name", label: "Name", sel: ".xk-name|.sh-foot-t:not(.stand)", props: { weight: 600, size: 64 } },
+      { k: "sh-run", label: "A line's name and sentence", sel: ".xk-stand|.sh-foot-t.stand", props: { weight: 600, size: 35, tracking: -0.042 } },
+      { k: "sh-sent", label: "Sentence under a name", sel: ".xk-sent|.sh-foot-s", props: { weight: 500, size: 15, leading: 1.3 } },
+      { k: "sh-cap", label: "Credits", sel: ".xk-cap", props: { weight: 600, size: 13 } },
+      { k: "sh-label", label: "Labels", sel: ".sh-bar-k|.xk-n|.sh-foot-n|.sh-foot-k|.sh-foot-l", props: { weight: 700, size: 8.5, tracking: 0.2 } },
+    ] },
     { g: "Home", items: [
       { k: "say", label: "Statement", sel: ".rest .say", props: { weight: 600, size: 35, tracking: -0.042, leading: 1.02 } },
     ] },
@@ -36,8 +44,8 @@
       { k: "ix-year", label: "Years", sel: "html[data-ix=\"e\"] #idx .e.ey .t", props: { weight: 700, size: 21 } },
       { k: "ix-fig", label: "Figures", sel: "html[data-ix=\"e\"] #idx .e.efig .fn", props: { weight: 700, size: 34 } },
       { k: "ix-list", label: "Work list, capabilities, tools", sel: "html[data-ix=\"e\"] #idx .e.ew .t|html[data-ix=\"e\"] #idx .e.ecap .t|html[data-ix=\"e\"] #idx .e.etool .t", props: { weight: 500, size: 13 } },
-      { k: "ix-dk", label: "Sentences", sel: "html[data-ix=\"e\"] #idx .e .dk", props: { weight: 500, size: 10.5 } },
-      { k: "ix-head", label: "Section heads", sel: "html[data-ix=\"e\"] #idx .eh", props: { weight: 600, size: 10 } },
+      { k: "ix-dk", label: "Sentences", sel: "html[data-ix=\"e\"] #idx .e .dk", props: { weight: 400, size: 12 } },
+      { k: "ix-head", label: "Labels", sel: "html[data-ix=\"e\"] #idx .grp h2.eh|html[data-ix=\"e\"] #idx .e .kk.caps|html[data-ix=\"e\"] #idx .e .cr.caps", props: { weight: 700, size: 8.5, tracking: 0.2 } },
     ] },
   ];
   const PROP = {
