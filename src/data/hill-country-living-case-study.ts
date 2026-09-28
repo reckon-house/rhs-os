@@ -7,7 +7,7 @@ export const hillCountryLivingCaseStudy: CaseStudy = {
   title: "Hill Country Residence: Livingroom.",
   category: { label: "Interiors", href: "/category/interiors" },
   subtitle:
-    "The living room at the center of the Hill Country house. | A limestone fireplace wall, reclaimed pine, mid-century furniture with Western details, collected over time.",
+    "The living room is at the center of the Hill Country house. | A limestone fireplace wall and reclaimed pine floors frame mid-century furniture with Western details, collected over time.",
   field: "Interior Design\nFurniture Curation\nArt Selection\nFixture Sourcing",
   author: "Jeremy Prasatik",
   published: "2023",
@@ -49,7 +49,7 @@ export const hillCountryLivingCaseStudy: CaseStudy = {
       },
       title: "Hill Country Residence\nLivingroom.",
       subtitle:
-        "The living room at the center of the Hill Country house. | A limestone fireplace wall, reclaimed pine, mid-century furniture with Western details, collected over time.",
+        "The living room is at the center of the Hill Country house. | A limestone fireplace wall and reclaimed pine floors frame mid-century furniture with Western details, collected over time.",
       field: "Interior Design  Furniture Curation  Art Selection  Fixture Sourcing",
       author: "Jeremy Prasatik",
       published: "2023",
@@ -64,10 +64,10 @@ export const hillCountryLivingCaseStudy: CaseStudy = {
         { label: "Built", value: "Living room around a floor-to-ceiling limestone fireplace wall, open to the kitchen." },
         { label: "Scope", value: "Interior design, furniture curation, art selection, fixture sourcing." },
         { label: "Materials", value: "Limestone, reclaimed 1950s pine, cognac leather, charcoal tweed, antiqued brass." },
-        { label: "Angle", value: "Everything picked for how it will wear, and none of it bought as a set." },
+        { label: "Angle", value: "Everything was picked for how it will wear, and none of it was bought as a set." },
       ],
       abstract:
-        "Open to the kitchen, with a floor-to-ceiling limestone fireplace wall. Reclaimed 1950s pine on the floor, exposed beams overhead, brass fixtures.\n\nThe furniture is mid-century in shape with textiles that lean Western: a cognac leather sofa on a wood frame, tweed armchairs, a Navajo-style throw. Every piece was chosen for how it will age, and none of it came as a set.\n\nOn the stone wall, an original painting by Dwight D. Eisenhower hangs with landscape pieces in gilded frames. Family heirlooms sit next to new finds, and there is a sheepskin under the bench that gets moved around.",
+        "The living room is open to the kitchen and has a floor-to-ceiling limestone fireplace wall. Underfoot is reclaimed 1950s pine, with exposed beams overhead and brass fixtures.\n\nThe furniture is mid-century in shape with textiles that lean Western: a cognac leather sofa on a wood frame, tweed armchairs, a Navajo-style throw. Every piece was chosen for how it will age, and none of it came as a set.\n\nOn the stone wall, an original painting by Dwight D. Eisenhower hangs with landscape pieces in gilded frames. Family heirlooms sit next to new finds, and a sheepskin under the bench gets moved around.",
     },
 
         // ── HERO ──
@@ -86,7 +86,7 @@ export const hillCountryLivingCaseStudy: CaseStudy = {
       id: "material-header",
       type: "section-header",
       label: "SECTION 02: MATERIAL",
-      title: "The same four materials",
+      title: "Stone, pine, brass and leather",
       // Pinned so the four-material list travels up beside the headline
       // instead of under it. The names have to be readable against the
       // headline that groups them, and holding is what puts them there.
@@ -101,7 +101,7 @@ export const hillCountryLivingCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "Stone, pine, brass, leather.",
+        "The walls and ceiling are kept plain, so the living room gets its texture from four materials.",
     },
     {
       id: "material-footnote",
@@ -109,7 +109,7 @@ export const hillCountryLivingCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "Limestone floor to ceiling on the fireplace wall. Reclaimed 1950s pine underfoot and overhead in the exposed beams. Brass on the fixtures, cognac leather on the sofa and the bench. The walls and ceiling are kept plain, so the texture comes from those four.",
+        "The exposed beams are the same reclaimed 1950s pine as the floor. Cognac leather is on the sofa and the bench seat.",
     },
 
     // Symmetrical fireplace wall — promoted to a scroll-animated hero so
@@ -175,7 +175,7 @@ export const hillCountryLivingCaseStudy: CaseStudy = {
       id: "collected-header",
       type: "section-header",
       label: "SECTION 03: COLLECTED",
-      title: "There is an Eisenhower",
+      title: "There is a painting by Eisenhower",
       // The study's one crossing, on the beat where the room's contents
       // arrive: what is in it, named, at display size.
       //
@@ -185,7 +185,7 @@ export const hillCountryLivingCaseStudy: CaseStudy = {
       // audit reads.
       pressing: {
         mark: { n: "03", name: "Heirlooms and Finds" },
-        heldLine: "on the wall.",
+        heldLine: "on the fireplace wall.",
         choreo: { pin: true, crossing: true },
       },
     },
@@ -198,7 +198,7 @@ export const hillCountryLivingCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "Under the Eisenhower, a mid-century record-player shelf with the vinyl below it, ZZ Top and Sturgill Simpson in the stack. A ladder shelf holds a vintage globe and ceramic vessels, brass fire tools underneath. Two tweed armchairs face each other at the tall window with a leather stool between them and the Hill Country outside.",
+        "Under the Eisenhower painting is a mid-century record-player shelf, and the vinyl stacked below it includes ZZ Top and Sturgill Simpson. A ladder shelf holds a vintage globe and ceramic vessels, with brass fire tools underneath. Two tweed armchairs face each other at the tall window with a leather stool between them and the Hill Country outside.",
     },
 
     // 2-up: tweed armchairs in two settings (the 2x23 pair)
@@ -272,11 +272,11 @@ export const hillCountryLivingCaseStudy: CaseStudy = {
       id: "interiors-index",
       type: "interiors-index",
       label: "SECTION 04: MATERIALS & FINISHES",
-      title: "The materials,\nchosen for how they age.",
+      title: "The living room's materials\nwere chosen for how they age.",
       introText:
-        "Limestone, pine, cognac leather, charcoal tweed, antiqued brass. All of it can take a scuff.",
+        "Limestone, pine, cognac leather, charcoal tweed and antiqued brass can all take a scuff.",
       philosophyText:
-        "Color comes from the materials themselves, with no accents and nothing painted for effect. Limestone takes light without bouncing it back. Pine is warm underfoot, and cognac leather darkens with use. Tweed looks soft from across the room and structured up close. Brass goes dark over time.",
+        "Color in the living room comes from the materials themselves, with no accents and nothing painted for effect. Limestone takes light without bouncing it back. Pine is warm underfoot, and cognac leather darkens with use. Tweed looks soft from across the room and structured up close. Brass goes dark over time.",
       colors: [
         { name: "Limestone Cream", hex: "#E5DDC9", description: "Fireplace wall, paint" },
         { name: "Reclaimed Pine", hex: "#9B6F47", description: "Floors, beams" },
@@ -304,10 +304,10 @@ export const hillCountryLivingCaseStudy: CaseStudy = {
       id: "closing-header",
       type: "section-header",
       label: "SECTION 05: CLOSING",
-      title: "Everything in the room",
+      title: "Just past the living room",
       pressing: {
-        mark: { n: "04", name: "Ten Years" },
-        heldLine: "gets used.",
+        mark: { n: "04", name: "The Entry" },
+        heldLine: "is the entry.",
       },
     },
     {
@@ -317,7 +317,7 @@ export const hillCountryLivingCaseStudy: CaseStudy = {
       stack: ["AutoCAD", "SketchUp", "Material specification"],
       links: [],
       content:
-        "Just past the room, the entry gets the same treatment: a leather-strapped oval mirror on the wall, a wood console with a crystal lamp on it, a plaid throw and a wicker basket underneath.",
+        "The entry gets the same treatment as the living room: a leather-strapped oval mirror on the wall and a wood console with a crystal lamp on it. A plaid throw and a wicker basket sit under the console.",
     },
   ],
 };
