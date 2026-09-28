@@ -989,6 +989,27 @@
       root.setProperty("--lw", Math.floor(lo) + "px");
     }
   };
+  /* the work cards' names, all at one size: as large as the widest word
+     among them allows in the column, up to 26px, so no name breaks a
+     word (27 Sept, his "Ivy Park by Beyonce is WAY more important than
+     the year ... i saw we make these more powerful and do more work than
+     just a year"; the year was the big line, the name 13px under it) */
+  const fitFeat = () => {
+    const ts = [...IDX.querySelectorAll(".e.ef .t")]; if (!ts.length) return;
+    ts.forEach((t) => { t.style.fontSize = ""; });
+    const pr = document.createElement("span"); pr.style.cssText = "position:absolute;visibility:hidden;white-space:nowrap;font-size:100px";
+    let size = 26;
+    ts.forEach((t) => {
+      const w = t.parentNode.clientWidth || t.clientWidth; if (!w) return;
+      const words = t.textContent.trim().split(/\s+/);
+      t.appendChild(pr);
+      let wid = 1; words.forEach((x) => { pr.textContent = x; wid = Math.max(wid, pr.offsetWidth); });
+      pr.remove();
+      size = Math.min(size, (w / wid) * 100 * 0.98);
+    });
+    size = Math.max(15, Math.floor(size * 2) / 2);
+    ts.forEach((t) => { t.style.fontSize = size + "px"; });
+  };
   const fit = (fresh) => {
     const was = HTML.classList.contains("stack");
     let stack = innerWidth <= 760 || Math.min(innerWidth * 0.46, 760) < 430;
@@ -1001,6 +1022,7 @@
     if (stack) { if (MARK.parentNode !== document.body) document.body.insertBefore(MARK, FOCUS); }
     else if (top && top.firstChild !== MARK) top.insertBefore(MARK, top.firstChild);
     sizeIndex();
+    fitFeat();
     if (fresh || stack !== was || !tio) { watchThumbs(); watchSeen(); }
   };
 
