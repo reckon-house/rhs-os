@@ -582,6 +582,8 @@ html[data-motion="scrub"] .sp.mo .sp-bar2.rv i { transform: scaleX(var(--p, 1));
 .sp-pals { color: var(--grey); }
 .sp-palx { position: relative; margin-top: clamp(90px, 16cqw, 160px); }
 .sp-palx > .sp-palh { margin: 0 var(--m) 14px; }
+/* inside the title block: edge to edge past its margins, the facts after */
+.sp-spec > .sp-palx { margin: 0 calc(-1 * var(--m)) clamp(44px, 8cqw, 72px); }
 .sp-palx .sp-pic { background-color: transparent; }
 .sp-palx .sp-pic img { object-fit: cover; }
 

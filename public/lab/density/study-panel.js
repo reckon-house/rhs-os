@@ -1150,7 +1150,12 @@
         spec.appendChild(cols);
       }
       const pl = PAL();
-      if (M.palette && M.palette.colors && M.palette.colors.length && pl !== "swatch") frag.appendChild(palSection(pl)); /* the title block follows it */
+      /* the palette opens the title block, under its rule and the study's
+         name. It stood before the block at first, and so read as part of
+         the closing section, its closing lines like a caption to the
+         colours (his "what does this block of text align with? ... they
+         sit inside of the closing section", 27 Sept) */
+      if (M.palette && M.palette.colors && M.palette.colors.length && pl !== "swatch") spec.insertBefore(palSection(pl), spec.firstChild.nextSibling);
       if (M.palette && M.palette.colors && M.palette.colors.length && pl === "swatch") {
         const pal = el("div", "sp-pal"); pal.style.setProperty("--n", M.palette.colors.length);
         M.palette.colors.forEach((c) => {
