@@ -327,7 +327,9 @@ body.staged #focus { opacity: 0; pointer-events: none; }
 .cap .act .caps { opacity: 0.7; font-variant-numeric: tabular-nums; }
 
 /* at rest: his statement, as the board sets a lead */
-.rest .say { max-width: 17em; }
+/* the statement in demi, a step under the bold it was (27 Sept, his
+   "let's try just this one demi-bold") */
+.rest .say { max-width: 17em; font-weight: 600; }
 .rest .links { display: flex; flex-wrap: wrap; gap: 6px 22px; margin: 1.7em 0 0; font-size: 13px; font-weight: 600; }
 .rest .links a { border-bottom: 1px solid var(--hair); }
 .rest .links a:hover { border-bottom-color: var(--ink); }
