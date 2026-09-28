@@ -7,7 +7,7 @@ export const nordstromPersonalizationCaseStudy: CaseStudy = {
   title: "Nordstrom Personalization System",
   category: { label: "Digital", href: "/category/digital" },
   subtitle:
-    "Personalized homepage content for Nordstrom, built on three tile shapes. | They resize for every breakpoint, so one picture works many ways and the pages don't look machine-made.",
+    "Nordstrom's personalized homepages were all built on three tile shapes. | The tiles resized for every screen, so one picture could be used many ways.",
   field: "Design Systems\nArt Direction\nProduct Photography Direction\nEcommerce Design",
   author: "Jeremy Prasatik",
   published: "2015",
@@ -50,7 +50,7 @@ export const nordstromPersonalizationCaseStudy: CaseStudy = {
       },
       title: "Nordstrom\nPersonalization\nSystem",
       subtitle:
-        "Personalized homepage content for Nordstrom, built on three tile shapes. | They resize for every breakpoint, so one picture works many ways and the pages don't look machine-made.",
+        "Nordstrom's personalized homepages were all built on three tile shapes. | The tiles resized for every screen, so one picture could be used many ways.",
       field: "Design Systems  Art Direction  Product Photography Direction",
       author: "Jeremy Prasatik",
       published: "2015",
@@ -61,13 +61,13 @@ export const nordstromPersonalizationCaseStudy: CaseStudy = {
         "Product Photography Direction",
       ],
       summary: [
-        { label: "Built", value: "Three tile shapes, square, hero, and vertical, that resize for every breakpoint." },
+        { label: "Built", value: "Square, hero, and vertical tiles that resized from phone to desktop." },
         { label: "Scope", value: "Design systems, art direction, product photography direction." },
-        { label: "Tools", value: "Nordstrom CMS, editorial templates, asset library. One picture, used many ways." },
-        { label: "Angle", value: "Three tile shapes with strict rules, so millions of pages come out different from each other." },
+        { label: "Tools", value: "Nordstrom CMS, editorial templates, asset library." },
+        { label: "Angle", value: "The three tile shapes had strict rules, so millions of pages came out different from each other." },
       ],
       abstract:
-        "Nordstrom needed personalized content for millions of customers, and it couldn't look like a machine had made it.\n\nBuilt the layouts on three tile shapes, square, hero, and vertical, each one able to resize and restack across phone and desktop while the pages kept one look. The rules were strict enough to run at that scale, and the pages still came out different from each other.\n\nThe product photography followed the same rules. Deliberate contrast, precise angles, no styling props, so each image worked on its own as a story hero or stacked into a grid as ecomm.",
+        "Nordstrom needed personalized content for millions of customers, and it couldn't look like a machine had made it.\n\nBuilt the layouts on square, hero, and vertical tiles, three shapes that could each resize and restack across phone and desktop while the pages kept one look. The tile rules were strict enough to run for millions of customers, and the pages still came out different from each other.\n\nThe product photography followed the same rules: deliberate contrast, precise angles, and no styling props, so each image worked on its own as a story hero or stacked into a product grid.",
     },
 
         // ── HERO ──
@@ -86,10 +86,10 @@ export const nordstromPersonalizationCaseStudy: CaseStudy = {
       id: "system-header",
       type: "section-header",
       label: "SECTION 02: THE SYSTEM",
-      title: "Every page is built from",
+      title: "Each tile shape",
       pressing: {
         mark: { n: "02", name: "Three Shapes" },
-        heldLine: "three tile shapes.",
+        heldLine: "had its own job.",
         // The headline holds while both copy blocks travel up beside it.
         // "Three shapes" has to stay on screen through the paragraph that
         // names them, or the claim and its list never share a frame.
@@ -143,7 +143,7 @@ export const nordstromPersonalizationCaseStudy: CaseStudy = {
       id: "assembled-header",
       type: "section-header",
       label: "SECTION 03: ASSEMBLED",
-      title: "A different homepage",
+      title: "Every shopper had",
       // The study's one crossing, on the claim the system exists to make.
       //
       // pin declares in the data what the crossing already does, hold the
@@ -151,7 +151,7 @@ export const nordstromPersonalizationCaseStudy: CaseStudy = {
       // flag is there so the hold is readable without opening the layout.
       pressing: {
         mark: { n: "03", name: "Three Homepages" },
-        heldLine: "for each shopper.",
+        heldLine: "a homepage of their own.",
         choreo: { pin: true, crossing: true },
       },
     },
@@ -160,7 +160,7 @@ export const nordstromPersonalizationCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "The young customer landed on Savvy Mag, the designer-brand shopper got Summer to Fall styling, and the men's shopper opened on city essentials. All of them were built from the one set of tiles.",
+        "Nordstrom's young customer landed on the Savvy Mag editorial, the designer-brand shopper got Summer to Fall Style, and the men's shopper opened on High City Essentials. All three homepages were built from the same tiles.",
     },
 
     // ── Showcase: Savvy Mag (young customer) — single, padded, large
@@ -208,10 +208,10 @@ export const nordstromPersonalizationCaseStudy: CaseStudy = {
       id: "devices-header",
       type: "section-header",
       label: "SECTION 04: ACROSS DEVICES",
-      title: "The pictures came over as they were,",
+      title: "The phone homepage used",
       pressing: {
         mark: { n: "04", name: "On the Phone" },
-        heldLine: "only the arrangement changed.",
+        heldLine: "the same pictures as the desktop.",
         // Holds the headline through its copy, and the cluster reserves
         // the room the editorial source plate below climbs into.
         choreo: { pin: true },
@@ -222,7 +222,7 @@ export const nordstromPersonalizationCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "The hero photography and the product cards, restacked to fit the smaller screen.",
+        "On the phone, only the arrangement changed: the hero photography and the product cards restacked to fit the smaller screen.",
     },
 
     // ── Savvy Mag editorial source — inline hero (the raw asset that templates into the system)
@@ -277,7 +277,7 @@ export const nordstromPersonalizationCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "White seamless paper, no props, one shadow throughout. The same shoe could run in a Saturday editorial story and a Sunday inventory clear-out and look planned in both places.",
+        "Every product sat on white seamless paper, with no props and one shadow throughout. The same shoe could run in a Saturday editorial story and a Sunday inventory clear-out and look planned in both places.",
     },
     {
       id: "products-footnote",
@@ -285,7 +285,7 @@ export const nordstromPersonalizationCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "Consistent eye level, deliberate contrast, precise angles. With no styling to look at, the merchandise came first.",
+        "The eye level stayed consistent from photo to photo. With no styling to look at, the merchandise came first.",
     },
 
     // ── Product row 1 (3 — warm/playful)
@@ -332,7 +332,7 @@ export const nordstromPersonalizationCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "Three shapes and one library of pictures, with every picture used more than once.",
+        "The tiles all drew their pictures from one library.",
     },
     {
       id: "closing",
@@ -345,7 +345,7 @@ export const nordstromPersonalizationCaseStudy: CaseStudy = {
       stack: ["Nordstrom CMS", "Editorial Templates", "Asset Library"],
       links: [],
       content:
-        "The tiles ran the homepage, campaign sends, and the long tail of category pages.",
+        "Nordstrom's campaign sends and the long tail of category pages ran on the same three tile shapes as the homepage.",
     },
   ],
 };
