@@ -893,20 +893,15 @@
     GROUPS.forEach((g) => { g.count = null; });
     const markIn = IDX.contains(MARK);
     IDX.replaceChildren();
-    /* the switch: three letters, nothing else. It sits on the mark's line
-       at the top, where it can be found; at the foot of an index two
-       screens tall it could not (his "how do i go between the different
-       versions?", 27 Sept) */
-    const sw = el("div", "ixsw caps", '<span class="ixl">Index</span>' + IXS.map((x) => '<a href="?index=' + x + '" data-ix="' + x + '"' + (x === IX ? ' class="on" aria-current="true"' : "") + ">" + x.toUpperCase() + "</a>").join(""));
+    /* the mark heads the index alone. The four rows of switches that sat
+       beside it (Index, Mark, Texture, Motion) came off with his "let's
+       go ahead and remove these options so we can start to see how the
+       final site will look" (27 Sept): the page shows its settled
+       choices, E, grey, the texture on and wipe. The others still answer
+       to ?index=, ?mark=, ?texture= and ?motion=, and to XREF in the
+       console, for comparing */
     const top = el("div", "ixtop");
     if (markIn) top.appendChild(MARK);
-    top.appendChild(sw);
-    /* E's second switch: how an entry takes the ink */
-    if (IX === "e") top.appendChild(el("div", "ixsw mksw caps", '<span class="ixl">Mark</span>' + MKS.map((x) => '<a href="?mark=' + x + '" data-mk="' + x + '"' + (x === MK ? ' class="on" aria-current="true"' : "") + ">" + x + "</a>").join("")));
-    /* and its third: the texture, one to a section */
-    if (IX === "e") top.appendChild(el("div", "ixsw txsw caps", '<span class="ixl">Texture</span>' + TXS.map((x) => '<a href="?texture=' + x + '" data-tx="' + x + '"' + (x === TX ? ' class="on" aria-current="true"' : "") + ">" + x + "</a>").join("")));
-    /* and its fourth: how a room and a shelf come in (MOTS below) */
-    if (IX === "e") top.appendChild(el("div", "ixsw mosw caps", '<span class="ixl">Motion</span>' + MOTS.map((x) => '<a href="?motion=' + x + '" data-mo="' + x + '"' + (x === MOT ? ' class="on" aria-current="true"' : "") + ">" + x + "</a>").join("")));
     IDX.appendChild(top);
     LAYOUT[IX]().filter(Boolean).forEach((n) => IDX.appendChild(n));
     /* in D the mark and the switch head the first column only, as the
@@ -1028,14 +1023,12 @@
        Sept): the cell's fill in a light grey, the words staying ink, and
        a circle of ink on the rule at the row's left edge.
      The runs of capabilities, tools and figures stay bold in all four. */
-  const MKS = ["grey", "cell", "bar", "node"], MK_LS = "crossref2.mark";
-  const lsMk = () => { try { return localStorage.getItem(MK_LS); } catch (e) { return null; } };
-  let MK = MKS.includes(QMARK) ? QMARK : QMARK === "ink" ? "bar" : MKS.includes(lsMk()) ? lsMk() : "grey";
+  const MKS = ["grey", "cell", "bar", "node"];
+  let MK = MKS.includes(QMARK) ? QMARK : QMARK === "ink" ? "bar" : "grey";
   HTML.dataset.mk = MK;
   const setMark = (x) => {
     if (!MKS.includes(x) || x === MK) return;
     MK = x; HTML.dataset.mk = x;
-    try { localStorage.setItem(MK_LS, x); } catch (e) { /* private window */ }
     const u = new URL(location.href); u.searchParams.set("mark", x);
     history.replaceState(history.state, "", u.pathname + u.search + u.hash);
     IDX.querySelectorAll(".mksw a").forEach((a) => { const on = a.dataset.mk === x; a.classList.toggle("on", on); if (on) a.setAttribute("aria-current", "true"); else a.removeAttribute("aria-current"); });
@@ -1078,13 +1071,11 @@
      different for Ivy Park and the long lines - maybe some sort of ascii
      code type of look mixed into some of them?": the patterns drawn as
      long lines (scan lines, a trellis, a hatch, tally marks) became the
-     four above, two of them code. On by default; ?texture=none or the
-     row under Mark turns it off, kept in localStorage under a new key so
-     a "none" from the first round does not hide it. ── */
-  const TXS = ["none", "on"], TX_LS = "crossref2.texture2";
+     four above, two of them code. On, the settled choice; ?texture=none
+     turns it off (the row that did came off with the other switches). ── */
+  const TXS = ["none", "on"];
   const QTX = (new URLSearchParams(location.search).get("texture") || "").toLowerCase();
-  const lsTx = () => { try { return localStorage.getItem(TX_LS); } catch (e) { return null; } };
-  let TX = TXS.includes(QTX) ? QTX : TXS.includes(lsTx()) ? lsTx() : "on";
+  let TX = TXS.includes(QTX) ? QTX : "on";
   HTML.dataset.tx = TX;
   const toB64 = (s) => {
     const u = new TextEncoder().encode(s); let bin = "";
@@ -1199,7 +1190,6 @@
   const setTexture = (x) => {
     if (!TXS.includes(x) || x === TX) return;
     TX = x; HTML.dataset.tx = x;
-    try { localStorage.setItem(TX_LS, x); } catch (e) { /* private window */ }
     const u = new URL(location.href); u.searchParams.set("texture", x);
     history.replaceState(history.state, "", u.pathname + u.search + u.hash);
     IDX.querySelectorAll(".txsw a").forEach((a) => { const on = a.dataset.tx === x; a.classList.toggle("on", on); if (on) a.setAttribute("aria-current", "true"); else a.removeAttribute("aria-current"); });
@@ -1211,21 +1201,18 @@
      interactive TOC - what type of animations would work better - fit
      more style wise?"). Six families on one switch, the room's in
      study-panel.js (above FAM) and css, a shelf's pictures here in
-     XREF_IN. Wipe is the default since his pick ("wipe is awesome!",
-     27 Sept), under a new localStorage key so an earlier pick from the
-     six does not hide it; ?motion= or the row under Texture changes it.
-     Choosing one, or the one already chosen, plays what is on screen
+     XREF_IN. Wipe is the settled choice since his pick ("wipe is
+     awesome!", 27 Sept); ?motion= or XREF.setMotion() changes it, and
+     choosing one, or the one already chosen, plays what is on screen
      again ── */
-  const MOTS = ["rise", "set", "wipe", "focus", "cut", "scrub"], MOT_LS = "crossref2.motion2";
+  const MOTS = ["rise", "set", "wipe", "focus", "cut", "scrub"];
   const QMO = (new URLSearchParams(location.search).get("motion") || "").toLowerCase();
-  const lsMo = () => { try { return localStorage.getItem(MOT_LS); } catch (e) { return null; } };
-  let MOT = MOTS.includes(QMO) ? QMO : MOTS.includes(lsMo()) ? lsMo() : "wipe";
+  let MOT = MOTS.includes(QMO) ? QMO : "wipe";
   HTML.dataset.motion = MOT;
   const setMotion = (x) => {
     if (!MOTS.includes(x)) return;
     if (x !== MOT) {
       MOT = x; HTML.dataset.motion = x;
-      try { localStorage.setItem(MOT_LS, x); } catch (e) { /* private window */ }
       const u = new URL(location.href); u.searchParams.set("motion", x);
       history.replaceState(history.state, "", u.pathname + u.search + u.hash);
       IDX.querySelectorAll(".mosw a").forEach((a) => { const on = a.dataset.mo === x; a.classList.toggle("on", on); if (on) a.setAttribute("aria-current", "true"); else a.removeAttribute("aria-current"); });
@@ -2872,8 +2859,6 @@
       go({ v: "study", k: lc.dataset.k, from: o2 && o2.g.id !== "work" ? o2.key : null }, { push: true, at: lc.dataset.at || null, curtain: true });
       return;
     }
-    const sw = ev.target.closest(".ixsw a");
-    if (sw && !(ev.metaKey || ev.ctrlKey || ev.shiftKey || ev.button)) { ev.preventDefault(); if (sw.dataset.mk) setMark(sw.dataset.mk); else if (sw.dataset.tx) setTexture(sw.dataset.tx); else if (sw.dataset.mo) setMotion(sw.dataset.mo); else setIndex(sw.dataset.ix); return; }
     const o = entryOf(ev.target); if (!o) return;
     if (ev.metaKey || ev.ctrlKey || ev.shiftKey || ev.button) return; /* a new tab is still a new tab */
     ev.preventDefault();
@@ -2982,5 +2967,5 @@
     if (st.v !== "rest") apply(st, { curtain: false });
   };
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(start); else start();
-  window.XREF = { ENTRIES, GROUPS, FIGS, KEYMAP, show, fit, go, setIndex, get ix() { return IX; }, get view() { return VIEW; }, get shelf() { return SH; }, get room() { return RM; }, shelves: SHELVES, get layout() { return SH ? SH.lid : layoutId(); }, setShelf: setShelfLayout };
+  window.XREF = { ENTRIES, GROUPS, FIGS, KEYMAP, show, fit, go, setIndex, setMark, setTexture, setMotion, get ix() { return IX; }, get view() { return VIEW; }, get shelf() { return SH; }, get room() { return RM; }, shelves: SHELVES, get layout() { return SH ? SH.lid : layoutId(); }, setShelf: setShelfLayout };
 })();
