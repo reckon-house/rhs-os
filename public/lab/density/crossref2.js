@@ -964,7 +964,8 @@
     root.setProperty("--fl", "100px");
     const w = Math.max(...ls.map((a) => a.querySelector(".t").offsetWidth));
     const room = ls[0].clientWidth;
-    root.setProperty("--fl", Math.floor(Math.min(phone() ? 34 : 34, (room / w) * 100 * 0.97) * 4) / 4 + "px");
+    /* no larger than 26px, his size from the tweaks panel (27 Sept) */
+    root.setProperty("--fl", Math.floor(Math.min(26, (room / w) * 100 * 0.97) * 4) / 4 + "px");
   };
   const sizeIndex = () => {
     const root = HTML.style;
@@ -998,7 +999,7 @@
     const ts = [...IDX.querySelectorAll(".e.ef .t")]; if (!ts.length) return;
     ts.forEach((t) => { t.style.fontSize = ""; });
     const pr = document.createElement("span"); pr.style.cssText = "position:absolute;visibility:hidden;white-space:nowrap;font-size:100px";
-    let size = 26;
+    let size = 26; /* his 26px from the tweaks panel is the top (27 Sept) */
     ts.forEach((t) => {
       const w = t.parentNode.clientWidth || t.clientWidth; if (!w) return;
       const words = t.textContent.trim().split(/\s+/);

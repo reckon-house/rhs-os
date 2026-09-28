@@ -732,30 +732,87 @@ html:not([data-nums="on"]) :is(.sp-kick b, .sp-bar-s b, .sp-fno, .sp-kk .sp-no) 
 /* ── ONE TYPE SYSTEM (27 Sept, his "let's take an alignment pass on the
    number of fonts sizes, weight, styles, etc. in this one small section
    i could 7 different styles. can we simplify? what makes interesting
-   typography is scale but trends right now arent super bold/heavy").
-   Two weights where there were five (500 to 800), five sizes where
-   there were more than a dozen:
-   - display: the big sizes as they are fitted now, scale doing the
-     work, in medium rather than bold, a touch less tight;
-   - mid: a subtitle, a deck, a closing's second line, 19 to 24px,
-     regular;
-   - text: every paragraph (the lede too), a figure's sentence, a card,
-     a spec value, 15px, regular; a title inside the text (a column's, a
-     card's) and a figure named in its sentence the same size, medium;
+   typography is scale but trends right now arent super bold/heavy"),
+   then set to his own values from the tweaks panel the same day. He
+   tuned them in a 572px room: the sizes that follow the room are a
+   share of it that reads his size there, and the fitted ones (the
+   title, the pull quotes) take his size as their top in study-panel.js.
+   The roles, few and plain:
+   - display: the title (to 118px) and the section heads (36px there),
+     demi; the figures, fitted, demi; the pull quotes (to 36px), the next
+     study, the closing line and the palette's names, medium;
+   - mid: a subtitle, a deck, a closing's second line, 15px there,
+     medium, leading 1.3;
+   - text: every paragraph, a figure's sentence, a card, a spec value,
+     13px, regular, paragraphs on leading 2; a title inside the text 13px
+     in demi, a figure named in its sentence medium;
    - small: captions, the kicker, a field's foot, 12px, regular;
-   - label: small caps, 10.5px, medium, tracked.
-   ?type=bold shows the set it replaced ── */
-html:not([data-type="bold"]) .sp :is(.sp-title, .sp-ct, .sp-h, .sp-pq, .sp-fn, .sp-next-t, .sp-dur, .sp-closing p:first-child:not(.sp-long), .sp-pb > b, .sp-povb b, .sp-pcc b, .sp-pcyt b, .sp-wl) { font-weight: 500; }
-html:not([data-type="bold"]) .sp .sp-black .sp-fn { font-weight: 500; letter-spacing: -0.05em; }
-html:not([data-type="bold"]) .sp :is(.sp-title, .sp-h, .sp-pq, .sp-next-t, .sp-closing p:first-child:not(.sp-long)) { letter-spacing: -0.045em; }
-html:not([data-type="bold"]) .sp :is(.sp-stand, .sp-deck, .sp-closing p + p, .sp-closing p.sp-long) { max-width: 26em; font-size: clamp(19px, 2.9cqw, 24px); font-weight: 400; letter-spacing: -0.018em; line-height: 1.3; }
-html:not([data-type="bold"]) .sp .sp-deck.sp-short { font-size: clamp(19px, 2.9cqw, 24px); font-weight: 400; letter-spacing: -0.018em; line-height: 1.3; }
-html:not([data-type="bold"]) .sp :is(.sp-p, .sp-ls, .sp-lede, .sp-fs, .sp-card p, .sp-ns, .sp-tr dd, .sp-tcol li, .sp-stl li, .sp-nr) { font-size: 15px; font-weight: 400; letter-spacing: -0.004em; }
-html:not([data-type="bold"]) .sp :is(.sp-p, .sp-ls, .sp-lede, .sp-fs) { line-height: 1.62; }
-html:not([data-type="bold"]) .sp :is(.sp-col, .sp-card h3) { font-size: 15px; font-weight: 500; letter-spacing: -0.01em; }
-html:not([data-type="bold"]) .sp :is(.sp-fs b, .sp-stl li b, .sp-nr .v, .sp-nr .l) { font-weight: 500; }
-html:not([data-type="bold"]) .sp .sp-nr .v { font-size: 15px; letter-spacing: -0.01em; }
-html:not([data-type="bold"]) .sp :is(.sp-cap, .sp-meta, .sp-kk, .sp-bcap, .sp-fcap, .sp-spec-h, .sp-bar2, .sp-full) { font-size: 12px; font-weight: 400; }
-html:not([data-type="bold"]) .sp :is(.sp-caps, .sp-kick, .sp-bar-s, .sp-nl, .sp-tr dt, .sp-sw span:first-of-type, .sp-pbm, .sp-povb span, .sp-pcc span, .sp-pcyt span, .sp-pchy, .sp-pchl) { font-size: 10.5px; font-weight: 500; letter-spacing: 0.08em; }
-html:not([data-type="bold"]) .sp :is(.sp-pchl b) { font-weight: 500; }
+   - label: small caps, 8.5px, bold, tracked wide (0.2em).
+   Every selector here is a plain one: an :is() list takes the weight
+   of its heaviest member, which is how his first settings lost to this
+   block. ?type=bold shows the set it replaced ── */
+html:not([data-type="bold"]) .sp .sp-title,
+html:not([data-type="bold"]) .sp .sp-ct,
+html:not([data-type="bold"]) .sp .sp-h,
+html:not([data-type="bold"]) .sp .sp-fn { font-weight: 600; }
+html:not([data-type="bold"]) .sp .sp-black .sp-fn { font-weight: 600; letter-spacing: -0.05em; }
+html:not([data-type="bold"]) .sp .sp-pq,
+html:not([data-type="bold"]) .sp .sp-next-t,
+html:not([data-type="bold"]) .sp .sp-dur,
+html:not([data-type="bold"]) .sp .sp-closing p,
+html:not([data-type="bold"]) .sp .sp-pb > b,
+html:not([data-type="bold"]) .sp .sp-povb b,
+html:not([data-type="bold"]) .sp .sp-pcc b,
+html:not([data-type="bold"]) .sp .sp-pcyt b,
+html:not([data-type="bold"]) .sp .sp-wl { font-weight: 500; }
+html:not([data-type="bold"]) .sp .sp-title,
+html:not([data-type="bold"]) .sp .sp-h,
+html:not([data-type="bold"]) .sp .sp-pq,
+html:not([data-type="bold"]) .sp .sp-next-t { letter-spacing: -0.045em; }
+html:not([data-type="bold"]) .sp .sp-h { font-size: clamp(26px, 6.3cqw, 44px); }
+html:not([data-type="bold"]) .sp .sp-closing p:first-child { letter-spacing: -0.045em; }
+html:not([data-type="bold"]) .sp .sp-stand,
+html:not([data-type="bold"]) .sp .sp-deck,
+html:not([data-type="bold"]) .sp .sp-closing p + p,
+html:not([data-type="bold"]) .sp .sp-closing p.sp-long { max-width: 26em; font-size: clamp(14px, 2.62cqw, 18px); font-weight: 500; letter-spacing: -0.018em; line-height: 1.3; }
+html:not([data-type="bold"]) .sp .sp-p,
+html:not([data-type="bold"]) .sp .sp-fs,
+html:not([data-type="bold"]) .sp .sp-card p,
+html:not([data-type="bold"]) .sp .sp-ns,
+html:not([data-type="bold"]) .sp .sp-tr dd,
+html:not([data-type="bold"]) .sp .sp-tcol li,
+html:not([data-type="bold"]) .sp .sp-stl li,
+html:not([data-type="bold"]) .sp .sp-nr { font-size: 13px; font-weight: 400; letter-spacing: -0.004em; }
+html:not([data-type="bold"]) .sp .sp-p,
+html:not([data-type="bold"]) .sp .sp-fs { line-height: 2; }
+html:not([data-type="bold"]) .sp .sp-col,
+html:not([data-type="bold"]) .sp .sp-card h3 { font-size: 13px; font-weight: 600; letter-spacing: -0.01em; }
+html:not([data-type="bold"]) .sp .sp-fs b,
+html:not([data-type="bold"]) .sp .sp-stl li b,
+html:not([data-type="bold"]) .sp .sp-nr .v,
+html:not([data-type="bold"]) .sp .sp-nr .l { font-weight: 500; }
+html:not([data-type="bold"]) .sp .sp-nr .v { font-size: 13px; letter-spacing: -0.01em; }
+html:not([data-type="bold"]) .sp .sp-cap,
+html:not([data-type="bold"]) .sp .sp-meta,
+html:not([data-type="bold"]) .sp .sp-kk,
+html:not([data-type="bold"]) .sp .sp-bcap,
+html:not([data-type="bold"]) .sp .sp-fcap,
+html:not([data-type="bold"]) .sp .sp-spec-h,
+html:not([data-type="bold"]) .sp .sp-bar2,
+html:not([data-type="bold"]) .sp .sp-full { font-size: 12px; font-weight: 400; }
+html:not([data-type="bold"]) .sp .sp-caps,
+html:not([data-type="bold"]) .sp .sp-kick,
+html:not([data-type="bold"]) .sp .sp-bar-s,
+html:not([data-type="bold"]) .sp .sp-nl,
+html:not([data-type="bold"]) .sp .sp-tr dt,
+html:not([data-type="bold"]) .sp .sp-sw span:first-of-type,
+html:not([data-type="bold"]) .sp .sp-pbm,
+html:not([data-type="bold"]) .sp .sp-povb span,
+html:not([data-type="bold"]) .sp .sp-pcc span,
+html:not([data-type="bold"]) .sp .sp-pcyt span,
+html:not([data-type="bold"]) .sp .sp-pchy,
+html:not([data-type="bold"]) .sp .sp-pchl { font-size: 8.5px; font-weight: 700; letter-spacing: 0.2em; }
+html:not([data-type="bold"]) .sp .sp-pchl b { font-weight: 700; }
 html:not([data-type="bold"]) .sp .sp-bar-in { font-weight: 500; }
+
+

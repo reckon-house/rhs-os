@@ -909,3 +909,8 @@ html:not([data-nums="on"]) :is(.xs-cap, .xs-ti) > .n { display: none; }
    and stays in the Years column and on the work list */
 [data-ix="e"] .e.ef .fy { display: none; }
 [data-ix="e"] .e.ef .t { display: block; margin-left: -0.03em; font-size: 22px; font-weight: 700; letter-spacing: -0.04em; line-height: 0.98; text-wrap: balance; }
+
+/* his weights from the tweaks panel (27 Sept): the index's big words in
+   demi (the line names, the work cards' names, the years, the figures);
+   the line names and card names at most 26px, in crossref2.js */
+html[data-ix="e"] #idx :is(.e.el .t, .e.ef .t, .e.ey .t, .e.efig .fn) { font-weight: 600; }

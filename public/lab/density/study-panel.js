@@ -374,7 +374,9 @@
     try { localStorage.setItem(PAL_LS, x); } catch (e) { /* a private window */ }
     ROOMS.forEach((f) => f());
   };
-  const palRow = () => '<div class="sp-looks sp-pals caps">' + PALS.map((x) => '<button type="button" data-pal="' + x + '"' + (x === PAL() ? ' class="on" aria-pressed="true"' : ' aria-pressed="false"') + ">" + x + "</button>").join("") + "</div>";
+  /* the row came off with the looks' (his "yes, remove the palette row
+     too", 27 Sept); ?pal= still switches */
+  const palRow = () => "";
   const hexRgb = (h) => { const x = parseInt(String(h).replace("#", "").slice(0, 6), 16) || 0; return [(x >> 16) & 255, (x >> 8) & 255, x & 255]; };
   /* lightness, CIE L*, from a hex */
   const lstar = (h) => {
@@ -1596,7 +1598,10 @@
       /* the title: big, but under the cover, never over it in weight */
       if (parts.title && !parts.ctitle) {
         const t = parts.title, len = t.textContent.length;
-        fitLines(t, Math.max(34, W * 0.07), Math.min(104, W * (len <= 12 ? 0.135 : 0.108)), len > 26 ? 3 : 2);
+        /* as large as 118px, his size from the tweaks panel in a 572px
+           room, and scaled with the room from there; a long title steps
+           down until no word breaks the line (27 Sept) */
+        fitLines(t, Math.max(34, W * 0.07), Math.min(118, W * 0.206), len > 26 ? 4 : 3);
       }
       parts.pulls.forEach((q) => {
         const len = q.textContent.length, lk = q.closest(".sp-brk") ? LOOK() : null;
@@ -1604,8 +1609,9 @@
         if (lk === "air") { q.style.fontSize = ""; return; }
         /* takeover: as large as the words will go in most of a glass */
         if (lk === "takeover") { fitBox(q, Math.max(22, W * 0.3), (container.clientHeight || 800) * 0.62); return; }
-        if (lk === "pull" || lk === "combo") { fitLines(q, 22, Math.min(62, W * 0.066), 5); return; }
-        fitLines(q, 22, Math.min(96, W * (len < 50 ? 0.1 : len < 80 ? 0.082 : 0.068)), len < 50 ? 3 : 4);
+        /* 36px at his 572px room, from the tweaks panel (27 Sept) */
+        if (lk === "pull" || lk === "combo") { fitLines(q, 22, Math.min(36, W * 0.063), 6); return; }
+        fitLines(q, 22, Math.min(36, W * 0.063), 6);
       });
       /* figures: one line each, as large as their cell allows, at three
          scales: the black field loudest, a band on paper next, a figure
