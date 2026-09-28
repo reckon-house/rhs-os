@@ -7,7 +7,7 @@ export const blackWhiteTypeCaseStudy: CaseStudy = {
   title: "Typography & Patterns",
   category: { label: "Creative", href: "/category/creative" },
   subtitle:
-    "Six patterns and three lithographs. | Black ink on white paper, letterforms filled with a small library of shapes and repeats.",
+    "Three lithographs made from six repeating patterns. | The letterforms are filled with dots, lines and a diamond grid, in black ink on white paper.",
   field: "Typography Design\nPattern Design\nArt Direction",
   author: "Jeremy Prasatik",
   published: "2023",
@@ -48,7 +48,7 @@ export const blackWhiteTypeCaseStudy: CaseStudy = {
       },
       title: "Typography\n& Patterns",
       subtitle:
-        "Six patterns and three lithographs. | Black ink on white paper, letterforms filled with a small library of shapes and repeats.",
+        "Three lithographs made from six repeating patterns. | The letterforms are filled with dots, lines and a diamond grid, in black ink on white paper.",
       field: "Typography Design  Pattern Design  Art Direction",
       author: "Jeremy Prasatik",
       published: "2023",
@@ -63,10 +63,10 @@ export const blackWhiteTypeCaseStudy: CaseStudy = {
         { label: "Built", value: "Three lithographs, twelve pattern tiles" },
         { label: "Scope", value: "Typography, pattern design, art direction" },
         { label: "Tools", value: "Adobe Illustrator, Photoshop" },
-        { label: "Angle", value: "Six shapes, no color, and the only decisions left were placement and scale." },
+        { label: "Angle", value: "Six shapes and no color meant the only decisions left were placement and scale." },
       ],
       abstract:
-        "Personal work. The question was how much range a small set of patterns could produce once color, photography and gradients were off the table. What was left was black ink, white paper, and six repeating shapes.\n\nDots at two scales, lines in three directions, and a diamond grid, each one drawn as a positive and a negative, twelve tiles in all. They fill the letterforms, spill outside them, and sit behind them as backgrounds. Three lithographs came out of that set.\n\nWith no color to lean on, tone comes from spacing. A packed fill reads dark and an open one reads light, and the biggest shape on the sheet is where the eye goes first. The amount of paper left around a letter sets the mood of the whole print.",
+        "Typography & Patterns was personal work. The question was how much range a small set of patterns could produce once color, photography and gradients were off the table. What was left was black ink, white paper and six repeating shapes.\n\nThe six shapes are dots at two scales, lines in three directions, and a diamond grid. Each one is drawn as a positive and a negative, twelve tiles in all. The tiles fill the letterforms, spill outside them, and sit behind them as backgrounds. Three lithographs came out of that set.\n\nWith no color to lean on, tone comes from spacing. A packed fill looks dark and an open one looks light, and the biggest shape on the sheet is where the eye goes first. The amount of paper left around a letter sets the mood of the whole print.",
     },
 
         // ── HERO ──
@@ -123,17 +123,17 @@ export const blackWhiteTypeCaseStudy: CaseStudy = {
         {
           title: "The Shapes",
           content:
-            "Dots at two scales, a dense halftone and an open grid. Lines three ways: vertical hairlines, horizontal bands, diagonal stripes. And one diamond grid.",
+            "The dots come at two scales, a dense halftone and an open grid. Lines run three ways: vertical hairlines, horizontal bands and diagonal stripes. The last of the six shapes is a diamond grid.",
         },
         {
           title: "No Color",
           content:
-            "I wanted the shapes and the letterforms to be the focus, so color was never in it.\n\nThick stripes come forward and thin hairlines drop back. That is the whole tonal range.",
+            "I wanted the shapes and the letterforms to be the focus, so color was never in it.\n\nIn black and white, thick stripes come forward and thin hairlines drop back.",
         },
         {
           title: "The Three Prints",
           content:
-            "They read \"the fancy,\" \"highball stepper,\" and \"jack white.\" One is set in script, one in geometric capitals, and one in a mix of the two.",
+            "The three prints read \"the fancy,\" \"highball stepper,\" and \"jack white.\" One is set in script, one in geometric capitals, and one in a mix of the two.",
         },
       ],
       group: { name: "rules" },
@@ -144,7 +144,7 @@ export const blackWhiteTypeCaseStudy: CaseStudy = {
       id: "fancy-header",
       type: "section-header",
       label: "SECTION 03: LITHOGRAPH 01 / THE FANCY",
-      title: "Every stroke gets\na different fill.",
+      title: "Every stroke in \"the fancy\"\ngets a different fill.",
       pressing: {
         mark: { n: "03", name: "The Fancy" },
         // Holds while the fill list travels past it, then the print itself
@@ -157,7 +157,7 @@ export const blackWhiteTypeCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "It sits low in the left corner, with swashes running off the edge of the sheet, over a fine dot grid.",
+        "The lettering in \"the fancy\" sits low in the left corner over a fine dot grid, with swashes running off the edge of the sheet.",
     },
     {
       id: "fancy-footnote",
@@ -165,7 +165,7 @@ export const blackWhiteTypeCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "It reads \"the fancy.\" Polka dots fill the bowl of the 'a,' diagonal stripes the crossbar of the 'F.' The descender of the 'y' gets vertical hairlines.",
+        "Polka dots fill the bowl of the 'a' in \"the fancy,\" and the crossbar of the 'F' takes diagonal stripes. The descender of the 'y' gets vertical hairlines.",
     },
 
     // ── FLAT ART — the print arrives before the swatches that built it.
@@ -250,7 +250,7 @@ export const blackWhiteTypeCaseStudy: CaseStudy = {
     {
       id: "headline-constraint",
       type: "editorial-headline",
-      text: "The whole library\nis six shapes.",
+      text: "The whole pattern library\nis six shapes",
     },
 
     // ── POSTER 2: "highball stepper" — the zoom. A print photographed in a room is
@@ -269,7 +269,7 @@ export const blackWhiteTypeCaseStudy: CaseStudy = {
         captions: [
           "Highball stepper, lithograph 02",
           "Slab capitals and script",
-          "Photographed on the bench",
+          "Photographed on a wooden bench",
         ],
         instruction: "Scroll. It fills the mat, then travels the frame",
         choreo: { zoom: true },
@@ -289,7 +289,7 @@ export const blackWhiteTypeCaseStudy: CaseStudy = {
       id: "stepper-header",
       type: "section-header",
       label: "SECTION 04: LITHOGRAPH 02 / HIGHBALL STEPPER",
-      title: "The second print blows\nthe same tiles up.",
+      title: "The second print, \"highball stepper,\"\nblows the same tiles up.",
       pressing: {
         mark: { n: "04", name: "Highball Stepper" },
         choreo: { pin: true },
@@ -352,7 +352,7 @@ export const blackWhiteTypeCaseStudy: CaseStudy = {
     {
       id: "headline-density",
       type: "editorial-headline",
-      text: "With no color, spacing\nis the only tone control.",
+      text: "With no color, spacing\nis the only tone control",
     },
 
     // ── POSTER 3: "jack white" — brief first, and the photograph climbs it.
@@ -362,7 +362,7 @@ export const blackWhiteTypeCaseStudy: CaseStudy = {
       id: "white-header",
       type: "section-header",
       label: "SECTION 05: LITHOGRAPH 03 / JACK WHITE",
-      title: "This one puts handmade strokes\nnext to machine-drawn ones.",
+      title: "Handmade strokes sit next to\nmachine-drawn ones in \"jack white.\"",
       pressing: {
         mark: { n: "05", name: "Jack White" },
         choreo: { pin: true },
@@ -373,7 +373,7 @@ export const blackWhiteTypeCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "The calligraphy across the top is thin enough to read as drawing. The geometric 'A' and the slab 'K' in the lower right are the heaviest shapes on the sheet.",
+        "The calligraphy across the top of \"jack white\" is thin enough to pass for drawing. The geometric 'A' and the slab 'K' in the lower right are the heaviest shapes on the sheet.",
     },
     {
       id: "white-footnote",
@@ -381,7 +381,7 @@ export const blackWhiteTypeCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "The dot grid behind it is the most open of the three prints, pinpoints on a wide field. Not every stroke gets a fill here, so the ones that do read louder.",
+        "Behind \"jack white\" is the most open dot grid of the three prints, pinpoints on a wide field. Not every stroke in this print gets a fill, so the filled ones stand out.",
     },
 
     // The print in the world, climbing the brief that describes it. It is a
@@ -438,7 +438,7 @@ export const blackWhiteTypeCaseStudy: CaseStudy = {
         captions: [
           "Sparse dots, white on black",
           "The open end of the range",
-          "Dots at the other scale",
+          "One of two dot scales",
         ],
         choreo: { zoom: true },
       },
@@ -474,7 +474,7 @@ export const blackWhiteTypeCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "What changes between them is how big each one runs, and how much of the sheet it covers.",
+        "What changes from print to print is how big each pattern runs and how much of the sheet it covers.",
       group: { name: "system" },
     },
     {
@@ -483,7 +483,7 @@ export const blackWhiteTypeCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "That was enough for three prints that don't look like they came from the same set.",
+        "The three prints still don't look like they came from one set of patterns.",
       group: { name: "system" },
     },
     {
@@ -493,17 +493,17 @@ export const blackWhiteTypeCaseStudy: CaseStudy = {
         {
           title: "The Dot Grid",
           content:
-            "Background in \"the fancy,\" at a scale fine enough to read as light gray, close to paper grain. In \"highball stepper\" the same tile is blown up to fill a whole capital, and at that size each dot is a shape in its own right. In \"jack white\" it drops to sparse pinpoints.",
+            "The dot grid sits behind \"the fancy\" at a scale fine enough to print as light gray, close to paper grain. In \"highball stepper\" the same tile is blown up to fill a whole capital, and at that size each dot is a shape in its own right. In \"jack white\" it drops to sparse pinpoints.",
         },
         {
           title: "Diagonal Stripes",
           content:
-            "The same 45-degree stripe at the same line weight in both prints. In \"the fancy\" it is one crossbar wide and easy to miss. In \"highball stepper\" it fills a slab letter top to bottom, and blown up like that the angle gives the whole stack some speed.\n\nThe only difference is how much of the letter it covers.",
+            "The same 45-degree stripe, at the same line weight, runs through both \"the fancy\" and \"highball stepper.\" In \"the fancy\" it covers one crossbar of the 'F' and is easy to miss.\n\nIn \"highball stepper\" it fills a slab 'R' top to bottom, and blown up like that the angle gives the whole stack some speed.",
         },
         {
           title: "White Space",
           content:
-            "Three ratios of ink to paper. \"the fancy\" is mostly paper, with the letters clustered in the lower left. \"highball stepper\" runs edge to edge. \"jack white\" sits between them, open background, dense cluster at the bottom.\n\nThat ratio is most of what separates the sparse print from the packed one.",
+            "Each of the three prints has its own ratio of ink to paper. Most of \"the fancy\" is paper, \"highball stepper\" runs edge to edge, and \"jack white\" sits between them, with an open background and a dense cluster at the bottom.\n\nThe ratio of ink to paper is most of what separates the sparse print from the packed one.",
         },
       ],
       group: { name: "system" },
