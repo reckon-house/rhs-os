@@ -2104,11 +2104,11 @@
   /* a new key when the default changed, so a choice remembered from
      before (the grid, mostly) does not hide the new default */
   const SHELF_LS = "crossref2.shelf.2";
-  let shelfPref = (() => {
-    const q = new URLSearchParams(location.search).get("shelf");
-    if (q) return q.toLowerCase();
-    try { return localStorage.getItem(SHELF_LS) || ""; } catch (e) { return ""; }
-  })();
+  /* the stack is the shelf now: the switch that chose between the layouts
+     came off (27 Sept, his "remove the Stack Grid Spread switch from the
+     shelves"), so no remembered choice overrides it; ?shelf= still
+     opens another, and XREF.setShelf() in the console */
+  let shelfPref = ((new URLSearchParams(location.search).get("shelf")) || "").toLowerCase();
   const layoutId = () => { const ids = shelfIds(); return ids.includes(shelfPref) ? shelfPref : ids.includes(SHELF_DEF) ? SHELF_DEF : ids.includes("grid") ? "grid" : ids[0] || null; };
   /* a choice remembered from an earlier visit goes into the address, so a
      link copied now opens on it. One asked for by the address and not
@@ -2279,6 +2279,7 @@
   /* the switch: every layout that loaded, by its own word, the current
      one underlined. Plain words, nothing else */
   const drawSwitch = (S) => {
+    S.sw.innerHTML = ""; return;
     const ids = shelfIds();
     S.sw.innerHTML = ids.map((id) => {
       const u = new URL(location.href); u.searchParams.set("shelf", id);
