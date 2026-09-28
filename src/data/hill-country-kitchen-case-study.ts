@@ -7,7 +7,7 @@ export const hillCountryKitchenCaseStudy: CaseStudy = {
   title: "Hill Country Kitchen",
   category: { label: "Interiors", href: "/category/interiors" },
   subtitle:
-    "A kitchen in the Texas Hill Country, built from four materials. | Sage green cabinetry, raw white oak, veined marble, unlacquered brass. New and vintage together, in the same four finishes.",
+    "A kitchen in the Texas Hill Country, built from four materials. | Sage green cabinetry, raw white oak, veined marble and unlacquered brass let new and vintage pieces share one room.",
   field: "Interior Design\nKitchen Design\nMaterial Specification",
   author: "Jeremy Prasatik",
   published: "2023",
@@ -50,7 +50,7 @@ export const hillCountryKitchenCaseStudy: CaseStudy = {
       },
       title: "Hill Country\nKitchen",
       subtitle:
-        "A kitchen in the Texas Hill Country, built from four materials. | Sage green cabinetry, raw white oak, veined marble, unlacquered brass. New and vintage together, in the same four finishes.",
+        "A kitchen in the Texas Hill Country, built from four materials. | Sage green cabinetry, raw white oak, veined marble and unlacquered brass let new and vintage pieces share one room.",
       field: "Interior Design  Kitchen Design  Material Specification",
       author: "Jeremy Prasatik",
       published: "2023",
@@ -62,13 +62,13 @@ export const hillCountryKitchenCaseStudy: CaseStudy = {
         "Custom Millwork",
       ],
       summary: [
-        { label: "Built", value: "Hill Country kitchen, ground up. Cabinetry, island, dining area, the full material spec." },
+        { label: "Built", value: "The Hill Country kitchen from the ground up: cabinetry, island, dining area and the full material spec." },
         { label: "Scope", value: "Interior design, space planning, fixture selection, construction documentation." },
         { label: "Materials", value: "Sage green, raw white oak, Calacatta marble, unlacquered brass." },
         { label: "Angle", value: "Pick four materials up front and use nothing else, so pieces from different eras can share a room." },
       ],
       abstract:
-        "Four materials, picked before the first cabinet was drawn and used on every surface. Sage green on most of what you see, raw white oak for the warmth, Calacatta marble on the counters and the backsplash, unlacquered brass on the pulls, the knobs, and the faucet. Between them they cover every cabinet face, countertop, and piece of hardware in the room.\n\nThe mix of periods is on purpose. Shaker cabinet doors come out of traditional American kitchens, the steel-frame windows and open shelving are contemporary, the cremone bolts and schoolhouse pendants are European antique, and a turned-leg dining table sits with leather safari chairs. It works as one room because all of it is in the same four finishes.\n\nThe kitchen is the hub of the house, used for cooking, gathering, and working in about equal measure. The island sits in the middle with open shelving at one end, seating at the other, and marble running the full length. Every decision came back to how a family uses a kitchen day to day.",
+        "Four materials, picked before the first cabinet was drawn, cover every cabinet face, countertop, and piece of hardware in the Hill Country kitchen. Sage green is on most of what you see, raw white oak adds warmth, Calacatta marble runs the counters and the backsplash, and unlacquered brass is on the pulls, the knobs, and the faucet.\n\nThe kitchen mixes periods on purpose. Shaker cabinet doors come out of traditional American kitchens, the steel-frame windows and open shelving are contemporary, the cremone bolts and schoolhouse pendants are European antique, and a turned-leg dining table sits with leather safari chairs. It works as one room because the new and vintage pieces are in the same four finishes.\n\nThe kitchen gets used for cooking, gathering, and working in about equal measure, and it's the hub of the house. The island is in the middle, with open shelving at one end and seating at the other. Every decision came back to how a family uses a kitchen day to day.",
     },
 
         // ── HERO ──
@@ -85,10 +85,10 @@ export const hillCountryKitchenCaseStudy: CaseStudy = {
       id: "material-header",
       type: "section-header",
       label: "SECTION 02: THE MATERIAL SYSTEM",
-      title: "Designed around",
+      title: "The kitchen's four materials were chosen",
       pressing: {
-        mark: { n: "02", name: "Material Selections" },
-        heldLine: "the material selections.",
+        mark: { n: "02", name: "Four Materials" },
+        heldLine: "before a single cabinet was drawn.",
         choreo: { pin: true },
       },
       group: { name: "materials", bg: "#ECE6E1", radius: 75, padding: "60px" },
@@ -107,7 +107,7 @@ export const hillCountryKitchenCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "With only four materials, each one does more of the work, and what you notice is where they meet: oak against green, marble between the two, brass on all of it.",
+        "With only four materials, each one does more of the work: oak against green, marble between the two, brass on all of it.",
       group: { name: "materials" },
     },
     {
@@ -117,17 +117,17 @@ export const hillCountryKitchenCaseStudy: CaseStudy = {
         {
           title: "Sage Green",
           content:
-            "A muted sage with enough gray to keep it calm and enough green to keep it alive, on everything around the perimeter: base cabinets, uppers, the glass-front display, the range hood surround, the refrigerator panel, the pantry wall. It sits back a little so the marble and the brass get noticed first.\n\nThe finish is matte. Satin would have pushed the cabinets contemporary and gloss would have fought the raw oak. Matte lets the shaker profiles throw soft shadows.",
+            "The sage is a muted green with enough gray in it to stay calm, and it goes on everything around the perimeter: base cabinets, uppers, the glass-front display, the range hood surround, the refrigerator panel, the pantry wall. The color sits back a little so the marble and the brass get noticed first.\n\nThe sage has a matte finish. Satin would have pushed the cabinets contemporary and gloss would have fought the raw oak. Matte lets the Shaker profiles throw soft shadows.",
         },
         {
           title: "White Oak + Marble",
           content:
-            "The island is raw white oak, unsealed, with the growth rings showing on the end grain of the open shelves. It is the warmest thing in the room.\n\nCalacatta marble runs the perimeter counters and the full backsplash behind the range, gray and gold veining on a warm white ground. It separates the green cabinets from the white walls, and where the oak meets the green, marble sits between them.",
+            "The island is raw white oak, unsealed, and the warmest material in the room. The growth rings show on the end grain of the open shelves.\n\nCalacatta marble runs the perimeter counters and the full backsplash behind the range, gray and gold veining on a warm white ground. The marble separates the green cabinets from the white walls.",
         },
         {
           title: "Unlacquered Brass",
           content:
-            "Cabinet pulls, the cremone bolts on the tall pantry doors, the bridge faucet, the pendants, the sconce arms, the range knobs and trim, all in the same brass. Even the bar stool frames pick up the tone.\n\nUnlacquered means it patinas. It darkens where hands go and stays bright where they don't, so the decorative bolts stay pale.",
+            "The brass goes on the cabinet pulls, the cremone bolts on the tall pantry doors, the bridge faucet, the pendants, the sconce arms, and the range knobs and trim.\n\nUnlacquered brass patinas. The metal darkens where hands go and stays bright where they don't.",
         },
       ],
       group: { name: "materials" },
@@ -182,13 +182,13 @@ export const hillCountryKitchenCaseStudy: CaseStudy = {
       id: "hardware-header",
       type: "section-header",
       label: "SECTION 03: CABINETRY / HARDWARE",
-      title: "Brass on everything",
+      title: "Every pull and knob",
       // The study's one crossing. Standalone rather than the brief form:
       // this is the only header here that carries no method columns, and
       // PRESSING.md §7 puts short-copy headers in the standalone staging.
       pressing: {
         mark: { n: "03", name: "Shaker Cabinets" },
-        heldLine: "you actually touch.",
+        heldLine: "is the same unlacquered brass.",
         choreo: { crossing: true },
       },
     },
@@ -197,7 +197,7 @@ export const hillCountryKitchenCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "Floor to ceiling on three walls: base cabinets, glass-front uppers, a built-in hutch either side of the range, and full-height pantry doors that close with cremone bolts.",
+        "The cabinetry goes floor to ceiling on three walls: base cabinets, glass-front uppers, a built-in hutch on either side of the range, and full-height pantry doors.",
     },
     {
       id: "hardware-footnote",
@@ -205,7 +205,7 @@ export const hillCountryKitchenCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "The cremone bolts are a French mechanism on American shaker doors in a Texas kitchen. They put a long vertical line on the tallest cabinet faces and give the pantry wall a presence a standard pull wouldn't, and one lever locks the door top and bottom at once.",
+        "The pantry doors close with cremone bolts, a French mechanism where one lever locks the door top and bottom at once. The bolts put a long vertical line on the tallest cabinet faces and give the pantry wall a presence a standard pull wouldn't.",
     },
 
     // ── GROUP 2: Range + details ──
@@ -272,7 +272,7 @@ export const hillCountryKitchenCaseStudy: CaseStudy = {
     {
       id: "headline-system",
       type: "editorial-headline",
-      text: "The whole room is\nfour materials",
+      text: "What you notice in the kitchen\nis where the materials meet",
     },
 
     // ── MATERIAL INTERACTION CHART ──
@@ -286,10 +286,10 @@ export const hillCountryKitchenCaseStudy: CaseStudy = {
       id: "island-header",
       type: "section-header",
       label: "SECTION 04: THE ISLAND",
-      title: "The marble top runs the full length",
+      title: "The island's marble top",
       pressing: {
         mark: { n: "04", name: "Raw Oak Island" },
-        heldLine: "with no break in it.",
+        heldLine: "runs end to end without a break.",
         choreo: { pin: true },
       },
     },
@@ -298,7 +298,7 @@ export const hillCountryKitchenCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "Prep counter at one end, bar at the other. Four stools with brass-tone frames tuck under the overhang.",
+        "The island has a prep counter at one end and a bar at the other, where four stools with brass-tone frames tuck under the overhang.",
     },
     {
       id: "island-footnote",
@@ -306,7 +306,7 @@ export const hillCountryKitchenCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "Open shelves on the working end keep plates and bowls within reach of the dishwasher. A firewood cubby at the base.",
+        "Open shelves on the island's working end keep plates and bowls within reach of the dishwasher. The base has a firewood cubby too.",
     },
     {
       id: "island-columns",
@@ -315,17 +315,17 @@ export const hillCountryKitchenCaseStudy: CaseStudy = {
         {
           title: "The Oak Choice",
           content:
-            "White oak, no stain and no polyurethane, just a penetrating oil finish. The grain stays open and the color goes from pale honey to a deeper amber over years of use.\n\nRaw wood in a kitchen was the riskiest call of the whole spec. It is meant to age. The island should look used: water rings, knife marks, flour in the grain.",
+            "The island's white oak has a penetrating oil finish, with no stain and no polyurethane. The grain stays open and the color goes from pale honey to a deeper amber over years of use.\n\nRaw wood in a kitchen was the riskiest call of the whole spec. The island is meant to look used, with water rings, knife marks and flour in the grain.",
         },
         {
           title: "Where It Sits",
           content:
-            "Centered, with space to walk on all four sides, and the first thing you see from the entry. Eight feet of usable counter, with the open shelving facing the dining side.\n\nEvery sight line in the kitchen crosses it. From the range you look over it to the windows; from the dining table you look through it to the backsplash. The oak breaks up the green and marble around the perimeter.",
+            "From the entry, the island is the first thing you see, centered with space to walk on all four sides. Eight feet of usable counter sits on the island, and the open shelving faces the dining side.\n\nEvery sight line in the kitchen crosses the island: from the range you look over it to the windows, and from the dining table you look through it to the backsplash. The oak breaks up the green and marble around the perimeter.",
         },
         {
           title: "On Legs",
           content:
-            "The island has legs, visible ones, with open shelving between them, and that is why it looks like furniture instead of a built-in. The cabinets around the walls are architecture and the island is a table.\n\nPeople treat furniture differently. Guests lean on it, sit around it, set things down on it without asking. A solid-panel island with a granite overhang would keep them at arm's length.",
+            "The cabinets around the walls are built in, but the island stands on visible legs with open shelving between them, so it looks like furniture.\n\nGuests treat the island like a table: they lean on it, sit around it and set things down on it without asking. A solid-panel island with a granite overhang would keep them at arm's length.",
         },
       ],
     },
@@ -358,7 +358,7 @@ export const hillCountryKitchenCaseStudy: CaseStudy = {
         captions: [
           "The whole room",
           "Dining table to range wall",
-          "Both zones, one frame",
+          "The island between the table and the range",
         ],
         choreo: { zoom: true },
       },
@@ -369,7 +369,7 @@ export const hillCountryKitchenCaseStudy: CaseStudy = {
       id: "dining-header",
       type: "section-header",
       label: "SECTION 05: THE DINING ZONE",
-      title: "The switch in tone",
+      title: "The switch from light to dark at the dining end",
       pressing: {
         mark: { n: "05", name: "The Dining Table" },
         heldLine: "is abrupt on purpose.",
@@ -389,7 +389,7 @@ export const hillCountryKitchenCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "The safari chairs are leather on oak frames. The leather picks up the warmth of the brass and the oak goes with the island. A dark patterned rug sits under the whole group and marks it off from the kitchen floor.",
+        "The safari chairs are leather on oak frames. The leather picks up the warmth of the brass and the oak goes with the island. A dark patterned rug lies under the table and chairs and marks the dining area off from the kitchen floor.",
     },
 
     // ── DINING DETAILS ──
@@ -448,7 +448,7 @@ export const hillCountryKitchenCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "Cooking, then gathering, then working, in the same room over a day.",
+        "Over a day, the kitchen goes from cooking to gathering to working.",
     },
     {
       id: "closing",
@@ -463,7 +463,7 @@ export const hillCountryKitchenCaseStudy: CaseStudy = {
       stack: ["AutoCAD", "SketchUp", "Adobe Creative Suite"],
       links: [],
       content:
-        "Sage green on the vertical planes, marble on the horizontal ones, oak in the middle, brass on the hardware. The island handles prep, serving, and seating at the same time, and the dining table sits close enough to stay in the conversation and far enough off to be its own place.",
+        "Sage green takes the vertical planes and marble the horizontal ones, with oak in the middle and brass on the hardware. The island handles prep, serving, and seating at the same time, and the dining table sits close enough to stay in the conversation and far enough off to be its own place.",
     },
   ],
 };
