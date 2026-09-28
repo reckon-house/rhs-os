@@ -903,7 +903,7 @@
       builtW = W;
       ids.length = 0; pending.clear();
       if (parts && parts.stops) parts.stops.forEach((f) => f());
-      const P = { rows: [], asides: [], figs: [], title: null, pulls: [], coverBox: null, coverFrame: null, knocks: [], stops: [] };
+      const P = { rows: [], asides: [], figs: [], title: null, pulls: [], coverBox: null, coverFrame: null, knocks: [], stops: [], briefs: [] };
       const s = M.s;
       const frag = document.createDocumentFragment();
       const g = Math.max(5, Math.round(W * 0.011));
@@ -1033,7 +1033,11 @@
       if (M.openPics.length) frag.appendChild(picGroup(M.openPics, "sp-plates sp-first"));
       M.secs.forEach((sec) => {
         figs.n = 0; lede = !sec.open;
-        const blocks = spread(asideUp(shape(sec.items, figs)));
+        /* with the site's scroll a section's text stays together, its
+           head held beside it (the brief below), and the pictures follow
+           it, as the live site sets a brief and then its plates; without
+           it, a picture moves into the middle of a long stretch of text */
+        const blocks = CH && !sec.open ? asideUp(shape(sec.items, figs)) : spread(asideUp(shape(sec.items, figs)));
         if (sec.open) { blocks.forEach((b) => frag.appendChild(blockEl(b))); return; }
         const se = el("section", "sp-sec");
         /* the label as the study writes it, in small grey caps, over the head */
@@ -1047,8 +1051,24 @@
            sentence carries it, under the label (27 Sept review) */
         const ink = (sec.head.held ? sec.head.ink : halves(sec.head.text)[0]).trim();
         const firstText = sec.items.find((i) => i.f && i.f.kind === "line" && i.t !== "col" && i.t !== "card");
-        if (!(ink && firstText && firstText.f.text.length > ink.length && firstText.f.text.startsWith(ink))) se.appendChild(tag(el("h2", "sp-h", inkGreyF(sec.head)), sec.head));
-        blocks.forEach((b) => se.appendChild(blockEl(b)));
+        const h2 = !(ink && firstText && firstText.f.text.length > ink.length && firstText.f.text.startsWith(ink)) ? tag(el("h2", "sp-h", inkGreyF(sec.head)), sec.head) : null;
+        /* the brief (PressingBrief): with the site's scroll, the head and
+           its deck are held in the left half while the section's first
+           runs of text scroll past in the right, the column starting
+           under the head. Two tracks only; narrow, it stacks */
+        const d0 = blocks[0] && blocks[0].t === "deck" ? 1 : 0;
+        let j = d0; while (j < blocks.length && (blocks[j].t === "run" || blocks[j].t === "cards")) j++;
+        if (CH && h2 && j > d0) {
+          const br = el("div", "sp-brief"), hd = el("div", "sp-bhd"), col = el("div", "sp-bcol");
+          hd.appendChild(h2); if (d0) hd.appendChild(blockEl(blocks[0]));
+          blocks.slice(d0, j).forEach((b) => col.appendChild(blockEl(b)));
+          br.appendChild(hd); br.appendChild(col); se.appendChild(br);
+          P.briefs.push({ hd, col });
+          blocks.slice(j).forEach((b) => se.appendChild(blockEl(b)));
+        } else {
+          if (h2) se.appendChild(h2);
+          blocks.forEach((b) => se.appendChild(blockEl(b)));
+        }
         frag.appendChild(se);
       });
 
@@ -1470,6 +1490,12 @@
 
       fitType(W);
       if (parts.cvw) coverLay(W);
+      parts.briefs.forEach(({ hd, col }) => {
+        col.style.marginTop = "";
+        if (W < 560) return;
+        col.style.marginTop = "0px";
+        col.style.marginTop = Math.round(hd.offsetHeight + 34) + "px";
+      });
       /* the fill's copy of the words, made once they are sized */
       parts.knocks.forEach((K) => {
         const c = K.a.cloneNode(true);

@@ -659,3 +659,27 @@ html[data-motion="scrub"] .sp.mo .sp-bar2.rv i { transform: scaleX(var(--p, 1));
 /* a pair's pictures: a tenth taller, moved by the scroll, the neighbours
    against each other (the live PressingPlatesPair) */
 .sp.mo .sp-pic.par2 img { bottom: auto; height: 110%; translate: 0 var(--py, 0px); }
+
+/* ── THE BRIEF (27 Sept; PressingBrief and column-drop.ts, the live
+   numbers): a section's head and deck held in the left half while its
+   first runs of text scroll past in the right. The column starts under
+   the head (its height and 34px), so it reads as a staircase until the
+   head holds, 44px under the room's running head and a little more on
+   a tall glass (live: the masthead and clamp(16px, 4dvh, its height)).
+   A column title sits over its own text here, not in a rail: the left
+   half is the head's. Two tracks only; narrow, it stacks and holds
+   nothing, as live ── */
+.sp-brief { margin: clamp(20px, 3.6cqw, 34px) var(--m) 0; }
+.sp-brief .sp-h { margin: 0; }
+.sp-brief .sp-bhd > .sp-deck { margin: clamp(14px, 2.4cqw, 22px) 0 0; }
+.sp-bcol { margin-top: clamp(26px, 5cqw, 44px); }
+.sp-bcol > .sp-run { display: block; margin: 0; padding: 0; }
+.sp-bcol > .sp-run.sp-hasc { margin: 0; padding: 12px 0 0; }
+.sp-bcol > .sp-run + .sp-run { margin-top: clamp(28px, 5cqw, 44px); }
+.sp-bcol .sp-col { position: static; margin-top: 0; }
+@container sp (min-width: 560px) {
+  .sp-brief { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); column-gap: var(--gc); align-items: start; }
+  .sp-bhd { position: sticky; top: calc(44px + clamp(16px, var(--vh, 800px) * 0.04, 44px)); }
+}
+/* feature cards in a held section's column stack, one to a line */
+.sp-bcol > .sp-cards { margin: clamp(30px, 5.4cqw, 48px) 0 0; grid-template-columns: minmax(0, 1fr); }
