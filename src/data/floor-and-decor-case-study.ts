@@ -7,7 +7,7 @@ export const floorAndDecorCaseStudy: CaseStudy = {
   title: "Floor & Decor Feature",
   category: { label: "Interiors", href: "/category/interiors" },
   subtitle:
-    "Floor & Decor named the studio Designer of the Quarter for three bathrooms that share one material kit. | Marble, dolomite, white oak and classic tile, used three different ways.",
+    "Floor & Decor named the studio Designer of the Quarter for three bathrooms. | All three rooms use the same marble, dolomite, white oak and classic tile.",
   field: "Interior Design\nMaterial Selection\nFinish Coordination",
   author: "Jeremy Prasatik",
   published: "2023",
@@ -43,20 +43,20 @@ export const floorAndDecorCaseStudy: CaseStudy = {
       },
       title: "Floor & Decor\nFeature",
       subtitle:
-        "Floor & Decor named the studio Designer of the Quarter for three bathrooms that share one material kit. | Marble, dolomite, white oak and classic tile, used three different ways.",
+        "Floor & Decor named the studio Designer of the Quarter for three bathrooms. | All three rooms use the same marble, dolomite, white oak and classic tile.",
       field: "Interior Design  Material Selection  Finish Coordination",
       author: "Jeremy Prasatik",
       published: "2023",
       status: "Featured",
       classification: ["Interior Design", "Material Selection", "Finish Coordination"],
       summary: [
-        { label: "Built", value: "Designer of the Quarter, Summer 2023. Hard surface selections across three residential bathrooms. Catalog, website, video interview" },
+        { label: "Built", value: "Hard surface selections for three residential bathrooms, which earned the studio Designer of the Quarter from Floor & Decor in Summer 2023." },
         { label: "Scope", value: "Interior design, material selection, finish coordination" },
         { label: "Materials", value: "Marble, dolomite, white oak, classic tile" },
-        { label: "Angle", value: "Everything was picked at once on one moodboard, so the stone, wood and metal were already proven next to each other." },
+        { label: "Angle", value: "All the materials for the three bathrooms were picked at once on one moodboard, so the stone, wood and metal were already proven next to each other." },
       ],
       abstract:
-        "In Summer 2023 Floor & Decor named the studio Designer of the Quarter, for the hard surface selections in three residential bathrooms. Marble, dolomite, white oak and classic tile were the kit every project pulled from, and each one used it differently.\n\nOne is urban southwest, with exposed brick and a matte black soaking tub. One is modern farmhouse, with shiplap, brass fixtures and patterned floor tile. The third is quiet glam, veined marble running floor to ceiling. Each room stands on its own, and the materials under all three are the same.\n\nThe focus was hard surfaces, the tile and stone the rest of each room was built around.",
+        "In Summer 2023 Floor & Decor named the studio Designer of the Quarter for choosing the hard surfaces in three residential bathrooms. Marble, dolomite, white oak and classic tile were the four materials every project pulled from, and each room used them differently.\n\nThe urban southwest bath has exposed brick and a matte black soaking tub. The modern farmhouse bath has shiplap, brass fixtures and patterned floor tile. In the quiet glam bath, veined marble runs floor to ceiling.\n\nThe focus was hard surfaces, the tile and stone the rest of each room was built around.",
     },
 
         // ── HERO ──
@@ -78,13 +78,13 @@ export const floorAndDecorCaseStudy: CaseStudy = {
       id: "directions-header",
       type: "section-header",
       label: "SECTION 02: THE PROJECTS",
-      title: "The same four materials",
+      title: "The three rooms are urban southwest,",
       // Pins so "Three Directions." holds while the subhead and footnote
       // travel up beside it. Nothing climbs this brief — the hold is for
       // the copy, which is where the three projects get named.
       pressing: {
         mark: { n: "02", name: "Three Bathrooms" },
-        heldLine: "in all three rooms.",
+        heldLine: "modern farmhouse and quiet glam.",
         choreo: { pin: true },
       },
     },
@@ -93,7 +93,7 @@ export const floorAndDecorCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "The proportions, the fixtures and the finishes are what differ.",
+        "The proportions, the fixtures and the finishes are what change from room to room.",
     },
     // Footnote cut here (Aug 2026 copy pass): it said the subtitle again,
     // one kit, three rooms, and the subhead above already carries the part
@@ -137,7 +137,7 @@ export const floorAndDecorCaseStudy: CaseStudy = {
       id: "confidence-header",
       type: "section-header",
       label: "SECTION 03: MATERIAL CONFIDENCE",
-      title: "Everything got picked at the same time,",
+      title: "Every material in the three bathrooms",
       // The study's one crossing, on the sentence the whole feature exists
       // to argue.
       //
@@ -147,7 +147,7 @@ export const floorAndDecorCaseStudy: CaseStudy = {
       // audit reads.
       pressing: {
         mark: { n: "03", name: "Mixed Materials" },
-        heldLine: "on one moodboard.",
+        heldLine: "was picked together, on one moodboard.",
         choreo: { pin: true, crossing: true },
       },
     },
@@ -156,7 +156,7 @@ export const floorAndDecorCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "The stone, the wood and the metals were chosen together, before any of the rooms was drawn.",
+        "The moodboard came first, before any room was drawn.",
     },
     {
       id: "confidence-footnote",
@@ -164,7 +164,7 @@ export const floorAndDecorCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "Some of it looked risky on paper. In the room, a matte black tub between brick and warm oak reads softer than it does in a render, and patterned floor tile under shiplap and a vaulted ceiling reads calmer than it would under flat drywall.",
+        "Some of the material combinations looked risky on paper. In the urban southwest bath, a matte black tub between brick and warm oak looks softer in person than in a render. The modern farmhouse bath's patterned floor tile, under shiplap and a vaulted ceiling, feels calmer than it would under flat drywall.",
     },
 
     // ── Urban Southwest shower details — first 2-up. Holds, so the quiet
@@ -218,7 +218,7 @@ export const floorAndDecorCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "Large-format veined marble runs the full height of the walls, a brass urchin pendant breaks up all that height, and a star tile grounds the floor. Of the three rooms this one is the furthest from the brick and matte black. It uses the same marble as the other two, as one slab, with brass as the only metal.",
+        "In the quiet glam bath, large-format veined marble runs the full height of the walls, a brass urchin pendant breaks up all that height, and a star tile grounds the floor. Of the three rooms, this one is the furthest from the brick and matte black of the urban southwest bath. It uses the same marble as the other two, as one slab, with brass as the only metal.",
     },
 
     // ── Modern Farmhouse details — second 2-up
@@ -246,7 +246,7 @@ export const floorAndDecorCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "Mapping the materials across the three projects shows where the overlaps are. Polished nickel and the hex mosaic each turn up in two of the three, and brass ties the two warmer rooms together. What makes each room its own is the handful of things that only show up once in the whole feature: exposed brick, shiplap, the urchin pendant.",
+        "Polished nickel and the hex mosaic each turn up in two of the three bathrooms, and brass ties the two warmer rooms, modern farmhouse and quiet glam, together. Exposed brick, shiplap and the urchin pendant each appear in just one bathroom, and those are what make each room its own.",
     },
     {
       id: "material-overlap",
@@ -260,10 +260,10 @@ export const floorAndDecorCaseStudy: CaseStudy = {
       id: "closing-header",
       type: "section-header",
       label: "SECTION 04: CLOSING",
-      title: "Designer of the Quarter,",
+      title: "Floor & Decor featured the studio",
       pressing: {
         mark: { n: "04", name: "Summer 2023" },
-        heldLine: "Summer 2023.",
+        heldLine: "in its summer catalog and on its website.",
       },
     },
     // Closing subhead cut here (Aug 2026 copy pass): it re-told the
@@ -276,7 +276,7 @@ export const floorAndDecorCaseStudy: CaseStudy = {
       stack: ["AutoCAD", "SketchUp", "Adobe Creative Suite"],
       links: [],
       content:
-        "The feature ran in the summer catalog and on the Floor & Decor website, with a video interview to go with it.",
+        "The Designer of the Quarter feature came with a video interview.",
     },
   ],
 };
