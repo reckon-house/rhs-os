@@ -67,10 +67,10 @@ export const brandingGraphicsCaseStudy: CaseStudy = {
         { label: "Built", value: "Four album covers, posters, prints, logos, a storefront window" },
         { label: "Scope", value: "Graphic design, album art, poster and logo design, photo compositing" },
         { label: "Tools", value: "Photoshop, Illustrator, InDesign, film camera, hand-rendering" },
-        { label: "Angle", value: "Each piece was made to fit its client, a fashion collective, a DJ, a lifestyle brand, so no two share a look." },
+        { label: "Angle", value: "Each piece was made to fit its client, such as a fashion collective, a DJ or a lifestyle brand, so no two share a look." },
       ],
       abstract:
-        "Album covers, posters, art prints, logos, and one storefront window, made over about ten years for musicians, friends, and a handful of brands.\n\nFour album covers, each for a different act. Posters and prints, from a typography exercise to double-exposed landscapes. Five logos for five clients. And one 4x6 film photograph blown up to fill a storefront window.\n\nPhotoshop, Illustrator, and InDesign for most of it, a film camera for the photography, and hand-drawn type where a piece called for it.",
+        "Here are album covers, posters, art prints, logos, and one storefront window, made over about ten years for musicians, friends, and a handful of brands.\n\nThe four album covers are each for a different act. The posters and prints run from a typography exercise to double-exposed landscapes. Five logos went to five clients. One 4x6 film photograph was blown up to fill a storefront window.\n\nMost of the work was done in Photoshop, Illustrator, and InDesign, with a film camera for the photography, and hand-drawn type where a piece called for it.",
     },
 
     // ── HERO CAROUSEL ──
@@ -93,7 +93,7 @@ export const brandingGraphicsCaseStudy: CaseStudy = {
           alt: "Okina brand identity, wordmark over an iridescent gradient",
         },
       ],
-      pressing: { captions: ["Zine cover and wordmark"] },
+      pressing: { captions: ["Inna zine cover and Okina wordmark"] },
     },
 
     // ════════════════════════════════════════
@@ -103,10 +103,10 @@ export const brandingGraphicsCaseStudy: CaseStudy = {
       id: "posters-header",
       type: "section-header",
       label: "SECTION 02: POSTERS & PRINTS",
-      title: "Double exposures where texture",
+      title: "Double-exposed landscapes",
       pressing: {
         mark: { n: "02", name: "Posters and Prints" },
-        heldLine: "stands in for detail.",
+        heldLine: "let texture stand in for detail.",
         // Held so the second line stays put while its copy travels,
         // and so the ABC poster underneath has a screen to climb.
         choreo: { pin: true },
@@ -117,7 +117,7 @@ export const brandingGraphicsCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "Photographs over dot-matrix grids, and radial color studies built from pattern.",
+        "Among the posters and prints are photographs over dot-matrix grids and radial color studies built from pattern.",
     },
     {
       id: "posters-footnote",
@@ -125,7 +125,7 @@ export const brandingGraphicsCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "Some were personal and some had a deadline. None of them came with a brief.",
+        "Some posters were personal projects and some had deadlines, but none of them came with a brief.",
     },
 
     // ── ABC 123 typography poster — single, padded.
@@ -267,7 +267,7 @@ export const brandingGraphicsCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "Folk, pop, ambient and a DJ, so nothing carries over from one sleeve to the next.",
+        "The four covers go from folk to pop to ambient to a DJ, so nothing carries over from one sleeve to the next.",
     },
     {
       id: "covers-footnote",
@@ -275,7 +275,7 @@ export const brandingGraphicsCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "Woodgrain collage and halftone geometry for the folk record. Grunge compositing and hand-drawn type for the pop artist. Linework landscapes stacked into depth for the ambient release. A saturated portrait for the DJ, where the color carries the whole thing.",
+        "The folk record's cover uses woodgrain collage and halftone geometry, and the pop artist's sleeve has grunge compositing and hand-drawn type. On the ambient release, linework landscapes stack into depth, and the DJ's cover is a saturated portrait where the color carries the whole thing.",
     },
 
     // ── Album covers — 2×2 grid that meets at the center, only outer corners rounded
@@ -294,7 +294,7 @@ export const brandingGraphicsCaseStudy: CaseStudy = {
     {
       id: "headline-1",
       type: "editorial-headline",
-      text: "Cover art for music\nthat didn't exist yet.",
+      text: "Cover art for music\nthat didn't exist yet",
     },
 
     // ════════════════════════════════════════
@@ -304,7 +304,7 @@ export const brandingGraphicsCaseStudy: CaseStudy = {
       id: "storefront-header",
       type: "section-header",
       label: "SECTION 04: STOREFRONT",
-      title: "The photograph was shot on film",
+      title: "The storefront photograph was shot on film",
       pressing: {
         mark: { n: "04", name: "From a 4x6" },
         heldLine: "and blown up to street size.",
@@ -319,7 +319,7 @@ export const brandingGraphicsCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "Bokeh's Fall. A 4x6 of defocused lights, orange and pink on black, with type set over it for the window. The original is below.",
+        "Bokeh's Fall started as a 4x6 of defocused lights, orange and pink on black, and had type set over it for the window. The original print of Bokeh's Fall is below.",
     },
 
     // ── Bokeh's Fall storefront — the zoom. The section's copy is about a
@@ -362,7 +362,7 @@ export const brandingGraphicsCaseStudy: CaseStudy = {
       id: "marks-header",
       type: "section-header",
       label: "SECTION 05: MARKS",
-      title: "Five logos, each drawn",
+      title: "Each of the five logos was drawn",
       pressing: {
         mark: { n: "05", name: "Five Logos" },
         heldLine: "for a different kind of client.",
@@ -374,7 +374,7 @@ export const brandingGraphicsCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "Flowing botanical illustration for a fashion collective, halftone dots and geometric sans for a DJ, a bird on a monogram for a lifestyle brand.",
+        "The logo for a fashion collective is wrapped in flowing botanical illustration, and the one for a DJ uses halftone dots and a geometric sans. A lifestyle brand got a bird on a monogram.",
     },
     {
       id: "marks-footnote",
@@ -382,7 +382,7 @@ export const brandingGraphicsCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "The other two are a planet-and-orbit wordmark in heavy black sans and a four-circle mark over an engraved serif.",
+        "Okina's logo is a planet-and-orbit wordmark in heavy black sans, and J. Christianson's is a four-circle mark over an engraved serif.",
     },
 
     // ── Marks — two rows, not five plates.
@@ -415,7 +415,7 @@ export const brandingGraphicsCaseStudy: CaseStudy = {
         },
         {
           src: `${IMG}/branding-graphics-logo-hey-sd-stellar-jay-bird.jpg`,
-          alt: "Hey SD logo, bold serif monogram with stellar jay bird perched on letterforms",
+          alt: "Hey SD logo, bold serif monogram with Steller's jay perched on letterforms",
         },
         {
           src: `${IMG}/branding-graphics-logo-okina-orbit-wordmark.jpg`,
@@ -445,10 +445,10 @@ export const brandingGraphicsCaseStudy: CaseStudy = {
       id: "closing-header",
       type: "section-header",
       label: "SECTION 06: CLOSING",
-      title: "Still adding",
+      title: "This collection",
       pressing: {
         mark: { n: "06", name: "Closing" },
-        heldLine: "to this one.",
+        heldLine: "is still growing.",
       },
     },
     // No subhead here on purpose. Its one good line moved into the
@@ -466,7 +466,7 @@ export const brandingGraphicsCaseStudy: CaseStudy = {
       stack: ["Photoshop", "Illustrator", "InDesign", "Camera", "Hand-rendering"],
       links: [],
       content:
-        "Personal projects, deadline projects, album sleeves nobody asked for, logos for friends starting things. About ten years of it so far.",
+        "The pieces here are a mix of personal and deadline projects, including album sleeves nobody asked for and logos for friends starting things.",
     },
   ],
 };
