@@ -136,7 +136,31 @@
      out, and over the stage, clipped to it, so a wire into a shelf or a
      room still lands on the picture (27 Sept) */
   const WIRES_BACK = $("#wiresBack");
-  const clearWires = () => { WIRES.innerHTML = ""; if (WIRES_BACK) WIRES_BACK.innerHTML = ""; };
+  /* wires going (27 Sept, his "when switching projects or attributes the
+     wires lines just 'blink' away then blink back in. it might be cool
+     is there was a quick draw in, draw out, then draw back in for the new
+     selection"): asked to go quietly, each wire draws itself back to its
+     entry, quickly, and its dot fades; draw() then waits that long before
+     the new ones draw in. Anything else that clears them (a room opening,
+     a shelf) still clears them at once. Says whether any were leaving */
+  const WIRE_OUT = 180, WIRE_IN = 420;
+  const clearWires = (anim) => {
+    if (!anim || matchMedia("(prefers-reduced-motion: reduce)").matches) { WIRES.innerHTML = ""; if (WIRES_BACK) WIRES_BACK.innerHTML = ""; return false; }
+    let any = false;
+    [...WIRES.children].concat(WIRES_BACK ? [...WIRES_BACK.children] : []).forEach((g) => {
+      if (g._going) return; g._going = true;
+      if (!g.classList.contains("live") && !g.classList.contains("in")) { g.remove(); return; }
+      any = true;
+      g.querySelectorAll("path").forEach((pth) => {
+        const L = pth.getTotalLength();
+        pth.style.transition = "stroke-dashoffset " + WIRE_OUT + "ms cubic-bezier(0.4, 0, 0.7, 1)";
+        pth.style.strokeDasharray = L; pth.style.strokeDashoffset = L;
+      });
+      g.querySelectorAll("circle").forEach((c) => { c.style.transition = "opacity " + WIRE_OUT + "ms ease"; c.style.opacity = "0"; });
+      setTimeout(() => g.remove(), WIRE_OUT + 40);
+    });
+    return any;
+  };
   const EASE = "cubic-bezier(0.2, 0.7, 0.2, 1)";
   /* the site's exit curve: leaving is quicker than arriving (reveal.module.css) */
   const EXIT = "cubic-bezier(0.4, 0, 0.7, 1)";
@@ -1832,7 +1856,7 @@
   /* pairs: [{ x: entry, q: [x, y], me }]; dots at each end on the stage.
      Every ground is paper now (27 Sept), so a wire is ink all the way */
   const draw = (pairs, o) => {
-    clearWires();
+    const going = clearWires(!(o && o.live));
     if (phone() || !pairs.length) return null;
     const g = document.createElementNS(NS, "g");
     const dots = new Map();
@@ -1849,13 +1873,33 @@
     if (back) WIRES_BACK.appendChild(back);
     const both = back ? [g, back] : [g];
     if (o && o.live) { both.forEach((x) => x.classList.add("live")); return g; }
-    both.forEach((x) => x.querySelectorAll("path.me").forEach((pth) => { const L = pth.getTotalLength(); pth.style.strokeDasharray = L; pth.style.strokeDashoffset = L; }));
-    requestAnimationFrame(() => requestAnimationFrame(() => both.forEach((x) => { x.classList.add("in"); x.querySelectorAll("path.me").forEach((pth) => { pth.style.strokeDashoffset = 0; }); })));
+    /* every wire draws in from its entry, one a moment after another,
+       after the ones before have drawn out; the dots come with them */
+    const wait = going ? WIRE_OUT : 0;
+    /* the start is set with no transition and committed first: measuring
+       a wire settles its style at 0, so a transition set with the start
+       ran from 0 and the wire never hid */
+    both.forEach((x) => {
+      x.querySelectorAll("path").forEach((pth, i) => {
+        const L = pth.getTotalLength();
+        pth.style.transition = "none";
+        pth.style.strokeDasharray = L; pth.style.strokeDashoffset = L;
+        pth._tr = "stroke-dashoffset " + WIRE_IN + "ms cubic-bezier(0.2, 0.7, 0.2, 1) " + (wait + Math.min(i * 12, 180)) + "ms";
+      });
+      x.querySelectorAll("circle").forEach((c) => { c.style.transition = "none"; c.style.opacity = "0"; });
+    });
+    void WIRES.getBoundingClientRect();
+    requestAnimationFrame(() => requestAnimationFrame(() => both.forEach((x) => {
+      if (x._going) return;
+      x.classList.add("in");
+      x.querySelectorAll("path").forEach((pth) => { pth.style.transition = pth._tr; pth.style.strokeDashoffset = 0; });
+      x.querySelectorAll("circle").forEach((c) => { c.style.transition = "opacity 200ms ease " + (wait + WIRE_IN * 0.6) + "ms"; c.style.opacity = ""; });
+    })));
     return g;
   };
   const wire = (live) => {
     if (staged()) return;
-    if (phone() || !cur) { clearWires(); return; }
+    if (phone() || !cur) { clearWires(true); return; }
     const layer = layerOf(); if (!layer) return;
     const m = layer.querySelector(".main"); if (!m) return;
     const r = m.getBoundingClientRect();
