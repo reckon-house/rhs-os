@@ -722,3 +722,9 @@ html[data-motion="scrub"] .sp.mo .sp-bar2.rv i { transform: scaleX(var(--p, 1));
   .sp-brk-f.lk-combo .sp-fm > .sp-fn { grid-row: 1 / span 3; min-width: 0; }
   .sp-brk-f.lk-combo .sp-fm > :not(.sp-fn) { grid-column: 2; }
 }
+
+/* ── NUMBER LABELS (27 Sept; the rule in crossref2.css): a study's own
+   number on its kicker, a section's locator on its rule and in the
+   running head, and a picture's figure number come off; the section's
+   name and the picture's words stay. ?nums=on puts them back ── */
+html:not([data-nums="on"]) :is(.sp-kick b, .sp-bar-s b, .sp-fno, .sp-kk .sp-no) { display: none; }

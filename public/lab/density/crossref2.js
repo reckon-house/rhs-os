@@ -1209,6 +1209,8 @@
   const QMO = (new URLSearchParams(location.search).get("motion") || "").toLowerCase();
   let MOT = MOTS.includes(QMO) ? QMO : "wipe";
   HTML.dataset.motion = MOT;
+  /* number labels (27 Sept): off unless ?nums=on; the CSS says which */
+  HTML.dataset.nums = (new URLSearchParams(location.search).get("nums") || "") === "on" ? "on" : "off";
   const setMotion = (x) => {
     if (!MOTS.includes(x)) return;
     if (x !== MOT) {

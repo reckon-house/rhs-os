@@ -886,3 +886,16 @@ html.stack .sh-foot-t.stand { flex-basis: 100%; }
   height: 100vh; height: 100dvh; padding: var(--m) var(--m) var(--m) calc(var(--gut) / 2); }
 .layer.home .folio { top: var(--m); left: calc(var(--gut) / 2); right: var(--m); }
 .hm-foot { min-height: calc(100vh - 44px); min-height: calc(100dvh - 44px); background: var(--paper); color: var(--ink); box-shadow: 0 -44px 0 var(--paper); }
+
+/* ── NUMBER LABELS (27 Sept, his "there are a lot of number labels on
+   things - it's turning into an 'ai-tell' out in the design community
+   so i would like to take a pass at reducing/removing the ones not
+   needed"). The rule: a number stays when it is data (a count, a year,
+   a figure, the lit readout "3 /6"); one that only labels (a group's
+   01, a line's 01, a study's own number) comes off. The room's go in
+   study-panel.css. ?nums=on puts them back, for comparing. The §
+   links on a shelf's credits stay: they take the reader to a place ── */
+html[data-ix="e"]:not([data-nums="on"]) :is(.eh b, .e.el .kk > span:not(.cnt), .e .wn) { display: none; }
+html[data-ix="e"]:not([data-nums="on"]) .e.el .kk { justify-content: flex-end; }
+html:not([data-nums="on"]) .xk-no { display: none; }
+html:not([data-nums="on"]) :is(.xs-cap, .xs-ti) > .n { display: none; }
