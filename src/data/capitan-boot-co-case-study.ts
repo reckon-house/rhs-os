@@ -7,7 +7,7 @@ export const capitanBootCoCaseStudy: CaseStudy = {
   title: "Capitan Boot Co.",
   category: { label: "Creative", href: "/category/creative" },
   subtitle:
-    "Brand identity for Capitan Boot Co., a Western boot maker: logo, type, badges, and apparel graphics. | Built to be stamped into leather, stitched, and embossed, and still read.",
+    "Brand identity for Capitan Boot Co., a Western boot maker: logo, type, badges, apparel graphics, and campaign photography. | Every mark still reads when it's stamped into leather, stitched, or embossed.",
   field: "Brand Identity\nLogo System\nApparel Graphics\nPhotography",
   author: "Jeremy Prasatik",
   published: "2018",
@@ -37,7 +37,7 @@ export const capitanBootCoCaseStudy: CaseStudy = {
       },
       title: "Capitan\nBoot Co.",
       subtitle:
-        "Brand identity for Capitan Boot Co., a Western boot maker: logo, type, badges, and apparel graphics. | Built to be stamped into leather, stitched, and embossed, and still read.",
+        "Brand identity for Capitan Boot Co., a Western boot maker: logo, type, badges, apparel graphics, and campaign photography. | Every mark still reads when it's stamped into leather, stitched, or embossed.",
       field: "Brand Identity  Logo System  Apparel Graphics  Photography",
       author: "Jeremy Prasatik",
       published: "2018",
@@ -50,7 +50,7 @@ export const capitanBootCoCaseStudy: CaseStudy = {
         { label: "Angle", value: "Marks and photographs by the same person, shot in the landscape the boots are made for." },
       ],
       abstract:
-        "Capitan Boot Co. makes Western boots and needed a brand that could take the same wear. Stamps blur and embossing flattens out, so every mark had to come through that and still read, on a hangtag or across a banner.\n\nThe identity is a primary logo, secondary badges, typographic lockups, and a set of illustrations. Northwest Regular and Oldman Regular are the type pairing, and the bull skull lockup is drawn on a geometric grid. Every piece works stamped, stitched, embroidered, or printed.\n\nThe campaign was shot in West Texas, in Big Bend, mesa country, and river bottom, with no props, no stand-ins, and no styling beyond what was already there. The pictures come from the landscape the boots are made for.",
+        "Capitan Boot Co. makes Western boots and needed a brand that could take as much wear as they do. Stamps blur and embossing flattens out, so every mark had to survive both and still read, on a hangtag or across a banner.\n\nCapitan's identity is a primary logo, secondary badges, typographic lockups, and a set of illustrations. Northwest Regular and Oldman Regular are the type pairing, and the bull skull lockup is drawn on a geometric grid. Every piece of the identity works stamped, stitched, embroidered, or printed.\n\nCapitan's campaign was shot in West Texas, in Big Bend, mesa country, and river bottom, with no props or stand-ins and no styling added to what was already there.",
     },
 
         // ── HERO ──
@@ -83,7 +83,7 @@ export const capitanBootCoCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "Pressed into leather and stitched into denim, the same mark has to read both ways.",
+        "Each mark has to read whether it's pressed into leather or stitched into denim.",
     },
     {
       id: "marks-footnote",
@@ -91,7 +91,7 @@ export const capitanBootCoCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "The diamond badge below runs full bleed over Big Bend. The carousel under it runs the buffalo logo and the vintage badge small, closer to the size they'd be on a hangtag.",
+        "The diamond badge runs full bleed over a Big Bend photograph. The carousel shows the buffalo logo and the vintage badge small, closer to the size they'd be on a hangtag.",
     },
 
     // ── Diamond badge over Big Bend. Climbs the marks brief, which
@@ -144,7 +144,7 @@ export const capitanBootCoCaseStudy: CaseStudy = {
       id: "westtexas-header",
       type: "section-header",
       label: "SECTION 03: WEST TEXAS",
-      title: "Shot on location",
+      title: "The campaign was shot on location",
       // The study's one crossing, on the beat where the photography
       // arrives. The headline just says where it was shot; the cut is
       // the gesture, so the words stay short and plain.
@@ -164,7 +164,7 @@ export const capitanBootCoCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "Mesa country, river bottom, grassland at last light. The lockups sit right on the photographs, which had to leave room for them.",
+        "The lockups sit right on top of the photographs, so each frame had to leave room for them.",
     },
     {
       id: "westtexas-footnote",
@@ -172,7 +172,7 @@ export const capitanBootCoCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "The same person drew the marks and shot the pictures.",
+        "The campaign photographs show mesa country, river bottom, and grassland at last light.",
     },
 
     // ── Inline hero: Golden grassland with framed Western Original inset.
@@ -246,9 +246,9 @@ export const capitanBootCoCaseStudy: CaseStudy = {
       label: "SECTION 04: MARKS & MATERIALS",
       title: "Cream, tan, olive, dark olive.\nNorthwest and Oldman.",
       introText:
-        "Four colors and a type pairing. Every color, face, and lockup was tested on the real process before it went in.",
+        "Every color, typeface, and lockup was tested the way it would be produced before it went into the brand.",
       philosophyText:
-        "Each mark keeps its shape however roughly it gets reproduced. The bull skull lockup is drawn on a geometric grid, so the proportions stay put from a thumbnail stamp up to a banner.\n\nNorthwest carries the size and Oldman carries the character. Between them they're on the stamps, the banners, the labels, the packaging, and the apparel.",
+        "The bull skull lockup is drawn on a geometric grid, so the proportions stay put from a thumbnail stamp up to a banner.\n\nNorthwest carries the size and Oldman carries the character.",
       colors: [
         { name: "Cream", hex: "#EFEAD9", description: "Paper, hangtags" },
         { name: "Tan", hex: "#C4B594", description: "Photography, leather" },
@@ -277,7 +277,7 @@ export const capitanBootCoCaseStudy: CaseStudy = {
           name: "Northwest Round",
           role: "Soft display",
           description:
-            "Rounded cut of Northwest, for softer surfaces where the sharp corners of the regular would be too much.",
+            "Rounded cut of Northwest, for softer surfaces where Northwest Regular's sharp corners would be too much.",
           family: "'Northwest Round', 'Russo One', sans-serif",
           weight: 400,
         },
@@ -302,10 +302,10 @@ export const capitanBootCoCaseStudy: CaseStudy = {
       id: "closing-header",
       type: "section-header",
       label: "SECTION 05: CLOSING",
-      title: "The same marks had to work",
+      title: "The same person drew the marks",
       pressing: {
-        mark: { n: "04", name: "Leather, Paper, Denim" },
-        heldLine: "on leather, paper and denim.",
+        mark: { n: "04", name: "Drawn and Shot" },
+        heldLine: "and shot the photographs.",
       },
     },
     {
@@ -313,7 +313,7 @@ export const capitanBootCoCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "Marks, type, apparel graphics, and the campaign photography.",
+        "The campaign pictures come from the landscape the boots are made for.",
     },
     {
       id: "closing",
@@ -322,7 +322,7 @@ export const capitanBootCoCaseStudy: CaseStudy = {
       stack: ["Illustrator", "Photoshop", "InDesign", "Camera"],
       links: [],
       content:
-        "Boots get scuffed. The marks were drawn so that when they do, you can still tell whose boot it is.",
+        "The marks were drawn so you can still tell whose boot it is after it gets scuffed.",
     },
   ],
 };
