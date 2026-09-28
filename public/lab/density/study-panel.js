@@ -568,10 +568,13 @@
     /* the live site's scroll (27 Sept, his "can we add the scaling,
        parallax and other effects we have live? ... as many as we can so
        they feel really immersive like the live version", and "yes make
-       wipe the default and start the port!"). With motion the room opens
-       as a study opens on the site; ?scroll=page keeps the page as it
-       was, for comparing */
-    const CH = mo && (new URLSearchParams(location.search).get("scroll") || "live") !== "page";
+       wipe the default and start the port!"). Built, then set aside the
+       same day: he liked the rooms better as they were ("i noticed we
+       pulled the entire way the live case studies animate...i kinda like
+       how we had them before we did that"). The page is the default
+       again; ?scroll=live still opens a room the way a study opens on
+       the site, for comparing */
+    const CH = mo && (new URLSearchParams(location.search).get("scroll") || "page") === "live";
     if (CH) root.classList.add("ch");
     let lenis = null, lraf = 0;
     if (mo && window.Lenis) {
