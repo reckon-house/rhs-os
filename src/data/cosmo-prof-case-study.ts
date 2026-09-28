@@ -7,7 +7,7 @@ export const cosmoProfCaseStudy: CaseStudy = {
   title: "Cosmo Prof.",
   category: { label: "Digital", href: "/category/digital" },
   subtitle:
-    "A digital refresh for Cosmo Prof, the salon supply retailer. | New photography, simpler navigation, and shoppable pieces built for working stylists.",
+    "A digital refresh for Cosmo Prof, the salon supply retailer. | The site got new photography, simpler navigation and shoppable video for working stylists.",
   field: "Creative Direction\nDigital Design\nPhotography Direction\nEcommerce Design",
   author: "Jeremy Prasatik",
   published: "2021",
@@ -37,20 +37,20 @@ export const cosmoProfCaseStudy: CaseStudy = {
       },
       title: "Cosmo Prof.",
       subtitle:
-        "A digital refresh for Cosmo Prof, the salon supply retailer. | New photography, simpler navigation, and shoppable pieces built for working stylists.",
+        "A digital refresh for Cosmo Prof, the salon supply retailer. | The site got new photography, simpler navigation and shoppable video for working stylists.",
       field: "Creative Direction  Digital Design  Photography Direction",
       author: "Jeremy Prasatik",
       published: "2021",
       status: "Live",
       classification: ["Creative Direction", "Digital Design", "Photography Direction"],
       summary: [
-        { label: "Built", value: "Digital experience for a B2B salon retailer. Homepage, shoppable video, tabbed recommendations, unified templates" },
+        { label: "Built", value: "A homepage, shoppable video, tabbed recommendations and unified templates for a B2B salon retailer" },
         { label: "Scope", value: "Creative direction, digital design, photography direction" },
         { label: "Tools", value: "Figma, Sketch, Photoshop" },
-        { label: "Angle", value: "Photography first, and the rest of the site built to sit around it." },
+        { label: "Angle", value: "The site is built around its photography." },
       ],
       abstract:
-        "Cosmo Prof sells salon supplies to working stylists. The site was functional but dated, and it needed to match the professionals using it. The job was new visual direction and clearer product discovery, and none of it could slow the store down.\n\nStarted with photography: high-contrast lighting, defined shadows, cleaner compositions. Typography moved to Jost, and the palette put soft neutrals against sharp black.\n\nThe new homepage has tabbed recommendations personalized to each stylist, shoppable video you can buy from while it plays, and a global header cut back so the content gets the screen. The same templates carry promotions, brand campaigns and education modules.",
+        "Cosmo Prof sells salon supplies to working stylists. The site was functional but dated, and it needed to match the professionals using it. The job was to set a new visual direction and make products easier to find, and none of it could slow the store down.\n\nWork started with photography: high-contrast lighting, defined shadows and cleaner compositions. Typography moved to Jost, and the palette put soft neutrals against sharp black.\n\nThe new homepage has tabbed recommendations personalized to each stylist, shoppable video you can buy from while it plays, and a global header cut back so the content gets the screen. One set of templates carries promotions, brand campaigns and education modules.",
     },
 
         // ── HERO ──
@@ -93,7 +93,7 @@ export const cosmoProfCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "Compositions that read at thumbnail size and still work at full bleed. The templates that came after pulled from that library.",
+        "Every photo is composed to read at thumbnail size and still hold up edge to edge.",
     },
     {
       id: "photo-footnote",
@@ -138,7 +138,7 @@ export const cosmoProfCaseStudy: CaseStudy = {
     {
       id: "headline-pros",
       type: "editorial-headline",
-      text: "Pictures for the\npeople who use the tools",
+      text: "Pictures for the stylists\nwho use the tools",
     },
 
     // ════════════════════════════════════════
@@ -148,10 +148,10 @@ export const cosmoProfCaseStudy: CaseStudy = {
       id: "home-header",
       type: "section-header",
       label: "SECTION 03: HOMEPAGE",
-      title: "The tabs sort to",
+      title: "The homepage sorts its recommendations",
       pressing: {
         mark: { n: "03", name: "Smaller Header" },
-        heldLine: "whoever is logged in.",
+        heldLine: "for whoever is logged in.",
         // Holds the headline while the two copy blocks travel up beside
         // it. The section's own argument is about a header getting out of
         // the way, so letting this one sit still while the copy moves is
@@ -164,7 +164,7 @@ export const cosmoProfCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "The hero goes to the seasonal launch. Below the fold, what a stylist buys first, then the rest of the catalog.",
+        "The top of the page goes to the seasonal launch. Below the fold, a stylist finds what they buy first, then the rest of the catalog.",
     },
     {
       id: "home-footnote",
@@ -172,7 +172,7 @@ export const cosmoProfCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "The shoppable video comes after, with the products from each look a tab away, and the catalog is still right there under it.",
+        "The For The Pros module plays shoppable video with the products from each look a tab away, and the catalog is still right there under it.",
     },
 
     // Three desktop captures used to stack here as three plain plates.
@@ -223,7 +223,7 @@ export const cosmoProfCaseStudy: CaseStudy = {
       title: "On the phone,",
       pressing: {
         mark: { n: "04", name: "The Phone" },
-        heldLine: "tabs become swipes.",
+        heldLine: "the recommendation tabs become swipes.",
         // One absorbed block, so the hold is short. Left unpinned it read
         // as the only header on the page that scrolls away from its copy.
         choreo: { pin: true },
@@ -234,7 +234,7 @@ export const cosmoProfCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "The page keeps the desktop order. The hero crops vertical and keeps the product in frame, and the catalog drops to one column.",
+        "The mobile homepage follows the desktop order. The launch image at the top crops to a vertical frame and keeps the product in it, and the catalog drops to one column.",
     },
 
     {
@@ -262,11 +262,11 @@ export const cosmoProfCaseStudy: CaseStudy = {
       id: "marks-materials",
       type: "marks-materials",
       label: "SECTION 05: MARKS & MATERIALS",
-      title: "Warm neutrals, sharp black.\nJost, wordmark to caption.",
+      title: "The palette is soft neutrals and sharp black,\nand Jost runs from the wordmark to the captions.",
     introText:
-        "The colors stay back so the photography leads. Jost runs from the header lockup down to the price line under a product.",
+        "Cosmo Prof's colors stay back so the photography leads.",
       philosophyText:
-        "The people buying here are professionals, so the brand had to feel premium and never get precious about it. Soft neutrals bring the warmth, and sharp black gives it structure.\n\nJost does all of it. ExtraBold for the wordmark and the category nav, Medium for module headlines, Regular for catalog copy, Light for captions and price lines.",
+        "The people buying from Cosmo Prof are professionals, so the brand had to feel premium and never get precious about it.\n\nThe neutrals bring the warmth, and the black gives the brand its structure.",
       colors: [
         { name: "Cream", hex: "#F8F6F2", description: "Paper, cards" },
         { name: "Blush", hex: "#F4D9DC", description: "Hero accent" },
@@ -280,7 +280,7 @@ export const cosmoProfCaseStudy: CaseStudy = {
           sampleText: "Cosmo Prof",
           role: "Wordmark & nav",
           description:
-            "Heavy geometric sans for the COSMO PROF lockup and the category navigation. Block weight that reads at thumbnail size.",
+            "The COSMO PROF wordmark and the category navigation are set in Jost ExtraBold, a heavy geometric sans that reads at thumbnail size.",
           family: "'Jost', 'Inter', 'Helvetica Neue', sans-serif",
           weight: 800,
         },
@@ -288,7 +288,7 @@ export const cosmoProfCaseStudy: CaseStudy = {
           name: "Jost Medium",
           role: "Section headlines",
           description:
-            "Mid-weight for module headlines like Introducing, For The Pros, Hair Care. Big at headline size and still light on the page.",
+            "Jost Medium sets the homepage module headlines like Introducing, For The Pros and Hair Care. It stays light on the page even set large.",
           family: "'Jost', 'Inter', 'Helvetica Neue', sans-serif",
           weight: 500,
         },
@@ -296,7 +296,7 @@ export const cosmoProfCaseStudy: CaseStudy = {
           name: "Jost Regular",
           role: "Body & catalog",
           description:
-            "Standard weight for catalog copy, product names and descriptions. The default everywhere outside the navigation.",
+            "Jost Regular sets catalog copy, product names and descriptions, and it's the default everywhere outside the navigation.",
           family: "'Jost', 'Inter', 'Helvetica Neue', sans-serif",
           weight: 400,
         },
@@ -304,7 +304,7 @@ export const cosmoProfCaseStudy: CaseStudy = {
           name: "Jost Light",
           role: "Captions & meta",
           description:
-            "Light weight for captions, price lines and secondary information. It sits back so the photography reads first.",
+            "Jost Light sets captions, price lines and secondary information. It sits back so the photography reads first.",
           family: "'Jost', 'Inter', 'Helvetica Neue', sans-serif",
           weight: 300,
         },
@@ -331,7 +331,7 @@ export const cosmoProfCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "Promotions, campaigns and education all run on them.",
+        "Every template pulls its pictures from the photo library.",
     },
     {
       id: "closing",
@@ -340,7 +340,7 @@ export const cosmoProfCaseStudy: CaseStudy = {
       stack: ["Figma", "Sketch", "Photoshop"],
       links: [],
       content:
-        "After that a promotion, a brand campaign or an education module dropped into the same slots and looked like one site.",
+        "A promotion, a brand campaign or an education module drops into the same slots and looks like one site.",
     },
   ],
 };
