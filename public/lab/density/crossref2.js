@@ -1233,6 +1233,9 @@
   HTML.dataset.motion = MOT;
   /* number labels (27 Sept): off unless ?nums=on; the CSS says which */
   HTML.dataset.nums = (new URLSearchParams(location.search).get("nums") || "") === "on" ? "on" : "off";
+  /* the rooms' one type system (27 Sept, study-panel.css): ?type=bold
+     shows the set it replaced */
+  if ((new URLSearchParams(location.search).get("type") || "") === "bold") HTML.dataset.type = "bold";
   const setMotion = (x) => {
     if (!MOTS.includes(x)) return;
     if (x !== MOT) {
