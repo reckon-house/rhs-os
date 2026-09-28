@@ -20,7 +20,7 @@ export const bigBendCaseStudy: CaseStudy = {
   title: "West Texas",
   category: { label: "Creative", href: "/category/creative" },
   subtitle:
-    "Photographs from a family trip through Big Bend and the desert around Marfa. | Personal work that later became the backdrop for the Capitan Boot Co. campaign.",
+    "Photographs from a family trip through Big Bend and the desert around Marfa. | The trip was personal, and Capitan Boot Co. later used a few of the photographs as backdrops in its campaign.",
   field: "Photography\nLandscape",
   author: "Jeremy Prasatik",
   published: "2022",
@@ -52,7 +52,7 @@ export const bigBendCaseStudy: CaseStudy = {
       },
       title: "West Texas",
       subtitle:
-        "Photographs from a family trip through Big Bend and the desert around Marfa. | Personal work that later became the backdrop for the Capitan Boot Co. campaign.",
+        "Photographs from a family trip through Big Bend and the desert around Marfa. | The trip was personal, and Capitan Boot Co. later used a few of the photographs as backdrops in its campaign.",
       field: "Photography  Landscape",
       author: "Jeremy Prasatik",
       published: "2022",
@@ -64,7 +64,7 @@ export const bigBendCaseStudy: CaseStudy = {
         { label: "Later", value: "Used as backdrops in the Capitan Boot Co. campaign" },
       ],
       abstract:
-        "Photographs from a family trip through far West Texas: Big Bend National Park, the road north, and the desert around Marfa. Big Bend is the largest national park in Texas and one of the least visited in the country.\n\nThe trip was personal. A few of these later became the backdrops for the Capitan Boot Co. campaign, shot in the same country.",
+        "The photographs in this study come from a family trip through far West Texas: Big Bend National Park, the road north, and the desert around Marfa. Big Bend is the largest national park in Texas and one of the least visited in the country.\n\nThe trip was personal. A few of the photographs later became backdrops for the Capitan Boot Co. campaign, which was shot in the same part of West Texas.",
     },
 
     // ── HERO — a Chisos peak, climbing the cover (non-inline) ──
@@ -114,7 +114,7 @@ export const bigBendCaseStudy: CaseStudy = {
     {
       id: "films-headline",
       type: "editorial-headline",
-      text: "Where There Will Be Blood\nand No Country for Old Men\nwere shot",
+      text: "There Will Be Blood\nand No Country for Old Men\nwere both filmed in West Texas",
     },
 
     // The range beside the canyon studies. chisos-range-panorama keeps its
@@ -177,7 +177,7 @@ export const bigBendCaseStudy: CaseStudy = {
       nativeRatio: true,
       inline: true,
       image: `${IMG}/woods_grid.jpg`,
-      alt: "A wide view toward the window in the Chisos Basin, laid over a repeating grid of the same fence line and desert ridgeline",
+      alt: "A wide view toward the Window in the Chisos Basin, laid over a repeating grid of the same fence line and desert ridgeline",
       pressing: { choreo: { rise: true } },
     },
 
@@ -205,7 +205,7 @@ export const bigBendCaseStudy: CaseStudy = {
       id: "prada-header",
       type: "section-header",
       label: "SECTION 02: PRADA MARFA",
-      title: "They put real Prada shoes inside",
+      title: "Prada Marfa is a fake boutique",
       // The study's one crossing, and its only section header. Everything
       // before it is landscape held at one cadence; the sculpture is the
       // turn, so the gesture marks it.
@@ -219,8 +219,8 @@ export const bigBendCaseStudy: CaseStudy = {
       // A.R.C. convention for saying so in the data, which is what the
       // audit reads.
       pressing: {
-        mark: { n: "02", name: "The Store on" },
-        heldLine: "and shut the door in 2005.",
+        mark: { n: "02", name: "Prada Marfa" },
+        heldLine: "with real Prada shoes, sealed in 2005.",
         choreo: { pin: true, crossing: true },
       },
     },
@@ -229,7 +229,7 @@ export const bigBendCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "Prada Marfa is a permanent sculpture on U.S. 90 near Valentine, northwest of Marfa, built by the artists Elmgreen and Dragset. The bags are that season's.",
+        "The artists Elmgreen and Dragset built Prada Marfa as a permanent sculpture on U.S. 90, northwest of Marfa. The bags on display are from the 2005 season.",
     },
     // The arrival, climbing the sentence that introduces it. The brief
     // reserves that room itself; never author it.
