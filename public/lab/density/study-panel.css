@@ -321,7 +321,9 @@
 .sp.mo .rv-pic:not(.alpha) { background-color: transparent; }
 .sp.mo .rv-pic img { scale: 1.06; transition: opacity 0.45s ease, scale 1.6s var(--ez-t) var(--d, 0ms), clip-path 0.9s var(--ez-w) var(--d, 0ms); }
 .sp.mo .rv-pic:not(.rv-go) img { clip-path: inset(0 0 100% 0); }
-.sp.mo .rv-pic.rv-go img { scale: 1; }
+/* the end state is a shape too: from inset() to none cannot be
+   animated, so the unveil never ran and the picture popped in */
+.sp.mo .rv-pic.rv-go img { scale: 1; clip-path: inset(0 0 0 0); }
 /* the drift: a tenth taller, moved up through it by the scroll */
 .sp.mo .sp-pic.par img { bottom: auto; height: 110%; translate: 0 var(--py, 0px); }
 /* the cover settles once the room is on stage, when nothing flew to it */
@@ -366,6 +368,8 @@
    above; each family here overrides them. What each one is for is set
    out in study-panel.js, above FAM ── */
 html[data-motion]:not([data-motion="rise"]) .sp.mo .rv-now::after { transition: none !important; }
+/* a replay puts every block back at its start with no travel */
+.sp.mo.rv-reset .rv, .sp.mo.rv-reset .rv *, .sp.mo.rv-reset .rv::before, .sp.mo.rv-reset .rv::after { transition: none !important; animation: none !important; }
 html:is([data-motion="set"], [data-motion="wipe"], [data-motion="focus"], [data-motion="cut"]) .sp.mo .rv-split .rvw { clip-path: none; }
 html:is([data-motion="set"], [data-motion="wipe"], [data-motion="focus"], [data-motion="cut"]) .sp.mo .rv-split .rvi { transform: none; }
 /* the band over a line is the words' own colour: solid over display
@@ -397,16 +401,18 @@ html[data-motion="set"] .sp.mo .rv-fade { transition: opacity 0.2s linear var(--
 html[data-motion="set"] .sp.mo .rv-fade:not(.rv-go) { transform: none; }
 
 /* WIPE: the index's own mark. A band sweeps in over a line from the
-   left and leaves to the right, the words turning up under it; a
-   picture is uncovered from under an ink panel the same way */
+   left and leaves to the right, the words turning up under it. A
+   picture is masked in along the same path, its own edge sweeping in
+   from the left on the band's curve: it was uncovered from under an
+   ink panel at first, and the ink read as passing over the picture
+   (his "the wipe happens OVER the image ... can it mask the image
+   in?", 27 Sept) */
 html[data-motion="wipe"] .sp.mo .rvband { clip-path: inset(0 100% 0 0); }
 html[data-motion="wipe"] .sp.mo .rv-go > .rvband { animation: rvwipe var(--bd, 700ms) linear var(--d, 0ms) both; }
 html[data-motion="wipe"] .sp.mo .rv-split .rvi { opacity: 0; }
 html[data-motion="wipe"] .sp.mo .rv-split.rv-go .rvi { opacity: 1; transition: opacity 0s linear var(--d, 0ms); }
-html[data-motion="wipe"] .sp.mo .rv-pic::before { content: ""; position: absolute; inset: 0; z-index: 2; background: var(--ink); clip-path: inset(0 100% 0 0); pointer-events: none; }
-html[data-motion="wipe"] .sp.mo .rv-pic.rv-go:not(.rv-now)::before { animation: rvwipe 0.8s linear var(--d, 0ms) both; }
-html[data-motion="wipe"] .sp.mo .rv-pic img { scale: 1; transition: opacity 0.45s ease, clip-path 0s linear calc(var(--d, 0ms) + 0.4s); }
-html[data-motion="wipe"] .sp.mo .rv-pic:not(.rv-go) img { clip-path: inset(0 0 0 100%); }
+html[data-motion="wipe"] .sp.mo .rv-pic img { scale: 1; transition: opacity 0.45s ease, clip-path 0.7s cubic-bezier(0.45, 0, 0.2, 1) var(--d, 0ms); }
+html[data-motion="wipe"] .sp.mo .rv-pic:not(.rv-go) img { clip-path: inset(0 100% 0 0); }
 html[data-motion="wipe"] .sp.mo .rv-field::after { transform-origin: 100% 50%; transition: transform 0.7s cubic-bezier(0.45, 0, 0.2, 1) var(--d, 0ms); }
 html[data-motion="wipe"] .sp.mo .rv-field.rv-go::after { transform: scaleX(0); }
 html[data-motion="wipe"] .sp.mo .rv-rule::before { transition: transform 0.36s cubic-bezier(0.45, 0, 0.2, 1) var(--d, 0ms); }

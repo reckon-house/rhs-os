@@ -182,7 +182,7 @@
        slit like a shutter, a rule draws at a typesetter's pace;
      - wipe: the index's own mark, a band sweeping over a line and off it
        with the words under it (ink on display type, the grey cell on
-       text), a picture uncovered from under an ink panel;
+       text), a picture masked in along the same path;
      - focus: out of a blur, a picture settling from a little closer;
      - cut: hard cuts a line at a time in Faux Reel's rhythm, a picture
        after a blink of ink;
@@ -610,6 +610,9 @@
     /* the family changed on the page: what has played plays again */
     function replay() {
       if (dead || !mo) return;
+      /* back to the start states at once: unwound through their own
+         transitions, a picture was still half there when its turn came */
+      root.classList.add("rv-reset");
       root.querySelectorAll(".rvband").forEach((b) => b.remove());
       root.querySelectorAll(".rv").forEach((e) => {
         if (e._still) return;
@@ -617,6 +620,8 @@
         if (e._rvpos) { e.style.position = ""; e._rvpos = false; }
         if (e.querySelector(".rvw")) unsplit(e);
       });
+      void root.offsetHeight;
+      root.classList.remove("rv-reset");
       armReveals(false);
     }
 
