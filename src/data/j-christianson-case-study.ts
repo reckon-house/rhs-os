@@ -7,7 +7,7 @@ export const jChristiansonCaseStudy: CaseStudy = {
   title: "J. Christianson",
   category: { label: "Creative", href: "/category/creative" },
   subtitle:
-    "A brand identity for J. Christianson, a fashion and home goods label, built from the name outward. | A four-circle mark that changes color by where it goes, and one tree drawing in four colorways for the whole line.",
+    "A brand identity for J. Christianson, a fashion and home goods label, built from the name outward. | The four-circle mark changes color from place to place, and one tree drawing in four colorways covers the whole line.",
   field: "Brand Development\nNaming\nLogo Design\nGraphic Design",
   author: "Jeremy Prasatik",
   published: "2019",
@@ -50,7 +50,7 @@ export const jChristiansonCaseStudy: CaseStudy = {
       },
       title: "J. Christianson",
       subtitle:
-        "A brand identity for J. Christianson, a fashion and home goods label, built from the name outward. | A four-circle mark that changes color by where it goes, and one tree drawing in four colorways for the whole line.",
+        "A brand identity for J. Christianson, a fashion and home goods label, built from the name outward. | The four-circle mark changes color from place to place, and one tree drawing in four colorways covers the whole line.",
       field: "Brand Development  Naming  Logo Design  Graphic Design",
       author: "Jeremy Prasatik",
       published: "2019",
@@ -68,7 +68,7 @@ export const jChristiansonCaseStudy: CaseStudy = {
         { label: "Angle", value: "The mark changes color depending on where it goes, and one tree drawing in four colorways covers the whole product line." },
       ],
       abstract:
-        "J. Christianson is a fashion and home goods label, and the brand started from nothing: the name first, then the mark, the palette, the type, and the product graphics.\n\nThe logo is four circles in a tight grid. The shape stays the same and the colors change with the setting. Brown circles with the accent colors in one place, olive circles with the same accents in another, so the one mark can change palette and still be recognized.\n\nA tree silhouette does the rest, drawn once and run in four seasonal colorways over a striped field in the brand colors. It went on apparel, candles, hangtags, and print.",
+        "J. Christianson is a fashion and home goods label, and the brand started from nothing: the name first, then the mark, the palette, the type, and the product graphics.\n\nThe logo is four circles in a tight grid. Its shape stays the same and its colors change with the setting, so the one mark can still be recognized.\n\nThe product graphics come from a tree silhouette, drawn once and run in four seasonal colorways over a striped field in the brand colors. The tree graphic went on apparel, candles, hangtags, and print.",
     },
 
         // ── HERO ──
@@ -85,13 +85,13 @@ export const jChristiansonCaseStudy: CaseStudy = {
       id: "tree-header",
       type: "section-header",
       label: "SECTION 02: THE TREE",
-      title: "The branches run past the edge",
+      title: "The tree's branches run past the edge",
       // Pinned because this is the study's long argument: the headline
       // holds while four colorways, four surfaces, and the breakout
       // detail travel past it as one column.
       pressing: {
         mark: { n: "02", name: "The Tree" },
-        heldLine: "of the color block.",
+        heldLine: "of the stripes.",
         choreo: { pin: true },
       },
       group: { name: "tree", bg: "#ECE6E1", radius: 75, padding: "60px" },
@@ -101,7 +101,7 @@ export const jChristiansonCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "A white silhouette over the brand's stripe pattern.",
+        "The tree graphic is a white silhouette over the brand's stripe pattern.",
       group: { name: "tree" },
     },
     {
@@ -110,7 +110,7 @@ export const jChristiansonCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "Teal and dark green, yellow and gold, orange and rust, brown and earth tones. The tree and the stripes stay the same and the palette changes with the season, so one drawing covers all four.",
+        "Each season gets its own colorway of the tree graphic: teal and dark green, yellow and gold, orange and rust, and brown and earth tones. The tree and the stripes stay the same in all four.",
       group: { name: "tree" },
     },
     {
@@ -164,7 +164,7 @@ export const jChristiansonCaseStudy: CaseStudy = {
         plate: "02",
         captions: [
           "Brand pattern at billboard scale",
-          "Four-dot mark centered",
+          "Four-circle mark centered",
           "Organic color shapes",
         ],
         instruction: "Scroll. It fills the mat, then travels the frame",
@@ -194,7 +194,7 @@ export const jChristiansonCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "Tight spacing, no outline, and a different color each season.",
+        "The mark is drawn with tight spacing and no outline, in a different color each season.",
     },
     {
       id: "mark-footnote",
@@ -202,7 +202,7 @@ export const jChristiansonCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "Brown circles with yellow, orange, red, and teal accents in one version, olive circles with the same accents in the other. The accents stay in the bottom-right cluster while the main color changes, and the grid is what you recognize. Fewer locked variations meant more places the mark could go without redrawing it.",
+        "The dot grid pattern keeps the yellow, orange, red, and teal circles in the bottom-right cluster, and the rest of its circles are brown in one version and olive in the other. Fewer fixed versions of the mark meant it could go more places without being redrawn.",
     },
 
     // ── BRAND PATTERN — climbs the mark section it belongs to ──
@@ -262,7 +262,7 @@ export const jChristiansonCaseStudy: CaseStudy = {
     {
       id: "headline-found",
       type: "editorial-headline",
-      text: "The whole year\nlit up on the sign",
+      text: "All four seasons\nlit up on one sign",
     },
 
     // ── OUTDOOR SIGN HERO — the last picture, grown to full size ──
@@ -291,10 +291,10 @@ export const jChristiansonCaseStudy: CaseStudy = {
       id: "closing-header",
       type: "section-header",
       label: "SECTION 04: CLOSING",
-      title: "The name came first,",
+      title: "The whole identity was drawn to fit",
       pressing: {
-        mark: { n: "04", name: "The Name" },
-        heldLine: "then the mark, then the tree.",
+        mark: { n: "04", name: "Big or Small" },
+        heldLine: "a billboard and a candle label.",
       },
     },
     // No subhead here on purpose. The one it had re-told the abstract
@@ -312,7 +312,7 @@ export const jChristiansonCaseStudy: CaseStudy = {
       stack: ["Adobe Illustrator", "Adobe Photoshop"],
       links: [],
       content:
-        "Mid-century earth tones. Everything was drawn to go big or small, so the same identity sits on a billboard and on a candle label.\n\nThe name, the mark and the tree were decided once, up front, and every piece after that used them as they were.",
+        "J. Christianson's colors are mid-century earth tones.\n\nThe name, the mark and the tree were decided once, up front, and every piece after that used them as they were.",
     },
   ],
 };
