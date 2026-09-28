@@ -917,3 +917,17 @@ html:not([data-nums="on"]) :is(.xs-cap, .xs-ti) > .n { display: none; }
    demi (the line names, the work cards' names, the years, the figures);
    the line names and card names at most 26px, in crossref2.js */
 html[data-ix="e"] #idx :is(.e.el .t, .e.ef .t, .e.ey .t, .e.efig .fn) { font-weight: 600; }
+
+/* the shelf's frame and foot, as the rooms' type (27 Sept; the stack's
+   own in shelf-stack.css): the running head medium, its label the small
+   caps (8.5px bold, tracked wide), the layouts' words regular; the
+   foot's name and run in demi, its sentence 15px medium, its labels the
+   small caps, all as the stack sets the shelf they carry on into */
+.sh-bar { font-weight: 500; }
+.sh-bar-k { font-size: 8.5px; font-weight: 700; letter-spacing: 0.2em; }
+.sh-sw { font-weight: 400; }
+.sh-foot-t, .sh-foot-t.stand, html.stack .sh-foot-t.stand { font-weight: 600; }
+.sh-foot-s { font-size: 15px; font-weight: 500; }
+html.stack .sh-foot-s { font-size: 14px; }
+.sh-foot-n, .sh-foot-k, .sh-foot-l { font-size: 8.5px; font-weight: 700; letter-spacing: 0.2em; }
+.sh-foot-n b { font-weight: 700; }

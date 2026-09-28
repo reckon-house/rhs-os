@@ -66,3 +66,22 @@
 .xk.ph .xk-hl { flex-wrap: wrap; row-gap: 14px; }
 .xk.ph .xk-stand { flex-basis: 100%; }
 .xk-stand .g { color: var(--grey); }
+
+/* ── the shelf's type, as the rooms' (27 Sept, his "let's then take a
+   design typography pass at the other sections and align with the
+   changes we just made (size, weight, etc)"). The name and a line's run
+   in demi at their sizes; the sentence under a name at the rooms' mid,
+   15px medium, grey; a credit's title 13px demi, its year and
+   discipline 13px regular; the count and the labels as the rooms' small
+   caps, 8.5px bold, tracked wide; the section links 12px regular. The
+   foot's copies of these (crossref2.css) keep to the same, so the
+   carry-on still lands true ── */
+.xk-name, .xk-stand { font-weight: 600; }
+.xk-sent { font-size: 15px; font-weight: 500; letter-spacing: -0.012em; line-height: 1.3; }
+.xk.ph .xk-sent { font-size: 14px; }
+.xk-n, .xk-sl { font-size: 8.5px; font-weight: 700; letter-spacing: 0.2em; }
+.xk-n b { font-weight: 700; }
+.xk-cap { font-size: 13px; font-weight: 600; }
+.xk-y, .xk-d { font-weight: 400; }
+.xk-l { font-size: 12px; font-weight: 400; letter-spacing: 0; }
+.xk-see, .xk.ph .xk-see { font-size: 13px; font-weight: 600; }
