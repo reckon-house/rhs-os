@@ -7,7 +7,7 @@ export const fairviewEntryCaseStudy: CaseStudy = {
   title: "The Fairview: Entry.",
   category: { label: "Interiors", href: "/category/interiors" },
   subtitle:
-    "The Fairview entry, two stories tall. | Floor-to-ceiling French doors, a brass and alabaster chandelier, and a vintage rug on white oak.",
+    "The Fairview entry is a two-story foyer sized around its French doors. | A brass and alabaster chandelier hangs overhead, and a vintage rug runs down the white oak floor.",
   field: "Interior Design\nFurniture Curation\nFinish Selection",
   author: "Jeremy Prasatik",
   published: "2023",
@@ -35,7 +35,7 @@ export const fairviewEntryCaseStudy: CaseStudy = {
       },
       title: "The Fairview\nEntry.",
       subtitle:
-        "The Fairview entry, two stories tall. | Floor-to-ceiling French doors, a brass and alabaster chandelier, and a vintage rug on white oak.",
+        "The Fairview entry is a two-story foyer sized around its French doors. | A brass and alabaster chandelier hangs overhead, and a vintage rug runs down the white oak floor.",
       field: "Interior Design  Furniture Curation  Finish Selection",
       author: "Jeremy Prasatik",
       published: "2023",
@@ -48,7 +48,7 @@ export const fairviewEntryCaseStudy: CaseStudy = {
         { label: "Angle", value: "The light through the front doors comes first, and every piece was picked to leave it alone." },
       ],
       abstract:
-        "The entry is two stories tall, with French ironwork doors running floor to ceiling at the center. The light through those doors comes first. Everything else in the room is sized and placed to let it through.\n\nA vintage rug runner on white oak boards that run unbroken to the doorway. A brass and alabaster chandelier hung by itself overhead. A potted palm against limestone-cream walls.\n\nTwo pieces of art on the side wall, a slatted wood geometric and a dark abstract in a thick frame, with a leather bench between them for the boots that come off and the bag set down on the way in.",
+        "The entry is two stories tall, with French ironwork doors running floor to ceiling at the center. The light through those doors comes first. Everything else in the room is sized and placed to let it through.\n\nWhite oak boards run unbroken to the doorway, with a vintage rug runner down the middle. A brass and alabaster chandelier hangs by itself overhead, and a potted palm stands against limestone-cream walls.\n\nTwo pieces of art hang on the side wall, a slatted wood geometric and a dark abstract in a thick frame, with a leather bench between them for the boots that come off and the bag set down on the way in.",
     },
 
         // ── HERO ──
@@ -67,7 +67,7 @@ export const fairviewEntryCaseStudy: CaseStudy = {
       id: "light-header",
       type: "section-header",
       label: "SECTION 02: LIGHT",
-      title: "The doors run floor to ceiling,",
+      title: "The French doors run floor to ceiling,",
       // This study's one crossing, on its opening argument. Its sibling
       // (fairview-sitting) crosses its SECOND header instead — two rooms
       // in one house should not choreograph identically.
@@ -85,7 +85,7 @@ export const fairviewEntryCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "Nothing on the floor gets between them and the sun.",
+        "Nothing on the floor gets between the doors and the sun.",
     },
     {
       id: "light-footnote",
@@ -93,7 +93,7 @@ export const fairviewEntryCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "The walls are limestone-cream. That color takes the light and doesn't throw it back. The rug is dark enough to ground the floor and woven loose enough to still read on a cloudy afternoon.",
+        "The limestone-cream walls take the light and don't throw it back. The rug is dark enough to ground the floor and woven loose enough to still show on a cloudy afternoon.",
     },
 
     // Two vertical light compositions, one either side of the zoom below.
@@ -158,14 +158,14 @@ export const fairviewEntryCaseStudy: CaseStudy = {
       id: "pieces-header",
       type: "section-header",
       label: "SECTION 03: PIECES",
-      title: "All of it had been",
+      title: "The rug, the bench and the art",
       // Pinned: the headline holds while the copy about the rug, the light
       // and the two pieces of art travels up beside it. The section is a
       // list of objects, so the name of the list should stay on screen for
       // the whole of it.
       pressing: {
         mark: { n: "03", name: "The Pieces" },
-        heldLine: "somewhere else first.",
+        heldLine: "had all been somewhere else first.",
         choreo: { pin: true },
       },
     },
@@ -174,7 +174,7 @@ export const fairviewEntryCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "The rug, the bench and the two pieces of art, all found.",
+        "The leather bench sits under the slatted wood piece, with a sheepskin throw over it and a basket underneath.",
     },
     {
       id: "pieces-footnote",
@@ -182,7 +182,7 @@ export const fairviewEntryCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "The chandelier is one alabaster pendant set in brass, oversized on purpose. The bench sits under the slatted wood piece with a sheepskin throw over it and a basket underneath. The palm and the coat tree share the corner that gets the morning sun.",
+        "The chandelier is one alabaster pendant set in brass, oversized on purpose. The palm and the coat tree share the corner that gets the morning sun.",
     },
 
     // 2-up: two tight detail shots of the found objects side by side. Left
@@ -224,7 +224,7 @@ export const fairviewEntryCaseStudy: CaseStudy = {
     {
       id: "headline-threshold",
       type: "editorial-headline",
-      text: "This is the first room\nanyone walks into",
+      text: "The entry is the first room\nanyone walks into",
     },
 
     // ════════════════════════════════════════
@@ -236,12 +236,12 @@ export const fairviewEntryCaseStudy: CaseStudy = {
       id: "marks-materials",
       type: "marks-materials",
       label: "SECTION 04: MARKS & MATERIALS",
-      title: "The whole foyer\nin five materials.",
+      title: "Here's the whole foyer\nin five materials.",
       introText:
-        "Oak, iron, brass, wool, and limestone. Each one has one job in the room.",
+        "Oak is on the floor, iron at the doors and transom, brass overhead, a wool runner down the middle and limestone-cream on the walls.",
       philosophyTitle: "Material philosophy",
       philosophyText:
-        "Oak on the floor, iron at the doors and transom, brass overhead, wool down the middle, limestone on the walls. Nothing sits on top of them. The color in the room is whatever those five already are.\n\nThe bench frame and the coat tree are black iron too, so the metalwork reads as one set.",
+        "The color in the foyer is whatever the five materials already are.\n\nThe bench frame is the same black iron as the doors, so the ironwork matches.",
       colors: [
         { name: "Limestone Cream", hex: "#E7DFD2", description: "Walls, ceiling" },
         { name: "Black Iron", hex: "#1F1E1B", description: "Doors, frames, bench" },
@@ -254,7 +254,7 @@ export const fairviewEntryCaseStudy: CaseStudy = {
           name: "White Oak",
           role: "Floors",
           description:
-            "Wide-plank white oak, running from the front door on into the rest of the house. The grain is the only horizontal pattern in the room.",
+            "The grain of the wide-plank white oak is the only horizontal pattern in the room.",
           family: "'Avenir Next', system-ui, sans-serif",
           weight: 400,
         },
@@ -262,7 +262,7 @@ export const fairviewEntryCaseStudy: CaseStudy = {
           name: "Black Iron",
           role: "Doors, frames, bench",
           description:
-            "Steel French doors with matching transom windows across the front of the room. The bench frame and the coat tree are the same black.",
+            "Steel French doors and matching transom windows span the front of the room.",
           family: "'Caslon', 'Adobe Caslon Pro', 'Garamond', serif",
           weight: 600,
         },
@@ -270,7 +270,7 @@ export const fairviewEntryCaseStudy: CaseStudy = {
           name: "Antiqued Brass",
           role: "Chandelier",
           description:
-            "One alabaster pendant set in hand-rubbed brass, hung dead center. It is the only brass in the room.",
+            "The chandelier is set in hand-rubbed brass and hangs dead center. It is the only brass in the foyer.",
           family: "'Didot', 'Bodoni 72', 'Caslon', serif",
           weight: 400,
         },
@@ -278,7 +278,7 @@ export const fairviewEntryCaseStudy: CaseStudy = {
           name: "Vintage Wool",
           role: "Rug runner",
           description:
-            "An indigo-gray runner, found vintage and faded soft. It leaves most of the oak showing.",
+            "The indigo-gray wool runner is a vintage find, faded soft, and it leaves most of the oak showing.",
           family: "'Avenir Next', system-ui, sans-serif",
           weight: 400,
         },
@@ -286,7 +286,7 @@ export const fairviewEntryCaseStudy: CaseStudy = {
           name: "Limestone",
           role: "Walls",
           description:
-            "Limestone-cream on the walls, trim, and ceiling, so the whole shell of the room is a single soft color.",
+            "The walls, trim and ceiling are all limestone-cream, so the whole shell of the room is one soft color.",
           family: "'Caslon', 'Adobe Caslon Pro', 'Garamond', serif",
           weight: 400,
         },
@@ -314,7 +314,7 @@ export const fairviewEntryCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "After that, the rug, the chandelier, and the light through the doors.",
+        "After the bench, there's the rug, the chandelier and the light through the doors.",
     },
     {
       id: "closing",
@@ -323,7 +323,7 @@ export const fairviewEntryCaseStudy: CaseStudy = {
       stack: ["AutoCAD", "SketchUp", "Material specification"],
       links: [],
       content:
-        "A two-story foyer sized around the light through its front doors and furnished with found pieces.",
+        "The white oak floor runs from the front door on into the rest of the house.",
     },
   ],
 };
