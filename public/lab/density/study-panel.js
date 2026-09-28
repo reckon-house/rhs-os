@@ -192,7 +192,7 @@
     ["mask", ".sp-title, .sp-stand, .sp-h, .sp-deck, .sp-pq, .sp-closing p, .sp-fn, .sp-next-t, .sp-dur, .sp-col, .sp-card h3"],
     ["lines", ".sp-p"],
     ["pic", ".sp-pic:not(.sp-cpic)"],
-    ["field", ".sp-black, .sp-field"],
+    ["field", ".sp-black, .sp-field, .sp-pc, .sp-pb, .sp-povb, .sp-pcy, .sp-pchg"],
     ["rule", ".sp-kick, .sp-open, .sp-run.sp-hasc, .sp-foot, .sp-spec, .sp-card, .sp-tcol, .sp-tr, .sp-nr"],
     ["fade", ".sp-cap, .sp-fs, .sp-nl, .sp-ns, .sp-meta, .sp-spec-h, .sp-tcol > .sp-caps, .sp-tcol ul, .sp-palw, .sp-bar2, .sp-stl li, .sp-full, .sp-next > .sp-caps, .sp-fcap, .sp-bcap, .sp-card p, .sp-tr dd, .sp-tr dt"],
   ];
@@ -325,6 +325,88 @@
   /* the wall: the words again and again in outline, over the words
      themselves in solid */
   const wallHtml = (words, rows) => { const line = (words + "   ").repeat(5); let h = ""; for (let i = 0; i < rows; i++) h += '<span class="sp-wl">' + esc(line) + "</span>"; return '<div class="sp-wall" aria-hidden="true">' + h + "</div>"; };
+
+  /* ── the palette (27 Sept, his "let's be large and more impactful with
+     the palette - i think it's another moment to have fun. the color
+     could sit on one of the images. or paired with the image. one block
+     per image and it's a carosel? or opposite maybe it's a big block of
+     color with a thumbnail image on top and it animates through different
+     colors with different images on top. big color blocks with
+     thumbnails on them. or some sort of graph or chart. let's do some
+     options for it too!"). Six looks on a row of their own
+     (html[data-pal], localStorage, ?pal=):
+     - swatch: as it was, small squares in the title block;
+     - overlay: the colours as bars laid over the study's picture that
+       holds the most of them;
+     - paired: a column to each colour, its hex up the column, over the
+       picture that colour is most of;
+     - blocks: big blocks of colour, each with its picture on it;
+     - cycle: one big block that runs through the colours, a different
+       picture on each;
+     - chart: the colours as a chart of their lightness (L*), darkest
+       first.
+     The studies' palettes carry no names, so none is made up: a colour
+     is its hex and its RGB. Which picture goes with which colour is
+     measured from the pictures themselves (the one with the most pixels
+     nearest that colour), once, when the room is built ── */
+  const PALS = ["swatch", "overlay", "paired", "blocks", "cycle", "chart"], PAL_LS = "crossref2.pal";
+  (() => {
+    const q = (new URLSearchParams(location.search).get("pal") || "").toLowerCase();
+    let v = PALS.includes(q) ? q : null;
+    if (!v) { try { v = localStorage.getItem(PAL_LS); } catch (e) { /* a private window */ } }
+    document.documentElement.dataset.pal = PALS.includes(v) ? v : "swatch";
+  })();
+  const PAL = () => { const v = document.documentElement.dataset.pal; return PALS.includes(v) ? v : "swatch"; };
+  const setPal = (x) => {
+    if (!PALS.includes(x)) return;
+    document.documentElement.dataset.pal = x;
+    try { localStorage.setItem(PAL_LS, x); } catch (e) { /* a private window */ }
+    ROOMS.forEach((f) => f());
+  };
+  const palRow = () => '<div class="sp-looks sp-pals caps">' + PALS.map((x) => '<button type="button" data-pal="' + x + '"' + (x === PAL() ? ' class="on" aria-pressed="true"' : ' aria-pressed="false"') + ">" + x + "</button>").join("") + "</div>";
+  const hexRgb = (h) => { const x = parseInt(String(h).replace("#", "").slice(0, 6), 16) || 0; return [(x >> 16) & 255, (x >> 8) & 255, x & 255]; };
+  /* lightness, CIE L*, from a hex */
+  const lstar = (h) => {
+    const y = hexRgb(h).map((v) => { v /= 255; return v <= 0.04045 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4); });
+    const Y = 0.2126 * y[0] + 0.7152 * y[1] + 0.0722 * y[2];
+    return Y > 216 / 24389 ? 116 * Math.cbrt(Y) - 16 : (24389 / 27) * Y;
+  };
+  const palCache = new Map();
+  const matchPal = (k, colors, pics) => {
+    if (palCache.has(k)) return palCache.get(k);
+    const pr = Promise.all(pics.slice(0, 18).map((f) => new Promise((res) => {
+      const im = new Image(); im.decoding = "async";
+      im.onload = () => { try { const c = document.createElement("canvas"); c.width = c.height = 40; const x = c.getContext("2d", { willReadFrequently: true }); x.drawImage(im, 0, 0, 40, 40); res({ f, d: x.getImageData(0, 0, 40, 40).data }); } catch (e) { res(null); } };
+      im.onerror = () => res(null);
+      im.src = encodeURI(f.t384 || f.t768 || f.src);
+    }))).then((list) => {
+      list = list.filter(Boolean);
+      if (!list.length) return { best: null, per: [] };
+      const cs = colors.map((c) => hexRgb(c.hex));
+      const share = cs.map(() => list.map(() => 0));
+      list.forEach((it, j) => {
+        const d = it.d; let n = 0;
+        for (let q = 0; q < d.length; q += 4) {
+          if (d[q + 3] < 200) continue; n++;
+          let bi = 0, bd = Infinity;
+          cs.forEach((c, i) => { const dd = (d[q] - c[0]) ** 2 + (d[q + 1] - c[1]) ** 2 + (d[q + 2] - c[2]) ** 2; if (dd < bd) { bd = dd; bi = i; } });
+          if (bd < 4800) share[bi][j]++;
+        }
+        if (n) share.forEach((row) => { row[j] /= n; });
+      });
+      let best = list[0].f, bs = -1;
+      list.forEach((it, j) => { const t = share.reduce((a, row) => a + row[j], 0); if (t > bs) { bs = t; best = it.f; } });
+      /* each colour its strongest picture, the strongest pairings first,
+         no picture twice while another is left */
+      const per = new Array(cs.length).fill(null), used = new Set(), pairs = [];
+      share.forEach((row, i) => row.forEach((v, j) => pairs.push([v, i, j])));
+      pairs.sort((a, b) => b[0] - a[0]).forEach(([, i, j]) => { if (!per[i] && !used.has(j)) { per[i] = list[j].f; used.add(j); } });
+      per.forEach((x, i) => { if (!x) per[i] = list[i % list.length].f; });
+      return { best, per };
+    });
+    palCache.set(k, pr);
+    return pr;
+  };
 
   /* ── compose: a study's fragments, in its own reading order, sorted into
      the parts of a room. Nothing is dropped except the Author fact (it is
@@ -746,7 +828,8 @@
       const V = container.clientHeight || window.innerHeight || 800;
       builtW = W;
       ids.length = 0; pending.clear();
-      const P = { rows: [], asides: [], figs: [], title: null, pulls: [], coverBox: null, coverFrame: null, knocks: [] };
+      if (parts && parts.stops) parts.stops.forEach((f) => f());
+      const P = { rows: [], asides: [], figs: [], title: null, pulls: [], coverBox: null, coverFrame: null, knocks: [], stops: [] };
       const s = M.s;
       const frag = document.createDocumentFragment();
       const g = Math.max(5, Math.round(W * 0.011));
@@ -896,13 +979,15 @@
         });
         spec.appendChild(cols);
       }
-      if (M.palette && M.palette.colors && M.palette.colors.length) {
+      const pl = PAL();
+      if (M.palette && M.palette.colors && M.palette.colors.length && pl !== "swatch") frag.appendChild(palSection(pl)); /* the title block follows it */
+      if (M.palette && M.palette.colors && M.palette.colors.length && pl === "swatch") {
         const pal = el("div", "sp-pal"); pal.style.setProperty("--n", M.palette.colors.length);
         M.palette.colors.forEach((c) => {
           const sw = el("div", "sp-sw", '<i style="background:' + esc(c.hex) + '"></i><span>' + esc(String(c.hex).toUpperCase()) + "</span>" + (c.name ? "<span>" + esc(c.name) + "</span>" : ""));
           pal.appendChild(sw);
         });
-        const pw = el("div", "sp-palw"); if (M.palette.title) pw.appendChild(el("div", "sp-caps", esc(M.palette.title))); pw.appendChild(tag(pal, M.palette));
+        const pw = el("div", "sp-palw"); if (M.palette.title) pw.appendChild(el("div", "sp-caps sp-palh", esc(M.palette.title) + palRow())); pw.appendChild(tag(pal, M.palette));
         spec.appendChild(pw);
       }
       frag.appendChild(spec);
@@ -932,6 +1017,78 @@
       parts = P;
 
       /* ── the builders ── */
+      /* the palette as a moment of its own, before the title block */
+      function palSection(pl) {
+        const cols = M.palette.colors.map((c) => ({ hex: String(c.hex).toUpperCase(), rgb: hexRgb(c.hex), ink: D.ink(c.hex), L: lstar(c.hex) }));
+        const n = cols.length;
+        const seen = new Set();
+        const pics = [M.lead].concat(D.byStudy(k).filter((f) => f.kind === "pic")).filter((f) => f && !f.alpha && f.src && !seen.has(f.src) && seen.add(f.src));
+        const sec = el("section", "sp-palx lk-" + pl); sec.style.setProperty("--n", n);
+        sec.appendChild(el("div", "sp-caps sp-palh", esc(M.palette.title || "Palette") + palRow()));
+        const rgbT = (c) => "RGB " + c.rgb.join(" ");
+        const box = (f, cls) => { const b = el("div", "sp-pic " + cls); b._f = f; watch(b); return b; };
+        const slots = []; /* pictures the pairing will choose: [box, colour index or -1 for the best] */
+        const pic = (i, cls) => { if (!pics.length) return null; const b = box(pics[(i < 0 ? 0 : i + 1) % pics.length], cls); slots.push([b, i]); return b; };
+        if (pl === "overlay") {
+          const w = el("div", "sp-pov"); const b = pic(-1, "sp-povp"); if (b) w.appendChild(b);
+          const st = el("div", "sp-povs");
+          cols.forEach((c) => { const r = el("div", "sp-povb", "<b>" + c.hex + "</b><span>" + rgbT(c) + "</span>"); r.style.background = c.hex; r.style.color = c.ink; st.appendChild(r); });
+          w.appendChild(st); sec.appendChild(w);
+        } else if (pl === "paired") {
+          const w = el("div", "sp-ppr");
+          cols.forEach((c, i) => {
+            const col = el("div", "sp-pc");
+            const cc = el("div", "sp-pcc", "<span>" + rgbT(c) + "</span><b>" + c.hex + "</b>"); cc.style.background = c.hex; cc.style.color = c.ink; col.appendChild(cc);
+            const b = pic(i, "sp-pcp"); if (b) col.appendChild(b);
+            w.appendChild(col);
+          });
+          sec.appendChild(w);
+        } else if (pl === "blocks") {
+          const w = el("div", "sp-pbk n" + n);
+          cols.forEach((c, i) => {
+            const bk = el("div", "sp-pb", "<b>" + c.hex + '</b><span class="sp-pbm">HEX ' + c.hex.slice(1) + "<br>" + rgbT(c) + "</span>"); bk.style.background = c.hex; bk.style.color = c.ink;
+            const b = pic(i, "sp-pbp"); if (b) bk.appendChild(b);
+            w.appendChild(bk);
+          });
+          sec.appendChild(w);
+        } else if (pl === "cycle") {
+          const w = el("div", "sp-pcy");
+          const prog = el("div", "sp-pcyp", cols.map(() => "<i></i>").join("")); w.appendChild(prog);
+          const bs = cols.map((c, i) => pic(i, "sp-pcyi")).filter(Boolean); bs.forEach((b) => w.appendChild(b));
+          const t = el("div", "sp-pcyt"); w.appendChild(t);
+          let at = -1, tm = 0, vis = false;
+          const show = (i) => {
+            at = (i + n) % n; const c = cols[at];
+            w.style.background = c.hex; w.style.color = c.ink;
+            t.innerHTML = '<span class="sp-pcyn">' + two(at + 1) + " / " + two(n) + "</span><b>" + c.hex + "</b><span>" + rgbT(c) + "</span>";
+            bs.forEach((b, j) => b.classList.toggle("on", j === at));
+            [...prog.children].forEach((x, j) => x.classList.toggle("on", j <= at));
+          };
+          const run = () => { clearInterval(tm); tm = 0; if (vis && MOTION()) tm = setInterval(() => { if (dead || !w.isConnected) { clearInterval(tm); return; } show(at + 1); }, 2400); };
+          w.addEventListener("click", () => { show(at + 1); run(); });
+          if ("IntersectionObserver" in window) { const cio = new IntersectionObserver(([e]) => { vis = e.isIntersecting; run(); }, { root: container, threshold: 0.25 }); cio.observe(w); P.stops.push(() => { cio.disconnect(); clearInterval(tm); }); }
+          show(0);
+          sec.appendChild(w);
+        } else {
+          /* chart: bars by lightness, the darkest first */
+          const order = cols.map((c, i) => i).sort((a, b) => cols[a].L - cols[b].L);
+          const w = el("div", "sp-pch");
+          const g = el("div", "sp-pchg");
+          g.innerHTML = '<span class="sp-pchy" style="bottom:100%">100</span><span class="sp-pchy" style="bottom:50%">50</span><span class="sp-pchy" style="bottom:0">0</span>';
+          order.forEach((i) => { const c = cols[i]; const b = el("i", "sp-pchb"); b.style.cssText = "height:" + Math.max(1, c.L).toFixed(1) + "%;background:" + c.hex; g.appendChild(b); });
+          w.appendChild(g);
+          w.appendChild(el("div", "sp-pchl", order.map((i) => "<span><b>" + cols[i].hex + "</b>L* " + Math.round(cols[i].L) + "</span>").join("")));
+          w.appendChild(el("div", "sp-caps sp-pchk", "Lightness, L*, darkest first"));
+          sec.appendChild(w);
+        }
+        /* the pairing, measured from the pictures; a box not yet loaded
+           takes its measured picture */
+        if (slots.length) matchPal(k, M.palette.colors, pics).then((m) => {
+          if (dead) return;
+          slots.forEach(([b, i]) => { const f = i < 0 ? m.best : m.per[i]; if (f && !b._loaded) b._f = f; });
+        });
+        return sec;
+      }
       function paras(list) {
         const out = []; let p = null;
         list.forEach((f) => { if (!p || p.pi !== f.pi) { p = { pi: f.pi, lines: [] }; out.push(p); } p.lines.push(f); });
@@ -1338,8 +1495,9 @@
     };
     ROOMS.add(relook);
     root.addEventListener("click", (ev) => {
-      const b = ev.target.closest(".sp-looks [data-look]"); if (!b) return;
-      ev.preventDefault(); ev.stopPropagation(); setLook(b.dataset.look);
+      const b = ev.target.closest(".sp-looks [data-look], .sp-looks [data-pal]"); if (!b) return;
+      ev.preventDefault(); ev.stopPropagation();
+      if (b.dataset.pal) setPal(b.dataset.pal); else setLook(b.dataset.look);
     });
     /* a new width: small changes relayout; a real change rebuilds the rows
        and keeps the reader where they were */
@@ -1388,6 +1546,7 @@
     }
     function destroy() {
       dead = true; ROOMS.delete(relook);
+      if (parts && parts.stops) parts.stops.forEach((f) => f());
       container.removeEventListener("scroll", onKnock); cancelAnimationFrame(knT);
       if (io) io.disconnect(); if (ro) ro.disconnect(); if (headIO) headIO.disconnect(); if (rio) rio.disconnect();
       if (lenis) { cancelAnimationFrame(lraf); lenis.destroy(); lenis = null; }
@@ -1400,5 +1559,5 @@
     return room;
   }
 
-  window.StudyPanel = { render, cover, setLook, looks: LOOKS };
+  window.StudyPanel = { render, cover, setLook, looks: LOOKS, setPal, pals: PALS };
 })();

@@ -574,3 +574,66 @@ html[data-motion="scrub"] .sp.mo .sp-bar2.rv i { transform: scaleX(var(--p, 1));
 .sp-kin :is(.sp-bcap, .sp-fcap) { opacity: 1; }
 .sp:not(.mo) .sp-brk.lk-fill { height: auto; }
 .sp:not(.mo) .sp-kscr { position: relative; height: auto; min-height: var(--vh, 100vh); }
+
+/* ── THE PALETTE'S LOOKS (27 Sept): six, on a row beside its label. What
+   each is for is set out in study-panel.js, above PALS. Every look but
+   swatch is a moment of its own before the title block, edge to edge ── */
+.sp-palh { display: flex; flex-wrap: wrap; align-items: baseline; row-gap: 6px; }
+.sp-pals { color: var(--grey); }
+.sp-palx { position: relative; margin-top: clamp(90px, 16cqw, 160px); }
+.sp-palx > .sp-palh { margin: 0 var(--m) 14px; }
+.sp-palx .sp-pic { background-color: transparent; }
+.sp-palx .sp-pic img { object-fit: cover; }
+
+/* overlay: the colours as bars on the picture that holds most of them */
+.sp-pov { position: relative; height: min(calc(var(--vh, 100vh) * 0.94), 128cqw); overflow: hidden; background: #111; }
+.sp-povp { position: absolute; inset: 0; }
+.sp-povs { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: min(74%, 520px); display: grid; gap: clamp(6px, 1.2cqw, 10px); }
+.sp-povb { display: flex; justify-content: space-between; align-items: center; gap: 12px; height: clamp(52px, 10cqw, 84px); padding: 0 clamp(14px, 3cqw, 26px); }
+.sp-povb:nth-child(even) { flex-direction: row-reverse; }
+.sp-povb b { font-size: clamp(18px, 3.6cqw, 30px); font-weight: 700; letter-spacing: -0.035em; font-variant-numeric: tabular-nums; }
+.sp-povb span { font-size: 10px; font-weight: 600; letter-spacing: 0.07em; opacity: 0.8; font-variant-numeric: tabular-nums; }
+
+/* paired: a column to each colour, its hex up the column, over its picture */
+.sp-ppr { display: grid; grid-template-columns: repeat(var(--n, 5), minmax(0, 1fr)); height: min(calc(var(--vh, 100vh) * 0.96), 150cqw); }
+.sp-pc { display: grid; grid-template-rows: minmax(0, 1fr) 38%; min-width: 0; }
+.sp-pcc { position: relative; min-height: 0; overflow: hidden; }
+.sp-pcc span { position: absolute; left: clamp(8px, 1.8cqw, 16px); top: clamp(10px, 2cqw, 18px); font-size: 9px; font-weight: 600; letter-spacing: 0.06em; line-height: 1.3; opacity: 0.8; font-variant-numeric: tabular-nums; max-width: 7em; }
+.sp-pcc b { position: absolute; left: clamp(6px, 1.6cqw, 14px); bottom: clamp(12px, 2.4cqw, 22px); writing-mode: vertical-rl; transform: rotate(180deg);
+  font-size: clamp(24px, 6.4cqw, 60px); font-weight: 700; letter-spacing: -0.03em; line-height: 1; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.sp-pcp { min-height: 0; height: 100%; }
+
+/* blocks: big blocks of colour, each with its picture on it */
+.sp-pbk { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); grid-auto-rows: clamp(150px, 31cqw, 280px); }
+.sp-pbk.n3 .sp-pb:first-child, .sp-pbk.n5 .sp-pb:first-child { grid-row: span 2; }
+.sp-pbk.n4 .sp-pb:first-child { grid-column: span 2; }
+.sp-pb { position: relative; min-width: 0; padding: clamp(12px, 2.4cqw, 22px); overflow: hidden; }
+.sp-pb > b { display: block; font-size: clamp(22px, 4.6cqw, 42px); font-weight: 700; letter-spacing: -0.04em; line-height: 0.95; font-variant-numeric: tabular-nums; }
+.sp-pbm { position: absolute; left: clamp(12px, 2.4cqw, 22px); bottom: clamp(12px, 2.4cqw, 22px); font-size: 10px; font-weight: 600; letter-spacing: 0.06em; line-height: 1.5; opacity: 0.8; font-variant-numeric: tabular-nums; }
+.sp-pbp { position: absolute; right: clamp(12px, 2.4cqw, 22px); bottom: clamp(12px, 2.4cqw, 22px); width: 31%; max-height: calc(100% - 2 * clamp(12px, 2.4cqw, 22px)); aspect-ratio: 3 / 4; }
+.sp-pbk.n3 .sp-pb:first-child .sp-pbp, .sp-pbk.n5 .sp-pb:first-child .sp-pbp { width: 44%; }
+
+/* cycle: one block that runs through the colours, a picture on each */
+.sp-pcy { position: relative; height: min(calc(var(--vh, 100vh) * 0.88), 124cqw); overflow: hidden; cursor: pointer;
+  transition: background-color 0.7s cubic-bezier(0.45, 0, 0.2, 1), color 0.7s cubic-bezier(0.45, 0, 0.2, 1); }
+.sp-pcyp { position: absolute; left: var(--m); right: var(--m); top: clamp(14px, 2.6cqw, 22px); z-index: 2; display: grid; grid-template-columns: repeat(var(--n, 5), minmax(0, 1fr)); gap: 5px; }
+.sp-pcyp i { height: 2px; background: currentColor; opacity: 0.28; transition: opacity 0.4s ease; }
+.sp-pcyp i.on { opacity: 1; }
+.sp-pcyi { position: absolute; left: 50%; top: 45%; width: min(40%, 300px); aspect-ratio: 4 / 5; transform: translate(-50%, -50%) scale(0.96); opacity: 0;
+  transition: opacity 0.55s ease, transform 0.9s cubic-bezier(0.16, 1, 0.3, 1); }
+.sp-pcyi.on { opacity: 1; transform: translate(-50%, -50%); }
+.sp-pcyt { position: absolute; left: var(--m); right: var(--m); bottom: clamp(18px, 3.4cqw, 30px); z-index: 2; display: flex; align-items: baseline; gap: 6px 18px; flex-wrap: wrap; }
+.sp-pcyt b { font-size: clamp(34px, 8cqw, 76px); font-weight: 700; letter-spacing: -0.05em; line-height: 0.9; font-variant-numeric: tabular-nums; }
+.sp-pcyt span { font-size: 10px; font-weight: 600; letter-spacing: 0.07em; opacity: 0.8; font-variant-numeric: tabular-nums; }
+.sp-pcyn { flex-basis: 100%; }
+
+/* chart: the colours by lightness, darkest first */
+.sp-pch { margin: 0 var(--m); }
+.sp-pchg { position: relative; display: grid; grid-template-columns: repeat(var(--n, 5), minmax(0, 1fr)); gap: clamp(6px, 1.4cqw, 12px); align-items: end;
+  height: clamp(260px, 60cqw, 480px); margin-left: 28px; border-bottom: 1px solid var(--ink);
+  background: linear-gradient(var(--hair), var(--hair)) 0 0 / 100% 1px no-repeat, linear-gradient(var(--hair), var(--hair)) 0 50% / 100% 1px no-repeat; }
+.sp-pchb { display: block; min-height: 2px; }
+.sp-pchy { position: absolute; left: -28px; transform: translateY(50%); font-size: 9.5px; font-weight: 600; color: var(--grey); font-variant-numeric: tabular-nums; }
+.sp-pchl { display: grid; grid-template-columns: repeat(var(--n, 5), minmax(0, 1fr)); gap: clamp(6px, 1.4cqw, 12px); margin: 10px 0 0 28px; font-size: 10.5px; font-weight: 500; line-height: 1.4; color: var(--grey); font-variant-numeric: tabular-nums; }
+.sp-pchl b { display: block; font-weight: 700; color: var(--ink); letter-spacing: 0.02em; }
+.sp-pchk { margin: 18px 0 0 28px; }
