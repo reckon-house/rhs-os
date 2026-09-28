@@ -1120,7 +1120,7 @@
      long lines (scan lines, a trellis, a hatch, tally marks) became the
      four above, two of them code. On, the settled choice; ?texture=none
      turns it off (the row that did came off with the other switches). ── */
-  const TXS = ["none", "on"];
+  const TXS = ["none", "on", "glyphs"];
   const QTX = (new URLSearchParams(location.search).get("texture") || "").toLowerCase();
   let TX = TXS.includes(QTX) ? QTX : "on";
   HTML.dataset.tx = TX;
@@ -1185,6 +1185,27 @@
   const PADV = 8;
   /* four strengths of the same mark, by the noise under it */
   const LEVELS = [0.72, 0.88, 1.04, 1.2];
+  /* the dot grid (27 Sept, his "so the texture - for some reason it's
+     just not working...my idea was to incorporate a little techy old
+     school type of vibe. just something subtle", with a dot-matrix
+     ground from a retro screen as the reference, "we dont need the color
+     change"). One device-crisp dot every 5px, in a light grey, even all
+     over, every section on the one grid (it is laid from the index's own
+     corner, so neighbouring sections line up), still kept inside each
+     section. The marks per section (stars, code, brackets) are
+     ?texture=glyphs */
+  const DOT_P = 5, DOT_A = 0.2;
+  const drawDots = (cv, g, sec, W, H, dpr) => {
+    const P = Math.round(DOT_P * dpr), d = Math.max(1, Math.round(dpr));
+    const tile = document.createElement("canvas"); tile.width = tile.height = P;
+    const tg = tile.getContext("2d"); tg.fillStyle = "#000"; tg.fillRect(0, 0, d, d);
+    const ir = IDX.getBoundingClientRect(), sr = sec.getBoundingClientRect();
+    const ox = mod(Math.round((ir.left - sr.left) * dpr), P), oy = mod(Math.round((ir.top - (sr.top - PADV)) * dpr), P);
+    const pt = g.createPattern(tile, "repeat");
+    if (pt.setTransform) pt.setTransform(new DOMMatrix().translate(ox, oy));
+    g.setTransform(1, 0, 0, 1, 0, 0); g.globalAlpha = DOT_A; g.fillStyle = pt;
+    g.fillRect(0, 0, cv.width, cv.height);
+  };
   const drawSec = (sec) => {
     let cv = sec.querySelector(":scope > canvas.stx");
     const key0 = sec.dataset.tx || sec.dataset.g, pat = PAT[key0];
@@ -1192,10 +1213,12 @@
     if (!cv) { cv = el("canvas", "stx"); cv.setAttribute("aria-hidden", "true"); sec.insertBefore(cv, sec.firstChild); }
     const W = sec.clientWidth, H = sec.clientHeight + PADV * 2;
     const dpr = Math.min(2, window.devicePixelRatio || 1);
-    const key = W + "," + H + "," + dpr; if (cv._k === key) return; cv._k = key;
+    const key = W + "," + H + "," + dpr + "," + TX; if (cv._k === key) return; cv._k = key;
     if (!W || !H) return;
     cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr);
-    const g = cv.getContext("2d"); g.setTransform(dpr, 0, 0, dpr, 0, 0);
+    const g = cv.getContext("2d");
+    if (TX === "on") { drawDots(cv, g, sec, W, H, dpr); return; }
+    g.setTransform(dpr, 0, 0, dpr, 0, 0);
     g.font = TFONT + "px " + (getComputedStyle(HTML).getPropertyValue("--mono").trim() || "monospace");
     g.textAlign = "center"; g.textBaseline = "middle"; g.fillStyle = "#000";
     /* the section's own weather: a seed from its name */
