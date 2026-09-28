@@ -143,7 +143,10 @@
      entry, quickly, and its dot fades; draw() then waits that long before
      the new ones draw in. Anything else that clears them (a room opening,
      a shelf) still clears them at once. Says whether any were leaving */
-  const WIRE_OUT = 180, WIRE_IN = 420;
+  /* slower and one after another, since at 180 and 420ms, all but at
+     once, he could not tell they drew at all ("maybe it's so fast? maybe
+     it's because they happen all at the same time?", 27 Sept) */
+  const WIRE_OUT = 280, WIRE_IN = 760, WIRE_STEP = 45, WIRE_SPREAD = 520;
   const clearWires = (anim) => {
     if (!anim || matchMedia("(prefers-reduced-motion: reduce)").matches) { WIRES.innerHTML = ""; if (WIRES_BACK) WIRES_BACK.innerHTML = ""; return false; }
     let any = false;
@@ -153,7 +156,7 @@
       any = true;
       g.querySelectorAll("path").forEach((pth) => {
         const L = pth.getTotalLength();
-        pth.style.transition = "stroke-dashoffset " + WIRE_OUT + "ms cubic-bezier(0.4, 0, 0.7, 1)";
+        pth.style.transition = "stroke-dashoffset " + WIRE_OUT + "ms cubic-bezier(0.55, 0, 0.75, 0.3)";
         pth.style.strokeDasharray = L; pth.style.strokeDashoffset = L;
       });
       g.querySelectorAll("circle").forEach((c) => { c.style.transition = "opacity " + WIRE_OUT + "ms ease"; c.style.opacity = "0"; });
@@ -1194,7 +1197,8 @@
      corner, so neighbouring sections line up), still kept inside each
      section. The marks per section (stars, code, brackets) are
      ?texture=glyphs */
-  const DOT_P = 5, DOT_A = 0.2;
+  /* 0.2 of ink at first; "even more subtle", 27 Sept */
+  const DOT_P = 5, DOT_A = 0.11;
   const drawDots = (cv, g, sec, W, H, dpr) => {
     const P = Math.round(DOT_P * dpr), d = Math.max(1, Math.round(dpr));
     const tile = document.createElement("canvas"); tile.width = tile.height = P;
@@ -1904,7 +1908,7 @@
         const L = pth.getTotalLength();
         pth.style.transition = "none";
         pth.style.strokeDasharray = L; pth.style.strokeDashoffset = L;
-        pth._tr = "stroke-dashoffset " + WIRE_IN + "ms cubic-bezier(0.2, 0.7, 0.2, 1) " + (wait + Math.min(i * 12, 180)) + "ms";
+        pth._tr = "stroke-dashoffset " + WIRE_IN + "ms cubic-bezier(0.6, 0, 0.3, 1) " + (wait + Math.min(i * WIRE_STEP, WIRE_SPREAD)) + "ms";
       });
       x.querySelectorAll("circle").forEach((c) => { c.style.transition = "none"; c.style.opacity = "0"; });
     });
@@ -1913,7 +1917,7 @@
       if (x._going) return;
       x.classList.add("in");
       x.querySelectorAll("path").forEach((pth) => { pth.style.transition = pth._tr; pth.style.strokeDashoffset = 0; });
-      x.querySelectorAll("circle").forEach((c) => { c.style.transition = "opacity 200ms ease " + (wait + WIRE_IN * 0.6) + "ms"; c.style.opacity = ""; });
+      x.querySelectorAll("circle").forEach((c) => { c.style.transition = "opacity 240ms ease " + (wait + WIRE_IN * 0.7) + "ms"; c.style.opacity = ""; });
     })));
     return g;
   };
