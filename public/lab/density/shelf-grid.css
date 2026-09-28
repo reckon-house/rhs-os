@@ -55,7 +55,8 @@
 .xg .tcap.scr:not(.lt) { background: rgba(255, 255, 255, 0.5); }
 /* an index entry under the pointer: the captions of what it touches set
    solid, ink with paper words. Nothing dims */
-.xg.lit .tu.hit .tcap, .xg.lit .tu.hit .tcap.scr { opacity: 1; background: var(--ink); color: var(--paper); -webkit-mask-image: none; mask-image: none; }
+/* the index's grey cell, the words ink (27 Sept, as the stack's) */
+.xg.lit .tu.hit .tcap, .xg.lit .tu.hit .tcap.scr { opacity: 1; background: #ECECEC; color: var(--ink); -webkit-mask-image: none; mask-image: none; }
 .xg.lit .tu.hit .tcap .y { opacity: 0.66; }
 .xg.lit .tu.hit.rep .tcap { display: block; }
 

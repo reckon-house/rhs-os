@@ -29,7 +29,7 @@
 .xk-cap { display: flex; align-items: baseline; gap: 12px; padding: 13px 20px 34px; font-size: 13px; font-weight: 600; letter-spacing: -0.012em; line-height: 1.3; }
 .xk-no { flex: none; font-size: 10px; font-weight: 600; letter-spacing: 0.08em; color: var(--grey); font-variant-numeric: tabular-nums; }
 .xk-t { transition: background-size 0.26s cubic-bezier(0.45, 0, 0.2, 1), color 0.18s ease 0.04s;
-  background-image: linear-gradient(var(--ink), var(--ink)); background-repeat: no-repeat; background-size: 0% 100%; background-position: 100% 0;
+  background-image: linear-gradient(#ECECEC, #ECECEC); background-repeat: no-repeat; background-size: 0% 100%; background-position: 100% 0;
   padding-inline: 0.2em; margin-inline: -0.2em; -webkit-box-decoration-break: clone; box-decoration-break: clone; }
 .xk-y { color: var(--grey); font-weight: 500; font-variant-numeric: tabular-nums; }
 .xk-d { margin-left: auto; text-align: right; color: var(--grey); font-weight: 500; }
@@ -46,7 +46,10 @@
 .xk-see a { color: var(--ink); border-bottom: 1px solid var(--hair); transition: border-color 0.2s ease; }
 .xk-see a:hover { border-bottom-color: var(--ink); }
 .xk.ph .xk-see { font-size: 13px; }
-.xk-it.hit .xk-t { background-size: 100% 100%; background-position: 0 0; color: var(--paper); }
+/* the index's own grey cell, the words staying ink (27 Sept, his "let's
+   make the highlight color on these match the TOC - the grey vs the
+   black"; it was the black band, the words in paper) */
+.xk-it.hit .xk-t { background-size: 100% 100%; background-position: 0 0; color: var(--ink); }
 .xk.ph .xk-head { padding: 24px 16px 24px; }
 .xk.ph .xk-name { font-size: 40px; letter-spacing: -0.045em; }
 .xk.ph .xk-sent { font-size: 16px; margin-top: 12px; }

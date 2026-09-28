@@ -72,7 +72,8 @@
 
 /* an index entry under the pointer: the names of the studies it touches
    set solid, ink behind and paper words. Nothing dims */
-.xs.lit .hit .t { background: var(--ink); color: var(--paper); box-shadow: 0 0 0 0.2em var(--ink); -webkit-box-decoration-break: clone; box-decoration-break: clone; text-decoration: none; }
+/* the index's grey cell, the words ink (27 Sept, as the stack's) */
+.xs.lit .hit .t { background: #ECECEC; color: var(--ink); box-shadow: 0 0 0 0.2em #ECECEC; -webkit-box-decoration-break: clone; box-decoration-break: clone; text-decoration: none; }
 /* a contents row followed: its caption is marked the same way a moment */
 .xs-cap.at .t { animation: xs-at 1.8s ease forwards; }
 @keyframes xs-at {

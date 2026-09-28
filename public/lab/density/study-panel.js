@@ -306,7 +306,9 @@
     try { localStorage.setItem(LOOK_LS, x); } catch (e) { /* a private window */ }
     ROOMS.forEach((f) => f());
   };
-  const lookRow = () => '<div class="sp-looks caps">' + LOOKS.map((x) => '<button type="button" data-look="' + x + '"' + (x === LOOK() ? ' class="on" aria-pressed="true"' : ' aria-pressed="false"') + ">" + x + "</button>").join("") + "</div>";
+  /* the row came off once he settled on combo ("this looks GREAT - we
+     can remove the options toggle", 27 Sept); ?look= still switches */
+  const lookRow = () => "";
   /* a figure drawn as what it counts */
   const picto = (fig, text) => {
     const f = String(fig || ""), lf = f.toLowerCase();
