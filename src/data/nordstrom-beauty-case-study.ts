@@ -7,7 +7,7 @@ export const nordstromBeautyCaseStudy: CaseStudy = {
   title: "Nordstrom Beauty",
   category: { label: "Digital", href: "/category/digital" },
   subtitle:
-    "Nordstrom's beauty editorial hub, where every story is shoppable. | Built to stay current without a team rebuilding the pages every week.",
+    "Nordstrom's beauty editorial hub, where every story is shoppable. | The hub was built from templates, so it stayed current without a team rebuilding its pages.",
   field: "Product Design\nUX Design\nVisual Design\nEcommerce Design",
   author: "Jeremy Prasatik",
   published: "2018",
@@ -46,7 +46,7 @@ export const nordstromBeautyCaseStudy: CaseStudy = {
       },
       title: "Nordstrom\nBeauty",
       subtitle:
-        "Nordstrom's beauty editorial hub, where every story is shoppable. | Built to stay current without a team rebuilding the pages every week.",
+        "Nordstrom's beauty editorial hub, where every story is shoppable. | The hub was built from templates, so it stayed current without a team rebuilding its pages.",
       field: "Product Design  UX Design  Visual Design",
       author: "Jeremy Prasatik",
       published: "2018",
@@ -64,7 +64,7 @@ export const nordstromBeautyCaseStudy: CaseStudy = {
         { label: "Angle", value: "Magazine stories on top, the product catalog underneath." },
       ],
       abstract:
-        "Beauty content ages fast. New products launch weekly and trends shift with the season, so a static story falls behind. The answer was a set of templates the products could rotate through.\n\nThree modular story formats, each written in an editorial voice and built so merchandising could swap products without touching the layout. \"Get That Glow\" and \"Top 5 Serums\" told seasonal stories while the product grid under them stayed current.\n\nA virtual try-on tool let customers upload a photo or pull their Style Profile selfie, then drag across a color gradient to preview shades on their own face. Pick a color, see it on, buy without leaving the modal. Stories opened into a shoppable drawer on the same page, so a customer could buy from inside the story.",
+        "Beauty content ages fast. New products launch weekly and trends shift with the season, so a static story falls behind.\n\nThe beauty hub ran on three modular story templates. Each template was written in an editorial voice and built so merchandising could swap products without touching the layout. \"Get That Glow\" and \"Top 5 Serums\" told seasonal stories while the product grid under them stayed current.\n\nA virtual try-on tool let customers upload a photo or pull their Style Profile selfie, then drag across a color gradient to preview shades on their own face. Customers could buy the shade they chose without leaving the try-on modal. Stories opened their products in a shoppable drawer on the same page, so a customer could add to bag from inside the story, with no detour to a product page.",
     },
 
         // ── HERO ──
@@ -81,13 +81,13 @@ export const nordstromBeautyCaseStudy: CaseStudy = {
       id: "hub-header",
       type: "section-header",
       label: "SECTION 02: THE HUB",
-      title: "Each card opens into",
+      title: "Each card on the hub opens into",
       // Pinned: the argument for the template runs two blocks long, so the
       // headline holds while the column travels, and the hub screenshot
       // below has a named holder to climb.
       pressing: {
         mark: { n: "02", name: "Three Stories" },
-        heldLine: "a full shoppable story.",
+        heldLine: "a full editorial story.",
         choreo: { pin: true },
       },
       group: { name: "hub", bg: "#ECE6E1", radius: 75, padding: "60px" },
@@ -97,7 +97,7 @@ export const nordstromBeautyCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "\"Lips That Pop,\" \"Top 5 Serums,\" and \"Get That Glow.\" Three cards gave merchandising room for the seasonal pushes and kept the page from getting crowded.",
+        "The hub's stories were \"Lips That Pop,\" \"Top 5 Serums,\" and \"Get That Glow.\" Three cards gave merchandising room for the seasonal pushes and kept the page from getting crowded.",
       group: { name: "hub" },
     },
     {
@@ -106,7 +106,7 @@ export const nordstromBeautyCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "The headlines, photography, and copy were written per story. The product data came in from the catalog on its own, so swapping a SKU updated the price, description, and picture with no designer opening the page.",
+        "Every story got its own headlines, photography, and copy. The product data came straight from the catalog, so swapping a product updated its price, description, and picture with no designer opening the page.",
       group: { name: "hub" },
     },
 
@@ -153,14 +153,14 @@ export const nordstromBeautyCaseStudy: CaseStudy = {
       id: "tryon-header",
       type: "section-header",
       label: "SECTION 03: VIRTUAL TRY-ON",
-      title: "Upload a selfie,",
+      title: "Upload a selfie",
       // Pinned. The zoom above it has just held one frame for 320dvh, so
       // the copy arrives on a screen that is already still. Holding the
       // headline keeps that stillness through the explanation, then hands
       // it to the desktop plate that climbs out of it.
       pressing: {
         mark: { n: "03", name: "Try-On" },
-        heldLine: "try on every shade.",
+        heldLine: "and try on every shade.",
         choreo: { pin: true },
       },
     },
@@ -177,7 +177,7 @@ export const nordstromBeautyCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "It shipped inside the \"Lips That Pop\" story, built as its own component so it could move to eye, cheek, or nail. The gradient mapped to the available SKUs, so any shade you could try was one you could buy.",
+        "The try-on shipped inside the \"Lips That Pop\" story, built as its own component so it could be reused for eye, cheek, or nail products. Every shade on the color gradient mapped to a product you could buy.",
     },
 
     // ── Desktop try-on ──
@@ -197,7 +197,7 @@ export const nordstromBeautyCaseStudy: CaseStudy = {
     {
       id: "headline-editorial",
       type: "editorial-headline",
-      text: "The products changed every week.\nThe pages didn't have to.",
+      text: "The products changed every week\nThe pages didn't have to",
     },
 
     // ── SHOPPABLE STORIES ──
@@ -215,7 +215,7 @@ export const nordstromBeautyCaseStudy: CaseStudy = {
       // story it describes rises over the top of it.
       pressing: {
         mark: { n: "04", name: "The Drawer" },
-        heldLine: "the read.",
+        heldLine: "the story you're reading.",
         choreo: { pin: true, crossing: true },
       },
     },
@@ -224,7 +224,7 @@ export const nordstromBeautyCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "Reviews, price, size options and add to bag come in from the side while the story stays on screen behind it.",
+        "A product drawer with reviews, price, size options, and add to bag comes in from the side while the page behind it stays on screen.",
     },
     {
       id: "stories-footnote",
@@ -232,7 +232,7 @@ export const nordstromBeautyCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "It also kept the numbers in one place. Time on page, scroll depth, and conversion were all measured inside the story, so merchandising could see which angle drove the most adds to bag with no attribution guesswork.",
+        "The drawer kept the numbers in one place. Time on page, scroll depth, and conversion were all measured inside the story, so merchandising could see which editorial angle drove the most adds to bag.",
     },
 
     // ── GLOW STORY HERO — climbs the crossing that argues for it ──
@@ -284,10 +284,10 @@ export const nordstromBeautyCaseStudy: CaseStudy = {
       id: "closing-header",
       type: "section-header",
       label: "SECTION 05: CLOSING",
-      title: "A customer could buy where they were,",
+      title: "The templates ran through three seasonal rotations",
       pressing: {
         mark: { n: "05", name: "Three Templates" },
-        heldLine: "with no detour to a product page.",
+        heldLine: "before anyone asked for a layout change.",
       },
     },
     {
@@ -302,7 +302,7 @@ export const nordstromBeautyCaseStudy: CaseStudy = {
       stack: ["Nordstrom CMS", "Custom Components", "HTML/CSS/JS"],
       links: [],
       content:
-        "The templates ran through three seasonal rotations before anyone asked for a layout change. In between, merchandising swapped products and the catalog kept everything else current.",
+        "Between rotations, merchandising swapped in new products and the catalog kept everything else current.",
     },
   ],
 };
