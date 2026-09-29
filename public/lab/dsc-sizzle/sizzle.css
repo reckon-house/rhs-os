@@ -22,6 +22,7 @@
   --lab: clamp(6.5px, 1.22cqw, 11px); --sm: clamp(9px, 1.86cqw, 16px); --mid: clamp(10.5px, 2.15cqw, 19px);
   --ez: cubic-bezier(0.45, 0, 0.2, 1); --ezo: cubic-bezier(0.16, 1, 0.3, 1); }
 .stage.off { display: none; }
+.shots { position: absolute; inset: 0; }
 .stage * { box-sizing: border-box; }
 
 /* ── the shots ── */
@@ -189,3 +190,59 @@
 @media (prefers-reduced-motion: reduce) {
   .pic.sl img { animation: none; }
 }
+
+/* ── the mix (29 Sept): the app running, in the reel's own cuts ───────
+   His second pass: "the sizzle should show how it actually works but in
+   a SAAS sizzle type of way ... vary the transitions ... even when it
+   slows down something should always be moving". So the paper's dots
+   drift, every photograph glides, every phone is under a slow camera,
+   and the cuts come from Faux Reel's own vocabulary (the house's
+   SizzleReel: whip, iris, flash, pinch, shutter, slat, burn, and a
+   push through the glass) with the room's band among them. */
+.paper.dots { animation: szldots 26s linear infinite; }
+@keyframes szldots { from { background-position: 0 0; } to { background-position: 65px -40px; } }
+
+/* a phone, drawn: ours, as the demos' mat is ours, not a cloned device.
+   Drawn at its own size and scaled, so the app inside it lays out as it
+   does on a phone */
+.cam { position: absolute; transform-origin: 50% 50%; will-change: transform; }
+.dev { position: absolute; left: 0; top: 0; width: 412px; height: 822px; padding: 11px; border-radius: 60px; background: #0c0c0c; transform-origin: 0 0;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.07), 0 2px 5px rgba(0, 0, 0, 0.18), 0 34px 80px rgba(0, 0, 0, 0.3); }
+.ink .dev { box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.16), 0 34px 80px rgba(0, 0, 0, 0.5); }
+.dev .scr { position: relative; width: 390px; height: 800px; border-radius: 49px; overflow: hidden; background: #fff; }
+.dev .scr .ui { display: block; width: 390px; height: 800px; border: 0; background: #fff; pointer-events: none; }
+.dev .scr > img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: 50% 0; }
+.dev .scr > img.top { padding-top: 46px; background: #fff; }
+.dev .isl { position: absolute; left: 50%; top: 22px; width: 118px; height: 34px; margin-left: -59px; border-radius: 20px; background: #000; z-index: 3; }
+
+/* a layer over the shots, for what crosses a cut (the request, flying
+   from the athlete's phone to the owner's) */
+.ovl { position: absolute; inset: 0; z-index: 25; pointer-events: none; }
+.flyc { position: absolute; left: 0; top: 0; transform-origin: 0 0; padding: 12px 14px; border-radius: 18px; background: #fff; color: #000; width: 240px;
+  font-size: 13px; line-height: 1.35; box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1), 0 18px 40px rgba(0, 0, 0, 0.28); }
+.flyc b { font-weight: 600; }
+.flyc .g { color: rgba(0, 0, 0, 0.5); }
+.flyc .lab { display: block; margin-top: 4px; font-size: 9px; color: rgba(0, 0, 0, 0.45); }
+
+/* notes: the spread's column, beside a phone, a line or a trace at a
+   time under a hairline */
+.notes { position: absolute; }
+.note { position: relative; padding: 0.85em 0 0; margin-bottom: 1.25em; }
+.note > .rule { position: absolute; left: 0; right: 0; top: 0; }
+.note .lab { color: var(--grey); margin-bottom: 0.45em; }
+.note .say { font-size: clamp(9.5px, 2.35cqw, 21px); font-weight: 500; line-height: 1.22; letter-spacing: -0.015em; }
+@container szl (width < 520px) { .note { margin-bottom: 0.8em; padding-top: 0.6em; } .note .lab { margin-bottom: 0.3em; } }
+.note .say .g { color: var(--grey); }
+.note .trace { display: flex; align-items: center; gap: 0.6em; font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: clamp(8.5px, 1.5cqw, 13px); color: var(--grey); margin-top: 0.4em; }
+.note .trace .tk { color: var(--ink); }
+.ink .note .trace .tk { color: #fff; }
+
+/* the cuts that need a body of their own */
+.cutc { position: absolute; inset: 0; z-index: 30; pointer-events: none; }
+.slats { display: flex; }
+.slats > i { flex: 1; height: 100%; background: var(--bc, #000); transform: scaleY(0); transform-origin: 50% 0; }
+.pinch > i { position: absolute; left: 0; right: 0; height: 50.5%; background: var(--bc, #000); }
+.pinch > i:first-child { top: 0; transform: translateY(-101%); }
+.pinch > i:last-child { bottom: 0; transform: translateY(101%); }
+.flash { background: #fff; opacity: 0; }
+.burnw { background: #F3F0ED; opacity: 0; }

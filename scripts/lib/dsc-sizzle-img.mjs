@@ -39,6 +39,7 @@ const SCREENS = {
   registration: "dsc-athlete-app-registration-form.jpg",
   dashboard: "dsc-athlete-app-dashboard-next-session.jpg",
   programs: "dsc-athlete-app-programs-services.jpg",
+  trainer: "dsc-athlete-app-trainer-bio-profile.jpg",
   connect: "dsc-athlete-app-connect-mcp-server.jpg",
   consent: "dsc-claude-oauth-consent-screen.jpg",
   "claude-trainers": "dsc-claude-mcp-chat-trainers.jpg",

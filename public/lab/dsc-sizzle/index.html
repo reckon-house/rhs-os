@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex">
-<title>DSC sizzle · five versions · Reckon*House lab</title>
+<title>DSC sizzle · six versions · Reckon*House lab</title>
 <!-- ── THE DSC HERO SIZZLE, COMPARED (28 Sept 2026) ──────────────────────
      The five versions of the DSC hero side by side, each at the width a
      room gives its cover, each playing on its own loop. The same player
@@ -29,13 +29,14 @@
 </head>
 <body>
 <header class="top">
-  <h1>DSC hero sizzle · five versions</h1>
+  <h1>DSC hero sizzle · six versions</h1>
   <p>Lightest words to heaviest. Each is made of the room's own parts: its wipe, its type, its black field, its paper. Open one in the DSC room to see it over the cover, where it lives.</p>
 </header>
 <main class="grid" id="grid"></main>
 <script src="/lab/dsc-sizzle/sizzle.js"></script>
 <script>
   const NOTES = {
+    mix: "<b>The app, running.</b> The phones run the deployed app's own stylesheet and replay the real exchanges: the athlete's AI, the request flying to the owner, one tap, the week said out loud, a standing slot. Quick beats between (a headline, the checks, a figure, the athlete app's screens), Faux Reel's cuts with the band among them, and nothing ever still.",
     caption: "<b>Pictures lead.</b> Photographs and screens cut on the left-to-right mask, a paper tab in the corner naming each in a sentence. The checks tick on black.",
     figures: "<b>The black field as a reel.</b> A figure as large as the frame holds, its sentence small under it, hard cuts to the photographs between. The one tap is pressed.",
     headline: "<b>A magazine opener per beat.</b> One sentence set large and wiped in, the screen or the photograph opening beside it.",
@@ -45,7 +46,7 @@
   const grid = document.getElementById("grid");
   DSCSizzle.versions.forEach((v) => {
     const c = document.createElement("section"); c.className = "cell";
-    c.innerHTML = '<h2>' + v.name + ' <span>' + v.weight + ' text</span></h2><div class="frame"></div><p>' + NOTES[v.id] + '</p><a href="/lab/density/crossref2.html?sizzle=' + v.id + '#study/dsc">Open in the DSC room</a>';
+    c.innerHTML = '<h2>' + v.name + ' <span>' + v.weight + (v.id === "mix" ? "" : " text") + '</span></h2><div class="frame"></div><p>' + NOTES[v.id] + '</p><a href="/lab/density/crossref2.html?sizzle=' + v.id + '#study/dsc">Open in the DSC room</a>';
     grid.appendChild(c);
     DSCSizzle.mount(c.querySelector(".frame"), { version: v.id, fixed: true });
   });

@@ -97,6 +97,14 @@
   ],
   "screen": true
  },
+ "trainer": {
+  "w": 774,
+  "h": 1200,
+  "rungs": [
+   774
+  ],
+  "screen": true
+ },
  "connect": {
   "w": 760,
   "h": 695,
