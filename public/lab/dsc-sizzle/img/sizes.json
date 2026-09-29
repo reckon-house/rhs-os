@@ -65,6 +65,20 @@
    1800
   ]
  },
+ "app-checkin": {
+  "w": 3012,
+  "h": 2008,
+  "rungs": [
+   1600
+  ]
+ },
+ "app-landing": {
+  "w": 3000,
+  "h": 2000,
+  "rungs": [
+   1600
+  ]
+ },
  "login": {
   "w": 774,
   "h": 1200,
@@ -102,6 +116,22 @@
   "h": 1200,
   "rungs": [
    774
+  ],
+  "screen": true
+ },
+ "trainers-list": {
+  "w": 800,
+  "h": 2346,
+  "rungs": [
+   800
+  ],
+  "screen": true
+ },
+ "dash-full": {
+  "w": 776,
+  "h": 1812,
+  "rungs": [
+   776
   ],
   "screen": true
  },

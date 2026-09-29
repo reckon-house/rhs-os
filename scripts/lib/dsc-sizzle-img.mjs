@@ -40,6 +40,10 @@ const SCREENS = {
   dashboard: "dsc-athlete-app-dashboard-next-session.jpg",
   programs: "dsc-athlete-app-programs-services.jpg",
   trainer: "dsc-athlete-app-trainer-bio-profile.jpg",
+  /* tall captures, for scrolling inside a phone: the trainers list (staff
+     demo accounts) and the athlete dashboard end to end */
+  "trainers-list": "new/admin-screens/image 399.jpg",
+  "dash-full": "new/scheduling-screens/04-athlete-dashboard-full 4.jpg",
   connect: "dsc-athlete-app-connect-mcp-server.jpg",
   consent: "dsc-claude-oauth-consent-screen.jpg",
   "claude-trainers": "dsc-claude-mcp-chat-trainers.jpg",
@@ -48,9 +52,24 @@ const SCREENS = {
   "owner-chat": "dsc-owner-console-batch-scheduling-chat.jpg",
 };
 
+/* the app's own backgrounds, for the screens the sizzle rebuilds from its
+   source (screens.js, 29 Sept 2026): the check-in kiosk's floor and the
+   sign-up page's. They are not in the study; they are what anyone sees
+   on the app's public /checkin and /athlete/register pages, read from
+   its public folder (the same overhead shot of the floor, flipped, one
+   with the gym's line across its foot). Skipped if the app is not here */
+const APP = process.env.DSC_APP || "/Users/jp33/Documents/DSC/gym-management";
+const APP_PHOTOS = {
+  "app-checkin": ["public/checkin-bg-flip.jpg", [1600]],
+  "app-landing": ["public/images/landing-page-bg.jpg", [1600]],
+};
+
 const sizes = {};
-for (const [name, [src, rungs]] of Object.entries(PHOTOS)) {
-  const file = path.join(SRC, src), m = await sharp(file).metadata();
+const photos = Object.entries(PHOTOS).map(([name, [src, rungs]]) => [name, path.join(SRC, src), rungs]);
+if (fs.existsSync(APP)) Object.entries(APP_PHOTOS).forEach(([name, [src, rungs]]) => photos.push([name, path.join(APP, src), rungs]));
+else console.log("no app at " + APP + ": its two backgrounds keep the files already in img/");
+for (const [name, file, rungs] of photos) {
+  const m = await sharp(file).metadata();
   sizes[name] = { w: m.width, h: m.height, rungs: [] };
   for (const r of rungs) {
     const w = r ? Math.min(r, m.width) : m.width, out = `${name}@${w}.webp`;

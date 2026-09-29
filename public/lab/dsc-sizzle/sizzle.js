@@ -52,7 +52,7 @@
    a row of the versions sits under it, as the looks rows did, until he
    picks one. */
 (() => {
-  const BASE = "/lab/dsc-sizzle/", IMG = BASE + "img/", VQ = "?v=10";
+  const BASE = "/lab/dsc-sizzle/", IMG = BASE + "img/", VQ = "?v=14";
   const VERSIONS = [
     { id: "mix", name: "Mix", weight: "the app in use" },
     { id: "caption", name: "Caption", weight: "light" },
@@ -83,11 +83,16 @@
     "phone-site": { w: 3118, h: 1926, rungs: [1000, 1400, 1600, 2000] },
     "site-recovery": { w: 1800, h: 1109, rungs: [900, 1800] },
     "site-facilities": { w: 1800, h: 1557, rungs: [900, 1800] },
+    /* the app's own backgrounds, behind two of its rebuilt screens */
+    "app-checkin": { w: 3012, h: 2008, rungs: [1600] },
+    "app-landing": { w: 3000, h: 2000, rungs: [1600] },
     login: { w: 774, h: 1200, screen: true },
     registration: { w: 775, h: 1200, screen: true },
     dashboard: { w: 711, h: 1099, screen: true },
     programs: { w: 774, h: 1200, screen: true },
     trainer: { w: 774, h: 1200, screen: true },
+    "trainers-list": { w: 800, h: 2346, screen: true },
+    "dash-full": { w: 776, h: 1812, screen: true },
     connect: { w: 760, h: 695, screen: true },
     consent: { w: 1141, h: 1300, screen: true },
     "claude-trainers": { w: 919, h: 1400, screen: true },
@@ -614,26 +619,42 @@
      moving at all times, subtle notes animating through, the screens in
      use growing, panning, etc."
 
-     So this one runs the app itself. The phones load the deployed app's
-     compiled stylesheet (public/lab/dsc-demos/dsc-app.css) and carry its
-     JSX class strings, as the study's live demos do, and replay the same
-     real exchanges: the athlete asking their own AI, the request landing
-     on the owner's console and approved in one tap, the owner's week said
-     out loud, a standing slot filling the calendar. Each sits in the
-     spread's frame (a running head, notes in the other half, a line or a
-     tool call at a time) and holds long enough to follow, under a camera
-     that never stops. Between them the pace goes quick: photographs
-     gliding, a headline, the checks, a figure, the athlete app's three
-     screens. The cuts are Faux Reel's own (whip, iris, flash, pinch,
-     shutter, slat, burn, a push through the glass), the room's band
-     among them.
+     So this one runs the app itself. The phones load the app's own
+     stylesheet, compiled from its current source (app.css, by
+     scripts/lib/dsc-app-css.mjs), and carry its JSX class strings, as the
+     study's live demos do, and replay the same real exchanges: the
+     athlete asking their own AI, the request landing on the owner's
+     console and approved in one tap, the owner's week said out loud, a
+     standing slot filling the calendar. Each sits in the spread's frame
+     (a running head, notes in the other half, a line or a tool call at a
+     time) and holds long enough to follow, under a camera that never
+     stops. Between them the pace goes quick: photographs gliding, a
+     headline, the checks, a figure. The cuts are Faux Reel's own (whip,
+     iris, flash, pinch, shutter, slat, burn, a push through the glass),
+     the room's band among them.
+
+     Then a second act (29 Sept): "the back office", the rest of the gym
+     on the same app. The owner's home toured top to bottom, then two
+     pairs of phones cropped side by side, each flipping through the
+     app's own screens (screens.js, rebuilt from its source), one Tuesday
+     so the screens agree with each other.
 
      The phones are iframes, not the shadow root: Tailwind v4 registers
      its variables with @property, which a shadow tree ignores, and the
      app's borders would go with them. The app's @font-face rules are
      swapped for the site's own Avenir files, already in cache. ── */
-  let APPCSS = null;
-  const appCss = () => APPCSS || (APPCSS = fetch("/lab/dsc-demos/dsc-app.css").then((r) => (r.ok ? r.text() : "")).then((t) => t.replace(/@font-face\s*\{[^}]*\}/g, "")).catch(() => ""));
+  let APPCSS = null, SCREENS = null;
+  const appCss = () => APPCSS || (APPCSS = fetch(BASE + "app.css" + VQ).then((r) => (r.ok ? r.text() : "")).then((t) => t.replace(/@font-face\s*\{[^}]*\}/g, "")).catch(() => ""));
+  /* the second act's screens, rebuilt from the app's source, live in
+     screens.js and load only when a reel has them */
+  const screensJs = () => SCREENS || (SCREENS = new Promise((res) => {
+    if (window.DSCScreens) return res();
+    const s = document.createElement("script"); s.src = BASE + "screens.js" + VQ;
+    s.onload = s.onerror = () => res(); document.head.appendChild(s);
+  }));
+  /* a section that names a screen takes its page and its steps, and
+     keeps its own time and tag */
+  const screenOf = (x) => (x && x.screen ? Object.assign({}, (window.DSCScreens || {})[x.screen], x) : x);
   const FONTS = [[400, "Regular.woff2"], [500, "Medium.woff"], [600, "DemiBold.woff"], [700, "Bold.woff"], [800, "Heavy.woff"]]
     .map(([w, f]) => "@font-face{font-family:'Avenir Next';src:url('/fonts/AvenirNext-" + f + "');font-weight:" + w + ";font-display:block}").join("");
   /* inside a phone: a status bar, the demos' reveal and press, a tap, a
@@ -666,7 +687,8 @@
     + "@keyframes ai-rot{to{transform:rotate(360deg)}}"
     + ".ai-dockrow{padding:10px 12px 14px;border-top:1px solid rgba(0,0,0,.08)}"
     + ".ai-dock{display:flex;align-items:center;gap:8px;border:1px solid rgba(0,0,0,.12);border-radius:14px;padding:10px 14px;font-size:14px;color:#111;min-height:20px}.ai-dock .ai-ph{color:rgba(0,0,0,.35)}"
-    + "#th{scroll-behavior:smooth}#th::-webkit-scrollbar{display:none}";
+    + "#th{scroll-behavior:smooth}#th::-webkit-scrollbar{display:none}"
+    + ".pg{position:absolute;inset:0;overflow:hidden;background:#fff;will-change:transform}.pg.off{visibility:hidden}.pgin{min-height:100%;will-change:transform}.pgin>img.shot{display:block;width:100%}";
   const SB = '<div class="sb"><span>9:41</span><span class="bt"></span></div>';
   const MARKSRC = "/lab/dsc-demos/assets/logo-mark.png";
   const CHEV = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>';
@@ -677,13 +699,16 @@
   const UI = {
     ai: '<div class="ai-chat"><div class="ai-head"><span class="ai-dot"></span> AI assistant <span class="ai-conn">DSC connected · MCP</span></div>'
       + '<div class="ai-scroll" id="sc"></div><div class="ai-dockrow"><div class="ai-dock" id="dock"><span class="ai-ph">Message…</span></div></div></div>',
+    /* the owner's home as the app draws it (admin/page.tsx 293-331, 515-531):
+       the check-in box above the alerts, the four cards below; the same
+       home the second act tours in full */
     home: '<div class="bg-white flex flex-col" style="min-height:0;flex:1">'
       + '<header class="px-4 pt-6 pb-4 flex items-center justify-between"><div class="flex items-center gap-3"><img src="' + MARKSRC + '" alt="DSC" width="44" height="44"></div>'
-      + '<div class="flex items-center gap-3"><button class="dsc-label text-black/60">Log out</button></div></header>'
+      + '<div class="flex items-center gap-3"><span class="dsc-label text-black/60">Account</span><button class="dsc-label text-black/60">Log out</button></div></header>'
+      + '<div class="px-4 pb-3"><div class="rounded-3xl bg-black/[0.04] p-4 max-w-3xl mx-auto w-full"><div class="flex items-center justify-between mb-2"><div class="dsc-label text-black/50">Check in</div></div><input placeholder="Type a name…" autocomplete="off" tabindex="-1" class="w-full h-12 px-4 bg-white rounded-2xl text-black text-base placeholder:text-black/30"></div></div>'
       + '<div class="px-4 space-y-2 pb-2" id="alerts"></div>'
       + '<section class="px-4 pt-2 pb-4"><div class="grid grid-cols-2 gap-3 max-w-3xl mx-auto">'
-      + '<span class="group block bg-black/[0.04] rounded-3xl p-4 aspect-square flex flex-col justify-between overflow-hidden"><span class="dsc-label text-black/40 break-words">Talk to the scheduler</span><span class="dsc-headline text-2xl text-black whitespace-pre-line leading-[0.9] break-words">Chat /\nSchedule</span></span>'
-      + '<span class="group block bg-black/[0.04] rounded-3xl p-4 aspect-square flex flex-col justify-between overflow-hidden"><span class="dsc-label text-black/40 break-words">See the week</span><span class="dsc-headline text-2xl text-black whitespace-pre-line leading-[0.9] break-words">Calendar</span></span>'
+      + [["Talk to the scheduler", "Chat /\nSchedule"], ["See the week", "Calendar"], ["Hours &amp; roster", "Trainers"], ["Members &amp; assignments", "Athletes"]].map(([a, b]) => '<span class="group block bg-black/[0.04] rounded-3xl p-4 aspect-square flex flex-col justify-between overflow-hidden"><span class="dsc-label text-black/40 break-words">' + a + '</span><span class="dsc-headline text-2xl text-black whitespace-pre-line leading-[0.9] break-words">' + b + "</span></span>").join("")
       + "</div></section></div>",
     box: '<div class="flex items-center gap-2 mb-2"><span class="w-2 h-2 rounded-full bg-black"></span><span class="dsc-label text-black">Booking requests · 1</span></div>'
       + '<div class="space-y-2"><div class="bg-white rounded-2xl p-3 flex flex-col sm:flex-row sm:items-center gap-2"><div class="flex-1 min-w-0">'
@@ -743,6 +768,8 @@
       P.ready = Promise.resolve(null);
       return P;
     }
+    /* a phone with sections: each a page of its own, the first showing */
+    if (o.pages) o.body = o.pages.map((pg, i) => '<div class="pg' + (i ? " off" : "") + '"><div class="pgin">' + (pg.img ? '<img class="shot" alt="" src="' + srcOf(pg.img, 0) + '">' : pg.html) + "</div></div>").join("");
     const f = document.createElement("iframe"); f.className = "ui"; f.setAttribute("tabindex", "-1"); f.setAttribute("aria-hidden", "true"); f.title = "";
     scr.appendChild(f); P.frame = f;
     P.ready = appCss().then((css) => new Promise((res) => {
@@ -751,6 +778,66 @@
     }));
     return P;
   };
+  /* inside a phone: the next section pushes in from the right and the
+     last gives way, as a phone navigates; a section scrolls up within
+     the glass */
+  const flip = (c, doc, i, dur) => {
+    dur = dur || 540;
+    const pages = [...doc.querySelectorAll(".pg")], nx = pages[i]; if (!nx) return;
+    const cur = pages.find((pg) => pg !== nx && !pg.classList.contains("off"));
+    nx.classList.remove("off");
+    c.anim(nx, [{ transform: "translateX(100%)" }, { transform: "translateX(0%)" }], { duration: dur, easing: "cubic-bezier(0.7, 0, 0.15, 1)" });
+    if (cur) {
+      c.anim(cur, [{ transform: "translateX(0%)", filter: "brightness(1)" }, { transform: "translateX(-30%)", filter: "brightness(0.9)" }], { duration: dur, easing: "cubic-bezier(0.7, 0, 0.15, 1)", fill: "forwards" });
+      c.T(dur + 20, () => cur.classList.add("off"));
+    }
+  };
+  const scrollPg = (c, doc, i, px, dur) => {
+    const pg = doc.querySelectorAll(".pg")[i]; if (!pg) return;
+    const inner = pg.firstChild, max = Math.max(0, inner.scrollHeight - pg.clientHeight), y = px == null ? max : Math.min(px, max);
+    if (y > 0) c.anim(inner, [{ transform: "translateY(0px)" }, { transform: "translateY(" + -y + "px)" }], { duration: dur || 1400, easing: "cubic-bezier(0.45, 0, 0.35, 1)", fill: "forwards" });
+  };
+  /* a phone going through its sections: each held for its time, its own
+     steps run from when it shows, and a tag outside the phone naming it */
+  const sections = (c, P, t0, list, tag) => script(c, P, t0, (doc, at) => {
+    let t = 0;
+    list.forEach((sec, i) => {
+      if (i) at(t, () => flip(c, doc, i));
+      const s0 = t + (i ? 320 : 0);
+      if (tag && sec.tag) tag(sec.tag, s0 - (i ? 120 : 0));
+      if (sec.run) sec.run(doc, (ms, f) => at(s0 + ms, f), c);
+      if (sec.scroll) at(s0 + (sec.scroll[0] || 350), () => scrollPg(c, doc, i, sec.scroll[1], sec.scroll[2] || Math.max(700, sec.d - (sec.scroll[0] || 350) - 250)));
+      t += sec.d;
+    });
+  });
+  /* a paper tag beside a phone, whose words turn over under a band of ink
+     as the section changes */
+  const tagAt = (c, s, x, y, right) => {
+    const g = c.el("div", "ptag" + (right ? " r" : "")); g.style.cssText = (right ? "right:" + x : "left:" + x) + "px;top:" + y + "px";
+    const tt = c.el("div", "lab"); g.appendChild(tt); g.style.visibility = "hidden"; s.appendChild(g);
+    return (text, at) => c.T(Math.max(0, at), () => {
+      const b = c.el("i", "bd go"); g.appendChild(b);
+      c.T(330, () => { tt.textContent = text; g.style.visibility = ""; });
+      c.T(720, () => b.remove());
+    });
+  };
+  /* two phones side by side, larger than the frame so it crops them,
+     each going through its own sections, drifting against each other.
+     Mirrored (o.mirror), the left phone rides high and the right low, so
+     two pairs in a row don't repeat */
+  const pairShot = (o) => ({ d: o.d, cut: o.cut, dir: o.dir, ground: o.ground || "paper dots", app: true, scr: [...o.left, ...o.right].some((x) => x.screen), pics: o.pics || [], build(c, s) {
+    const d = this.d, h = c.H * (o.h || 1.2), m = !!o.mirror;
+    const left = o.left.map(screenOf), right = o.right.map(screenOf);
+    const L = phone(c, s, c.W * 0.285, c.H * (m ? 0.42 : 0.6), h, { pages: left });
+    const R = phone(c, s, c.W * 0.715, c.H * (m ? 0.6 : 0.42), h, { pages: right });
+    const drift = (P, a, b) => c.anim(P.cam, [{ transform: "translateY(" + (a * c.H).toFixed(1) + "px) scale(1)" }, { transform: "translateY(" + (b * c.H).toFixed(1) + "px) scale(1.035)" }], { duration: d + 900, easing: "linear", fill: "forwards" });
+    if (m) { drift(L, -0.02, 0.05); drift(R, 0.03, -0.05); } else { drift(L, 0.03, -0.05); drift(R, -0.02, 0.05); }
+    /* the tags both sit at the top, over each phone's head: at the foot
+       they covered a roster's names */
+    const tl = tagAt(c, s, c.pad, c.top, false), tr = tagAt(c, s, c.pad, c.top, true);
+    return (t0) => { sections(c, L, t0, left, tl); sections(c, R, t0 + (o.lag || 260), right, tr); return 0; };
+  } });
+
   /* the camera: a list of poses, each a scale and the point of the phone
      (a share of its box) it carries toward a point of the frame, joined
      on one soft curve, and the last held only by the end of the shot */
@@ -881,11 +968,12 @@
     };
   } };
   /* the owner's console: the request lands, one tap approves it */
-  const OWN = { cx: 0.29, cy: 0.53, h: 1.0, fy: 0.25 };
+  const OWN = { cx: 0.29, cy: 0.53, h: 1.0, fy: 0.39 };
   /* where the request box sits on the owner's phone as the shot opens:
-     under the status bar (50) and the header (84), inside the bezel (11),
-     the box as wide as the screen less its margins (358) */
-  const ownerTarget = (c) => { const h = c.H * OWN.h, k = h / DH, top = c.H * OWN.cy - h / 2, w = 358 * k; return { x: c.W * OWN.cx - w / 2, y: top + 145 * k, w }; };
+     under the status bar (50), the header (84) and the check-in box
+     (116), inside the bezel (11), the box as wide as the screen less its
+     margins (358) */
+  const ownerTarget = (c) => { const h = c.H * OWN.h, k = h / DH, top = c.H * OWN.cy - h / 2, w = 358 * k; return { x: c.W * OWN.cx - w / 2, y: top + 261 * k, w }; };
   const ownerShot = { d: 2900, cut: "whip", ground: "paper dots", app: true, build(c, s) {
     const d = this.d;
     const P = phone(c, s, c.W * OWN.cx, c.H * OWN.cy, c.H * OWN.h, { body: UI.home });
@@ -982,17 +1070,57 @@
       return 0;
     };
   } };
-  /* the athlete app, three screens at once, each drifting its own way */
-  const tripShot = { d: 2000, cut: "whip", ground: "paper dots", pics: ["dashboard", "trainer", "programs"], build(c, s) {
-    const d = this.d;
-    const K = c.el("div", "lab abs", "The athlete app"); K.style.cssText = `left:${c.pad}px;top:${c.top}px`; s.appendChild(K);
-    const spec = [["dashboard", 0.22, 0.78, 1], ["trainer", 0.5, 0.94, -1], ["programs", 0.78, 0.78, 1]];
-    spec.forEach(([name, x, hh, dir], i) => {
-      const P = phone(c, s, c.W * x, c.H * (i === 1 ? 0.53 : 0.6), c.H * hh, { img: name });
-      c.anim(P.cam, [{ transform: "translateY(" + (c.H * 0.5).toFixed(0) + "px)", easing: "cubic-bezier(0.16, 1, 0.3, 1)" }, { transform: "translateY(0px)", offset: 0.32, easing: "linear" }, { transform: "translateY(" + (-dir * c.H * 0.05).toFixed(0) + "px)" }], { duration: d + 700, delay: 80 * i, fill: "both" });
-    });
-    return (t0) => { c.wipe(K, { at: t0, kind: "tint", dur: 460 }); return 0; };
+  /* ── the second act (29 Sept): after the booking, the rest of the gym
+     on the same app. His notes: the owner's screen "is quick but i think
+     there are a ton more features"; the three phones at the end split
+     "side by side but cropped in", flipping "through different sections
+     of the app", some of them scrolling "within the phone screen". The
+     screens are screens.js's, rebuilt from the app's source, one day ── */
+
+  /* the owner's home, all of it: down through every alert, the launcher
+     and its links, then into Groups, where a roster's next eight weeks go
+     on the calendar in one tap. Beside it, each part named as the page
+     reaches it (every other one in a narrow frame) */
+  const TOUR = [[150, "Lead follow-ups"], [330, "Time off requests"], [510, "Class requests"], [1080, "Who hasn't been in"], [1680, "Attendance not taken"], [1900, "New registrations"], [3400, "Groups"]];
+  const tourShot = { d: 4900, cut: "shutter", ground: "paper dots", app: true, scr: true, build(c, s) {
+    const d = this.d, O = screenOf({ screen: "owner" }), G = screenOf({ screen: "groups" });
+    const P = phone(c, s, c.W * 0.29, c.H * 0.55, c.H * 1.04, { pages: [O, G] });
+    const N = notesAt(c, s, c.W * 0.56, c.top, c.W * 0.4, "The owner console", d);
+    camera(c, P, d + 700, [
+      { t: 0, s: 1.02 },
+      { t: 1, s: 1.14, fx: 0.5, fy: 0.46, tx: c.W * 0.29, ty: c.H * 0.52, k: 0.7 },
+    ]);
+    const few = c.W < 520;
+    return (t0) => {
+      N.head(t0);
+      script(c, P, t0, (doc, at) => {
+        O.run(doc, at, c);
+        at(3300, () => flip(c, doc, 1));
+        G.run(doc, (ms, f) => at(3620 + ms, f), c);
+      });
+      TOUR.forEach(([ms, lab], i) => { if (!few || i % 2 === 0) N.add(t0 + ms, { lab }); });
+      return 0;
+    };
   } };
+  /* a draft for him to edit, not yet a line in the study: the act's turn */
+  const PIVOT = "The rest of the gym runs on the same app.";
+  const ACT2 = [
+    mixHead("The back office", PIVOT, { d: 1900, cut: "band" }),
+    tourShot,
+    /* the floor: Marcus checks in for his 4pm, the coach takes the 7am's
+       attendance; the PT clears Priya's ankle, Zeke's days off go on the
+       calendar */
+    pairShot({ d: 5900, cut: "whip", dir: -1, lag: 200, pics: ["app-checkin"],
+      left: [{ screen: "checkin", d: 2500, tag: "Check-in" }, { screen: "coach", d: 3000, tag: "Attendance" }],
+      right: [{ screen: "injuries", d: 2400, tag: "Injuries" }, { screen: "timeoffHome", d: 1400, tag: "Time off" }, { screen: "timeoffCal", d: 1600 }] }),
+    /* the front door: a lead becomes an athlete and his mother signs the
+       waiver; a family signs up, into the athlete app */
+    pairShot({ d: 5600, cut: "flash", mirror: true, pics: ["app-landing", "dash-full", "trainers-list"],
+      left: [{ screen: "leads", d: 2900, tag: "Leads" }, { screen: "waiver", d: 2600, tag: "Waiver" }],
+      right: [{ screen: "signup", d: 2000, tag: "Sign-up" }, { img: "dash-full", d: 1700, tag: "The athlete app", scroll: [300] }, { img: "trainers-list", d: 1700, tag: "Trainers", scroll: [300] }] }),
+  ];
+  /* the second act alone, a bench (play.html?v=_act2), not in the row */
+  V._act2 = { shots: [...ACT2, markShot({ d: 1400, cut: "band" })], loopCut: "burn", poster: 1 };
 
   V.mix = {
     shots: [
@@ -1007,7 +1135,7 @@
       glideShot("phone-chat", { d: 1000, cut: "mask", op: "40% 50%", glide: [[1.04, 0, 0], [1.14, -1.5, -1]] }),
       ownerChatShot,
       dayShot,
-      tripShot,
+      ...ACT2,
       markShot({ d: 1400, cut: "band" }),
     ],
     loopCut: "burn",
@@ -1296,7 +1424,8 @@
       const list = seq(), urls = new Set();
       list.forEach((S) => (S.pics || []).forEach((n) => { urls.add(srcOf(n, PICS[n].screen ? 0 : coverW(n, Math.max(ctx.W, 400), Math.max(ctx.H, 260)))); }));
       const app = list.some((S) => S.app) ? [appCss()] : [];
-      return Promise.all([...urls].map((u) => new Promise((res) => { const im = new Image(); im.onload = im.onerror = () => res(); im.src = u; })).concat(app)).then(() => null);
+      const scr = list.some((S) => S.scr) ? [screensJs()] : [];
+      return Promise.all([...urls].map((u) => new Promise((res) => { const im = new Image(); im.onload = im.onerror = () => res(); im.src = u; })).concat(app, scr)).then(() => null);
     };
     const fonts = () => document.fonts ? Promise.all(["600 40px 'Avenir Next'", "500 16px 'Avenir Next'", "400 14px 'Avenir Next'", "700 10px 'Avenir Next'"].map((f) => document.fonts.load(f).catch(() => null))) : Promise.resolve();
 
