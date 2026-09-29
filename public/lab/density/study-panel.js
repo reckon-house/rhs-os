@@ -1048,6 +1048,12 @@
         const side = el("div", "sp-cside"); cv.appendChild(side); P.coverSide = side;
         cv.appendChild(box); P.coverBox = box; P.coverFrame = cv; P.lead = lf;
         room.cover = box;
+        /* a cover that plays (28 Sept, the DSC hero sizzle, public/lab/
+           dsc-sizzle): the player mounts over the lead picture, so the
+           tile still flies into this box and the first frame is the same
+           picture. A rebuild stops it (P.stops) and this mounts it again */
+        const live = window.SP_LIVE && window.SP_LIVE[k];
+        if (live) { try { const off = live(box, cv, { still: !mo }); if (typeof off === "function") P.stops.push(off); } catch (e) { /* the cover stays a picture */ } }
       }
       frag.appendChild(cv);
 

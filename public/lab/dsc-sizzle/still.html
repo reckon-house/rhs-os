@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex">
+<title>DSC sizzle · one shot · Reckon*House lab</title>
+<!-- A test bench: one shot of one version, held still, at a width.
+     still.html?v=figures&shot=7&w=364 -->
+<link rel="stylesheet" href="/lab/density/density.css">
+<style>body { margin: 20px; background: #fff; } #f { position: relative; background: #111; overflow: hidden; }</style>
+</head>
+<body>
+<div id="f"></div>
+<script src="/lab/dsc-sizzle/sizzle.js"></script>
+<script>
+  const q = new URLSearchParams(location.search), w = +(q.get("w") || 694), f = document.getElementById("f");
+  f.style.width = w + "px"; f.style.height = Math.round(w / 1.5) + "px";
+  DSCSizzle.mount(f, { version: q.get("v") || "headline", still: true, fixed: true, shot: +(q.get("shot") || 1) });
+</script>
+</body>
+</html>

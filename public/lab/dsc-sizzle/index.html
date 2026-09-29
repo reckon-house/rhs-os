@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>DSC sizzle · five versions · Reckon*House lab</title>
+<!-- ── THE DSC HERO SIZZLE, COMPARED (28 Sept 2026) ──────────────────────
+     The five versions of the DSC hero side by side, each at the width a
+     room gives its cover, each playing on its own loop. The same player
+     runs in the DSC room itself (crossref2.html#study/dsc), over the
+     cover, with a row under it to switch. The notes under each are for
+     him, not for the site. -->
+<link rel="stylesheet" href="/lab/density/density.css">
+<style>
+  body { margin: 0; padding: 28px 28px 80px; background: var(--paper); color: var(--ink); font-family: var(--sans); -webkit-font-smoothing: antialiased; }
+  .top { display: flex; justify-content: space-between; align-items: baseline; gap: 24px; padding-bottom: 12px; border-bottom: 1px solid var(--ink); margin-bottom: 36px; }
+  .top h1 { margin: 0; font-size: 12px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; }
+  .top p { margin: 0; font-size: 13px; line-height: 1.5; color: var(--grey); max-width: 56ch; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 620px), 1fr)); gap: 56px 36px; }
+  .cell h2 { display: flex; align-items: baseline; gap: 12px; margin: 0 0 10px; font-size: 8.5px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; }
+  .cell h2 span { color: var(--grey); }
+  .frame { position: relative; aspect-ratio: 3 / 2; background: #111; overflow: hidden; }
+  .cell p { margin: 12px 0 0; font-size: 13px; line-height: 1.55; color: var(--grey); max-width: 62ch; }
+  .cell p b { font-weight: 500; color: var(--ink); }
+  .cell a { display: inline-block; margin-top: 8px; font-size: 8.5px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; border-bottom: 1px solid var(--ink); padding-bottom: 2px; }
+  .narrow { max-width: 390px; }
+</style>
+</head>
+<body>
+<header class="top">
+  <h1>DSC hero sizzle · five versions</h1>
+  <p>Lightest words to heaviest. Each is made of the room's own parts: its wipe, its type, its black field, its paper. Open one in the DSC room to see it over the cover, where it lives.</p>
+</header>
+<main class="grid" id="grid"></main>
+<script src="/lab/dsc-sizzle/sizzle.js"></script>
+<script>
+  const NOTES = {
+    caption: "<b>Pictures lead.</b> Photographs and screens cut on the left-to-right mask, a paper tab in the corner naming each in a sentence. The checks tick on black.",
+    figures: "<b>The black field as a reel.</b> A figure as large as the frame holds, its sentence small under it, hard cuts to the photographs between. The one tap is pressed.",
+    headline: "<b>A magazine opener per beat.</b> One sentence set large and wiped in, the screen or the photograph opening beside it.",
+    spread: "<b>The room in miniature.</b> A running head, a two-tone lead in the right half, pictures and captions in the left, a page turn between.",
+    transcript: "<b>The demo as type.</b> The athlete's real words typed, their AI's tool calls ticking, the request approved on the owner's console in one tap, then the owner's week said out loud.",
+  };
+  const grid = document.getElementById("grid");
+  DSCSizzle.versions.forEach((v) => {
+    const c = document.createElement("section"); c.className = "cell";
+    c.innerHTML = '<h2>' + v.name + ' <span>' + v.weight + ' text</span></h2><div class="frame"></div><p>' + NOTES[v.id] + '</p><a href="/lab/density/crossref2.html?sizzle=' + v.id + '#study/dsc">Open in the DSC room</a>';
+    grid.appendChild(c);
+    DSCSizzle.mount(c.querySelector(".frame"), { version: v.id, fixed: true });
+  });
+</script>
+</body>
+</html>

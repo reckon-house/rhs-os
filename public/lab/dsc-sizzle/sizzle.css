@@ -1,0 +1,191 @@
+/* ── THE DSC HERO SIZZLE: its page (28 Sept 2026) ──────────────────────
+   Loaded inside the player's shadow root, so none of this reaches the
+   room and none of the room's rules (".sp-pic img" above all) reach in.
+   Everything is measured against the frame: the stage is a size
+   container, so cqw and cqh are a hundredth of the frame's width and
+   height, and a reel drawn 390 wide on a phone keeps the proportions of
+   one drawn 700 wide in a room.
+
+   The type is the room's, mapped onto its five roles (his "Scale, not
+   weight", 27 Sept): display fitted and set in demi; mid 15px medium at
+   a 700 frame; small 13px regular; labels 8.5px bold tracked 0.2em.
+   Ink, paper, one grey. The motion is the room's wipe: a band sweeps
+   over a line and off it, and the words are there when it has gone;
+   a picture opens from the left on the same curve. */
+
+:host { all: initial; position: absolute; inset: 0; display: block; z-index: 2; contain: strict; }
+.stage { position: absolute; inset: 0; overflow: hidden; container: szl / size; background: #111;
+  font-family: "Avenir Next", "Helvetica Neue", Helvetica, Arial, sans-serif; color: #000;
+  -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; font-kerning: normal;
+  --ink: #000; --paper: #fff; --grey: rgba(0, 0, 0, 0.42); --hair: rgba(0, 0, 0, 0.13); --mist: #ECECEC;
+  --pad: 4.4cqw; --top: max(34px, 8.5cqh);
+  --lab: clamp(6.5px, 1.22cqw, 11px); --sm: clamp(9px, 1.86cqw, 16px); --mid: clamp(10.5px, 2.15cqw, 19px);
+  --ez: cubic-bezier(0.45, 0, 0.2, 1); --ezo: cubic-bezier(0.16, 1, 0.3, 1); }
+.stage.off { display: none; }
+.stage * { box-sizing: border-box; }
+
+/* ── the shots ── */
+.shot { position: absolute; inset: 0; overflow: hidden; }
+/* the reel's own paper is a shade off the room's, the tone the room gives
+   a picture's box, so a page of type reads as a plate over the page and
+   not as more of it */
+.paper { background: #F2F2F0; color: var(--ink); }
+/* the index's dot grid, so a page of paper still reads as a frame
+   against the room's own paper */
+.dots { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='5' height='5'%3E%3Crect width='1' height='1' fill='%23000' fill-opacity='0.11'/%3E%3C/svg%3E"); background-size: 5px 5px; }
+.ink { background: #000; color: #fff; --grey: rgba(255, 255, 255, 0.52); --hair: rgba(255, 255, 255, 0.2); }
+.mist { background: var(--mist); color: var(--ink); }
+.photo { background: #151515; }
+
+/* a cut: the next shot opens from the left, on the house's curve */
+.shot.cm { clip-path: inset(0 100% 0 0); }
+.shot.cm.go { clip-path: inset(0 0 0 0); transition: clip-path 0.72s var(--ez); }
+/* a hard cut: one blink of ink */
+.blink { position: absolute; inset: 0; z-index: 30; background: #000; pointer-events: none; animation: szlblink 110ms steps(1) both; }
+@keyframes szlblink { 0% { opacity: 1; } 100% { opacity: 0; } }
+/* a page turn: a band across the whole frame, in then out */
+.fband { position: absolute; inset: 0; z-index: 30; background: var(--bc, #000); pointer-events: none;
+  animation: szlwipe var(--bd, 900ms) linear both; }
+
+/* ── the wipe, the room's own (study-panel.css, rvwipe) ── */
+@keyframes szlwipe {
+  0% { clip-path: inset(0 100% 0 0); animation-timing-function: cubic-bezier(0.45, 0, 0.2, 1); }
+  48% { clip-path: inset(0 0 0 0); }
+  52% { clip-path: inset(0 0 0 0); animation-timing-function: cubic-bezier(0.45, 0, 0.2, 1); }
+  100% { clip-path: inset(0 0 0 100%); }
+}
+.wp { position: relative; }
+.wp .w { opacity: 0; }
+.wp.go .w { opacity: 1; transition: opacity 0s linear var(--d, 0ms); }
+.wp > .bd { position: absolute; z-index: 1; pointer-events: none; clip-path: inset(0 100% 0 0); }
+.wp > .bd.ink { background: currentColor; }
+.wp > .bd.tint { background: color-mix(in srgb, currentColor 10%, transparent); }
+.wp.go > .bd { animation: szlwipe var(--bd, 760ms) linear var(--d, 0ms) both; }
+/* streamed: the words come in one after another, as a reply does */
+.st .w { opacity: 0; }
+.st.go .w { opacity: 1; transition: opacity 0.16s ease var(--d, 0ms); }
+.now .w, .now.w { opacity: 1 !important; transition: none !important; }
+.now > .bd { display: none; }
+/* a rule draws in from the left */
+.rule { display: block; height: 1px; background: currentColor; transform: scaleX(0); transform-origin: 0 50%; }
+.rule.hair { background: var(--hair); }
+.rule.go { transform: none; transition: transform 0.42s var(--ez) var(--d, 0ms); }
+.rule.now { transform: none; }
+/* a fade, for the few small things that have no line to wipe */
+.fd { opacity: 0; }
+.fd.go { opacity: 1; transition: opacity 0.4s ease var(--d, 0ms); }
+.fd.now { opacity: 1; }
+
+/* ── pictures: at most half their pixels, the room's rule ── */
+.pic { position: absolute; overflow: hidden; background: rgba(0, 0, 0, 0.06); }
+.pic img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: var(--op, 50% 50%); display: block; }
+.pic.full { inset: 0; }
+/* a screen: flat, so a hairline gives it an edge on any ground */
+.pic.scr { background: #fff; box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.12); }
+.ink .pic.scr { box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.14); }
+/* opening from the left, as the room's pictures do under wipe */
+.pic.m { clip-path: inset(0 100% 0 0); }
+.pic.m.go { clip-path: inset(0 0 0 0); transition: clip-path 0.72s var(--ez) var(--d, 0ms); }
+.pic.m.now { clip-path: none; }
+/* the cover's settle, 1.07 to 1 (study-panel.css sp-settle), given to
+   every photograph so the frame is never quite still */
+.pic.sl img { animation: szlsettle var(--sd, 2.6s) var(--ezo) both; }
+@keyframes szlsettle { from { scale: 1.07; } }
+.pic.cap { overflow: visible; }
+
+/* ── type, the room's five roles ── */
+.lab { font-size: var(--lab); font-weight: 700; letter-spacing: 0.2em; line-height: 1.3; text-transform: uppercase; }
+.g { color: var(--grey); }
+.sm { font-size: var(--sm); font-weight: 400; line-height: 1.45; letter-spacing: -0.003em; }
+.mid { font-size: var(--mid); font-weight: 500; line-height: 1.3; letter-spacing: -0.01em; }
+.dsp { font-weight: 600; letter-spacing: -0.045em; line-height: 1; }
+.lead { font-weight: 500; letter-spacing: -0.022em; line-height: 1.18; }
+.fig { font-weight: 600; letter-spacing: -0.055em; line-height: 0.84; white-space: nowrap; }
+.mono { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: calc(var(--sm) * 0.9); font-weight: 400; letter-spacing: 0; }
+.abs { position: absolute; }
+
+/* ── a tick, drawn ── */
+.tk { width: 1.05em; height: 0.9em; flex: none; overflow: visible; }
+.tk path { fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: square; stroke-dasharray: 16; stroke-dashoffset: 16; }
+.tk.go path { stroke-dashoffset: 0; transition: stroke-dashoffset 0.32s var(--ez) var(--d, 0ms); }
+.tk.now path { stroke-dashoffset: 0; }
+
+/* ── the checks: every booking, one engine (the study's abstract) ── */
+.checks { position: absolute; }
+.checks.sm { font-size: var(--sm); }
+.checks.mid { font-size: var(--mid); font-weight: 500; }
+.checks.lg { font-size: clamp(12px, 2.9cqw, 27px); font-weight: 500; letter-spacing: -0.015em; }
+.checks.em { font-size: 1.12em; font-weight: 500; }
+.ck { display: flex; justify-content: space-between; align-items: baseline; gap: 1.2em; padding: 0.56em 0 0.6em; }
+.ck .rule { position: absolute; left: 0; right: 0; bottom: 0; }
+.ck-row { position: relative; }
+
+/* ── the request, as it lands on the owner's console: who and when, then
+   the two buttons under them ── */
+.rq { position: absolute; padding: 1em 0 1.05em; }
+.rq > .rule { position: absolute; left: 0; right: 0; }
+.rq > .rule.t { top: 0; }
+.rq > .rule.b { bottom: 0; }
+.rq-l { min-width: 0; }
+.rq-when { margin-top: 0.3em; }
+.rq-via { font-size: 0.66em; letter-spacing: 0.16em; }
+.rq-a { display: flex; align-items: center; gap: 1.1em; margin-top: 0.95em; }
+/* on a photograph: a card of paper */
+.rq.card { background: var(--paper); color: var(--ink); padding: 1.1em 1.25em 1.15em; --grey: rgba(0, 0, 0, 0.42); clip-path: inset(0 100% 0 0); }
+.rq.card.go { clip-path: inset(0 0 0 0); transition: clip-path 0.72s var(--ez) var(--d, 0ms); }
+.rq.card.now { clip-path: none; }
+.rq.card .rq-ok { left: 1.25em; }
+.btn { position: relative; display: inline-flex; align-items: center; height: 2.5em; padding: 0 1.25em; border-radius: 99px; background: var(--ink); color: var(--paper);
+  font-size: var(--lab); font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; overflow: hidden; }
+.ink .btn { background: var(--paper); color: var(--ink); }
+.ink .g.lt { color: rgba(255, 255, 255, 0.66); }
+.btn.press { animation: szlpress 0.32s var(--ez) both; }
+@keyframes szlpress { 40% { scale: 0.9; } 100% { scale: 1; } }
+.btn .bd { position: absolute; inset: 0; background: currentColor; clip-path: inset(0 100% 0 0); }
+.btn.press .bd { animation: szlwipe 0.6s linear 0.08s both; }
+.rq.done .rq-l, .rq.done .rq-a { opacity: 0; transition: opacity 0.2s ease; }
+.rq .rq-ok { position: absolute; left: 0; right: 0; top: 50%; translate: 0 -50%; }
+
+/* ── the caption tab (Caption): paper, flush to the frame's corner, like
+   the shelves' credit strip ── */
+.tab { position: absolute; left: 0; bottom: 0; z-index: 10; max-width: min(50cqw, 460px); background: var(--paper); color: var(--ink);
+  padding: 1.5cqh 2.4cqw 1.7cqh var(--pad); }
+.tab .lab { color: var(--grey); margin-bottom: 0.5em; }
+.tab .sm { font-weight: 500; }
+.tab > .bd { position: absolute; inset: 0; z-index: 2; background: var(--ink); clip-path: inset(0 100% 0 0); }
+.tab > .bd.go { animation: szlwipe 0.66s linear both; }
+
+/* ── a running head (Spread, Transcript) ── */
+.rh { position: absolute; left: var(--pad); right: var(--pad); top: var(--top); display: flex; justify-content: space-between; align-items: baseline; gap: 2em; padding-bottom: 0.9em; }
+.rh .rule { position: absolute; left: 0; right: 0; bottom: 0; }
+
+/* ── the transcript: who speaks in the rail, the words beside it ── */
+/* sized as one block (sizzle.js fits its font-size to the page), so
+   every role keeps its proportion to the others */
+.tx { position: absolute; left: var(--pad); right: var(--pad); display: grid; grid-template-columns: 17cqw minmax(0, 1fr); column-gap: 3.2cqw; row-gap: 0.95em; align-items: baseline; font-size: 14px; }
+.tx .who { padding-top: 0.2em; color: var(--grey); font-size: 0.62em; }
+.tx .said { font-size: 2.2em; font-weight: 600; letter-spacing: -0.035em; line-height: 1.08; }
+.tx .mid { font-size: 1.32em; }
+.tx .sm { font-size: 1em; }
+.tx .lab { font-size: 0.62em; }
+.tx .mono { font-size: 0.9em; }
+.tx .tool { display: flex; align-items: center; gap: 0.7em; color: var(--grey); }
+.tx .tool .tk { color: var(--ink); }
+.tx .rq .btn { font-size: 0.62em; }
+/* the owner's card is the page's protagonist, set as the said lines are */
+.tx .rq .rq-who, .tx .rq .rq-ok { font-size: 1.9em; font-weight: 600; letter-spacing: -0.03em; line-height: 1.1; }
+.tx .rq .rq-ok .g { font-weight: 500; }
+.caret { display: inline-block; width: 0.07em; height: 0.92em; margin-left: 0.05em; vertical-align: -0.1em; background: currentColor; }
+/* narrow: the speaker goes over the words */
+@container szl (width < 520px) {
+  .tx { grid-template-columns: minmax(0, 1fr); row-gap: 0.4cqh; }
+  .tx .who { margin-top: 1.4cqh; }
+}
+
+/* ── the mark, drawn in whatever colour its ground wants ── */
+.mark { position: absolute; background: currentColor; -webkit-mask: url("img/mark.png") center / contain no-repeat; mask: url("img/mark.png") center / contain no-repeat; }
+.mark.fd { transition-duration: 0.6s; }
+
+@media (prefers-reduced-motion: reduce) {
+  .pic.sl img { animation: none; }
+}

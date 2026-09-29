@@ -1,0 +1,148 @@
+{
+ "laptop-concrete": {
+  "w": 3120,
+  "h": 1926,
+  "rungs": [
+   1000,
+   1400,
+   1600,
+   2000
+  ]
+ },
+ "phone-chat": {
+  "w": 3120,
+  "h": 1926,
+  "rungs": [
+   1000,
+   1400,
+   1600,
+   2000
+  ]
+ },
+ "phone-calendar": {
+  "w": 3120,
+  "h": 1926,
+  "rungs": [
+   1000,
+   1400,
+   1600,
+   2000
+  ]
+ },
+ "phone-site": {
+  "w": 3118,
+  "h": 1926,
+  "rungs": [
+   1000,
+   1400,
+   1600,
+   2000
+  ]
+ },
+ "laptop-stool": {
+  "w": 1920,
+  "h": 1280,
+  "rungs": [
+   1000,
+   1400,
+   1600,
+   1920
+  ]
+ },
+ "site-recovery": {
+  "w": 1800,
+  "h": 1109,
+  "rungs": [
+   900,
+   1800
+  ]
+ },
+ "site-facilities": {
+  "w": 1800,
+  "h": 1557,
+  "rungs": [
+   900,
+   1800
+  ]
+ },
+ "login": {
+  "w": 774,
+  "h": 1200,
+  "rungs": [
+   774
+  ],
+  "screen": true
+ },
+ "registration": {
+  "w": 775,
+  "h": 1200,
+  "rungs": [
+   775
+  ],
+  "screen": true
+ },
+ "dashboard": {
+  "w": 711,
+  "h": 1099,
+  "rungs": [
+   711
+  ],
+  "screen": true
+ },
+ "programs": {
+  "w": 774,
+  "h": 1200,
+  "rungs": [
+   774
+  ],
+  "screen": true
+ },
+ "connect": {
+  "w": 760,
+  "h": 695,
+  "rungs": [
+   760
+  ],
+  "screen": true
+ },
+ "consent": {
+  "w": 1141,
+  "h": 1300,
+  "rungs": [
+   1141
+  ],
+  "screen": true
+ },
+ "claude-trainers": {
+  "w": 919,
+  "h": 1400,
+  "rungs": [
+   919
+  ],
+  "screen": true
+ },
+ "claude-avail": {
+  "w": 921,
+  "h": 1400,
+  "rungs": [
+   921
+  ],
+  "screen": true
+ },
+ "claude-request": {
+  "w": 1096,
+  "h": 1400,
+  "rungs": [
+   1096
+  ],
+  "screen": true
+ },
+ "owner-chat": {
+  "w": 776,
+  "h": 1200,
+  "rungs": [
+   776
+  ],
+  "screen": true
+ }
+}
