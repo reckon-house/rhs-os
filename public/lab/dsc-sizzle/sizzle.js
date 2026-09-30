@@ -293,7 +293,7 @@
 
   /* ── figures: the black field as a reel. A figure sits on its own
      sentence at the foot of the frame, the study named in the corner ── */
-  const figShot = (fig, say, o) => Object.assign({ ground: "ink", d: 2300, cut: "blink", build(c, s) {
+  const figShot = (fig, say, o) => Object.assign({ name: fig, ground: "ink", d: 2300, cut: "blink", build(c, s) {
     const S = c.el("div", "mid g lt abs", esc(say)); S.style.cssText = `left:${c.pad}px;bottom:${c.pad}px;width:${Math.min(c.W * 0.56, 520)}px`;
     s.appendChild(S);
     const N = c.el("div", "lab g abs fd", "Dallas Sport Collective"); N.style.cssText = `right:${c.pad}px;bottom:${c.pad}px`;
@@ -776,6 +776,8 @@
       f.addEventListener("load", () => { P.doc = f.contentDocument; res(P.doc); }, { once: true });
       f.srcdoc = '<!doctype html><html><head><meta charset="utf-8"><style>' + FONTS + css + UICSS + "</style></head><body>" + SB + '<div class="app">' + (o.body || "") + "</div></body></html>";
     }));
+    if (c.phoneFrame) c.phoneFrame(f);
+    if (c.hold) c.hold(P.ready);
     return P;
   };
   /* inside a phone: the next section pushes in from the right and the
@@ -825,7 +827,7 @@
      each going through its own sections, drifting against each other.
      Mirrored (o.mirror), the left phone rides high and the right low, so
      two pairs in a row don't repeat */
-  const pairShot = (o) => ({ d: o.d, cut: o.cut, dir: o.dir, ground: o.ground || "paper dots", app: true, scr: [...o.left, ...o.right].some((x) => x.screen), pics: o.pics || [], build(c, s) {
+  const pairShot = (o) => ({ name: o.name, d: o.d, cut: o.cut, dir: o.dir, ground: o.ground || "paper dots", app: true, scr: [...o.left, ...o.right].some((x) => x.screen), pics: o.pics || [], build(c, s) {
     const d = this.d, h = c.H * (o.h || 1.2), m = !!o.mirror;
     const left = o.left.map(screenOf), right = o.right.map(screenOf);
     const L = phone(c, s, c.W * 0.285, c.H * (m ? 0.42 : 0.6), h, { pages: left });
@@ -860,11 +862,12 @@
      the phone took to load */
   const script = (c, P, t0, fn) => {
     const born = c.now() + t0;
-    P.ready.then((doc) => {
+    const done = P.ready.then((doc) => {
       if (!doc) return;
       const at = (ms, f) => c.T(Math.max(0, born + ms - c.now()), f);
       fn(doc, at);
     });
+    if (c.hold) c.hold(done);
   };
   const addIn = (d, parent, cls, html) => { const b = d.createElement("div"); b.className = cls + " pp"; if (html != null) b.innerHTML = html; parent.appendChild(b); void b.offsetWidth; b.classList.add("in"); return b; };
   /* typed into a field, the caret following */
@@ -901,7 +904,7 @@
       },
     };
   };
-  const glideShot = (name, o) => Object.assign({ ground: "photo", pics: [name], build(c, s) {
+  const glideShot = (name, o) => Object.assign({ name, ground: "photo", pics: [name], build(c, s) {
     const p = c.pic(name, [0, 0, c.W, c.H], { op: o && o.op });
     s.appendChild(p);
     const [a, b] = (o && o.glide) || [[1, 0, 0], [1.07, -1, 0]];
@@ -909,13 +912,13 @@
     return () => 0;
   } }, o || {});
   /* a headline across the page, then drifting while the dots do */
-  const mixHead = (label, text, o) => Object.assign({ ground: "paper dots", build(c, s) {
+  const mixHead = (label, text, o) => Object.assign({ name: label, ground: "paper dots", build(c, s) {
     const K = kicker(c, s, c.pad, c.top, c.W * 0.46, label);
     const T = headline(c, s, c.pad, c.top + K.h() + c.H * 0.05, c.W - 2 * c.pad, text, 2, Math.min(84, c.W * 0.09));
     c.anim(T, [{ transform: "translateY(0px)" }, { transform: "translateY(" + (-c.H * 0.03).toFixed(1) + "px)" }], { duration: (o.d || 1600) + 900, easing: "linear", fill: "forwards" });
     return (t0) => { K.play(t0); return c.wipe(T, { at: t0 + 150 }); };
   } }, o || {});
-  const markShot = (o) => Object.assign({ ground: "ink", build(c, s) {
+  const markShot = (o) => Object.assign({ name: "The mark", ground: "ink", build(c, s) {
     const m = c.el("i", "mark fd"), sz = Math.round(c.H * 0.36);
     m.style.cssText = `left:${(c.W - sz * 0.9) / 2}px;top:${(c.H - sz) / 2 - c.H * 0.05}px;width:${sz * 0.9}px;height:${sz}px`;
     s.appendChild(m);
@@ -926,7 +929,7 @@
   } }, o || {});
 
   /* the athlete asks their own AI; the request flies to the owner */
-  const aiShot = { d: 5700, cut: "mask", ground: "paper dots", app: true, build(c, s) {
+  const aiShot = { name: "The athlete's AI", d: 5700, cut: "mask", ground: "paper dots", app: true, build(c, s) {
     const d = this.d;
     const P = phone(c, s, c.W * 0.72, c.H * 0.53, c.H * 1.0, { body: UI.ai });
     const N = notesAt(c, s, c.pad, c.top, c.W * 0.4, "Booking by AI", d);
@@ -974,7 +977,7 @@
      (116), inside the bezel (11), the box as wide as the screen less its
      margins (358) */
   const ownerTarget = (c) => { const h = c.H * OWN.h, k = h / DH, top = c.H * OWN.cy - h / 2, w = 358 * k; return { x: c.W * OWN.cx - w / 2, y: top + 261 * k, w }; };
-  const ownerShot = { d: 2900, cut: "whip", ground: "paper dots", app: true, build(c, s) {
+  const ownerShot = { name: "The owner console", d: 2900, cut: "whip", ground: "paper dots", app: true, build(c, s) {
     const d = this.d;
     const P = phone(c, s, c.W * OWN.cx, c.H * OWN.cy, c.H * OWN.h, { body: UI.home });
     const N = notesAt(c, s, c.W * 0.56, c.top, c.W * 0.4, "The owner console", d);
@@ -1005,7 +1008,7 @@
     };
   } };
   /* the engine: every check, quickly, on black */
-  const checksShot = { d: 1500, cut: "iris", ground: "ink", build(c, s) {
+  const checksShot = { name: "The checks", d: 1500, cut: "iris", ground: "ink", build(c, s) {
     const K = kicker(c, s, c.pad, c.top, c.W * 0.5, "One engine");
     const k = checksAt(c, s, c.pad, c.top + K.h() + c.H * 0.06, Math.min(c.W * 0.62, 560), { size: "lg", gap: 115 });
     c.anim(k.box, [{ transform: "translateY(0px)" }, { transform: "translateY(" + (-c.H * 0.03).toFixed(1) + "px)" }], { duration: this.d + 800, easing: "linear", fill: "forwards" });
@@ -1013,7 +1016,7 @@
   } };
   /* the owner says the week: the scheduler proposes, skips three by name,
      waits for commit */
-  const ownerChatShot = { d: 5500, cut: "push", ground: "paper dots", app: true, at: (c) => ({ x: c.W * 0.575, y: c.H * 0.46 }), build(c, s) {
+  const ownerChatShot = { name: "The owner's chat", d: 5500, cut: "push", ground: "paper dots", app: true, at: (c) => ({ x: c.W * 0.575, y: c.H * 0.46 }), build(c, s) {
     const d = this.d;
     const P = phone(c, s, c.W * 0.71, c.H * 0.53, c.H * 1.0, { body: UI.chat });
     const N = notesAt(c, s, c.pad, c.top, c.W * 0.4, "A week by chat", d);
@@ -1053,7 +1056,7 @@
     };
   } };
   /* a standing slot: the engine writes the next eight Tuesdays */
-  const dayShot = { d: 2100, cut: "slat", ground: "paper dots", app: true, build(c, s) {
+  const dayShot = { name: "Standing slots", d: 2100, cut: "slat", ground: "paper dots", app: true, build(c, s) {
     const d = this.d;
     const P = phone(c, s, c.W * 0.29, c.H * 0.56, c.H * 1.04, { body: UI.day });
     const N = notesAt(c, s, c.W * 0.56, c.top, c.W * 0.4, "Standing slots", d);
@@ -1082,7 +1085,7 @@
      on the calendar in one tap. Beside it, each part named as the page
      reaches it (every other one in a narrow frame) */
   const TOUR = [[150, "Lead follow-ups"], [330, "Time off requests"], [510, "Class requests"], [1080, "Who hasn't been in"], [1680, "Attendance not taken"], [1900, "New registrations"], [3400, "Groups"]];
-  const tourShot = { d: 4900, cut: "shutter", ground: "paper dots", app: true, scr: true, build(c, s) {
+  const tourShot = { name: "The owner's home", d: 4900, cut: "shutter", ground: "paper dots", app: true, scr: true, build(c, s) {
     const d = this.d, O = screenOf({ screen: "owner" }), G = screenOf({ screen: "groups" });
     const P = phone(c, s, c.W * 0.29, c.H * 0.55, c.H * 1.04, { pages: [O, G] });
     const N = notesAt(c, s, c.W * 0.56, c.top, c.W * 0.4, "The owner console", d);
@@ -1110,12 +1113,12 @@
     /* the floor: Marcus checks in for his 4pm, the coach takes the 7am's
        attendance; the PT clears Priya's ankle, Zeke's days off go on the
        calendar */
-    pairShot({ d: 5900, cut: "whip", dir: -1, lag: 200, pics: ["app-checkin"],
+    pairShot({ name: "The floor", d: 5900, cut: "whip", dir: -1, lag: 200, pics: ["app-checkin"],
       left: [{ screen: "checkin", d: 2500, tag: "Check-in" }, { screen: "coach", d: 3000, tag: "Attendance" }],
       right: [{ screen: "injuries", d: 2400, tag: "Injuries" }, { screen: "timeoffHome", d: 1400, tag: "Time off" }, { screen: "timeoffCal", d: 1600 }] }),
     /* the front door: a lead becomes an athlete and his mother signs the
        waiver; a family signs up, into the athlete app */
-    pairShot({ d: 5600, cut: "flash", mirror: true, pics: ["app-landing", "dash-full", "trainers-list"],
+    pairShot({ name: "The front door", d: 5600, cut: "flash", mirror: true, pics: ["app-landing", "dash-full", "trainers-list"],
       left: [{ screen: "leads", d: 2900, tag: "Leads" }, { screen: "waiver", d: 2600, tag: "Waiver" }],
       right: [{ screen: "signup", d: 2000, tag: "Sign-up" }, { img: "dash-full", d: 1700, tag: "The athlete app", scroll: [300] }, { img: "trainers-list", d: 1700, tag: "Trainers", scroll: [300] }] }),
   ];
@@ -1124,15 +1127,15 @@
 
   V.mix = {
     shots: [
-      glideShot("cover", { d: 1400, glide: [[1, 0, 0], [1.08, -1.2, 0.4]] }),
-      glideShot("phone-site", { d: 850, cut: "whip", glide: [[1.12, 2, 0], [1.2, -2, 1]] }),
+      glideShot("cover", { name: "Cover", d: 1400, glide: [[1, 0, 0], [1.08, -1.2, 0.4]] }),
+      glideShot("phone-site", { name: "The site", d: 850, cut: "whip", glide: [[1.12, 2, 0], [1.2, -2, 1]] }),
       mixHead("From your AI", SAY.aiUse, { d: 1900, cut: "band" }),
       aiShot,
       ownerShot,
       checksShot,
       figShot("1 tap", SAY.approve, { d: 1250, cut: "blink", drift: true }),
       mixHead("A week by chat", SAY.weekSay, { d: 1600, cut: "pinch" }),
-      glideShot("phone-chat", { d: 1000, cut: "mask", op: "40% 50%", glide: [[1.04, 0, 0], [1.14, -1.5, -1]] }),
+      glideShot("phone-chat", { name: "The chat, in hand", d: 1000, cut: "mask", op: "40% 50%", glide: [[1.04, 0, 0], [1.14, -1.5, -1]] }),
       ownerChatShot,
       dayShot,
       ...ACT2,
@@ -1156,13 +1159,24 @@
     let shots = null, ovl = null;
     const cssReady = new Promise((res) => { link.addEventListener("load", res, { once: true }); link.addEventListener("error", res, { once: true }); });
 
-    const still = !!opts.still || matchMedia("(prefers-reduced-motion: reduce)").matches;
+    /* review.html mounts with a clock of its own, below; nothing else does */
+    const review = !!opts.review;
+    const still = !review && (!!opts.still || matchMedia("(prefers-reduced-motion: reduce)").matches);
     let ver = opts.version || current();
     let dead = false, playing = false, seen = false, idx = -1, cur = null, curS = null, tab = null, gen = 0;
     const timers = new Set(), loops = new Set(), anims = new Set();
-    const T = (ms, fn) => { const my = gen; const id = setTimeout(() => { timers.delete(id); if (!dead && my === gen) fn(); }, still ? 0 : Math.max(0, ms)); timers.add(id); return id; };
-    const stop = () => { timers.forEach(clearTimeout); timers.clear(); loops.forEach(clearInterval); loops.clear(); gen++; };
-    const halt = () => { stop(); anims.forEach((a) => { try { a.cancel(); } catch (e) { /* gone */ } }); anims.clear(); };
+    /* ── the review clock. Time is a number a timeline moves, not the
+       wall's: every timer the reel sets waits in vq for it, and every
+       animation it starts (its own, and the CSS ones in its shadow and
+       its phones) is held and set to it, so any moment can be built again
+       exactly, paused, stepped or slowed. Off review, the wall's clock ── */
+    let vnow = 0, vseq = 0, holds = [];
+    const vq = [], vt = new Map(), phoneFrames = new Set();
+    const T = review
+      ? (ms, fn) => { const my = gen; vq.push({ at: vnow + Math.max(0, ms), seq: vseq++, fn: () => { if (!dead && my === gen) fn(); } }); }
+      : (ms, fn) => { const my = gen; const id = setTimeout(() => { timers.delete(id); if (!dead && my === gen) fn(); }, still ? 0 : Math.max(0, ms)); timers.add(id); return id; };
+    const stop = () => { timers.forEach(clearTimeout); timers.clear(); loops.forEach(clearInterval); loops.clear(); vq.length = 0; gen++; };
+    const halt = () => { stop(); anims.forEach((a) => { try { a.cancel(); } catch (e) { /* gone */ } }); anims.clear(); vt.clear(); phoneFrames.clear(); holds = []; };
 
     const el = (t, c, html) => { const e = document.createElement(t); if (c) e.className = c; if (html != null) e.innerHTML = html; return e; };
     const ctx = { el, T, get instant() { return still; } };
@@ -1171,14 +1185,21 @@
     const anim = (e, frames, o) => {
       if (!e || !e.animate || still) return null;
       const a = e.animate(frames, o); anims.add(a);
+      if (review) { a.pause(); vt.set(a, vnow); a.currentTime = 0; }
       a.finished.then(() => anims.delete(a), () => anims.delete(a));
       return a;
     };
     ctx.anim = anim;
-    ctx.now = () => performance.now();
+    ctx.now = review ? () => vnow : () => performance.now();
     ctx.stageRect = () => stage.getBoundingClientRect();
     /* a clock that repeats until its function says stop */
-    ctx.every = (ms, fn) => { const my = gen; const id = setInterval(() => { if (dead || my !== gen || fn() === false) { clearInterval(id); loops.delete(id); } }, ms); loops.add(id); return id; };
+    ctx.every = review
+      ? (ms, fn) => { const my = gen; const tick = () => { if (dead || my !== gen) return; if (fn() !== false) T(ms, tick); }; T(ms, tick); }
+      : (ms, fn) => { const my = gen; const id = setInterval(() => { if (dead || my !== gen || fn() === false) { clearInterval(id); loops.delete(id); } }, ms); loops.add(id); return id; };
+    /* under review a phone is waited for: the clock holds while it loads,
+       so its steps land on their moments, not after them */
+    ctx.hold = review ? (p) => { holds.push(p); } : null;
+    ctx.phoneFrame = review ? (f) => { phoneFrames.add(f); } : null;
     const size = () => {
       ctx.W = stage.clientWidth; ctx.H = stage.clientHeight;
       ctx.pad = Math.round(ctx.W * 0.044); ctx.top = Math.round(Math.max(34, ctx.H * 0.085));
@@ -1245,13 +1266,12 @@
         node.appendChild(car); ghost.remove();
         const rest = el("span", null, esc(text)); rest.style.visibility = "hidden"; node.appendChild(rest);
         let n = 0;
-        const id = setInterval(() => {
-          if (dead) { clearInterval(id); return; }
+        ctx.every(cps, () => {
           n = Math.min(text.length, n + 1);
           tx.nodeValue = text.slice(0, n); rest.textContent = text.slice(n);
-          if (n >= text.length) { clearInterval(id); loops.delete(id); rest.remove(); T(420, () => car.remove()); }
-        }, cps);
-        loops.add(id);
+          if (n >= text.length) { rest.remove(); T(420, () => car.remove()); return false; }
+          return true;
+        });
       });
       return at + text.length * cps;
     };
@@ -1429,16 +1449,91 @@
     };
     const fonts = () => document.fonts ? Promise.all(["600 40px 'Avenir Next'", "500 16px 'Avenir Next'", "400 14px 'Avenir Next'", "700 10px 'Avenir Next'"].map((f) => document.fonts.load(f).catch(() => null))) : Promise.resolve();
 
-    const begin = () => {
+    /* a clean stage: the shots, the caption tab, the overlay the request
+       flies across */
+    const restage = () => {
       halt(); cur = null; curS = null; idx = -1;
       stage.replaceChildren();
       tab = null;
-      if (ver === "still" || !V[ver]) { stage.classList.add("off"); return; }
-      stage.classList.remove("off");
-      size();
       shots = el("div", "shots"); stage.appendChild(shots);
       if (V[ver].tab) { tab = el("div", "tab"); tab.appendChild(el("div", "tt")); tab.style.visibility = "hidden"; stage.appendChild(tab); }
       ovl = el("div", "ovl"); stage.appendChild(ovl);
+    };
+
+    /* ── review: the reel laid out on one timeline, shot after shot ── */
+    let starts = [], total = 0, running = false, rate = 1, lastReal = 0, resumeAt = +opts.at || 0, lock = Promise.resolve(), target = null, seeking = false;
+    const tickers = new Set();
+    const emit = () => tickers.forEach((cb) => { try { cb(vnow); } catch (e) { /* the listener's own trouble */ } });
+    const layoutTimes = () => { starts = []; total = 0; seq().forEach((S) => { starts.push(total); total += S.d; }); };
+    const exclusive = (fn) => (lock = lock.then(fn, fn));
+    /* every animation set to where it is at t; any the last step started
+       (a CSS transition, a band, a sheet sliding up in a phone) is stamped
+       with t first and held */
+    const sweep = (t) => {
+      const roots = [sr];
+      phoneFrames.forEach((f) => { if (!f.isConnected) { phoneFrames.delete(f); return; } if (f.contentDocument) roots.push(f.contentDocument); });
+      roots.forEach((r) => {
+        let list = [];
+        try { list = r.getAnimations(); } catch (e) { return; }
+        list.forEach((a) => {
+          if (!vt.has(a)) { vt.set(a, t); try { a.pause(); } catch (e) { /* gone */ } }
+          const ct = Math.max(0, t - vt.get(a));
+          try { if (a.currentTime !== ct) a.currentTime = ct; } catch (e) { /* gone */ }
+        });
+      });
+    };
+    /* run every step due by t, in order, each with the world set to its
+       own moment; a phone still loading holds the clock until it is */
+    const advanceTo = async (t) => {
+      for (;;) {
+        if (dead) return;
+        if (holds.length) { const h = holds; holds = []; await Promise.all(h.map((q) => Promise.resolve(q).catch(() => null))); await null; await null; continue; }
+        let k = -1;
+        for (let i = 0; i < vq.length; i++) { const it = vq[i]; if (it.at <= t && (k < 0 || it.at < vq[k].at || (it.at === vq[k].at && it.seq < vq[k].seq))) k = i; }
+        if (k < 0) break;
+        const it = vq.splice(k, 1)[0];
+        if (it.at > vnow) { vnow = it.at; sweep(vnow); }
+        it.fn(); sweep(vnow);
+      }
+      if (t > vnow) vnow = t;
+      sweep(vnow);
+    };
+    /* the reel as it is at t. Forward and within a shot's reach, the clock
+       just runs on; otherwise it is built again from the shot before
+       (whose cut brings this one in) and run up to t */
+    const doSeek = async (t) => {
+      if (!total) return;
+      t = Math.max(0, Math.min(total - 1, t));
+      let n = 0; while (n + 1 < starts.length && starts[n + 1] <= t) n++;
+      if (curS && t >= vnow && n <= idx + 1) { await advanceTo(t); return; }
+      const from = n > 0 && t - starts[n] < 1500 ? n - 1 : n;
+      restage(); vnow = starts[from]; playing = true;
+      show(from, "none");
+      await advanceTo(t);
+    };
+    const requestSeek = (t) => {
+      target = t;
+      if (!seeking) {
+        seeking = true;
+        exclusive(async () => { while (target != null) { const x = target; target = null; await doSeek(x); } seeking = false; emit(); });
+      }
+      return lock;
+    };
+    const nextFrame = (f) => (document.hidden ? setTimeout(f, 16) : requestAnimationFrame(f));
+    const frame = async () => {
+      if (!running || dead) return;
+      const now = performance.now(), dt = Math.min(80, now - lastReal); lastReal = now;
+      if (!seeking) await exclusive(async () => { const t = vnow + dt * rate; if (t >= total) await doSeek(0); else await advanceTo(t); });
+      emit();
+      if (running && !dead) nextFrame(frame);
+    };
+
+    const begin = () => {
+      if (ver === "still" || !V[ver]) { halt(); cur = null; curS = null; idx = -1; stage.replaceChildren(); tab = null; stage.classList.add("off"); return; }
+      stage.classList.remove("off");
+      size();
+      restage();
+      if (review) { layoutTimes(); requestSeek(resumeAt); return; }
       /* not playing until play() says so, or the first shot would set its
          own clock beside play()'s and the reel would skip a shot */
       playing = false;
@@ -1460,7 +1555,8 @@
     function pause() { if (!playing) return; playing = false; stop(); }
 
     let io = null;
-    if ("IntersectionObserver" in window) {
+    if (review) seen = true;
+    else if ("IntersectionObserver" in window) {
       io = new IntersectionObserver((es) => es.forEach((e) => { seen = e.isIntersecting && e.intersectionRatio >= 0.3; if (seen) play(); else pause(); }), { threshold: [0, 0.3, 0.6] });
       io.observe(wrap);
     } else seen = true;
@@ -1481,6 +1577,7 @@
         const w = stage.clientWidth; if (!w) return;
         if (!lastW) { lastW = w; return; }
         if (Math.abs(w - lastW) / lastW < 0.06) return;
+        if (review) { lastW = w; resumeAt = vnow; begin(); return; }
         lastW = w; const was = playing; begin(); if (was) play();
       }, 120);
     }) : null;
@@ -1499,8 +1596,22 @@
     const api = {
       el: wrap, fixed: !!opts.fixed,
       get version() { return ver; },
-      set(v) { if (dead || (!IDS.includes(v) && v !== "still") || v === ver) return; ver = v; if (!ready) return; size(); preload().then(() => { if (!dead && ver === v) begin(); }); },
-      destroy() { dead = true; halt(); if (io) io.disconnect(); if (ro) ro.disconnect(); LIVE.delete(api); wrap.remove(); },
+      set(v) { if (dead || (!IDS.includes(v) && v !== "still") || v === ver) return; ver = v; resumeAt = 0; if (!ready) return; size(); preload().then(() => { if (!dead && ver === v) begin(); }); },
+      destroy() { dead = true; running = false; halt(); if (io) io.disconnect(); if (ro) ro.disconnect(); LIVE.delete(api); wrap.remove(); },
+      /* the review page's handle on the clock (review.html) */
+      review: review ? {
+        shots: () => seq().map((S, i) => ({ i, name: S.name || (S.cap && S.cap[0]) || "Shot " + (i + 1), d: S.d, start: starts[i] })),
+        total: () => total,
+        time: () => vnow,
+        playing: () => running,
+        speed: () => rate,
+        play() { if (running || dead) return; running = true; lastReal = performance.now(); nextFrame(frame); emit(); },
+        pause() { running = false; emit(); },
+        seek: (t) => requestSeek(t),
+        rate(r) { rate = r; emit(); },
+        onTick(cb) { tickers.add(cb); return () => tickers.delete(cb); },
+        idle: () => lock,
+      } : null,
     };
     LIVE.add(api);
     return api;

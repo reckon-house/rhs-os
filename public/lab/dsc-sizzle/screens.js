@@ -32,11 +32,13 @@
   const $ = (doc, id) => doc.getElementById(id);
   /* a finger on the glass: a ripple where it lands and the press state
      the demos use */
-  const tap = (doc, el) => {
+  const tap = (doc, el, c) => {
     if (!el) return;
     const r = el.getBoundingClientRect(), t = doc.createElement("i"); t.className = "tap";
     t.style.left = r.left + r.width / 2 + "px"; t.style.top = r.top + r.height / 2 + "px"; doc.body.appendChild(t);
-    el.classList.add("press"); setTimeout(() => el.classList.remove("press"), 150); setTimeout(() => t.remove(), 800);
+    /* on the player's clock, so a paused or rewound reel holds the press */
+    const later = c ? c.T : (ms, f) => setTimeout(f, ms);
+    el.classList.add("press"); later(150, () => el.classList.remove("press")); later(800, () => t.remove());
   };
   const reveal = (el) => { el.classList.add("pp"); void el.offsetWidth; el.classList.add("in"); return el; };
   const node = (doc, html) => { const t = doc.createElement("template"); t.innerHTML = html.trim(); return t.content.firstElementChild; };
@@ -51,9 +53,9 @@
   const glide = (c, el, y0, y1, dur) => c.anim(el, [{ transform: "translateY(" + -y0 + "px)" }, { transform: "translateY(" + -y1 + "px)" }], { duration: dur, easing: "cubic-bezier(0.45, 0, 0.35, 1)", fill: "forwards" });
   /* a box that scrolls itself (a sheet, the waiver's text), stepped */
   const scrollBox = (c, el, to, dur) => {
-    const from = el.scrollTop, t0 = performance.now();
+    const from = el.scrollTop, t0 = c.now();
     c.every(16, () => {
-      const k = Math.min(1, (performance.now() - t0) / dur), e = k < 0.5 ? 2 * k * k : 1 - Math.pow(-2 * k + 2, 2) / 2;
+      const k = Math.min(1, (c.now() - t0) / dur), e = k < 0.5 ? 2 * k * k : 1 - Math.pow(-2 * k + 2, 2) / 2;
       el.scrollTop = from + (to - from) * e; return k < 1;
     });
   };
@@ -88,9 +90,9 @@
 </main></div>
 <footer class="bg-white pt-3 md:pt-4 pb-2"><p class="text-black font-medium uppercase" style="font-size:clamp(16px, 3.5vw, 48px);letter-spacing:clamp(0.1em, 2vw, 0.4em)">Unlock Your Peak Performance</p><p class="text-gray-500 text-xs mt-1 md:mt-2">Copyright &copy; 2025 Dallas Sports Collective. All Rights Reserved.</p></footer>
 </div>`,
-    run(doc, at) {
+    run(doc, at, c) {
       type(doc, $(doc, "email"), "marcus.chen@email.com", at, 250, 30);
-      at(1000, () => tap(doc, $(doc, "signin")));
+      at(1000, () => tap(doc, $(doc, "signin"), c));
       at(1150, () => { $(doc, "kiosk").innerHTML = '<div class="absolute inset-0 flex items-center justify-center"><div class="text-center bg-black/70 backdrop-blur rounded-2xl p-8"><div class="text-white text-xl mb-4">Finding your session...</div><div class="animate-pulse text-white text-4xl">...</div></div></div>'; });
       at(1750, () => {
         const k = $(doc, "kiosk");
@@ -132,12 +134,12 @@
 </div>`,
     /* the coach opens the owed session, taps the one who didn't come, and
        saves; the amber card clears */
-    run(doc, at) {
-      at(250, () => tap(doc, $(doc, "take")));
+    run(doc, at, c) {
+      at(250, () => tap(doc, $(doc, "take"), c));
       at(420, () => swap($(doc, "sheet"), "hidden"));
-      at(1050, () => tap(doc, $(doc, "r3")));
+      at(1050, () => tap(doc, $(doc, "r3"), c));
       at(1150, () => { swap($(doc, "r3"), "bg-emerald-50 text-emerald-950", "bg-red-50 text-red-900"); $(doc, "r3s").textContent = "No-show"; $(doc, "save").textContent = "Save · 3 here, 1 no-show"; });
-      at(1750, () => tap(doc, $(doc, "save")));
+      at(1750, () => tap(doc, $(doc, "save"), c));
       at(1850, () => { const v = $(doc, "save"); v.textContent = "Saving…"; v.setAttribute("disabled", ""); });
       at(2200, () => { swap($(doc, "sheet"), null, "hidden"); $(doc, "t2note").textContent = "Attendance taken"; swap($(doc, "owed"), null, "hidden"); });
     },
@@ -172,17 +174,17 @@
 </div></div></div>`,
     /* the PT replies, then clears it; it moves to Cleared, the thread
        kept */
-    run(doc, at) {
-      at(250, () => tap(doc, $(doc, "send")));
+    run(doc, at, c) {
+      at(250, () => tap(doc, $(doc, "send"), c));
       at(400, () => {
         const n = node(doc, INJ_REPLY); $(doc, "notes").appendChild(n); reveal(n);
         const p = $(doc, "pill"); p.className = "dsc-label px-2 py-1 rounded-full shrink-0 bg-amber-100 text-amber-900"; p.textContent = "PT following up";
         $(doc, "meta").textContent = "Flagged by Scott · Jun 22, 4:05 PM · 2 notes"; $(doc, "tabOpen").textContent = "Open"; $(doc, "reply").value = "";
       });
-      at(1050, () => tap(doc, $(doc, "clear")));
+      at(1050, () => tap(doc, $(doc, "clear"), c));
       at(1200, () => swap($(doc, "t1"), null, "gone"));
       at(1480, () => { const t = $(doc, "t1"); if (t) t.remove(); });
-      at(1520, () => tap(doc, $(doc, "tabCleared")));
+      at(1520, () => tap(doc, $(doc, "tabCleared"), c));
       at(1620, () => {
         $(doc, "tabOpen").className = "h-10 px-4 rounded-full text-sm font-semibold bg-black/5 text-black/70";
         $(doc, "tabCleared").className = "h-10 px-4 rounded-full text-sm font-semibold bg-black text-white";
@@ -214,9 +216,9 @@
   const TIME_OFF = (ids) => `<div ${ids ? 'id="toff" ' : ""}class="px-4 py-3 rounded-2xl bg-sky-50 border border-sky-200 max-w-3xl mx-auto"><div class="flex items-center gap-2 mb-2"><span class="w-2 h-2 rounded-full bg-sky-600" aria-hidden="true"></span><span class="dsc-label text-sky-900">Time off requests · 1</span></div><div class="space-y-2"><div class="bg-white rounded-2xl p-3 flex flex-col sm:flex-row sm:items-center gap-2"><div class="flex-1 min-w-0"><div class="text-black text-sm"><span class="font-medium">Zeke</span><span class="text-black/50"> · </span><span>Thu Jun 25 – Fri Jun 26</span></div><div class="text-xs text-black/70 mt-0.5 italic truncate">&ldquo;Family wedding&rdquo;</div><div class="text-xs mt-0.5 text-amber-800">On 1 session then: Fri, Jun 26, 4:00 PM (Priya Patel)</div></div><div class="flex gap-2 shrink-0"><button ${ids ? 'id="toff-ok" ' : ""}class="h-8 px-3 bg-black text-white text-xs rounded-full dsc-headline disabled:opacity-40">Approve</button><button ${ids ? 'id="toff-no" ' : ""}class="h-8 px-3 border border-black/20 text-black/70 text-xs rounded-full disabled:opacity-40">Decline</button></div></div></div></div>`;
   S.timeoffHome = {
     html: `<div class="bg-white flex flex-col" style="height:750px;display:flex;flex-direction:column;overflow:hidden">${HOME_HEAD}${HOME_CHECKIN(6)}<div class="px-4 space-y-2 pb-2" id="alerts">${LEADS_DUE}</div><section class="px-4 pt-2 pb-4"><div class="grid grid-cols-2 gap-3 md:gap-4 max-w-3xl mx-auto">${CARDS}</div></section></div>`,
-    run(doc, at) {
+    run(doc, at, c) {
       at(100, () => { const n = node(doc, TIME_OFF(true)); $(doc, "alerts").appendChild(n); reveal(n); });
-      at(650, () => tap(doc, $(doc, "toff-ok")));
+      at(650, () => tap(doc, $(doc, "toff-ok"), c));
       at(780, () => { $(doc, "toff-ok").setAttribute("disabled", ""); $(doc, "toff-no").setAttribute("disabled", ""); });
     },
   };
@@ -286,17 +288,17 @@ ${LEAD("l4", "Andre Baptiste", "", "Off-season strength", "New", "Walk-in", "McK
     /* the owner opens Isaiah, who signed up: convert, with Scott, and the
        app says what is still owed */
     run(doc, at, c) {
-      at(450, () => tap(doc, $(doc, "l3")));
+      at(450, () => tap(doc, $(doc, "l3"), c));
       at(600, () => {
         $(doc, "leads").appendChild(node(doc, `<div id="sheet" class="absolute inset-0 z-50 flex items-end md:items-center md:justify-center bg-black/40 dsc-sheet-backdrop"><div id="panel" class="bg-white rounded-t-3xl md:rounded-3xl w-full md:max-w-lg max-h-[90vh] overflow-y-auto dsc-sheet-panel"><div class="px-5 pt-5 pb-3 flex items-center justify-between sticky top-0 bg-white z-10"><div class="dsc-headline text-2xl text-black truncate">Isaiah Brooks</div><button class="w-9 h-9 rounded-full bg-black/5 flex items-center justify-center text-black/60 shrink-0" aria-label="Close">✕</button></div><div id="lsbody" class="px-5 pb-6 space-y-4">${LEAD_INFO}<div><div class="dsc-label text-black/50 mb-1.5">Stage</div><div class="flex flex-wrap gap-1.5">${STAGE("New") + STAGE("Contacted") + STAGE("Trial") + STAGE("Waitlist", true)}</div></div><div class="rounded-2xl bg-black/[0.04] p-3 space-y-2"><textarea rows="2" tabindex="-1" placeholder="What happened? &quot;Texted, trying Tuesday 5pm&quot;" class="w-full px-3 py-2 bg-white rounded-xl text-black text-sm"></textarea><label class="flex items-center gap-2 text-sm text-black/70"><input type="checkbox" checked tabindex="-1" class="w-4 h-4 accent-black">I reached out / talked to them</label><div class="flex flex-wrap items-center gap-1.5"><span class="dsc-label text-black/50 mr-1">Next follow-up</span>${NEXT("Tomorrow") + NEXT("3 days", true) + NEXT("1 week") + NEXT("2 weeks")}</div><button disabled class="w-full h-10 bg-black text-white rounded-full text-sm font-semibold disabled:bg-black/30">Save note · next Fri, Jun 26</button><p class="text-xs text-black/50">Currently set: Tue, Jun 23</p></div><div id="conv"><div class="flex gap-2"><button id="make" class="flex-1 h-11 bg-emerald-700 text-white rounded-full text-sm font-semibold">They signed up → make athlete</button><button class="h-11 px-4 rounded-full bg-black/5 text-black/70 text-sm font-semibold">Lost</button></div></div>${LEAD_HISTORY}</div></div></div>`));
       });
-      at(1250, () => tap(doc, $(doc, "make")));
+      at(1250, () => tap(doc, $(doc, "make"), c));
       at(1400, () => {
         $(doc, "conv").innerHTML = '<div class="rounded-2xl border border-black/10 p-3 space-y-2"><div class="text-sm font-semibold text-black">Make Isaiah an athlete</div><select tabindex="-1" class="w-full h-11 px-3 bg-black/5 rounded-xl text-black placeholder:text-black/30"><option>Scott</option></select><p class="text-xs text-black/60">They’ll also be added to Thursday hoops.</p><div class="flex gap-2"><button id="go" class="flex-1 h-10 bg-emerald-700 text-white rounded-full text-sm font-semibold disabled:opacity-40">Convert</button><button class="h-10 px-4 rounded-full bg-black/5 text-sm">Cancel</button></div></div>';
         reveal($(doc, "conv").firstChild);
         scrollBox(c, $(doc, "panel"), 60, 380);
       });
-      at(1900, () => tap(doc, $(doc, "go")));
+      at(1900, () => tap(doc, $(doc, "go"), c));
       at(2100, () => {
         $(doc, "lsbody").innerHTML = LEAD_INFO + '<div id="done" class="rounded-2xl bg-emerald-50 p-4 text-sm text-emerald-950">Isaiah Brooks is now an athlete. Added to Thursday hoops. They still need a signed waiver, send the link from their profile. <span class="underline font-semibold">Open profile</span></div><div class="rounded-2xl bg-black/[0.04] p-3 space-y-2"><textarea rows="2" tabindex="-1" placeholder="Add a note" class="w-full px-3 py-2 bg-white rounded-xl text-black text-sm"></textarea><button disabled class="w-full h-10 bg-black text-white rounded-full text-sm font-semibold disabled:bg-black/30">Add note</button></div>' + LEAD_HISTORY;
         $(doc, "panel").scrollTop = 0; reveal($(doc, "done"));
@@ -339,8 +341,8 @@ Dallas Sports Collective, LLC, any staff member or agent does not provide medica
       at(150, () => scrollBox(c, box, 700, 520));
       at(520, () => glide(c, page, 0, y, 460));
       type(doc, $(doc, "wv-name"), "Nina Brooks", at, 640, 32);
-      at(1060, () => { const a = $(doc, "wv-agree"); tap(doc, a); a.checked = true; $(doc, "wv-sign").removeAttribute("disabled"); });
-      at(1300, () => { const s = $(doc, "wv-sign"); tap(doc, s); s.textContent = "Signing…"; });
+      at(1060, () => { const a = $(doc, "wv-agree"); tap(doc, a, c); a.checked = true; $(doc, "wv-sign").removeAttribute("disabled"); });
+      at(1300, () => { const s = $(doc, "wv-sign"); tap(doc, s, c); s.textContent = "Signing…"; });
       at(1520, () => {
         c.anim(page, [{ transform: "translateY(0px)" }, { transform: "translateY(0px)" }], { duration: 10, fill: "forwards" });
         $(doc, "wv-state").innerHTML = '<div class="rounded-3xl bg-emerald-50 p-8 text-center"><div class="dsc-headline text-3xl text-emerald-950">Signed. Thank you.</div><p class="text-emerald-900 mt-3">Isaiah’s waiver is on file with DSC. You can close this page.</p></div>';
@@ -389,7 +391,7 @@ Dallas Sports Collective, LLC, any staff member or agent does not provide medica
       const y0 = Math.max(0, depth(page, dob) - 70);
       c.anim(page, [{ transform: "translateY(" + -y0 + "px)" }, { transform: "translateY(" + -y0 + "px)" }], { duration: 10, fill: "forwards" });
       at(200, () => { dob.textContent = "Nov 2, 2012"; swap(g, "hidden"); reveal(g); });
-      const pick = (id, ms) => at(ms, () => { const b = $(doc, id); tap(doc, b); swap(b, "bg-white/10 text-white/80 hover:bg-white/20", "bg-white text-black"); });
+      const pick = (id, ms) => at(ms, () => { const b = $(doc, id); tap(doc, b, c); swap(b, "bg-white/10 text-white/80 hover:bg-white/20", "bg-white text-black"); });
       pick("chip-v", 520);
       pick("chip-t", 820);
       at(840, () => { $(doc, "reg-sport-label").textContent = "Sports (pick any)"; $(doc, "reg-grade").innerHTML = "<option>8th grade</option>"; });
@@ -445,7 +447,7 @@ ${BOX("oh-newreg", "bg-black/[0.05] border border-black/10", "bg-black", ["New r
         const y = Math.min(max, Math.max(0, depth(oh, $(doc, id)) - 24)), from = prev; prev = y;
         at(ms - 480, () => glide(c, oh, from, y, 480));
       });
-      at(3100, () => tap(doc, $(doc, "oh-link-groups")));
+      at(3100, () => tap(doc, $(doc, "oh-link-groups"), c));
     },
   };
   /* Groups: a named roster with a standing time; Materialize puts the
@@ -462,8 +464,8 @@ ${BOX("oh-newreg", "bg-black/[0.05] border border-black/10", "bg-black", ["New r
 <div class="rounded-3xl p-5 bg-black/[0.04]"><div class="flex items-start justify-between gap-3 mb-3"><div class="min-w-0"><div class="dsc-headline text-xl text-black truncate">Basketball group</div><div class="dsc-label text-black/50 mt-1">Mondays at 11:00am · 60 min · Celina</div><div class="dsc-label text-emerald-700 mt-1">Open to families · 6/8 spots</div></div><button class="dsc-label text-black/50 hover:text-black shrink-0">Edit</button></div><div class="flex flex-wrap gap-1.5 mb-3">${MEMBERS(["Marcus C.", "Priya P.", "Olivia S.", "Dante W.", "Jamal R.", "Fatima A."])}</div><div class="flex items-center justify-between gap-3 flex-wrap"><div class="dsc-label text-black/50">Zeke (lead) · Justin</div><button id="gp-materialize" class="h-9 px-4 rounded-full bg-black text-white text-sm font-semibold disabled:bg-black/20">Materialize 8 weeks</button></div></div>
 <div class="rounded-3xl p-5 bg-black/[0.04]"><div class="flex items-start justify-between gap-3 mb-3"><div class="min-w-0"><div class="dsc-headline text-xl text-black truncate">Combine prep</div><div class="dsc-label text-black/50 mt-1">Wednesdays at 6:00am · 90 min · McKinney</div></div><button class="dsc-label text-black/50 hover:text-black shrink-0">Edit</button></div><div class="flex flex-wrap gap-1.5 mb-3">${MEMBERS(["Brandon M.", "Trevor N.", "Kenji W."])}</div><div class="flex items-center justify-between gap-3 flex-wrap"><div class="dsc-label text-black/50">Scott</div><button class="h-9 px-4 rounded-full bg-black text-white text-sm font-semibold disabled:bg-black/20">Materialize 8 weeks</button></div></div>
 </div></div></div></div>`,
-    run(doc, at) {
-      at(380, () => tap(doc, $(doc, "gp-materialize")));
+    run(doc, at, c) {
+      at(380, () => tap(doc, $(doc, "gp-materialize"), c));
       at(620, () => { const b = node(doc, '<div class="rounded-2xl bg-emerald-50 border border-emerald-200 px-4 py-3 text-sm text-emerald-900 mb-4 flex items-start justify-between gap-3"><span>Basketball group: 8 sessions added. Everyone on the roster has been emailed once.</span><button class="shrink-0 opacity-50 hover:opacity-100" aria-label="Dismiss">✕</button></div>'); $(doc, "gp-banner").appendChild(b); reveal(b); });
     },
   };

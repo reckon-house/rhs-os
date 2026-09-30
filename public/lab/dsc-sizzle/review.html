@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>DSC sizzle · review · Reckon*House lab</title>
+<!-- ── THE SIZZLE'S REVIEW BENCH (29 Sept 2026) ─────────────────────────
+     His ask, in the editing phase: "is there a way i can pause it ... a
+     way to give you specific feedback on a particular section? a
+     scrubber maybe?"
+
+     The reel plays here on a clock of its own (DSCSizzle.mount with
+     review: true): every timer it sets and every animation it starts is
+     held and set to the timeline's time, so any moment can be built again
+     exactly, paused, stepped a frame at a time or slowed. Each shot is a
+     numbered segment; a note is pinned to the moment on screen and kept
+     in this browser, and "Copy all notes" puts them in one block to paste
+     back into the chat. ?v=mix&t=12.4 opens at a moment, paused. -->
+<link rel="stylesheet" href="/lab/density/density.css">
+<style>
+  body { margin: 0; padding: 24px 28px 60px; background: var(--paper); color: var(--ink); font-family: var(--sans); -webkit-font-smoothing: antialiased; }
+  .top { display: flex; justify-content: space-between; align-items: baseline; gap: 24px; padding-bottom: 10px; border-bottom: 1px solid var(--ink); margin-bottom: 20px; }
+  .top h1 { margin: 0; font-size: 12px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; }
+  .top p { margin: 0; font-size: 12px; line-height: 1.5; color: var(--grey); max-width: 70ch; text-align: right; }
+  .lab { font-size: 8.5px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; }
+  .frame { position: relative; background: #111; overflow: hidden; }
+  .bar { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 18px; margin-top: 12px; font-size: 12px; }
+  .bar .sp { flex: 1; }
+  button { font: inherit; color: inherit; background: none; border: 1px solid rgba(0,0,0,.18); padding: 5px 10px; cursor: pointer; }
+  button:hover { border-color: var(--ink); }
+  button.on { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+  #pp { min-width: 74px; font-weight: 600; }
+  #tc { font-variant-numeric: tabular-nums; color: var(--grey); }
+  #where { font-weight: 600; }
+  .grp { display: flex; gap: 4px; align-items: center; }
+  .grp .lab { color: var(--grey); margin-right: 4px; }
+  /* the timeline: a segment per shot, its width its length */
+  .tl { position: relative; display: flex; height: 46px; margin-top: 16px; user-select: none; -webkit-user-select: none; touch-action: none; cursor: pointer; }
+  .seg { position: relative; min-width: 0; background: #e3e0da; border-left: 1px solid var(--paper); padding: 6px 6px 0; overflow: hidden; }
+  .seg:nth-child(even) { background: #d8d5ce; }
+  .seg b { display: block; font-size: 9px; font-weight: 700; letter-spacing: 0.12em; }
+  .seg span { display: block; font-size: 10px; line-height: 1.3; color: var(--grey); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .seg.on { background: var(--ink); color: var(--paper); }
+  .seg.on span { color: rgba(255,255,255,.62); }
+  .ph { position: absolute; top: -5px; bottom: -5px; width: 2px; margin-left: -1px; background: #e0322e; pointer-events: none; z-index: 3; }
+  .mk { position: absolute; top: -11px; width: 9px; height: 9px; margin-left: -4.5px; border-radius: 50%; background: #e0322e; pointer-events: none; z-index: 2; }
+  .ticks { position: relative; height: 16px; margin-top: 3px; font-size: 9px; color: var(--grey); font-variant-numeric: tabular-nums; }
+  .ticks i { position: absolute; font-style: normal; transform: translateX(-50%); }
+  /* notes */
+  .note { display: flex; gap: 8px; margin-top: 18px; }
+  .note input { flex: 1; font: inherit; font-size: 13px; padding: 8px 10px; border: 1px solid rgba(0,0,0,.25); background: #fff; color: var(--ink); }
+  .note input:focus { outline: none; border-color: var(--ink); }
+  .note button, .tools button { font-size: 12px; }
+  ol { list-style: none; margin: 14px 0 0; padding: 0; }
+  li { display: flex; gap: 12px; align-items: baseline; padding: 8px 0; border-top: 1px solid rgba(0,0,0,.1); font-size: 13px; line-height: 1.45; }
+  li .at { flex: none; border: 0; padding: 0; font-weight: 600; text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px; }
+  li .tx { flex: 1; }
+  li .x { flex: none; border: 0; padding: 0 4px; color: var(--grey); }
+  .tools { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 14px; font-size: 12px; }
+  .tools .msg { color: var(--grey); }
+  .keys { margin-top: 22px; font-size: 11px; line-height: 1.6; color: var(--grey); }
+  .keys b { color: var(--ink); font-weight: 600; }
+  @media (max-width: 700px) { body { padding: 16px; } .top { display: block; } .top p { text-align: left; margin-top: 6px; } }
+</style>
+</head>
+<body>
+<header class="top">
+  <h1>DSC sizzle · review</h1>
+  <p>Pause anywhere, drag the timeline to any moment, and pin a note to what's on screen. Notes stay in this browser; copy them all and paste them in the chat.</p>
+</header>
+<div id="f" class="frame"></div>
+<div class="bar">
+  <button id="pp" type="button">Play</button>
+  <span id="tc">0.0 / 0.0s</span>
+  <span id="where"></span>
+  <span class="sp"></span>
+  <span class="grp"><span class="lab">Speed</span><button type="button" data-rate="1" class="on">1×</button><button type="button" data-rate="0.5">½×</button><button type="button" data-rate="0.25">¼×</button></span>
+  <span class="grp"><span class="lab">Size</span><button type="button" data-w="358">Phone</button><button type="button" data-w="717">Room</button><button type="button" data-w="1100">Large</button></span>
+</div>
+<div id="tl" class="tl" aria-label="Timeline"></div>
+<div id="ticks" class="ticks"></div>
+<div class="note">
+  <input id="nt" type="text" placeholder="A note at this moment" autocomplete="off">
+  <button id="add" type="button">Add note</button>
+</div>
+<ol id="notes"></ol>
+<div class="tools">
+  <button id="copy" type="button">Copy all notes</button>
+  <button id="moment" type="button">Copy this moment</button>
+  <button id="clear" type="button">Clear notes</button>
+  <span class="msg" id="msg"></span>
+</div>
+<p class="keys"><b>Space</b> play or pause · <b>← →</b> the shot before or after · <b>, .</b> a frame back or forward · <b>N</b> write a note · <b>Enter</b> saves it</p>
+
+<script src="/lab/dsc-sizzle/sizzle.js"></script>
+<script>
+(() => {
+  const q = new URLSearchParams(location.search);
+  const V = q.get("v") || "mix", AT = q.get("t") != null ? +q.get("t") * 1000 : null;
+  const $ = (id) => document.getElementById(id);
+  const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
+  const two = (n) => String(n).padStart(2, "0");
+  const sec = (ms) => (ms / 1000).toFixed(1) + "s";
+  const FRAME = 1000 / 30;
+
+  /* the frame, at the room's size unless asked; wider than the page and
+     it shrinks to fit */
+  const f = $("f");
+  let W = +q.get("w") || 717;
+  const setSize = (w) => {
+    W = w; const fit = Math.min(w, document.documentElement.clientWidth - 56);
+    f.style.width = fit + "px"; f.style.height = Math.round(fit / 1.5) + "px";
+    document.querySelectorAll("[data-w]").forEach((b) => b.classList.toggle("on", +b.dataset.w === w));
+  };
+  setSize(W);
+
+  const P = DSCSizzle.mount(f, { version: V, fixed: true, review: true, at: AT || 0 });
+  const R = P.review;
+  window.SZL = P;  /* a handle for checking the bench from the console */
+  let shots = [], total = 0, built = false;
+
+  /* where a time falls: the shot, and how far into it */
+  const where = (t) => { let n = 0; while (n + 1 < shots.length && shots[n + 1].start <= t) n++; return { n, s: shots[n], local: t - shots[n].start }; };
+  const label = (t) => { const w = where(t); return two(w.n + 1) + " · " + w.s.name + " · " + sec(w.local); };
+
+  const tl = $("tl"), ticks = $("ticks");
+  const ph = document.createElement("i"); ph.className = "ph";
+  const build = () => {
+    shots = R.shots(); total = R.total(); if (!total) return;
+    tl.innerHTML = "";
+    shots.forEach((s) => {
+      const g = document.createElement("div"); g.className = "seg"; g.style.flex = s.d + " 1 0px";
+      g.title = two(s.i + 1) + " · " + s.name + " · " + sec(s.d);
+      g.innerHTML = "<b>" + two(s.i + 1) + "</b><span>" + esc(s.name) + "</span>";
+      tl.appendChild(g);
+    });
+    tl.appendChild(ph);
+    ticks.innerHTML = "";
+    for (let t = 0; t <= total; t += 5000) { const i = document.createElement("i"); i.style.left = (t / total * 100) + "%"; i.textContent = t / 1000 + "s"; ticks.appendChild(i); }
+    built = true; drawNotes();
+  };
+  const update = () => {
+    if (!built) { build(); if (!built) return; if (AT == null && !started) { started = true; R.play(); } }
+    const t = R.time();
+    ph.style.left = (t / total * 100) + "%";
+    $("tc").textContent = sec(t) + " / " + sec(total);
+    const w = where(t);
+    $("where").textContent = label(t);
+    [...tl.querySelectorAll(".seg")].forEach((g, i) => g.classList.toggle("on", i === w.n));
+    $("pp").textContent = R.playing() ? "Pause" : "Play";
+    if (document.activeElement !== $("nt")) $("nt").placeholder = "A note at " + label(t);
+  };
+  let started = false;
+  R.onTick(update);
+
+  /* play, pause, speed, size */
+  const toggle = () => { if (R.playing()) R.pause(); else R.play(); };
+  $("pp").addEventListener("click", toggle);
+  document.querySelectorAll("[data-rate]").forEach((b) => b.addEventListener("click", () => {
+    R.rate(+b.dataset.rate); document.querySelectorAll("[data-rate]").forEach((x) => x.classList.toggle("on", x === b));
+  }));
+  document.querySelectorAll("[data-w]").forEach((b) => b.addEventListener("click", () => setSize(+b.dataset.w)));
+  addEventListener("resize", () => setSize(W));
+
+  /* the scrubber: press and drag anywhere on the timeline */
+  const toTime = (e) => { const r = tl.getBoundingClientRect(); return Math.max(0, Math.min(1, (e.clientX - r.left) / r.width)) * total; };
+  let drag = false;
+  tl.addEventListener("pointerdown", (e) => { if (!total) return; drag = true; tl.setPointerCapture(e.pointerId); R.pause(); const t = toTime(e); ph.style.left = (t / total * 100) + "%"; R.seek(t); });
+  tl.addEventListener("pointermove", (e) => { if (!drag) return; const t = toTime(e); ph.style.left = (t / total * 100) + "%"; R.seek(t); });
+  const end = () => { drag = false; };
+  tl.addEventListener("pointerup", end); tl.addEventListener("pointercancel", end);
+
+  /* the keys, unless a note is being written */
+  const shotStep = (dir) => {
+    const t = R.time(), w = where(t);
+    let n = dir < 0 ? (w.local > 400 ? w.n : w.n - 1) : w.n + 1;
+    n = Math.max(0, Math.min(shots.length - 1, n));
+    R.pause(); R.seek(shots[n].start);
+  };
+  addEventListener("keydown", (e) => {
+    if (e.target === $("nt")) { if (e.key === "Escape") $("nt").blur(); return; }
+    if (e.metaKey || e.ctrlKey || e.altKey) return;
+    if (e.key === " ") { e.preventDefault(); toggle(); }
+    else if (e.key === "ArrowLeft") { e.preventDefault(); shotStep(-1); }
+    else if (e.key === "ArrowRight") { e.preventDefault(); shotStep(1); }
+    else if (e.key === ",") { R.pause(); R.seek(Math.max(0, R.time() - FRAME)); }
+    else if (e.key === ".") { R.pause(); R.seek(R.time() + FRAME); }
+    else if (e.key === "n" || e.key === "N") { e.preventDefault(); R.pause(); $("nt").focus(); }
+  });
+
+  /* notes: pinned to the moment on screen, kept in this browser */
+  const KEY = "szl.review.notes." + V;
+  const load = () => { try { return JSON.parse(localStorage.getItem(KEY) || "[]"); } catch (e) { return []; } };
+  const save = () => { try { localStorage.setItem(KEY, JSON.stringify(notes)); } catch (e) { /* a private window */ } };
+  let notes = load();
+  const drawNotes = () => {
+    tl.querySelectorAll(".mk").forEach((m) => m.remove());
+    const ol = $("notes"); ol.innerHTML = "";
+    notes.forEach((n, i) => {
+      if (total) { const m = document.createElement("i"); m.className = "mk"; m.style.left = (n.t / total * 100) + "%"; tl.appendChild(m); }
+      const li = document.createElement("li");
+      li.innerHTML = '<button class="at" type="button">' + esc(two(n.shot + 1) + " · " + n.name + " · " + sec(n.local)) + '</button><span class="tx">' + esc(n.text) + '</span><button class="x" type="button" aria-label="Delete">×</button>';
+      li.querySelector(".at").addEventListener("click", () => { R.pause(); R.seek(n.t); });
+      li.querySelector(".x").addEventListener("click", () => { notes.splice(i, 1); save(); drawNotes(); });
+      ol.appendChild(li);
+    });
+  };
+  const addNote = () => {
+    const text = $("nt").value.trim(); if (!text || !total) return;
+    const t = R.time(), w = where(t);
+    notes.push({ t, shot: w.n, name: w.s.name, local: w.local, text });
+    notes.sort((a, b) => a.t - b.t); save(); drawNotes();
+    $("nt").value = ""; flash("Saved at " + label(t));
+  };
+  $("add").addEventListener("click", addNote);
+  $("nt").addEventListener("keydown", (e) => { if (e.key === "Enter") { e.preventDefault(); addNote(); } });
+
+  const link = (t) => location.origin + "/lab/dsc-sizzle/review.html?v=" + encodeURIComponent(V) + (t != null ? "&t=" + (t / 1000).toFixed(2) : "");
+  const flash = (m) => { $("msg").textContent = m; clearTimeout(flash.t); flash.t = setTimeout(() => ($("msg").textContent = ""), 2600); };
+  const copy = (text, done) => navigator.clipboard.writeText(text).then(() => flash(done), () => flash("Copy failed: select and copy by hand"));
+  $("copy").addEventListener("click", () => {
+    if (!notes.length) { flash("No notes yet"); return; }
+    copy("DSC sizzle, " + V + ": review notes\n" + notes.map((n) => two(n.shot + 1) + " " + n.name + ", at " + sec(n.local) + " (" + sec(n.t) + "): " + n.text).join("\n") + "\n" + link(), "Copied " + notes.length + " note" + (notes.length > 1 ? "s" : ""));
+  });
+  $("moment").addEventListener("click", () => { const t = R.time(); copy(label(t) + " (" + sec(t) + ") " + link(t), "Copied " + label(t)); });
+  $("clear").addEventListener("click", () => { if (!notes.length || !confirm("Clear all " + notes.length + " notes?")) return; notes = []; save(); drawNotes(); });
+})();
+</script>
+</body>
+</html>

@@ -46,7 +46,7 @@
   const grid = document.getElementById("grid");
   DSCSizzle.versions.forEach((v) => {
     const c = document.createElement("section"); c.className = "cell";
-    c.innerHTML = '<h2>' + v.name + ' <span>' + v.weight + (v.id === "mix" ? "" : " text") + '</span></h2><div class="frame"></div><p>' + NOTES[v.id] + '</p><a href="/lab/density/crossref2.html?sizzle=' + v.id + '#study/dsc">Open in the DSC room</a>';
+    c.innerHTML = '<h2>' + v.name + ' <span>' + v.weight + (v.id === "mix" ? "" : " text") + '</span></h2><div class="frame"></div><p>' + NOTES[v.id] + '</p><a href="/lab/density/crossref2.html?sizzle=' + v.id + '#study/dsc">Open in the DSC room</a> &nbsp; <a href="/lab/dsc-sizzle/review.html?v=' + v.id + '">Review: pause, scrub, notes</a>';
     grid.appendChild(c);
     DSCSizzle.mount(c.querySelector(".frame"), { version: v.id, fixed: true });
   });
