@@ -53,7 +53,7 @@ neiman-marcus/neiman-marcus-insite-rainbow-laptop-blue-chairs-mockup
 hp/rhs-sally-os-asset-hub-laptop   # its second standing: dealt in the opener, leads here
 arc/arc-app-kitchen-project-selection-lifestyle
 hp/rhs-dallas-sport-collective-laptop-stool
-dsc/dsc-owner-calendar-phone-hero
+dsc/dsc-owner-calendar-week-phone
 sizzle/sizzle
 
 # systems   (Systems)
@@ -65,7 +65,7 @@ sizzle/sizzle
 hp/rhs-nordstrom-framework-on-our-list   # again, for nordstrom-framework; this run's hero
 hp/rhs-sally-os-asset-hub-laptop   # again, for sally-os on this line
 hp/rhs-nordstrom-personalization-laptop   # again, for nordstrom-personalization on this line
-dsc/dsc-owner-calendar-phone-hero   # again, for dsc on this line
+dsc/dsc-owner-calendar-week-phone   # again, for dsc on this line
 hp/rhs-arc-app-project-select-phone   # again, for arc on this line
 sizzle/sizzle   # again, for sizzle on this line
 

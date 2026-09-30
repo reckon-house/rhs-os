@@ -22488,7 +22488,7 @@
    "balance": "Weight gathers in the upper third where headline and paragraph stack; the lower half thins to two single-line rows and a band of empty page."
   },
   {
-   "src": "/case-studies/dsc/dsc-claude-oauth-consent-screen.jpg",
+   "src": "/case-studies/dsc/dsc-claude-oauth-consent.jpg",
    "slug": "dsc",
    "kind": "screenshot",
    "f": {
@@ -22510,7 +22510,7 @@
     "AUTHORIZE ACCESS",
     "CLAUDE WANTS TO CONNECT.",
     "SIGNED IN AS",
-    "Marcus Chen - marcus.chen@gmail.com",
+    "Marcus Chen - marcus.chen@email.com",
     "WHAT THIS LETS IT DO",
     "See your upcoming sessions",
     "Check your trainer's availability",
@@ -22993,7 +22993,7 @@
    "balance": "Weight sits at the top with the headline and settles into an even repeating rhythm below, each card carrying two lines with the right margin left open where the text stops short."
   },
   {
-   "src": "/case-studies/dsc/dsc-owner-calendar-phone-hero.jpg",
+   "src": "/case-studies/dsc/dsc-owner-calendar-week-phone.jpg",
    "slug": "dsc",
    "kind": "mockup",
    "f": {
@@ -23021,7 +23021,7 @@
     "SESSIONS",
     "SESSION",
     "Marcus Chen",
-    "Jim Bender",
+    "Max Bishop",
     "SCOTT",
     "+ 1 MORE"
    ],
@@ -23061,7 +23061,7 @@
    "balance": "Detail is concentrated in the narrow diagonal of the device through the middle right; the left two thirds is uninterrupted asphalt and one broad shadow band."
   },
   {
-   "src": "/case-studies/dsc/dsc-owner-console-home-booking-requests.jpg",
+   "src": "/case-studies/dsc/dsc-owner-console-home-requests.jpg",
    "slug": "dsc",
    "kind": "screenshot",
    "f": {
@@ -23086,8 +23086,8 @@
     "APPROVE",
     "Decline",
     "NEW REGISTRATIONS · 2",
-    "Melissa Spacek",
-    "George Spacek",
+    "Jasmine Kumar",
+    "Nina Kowalski",
     "Assign…",
     "TALK TO THE SCHEDULER",
     "CHAT / SCHEDULE",
@@ -23201,7 +23201,7 @@
    "balance": "Cards alternate left and right down the column with the right side left blank on four rows; the black card interrupts that stagger by spanning the whole measure."
   },
   {
-   "src": "/case-studies/dsc/dsc-owner-console-athlete-roster.jpg",
+   "src": "/case-studies/dsc/dsc-owner-console-athlete-list.jpg",
    "slug": "dsc",
    "kind": "screenshot",
    "f": {
@@ -23222,7 +23222,7 @@
     "Search by name or email",
     "45 TOTAL",
     "13 ATHLETES NOT ASSIGNED TO A TRAINER",
-    "Jordan Ahmad",
+    "Noah Adler",
     "WITH SCOTT",
     "Fatima Al-Hassan",
     "WITH ZEKE",
@@ -23230,10 +23230,10 @@
     "WITH LISA",
     "Andre Baptiste",
     "WITH BRENDEN",
-    "Jesse Barnes",
+    "Eli Barton",
     "WAIVER PENDING",
-    "Cole Becker",
-    "Jim Bender",
+    "Owen Bell",
+    "Max Bishop",
     "Isaiah Brooks",
     "WITH SARA"
    ],

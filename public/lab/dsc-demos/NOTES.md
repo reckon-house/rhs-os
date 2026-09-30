@@ -96,8 +96,10 @@ Chrome sources per demo (also in each file's header comment):
 
 - **Real:** the flow and its values were run in the live app on 2026-06-12 —
   Marcus Chen · Tuesdays · 4:00 PM · 60 min · Scott — and the sheet, slot
-  card, and day view are the product's own markup. Jim Bender's 5/6/7am
-  Tuesday block on the day view is the seeded DB's real standing pattern.
+  card, and day view are the product's own markup. The 5/6/7am Tuesday
+  block on the day view is the live DB's real standing pattern; the name
+  on it is a stand-in, Max Bishop, because the real one is a client's
+  (29 Sept 2026: it was not in prisma/seed.ts, so it was never seed data).
 - **Representative / deliberate, two things:**
   1. **The materialization outcome.** The live run reported "0 sessions
      added, 8 skipped" because the seeded Marcus already had conflicting
@@ -119,7 +121,8 @@ Chrome sources per demo (also in each file's header comment):
 Everything shown already appears in the case study's static screenshots or the
 public app: seed-data athlete names, trainer first names, session times, tool
 names, the MCP URL pattern. No sales numbers, no real-athlete PII (Marcus
-Chen, Jim Bender are seed data), no credentials.
+Chen is seed data; Max Bishop is a stand-in for a real client), no
+credentials.
 
 ## Engine contract (`dsc-demo-kit.js`)
 

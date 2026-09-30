@@ -44,7 +44,7 @@ export const dscCaseStudy: CaseStudy = {
           "/case-studies/dsc/dsc-athlete-app-registration-form.jpg",
           "/case-studies/dsc/dsc-ai-scheduler-phone-hero.jpg",
           "/case-studies/dsc/dsc-athlete-app-connect-mcp-server.jpg",
-          "/case-studies/dsc/dsc-claude-oauth-consent-screen.jpg",
+          "/case-studies/dsc/dsc-claude-oauth-consent.jpg",
           "/case-studies/dsc/dsc-claude-mcp-chat-trainers.jpg",
           "/case-studies/dsc/dsc-claude-mcp-chat-trainer-availability.jpg",
         ],
@@ -201,7 +201,7 @@ export const dscCaseStudy: CaseStudy = {
       type: "masonry",
       images: [
         { src: "/case-studies/dsc/dsc-athlete-app-connect-mcp-server.jpg", alt: "DSC in-app connect screen with the MCP server URL and live connection status" },
-        { src: "/case-studies/dsc/dsc-claude-oauth-consent-screen.jpg", alt: "OAuth consent screen, Claude wants to connect, listing granted permissions" },
+        { src: "/case-studies/dsc/dsc-claude-oauth-consent.jpg", alt: "OAuth consent screen, Claude wants to connect, listing granted permissions" },
         { src: "/case-studies/dsc/dsc-claude-mcp-chat-trainers.jpg", alt: "Claude listing every DSC trainer and their specialties through the connected tools" },
         { src: "/case-studies/dsc/dsc-claude-mcp-chat-trainer-availability.jpg", alt: "Claude listing Scott's real availability for the week through the DSC tools" },
         { src: "/case-studies/dsc/dsc-claude-mcp-chat-booking-request.jpg", alt: "Claude confirming a booking request, pending the trainer's approval" },
@@ -287,7 +287,7 @@ export const dscCaseStudy: CaseStudy = {
     {
       id: "hero-owner",
       type: "hero",
-      image: "/case-studies/dsc/dsc-owner-calendar-phone-hero.jpg",
+      image: "/case-studies/dsc/dsc-owner-calendar-week-phone.jpg",
       alt: "DSC calendar open on a phone resting on concrete",
       inline: true,
       pressing: { choreo: { rise: true } },
@@ -372,9 +372,9 @@ export const dscCaseStudy: CaseStudy = {
       type: "quad-image",
       native: true,
       images: [
-        { src: "/case-studies/dsc/dsc-owner-console-home-booking-requests.jpg", alt: "DSC owner home with booking requests and new registrations" },
+        { src: "/case-studies/dsc/dsc-owner-console-home-requests.jpg", alt: "DSC owner home with booking requests and new registrations" },
         { src: "/case-studies/dsc/dsc-owner-console-calendar-week-view.jpg", alt: "DSC owner calendar week view with sessions per day" },
-        { src: "/case-studies/dsc/dsc-owner-console-athlete-roster.jpg", alt: "DSC owner athlete list with waiver and trainer-assignment status" },
+        { src: "/case-studies/dsc/dsc-owner-console-athlete-list.jpg", alt: "DSC owner athlete list with waiver and trainer-assignment status" },
         { src: "/case-studies/dsc/dsc-owner-console-batch-scheduling-chat.jpg", alt: "DSC owner scheduler chat running a batch booking, ten accepted and three conflicts skipped" },
       ],
       // Four owner screens, one row. The batch chat used to be a plate of

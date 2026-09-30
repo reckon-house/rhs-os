@@ -5769,8 +5769,8 @@
    "composition": "Flat-on crop of one scrolling column, left-aligned throughout, with cards nesting inward from the outer container.",
    "confidence": "high"
   },
-  "/case-studies/dsc/dsc-claude-oauth-consent-screen.jpg": {
-   "hash": "f1eed1875c513329",
+  "/case-studies/dsc/dsc-claude-oauth-consent.jpg": {
+   "hash": "82c15b8546bc884e",
    "kind": "screenshot",
    "room": null,
    "materials": [],
@@ -5801,7 +5801,7 @@
     "AUTHORIZE ACCESS",
     "CLAUDE WANTS TO CONNECT.",
     "SIGNED IN AS",
-    "Marcus Chen - marcus.chen@gmail.com",
+    "Marcus Chen - marcus.chen@email.com",
     "WHAT THIS LETS IT DO",
     "See your upcoming sessions",
     "Check your trainer's availability",
@@ -6260,8 +6260,8 @@
    "composition": "Straight-on capture of a phone-width column, cards stacked full measure with even gaps, everything left-aligned.",
    "confidence": "high"
   },
-  "/case-studies/dsc/dsc-owner-calendar-phone-hero.jpg": {
-   "hash": "4e1485ba484ca156",
+  "/case-studies/dsc/dsc-owner-calendar-week-phone.jpg": {
+   "hash": "e3b899baea2c4d8f",
    "kind": "mockup",
    "room": null,
    "materials": [
@@ -6299,7 +6299,7 @@
     "SESSIONS",
     "SESSION",
     "Marcus Chen",
-    "Jim Bender",
+    "Max Bishop",
     "SCOTT",
     "+ 1 MORE"
    ],
@@ -6326,8 +6326,8 @@
    "composition": "Overhead vantage with the phone laid on a diagonal from upper left to lower right, its shadow thrown the opposite way across the top left.",
    "confidence": "medium"
   },
-  "/case-studies/dsc/dsc-owner-console-home-booking-requests.jpg": {
-   "hash": "1117be6a8364e7de",
+  "/case-studies/dsc/dsc-owner-console-home-requests.jpg": {
+   "hash": "cc3582d251669f3a",
    "kind": "screenshot",
    "room": null,
    "materials": [],
@@ -6361,8 +6361,8 @@
     "APPROVE",
     "Decline",
     "NEW REGISTRATIONS · 2",
-    "Melissa Spacek",
-    "George Spacek",
+    "Jasmine Kumar",
+    "Nina Kowalski",
     "Assign…",
     "TALK TO THE SCHEDULER",
     "CHAT / SCHEDULE",
@@ -6462,8 +6462,8 @@
    "composition": "Straight-on capture, staggered two-column grid, day numerals set large and flush left in every card.",
    "confidence": "high"
   },
-  "/case-studies/dsc/dsc-owner-console-athlete-roster.jpg": {
-   "hash": "49bddc29e1cab9f5",
+  "/case-studies/dsc/dsc-owner-console-athlete-list.jpg": {
+   "hash": "ef522b03fc9397db",
    "kind": "screenshot",
    "room": null,
    "materials": [],
@@ -6495,7 +6495,7 @@
     "Search by name or email",
     "45 TOTAL",
     "13 ATHLETES NOT ASSIGNED TO A TRAINER",
-    "Jordan Ahmad",
+    "Noah Adler",
     "WITH SCOTT",
     "Fatima Al-Hassan",
     "WITH ZEKE",
@@ -6503,10 +6503,10 @@
     "WITH LISA",
     "Andre Baptiste",
     "WITH BRENDEN",
-    "Jesse Barnes",
+    "Eli Barton",
     "WAIVER PENDING",
-    "Cole Becker",
-    "Jim Bender",
+    "Owen Bell",
+    "Max Bishop",
     "Isaiah Brooks",
     "WITH SARA"
    ],

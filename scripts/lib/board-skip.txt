@@ -159,15 +159,15 @@ dsc/dsc-athlete-app-trainer-bio-profile.jpg   # marked by eye, 8 Sept 2026
 dsc/dsc-claude-mcp-chat-booking-request.jpg   # a chat cut mid-way
 dsc/dsc-claude-mcp-chat-trainer-availability.jpg   # a chat cut mid-way
 dsc/dsc-claude-mcp-chat-trainers.jpg   # a chat cut mid-way
-dsc/dsc-claude-oauth-consent-screen.jpg   # a consent screen
+dsc/dsc-claude-oauth-consent.jpg   # a consent screen
 dsc/dsc-marketing-site-facilities-equipment.jpg   # marked by eye, 8 Sept 2026
 dsc/dsc-marketing-site-laptop-hero.jpg   # marked by eye, 9 Sept 2026
 dsc/dsc-marketing-site-laptop-stool-hero.jpg   # marked by eye, 8 Sept 2026
 dsc/dsc-marketing-site-recovery-section.jpg   # marked by eye, 8 Sept 2026
-dsc/dsc-owner-console-athlete-roster.jpg   # a console cut mid-way
+dsc/dsc-owner-console-athlete-list.jpg   # a console cut mid-way
 dsc/dsc-owner-console-batch-scheduling-chat.jpg   # a console cut mid-way
 dsc/dsc-owner-console-calendar-week-view.jpg   # a console cut mid-way
-dsc/dsc-owner-console-home-booking-requests.jpg   # a console cut mid-way
+dsc/dsc-owner-console-home-requests.jpg   # a console cut mid-way
 
 # fairview-bedroom
 fairview-bedroom/fairview-suite-bedroom-chandelier-fireplace-slippers-2x.jpg   # marked by eye, 9 Sept 2026

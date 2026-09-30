@@ -45,7 +45,7 @@ const SCREENS = {
   "trainers-list": "new/admin-screens/image 399.jpg",
   "dash-full": "new/scheduling-screens/04-athlete-dashboard-full 4.jpg",
   connect: "dsc-athlete-app-connect-mcp-server.jpg",
-  consent: "dsc-claude-oauth-consent-screen.jpg",
+  consent: "dsc-claude-oauth-consent.jpg",
   "claude-trainers": "dsc-claude-mcp-chat-trainers.jpg",
   "claude-avail": "dsc-claude-mcp-chat-trainer-availability.jpg",
   "claude-request": "dsc-claude-mcp-chat-booking-request.jpg",

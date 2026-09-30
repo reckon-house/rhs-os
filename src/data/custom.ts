@@ -209,7 +209,7 @@ export const PIECES: Piece[] = [
     line: "The owner side is built for one person on the gym floor.",
     href: "/case-studies/dsc",
     image: {
-      src: `${T}/dsc/dsc-owner-calendar-phone-hero.webp`,
+      src: `${T}/dsc/dsc-owner-calendar-week-phone.webp`,
       alt: "The owner's calendar on a phone",
       w: 1536,
       h: 948,
@@ -429,7 +429,7 @@ export const OFFERS: Offer[] = [
       R("dsc/dsc-ai-scheduler-phone-hero"),
       R("sally-os/sally-os-briefing-portal-fullscreen"),
       R("hp/rhs-sally-os-asset-hub-laptop"),
-      R("dsc/dsc-owner-calendar-phone-hero"),
+      R("dsc/dsc-owner-calendar-week-phone"),
       R("sally-os/sally-os-dashboard-grid-overview"),
     ],
   },
@@ -452,7 +452,7 @@ export const OFFERS: Offer[] = [
     line: "The scheduler, the back office, the app you can't buy.",
     frames: [
       R("arc/arc-app-vinyl-turntable-shelves-lifestyle"),
-      R("dsc/dsc-owner-calendar-phone-hero"),
+      R("dsc/dsc-owner-calendar-week-phone"),
       R("arc/arc-app-kitchen-project-selection-lifestyle"),
       R("arc/arc-multi-device-lifestyle-hero"),
       R("sizzle/sizzle"),
