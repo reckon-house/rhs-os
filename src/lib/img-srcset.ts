@@ -18,7 +18,7 @@
  * number that something downstream is measuring. A srcset attribute on
  * the existing element moves nothing.
  *
- * Measured on dsc-owner-calendar-phone-hero.jpg, 1177 KB:
+ * Measured on dsc-owner-calendar-week-phone.jpg, 1177 KB:
  *   w=640   55 KB      w=1600  340 KB
  *   w=1080 176 KB      w=2400  487 KB
  */
