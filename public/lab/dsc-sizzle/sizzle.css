@@ -26,7 +26,9 @@
 .stage * { box-sizing: border-box; }
 
 /* ── the shots ── */
-.shot { position: absolute; inset: 0; overflow: hidden; }
+/* each shot its own layer, so a tag's z-index stays inside its shot and
+   the next shot always lands above it */
+.shot { position: absolute; inset: 0; overflow: hidden; z-index: 0; }
 /* the reel's own paper is a shade off the room's, the tone the room gives
    a picture's box, so a page of type reads as a plate over the page and
    not as more of it */
@@ -271,3 +273,5 @@
 .ink > .seam { background: #fff; }
 /* a statement as large as the frame takes it, one phrase lit */
 .say-big { font-weight: 600; letter-spacing: -0.045em; line-height: 0.96; }
+/* the checks as a plain list (his note, 29 Sept: "maybe we just do bullets") */
+.checks .blt { display: inline-block; width: 1.05em; }

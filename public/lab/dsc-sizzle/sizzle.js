@@ -52,7 +52,7 @@
    a row of the versions sits under it, as the looks rows did, until he
    picks one. */
 (() => {
-  const BASE = "/lab/dsc-sizzle/", IMG = BASE + "img/", VQ = "?v=15";
+  const BASE = "/lab/dsc-sizzle/", IMG = BASE + "img/", VQ = "?v=17";
   const VERSIONS = [
     { id: "mix", name: "Mix", weight: "the app in use" },
     { id: "caption", name: "Caption", weight: "light" },
@@ -162,6 +162,9 @@
     approve: "The owner approves each request with one tap.",
     week: "The owner can schedule a whole week out loud.",
     weekSay: "The owner can say a whole week out loud.",
+    /* his edit, 29 Sept: "1 tap" says "the owner" just before, so this one
+       drops it */
+    weekSayIt: "Say a whole week out loud.",
     open: "DSC is open seven days a week in Celina and McKinney, Texas.",
     live: "The platform is live at both locations, in Celina and McKinney.",
     onlyRequest: "An athlete's AI can only ever request a booking.",
@@ -203,8 +206,8 @@
     const top = c.el("i", "rule hair"); box.appendChild(top);
     const rows = CHECKS.map((t) => {
       const r = c.el("div", "ck-row"), ck = c.el("div", "ck");
-      const tx = c.el("span", null, esc(t)), tk = c.tick();
-      ck.appendChild(tx); ck.appendChild(tk); r.appendChild(ck);
+      const tx = c.el("span", null, (o.bullets ? '<span class="blt">•</span>' : "") + esc(t)), tk = o.bullets ? null : c.tick();
+      ck.appendChild(tx); if (tk) ck.appendChild(tk); r.appendChild(ck);
       const rl = c.el("i", "rule hair"); r.appendChild(rl);
       box.appendChild(r);
       return { tx, tk, rl };
@@ -219,7 +222,7 @@
           const t = at + 120 + i * gap;
           c.wipe(r.tx, { at: t, kind: "tint", dur: 520 });
           c.go(r.rl, t + 60);
-          c.go(r.tk, t + 360);
+          if (r.tk) c.go(r.tk, t + 360);
         });
         return at + 120 + (rows.length - 1) * gap + 700;
       },
@@ -1042,8 +1045,8 @@
      that matters lit and the rest in grey (his note, 29 Sept: "make the
      full statement really large and wrap down"), set on the frame's foot */
   const sayShot = (text, hi, o) => Object.assign({ name: hi, ground: "ink", d: 2000, cut: "blink", build(c, s) {
-    const i = text.lastIndexOf(hi);
-    const T = c.el("div", "say-big abs", '<span class="g">' + esc(text.slice(0, i)) + "</span>" + esc(text.slice(i)));
+    const i = text.lastIndexOf(hi), j = i + hi.length, g = (x) => (x ? '<span class="g">' + esc(x) + "</span>" : "");
+    const T = c.el("div", "say-big abs", g(text.slice(0, i)) + esc(hi) + g(text.slice(j)));
     T.style.cssText = `left:${c.pad}px;top:${c.top}px;width:${c.W - 2 * c.pad}px`;
     s.appendChild(T);
     const room = c.H - c.top - c.pad;
@@ -1053,9 +1056,9 @@
     return (t0) => c.wipe(T, { at: t0, kind: "ink", dur: 760 });
   } }, o || {});
   /* the engine: every check, quickly, on black */
-  const checksShot = { name: "The checks", d: 1500, cut: "split", ground: "ink", build(c, s) {
+  const checksShot = { name: "The checks", d: 3000, cut: "split", ground: "ink", build(c, s) {
     const K = kicker(c, s, c.pad, c.top, c.W * 0.5, "One engine");
-    const k = checksAt(c, s, c.pad, c.top + K.h() + c.H * 0.06, Math.min(c.W * 0.62, 560), { size: "lg", gap: 115 });
+    const k = checksAt(c, s, c.pad, c.top + K.h() + c.H * 0.06, Math.min(c.W * 0.62, 560), { size: "lg", gap: 165, bullets: true });
     c.anim(k.box, [{ transform: "translateY(0px)" }, { transform: "translateY(" + (-c.H * 0.03).toFixed(1) + "px)" }], { duration: this.d + 800, easing: "linear", fill: "forwards" });
     return (t0) => { K.play(t0); return k.play(t0 + 60); };
   } };
@@ -1162,8 +1165,10 @@
       return 0;
     };
   } };
-  /* a draft for him to edit, not yet a line in the study: the act's turn */
-  const PIVOT = "The rest of the gym runs on the same app.";
+  /* the act's turn. His note, 29 Sept: "the rest of the gym" made it sound
+     like some other part, not "the backbone of running the gym"; the tour
+     after it spells the parts out. Not yet a line in the study */
+  const PIVOT = "The same app runs the whole gym.";
   const ACT2 = [
     mixHead("The back office", PIVOT, { d: 1900, cut: "band" }),
     tourShot,
@@ -1173,6 +1178,10 @@
     pairShot({ name: "The floor", d: 5900, cut: "whip", dir: -1, lag: 200, pics: ["app-checkin"],
       left: [{ screen: "checkin", d: 2500, tag: "Check-in" }, { screen: "coach", d: 3000, tag: "Attendance" }],
       right: [{ screen: "injuries", d: 2400, tag: "Injuries" }, { screen: "timeoffHome", d: 1400, tag: "Time off" }, { screen: "timeoffCal", d: 1600 }] }),
+    /* the site, in hand, moved here from the opening (his note, 29 Sept:
+       two pictures of the site in a row to start): a breath between the two
+       pairs, and the way a family finds the front door */
+    glideShot("phone-site", { name: "The site", d: 1100, cut: "mask", glide: [[1.12, 2, 0], [1.2, -2, 1]] }),
     /* the front door: a lead becomes an athlete and his mother signs the
        waiver; a family signs up, into the athlete app */
     /* a little slower than the floor (his note, 29 Sept: "not QUITE as
@@ -1180,6 +1189,9 @@
     pairShot({ name: "The front door", d: 7300, cut: "flash", mirror: true, pics: ["app-landing", "dash-full", "trainers-list"],
       left: [{ screen: "leads", d: 3600, tag: "Leads" }, { screen: "waiver", d: 3400, tag: "Waiver" }],
       right: [{ screen: "signup", d: 2700, tag: "Sign-up" }, { img: "dash-full", d: 2200, tag: "The athlete app", scroll: [300] }, { img: "trainers-list", d: 2100, tag: "Trainers", scroll: [300] }] }),
+    /* a second dark statement, so the first act's isn't the only one (his
+       note, 29 Sept), arriving the same way, by a blink */
+    sayShot(SAY.live, "live at both locations,", { name: "Live", d: 2300, cut: "blink", drift: true }),
   ];
   /* the second act alone, a bench (play.html?v=_act2), not in the row */
   V._act2 = { shots: [...ACT2, markShot({ d: 1400, cut: "band" })], loopCut: "burn", poster: 1 };
@@ -1187,18 +1199,18 @@
   V.mix = {
     shots: [
       glideShot("cover", { name: "Cover", d: 1400, glide: [[1, 0, 0], [1.08, -1.2, 0.4]] }),
-      glideShot("phone-site", { name: "The site", d: 850, cut: "whip", glide: [[1.12, 2, 0], [1.2, -2, 1]] }),
       mixHead("From your AI", SAY.aiUse, { d: 1900, cut: "band" }),
       aiShot,
       ownerShot,
       checksShot,
       sayShot(SAY.approve, "one tap.", { name: "1 tap", d: 2000, cut: "blink", drift: true }),
-      mixHead("A week by chat", SAY.weekSay, { d: 1600, cut: "pinch" }),
+      mixHead("A week by chat", SAY.weekSayIt, { d: 1600, cut: "pinch" }),
       glideShot("phone-chat", { name: "The chat, in hand", d: 1000, cut: "mask", op: "40% 50%", glide: [[1.04, 0, 0], [1.14, -1.5, -1]] }),
       ownerChatShot,
       dayShot,
       ...ACT2,
-      markShot({ d: 1400, cut: "band" }),
+      /* after a dark statement, the house's wipe, not a white band */
+      markShot({ d: 1400, cut: "mask" }),
     ],
     loopCut: "burn",
     poster: 2,
