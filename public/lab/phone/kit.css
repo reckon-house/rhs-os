@@ -1,0 +1,100 @@
+/* ── PHONE: what every concept shares (29 Sept 2026) ─────────────────
+   The index as a phone sets it, a shelf, an About room and the few bits
+   of chrome the concepts have in common. The house's type and colour
+   come from density.css; the rooms bring study-panel.css. Two weights
+   (400, 500) and a label face, as the rooms keep them. */
+:root { --m: max(16px, 4.6vw); --bar: 58px; --rh: 46px; }
+/* --m is the rooms' own margin (study-panel.css sets 4.6% of the width),
+   so a head over a room lines up with the room's running head */
+html, body { height: 100%; }
+body { overflow: hidden; overscroll-behavior: none; -webkit-tap-highlight-color: transparent; }
+.ph-host { position: absolute; inset: 0; overflow-y: auto; overflow-x: hidden; overscroll-behavior: contain; -webkit-overflow-scrolling: touch; background: var(--paper); }
+/* a bare button first, so a class after it (the label type) can style it */
+.ph-btn { padding: 0; border: 0; background: none; font: inherit; color: inherit; text-transform: inherit; letter-spacing: inherit; cursor: pointer; }
+.ph-lab { font-size: 11px; font-weight: 600; letter-spacing: 0.14em; line-height: 1.2; text-transform: uppercase; }
+.g { color: var(--grey); }
+
+/* a picture: the board's own, loaded at the size it is drawn */
+.ph-pic { position: relative; display: block; overflow: hidden; background: #F2F2F0; aspect-ratio: var(--ar, 1.3333); }
+.ph-pic img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 0.45s var(--ease); }
+.ph-pic.in img { opacity: 1; }
+.ph-pic.none { background: #F2F2F0; }
+
+/* ── the index ── */
+.ix { padding: 0 var(--m) 40px; }
+.ix-st { padding: 22px 0 30px; }
+.ix-stm { margin: 0; font-size: 27px; font-weight: 500; line-height: 1.1; letter-spacing: -0.025em; }
+.ix-links { display: flex; flex-wrap: wrap; gap: 6px 18px; margin: 16px 0 0; font-size: 13px; font-weight: 500; }
+.ix-g { margin: 0 0 38px; }
+.ix-h { display: flex; justify-content: space-between; align-items: baseline; margin: 0 0 6px; padding: 8px 0 0; border-top: 1px solid var(--ink); font-size: 11px; font-weight: 600; letter-spacing: 0.14em; line-height: 1.2; text-transform: uppercase; }
+.ix-h b { font-weight: 600; margin-right: 10px; }
+.ix-h .n { color: var(--grey); font-variant-numeric: tabular-nums; }
+.ix .e { transition: color 0.3s var(--ease), opacity 0.3s var(--ease); }
+
+.ix-line { display: block; padding: 11px 0 13px; border-bottom: 1px solid var(--hair); }
+.ix-line .nm { display: block; font-size: 34px; font-weight: 500; line-height: 1; letter-spacing: -0.035em; }
+.ix-line sup { margin-left: 4px; font-size: 11px; font-weight: 500; letter-spacing: 0; color: var(--grey); vertical-align: 1.6em; }
+.ix-line .sn { display: block; margin-top: 5px; font-size: 13px; line-height: 1.35; color: var(--grey); }
+
+.ix-feats { display: grid; grid-template-columns: 1fr 1fr; gap: 18px 12px; margin-top: 18px; }
+.ix-feat .ph-pic { aspect-ratio: 4 / 3; }
+.ix-feat .t { display: block; margin-top: 7px; font-size: 14px; font-weight: 500; line-height: 1.2; }
+.ix-feat .l { display: block; margin-top: 2px; font-size: 12px; color: var(--grey); }
+
+.ix-work { font-variant-numeric: tabular-nums; }
+.ix-w { display: grid; grid-template-columns: 30px minmax(0, 1fr) auto; column-gap: 8px; align-items: baseline; padding: 9px 0 10px; border-bottom: 1px solid var(--hair); }
+.ix-w .no { font-size: 11px; color: var(--grey); }
+.ix-w .t { font-size: 17px; font-weight: 500; line-height: 1.2; letter-spacing: -0.01em; }
+.ix-w .y { font-size: 12px; color: var(--grey); }
+.ix-w .d { grid-column: 2 / span 2; margin-top: 2px; font-size: 12px; line-height: 1.3; color: var(--grey); }
+
+.ix-run { font-size: 15px; line-height: 1.75; }
+.ix-run .e { display: inline-block; margin-right: 14px; }
+.ix-run sup { margin-left: 2px; font-size: 10px; color: var(--grey); }
+.ix-years .e { font-size: 24px; font-weight: 500; letter-spacing: -0.02em; line-height: 1.35; margin-right: 16px; }
+.ix-years sup { vertical-align: 1.1em; }
+.ix-ab { display: block; padding: 10px 0 12px; border-bottom: 1px solid var(--hair); }
+.ix-ab .t { display: block; font-size: 20px; font-weight: 500; line-height: 1.15; letter-spacing: -0.015em; }
+.ix-ab .sn { display: block; margin-top: 4px; font-size: 13px; line-height: 1.35; color: var(--grey); }
+.ix-foot { display: flex; justify-content: space-between; align-items: baseline; margin: 10px 0 0; padding-top: 10px; border-top: 1px solid var(--ink); font-size: 13px; }
+
+/* the spec sheet: what the open study holds in ink, the rest grey, its
+   own row set solid */
+.ix.spec .e { color: var(--grey); }
+.ix.spec .e sup, .ix.spec .e .sn, .ix.spec .e .d, .ix.spec .e .no, .ix.spec .e .y, .ix.spec .e .l { color: inherit; }
+.ix.spec .e.on { color: var(--ink); }
+.ix.spec .ix-feat:not(.on) .ph-pic { opacity: 0.3; }
+/* a row is set solid, edge to edge; a picture card only stays in ink */
+.ix.spec .ix-w.cur, .ix.spec .ix-ab.cur { position: relative; z-index: 0; color: var(--paper); }
+.ix.spec .ix-w.cur::before, .ix.spec .ix-ab.cur::before { content: ""; position: absolute; inset: 0 calc(-1 * var(--m)); z-index: -1; background: var(--ink); }
+
+/* ── a shelf ── */
+.sh { padding: 20px var(--m) 48px; }
+.sh-lab { display: flex; justify-content: space-between; margin: 0 0 10px; padding-top: 8px; border-top: 1px solid var(--ink); font-size: 11px; font-weight: 600; letter-spacing: 0.14em; line-height: 1.2; text-transform: uppercase; }
+.sh-lab .n { color: var(--grey); }
+.sh-h { margin: 0 0 26px; font-size: 32px; font-weight: 500; line-height: 1.06; letter-spacing: -0.03em; }
+.sh-list { display: grid; grid-template-columns: 1fr 1fr; gap: 22px 12px; }
+.sh-s { display: block; min-width: 0; }
+.sh-s .ph-pic { aspect-ratio: 4 / 5; }
+.sh-s.lead { grid-column: 1 / -1; }
+.sh-s.lead .ph-pic { aspect-ratio: var(--ar, 1.3333); max-height: 62vh; }
+.sh-s .t { display: block; margin-top: 8px; font-size: 15px; font-weight: 500; line-height: 1.2; letter-spacing: -0.01em; }
+.sh-s.lead .t { font-size: 24px; letter-spacing: -0.025em; }
+.sh-s .y { display: block; margin-top: 3px; font-size: 12px; line-height: 1.3; color: var(--grey); }
+
+/* ── About, as a room of words ── */
+.ab { padding: 24px var(--m) 72px; }
+.ab-h { margin: 0 0 18px; font-size: 44px; font-weight: 500; line-height: 1; letter-spacing: -0.04em; }
+.ab-lede { margin: 0 0 22px; font-size: 22px; font-weight: 500; line-height: 1.2; letter-spacing: -0.015em; }
+.ab-p { margin: 0 0 16px; font-size: 17px; line-height: 1.5; }
+
+/* ── bits of chrome the concepts share ── */
+.ph-mark { font-size: 15px; font-weight: 700; letter-spacing: -0.05em; }
+.ph-mark i { font-style: normal; font-weight: 400; }
+/* a two-bar mark for an index or a close, drawn, not a font's */
+.ph-bars { position: relative; display: inline-block; width: 18px; height: 9px; vertical-align: middle; }
+.ph-bars::before, .ph-bars::after { content: ""; position: absolute; left: 0; right: 0; height: 1.5px; background: currentColor; transition: transform 0.35s var(--ease), top 0.35s var(--ease), bottom 0.35s var(--ease); }
+.ph-bars::before { top: 0; }
+.ph-bars::after { bottom: 0; }
+.x .ph-bars::before { top: 3.75px; transform: rotate(45deg); }
+.x .ph-bars::after { bottom: 3.75px; transform: rotate(-45deg); }

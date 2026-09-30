@@ -1,0 +1,326 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>C · Drawer · phone · Reckon*House lab</title>
+<!-- ── C · DRAWER (29 Sept 2026) ─────────────────────────────────────────
+     His: "or from the side?"
+
+     The desk's geometry, kept. On a desk the index sits on the left and
+     the room on the right; here the index is still to the left of the
+     room, just off the glass, and you pull it in. The two are one wide
+     strip, index then room, and they only ever move together.
+
+     The page opens on the index. Open a study and the strip slides left
+     in one motion: the index goes off the left edge as the room comes in
+     from the right, bound along its left edge by the index's spine, the
+     word Index lettered up it from the foot the way a book's spine reads.
+     Tap the spine, or pull it (or pull from anywhere within 24px of the
+     left edge), and the strip follows the finger until the index covers
+     86% of the glass, set as the room's spec sheet and opened with the
+     study's row a third of the way down; the room keeps a dimmed sliver
+     on the right. Let go past 35% of the way, or with a flick, and it
+     opens; tap the sliver, or push the index back, and it closes.
+
+     A line, a year, a tool opens its shelf inside the drawer; a study
+     from there closes the drawer onto its room, and Next at the room's
+     foot follows that shelf's order, the next room sliding in over the
+     last one past the spine. Close in the room's head runs the strip back
+     the other way, to the index (or the shelf the study came from) with
+     the study you left a third of the way down.
+
+     iOS Safari keeps a swipe from the very left edge for its own Back,
+     and the spine sits in that edge, so on an iPhone the tap is the way
+     in: a pull that starts on the spine can go to Safari instead.
+
+     ?k=arc opens a study, ?drawer=1 with it opens the drawer. -->
+<link rel="stylesheet" href="/lab/density/density.css">
+<link rel="stylesheet" href="/lab/density/study-panel.css">
+<link rel="stylesheet" href="/lab/phone/kit.css">
+<style>
+  #glass { position: fixed; inset: 0; overflow: hidden; overflow: clip; background: var(--paper); }
+  /* one wide strip: the index (--iw) then the room (--w), moved as one */
+  #strip { --w: 100vw; --iw: 100vw; --sp: calc(22px + env(safe-area-inset-left, 0px)); position: absolute; top: 0; bottom: 0; left: 0; width: calc(var(--iw) + var(--w)); will-change: transform; }
+
+  /* the index: the whole glass at home, 86% of it once it is parked */
+  #ixp { position: absolute; top: 0; bottom: 0; left: 0; width: var(--iw); overflow: hidden; overflow: clip; background: var(--paper); }
+  #ixp > .ph-host { padding: env(safe-area-inset-top, 0px) 0 env(safe-area-inset-bottom, 0px) env(safe-area-inset-left, 0px); touch-action: pan-y pinch-zoom; transition: transform 0.42s var(--ease); }
+  #shelf { transform: translateX(100%); outline: 1px solid var(--hair); }
+  body.shelf #shelf { transform: none; }
+  body.shelf #ixh { transform: translateX(-24%); }
+  .c-head { display: flex; align-items: center; height: var(--bar); padding: 0 var(--m); border-bottom: 1px solid var(--hair); }
+  .c-head .ph-mark { font-size: 17px; }
+  /* a shelf opens seated at the room, so its way back stays in reach, and
+     names the shelf once its own head has gone */
+  .back { position: sticky; top: 0; z-index: 2; display: flex; justify-content: space-between; align-items: baseline; gap: 16px; padding: 14px var(--m) 10px; background: var(--paper); border-bottom: 1px solid transparent; font-size: 11px; font-weight: 600; letter-spacing: 0.14em; line-height: 1.2; text-transform: uppercase; transition: border-color 0.3s var(--ease); }
+  .back .ph-btn { text-transform: inherit; letter-spacing: inherit; }
+  .back .nm { min-width: 0; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; color: var(--grey); opacity: 0; transition: opacity 0.3s var(--ease); }
+  .back.stuck { border-bottom-color: var(--hair); }
+  .back.named .nm { opacity: 1; }
+  .back + .sh { padding-top: 6px; }
+
+  /* the room, bound along its left edge by the index's spine */
+  #rp { position: absolute; top: 0; bottom: 0; left: var(--iw); width: var(--w); overflow: hidden; overflow: clip; background: var(--paper); }
+  #rooms { position: absolute; top: env(safe-area-inset-top, 0px); bottom: 0; left: var(--sp); right: env(safe-area-inset-right, 0px); overflow: hidden; overflow: clip; }
+  #rooms > .ph-host { padding-bottom: env(safe-area-inset-bottom, 0px); }
+  /* the edge of a room sliding in over the last one */
+  #rooms > .ph-host.in { outline: 1px solid var(--hair); }
+  /* 22px of paper with its hairline, and the pull reaching 24px in: the
+     last two are clear, over the room */
+  #spine { position: absolute; z-index: 2; left: 0; top: 0; bottom: 0; width: calc(var(--sp) + 2px); padding: 0 2px 0 env(safe-area-inset-left, 0px); display: flex; align-items: center; justify-content: center; background: linear-gradient(to right, var(--paper) calc(100% - 3px), var(--hair) calc(100% - 3px) calc(100% - 2px), transparent calc(100% - 2px)); touch-action: none; cursor: grab; user-select: none; -webkit-user-select: none; }
+  #spine .ph-lab { writing-mode: vertical-rl; transform: rotate(180deg); white-space: nowrap; }
+  #spine:focus-visible { outline: 1px solid var(--ink); outline-offset: -4px; }
+  #scrim { position: absolute; z-index: 3; inset: 0; background: #000; opacity: 0; pointer-events: none; touch-action: none; user-select: none; -webkit-user-select: none; }
+  body[data-state="drawer"] #scrim { pointer-events: auto; cursor: pointer; }
+  body.pulling, body.pulling * { user-select: none; -webkit-user-select: none; cursor: grabbing; }
+
+  /* the marking motion: the open study's row is swept with ink */
+  #ixh .ix.spec .e.cur::before { transform-origin: 0 50%; animation: c-sweep 0.42s var(--ease) both; }
+  @keyframes c-sweep { from { transform: scaleX(0); } }
+  /* in a shelf, the study on the glass takes the same band */
+  #shelf .sh-s .t { width: fit-content; margin-left: -4px; padding: 1px 4px; background: linear-gradient(var(--ink), var(--ink)) no-repeat 0 0 / 0% 100%; }
+  /* an About section on the glass is marked in the index the same way */
+  #ixh .ix-ab .t { width: fit-content; margin-left: -4px; padding: 0 4px; background: linear-gradient(var(--ink), var(--ink)) no-repeat 0 0 / 0% 100%; }
+  /* the band sweeps in; unmarked, it simply goes */
+  #shelf .sh-s.cur .t, #ixh .ix-ab.here .t { background-size: 100% 100%; color: var(--paper); transition: background-size 0.42s var(--ease), color 0.3s var(--ease); }
+
+  @media (prefers-reduced-motion: reduce) {
+    #ixp > .ph-host, #shelf .sh-s.cur .t, #ixh .ix-ab.here .t, .back, .back .nm { transition: none; }
+    #ixh .ix.spec .e.cur::before { animation: none; }
+  }
+</style>
+</head>
+<body data-state="home">
+<div id="glass">
+  <div id="strip">
+    <section id="ixp" aria-label="Index">
+      <div id="ixh" class="ph-host"></div>
+      <div id="shelf" class="ph-host"></div>
+    </section>
+    <section id="rp" aria-label="Room">
+      <div id="rooms"></div>
+      <button id="spine" class="ph-btn" type="button" aria-label="Index" aria-controls="ixp" aria-expanded="false"><span class="ph-lab">Index</span></button>
+      <div id="scrim"></div>
+    </section>
+  </div>
+</div>
+<script src="/lab/density/fragments.js"></script>
+<script src="/lab/density/density.js"></script>
+<script src="/lab/vendor/lenis.min.js" onerror="this.remove()"></script>
+<script src="/lab/density/study-panel.js"></script>
+<script src="/lab/dsc-sizzle/sizzle.js" onerror="this.remove()"></script>
+<script src="/lab/sizzle-reel.js" onerror="this.remove()"></script>
+<script src="/lab/phone/kit.js"></script>
+<script>
+(() => {
+  const P = window.PH, $ = (id) => document.getElementById(id), B = document.body;
+  const glass = $("glass"), strip = $("strip"), ixp = $("ixp"), ixh = $("ixh"), shelfH = $("shelf"), rp = $("rp"), rooms = $("rooms"), spine = $("spine"), scrim = $("scrim");
+  const RM = matchMedia("(prefers-reduced-motion: reduce)").matches, T = (ms) => (RM ? 0 : ms);
+  const DRAWER = 0.86;
+  /* the strip's offset x runs from -IW (the index parked off the left
+     edge, the room on the glass) to 0 (the index on the glass) */
+  let IW = glass.clientWidth, x = 0, state = "home", busy = false;
+  let cur = null, order = P.ORDER, live = null, shelfEl = null;
+
+  const lay = (iw) => { IW = iw; strip.style.setProperty("--w", glass.clientWidth + "px"); strip.style.setProperty("--iw", iw + "px"); };
+  const dw = () => Math.round(glass.clientWidth * DRAWER);
+  const place = (to, ms) => { x = to; P.set(strip, "translate3d(" + to + "px,0,0)", ms); };
+  const shade = (k, ms) => {
+    scrim.style.transition = ms ? "opacity " + ms + "ms " + P.EASE : "none";
+    scrim.style.opacity = (0.34 * Math.max(0, Math.min(1, k))).toFixed(3);
+  };
+  /* where the strip is now, even mid-glide, so a pull can catch it */
+  const nowX = () => {
+    const a = (getComputedStyle(strip).transform || "").match(/^matrix(3d)?\(([^)]+)\)/);
+    if (!a) return x;
+    const n = a[2].split(",").map(parseFloat);
+    return a[1] ? n[12] : n[4];
+  };
+  const setState = (s) => {
+    state = s; B.dataset.state = s;
+    ixp.inert = s === "room"; rp.inert = s === "home"; rooms.inert = s === "drawer";
+    spine.setAttribute("aria-expanded", s === "drawer" ? "true" : "false");
+  };
+
+  /* the index, the page it opens on; a shelf slides in over it */
+  const ix = P.index({ on: (kind, v) => pick(kind, v) });
+  ixh.appendChild(P.el("header", "c-head", '<span class="ph-mark">Reckon<i>*</i>House</span>'));
+  ixh.appendChild(ix);
+  /* what is on the glass, marked where the index and a shelf list it */
+  const markShelf = () => {
+    ix.querySelectorAll(".ix-ab").forEach((a) => a.classList.toggle("here", !!cur && cur.kind === "about" && a.getAttribute("href") === "#about/" + cur.v));
+    if (!shelfEl) return;
+    shelfEl.querySelectorAll(".sh-s").forEach((a) => a.classList.toggle("cur", !!cur && cur.kind === "study" && a.dataset.k === cur.v));
+  };
+  const pick = (kind, v) => {
+    if (busy) return;
+    if (kind === "study" || kind === "about") return open(kind, v, P.ORDER);
+    shelfH.innerHTML = "";
+    const S = P.shelfOf(kind, v), bar = P.el("div", "back");
+    const back = P.el("button", "ph-btn", "‹ Index"); back.type = "button";
+    back.addEventListener("click", () => B.classList.remove("shelf"));
+    bar.appendChild(back); bar.appendChild(P.el("span", "nm", P.esc(S ? S.name : "")));
+    shelfH.appendChild(bar);
+    const s = P.shelf({ kind, v, on: (k2, k) => open("study", k, s.ks) });
+    shelfH.appendChild(s); shelfH.scrollTop = 0; shelfEl = s; markShelf(); stick();
+    B.classList.add("shelf");
+  };
+  const stick = () => {
+    const bar = shelfH.querySelector(".back"), h = shelfH.querySelector(".sh-h"); if (!bar) return;
+    bar.classList.toggle("stuck", shelfH.scrollTop > 4);
+    bar.classList.toggle("named", !!h && shelfH.scrollTop > h.offsetTop + h.offsetHeight - bar.offsetHeight);
+  };
+  shelfH.addEventListener("scroll", stick, { passive: true });
+
+  /* the index opens with the room's row a third of the way down, and an
+     open shelf at the room's own picture, if they are all the way off the
+     glass (caught mid-glide, they stay where they are) */
+  const seatAt = (c) => {
+    if (!c || (state !== "going" && nowX() > -IW + 1)) return;
+    const third = (host, e) => { if (e) host.scrollTop = Math.max(0, Math.round(e.offsetTop - host.clientHeight / 3)); };
+    third(ixh, c.kind === "study" ? ix.rowOf(c.v) : ix.querySelector('.ix-ab[href="#about/' + c.v + '"]'));
+    if (shelfEl && c.kind === "study") third(shelfH, shelfEl.querySelector('.sh-s[data-k="' + c.v + '"]'));
+  };
+
+  /* a room: the real one, or an About section as a room of words */
+  const mount = () => {
+    const host = P.el("div", "ph-host"); rooms.appendChild(host);
+    const { kind, v } = cur, ord = order;
+    const room = kind === "about" ? P.about(host, v)
+      : P.room(host, v, { order: ord, hold: true, onNext: (nk) => open("study", nk, ord), onClose: () => leave() });
+    return { host, room };
+  };
+  const drop = (r) => { if (r) { r.room.destroy(); r.host.remove(); } };
+  const play = (r) => { if (r && r.room.play) r.room.play(); };
+
+  const open = (kind, v, ord) => {
+    if (busy || state === "going") return;
+    if (cur && cur.kind === kind && cur.v === v) { if (state === "drawer") drawer(false); return; }
+    order = kind === "study" && ord && ord.length > 1 && ord.includes(v) ? ord : P.ORDER;
+    cur = { kind, v };
+    ix.mark(kind === "study" ? v : null); markShelf();
+    if (state === "home") enter(); else if (state === "drawer") swap(); else push();
+  };
+  /* from the index: one motion, the index off the left edge as the room
+     comes in from the right; then the index is set at drawer width while
+     it is off the glass */
+  const enter = () => {
+    busy = true; setState("going");
+    setTimeout(() => {
+      live = mount();
+      setTimeout(() => {
+        place(-IW, T(520));
+        setTimeout(() => play(live), T(300));
+        setTimeout(() => { lay(dw()); place(-IW, 0); busy = false; setState("room"); }, T(520) + 40);
+      }, 30);
+    }, 60);
+  };
+  /* from the drawer: the new room is set under it, and it closes onto it */
+  const swap = () => {
+    busy = true;
+    setTimeout(() => {
+      const old = live; live = mount(); drop(old);
+      setTimeout(() => { busy = false; drawer(false); setTimeout(() => play(live), T(240)); }, 30);
+    }, 60);
+  };
+  /* room to room: the next one slides in over the last, past the spine */
+  const push = () => {
+    busy = true;
+    const old = live; live = mount(); const nh = live.host;
+    nh.classList.add("in"); P.set(nh, "translate3d(100%,0,0)", 0); void nh.offsetWidth;
+    setTimeout(() => {
+      P.set(nh, "translate3d(0,0,0)", T(480));
+      if (old) P.set(old.host, "translate3d(-24%,0,0)", T(480));
+      setTimeout(() => play(live), T(280));
+      setTimeout(() => { drop(old); nh.classList.remove("in"); P.set(nh, "", 0); busy = false; }, T(480) + 40);
+    }, 30);
+  };
+  /* Close: the strip runs back, the room off the right edge and the index
+     (or the shelf the study came from) in from the left, seated at the
+     study you left */
+  const leave = () => {
+    if (busy || state !== "room") return;
+    busy = true; setState("going");
+    const was = cur; cur = null; ix.mark(null); markShelf();
+    lay(glass.clientWidth); place(-IW, 0); seatAt(was); void strip.offsetWidth;
+    setTimeout(() => {
+      place(0, T(520));
+      setTimeout(() => { drop(live); live = null; busy = false; setState("home"); }, T(520) + 40);
+    }, 30);
+  };
+
+  /* the drawer: the index pulled back onto the glass over the room */
+  const drawer = (on, ms, seated) => {
+    if (busy || !live || (state !== "room" && state !== "drawer")) return;
+    if (on && state === "room" && !seated) seatAt(cur);
+    setState(on ? "drawer" : "room");
+    const t = ms == null ? T(440) : ms;
+    place(on ? 0 : -IW, t); shade(on ? 1 : 0, t);
+  };
+  spine.addEventListener("click", () => { if (state === "room") drawer(true); else if (state === "drawer") drawer(false); });
+  scrim.addEventListener("click", () => drawer(false));
+  addEventListener("keydown", (e) => { if (e.key === "Escape" && state === "drawer") drawer(false); });
+
+  /* the pull: the strip follows the finger, and the scrim with it; let go
+     and it opens or closes by distance (35% of the way) or by a flick
+     (0.4 px/ms). Every press reaches the kit, so its own tap and click
+     bookkeeping resets; whether a pull moves the strip is decided when
+     it starts */
+  let from = null, x0 = 0;
+  const pull = (ok) => ({
+    axis: "x", can: () => true,
+    start() {
+      from = ok() ? state : null; if (!from) return;
+      x0 = nowX(); if (from === "room") seatAt(cur);
+      B.classList.add("pulling"); place(x0, 0); shade(1 + x0 / IW, 0);
+    },
+    move(dx) {
+      if (!from) return;
+      let to = x0 + dx;
+      if (to > 0) to *= 0.2;
+      to = Math.max(-IW, to);
+      place(to, 0); shade(1 + to / IW, 0);
+    },
+    end(dx, dy, vx) {
+      if (!from) return;
+      const k = 1 + x / IW, f = from; from = null;
+      B.classList.remove("pulling");
+      drawer(Math.abs(vx) > 0.4 ? vx > 0 : f === "room" ? k > 0.35 : k > 0.65, T(380), true);
+    },
+  });
+  P.drag(spine, pull(() => state === "room" && !busy));
+  P.drag(scrim, pull(() => state === "drawer" && !busy));
+  P.drag(ixp, pull(() => state === "drawer" && !busy));
+  /* a finger is held by what it lands on; a mouse is not, and would slip
+     off a 24px spine before the pull knows its axis, so hold it */
+  [spine, scrim].forEach((n) => n.addEventListener("pointerdown", (e) => {
+    if (e.pointerType === "mouse") try { n.setPointerCapture(e.pointerId); } catch (err) { /* gone */ }
+  }));
+  /* a mouse pull across the index moves the strip, not a link's ghost */
+  ixp.addEventListener("dragstart", (e) => e.preventDefault());
+
+  addEventListener("resize", () => {
+    if (busy) return;
+    if (state === "home") { lay(glass.clientWidth); place(0, 0); }
+    else { lay(dw()); place(state === "drawer" ? 0 : -IW, 0); }
+  });
+
+  const q = new URLSearchParams(location.search);
+  lay(glass.clientWidth); place(0, 0); shade(0, 0); setState("home");
+  const k0 = q.get("k");
+  if (k0 && P.D.study(k0)) {
+    cur = { kind: "study", v: k0 }; ix.mark(k0);
+    live = mount(); lay(dw()); place(-IW, 0); setState("room");
+    setTimeout(() => play(live), 80);
+    if (q.get("drawer") === "1") setTimeout(() => drawer(true, 0), 120);
+  }
+  window.CONCEPT = {
+    open: (k) => open("study", k, P.ORDER), drawer: (on) => drawer(!!on), pick, leave,
+    get state() { return state; }, get room() { return live && live.room; },
+  };
+})();
+</script>
+</body>
+</html>

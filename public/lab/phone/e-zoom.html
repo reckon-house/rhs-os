@@ -1,0 +1,506 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>E · Zoom · phone · Reckon*House lab</title>
+<!-- ── E · ZOOM (29 Sept 2026) ───────────────────────────────────────────
+     His: "can we do some high level concepts of how it might function".
+     Not one he named. It answers with the site's own move: on the desk a
+     picture flies into the room's cover, and here that flight is the whole
+     way around.
+
+     The page opens on the index as a sheet of pictures. The statement at
+     the top, then What I make: each line under its name, set as the index
+     sets a line, with its studies as a grid of their board pictures, three
+     across, each with its number and name. Every study shows once: a
+     line's own lead under that line, every other study under the first
+     line that holds it, where a line lying wholly inside another asks
+     first (Apps and Systems sit inside Digital, and taken in plain order
+     they came out empty). The rest of the index follows as a phone reads
+     it, 02 Work to 07 Tools.
+
+     Tap a picture and it flies to where the room's cover will be while
+     the sheet sinks back behind it, as if the camera moved in; the room is
+     there when it lands, its cover in the same place, and it reads down.
+     A folio at the foot says which study you are in. Tap it, or pinch in
+     with two fingers, and the room zooms back out: the cover flies home
+     into its tile, the sheet comes forward, and that tile's name is set
+     solid, where you were. Next at a room's foot flies the next study's
+     small picture up into the new cover, in the sheet's order. A study in
+     Work opens from its row, the picture unfolding out of the line; a
+     year, a figure, a tool opens its shelf out of the word, and its
+     pictures fly into their rooms the same way. The sheet keeps its place
+     throughout, and the phone's own back steps out one depth.
+
+     ?k=arc opens a study. -->
+<link rel="stylesheet" href="/lab/density/density.css">
+<link rel="stylesheet" href="/lab/density/study-panel.css">
+<link rel="stylesheet" href="/lab/phone/kit.css">
+<style>
+  #sheet { z-index: 1; touch-action: pan-y; }
+  .ez-page { touch-action: pan-y; }
+
+  /* the sheet: the mark, the statement, then the pictures */
+  .ez-mast { display: flex; align-items: center; height: calc(52px + env(safe-area-inset-top, 0px)); padding: env(safe-area-inset-top, 0px) max(var(--m), env(safe-area-inset-right, 0px)) 0 max(var(--m), env(safe-area-inset-left, 0px)); }
+  .ez-mast .ph-mark { font-size: 17px; }
+  .ez-ix { padding-left: max(var(--m), env(safe-area-inset-left, 0px)); padding-right: max(var(--m), env(safe-area-inset-right, 0px)); padding-bottom: calc(40px + env(safe-area-inset-bottom, 0px)); }
+  .ez-ix .ix-st { padding-top: 6px; }
+  .ez-g + .ez-g { margin-top: 30px; }
+  .ez-lh { padding-bottom: 12px; }
+  .ez-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; align-items: start; margin-top: 12px; }
+  .ez-t { display: block; min-width: 0; -webkit-touch-callout: none; }
+  .ez-t .ph-pic { aspect-ratio: 1; }
+  .ez-c { position: relative; z-index: 0; display: grid; grid-template-columns: auto minmax(0, 1fr); column-gap: 5px; align-items: baseline; padding: 6px 0 8px; font-size: 12px; font-weight: 500; line-height: 1.25; letter-spacing: -0.005em; overflow-wrap: break-word; }
+  .ez-c .no { font-size: 10px; color: var(--grey); font-variant-numeric: tabular-nums; }
+  @media (hover: hover) { .ez-t:hover .ez-c .t { color: var(--grey); } }
+
+  /* where you were: an ink band sweeps across the name, the words go to
+     paper, as the index sets its current row */
+  @keyframes ez-sweep { from { transform: scaleX(0); } }
+  .ez-mk { position: relative; z-index: 0; color: var(--paper) !important; transition: color 0.2s var(--ease) 0.15s; }
+  .ez-mk * { color: inherit !important; }
+  .ez-mk::before { content: ""; position: absolute; z-index: -1; inset: var(--mk, 0 -4px); background: var(--ink); transform-origin: 0 50%; animation: ez-sweep 0.46s var(--ease) both; }
+  .ix-w.ez-mk, .ix-ab.ez-mk { --mk: 0 calc(-1 * var(--m)); }
+  .ix-run .e.ez-mk { --mk: 0 -5px; }
+  .sh-s .t.ez-mk { --mk: -2px -4px; }
+
+  /* the pages over the sheet: a room, a shelf, an About section */
+  .ez-room .sp { padding-bottom: calc(64px + env(safe-area-inset-bottom, 0px)); }
+  .ez-shelf .sh, .ez-shelf .ab { padding-top: calc(24px + env(safe-area-inset-top, 0px)); padding-bottom: calc(84px + env(safe-area-inset-bottom, 0px)); }
+  .ez-pinch { outline: 1px solid var(--hair); }
+  .ez-fly { position: fixed; z-index: 60; margin: 0; max-width: none; transform-origin: 0 0; pointer-events: none; will-change: transform, clip-path; }
+
+  /* the folio: where you are, and the way out, on a paper chip */
+  #folio { position: fixed; z-index: 90; left: max(var(--m), env(safe-area-inset-left, 0px)); bottom: calc(14px + env(safe-area-inset-bottom, 0px)); display: flex; align-items: center; gap: 10px; height: 34px; padding: 0 12px 0 11px; background: var(--paper); border: 1px solid var(--hair); font-size: 11px; font-weight: 600; letter-spacing: 0.14em; line-height: 1; text-transform: uppercase; white-space: nowrap; user-select: none; -webkit-user-select: none; transform: translateY(calc(100% + 40px + env(safe-area-inset-bottom, 0px))); transition: transform 0.42s var(--ease); pointer-events: none; }
+  body.deep #folio { transform: none; pointer-events: auto; transition-delay: 0.18s; }
+  #folio::after { content: ""; position: absolute; inset: -6px; }
+  #folio .no { max-width: 46vw; overflow: hidden; text-overflow: ellipsis; color: var(--grey); font-variant-numeric: tabular-nums; letter-spacing: 0.06em; }
+  #folio .no:empty { display: none; }
+  @media (prefers-reduced-motion: reduce) { #folio { transition: none; } .ez-mk::before { animation: none; } }
+</style>
+</head>
+<body>
+<div id="sheet" class="ph-host" aria-label="Index"></div>
+<button id="folio" class="ph-btn" type="button" aria-label="Index"><span class="no"></span><span class="w">Index</span></button>
+<script src="/lab/density/fragments.js"></script>
+<script src="/lab/density/density.js"></script>
+<script src="/lab/vendor/lenis.min.js" onerror="this.remove()"></script>
+<script src="/lab/density/study-panel.js"></script>
+<script src="/lab/dsc-sizzle/sizzle.js" onerror="this.remove()"></script>
+<script src="/lab/sizzle-reel.js" onerror="this.remove()"></script>
+<script src="/lab/phone/kit.js"></script>
+<script>
+(() => {
+  const P = window.PH, $ = (id) => document.getElementById(id), B = document.body;
+  if (!P) return;
+  const sheet = $("sheet"), folio = $("folio"), fNo = folio.querySelector(".no"), fW = folio.querySelector(".w");
+  const EASE = P.EASE;
+  /* the desk's flight home (540ms, crossref2.js) both ways, inside the
+     house's 350 to 550 */
+  const IN = 540, HOME = 540;
+  const still = () => matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /* ── the sheet: which line each study shows under ── */
+  const inside = (a, b) => a !== b && a.ks.length < b.ks.length && a.ks.every((k) => b.ks.includes(k));
+  const asks = P.LINES.map((l, i) => ({ l, i, d: P.LINES.filter((o) => inside(l, o)).length }))
+    .sort((a, b) => b.d - a.d || a.i - b.i).map((x) => x.l);
+  const under = new Map();
+  P.LINES.forEach((l) => { if (l.lead && l.ks.includes(l.lead) && !under.has(l.lead)) under.set(l.lead, l.tag); });
+  asks.forEach((l) => l.ks.forEach((k) => { if (!under.has(k)) under.set(k, l.tag); }));
+  const GROUPS = P.LINES.map((l) => ({ l, ks: l.ks.filter((k) => under.get(k) === l.tag).sort((a, b) => (b === l.lead) - (a === l.lead)) }));
+  /* the sheet's order, the one Next follows */
+  const SHEET = GROUPS.flatMap((g) => g.ks);
+
+  /* the index as a phone reads it, its first section drawn as pictures */
+  const ix = P.index({ on: (kind, v, el) => pick(kind, v, el), features: false });
+  ix.classList.add("ez-ix");
+  const tw = Math.round((Math.min(innerWidth, 1400) - 44) / 3);
+  const pics = P.el("section", "ix-g ez-pics"); pics.dataset.g = "pics";
+  pics.appendChild(P.el("h2", "ix-h", "<span><b>01</b>What I make</span>" + '<span class="n">' + P.LINES.length + "</span>"));
+  GROUPS.forEach((g) => {
+    if (!g.ks.length) return;
+    const grp = P.el("div", "ez-g"); grp.dataset.line = g.l.tag;
+    grp.appendChild(P.el("div", "ix-line ez-lh", '<span class="nm">' + P.esc(g.l.name) + "<sup>" + g.ks.length + "</sup></span>" + (g.l.sentence ? '<span class="sn">' + P.esc(g.l.sentence) + "</span>" : "")));
+    const grid = P.el("div", "ez-grid");
+    g.ks.forEach((k) => {
+      const a = P.el("a", "ez-t"); a.href = "#study/" + k; a.dataset.k = k;
+      a.appendChild(P.pic(k, tw));
+      a.appendChild(P.el("span", "ez-c", '<span class="no">' + P.num(k) + '</span><span class="t">' + P.esc(P.title(k)) + "</span>"));
+      a.addEventListener("click", (e) => { e.preventDefault(); open(k, { el: a }); });
+      grid.appendChild(a);
+    });
+    grp.appendChild(grid); pics.appendChild(grp);
+  });
+  const s1 = ix.querySelector('[data-g="lines"]');
+  if (s1) s1.replaceWith(pics); else ix.appendChild(pics);
+  sheet.appendChild(P.el("header", "ez-mast", '<span class="ph-mark">Reckon<i>*</i>House</span>'));
+  sheet.appendChild(ix);
+
+  /* ── where things are on the glass ── */
+  const seenIn = (node, host) => { const r = node.getBoundingClientRect(), h = host.getBoundingClientRect(); return r.width > 0 && r.bottom > h.top + 8 && r.top < h.bottom - 8; };
+  /* what of a box is on the glass: its rect cut by every ancestor that
+     clips it, as the desk measures a flight */
+  const visRect = (box) => {
+    const r = box.getBoundingClientRect();
+    let L = r.left, T = r.top, R = r.right, D = r.bottom;
+    for (let a = box.parentElement; a && a !== B && a !== document.documentElement; a = a.parentElement) {
+      const cs = getComputedStyle(a);
+      if (cs.overflowX === "visible" && cs.overflowY === "visible") continue;
+      const q = a.getBoundingClientRect();
+      if (cs.overflowX !== "visible") { L = Math.max(L, q.left); R = Math.min(R, q.right); }
+      if (cs.overflowY !== "visible") { T = Math.max(T, q.top); D = Math.min(D, q.bottom); }
+    }
+    L = Math.max(L, 0); T = Math.max(T, 0); R = Math.min(R, innerWidth); D = Math.min(D, innerHeight);
+    return R - L > 2 && D - T > 2 ? { left: L, top: T, right: R, bottom: D, width: R - L, height: D - T } : null;
+  };
+  /* a cover read past sits above the glass; it comes back from just there */
+  const onGlass = (r) => (r.bottom > 0 ? r : { left: r.left, right: r.right, width: r.width, height: r.height, top: -r.height, bottom: 0 });
+  /* a transform-origin at a point on the glass, in the page's own box */
+  const at = (x, y, host) => { const h = host.getBoundingClientRect(); return (x - h.left).toFixed(1) + "px " + (y - h.top).toFixed(1) + "px"; };
+  const centre = (r, host) => at(r.left + r.width / 2, r.top + r.height / 2, host);
+  const insetOf = (r, host) => { const h = host.getBoundingClientRect(); return "inset(" + [r.top - h.top, h.right - r.right, h.bottom - r.bottom, r.left - h.left].map((v) => Math.max(0, v).toFixed(1) + "px").join(" ") + ")"; };
+
+  /* ── the flight (the desk's, crossref2.js): a picture showing its whole
+     frame at A becomes the same picture cropped to B. The image is sized
+     to cover B, clipped to B, and at the start scaled evenly and clipped
+     back to A. Only transform and clip-path move. From a line of text A
+     is the line, so the picture unfolds out of it as a band ── */
+  const full = (R, r) => { const w = Math.max(R.width, R.height * r), h = w / r; return { x: R.left + (R.width - w) / 2, y: R.top + (R.height - h) / 2, w, h }; };
+  const cut = (R, F, s) => "inset(" + [(R.top - F.y) / s, (F.x + F.w - R.right) / s, (F.y + F.h - R.bottom) / s, (R.left - F.x) / s].map((v) => Math.max(0, v).toFixed(1) + "px").join(" ") + ")";
+  const fly = (A0, A, B0, Bc, src, r, ms) => {
+    const FA = full(A0, r), FB = full(B0, r), s = FA.w / FB.w;
+    const im = document.createElement("img"); im.className = "ez-fly"; im.alt = ""; im.decoding = "sync"; im.src = src;
+    Object.assign(im.style, { left: FB.x + "px", top: FB.y + "px", width: FB.w + "px", height: FB.h + "px" });
+    const k0 = { transform: "translate(" + (FA.x - FB.x).toFixed(1) + "px," + (FA.y - FB.y).toFixed(1) + "px) scale(" + s.toFixed(5) + ")", clipPath: cut(A, FA, s) };
+    const k1 = { transform: "translate(0px,0px) scale(1)", clipPath: cut(Bc, FB, 1) };
+    Object.assign(im.style, k0);
+    B.appendChild(im);
+    return { im, an: im.animate([k0, k1], { duration: ms, easing: EASE, fill: "forwards" }) };
+  };
+  /* the flyer stays until the picture under it has loaded, then goes */
+  const land = (fl, box, after, wantPic) => {
+    const gone = () => fl.im.remove();
+    fl.an.finished.then(() => {
+      if (after) after();
+      const t0 = performance.now();
+      const done = () => {
+        const ok = !wantPic || !box || !box.isConnected || box.classList.contains("in") || [...box.querySelectorAll("img")].some((im) => im.complete && im.naturalWidth);
+        if (!ok && performance.now() - t0 < 1400) { setTimeout(done, 40); return; }
+        fl.im.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 220, easing: "ease", fill: "forwards" }).finished.then(gone, gone);
+      };
+      done();
+    }, () => { if (after) after(); gone(); });
+  };
+  /* the picture a box shows now, else its thumbnail */
+  const srcFor = (box, k) => {
+    const ims = [...box.querySelectorAll("img")].filter((im) => im.complete && im.naturalWidth);
+    const im = ims[ims.length - 1], c = P.cover(k);
+    return im ? im.currentSrc || im.src : encodeURI(c.t384 || c.t768 || c.src);
+  };
+  const ready = (src, ms) => {
+    if (!ms) return Promise.resolve();
+    const im = new Image(); im.src = src;
+    return Promise.race([im.decode().catch(() => null), new Promise((res) => setTimeout(res, ms))]);
+  };
+  /* a page's pose: how far back it sits and how much of it shows. od
+     holds its showing back a little, so a page coming forward appears
+     only once the one over it has cleared, never through it */
+  const pose = (node, s, o, ms, od) => {
+    node.getAnimations().forEach((a) => { try { a.commitStyles(); } catch (e) { /* not filling */ } a.cancel(); });
+    const cs = getComputedStyle(node), from = { transform: cs.transform, opacity: cs.opacity };
+    const to = { transform: s === 1 ? "none" : "scale(" + s + ")", opacity: String(o) };
+    Object.assign(node.style, to);
+    if (!ms) return Promise.resolve();
+    if (!od) return node.animate([from, to], { duration: ms, easing: EASE }).finished.catch(() => {});
+    node.animate([{ transform: from.transform }, { transform: to.transform }], { duration: ms, easing: EASE });
+    return node.animate([{ opacity: from.opacity }, { opacity: to.opacity }], { duration: ms - od, delay: od, easing: EASE, fill: "backwards" }).finished.catch(() => {});
+  };
+  const mark = (el, pg) => {
+    if (!el) return;
+    pg.host.querySelectorAll(".ez-mk").forEach((x) => x.classList.remove("ez-mk"));
+    void el.offsetWidth;
+    el.classList.add("ez-mk");
+  };
+
+  /* ── the depths: the sheet, then a shelf or a room over it ── */
+  const stack = [{ kind: "home", host: sheet }];
+  const top = () => stack[stack.length - 1];
+  let busy = false, queued = null, Z = 10;
+  const arrive = () => { busy = false; const q = queued; queued = null; if (q) q(); };
+  const page = (cls) => { const h = P.el("div", "ph-host ez-page " + cls); h.style.zIndex = String(++Z); h.style.visibility = "hidden"; B.appendChild(h); return h; };
+  const url = (k) => { const u = new URL(location.href); if (k) u.searchParams.set("k", k); else u.searchParams.delete("k"); return u.pathname + u.search + u.hash; };
+
+  /* what was tapped: a tile (its picture flies), else a line of text */
+  const srcOf = (el, k) => {
+    if (!el) return null;
+    const box = el.querySelector(".ph-pic");
+    if (box) return { el, box, k, band: false, mark: el.querySelector(".ez-c") || el.querySelector(".t") || el };
+    return { el, box: el, k, band: true, mark: el };
+  };
+  /* a study's place on a page: its tile, else (on the sheet) its row in Work */
+  const tileOf = (pg, k, onGlassOnly) => {
+    const el = pg.host.querySelector((pg.kind === "home" ? ".ez-t" : ".sh-s") + '[data-k="' + k + '"]');
+    const s = el ? srcOf(el, k) : null;
+    if (s && (!onGlassOnly || seenIn(s.box, pg.host))) return s;
+    const row = pg.kind === "home" ? ix.rowOf(k) : null;
+    if (row && (!onGlassOnly || seenIn(row, pg.host))) return srcOf(row, k);
+    return onGlassOnly ? null : s;
+  };
+
+  /* the folio: where you are, and where it goes */
+  const say = () => {
+    const S = top(), deep = stack.length > 1;
+    B.classList.toggle("deep", deep);
+    if (!deep) return;
+    fNo.textContent = S.kind === "room" ? P.num(S.k) : S.name || "";
+    fW.textContent = stack[stack.length - 2].kind === "home" ? "Index" : "Back";
+    folio.setAttribute("aria-label", fW.textContent);
+  };
+
+  /* ── into a room: the tapped picture flies to where the cover will be,
+     the page it left sinks back behind it ── */
+  const open = (k, how) => {
+    how = how || {};
+    if (!P.D.study(k)) return;
+    if (busy) { queued = () => open(k, how); return; }
+    if (top().kind === "room") { next(k); return; }
+    if (top().kind === "about") return;
+    busy = true;
+    const parent = top();
+    const order = parent.kind === "shelf" && parent.ks && parent.ks.includes(k) ? parent.ks : SHEET.includes(k) ? SHEET : P.ORDER;
+    const src = how.cold ? null : how.el ? srcOf(how.el, k) : tileOf(parent, k, true);
+    const host = page("ez-room");
+    const room = P.room(host, k, { order, hold: true, onNext: (nk) => next(nk) });
+    const S = { kind: "room", host, k, room, order, from: src };
+    stack.push(S);
+    parent.host.style.pointerEvents = "none";
+    history.pushState({ ez: stack.length - 1 }, "", url(k));
+    say();
+    const T = how.cold || still() ? 0 : IN, cv = room.cover;
+    const sink = (A) => {
+      parent.host.style.transformOrigin = A ? centre(A, parent.host) : "50% 40%";
+      pose(parent.host, 0.94, 0, T).then(() => { if (top() !== parent) parent.host.style.visibility = "hidden"; });
+    };
+    if (!T || !src || !cv) {
+      sink(src && src.box.getBoundingClientRect());
+      host.style.visibility = "";
+      if (T) host.animate([{ clipPath: "inset(100% 0 0 0)" }, { clipPath: "inset(0 0 0 0)" }], { duration: IN, easing: EASE }).finished.then(arrive, arrive);
+      else arrive();
+      room.play({ delay: T ? 240 : 160, settle: true });
+      return;
+    }
+    /* a tile not yet loaded, or a row, waits a moment for its picture */
+    const pic = srcFor(src.box, k), c = P.cover(k);
+    ready(pic, 220).then(() => {
+      const A0 = src.box.getBoundingClientRect(), A = visRect(src.box) || A0;
+      const B0 = cv.getBoundingClientRect(), Bc = visRect(cv) || B0;
+      const fl = fly(A0, A, B0, Bc, pic, c.w / c.h, T);
+      sink(A0);
+      /* what the picture flies to shows at once and holds still; the room
+         comes up behind the flight, its words rising as it lands */
+      room.shown(cv);
+      cv.style.visibility = "hidden";
+      if (!src.band) src.box.style.visibility = "hidden";
+      host.style.visibility = "";
+      host.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 320, delay: 240, easing: "ease", fill: "backwards" });
+      land(fl, cv, () => { cv.style.visibility = ""; src.box.style.visibility = ""; arrive(); }, true);
+      room.play({ delay: 380 });
+    });
+  };
+
+  /* ── room to room: Next flies the next study's small picture up into
+     the new cover, as the desk does; the old room lifts away ── */
+  const next = (nk) => {
+    const S = top();
+    if (S.kind !== "room" || !P.D.study(nk) || nk === S.k) return;
+    if (busy) { queued = () => next(nk); return; }
+    busy = true;
+    const old = { host: S.host, room: S.room };
+    const host = page("ez-room");
+    const room = P.room(host, nk, { order: S.order, hold: true, onNext: (x) => next(x) });
+    Object.assign(S, { host, room, k: nk, from: null, prep: null });
+    history.replaceState({ ez: stack.length - 1 }, "", url(nk));
+    say();
+    old.host.style.pointerEvents = "none";
+    const gone = () => { old.room.destroy(); old.host.remove(); };
+    const np = old.room.el.querySelector(".sp-next-pic"), cv = room.cover, T = still() ? 0 : IN;
+    host.style.visibility = "";
+    if (T && np && cv && seenIn(np, old.host)) {
+      const c = P.cover(nk);
+      const A0 = np.getBoundingClientRect(), A = visRect(np) || A0, B0 = cv.getBoundingClientRect(), Bc = visRect(cv) || B0;
+      const fl = fly(A0, A, B0, Bc, srcFor(np, nk), c.w / c.h, T);
+      room.shown(cv); cv.style.visibility = "hidden"; np.style.visibility = "hidden";
+      host.animate([{ clipPath: "inset(100% 0 0 0)" }, { clipPath: "inset(0 0 0 0)" }], { duration: 520, delay: 40, easing: EASE, fill: "backwards" });
+      room.el.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 360, delay: 330, easing: "ease", fill: "backwards" });
+      old.host.animate([{ opacity: 1, transform: "none" }, { opacity: 0, transform: "translateY(-24px)" }], { duration: 360, easing: EASE, fill: "forwards" });
+      land(fl, cv, () => { cv.style.visibility = ""; gone(); arrive(); }, true);
+      room.play({ delay: 380 });
+    } else {
+      /* no small picture on the glass: a plain cross-fade */
+      old.host.animate([{ opacity: 1 }, { opacity: 0 }], { duration: T ? 300 : 0, easing: "ease", fill: "forwards" });
+      host.animate([{ opacity: 0 }, { opacity: 1 }], { duration: T ? 380 : 0, easing: "ease", fill: "backwards" }).finished.then(() => { gone(); arrive(); }, () => { gone(); arrive(); });
+      room.play({ delay: T ? 200 : 0, settle: true });
+    }
+  };
+
+  /* ── a shelf or an About section opens out of the word that was tapped ── */
+  const shelf = (kind, v, el) => {
+    if (busy) { queued = () => shelf(kind, v, el); return; }
+    if (top().kind !== "home") return;
+    busy = true;
+    const parent = top(), host = page("ez-shelf");
+    const S = { kind: kind === "about" ? "about" : "shelf", host, from: el ? { el, box: el, band: true, mark: el } : null };
+    if (kind === "about") { const a = P.about(host, v); S.dispose = () => a.destroy(); S.name = "About"; }
+    else {
+      const sh = P.shelf({ kind, v, on: (x, k, a) => open(k, { el: a }) });
+      host.appendChild(sh); S.ks = sh.ks || [];
+      const so = P.shelfOf(kind, v); S.name = so ? so.name : "";
+    }
+    stack.push(S);
+    parent.host.style.pointerEvents = "none";
+    history.pushState({ ez: stack.length - 1 }, "", url(null));
+    say();
+    const T = still() ? 0 : IN, R = el ? el.getBoundingClientRect() : null;
+    parent.host.style.transformOrigin = R ? centre(R, parent.host) : "50% 40%";
+    pose(parent.host, 0.94, 0, T).then(() => { if (top() !== parent) parent.host.style.visibility = "hidden"; });
+    host.style.visibility = "";
+    if (T && R) host.animate([{ clipPath: insetOf(R, host) }, { clipPath: "inset(0px 0px 0px 0px)" }], { duration: T, easing: EASE }).finished.then(arrive, arrive);
+    else arrive();
+  };
+  const pick = (kind, v, el) => (kind === "study" ? open(v, { el }) : shelf(kind, v, el));
+
+  /* ── back out one depth. The page under comes forward from where it sank
+     to, the place it lands on brought into view first if it is not ── */
+  const prepBack = (S, parent) => {
+    const ph = parent.host;
+    ph.getAnimations().forEach((a) => { try { a.commitStyles(); } catch (e) { /* not filling */ } a.cancel(); });
+    ph.style.visibility = "";
+    ph.style.transform = "none";
+    const tg = S.kind === "room" ? (S.from && S.from.k === S.k && S.from.el.isConnected ? S.from : tileOf(parent, S.k, false)) : S.from && S.from.el.isConnected ? S.from : null;
+    if (tg) {
+      const r = tg.box.getBoundingClientRect(), h = ph.getBoundingClientRect();
+      const seen = Math.min(r.bottom, h.bottom) - Math.max(r.top, h.top);
+      if (seen < Math.min(r.height, h.height) * 0.8) ph.scrollTop += r.top - h.top - Math.max(0, (h.height - r.height) / 2);
+      tg.rect = tg.box.getBoundingClientRect();
+      tg.clip = visRect(tg.box) || tg.rect;
+    }
+    ph.style.transformOrigin = tg ? centre(tg.rect, ph) : "50% 40%";
+    ph.style.transform = "scale(0.94)";
+    return tg;
+  };
+  const zoomOut = () => {
+    if (stack.length < 2) return;
+    if (busy) { queued = zoomOut; return; }
+    busy = true;
+    const S = stack[stack.length - 1], parent = stack[stack.length - 2];
+    const tg = S.prep || prepBack(S, parent);
+    stack.pop(); S.prep = null;
+    say();
+    const T = still() ? 0 : HOME;
+    const up = pose(parent.host, 1, 1, T, S.kind === "room" ? 120 : 0);
+    S.host.style.pointerEvents = "none";
+    const done = () => {
+      if (S.room) S.room.destroy();
+      if (S.dispose) S.dispose();
+      S.host.remove();
+      parent.host.style.pointerEvents = "";
+      if (tg) { tg.box.style.visibility = ""; mark(tg.mark, parent); }
+      arrive();
+    };
+    S.host.classList.remove("ez-pinch");
+    if (S.kind === "room") {
+      /* the room goes back into its tile as the sheet comes forward, and
+         clears fast, so its words never sit over the sheet; the picture
+         carries the move. A pinch keeps its own origin */
+      const cv = S.room.cover, cs = getComputedStyle(S.host), tf = cs.transform === "none" ? "" : cs.transform + " ";
+      if (!tf && tg) S.host.style.transformOrigin = centre(tg.rect, S.host);
+      S.host.animate([{ transform: tf || "none" }, { transform: tf + "scale(0.92)" }], { duration: T, easing: EASE, fill: "forwards" });
+      S.host.animate([{ opacity: cs.opacity }, { opacity: 0 }], { duration: T ? 180 : 0, easing: EASE, fill: "forwards" });
+      if (T && tg && cv) {
+        const A0 = onGlass(cv.getBoundingClientRect()), A = visRect(cv) || A0;
+        const c = P.cover(S.k);
+        const fl = fly(A0, A, tg.rect, tg.clip, srcFor(cv, S.k), c.w / c.h, T);
+        cv.style.visibility = "hidden";
+        if (!tg.band) tg.box.style.visibility = "hidden";
+        land(fl, tg.box, done, !tg.band);
+      } else up.then(done);
+    } else {
+      /* a shelf folds back into the word it opened from */
+      if (T && tg) S.host.animate([{ clipPath: "inset(0px 0px 0px 0px)" }, { clipPath: insetOf(tg.rect, S.host) }], { duration: T, easing: EASE, fill: "forwards" });
+      S.host.animate([{ opacity: 1 }, { opacity: 0 }], { duration: T ? T * 0.5 : 0, delay: T ? T * 0.5 : 0, easing: "ease", fill: "forwards" });
+      up.then(done);
+    }
+  };
+  /* the folio, a pinch, Escape: through the phone's history when the step
+     has an entry there, so its back does the same */
+  const back = () => {
+    if (stack.length < 2) return;
+    if (history.state && history.state.ez === stack.length - 1) history.back();
+    else zoomOut();
+  };
+  addEventListener("popstate", (e) => {
+    const d = e.state && typeof e.state.ez === "number" ? e.state.ez : 0;
+    if (d < stack.length - 1) zoomOut();
+  });
+  folio.addEventListener("click", back);
+  addEventListener("keydown", (e) => { if (e.key === "Escape") back(); });
+
+  /* ── the pinch: two fingers closing on a room or a shelf take it back
+     out. The page shrinks with the fingers, edged by a hairline, and the
+     one under it comes through; past 80% of where they started, out it
+     goes, and short of that it springs back ── */
+  let pin = null;
+  const gap = (t) => Math.hypot(t[0].clientX - t[1].clientX, t[0].clientY - t[1].clientY);
+  document.addEventListener("touchstart", (e) => {
+    if (e.touches.length !== 2 || stack.length < 2 || busy || pin) return;
+    const S = top(), parent = stack[stack.length - 2], t = e.touches;
+    S.prep = prepBack(S, parent);
+    S.host.style.transformOrigin = at((t[0].clientX + t[1].clientX) / 2, (t[0].clientY + t[1].clientY) / 2, S.host);
+    pin = { d0: Math.max(24, gap(t)), S, parent, fired: false };
+  }, { passive: true });
+  document.addEventListener("touchmove", (e) => {
+    if (!pin || e.touches.length !== 2) return;
+    if (e.cancelable) e.preventDefault();
+    if (pin.fired) return;
+    const k = gap(e.touches) / pin.d0;
+    if (k < 0.8) { pin.fired = true; back(); return; }
+    const s = Math.min(1, k);
+    pin.S.host.classList.toggle("ez-pinch", s < 0.995);
+    P.set(pin.S.host, s < 1 ? "scale(" + s.toFixed(4) + ")" : "none", 0);
+    pin.parent.host.style.opacity = Math.max(0, Math.min(1, (1 - k) / 0.2)).toFixed(3);
+  }, { passive: false });
+  const unpin = (e) => {
+    if (!pin || (e.touches && e.touches.length >= 2)) return;
+    const p = pin; pin = null;
+    if (p.fired) return;
+    p.S.prep = null;
+    p.S.host.classList.remove("ez-pinch");
+    p.S.host.style.transition = "";
+    pose(p.S.host, 1, 1, 360);
+    pose(p.parent.host, 0.94, 0, 360).then(() => { if (top() === p.S) p.parent.host.style.visibility = "hidden"; });
+  };
+  document.addEventListener("touchend", unpin);
+  document.addEventListener("touchcancel", unpin);
+  /* Safari's own page zoom stays out of it while a page is open */
+  ["gesturestart", "gesturechange"].forEach((t) => document.addEventListener(t, (e) => { if (stack.length > 1) e.preventDefault(); }, { passive: false }));
+  /* a trackpad's pinch arrives as a wheel with ctrl held */
+  let wz = 0, wzT = 0;
+  addEventListener("wheel", (e) => {
+    if (!e.ctrlKey || stack.length < 2) return;
+    e.preventDefault(); e.stopPropagation();
+    if (busy) return;
+    wz += e.deltaY; clearTimeout(wzT); wzT = setTimeout(() => { wz = 0; }, 260);
+    if (wz > 40) { wz = 0; back(); }
+  }, { passive: false, capture: true });
+
+  /* ?k=arc opens that room at load, over the sheet at its top */
+  const q = new URLSearchParams(location.search);
+  history.replaceState({ ez: 0 }, "", url(null));
+  if (q.get("k") && P.D.study(q.get("k"))) open(q.get("k"), { cold: true });
+  window.CONCEPT = { open: (k) => open(k), out: back, next: (k) => next(k), SHEET, get depth() { return stack.length - 1; }, get room() { const S = top(); return S.room || null; }, get busy() { return busy; } };
+})();
+</script>
+</body>
+</html>

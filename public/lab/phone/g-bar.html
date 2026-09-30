@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>G · Sheet and swipe · phone · Reckon*House lab</title>
+<!-- ── G · SHEET AND SWIPE (29 Sept 2026) ─────────────────────────────
+     Mine, from two of his: "maybe it's at the bottom and slides
+     up/open" and "maybe a swipe from side to side allows the user to go
+     back and forth?"
+
+     B's sheet, whole: the page opens on the index, a study folds it into
+     a bar at the foot that says where you are, and the bar pulls up for
+     the index, set as the study's spec sheet. What G adds is D's swipe,
+     put on the bar instead of the room: pull the bar sideways and the
+     next study's name slides in behind the one you are reading, as a
+     phone's player skips a song; let go past a quarter of the way (or
+     flick it) and that study opens, in the order of the shelf you came
+     from. The room itself never moves sideways, so nothing in it (a
+     carousel, a wide chart) has to compete with the gesture. The first
+     time the bar appears it leans once toward the next name, to say it
+     can.
+
+     ?k=arc opens a study, ?state=half the sheet at half. -->
+<link rel="stylesheet" href="/lab/density/density.css">
+<link rel="stylesheet" href="/lab/density/study-panel.css">
+<link rel="stylesheet" href="/lab/phone/kit.css">
+<style>
+  #room { z-index: 1; transition: opacity 0.3s var(--ease); }
+  #room.off { opacity: 0; }
+  #scrim { position: fixed; inset: 0; z-index: 2; background: #000; opacity: 0; pointer-events: none; }
+  #sheet { position: fixed; left: 0; right: 0; top: 0; height: 100%; z-index: 3; background: var(--paper); will-change: transform; display: flex; flex-direction: column; }
+  body.reading #sheet { box-shadow: 0 -1px 0 var(--ink); }
+  #bar { position: relative; flex: none; height: calc(var(--bar) + env(safe-area-inset-bottom, 0px)); padding: 0 var(--m) env(safe-area-inset-bottom, 0px); display: flex; align-items: center; gap: 10px; touch-action: none; cursor: grab; user-select: none; -webkit-user-select: none; border-bottom: 1px solid transparent; transition: border-color 0.3s var(--ease); }
+  body[data-state="full"] #bar, body[data-state="half"] #bar { border-bottom-color: var(--hair); }
+  #bar .grab { position: absolute; left: 50%; top: 6px; width: 34px; height: 3px; margin-left: -17px; border-radius: 2px; background: var(--faint); opacity: 0; transition: opacity 0.3s var(--ease); }
+  body.reading #bar .grab { opacity: 1; }
+  #bar .prog { position: absolute; left: 0; top: -1px; height: 2px; width: 100%; background: var(--ink); transform-origin: 0 50%; transform: scaleX(0); }
+  body:not([data-state="bar"]) #bar .prog { opacity: 0; }
+  #where { flex: 1; min-width: 0; display: flex; align-items: baseline; gap: 10px; }
+  #where .no { flex: none; font-size: 11px; color: var(--grey); font-variant-numeric: tabular-nums; }
+  #where .t { min-width: 0; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; font-size: 15px; font-weight: 500; letter-spacing: -0.01em; }
+  #where .pos { flex: none; margin-left: auto; font-size: 11px; color: var(--grey); font-variant-numeric: tabular-nums; }
+  #where .ph-mark { font-size: 17px; }
+  /* the three names the bar can show: the one before, yours, the next */
+  #where.run { display: block; overflow: hidden; }
+  #wtrack { display: flex; gap: 32px; will-change: transform; }
+  #wtrack .wl { flex: none; width: 100%; display: flex; align-items: baseline; gap: 10px; min-width: 0; }
+  #wtrack .wl:not(.cur) .t { color: var(--grey); }
+  #tog { flex: none; width: 36px; height: 36px; margin-right: -9px; display: grid; place-items: center; }
+  body:not(.reading) #tog { visibility: hidden; }
+  #inner { position: relative; flex: 1; min-height: 0; }
+  #inner > .ph-host { transition: transform 0.42s var(--ease); }
+  #shelf { transform: translateX(100%); }
+  body.shelf #shelf { transform: none; }
+  body.shelf #ixh { transform: translateX(-24%); }
+  .back { display: block; padding: 14px var(--m) 0; font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; }
+</style>
+</head>
+<body data-state="full">
+<div id="room" class="ph-host"></div>
+<div id="scrim"></div>
+<section id="sheet" aria-label="Index">
+  <div id="bar" role="button" aria-label="Index">
+    <i class="grab"></i><i class="prog"></i>
+    <div id="where"><span class="ph-mark">Reckon<i>*</i>House</span></div>
+    <span id="tog" class="ph-btn"><i class="ph-bars"></i></span>
+  </div>
+  <div id="inner">
+    <div id="ixh" class="ph-host"></div>
+    <div id="shelf" class="ph-host"></div>
+  </div>
+</section>
+<script src="/lab/density/fragments.js"></script>
+<script src="/lab/density/density.js"></script>
+<script src="/lab/vendor/lenis.min.js" onerror="this.remove()"></script>
+<script src="/lab/density/study-panel.js"></script>
+<script src="/lab/dsc-sizzle/sizzle.js" onerror="this.remove()"></script>
+<script src="/lab/sizzle-reel.js" onerror="this.remove()"></script>
+<script src="/lab/phone/kit.js"></script>
+<script>
+(() => {
+  const P = window.PH, $ = (id) => document.getElementById(id), B = document.body;
+  const sheet = $("sheet"), bar = $("bar"), host = $("room"), scrim = $("scrim"), ixh = $("ixh"), shelfH = $("shelf"), where = $("where");
+  let H = innerHeight, y = 0, state = "full", cur = null, order = P.ORDER, room = null;
+
+  /* the sheet's three stops: all of it, half, and the bar */
+  const stopY = (st) => (st === "full" ? 0 : st === "half" ? Math.round(H * 0.4) : H - bar.offsetHeight);
+  const place = (to, ms) => {
+    y = to; P.set(sheet, "translate3d(0," + to + "px,0)", ms);
+    const k = cur ? 1 - Math.min(1, to / stopY("bar")) : 0;
+    scrim.style.transition = ms ? "opacity " + ms + "ms " + P.EASE : "none";
+    scrim.style.opacity = (0.34 * k).toFixed(3);
+    scrim.style.pointerEvents = cur && to < stopY("bar") - 2 ? "auto" : "none";
+    /* the index scrolls to its own foot at every stop */
+    ixh.style.bottom = shelfH.style.bottom = to + "px";
+  };
+  const go = (st, ms) => {
+    if (!cur) st = "full";
+    state = st; B.dataset.state = st;
+    $("tog").classList.toggle("x", st !== "bar");
+    place(stopY(st), ms == null ? 440 : ms);
+  };
+
+  /* the bar: where you are, and how far through */
+  const lab = (k, c) => '<div class="wl' + (c ? " cur" : "") + '"><span class="no">' + P.num(k) + '</span><span class="t">' + P.esc(P.title(k)) + '</span><span class="pos">' + P.two(order.indexOf(k) + 1) + "/" + P.two(order.length) + "</span></div>";
+  /* a name's width and the air between two, so they never run together */
+  let wtrack = null; const GAP = 32, step = () => where.clientWidth + GAP;
+  const rest = (ms) => { if (wtrack) P.set(wtrack, "translateX(" + -step() + "px)", ms || 0); };
+  const say = () => {
+    wtrack = null; where.classList.remove("run");
+    if (!cur) { where.innerHTML = '<span class="ph-mark">Reckon<i>*</i>House</span>'; return; }
+    if (cur.kind === "about") { where.innerHTML = '<span class="no">About</span><span class="t">' + P.esc((P.DATA.about.find((a) => a.id === cur.v) || {}).name || "") + "</span>"; return; }
+    where.classList.add("run");
+    where.innerHTML = '<div id="wtrack">' + lab(P.prev(cur.v, order)) + lab(cur.v, true) + lab(P.next(cur.v, order)) + "</div>";
+    wtrack = $("wtrack"); rest(0);
+  };
+  const prog = bar.querySelector(".prog");
+  host.addEventListener("scroll", () => {
+    const m = host.scrollHeight - host.clientHeight;
+    prog.style.transform = "scaleX(" + (m > 0 ? Math.min(1, host.scrollTop / m) : 0).toFixed(4) + ")";
+  }, { passive: true });
+
+  /* the index, the page it opens on; a shelf slides in over it */
+  const ix = P.index({ on: (kind, v) => pick(kind, v) });
+  ixh.appendChild(ix);
+  const pick = (kind, v) => {
+    if (kind === "study") return open("study", v, P.ORDER);
+    if (kind === "about") return open("about", v, P.ORDER);
+    shelfH.innerHTML = "";
+    const back = P.el("button", "back ph-btn", "‹ Index"); back.addEventListener("click", () => B.classList.remove("shelf"));
+    shelfH.appendChild(back);
+    const s = P.shelf({ kind, v, on: (x, k) => open("study", k, s.ks) });
+    shelfH.appendChild(s); shelfH.scrollTop = 0;
+    B.classList.add("shelf");
+  };
+
+  /* a study (or an About section) opens behind the sheet, and the sheet
+     folds into the bar */
+  const open = (kind, v, ord) => {
+    const first = !cur;
+    order = ord && ord.length > 1 ? ord : P.ORDER;
+    cur = { kind, v }; B.classList.add("reading");
+    host.classList.add("off");
+    setTimeout(() => {
+      if (room) room.destroy(); host.innerHTML = ""; host.scrollTop = 0; prog.style.transform = "scaleX(0)";
+      room = kind === "about" ? P.about(host, v) : P.room(host, v, { order, hold: true, onNext: (nk) => open("study", nk, order) });
+      host.classList.remove("off");
+      if (room.play) setTimeout(() => room.play(), 260);
+    }, first ? 0 : 200);
+    ix.mark(kind === "study" ? v : null);
+    say(); go("bar", 520); lean();
+  };
+  /* at half, the index opens where the study sits in it */
+  const seat = () => {
+    if (B.classList.contains("shelf") || !cur || cur.kind !== "study") return;
+    const row = ix.rowOf(cur.v); if (!row) return;
+    ixh.scrollTop = Math.max(0, row.offsetTop - 96);
+  };
+
+  /* pull the bar, or tap it */
+  let y0 = 0;
+  P.drag(bar, {
+    axis: "y", can: () => !!cur,
+    start() { y0 = y; if (state === "bar") seat(); },
+    move(dx, dy) { const to = y0 + dy; place(to < 0 ? to * 0.25 : Math.min(stopY("bar"), to), 0); },
+    end(dx, dy, vx, vy) {
+      const to = y0 + dy + vy * 220;
+      const st = ["full", "half", "bar"].reduce((a, b) => (Math.abs(stopY(b) - to) < Math.abs(stopY(a) - to) ? b : a));
+      go(st, 380);
+    },
+    tap() { if (!cur) return; if (state === "bar") { seat(); go("half"); } else go("bar"); },
+  });
+  /* sideways on the bar: the study before, or the next, in the shelf's
+     order; the room dims a little under the pull and never moves */
+  let swiping = false;
+  P.drag(bar, {
+    axis: "x", can: () => !!(cur && cur.kind === "study" && state === "bar" && wtrack && order.length > 1),
+    start() { swiping = true; host.style.transition = "none"; },
+    move(dx) {
+      const w = where.clientWidth, d = Math.max(-step(), Math.min(step(), dx));
+      P.set(wtrack, "translateX(" + (-step() + d) + "px)", 0);
+      host.style.opacity = (1 - Math.min(0.45, (Math.abs(d) / w) * 0.6)).toFixed(3);
+    },
+    end(dx, dy, vx) {
+      swiping = false; host.style.transition = "";
+      const w = where.clientWidth, far = Math.abs(dx) > w * 0.26 || Math.abs(vx) > 0.35;
+      if (!far) { rest(320); host.style.opacity = ""; return; }
+      const dir = dx < 0 ? 1 : -1, k = dir > 0 ? P.next(cur.v, order) : P.prev(cur.v, order);
+      P.set(wtrack, "translateX(" + (dir > 0 ? -2 * step() : 0) + "px)", 240);
+      setTimeout(() => { host.style.opacity = ""; open("study", k, order); }, 200);
+    },
+  });
+  /* the first time the bar shows a study, it leans once toward the next */
+  let leaned = false;
+  const lean = () => {
+    if (leaned || !wtrack) return; leaned = true;
+    setTimeout(() => { if (!wtrack || swiping || state !== "bar") return; P.set(wtrack, "translateX(" + (-step() - 56) + "px)", 520); setTimeout(() => rest(560), 640); }, 1500);
+  };
+  scrim.addEventListener("click", () => go("bar"));
+  addEventListener("resize", () => { H = innerHeight; go(state, 0); rest(0); });
+
+  /* the room's own head is the desk's; here the bar says where you are */
+  const q = new URLSearchParams(location.search);
+  go("full", 0);
+  if (q.get("k") && P.D.study(q.get("k"))) {
+    open("study", q.get("k"), P.ORDER);
+    if (q.get("state") === "half" || q.get("state") === "full") setTimeout(() => { seat(); go(q.get("state"), 0); }, 60);
+  }
+  window.CONCEPT = { open, go, pick, get state() { return state; } };
+})();
+</script>
+</body>
+</html>

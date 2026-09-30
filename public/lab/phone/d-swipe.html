@@ -1,0 +1,441 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>D · Swipe · phone · Reckon*House lab</title>
+<!-- ── D · SWIPE (29 Sept 2026) ──────────────────────────────────────────
+     His: "maybe a swipe from side to side allows the user to go back and
+     forth?"
+
+     The rooms sit side by side like the pages of a magazine, in the order
+     of the shelf you came from, and the page left of the first room is
+     where you came from: the index, or the shelf a line, a year or a tool
+     opened. Swipe left for the next study, right for the one before; from
+     the first study, right again is back where you started, and from a
+     shelf, right again is the index. Each page scrolls down on its own;
+     the track only takes a pull that starts sideways. A study picked on
+     the index turns in beside it, one page, wherever it sits in the run.
+
+     A slim ribbon over the rooms says which study this is and where it
+     sits: its number and name, its place, and one tick per study along
+     its foot with the one you are on in ink, so the run's length shows.
+     While you pull, it crossfades to the study coming in. Tap it for the
+     index (or the shelf). It belongs to the run, so it rides away with
+     the room when you go back, and home opens where you came from: the
+     study's row (the line, the About section) marked with a band of ink.
+
+     ?k=arc opens a study; window.CONCEPT.open(k), .go(i). -->
+<link rel="stylesheet" href="/lab/density/density.css">
+<link rel="stylesheet" href="/lab/density/study-panel.css">
+<link rel="stylesheet" href="/lab/phone/kit.css">
+<style>
+  :root { --rib: 34px; --st: env(safe-area-inset-top, 0px); --sl: env(safe-area-inset-left, 0px); --sr: env(safe-area-inset-right, 0px); }
+  #deck { position: fixed; inset: 0; overflow: hidden; overflow: clip; background: var(--paper); touch-action: pan-y; }
+  #track { position: absolute; inset: 0; will-change: transform; }
+  /* a page, and the hairline down its left edge that shows only between
+     two pages */
+  .pg { position: absolute; top: 0; bottom: 0; left: 0; width: 100%; }
+  .pg::before { content: ""; position: absolute; top: 0; bottom: 0; left: -1px; width: 1px; background: var(--hair); }
+  .pg > .ph-host { touch-action: pan-y; padding-bottom: env(safe-area-inset-bottom, 0px); }
+  .pg.rm > .ph-host { top: calc(var(--rib) + var(--st)); }
+  .pg.home > .ph-host { padding-top: var(--st); padding-left: var(--sl); padding-right: var(--sr); }
+  /* the ribbon is the run's running head; the room's own stays down */
+  .pg.rm .sp-bar { display: none; }
+  body.drag, body.drag * { -webkit-user-select: none !important; user-select: none !important; }
+  body.drag #deck { cursor: grabbing; }
+  #deck img { -webkit-user-drag: none; }
+
+  /* the ribbon */
+  #rib { position: absolute; left: 0; right: 0; top: 0; z-index: 4; height: calc(var(--rib) + var(--st)); background: var(--paper); border-bottom: 1px solid var(--hair);
+    transform: translate3d(calc(100% + 1px), 0, 0); will-change: transform; cursor: pointer; touch-action: pan-y; -webkit-user-select: none; user-select: none; }
+  #rib .ly { position: absolute; left: calc(var(--m) + var(--sl)); right: calc(var(--m) + var(--sr)); bottom: 0; height: var(--rib); display: flex; align-items: center; gap: 9px; opacity: 0; pointer-events: none; }
+  #rib .no { flex: none; font-size: 11px; color: var(--grey); font-variant-numeric: tabular-nums; }
+  #rib .t { min-width: 0; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; font-size: 13px; font-weight: 500; letter-spacing: -0.005em; }
+  #rib .pos { flex: none; margin-left: auto; padding-left: 12px; font-size: 11px; color: var(--grey); font-variant-numeric: tabular-nums; }
+  #tk { position: absolute; left: calc(var(--m) + var(--sl)); bottom: -1px; height: 2px; background: var(--paper); pointer-events: none; }
+  #tk i { position: absolute; top: 0; height: 2px; background: var(--faint); }
+  #tk b { position: absolute; top: 0; left: 0; height: 2px; background: var(--ink); will-change: transform; }
+
+  /* home: the index under the mark, or a shelf */
+  .mast { display: flex; align-items: center; height: 50px; padding: 0 var(--m); }
+  .mast .ph-mark { font-size: 17px; }
+  .back { display: block; padding: 14px var(--m) 0; font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; }
+  /* back on the index, the entry you came from (the study's row, the
+     line, the About section) marked as the site marks a word: a band of
+     ink across it */
+  .ix .e.was { position: relative; z-index: 0; color: var(--paper); transition: color 0.2s var(--ease) 0.14s; }
+  .ix .e.was :is(.no, .y, .d, .sn, sup, .l) { color: inherit; }
+  .ix .e.was::before { content: ""; position: absolute; inset: 0 -6px; z-index: -1; background: var(--ink); transform-origin: 0 50%; animation: d-band 0.5s var(--ease) both; }
+  .ix .e.was:is(.ix-w, .ix-line, .ix-ab)::before { inset: 0 calc(-1 * var(--m)); }
+  @keyframes d-band { from { transform: scaleX(0); } }
+</style>
+</head>
+<body>
+<div id="deck">
+  <div id="track"></div>
+  <header id="rib" role="button" aria-label="Index" aria-hidden="true">
+    <div class="ly"></div><div class="ly"></div>
+    <div id="tk"><b></b></div>
+  </header>
+</div>
+<script src="/lab/density/fragments.js"></script>
+<script src="/lab/density/density.js"></script>
+<script src="/lab/vendor/lenis.min.js" onerror="this.remove()"></script>
+<script src="/lab/density/study-panel.js"></script>
+<script src="/lab/dsc-sizzle/sizzle.js" onerror="this.remove()"></script>
+<script src="/lab/sizzle-reel.js" onerror="this.remove()"></script>
+<script src="/lab/phone/kit.js"></script>
+<script>
+(() => {
+  const P = window.PH, $ = (id) => document.getElementById(id), B = document.body;
+  if (!P) return;
+  const deck = $("deck"), track = $("track"), rib = $("rib"), tk = $("tk"), cursor = tk.querySelector("b");
+  const lys = [...rib.querySelectorAll(".ly")];
+  const MS = matchMedia("(prefers-reduced-motion: reduce)").matches ? 0 : 380;
+  let W = deck.clientWidth;
+  const step = () => W + 1; /* a page and the hairline after it */
+  const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+
+  /* the run: what sits right of home, in order. Home is page 0 (the
+     index, or a shelf, with the index at -1 left of it); the rooms are
+     1..n */
+  const studies = (ks) => ks.map((k) => ({ k }));
+  let run = studies(P.ORDER), shelf = null, cur = 0, jump = null;
+  const whole = () => run.length === P.ORDER.length && run.every((x, i) => x.k === P.ORDER[i]);
+  const exists = (i) => (i === -1 ? !!shelf : i >= 0 && i <= run.length);
+  const inRun = (i) => i >= 1 && i <= run.length;
+  const item = (i) => run[i - 1];
+  const keyOf = (i) => (i === -1 ? "ix" : i === 0 ? (shelf ? "sh" : "ix") : item(i).k ? "s:" + item(i).k : "a:" + item(i).about);
+
+  /* the pages: home always, rooms only on screen and beside it */
+  const pages = new Map();
+  const page = (cls) => { const el = P.el("div", "pg " + cls), host = P.el("div", "ph-host"); el.appendChild(host); track.appendChild(el); return { el, host }; };
+  const pageAt = (i) => (exists(i) ? pages.get(keyOf(i)) : null);
+  const idxOf = (key, pg) => (key === "ix" ? (shelf ? -1 : 0) : key === "sh" ? 0 : pg.i);
+
+  const home = page("home");
+  home.host.appendChild(P.el("header", "mast", '<span class="ph-mark">Reckon<i>*</i>House</span>'));
+  const ix = P.index({ on: (kind, v, a) => pick(kind, v, a) });
+  home.host.appendChild(ix);
+  pages.set("ix", home);
+
+  /* where a page sits: beside the one on screen, or out of sight. A jump
+     brings its page beside this one and the rest step aside */
+  const relOf = (i) => {
+    if (jump != null) { if (i === jump) return Math.sign(jump - cur); if (i !== cur) return 9; }
+    return i - cur;
+  };
+  const place = (key, pg) => {
+    const r = relOf(idxOf(key, pg));
+    pg.el.style.transform = "translate3d(" + r * step() + "px,0,0)";
+    pg.el.style.visibility = Math.abs(r) <= 1 ? "" : "hidden";
+    pg.el.classList.toggle("on", r === 0);
+    pg.el.inert = r !== 0;
+  };
+  const lay = () => pages.forEach((pg, key) => place(key, pg));
+  const slot = (dir) => {
+    if (jump != null && Math.sign(jump - cur) === dir) return jump;
+    const j = cur + dir; return exists(j) ? j : null;
+  };
+
+  /* a room, or an About section, mounted into its own page */
+  const mount = (i) => {
+    if (!inRun(i)) return null;
+    const key = keyOf(i); let pg = pages.get(key);
+    if (pg) return pg;
+    pg = page("rm"); pg.i = i; pg.played = false;
+    const x = item(i);
+    if (x.about) pg.room = P.about(pg.host, x.about);
+    else pg.room = P.room(pg.host, x.k, { order: run.map((y) => y.k), hold: true, next: i < run.length ? undefined : false, onNext: () => { if (cur === i && !glide) go(i + 1); } });
+    pages.set(key, pg); place(key, pg);
+    return pg;
+  };
+  const unmount = (key) => {
+    const pg = pages.get(key); if (!pg || pg.i == null) return;
+    if (pg.room) pg.room.destroy(); pg.el.remove(); pages.delete(key);
+  };
+  /* three rooms at most: the one on screen and its two neighbours */
+  const prune = () => pages.forEach((pg, key) => { if (pg.i != null && Math.abs(pg.i - cur) > 1 && pg.i !== jump) unmount(key); });
+  const setRun = (items) => { pages.forEach((pg, key) => { if (pg.i != null) unmount(key); }); run = items; ticks(); };
+  const toTop = (pg) => {
+    const r = pg.room;
+    if (r && r.lenis && r.lenis.scrollTo) { try { r.lenis.scrollTo(0, { immediate: true, force: true }); } catch (e) { /* gone */ } }
+    pg.host.scrollTop = 0;
+  };
+
+  /* ── the ribbon: which study, where it sits, the run's length ── */
+  const pitch = () => Math.min(12, (lys[0].clientWidth || W - 32) / Math.max(1, run.length));
+  const tickX = (i) => (i - 1) * pitch();
+  const ticks = () => {
+    const ok = run.length && run.every((x) => x.k), p = pitch();
+    tk.style.display = ok ? "" : "none";
+    tk.querySelectorAll("i").forEach((e) => e.remove());
+    if (!ok) return;
+    run.forEach((x, j) => { const t = document.createElement("i"); t.style.left = (j * p).toFixed(2) + "px"; t.style.width = (p - 4).toFixed(2) + "px"; tk.insertBefore(t, cursor); });
+    tk.style.width = (run.length * p - 4).toFixed(2) + "px";
+    cursor.style.width = (p - 4).toFixed(2) + "px";
+  };
+  /* an About section carries the index's own number for About (04), as a
+     study carries its own */
+  const aboutNo = ((ix.querySelector('[data-g="about"] .ix-h b') || {}).textContent || "").trim();
+  const say = (i) => {
+    const x = item(i);
+    if (x.about) { const a = (P.DATA.about || []).find((y) => y.id === x.about) || {}; return '<span class="no">' + P.esc(aboutNo) + '</span><span class="t">' + P.esc(a.name || "") + "</span>"; }
+    return '<span class="no">' + P.num(x.k) + '</span><span class="t">' + P.esc(P.title(x.k)) + '</span><span class="pos">' + P.two(i) + "/" + P.two(run.length) + "</span>";
+  };
+  const fill = (ly, i) => {
+    const key = i != null && inRun(i) ? keyOf(i) + "@" + i + "/" + run.length : "";
+    if (ly._k === key) return;
+    ly._k = key; ly.innerHTML = key ? say(i) : "";
+  };
+  /* off: how far the track is pulled, in pages (+1 the next). Between two
+     rooms the ribbon stays and crossfades; between a room and home it
+     rides with the room, and its ink tick runs between the first tick
+     and the room's own, so a study opened far into the run shows how far */
+  const ribbon = (off, ms) => {
+    const dir = off > 0 ? 1 : off < 0 ? -1 : 0, a = cur, b = dir ? slot(dir) : null;
+    const f = Math.min(1, Math.abs(off)), ra = inRun(a), rb = b != null && inRun(b);
+    fill(lys[0], a); fill(lys[1], b);
+    /* the names cross without sitting on each other: the one leaving is
+       gone by half the pull, the one coming takes the second half, and
+       each drifts a little the way the pages go */
+    let x, o0, o1, s0 = 0, s1 = 0, cx;
+    if (ra && rb) { x = 0; o0 = clamp(1 - f / 0.5, 0, 1); o1 = clamp((f - 0.5) / 0.5, 0, 1); s0 = -dir * f * 14; s1 = dir * (1 - f) * 14; cx = tickX(a) + (tickX(b) - tickX(a)) * f; }
+    else if (ra) { x = b != null ? -off * step() : 0; o0 = 1; o1 = 0; cx = tickX(a) + (b != null ? (tickX(1) - tickX(a)) * f : 0); }
+    else if (rb) { x = dir * (1 - f) * step(); o0 = 0; o1 = 1; cx = tickX(1) + (tickX(b) - tickX(1)) * f; }
+    else { x = step(); o0 = 0; o1 = 0; cx = 0; }
+    const tr = ms ? "opacity " + ms + "ms " + P.EASE + ", transform " + ms + "ms " + P.EASE : "none";
+    lys[0].style.transition = lys[1].style.transition = tr;
+    lys[0].style.opacity = o0.toFixed(3); lys[1].style.opacity = o1.toFixed(3);
+    lys[0].style.transform = "translate3d(" + s0.toFixed(2) + "px,0,0)"; lys[1].style.transform = "translate3d(" + s1.toFixed(2) + "px,0,0)";
+    P.set(rib, "translate3d(" + x.toFixed(2) + "px,0,0)", ms);
+    P.set(cursor, "translate3d(" + cx.toFixed(2) + "px,0,0)", ms);
+    rib.setAttribute("aria-hidden", ra || rb ? "false" : "true");
+    rib.setAttribute("aria-label", shelf ? "Back" : "Index");
+  };
+
+  /* ── the track ── */
+  let off = 0, glide = null, glideT = 0, restT = 0, dragging = false;
+  const show = (o, ms) => { off = o; P.set(track, "translate3d(" + (-o * step()).toFixed(2) + "px,0,0)", ms); ribbon(o, ms); };
+  const turn = (dir, ms) => {
+    if (ms == null) ms = MS;
+    let to = dir ? slot(dir) : null;
+    if (to == null) { dir = 0; to = cur; }
+    glide = { to, dir, jump: jump != null };
+    show(dir, ms);
+    clearTimeout(glideT); glideT = setTimeout(settle, ms + 40);
+  };
+  const settle = () => {
+    clearTimeout(glideT);
+    const g = glide; if (!g) return; glide = null;
+    const mk = g.to === -1 || (g.to === 0 && !shelf) ? (backTo() || {}).el : null;
+    cur = g.to; jump = null;
+    /* the index again: a shelf left of it closes, and the run is every
+       study again */
+    if (cur === -1) closeShelf();
+    else if (cur === 0 && !shelf && !whole()) setRun(studies(P.ORDER));
+    lay(); show(0, 0);
+    const here = pageAt(cur);
+    if (here && here.room && !here.played) { here.played = true; if (here.room.play) here.room.play(); }
+    prune();
+    if (mk) markEl(mk);
+    clearTimeout(restT); restT = setTimeout(rest, 160);
+    say2url();
+  };
+  const settleNow = () => { if (!glide) return; show(glide.dir, 0); settle(); };
+  /* at rest: the rooms out of sight go back to their tops, and the pages
+     beside this one are mounted, one at a time */
+  const rest = () => {
+    clearTimeout(restT);
+    if (glide || dragging) { restT = setTimeout(rest, 200); return; }
+    pages.forEach((pg) => { if (pg.i != null && pg.i !== cur && pg.room && pg.host.scrollTop > 0) toTop(pg); });
+    const i = [cur + 1, cur - 1].find((j) => inRun(j) && !pageAt(j));
+    if (i != null) { mount(i); restT = setTimeout(rest, 140); }
+  };
+  const side = (dir) => { const j = slot(dir); if (j != null && inRun(j) && !pageAt(j)) mount(j); if (j != null && j <= 0) seatHome(); };
+
+  /* go to a page: beside it, a turn; further, a jump, still one page */
+  const go = (i, ms) => {
+    if (glide) settleNow();
+    if (!exists(i) || i === cur) return;
+    const d = i - cur;
+    if (i <= 0) seatHome();
+    if (Math.abs(d) > 1) {
+      jump = i;
+      pages.forEach((pg, key) => { if (pg.i != null && pg.i !== cur && pg.i !== i) unmount(key); });
+    }
+    mount(i); lay();
+    turn(Math.sign(d), ms);
+  };
+  const homeNow = () => {
+    if (glide) settleNow();
+    if (shelf) closeShelf(); else if (!whole()) setRun(studies(P.ORDER));
+    cur = 0; jump = null; lay(); show(0, 0); prune();
+    clearTimeout(restT); restT = setTimeout(rest, 160);
+  };
+
+  /* ── home ── */
+  const pick = (kind, v, a) => {
+    if (glide) settleNow();
+    if (kind === "study") {
+      if (!whole()) setRun(studies(P.ORDER));
+      const i = run.findIndex((x) => x.k === v) + 1; if (i > 0) go(i);
+      return;
+    }
+    if (kind === "about") { setRun([{ about: v, from: a || entryOf(kind, v) }]); go(1); return; }
+    openShelf(kind, v, a || entryOf(kind, v));
+  };
+  const entryOf = (kind, v) => {
+    const h = "#" + kind + "/" + (kind === "fig" || kind === "cap" || kind === "tool" ? encodeURIComponent(v) : v);
+    return [...ix.querySelectorAll("a.e")].find((e) => e.getAttribute("href") === h) || null;
+  };
+  /* a line, a year, a tool: its shelf turns in from the right and becomes
+     home, the index left of it, and the run is the shelf's studies */
+  const openShelf = (kind, v, from) => {
+    const s = P.shelf({ kind, v, on: (x, k) => { const i = run.findIndex((y) => y.k === k) + 1; if (i > 0) go(i); } });
+    if (!s.ks || !s.ks.length) return;
+    const pg = page("home sh");
+    const back = P.el("button", "back ph-btn", "‹ Index"); back.type = "button";
+    back.addEventListener("click", () => go(-1));
+    pg.host.appendChild(back); pg.host.appendChild(s);
+    shelf = { kind, v, el: s, pg, from };
+    pages.set("sh", pg);
+    setRun(studies(s.ks));
+    cur = -1; lay(); show(0, 0);
+    go(0);
+  };
+  const closeShelf = () => {
+    if (!shelf) return;
+    const pg = pages.get("sh"); pages.delete("sh"); if (pg) pg.el.remove();
+    shelf = null; cur = 0;
+    setRun(studies(P.ORDER));
+  };
+  /* going back, home opens where you came from: the study's row (its card,
+     on a shelf), the About section, or the line that opened the shelf */
+  const backTo = () => {
+    if (cur === 0 && shelf) return { host: home.host, el: shelf.from };
+    const x = inRun(cur) ? item(cur) : null; if (!x) return null;
+    if (x.about) return { host: home.host, el: x.from };
+    if (shelf) return { host: shelf.pg.host, el: shelf.el.querySelector('.sh-s[data-k="' + x.k + '"]') };
+    return { host: home.host, el: ix.rowOf(x.k) };
+  };
+  const seatHome = () => {
+    const b = backTo(); if (!b || !b.el) return;
+    const h = b.host, e = b.el;
+    const top = e.getBoundingClientRect().top - h.getBoundingClientRect().top + h.scrollTop, H = h.clientHeight;
+    if (top > h.scrollTop + 60 && top + e.offsetHeight < h.scrollTop + H - 40) return;
+    h.scrollTop = Math.max(0, Math.round(top - H * 0.34));
+  };
+  let marked = null;
+  const markEl = (e) => {
+    if (marked) marked.classList.remove("was");
+    marked = e && ix.contains(e) ? e : null;
+    if (marked) { void marked.offsetWidth; marked.classList.add("was"); }
+  };
+
+  /* ── the pull: the track follows the finger, the ends give a little ── */
+  let o0 = 0, lastDir = 0;
+  const catchGlide = () => {
+    const g = glide; if (!g) return 0;
+    let now = g.dir;
+    try { now = -new DOMMatrixReadOnly(getComputedStyle(track).transform).m41 / step(); } catch (e) { /* the end, then */ }
+    const plain = !g.jump && inRun(cur) && inRun(g.to);
+    show(g.dir, 0); settle();
+    return plain ? clamp(now - g.dir, -1, 1) : 0;
+  };
+  const pull = (o) => {
+    if ((o > 0 && slot(1) == null) || (o < 0 && slot(-1) == null)) o *= 0.3;
+    return clamp(o, -1, 1);
+  };
+  P.drag(deck, {
+    axis: "x",
+    start(dx) {
+      dragging = true; B.classList.add("drag");
+      try { getSelection().removeAllRanges(); } catch (e) { /* none */ }
+      o0 = glide ? catchGlide() : 0;
+      lastDir = dx < 0 ? 1 : -1; side(lastDir);
+    },
+    move(dx) {
+      const o = pull(o0 - dx / step()), d = o > 0 ? 1 : o < 0 ? -1 : 0;
+      if (d && d !== lastDir) { lastDir = d; side(d); }
+      show(o, 0);
+    },
+    end(dx, dy, vx) {
+      dragging = false; B.classList.remove("drag");
+      let dir = 0;
+      if (Math.abs(vx) > 0.35) dir = vx < 0 ? 1 : -1;
+      else if (Math.abs(off) > 0.22) dir = off > 0 ? 1 : -1;
+      if (dir && off && Math.sign(off) !== dir) dir = 0;
+      if (dir && slot(dir) == null) dir = 0;
+      turn(dir);
+    },
+  });
+  deck.addEventListener("dragstart", (e) => e.preventDefault());
+  rib.addEventListener("click", () => { if (inRun(cur) && !glide) go(0); });
+
+  /* a trackpad's sideways swipe, and the arrow keys, on a desk */
+  let wAcc = 0, wOn = false, wT = 0, wLock = 0;
+  deck.addEventListener("wheel", (e) => {
+    const k = e.deltaMode === 1 ? 16 : 1, dx = e.deltaX * k, dy = e.deltaY * k, now = performance.now();
+    if (!wOn && !(Math.abs(dx) > Math.abs(dy) * 1.2 && Math.abs(dx) > 1)) return;
+    e.preventDefault(); e.stopPropagation();
+    if (now < wLock) { wLock = now + 180; return; }
+    if (!wOn) { if (glide) settleNow(); wOn = true; wAcc = 0; }
+    wAcc += dx;
+    const o = pull(wAcc / step()), d = o > 0 ? 1 : o < 0 ? -1 : 0;
+    if (d && d !== lastDir) { lastDir = d; side(d); }
+    show(o, 0);
+    clearTimeout(wT);
+    if (Math.abs(o) > 0.22 && slot(d) != null) { wOn = false; wLock = now + 220; turn(d); return; }
+    wT = setTimeout(() => { wOn = false; turn(0); }, 140);
+  }, { passive: false, capture: true });
+  addEventListener("keydown", (e) => {
+    if (e.metaKey || e.ctrlKey || e.altKey) return;
+    if (e.key === "ArrowRight") { e.preventDefault(); go(cur + 1); }
+    else if (e.key === "ArrowLeft") { e.preventDefault(); go(cur - 1); }
+    else if (e.key === "Escape" && inRun(cur)) go(0);
+  });
+  addEventListener("resize", () => {
+    const w = deck.clientWidth; if (w === W) return;
+    if (glide) settleNow();
+    W = w; ticks(); lay(); show(0, 0);
+  });
+
+  /* the address keeps the study you are on, so a reload opens it again */
+  const say2url = () => {
+    const x = inRun(cur) ? item(cur) : null, q = new URLSearchParams(location.search);
+    if (x && x.k) q.set("k", x.k); else q.delete("k");
+    const s = q.toString();
+    try { history.replaceState(null, "", location.pathname + (s ? "?" + s : "")); } catch (e) { /* a file */ }
+  };
+
+  ticks(); lay(); show(0, 0);
+  const q = new URLSearchParams(location.search), k0 = q.get("k");
+  const i0 = k0 && P.D.study(k0) ? run.findIndex((x) => x.k === k0) + 1 : 0;
+  if (i0 > 0) {
+    cur = i0; const pg = mount(i0); lay(); show(0, 0);
+    setTimeout(() => { if (pg.room && !pg.played) { pg.played = true; pg.room.play(); } }, 250);
+    restT = setTimeout(rest, 700);
+  } else restT = setTimeout(rest, 900);
+
+  window.CONCEPT = {
+    open(k) {
+      if (!P.D.study(k)) return;
+      if (glide) settleNow();
+      let i = run.findIndex((x) => x.k === k) + 1;
+      if (i < 1) { homeNow(); i = run.findIndex((x) => x.k === k) + 1; }
+      go(i);
+    },
+    go: (i) => go(i),
+    pick: (kind, v) => { homeNow(); pick(kind, v); },
+    get cur() { return cur; },
+    get run() { return run.map((x) => x.k || "about:" + x.about); },
+    get shelf() { return shelf ? shelf.kind + ":" + shelf.v : null; },
+    get mounted() { return [...pages.keys()]; },
+  };
+})();
+</script>
+</body>
+</html>

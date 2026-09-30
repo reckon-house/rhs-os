@@ -1,0 +1,349 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>F · Stack · phone · Reckon*House lab</title>
+<!-- ── F · STACK (29 Sept 2026) ──────────────────────────────────────────
+     His: "maybe a swipe from side to side allows the user to go back and
+     forth?", answered the way the phone itself answers it.
+
+     Every depth is a page pushed in from the right, and these are the
+     desk's depths: the index is the page the site opens on; a line, a
+     year, a capability, a tool or a figure pushes its shelf over it; a
+     study, from the index or from a shelf, pushes its room. The page
+     underneath slides a third of the way left and dims, and waits there
+     with its scroll kept. Back is the desk's Close, one depth at a time.
+
+     Each pushed page has a head: on the left, Back, named for the page it
+     returns to ("‹ Index", "‹ Digital"); on a room over a shelf, "Index"
+     on the right, which goes straight home. The room's own running head
+     folds into it, so a room carries one bar: the study's name takes the
+     middle once its title has gone under, and the hairline fills with ink
+     as the room is read. While a room is open the index under the stack
+     is its spec sheet, as on the desk, so a pull back shows what the
+     study holds.
+
+     Back is also a pull from the left edge. The page follows the finger,
+     the one under it slides back into place in step, and a release past
+     40% of the width, or a flick, lets it go. Next at a room's foot swaps
+     the next study in (the shelf's order, or every study newest first),
+     pushed in the same way, so Back still returns to the shelf and not
+     through every room read on the way.
+
+     Every depth has an address (#line/digital, #year/2024, #study/arc,
+     #about/design), written with pushState, and popstate walks the stack,
+     so on the real site a phone's own back button and Safari's own edge
+     swipe do the same as the head's Back. The pull stays in the page as
+     well: on the compare page this runs in an iframe, where the browser's
+     gesture cannot reach it. In a frame the address is kept current in
+     place rather than pushed, so the compare page's own back button still
+     leaves the compare page.
+
+     ?k=arc opens a study, #line/digital a shelf. -->
+<link rel="stylesheet" href="/lab/density/density.css">
+<link rel="stylesheet" href="/lab/density/study-panel.css">
+<link rel="stylesheet" href="/lab/phone/kit.css">
+<style>
+  #stack { position: fixed; inset: 0; overflow: hidden; background: var(--paper); }
+  /* a page: the index at the foot, the rest pushed over it */
+  .pg { position: absolute; inset: 0; background: var(--paper); touch-action: pan-y; will-change: transform; }
+  .pg-up { transform: translate3d(100%, 0, 0); }
+  /* the pushed page's edge, a hairline, seen only while it moves */
+  .pg-up::before { content: ""; position: absolute; top: 0; bottom: 0; left: -1px; width: 1px; background: var(--faint); }
+  .pg-body { top: calc(var(--rh) + env(safe-area-inset-top, 0px)); padding-bottom: env(safe-area-inset-bottom, 0px); touch-action: pan-y; }
+  .pg-root .pg-body { top: 0; padding-top: env(safe-area-inset-top, 0px); }
+  .pg-dim { position: absolute; inset: 0; z-index: 4; background: #000; opacity: 0; pointer-events: none; }
+
+  /* the head: Back, the page's name once its own has gone under, Index */
+  .pg-head { position: absolute; left: 0; right: 0; top: 0; z-index: 3; height: calc(var(--rh) + env(safe-area-inset-top, 0px));
+    padding: env(safe-area-inset-top, 0px) max(var(--m), env(safe-area-inset-right, 0px)) 0 max(var(--m), env(safe-area-inset-left, 0px));
+    display: flex; align-items: center; justify-content: space-between; background: var(--paper); border-bottom: 1px solid var(--hair);
+    user-select: none; -webkit-user-select: none; }
+  .pg-back, .pg-home { position: relative; z-index: 1; height: var(--rh); display: flex; align-items: center; white-space: nowrap;
+    font-size: 11px; font-weight: 600; letter-spacing: 0.14em; line-height: 1.2; text-transform: uppercase; }
+  .pg-back { max-width: 40%; margin-left: -10px; padding: 0 10px; }
+  .pg-back span { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+  .pg-back b { flex: none; margin-right: 0.5em; font-weight: 600; }
+  .pg-home { margin: 0 -10px 0 auto; padding: 0 10px; }
+  .pg-t { position: absolute; left: var(--l, 120px); right: var(--r, 120px); bottom: 0; height: var(--rh); line-height: var(--rh);
+    overflow: hidden; white-space: nowrap; text-overflow: ellipsis; text-align: center; font-size: 15px; font-weight: 500; letter-spacing: -0.01em;
+    opacity: 0; transform: translate3d(0, 5px, 0); transition: opacity 0.3s var(--ease), transform 0.4s var(--ease); pointer-events: none; }
+  .pg-head.past .pg-t { opacity: 1; transform: none; }
+  /* in a room, the hairline fills with ink as it is read */
+  .pg-rule { position: absolute; left: 0; right: 0; bottom: -1px; height: 1px; background: var(--ink); transform-origin: 0 50%; transform: scaleX(0); }
+  /* the room's own running head is the page's head here */
+  .pg .sp-bar { display: none; }
+
+  body.pulling { cursor: grabbing; user-select: none; -webkit-user-select: none; }
+</style>
+</head>
+<body>
+<div id="stack"></div>
+<script src="/lab/density/fragments.js"></script>
+<script src="/lab/density/density.js"></script>
+<script src="/lab/vendor/lenis.min.js" onerror="this.remove()"></script>
+<script src="/lab/density/study-panel.js"></script>
+<script src="/lab/dsc-sizzle/sizzle.js" onerror="this.remove()"></script>
+<script src="/lab/sizzle-reel.js" onerror="this.remove()"></script>
+<script src="/lab/phone/kit.js"></script>
+<script>
+(() => {
+  const P = window.PH, B = document.body, stack = document.getElementById("stack");
+  /* the push: 400ms on the house curve; the page under goes a third of
+     the way left and dims. Reduced motion changes pages without the
+     slide; the pull still follows the finger */
+  const MS = matchMedia("(prefers-reduced-motion: reduce)").matches ? 0 : 400, DIM = 0.16, PAR = 30;
+  const pages = [];
+  const top = () => pages[pages.length - 1];
+  const wait = (ms) => new Promise((res) => setTimeout(res, ms));
+  const at = (x) => (typeof x === "number" ? "translate3d(" + x.toFixed(2) + "px,0,0)" : "translate3d(" + x + ",0,0)");
+  const dim = (pg, o, ms) => { pg.dim.style.transition = ms ? "opacity " + ms + "ms " + P.EASE : "none"; pg.dim.style.opacity = o.toFixed(3); };
+
+  /* one move at a time: a tap while a page is moving is let go; the
+     browser's own back and forward wait their turn */
+  let pending = 0, queue = Promise.resolve();
+  const run = (fn) => { pending++; queue = queue.then(fn).catch((e) => console.error(e)).then(() => { pending--; }); return queue; };
+  const act = (fn) => (pending ? queue : run(fn));
+
+  /* what a depth is called: its Back label on the page above, and its
+     name in its own head */
+  const about = (id) => (P.DATA.about || []).find((a) => a.id === id);
+  const nameOf = (kind, v) => {
+    if (kind === "study") return P.D.study(v) ? P.title(v) : null;
+    if (kind === "about") { const a = about(v); return a ? a.name : null; }
+    const s = P.shelfOf(kind, v); return s ? String(s.name) : null;
+  };
+
+  /* ── the index: the page at the foot of the stack ── */
+  const root = { el: P.el("section", "pg pg-root"), body: P.el("div", "pg-body ph-host"), dim: P.el("i", "pg-dim"), kind: "index", name: "Index" };
+  root.el.appendChild(root.body); root.el.appendChild(root.dim); stack.appendChild(root.el);
+  const ix = P.index({ on: (kind, v) => act(() => push(kind, v)) });
+  root.body.appendChild(ix);
+  pages.push(root);
+  /* while a room is open anywhere in the stack, the index is its spec
+     sheet */
+  const spec = () => { const r = pages.slice().reverse().find((p) => p.kind === "study"); ix.mark(r ? r.v : null); };
+
+  /* ── a pushed page: a head and a body, and what the body holds ── */
+  const make = (kind, v, below, order) => {
+    const name = nameOf(kind, v); if (name == null) return null;
+    const pg = { kind, v, name, below, el: P.el("section", "pg pg-up pg-" + kind), head: P.el("header", "pg-head"), body: P.el("div", "pg-body ph-host"), dim: P.el("i", "pg-dim") };
+    const back = P.el("button", "pg-back ph-btn", "<b>‹</b><span>" + P.esc(below.name) + "</span>"); back.type = "button";
+    back.addEventListener("click", () => act(() => popTo(pages.indexOf(pg) - 1)));
+    pg.head.appendChild(back);
+    pg.t = P.el("span", "pg-t", P.esc(name)); pg.head.appendChild(pg.t);
+    if (below !== root) {
+      const home = P.el("button", "pg-home ph-btn", "Index"); home.type = "button";
+      home.addEventListener("click", () => act(() => popTo(0)));
+      pg.head.appendChild(home);
+    }
+    pg.rule = P.el("i", "pg-rule"); pg.head.appendChild(pg.rule);
+    pg.el.appendChild(pg.body); pg.el.appendChild(pg.head); pg.el.appendChild(pg.dim);
+    stack.appendChild(pg.el);
+    if (kind === "study") {
+      pg.order = order || (below.ks && below.ks.length > 1 ? below.ks : P.ORDER);
+      pg.room = P.room(pg.body, v, { order: pg.order, hold: true, onNext: (nk) => act(() => swap(pg, nk)) });
+      pg.title = () => pg.room.el.querySelector(".sp-title");
+    } else if (kind === "about") {
+      pg.about = P.about(pg.body, v);
+      pg.title = () => pg.about.el.querySelector(".ab-h");
+    } else {
+      const s = P.shelf({ kind, v, on: (x, k) => act(() => push("study", k)) });
+      pg.body.appendChild(s); pg.ks = s.ks || [];
+      pg.title = () => s.querySelector(".sh-h");
+    }
+    /* the name comes into the head once the page's own has scrolled
+       under it; in a room the hairline is how far through */
+    let raf = 0;
+    pg.tick = () => {
+      raf = 0;
+      const t = pg.title(), past = !!t && t.getBoundingClientRect().bottom < pg.body.getBoundingClientRect().top + 4;
+      if (past !== !!pg.past) { pg.past = past; if (past) fit(pg); pg.head.classList.toggle("past", past); }
+      if (pg.room) { const m = pg.body.scrollHeight - pg.body.clientHeight; pg.rule.style.transform = "scaleX(" + (m > 0 ? Math.min(1, pg.body.scrollTop / m) : 0).toFixed(4) + ")"; }
+    };
+    pg.body.addEventListener("scroll", () => { if (!raf) raf = requestAnimationFrame(pg.tick); }, { passive: true });
+    pg.destroy = () => { if (pg.room) pg.room.destroy(); if (pg.about) pg.about.destroy(); pg.el.remove(); };
+    return pg;
+  };
+  /* the name sits in the middle of the head, clear of both labels; a
+     name too long for the middle takes all the room between them */
+  const fit = (pg) => {
+    const h = pg.head.getBoundingClientRect(), hm = pg.head.querySelector(".pg-home");
+    const L = pg.head.querySelector(".pg-back").getBoundingClientRect().right - h.left + 6;
+    const R = hm ? h.right - hm.getBoundingClientRect().left + 6 : parseFloat(getComputedStyle(pg.head).paddingRight) || 16;
+    const side = Math.max(L, R), t = pg.t;
+    t.style.left = "0px"; t.style.right = "auto";
+    const mid = t.offsetWidth + 1 <= h.width - 2 * side;
+    t.style.left = t.style.right = "";
+    pg.head.style.setProperty("--l", Math.round(mid ? side : L) + "px");
+    pg.head.style.setProperty("--r", Math.round(mid ? side : R) + "px");
+  };
+
+  /* only the page on top and the one under it are painted; the rest wait
+     where they were left, scroll and all */
+  const settle = () => pages.forEach((p, i) => {
+    const onTop = i === pages.length - 1;
+    p.el.style.visibility = i >= pages.length - 2 ? "" : "hidden";
+    p.el.inert = !onTop;
+  });
+
+  /* ── push: in from the right, the page under a third of the way left ── */
+  const push = (kind, v, o) => {
+    o = o || {};
+    const below = top(), pg = make(kind, v, below);
+    if (!pg) return Promise.resolve();
+    pages.push(pg);
+    if (o.hist !== false) hist("push");
+    spec();
+    const ms = o.anim === false ? 0 : MS;
+    void pg.el.offsetWidth;
+    P.set(pg.el, at(0), ms); P.set(below.el, at(-PAR + "%"), ms); dim(below, DIM, ms);
+    return (ms ? wait(ms) : Promise.resolve()).then(() => { settle(); if (pg.room) pg.room.play(); pg.tick(); });
+  };
+
+  /* ── back to depth d: the top page goes right, depth d comes home.
+     Home from a room skips the shelf, as the phone's own pop to root
+     does ── */
+  const popTo = (d, o) => {
+    o = o || {};
+    if (d < 0 || d >= pages.length - 1) return Promise.resolve();
+    const t = top(), to = pages[d], gone = pages.splice(d + 1);
+    gone.forEach((g) => { if (g !== t) g.el.style.visibility = "hidden"; });
+    to.el.style.visibility = ""; to.el.inert = false;
+    if (o.hist !== false) hist("back", gone.length);
+    spec();
+    const ms = o.ms != null ? o.ms : o.anim === false ? 0 : MS;
+    P.set(t.el, at("100%"), ms); P.set(to.el, at(0), ms); dim(to, 0, ms);
+    return (ms ? wait(ms) : Promise.resolve()).then(() => { gone.forEach((g) => g.destroy()); settle(); if (to.tick) to.tick(); });
+  };
+
+  /* ── Next: the next study pushed over the room it replaces, which is
+     then let go, so Back still returns to the page under both ── */
+  const swap = (old, nk) => {
+    if (top() !== old) return Promise.resolve();
+    const below = old.below, pg = make("study", nk, below, old.order);
+    if (!pg) return Promise.resolve();
+    pages[pages.length - 1] = pg;
+    hist("replace");
+    spec();
+    below.el.style.visibility = "hidden";
+    void pg.el.offsetWidth;
+    P.set(pg.el, at(0), MS); P.set(old.el, at(-PAR + "%"), MS); dim(old, DIM, MS);
+    return wait(MS).then(() => { old.destroy(); settle(); pg.room.play(); pg.tick(); });
+  };
+
+  /* ── the pull from the left edge: the page follows the finger, the one
+     under it slides back in step ── */
+  let pull = null;
+  const place = (x, W) => {
+    const k = Math.max(0, Math.min(1, x / W));
+    P.set(pull.t.el, at(k * W), 0); P.set(pull.u.el, at(-(PAR / 100) * W * (1 - k)), 0); dim(pull.u, DIM * (1 - k), 0);
+  };
+  /* the kit's pull keeps its last axis until another pull begins at the
+     edge, and its click guard then eats the next tap anywhere else on
+     the page. A press and lift at the edge, made in code once a pull has
+     ended, clears it */
+  const unstick = () => setTimeout(() => {
+    const o = { pointerId: 9173, pointerType: "touch", isPrimary: false, clientX: 0, clientY: 0, button: 0, bubbles: true };
+    stack.dispatchEvent(new PointerEvent("pointerdown", o));
+    stack.dispatchEvent(new PointerEvent("pointerup", o));
+  }, 0);
+  P.drag(stack, {
+    axis: "x", edge: 24,
+    can: (e) => !e.isTrusted || (!pending && pages.length > 1),
+    /* the pull holds the queue from the first pixels until it has
+       settled, so nothing else moves a page under the finger */
+    start() {
+      let release; const slot = new Promise((res) => { release = res; });
+      pull = { t: top(), u: pages[pages.length - 2], W: innerWidth, release };
+      run(() => slot);
+      pull.u.el.style.visibility = "";
+      B.classList.add("pulling");
+      try { getSelection().removeAllRanges(); } catch (e) { /* none */ }
+    },
+    move(dx) { place(dx, pull.W); },
+    end(dx, dy, vx, vy, e) {
+      B.classList.remove("pulling"); unstick();
+      const p = pull; pull = null;
+      const k = Math.max(0, Math.min(1, dx / p.W));
+      /* past 40%, or a flick right; a flick back left keeps the page, as
+         the phone does. A cancelled pull is the browser taking the
+         gesture for its own back, which popstate then follows */
+      const go = e.type !== "pointercancel" && vx > -0.4 && (k > 0.4 || vx > 0.4);
+      const ms = Math.min(MS, Math.round(Math.max(180, MS * (go ? 1 - k : k) + 60)));
+      if (go) return p.release(popTo(pages.indexOf(p.t) - 1, { ms }));
+      P.set(p.t.el, at(0), ms); P.set(p.u.el, at(-PAR + "%"), ms); dim(p.u, DIM, ms);
+      p.release(wait(ms).then(settle));
+    },
+  });
+  addEventListener("keydown", (e) => { if (e.key === "Escape" && pages.length > 1) act(() => popTo(pages.length - 2)); });
+
+  /* ── addresses: every depth is an entry in the browser's history. In
+     a frame (the compare page) an entry would belong to the whole page's
+     back button, and a frame's history.go can undo another frame's
+     entry; there the address is kept current in place, and the pull and
+     Back do the walking ── */
+  const FRAMED = (() => { try { return window.self !== window.top; } catch (e) { return true; } })();
+  const KINDS = ["line", "year", "cap", "tool", "fig", "study", "about"];
+  const BASE = (() => { const u = new URL(location.href); u.searchParams.delete("k"); return u.pathname + u.search; })();
+  const pathNow = () => pages.slice(1).map((p) => ({ kind: p.kind, v: p.v }));
+  const urlOf = (path) => { const l = path[path.length - 1]; return BASE + (l ? "#" + l.kind + "/" + encodeURIComponent(l.v) : ""); };
+  const hist = (how, n) => {
+    try {
+      const path = pathNow(), st = { f: 1, path };
+      if (how === "push" && !FRAMED) history.pushState(st, "", urlOf(path));
+      else if (how === "back" && !FRAMED) history.go(-n);
+      else history.replaceState(st, "", urlOf(path));
+    } catch (e) { /* a frame that may not write its history keeps the stack alone */ }
+  };
+  const parse = (h) => {
+    const m = /^#([a-z]+)\/(.+)$/.exec(h || ""); if (!m || !KINDS.includes(m[1])) return [];
+    let v = m[2]; try { v = decodeURIComponent(v); } catch (e) { /* as written */ }
+    return [{ kind: m[1], v }];
+  };
+  const valid = (path) => (path || []).filter((s) => s && KINDS.includes(s.kind) && nameOf(s.kind, s.v) != null);
+  const same = (a, b) => a.kind === b.kind && String(a.v) === String(b.v);
+  /* the stack walked to the entry the browser moved to: popped to what
+     the two share, then pushed on from there. Our own Back has already
+     popped, so its entry finds nothing to do */
+  const sync = (want, anim) => {
+    const have = pathNow(); let i = 0;
+    while (i < have.length && i < want.length && same(have[i], want[i])) i++;
+    let p = Promise.resolve();
+    if (i < have.length) p = p.then(() => popTo(i, { hist: false, anim: anim && i === want.length }));
+    want.slice(i).forEach((s, j, a) => { p = p.then(() => push(s.kind, s.v, { hist: false, anim: anim && j === a.length - 1 })); });
+    return p;
+  };
+  /* Safari's own swipe has already drawn the page leaving: no second
+     slide after it */
+  addEventListener("popstate", (e) => {
+    const want = valid(e.state && e.state.f ? e.state.path : parse(location.hash));
+    run(() => sync(want, !e.hasUAVisualTransition));
+  });
+  addEventListener("resize", () => { if (pull) return; pages.forEach((p) => { if (p.past) fit(p); }); });
+
+  /* ── at load: the entry a reload left, else the address, else ?k= ── */
+  const st0 = history.state && history.state.f ? history.state : null;
+  if (st0) valid(st0.path).forEach((s) => push(s.kind, s.v, { hist: false, anim: false }));
+  else {
+    let path = valid(parse(location.hash));
+    const k = new URLSearchParams(location.search).get("k");
+    if (!path.length && k && P.D.study(k)) path = [{ kind: "study", v: k }];
+    try { history.replaceState({ f: 1, path: [] }, "", BASE); } catch (e) { /* as above */ }
+    path.forEach((s) => push(s.kind, s.v, { anim: false }));
+  }
+  settle();
+
+  window.CONCEPT = {
+    push: (kind, v) => act(() => push(kind, v)),
+    pop: () => act(() => popTo(pages.length - 2)),
+    home: () => act(() => popTo(0)),
+    get depth() { return pages.length - 1; },
+    get path() { return pathNow(); },
+  };
+})();
+</script>
+</body>
+</html>

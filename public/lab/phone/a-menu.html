@@ -1,0 +1,364 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>A · Menu · phone · Reckon*House lab</title>
+<!-- ── A · MENU (29 Sept 2026) ──────────────────────────────────────────
+     His: "the TOC/index is a hamburger menu maybe?"
+
+     The index is the page, as it is on the desk, under a head that holds
+     the mark. Open a study and its room rises over the index like a
+     sheet laid on it; the index stays underneath as it was, so the mark
+     brings you home to the place you left. In a room the head takes one
+     word, Index, beside the two bars. Tap it and the index comes down
+     over the room from the head, a plain paper curtain with an ink rule
+     along its edge, opened at the study's own row in Work and set as its
+     spec sheet, as the desk sets it: what the study holds in ink, the
+     rest grey, and its row marked solid by the ink band as the curtain
+     lands. The bars cross into an X and the word turns to Close; tap it
+     and the curtain goes back up, the room exactly where you left it.
+
+     In the menu a line, a year, a capability, a tool or a figure slides
+     its shelf in from the right, with ‹ Index to go back. A study, from
+     the index or a shelf, lifts the curtain onto its room, and Next at
+     that room's foot follows the order it was chosen in. An About entry
+     opens as a room of words. Room to room is the room's own Next, which
+     raises the next room over it.
+
+     One index serves both: the curtain is the page's own index layer,
+     lent to the room while the menu is down and given back as it lifts,
+     so what the page showed (its scroll, an open shelf) is put back.
+
+     ?k=arc opens a study, ?k=arc&menu=1 with the menu down. -->
+<link rel="stylesheet" href="/lab/density/density.css">
+<link rel="stylesheet" href="/lab/density/study-panel.css">
+<link rel="stylesheet" href="/lab/phone/kit.css">
+<style>
+  :root { --hh: calc(var(--rh) + env(safe-area-inset-top, 0px)); }
+
+  /* the head: the mark, and in a room the way to the index */
+  #head { position: fixed; left: 0; right: 0; top: 0; z-index: 10; height: var(--hh); display: flex; align-items: center; justify-content: space-between; padding: env(safe-area-inset-top, 0px) calc(var(--m) + env(safe-area-inset-right, 0px)) 0 calc(var(--m) + env(safe-area-inset-left, 0px)); background: var(--paper); user-select: none; -webkit-user-select: none; }
+  #head::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 1px; background: var(--hair); }
+  #mark { height: var(--rh); padding-right: 24px; font-size: 17px; color: var(--ink); }
+  #tog { display: flex; align-items: center; gap: 10px; height: var(--rh); margin-right: -10px; padding: 0 10px 0 28px; }
+  body[data-mode="home"] #tog { pointer-events: none; }
+  /* the word turns through a mask, as the room's type rises through its
+     own: Index goes up as Close comes in under it, and back */
+  #tog .wd { display: inline-grid; overflow: hidden; padding-top: 1px; }
+  #tog .wd > span { grid-area: 1 / 1; justify-self: end; transform: translateY(120%); transition: transform 0.42s var(--ease); }
+  body[data-mode="room"] #tog [data-w="room"], body[data-mode="menu"] #tog [data-w="menu"] { transform: none; }
+  body[data-mode="menu"] #tog [data-w="room"] { transform: translateY(-120%); }
+  #tog .ph-bars { transform-origin: 100% 50%; transform: scaleX(0); transition: transform 0.42s var(--ease); }
+  body:not([data-mode="home"]) #tog .ph-bars { transform: none; }
+
+  /* the index layer: the page at home, the curtain in a room. Its ink
+     rule sits just past its foot, off the glass while it rests */
+  #ixl { position: fixed; left: 0; right: 0; top: var(--hh); bottom: -1px; z-index: 1; background: var(--paper); border-bottom: 1px solid var(--ink); will-change: transform; }
+  body.menu #ixl { z-index: 5; }
+  #panes { position: absolute; top: 0; bottom: 0; left: env(safe-area-inset-left, 0px); right: env(safe-area-inset-right, 0px); overflow: hidden; }
+  #panes > .ph-host { transition: transform 0.42s var(--ease); }
+  #shp { left: -1px; border-left: 1px solid var(--ink); transform: translateX(calc(100% + 2px)); }
+  #ixl.sh #shp { transform: none; }
+  #ixl.sh #ixp { transform: translateX(-24%); }
+  #ixp .ix { padding-bottom: calc(40px + env(safe-area-inset-bottom, 0px)); }
+  #shp .sh { padding-bottom: calc(48px + env(safe-area-inset-bottom, 0px)); }
+  .back { display: block; padding: 14px var(--m) 6px; font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; }
+
+  /* a room: a sheet with an ink rule along its top, which rests under
+     the head */
+  .rl { position: fixed; left: env(safe-area-inset-left, 0px); right: env(safe-area-inset-right, 0px); top: calc(var(--hh) - 1px); bottom: 0; z-index: 3; background: var(--paper); border-top: 1px solid var(--ink); will-change: transform; }
+  .rl > .ph-host { padding-bottom: env(safe-area-inset-bottom, 0px); }
+
+  /* the spec sheet in the curtain: the study's row is marked as it lands,
+     the ink band sweeping across it, and unmarked the same way back */
+  #ixl .ix.spec :is(.ix-w, .ix-ab).cur { z-index: 0; transition: color 0.16s linear 0.26s; }
+  #ixl .ix.spec :is(.ix-w, .ix-ab).cur::before { transform-origin: 0 50%; transition: transform 0.42s var(--ease); will-change: transform; }
+  #ixl.pre .ix.spec :is(.ix-w, .ix-ab).cur { color: var(--ink); transition: none; }
+  #ixl.pre .ix.spec :is(.ix-w, .ix-ab).cur::before { transform: scaleX(0); transition: none; }
+  #ixl.out .ix.spec .e, #ixl.out .ix.spec :is(.ix-w, .ix-ab).cur { color: var(--ink); transition: color 0.3s var(--ease); }
+  #ixl.out .ix.spec :is(.ix-w, .ix-ab).cur::before { transform: scaleX(0); transform-origin: 100% 50%; }
+  /* the study's picture among the six lines stays in ink: the kit's solid
+     mark would set its caption white over a band the pane hides */
+  #ixl .ix.spec .ix-feat.cur { color: var(--ink); }
+  #ixl .ix.spec .ix-feat.cur::before { content: none; }
+
+  /* a keyboard's focus is drawn in ink, as the room draws its Close */
+  #head .ph-btn:focus-visible, .back:focus-visible, :is(.ix, .sh) .e:focus-visible { outline: 1px solid var(--ink); outline-offset: 3px; }
+  #tog:focus-visible { outline-offset: -9px; }
+
+  /* a press shows while the finger is down */
+  :is(.ix, .sh) .e:active { color: var(--grey); }
+  :is(.ix-feat, .sh-s):active .ph-pic { opacity: 0.7; }
+
+  @media (prefers-reduced-motion: reduce) {
+    #tog .wd > span, #tog .ph-bars, #panes > .ph-host, #ixl .ix.spec :is(.ix-w, .ix-ab).cur, #ixl .ix.spec :is(.ix-w, .ix-ab).cur::before { transition: none !important; }
+  }
+</style>
+</head>
+<body data-mode="home">
+<header id="head">
+  <button id="mark" class="ph-btn ph-mark" type="button">Reckon<i>*</i>House</button>
+  <button id="tog" class="ph-btn" type="button" aria-expanded="false" aria-label="Index" tabindex="-1">
+    <span class="wd ph-lab" aria-hidden="true"><span data-w="room">Index</span><span data-w="menu">Close</span></span>
+    <i class="ph-bars"></i>
+  </button>
+</header>
+<section id="ixl" aria-label="Index">
+  <div id="panes">
+    <div id="ixp" class="ph-host"></div>
+    <div id="shp" class="ph-host" inert></div>
+  </div>
+</section>
+<div id="rooms"></div>
+<script src="/lab/density/fragments.js"></script>
+<script src="/lab/density/density.js"></script>
+<script src="/lab/vendor/lenis.min.js" onerror="this.remove()"></script>
+<script src="/lab/density/study-panel.js"></script>
+<script src="/lab/dsc-sizzle/sizzle.js" onerror="this.remove()"></script>
+<script src="/lab/sizzle-reel.js" onerror="this.remove()"></script>
+<script src="/lab/phone/kit.js"></script>
+<script>
+(() => {
+  const P = window.PH, $ = (id) => document.getElementById(id), B = document.body;
+  if (!P) return;
+  const markB = $("mark"), tog = $("tog"), ixl = $("ixl"), ixp = $("ixp"), shp = $("shp"), stage = $("rooms");
+  const still = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const T = (ms) => (still ? 0 : ms);
+  const UP = "translate3d(0,calc(-100% - 2px),0)", DOWN = "translate3d(0,calc(100% + 2px),0)", REST = "translate3d(0,0,0)";
+
+  /* home: the index is the page; room: a room over it; menu: the index
+     down over the room */
+  let mode = "home", cur = null, rooms = [], busy = false, shelfAt = null, saved = null;
+
+  const frames = (n) => new Promise((res) => { let i = 0; const f = () => (++i >= n ? res() : requestAnimationFrame(f)); requestAnimationFrame(f); });
+  /* a glide on the house curve that says when it has landed */
+  const glide = (node, tf, ms) => new Promise((res) => {
+    ms = T(ms);
+    let done = false;
+    const end = (e) => {
+      if (done || (e && (e.target !== node || e.propertyName !== "transform"))) return;
+      done = true; node.removeEventListener("transitionend", end); res();
+    };
+    node.addEventListener("transitionend", end);
+    P.set(node, tf, ms);
+    setTimeout(end, ms ? ms + 150 : 0);
+  });
+
+  /* only what is on top takes a tap */
+  const seal = () => {
+    ixl.inert = mode === "room";
+    rooms.forEach((r, i) => { r.layer.inert = mode !== "room" || i !== rooms.length - 1; });
+  };
+  const setMode = (m) => {
+    const was = mode, w = tog.querySelector('[data-w="room"]');
+    /* from the menu straight home, Index drops out of sight without
+       crossing its mask */
+    const jump = was === "menu" && m === "home";
+    if (jump) w.style.transition = "none";
+    mode = m; B.dataset.mode = m;
+    if (jump) { void w.offsetWidth; requestAnimationFrame(() => { w.style.transition = ""; }); }
+    tog.classList.toggle("x", m === "menu");
+    tog.setAttribute("aria-expanded", String(m === "menu"));
+    tog.setAttribute("aria-label", m === "menu" ? "Close" : "Index");
+    tog.tabIndex = m === "home" ? -1 : 0;
+    seal();
+  };
+
+  /* the index, and a shelf that slides in over it from the right */
+  const ix = P.index({ on: (kind, v) => pick(kind, v) });
+  ixp.appendChild(ix);
+  const slide = (on, now) => {
+    if (now) [ixp, shp].forEach((n) => { n.style.transition = "none"; });
+    ixl.classList.toggle("sh", on);
+    if (now) { void ixl.offsetWidth; [ixp, shp].forEach((n) => { n.style.transition = ""; }); }
+    ixp.inert = on; shp.inert = !on;
+  };
+  const showShelf = (kind, v, top, now) => {
+    shp.innerHTML = "";
+    const back = P.el("button", "back ph-btn", "‹ Index"); back.type = "button";
+    back.addEventListener("click", () => { if (!busy) hideShelf(); });
+    shp.appendChild(back);
+    const s = P.shelf({ kind, v, on: (x, k) => pick("study", k, s.ks) });
+    shp.appendChild(s);
+    shp.scrollTop = top || 0;
+    shelfAt = { kind, v };
+    slide(true, now);
+  };
+  const hideShelf = (now) => { shelfAt = null; slide(false, now); };
+
+  const pick = (kind, v, order) => {
+    if (busy) return;
+    if (kind === "study" || kind === "about") return go(kind, v, order);
+    showShelf(kind, v);
+  };
+  const go = (kind, v, order) => {
+    order = kind === "study" && order && order.length > 1 ? order : P.ORDER;
+    return mode === "menu" ? swap(kind, v, order) : rise(kind, v, order);
+  };
+
+  /* a room: the real one in a sheet of its own. Never more than two are
+     held, the one showing and the one rising over it */
+  const mount = (kind, v, order, tf) => {
+    const layer = P.el("div", "rl"), host = P.el("div", "ph-host");
+    layer.style.transform = tf;
+    layer.appendChild(host); stage.appendChild(layer);
+    const room = kind === "about" ? P.about(host, v)
+      : P.room(host, v, { order, hold: true, onNext: (nk) => { if (!busy && mode === "room") rise("study", nk, order); } });
+    const r = { layer, host, room, kind, v, order };
+    rooms.push(r);
+    cur = { kind, v, order };
+    return r;
+  };
+  const drop = (keep) => {
+    rooms.forEach((r) => { if (r !== keep) { r.room.destroy(); r.layer.remove(); } });
+    rooms = keep ? [keep] : [];
+  };
+  /* from the index, a shelf or a room's Next: the room rises over what
+     is there, which stays as it was. Its type starts to rise as the
+     sheet settles, so the two read as one movement */
+  const play = (r, ms) => { if (r.room.play) setTimeout(() => { if (rooms.includes(r)) r.room.play(); }, T(ms)); };
+  const rise = async (kind, v, order) => {
+    busy = true;
+    const r = mount(kind, v, order, DOWN);
+    setMode("room");
+    await frames(2);
+    play(r, 240);
+    await glide(r.layer, REST, 520);
+    drop(r); seal();
+    busy = false;
+  };
+
+  /* the menu: the index layer comes down over the room as a curtain,
+     opened at the study's row and set as its spec sheet */
+  const aboutRow = (id) => ix.querySelector('.ix-ab[href="#about/' + id + '"]');
+  const markFor = (c) => {
+    ix.mark(c && c.kind === "study" ? c.v : null);
+    if (c && c.kind === "about") { const a = aboutRow(c.v); ix.classList.add("spec"); if (a) a.classList.add("on", "cur"); }
+  };
+  const seat = () => {
+    const row = cur.kind === "study" ? ix.rowOf(cur.v) : aboutRow(cur.v);
+    if (row) ixp.scrollTop = Math.max(0, row.offsetTop - Math.round(ixp.clientHeight * 0.34));
+  };
+  const openMenu = async (now) => {
+    if (busy || mode !== "room" || !cur) return;
+    busy = true;
+    saved = { top: ixp.scrollTop, shelf: shelfAt ? { kind: shelfAt.kind, v: shelfAt.v, top: shp.scrollTop } : null };
+    hideShelf(true);
+    if (!now) ixl.classList.add("pre");
+    markFor(cur);
+    seat();
+    P.set(ixl, now ? REST : UP, 0);
+    B.classList.add("menu");
+    void ixl.offsetWidth;
+    setMode("menu");
+    if (!now) {
+      const g = glide(ixl, REST, 480);
+      setTimeout(() => ixl.classList.remove("pre"), T(250));
+      await g;
+    }
+    busy = false;
+  };
+  /* the curtain goes back up onto whatever room is under it; the index
+     is the page again, where the page had it */
+  const lift = async () => {
+    setMode("room");
+    await glide(ixl, UP, 440);
+    B.classList.remove("menu");
+    P.set(ixl, REST, 0);
+    ix.mark(null);
+    if (saved) {
+      if (saved.shelf) showShelf(saved.shelf.kind, saved.shelf.v, saved.shelf.top, true); else hideShelf(true);
+      ixp.scrollTop = saved.top;
+      saved = null;
+    }
+    seal();
+  };
+  const closeMenu = async () => {
+    if (busy || mode !== "menu") return;
+    busy = true;
+    await lift();
+    busy = false;
+  };
+  /* a study chosen in the menu: the spec sheet turns to it (its row
+     marked as the band sweeps across), the room is set under the
+     curtain, and the curtain lifts onto it */
+  const swap = async (kind, v, order) => {
+    if (cur && cur.kind === kind && cur.v === v) return closeMenu();
+    busy = true;
+    const inIndex = !shelfAt;
+    if (inIndex) {
+      ixl.classList.add("pre"); markFor({ kind, v }); void ixl.offsetWidth;
+      await frames(1); ixl.classList.remove("pre");
+    }
+    await frames(2);
+    drop(null);
+    const r = mount(kind, v, order, REST);
+    seal();
+    await P.wait(T(inIndex ? 320 : 60));
+    play(r, 80);
+    await lift();
+    busy = false;
+  };
+
+  /* the mark: home. From a room the room sinks back off the index; from
+     the menu the spec sheet turns back into the page; at home, the top */
+  const home = async () => {
+    if (busy) return;
+    if (mode === "home") {
+      if (shelfAt) hideShelf();
+      ixp.scrollTo({ top: 0, behavior: still ? "auto" : "smooth" });
+      return;
+    }
+    busy = true;
+    if (mode === "menu") {
+      saved = null; cur = null;
+      drop(null);
+      setMode("home");
+      B.classList.remove("menu");
+      ixl.classList.add("out");
+      await P.wait(T(420));
+      ix.mark(null); ixl.classList.remove("out");
+      busy = false;
+      return;
+    }
+    const top = rooms[rooms.length - 1];
+    setMode("home");
+    if (top) await glide(top.layer, DOWN, 460);
+    drop(null); cur = null; seal();
+    busy = false;
+  };
+
+  markB.addEventListener("click", () => home());
+  tog.addEventListener("click", () => (mode === "menu" ? closeMenu() : openMenu()));
+  addEventListener("keydown", (e) => {
+    if (e.key !== "Escape" || busy) return;
+    if (shelfAt && mode !== "room") hideShelf();
+    else if (mode === "menu") closeMenu();
+    else if (mode === "room") home();
+  });
+  /* a press state on a phone needs a touch listener somewhere */
+  document.addEventListener("touchstart", () => {}, { passive: true });
+
+  const q = new URLSearchParams(location.search);
+  setMode("home");
+  const k0 = q.get("k");
+  if (k0 && P.D.study(k0)) {
+    const r = mount("study", k0, P.ORDER, REST);
+    setMode("room");
+    play(r, 120);
+    if (q.get("menu") === "1") openMenu(true);
+  }
+  window.CONCEPT = {
+    open: (k, order) => (!busy && P.D.study(k) ? go("study", k, order) : null),
+    menu: (open) => (open === false || (open == null && mode === "menu") ? closeMenu() : openMenu()),
+    pick, home,
+    get state() { return mode; },
+    get cur() { return cur; },
+    get room() { const r = rooms[rooms.length - 1]; return r ? r.room : null; },
+  };
+})();
+</script>
+</body>
+</html>
