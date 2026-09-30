@@ -260,11 +260,6 @@
 .flash { background: #fff; opacity: 0; }
 .burnw { background: #F3F0ED; opacity: 0; }
 
-/* the tag over each phone's head in a pair: paper, its words turning over */
-.ptag { position: absolute; z-index: 6; background: var(--paper); color: var(--ink); padding: 0.7em 0.95em 0.72em; box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.08); }
-.ptag .lab { color: var(--ink); white-space: nowrap; }
-.ptag > .bd { position: absolute; inset: 0; z-index: 2; background: var(--ink); clip-path: inset(0 100% 0 0); }
-.ptag > .bd.go { animation: szlwipe 0.66s linear both; }
 
 /* a slide's seam (29 Sept, his "the blurs on the transitions"): the new
    shot comes in sharp, an ink rule on its leading edge */
@@ -275,3 +270,17 @@
 .say-big { font-weight: 600; letter-spacing: -0.045em; line-height: 0.96; }
 /* the checks as a plain list (his note, 29 Sept: "maybe we just do bullets") */
 .checks .blt { display: inline-block; width: 1.05em; }
+
+/* a pair's section names, large up the frame's edges (his note, 29 Sept):
+   the right reads down from the head, the left, turned, up from the foot */
+.spine { position: absolute; z-index: 6; writing-mode: vertical-rl; color: var(--ink); line-height: 0.92; white-space: nowrap; }
+.spine:not(.r) { transform: rotate(180deg); }
+.spine .sp-t { font-weight: 600; letter-spacing: 0.01em; text-transform: uppercase; }
+.spine > .bd { position: absolute; inset: 0; z-index: 2; background: var(--ink); clip-path: inset(0 0 100% 0); }
+.spine > .bd.go { animation: szlwipev 0.7s linear both; }
+@keyframes szlwipev {
+  0% { clip-path: inset(0 0 100% 0); animation-timing-function: cubic-bezier(0.45, 0, 0.2, 1); }
+  48% { clip-path: inset(0 0 0 0); }
+  52% { clip-path: inset(0 0 0 0); animation-timing-function: cubic-bezier(0.45, 0, 0.2, 1); }
+  100% { clip-path: inset(100% 0 0 0); }
+}

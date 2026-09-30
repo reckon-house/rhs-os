@@ -52,7 +52,7 @@
    a row of the versions sits under it, as the looks rows did, until he
    picks one. */
 (() => {
-  const BASE = "/lab/dsc-sizzle/", IMG = BASE + "img/", VQ = "?v=17";
+  const BASE = "/lab/dsc-sizzle/", IMG = BASE + "img/", VQ = "?v=18";
   const VERSIONS = [
     { id: "mix", name: "Mix", weight: "the app in use" },
     { id: "caption", name: "Caption", weight: "light" },
@@ -162,6 +162,10 @@
     approve: "The owner approves each request with one tap.",
     week: "The owner can schedule a whole week out loud.",
     weekSay: "The owner can say a whole week out loud.",
+    /* his words for the close, 29 Sept: "the platform runs two locations,
+       over 100 athletes including nfl, ncaa". The study has "more than a
+       hundred" athletes and NFL Combine prep; NCAA is his note's alone */
+    runs: "The platform runs two locations and more than a hundred athletes, including NFL and NCAA players.",
     /* his edit, 29 Sept: "1 tap" says "the owner" just before, so this one
        drops it */
     weekSayIt: "Say a whole week out loud.",
@@ -678,7 +682,7 @@
     + ".car{display:inline-block;width:2px;height:1.05em;background:currentColor;vertical-align:-.18em;margin-left:1px}"
     + ".ai-chat{flex:1;min-height:0;display:flex;flex-direction:column;background:#fff;font-family:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif}"
     + ".ai-head{padding:12px 16px;border-bottom:1px solid rgba(0,0,0,.08);font-size:13px;font-weight:600;color:rgba(0,0,0,.75);display:flex;align-items:center;gap:8px}"
-    + ".ai-head .ai-dot{width:8px;height:8px;border-radius:99px;background:#16a34a}"
+    + ".ai-head .ai-dot{width:8px;height:8px;border-radius:99px;background:#000}"
     + ".ai-head .ai-conn{margin-left:auto;font-family:'SF Mono',Menlo,monospace;font-size:10px;letter-spacing:.06em;color:rgba(0,0,0,.4);text-transform:uppercase}"
     + ".ai-scroll{flex:1;min-height:0;overflow-y:auto;padding:16px;scroll-behavior:smooth}.ai-scroll::-webkit-scrollbar{display:none}"
     + ".ai-user{max-width:85%;margin:0 0 14px auto;background:rgba(0,0,0,.06);border-radius:16px 16px 4px 16px;padding:10px 14px;font-size:14px;line-height:1.45;color:#111;width:fit-content}"
@@ -695,7 +699,7 @@
     + ".ai-dockrow{padding:10px 12px 14px;border-top:1px solid rgba(0,0,0,.08)}"
     + ".ai-dock{display:flex;align-items:center;gap:8px;border:1px solid rgba(0,0,0,.12);border-radius:14px;padding:10px 14px;font-size:14px;color:#111;min-height:20px}.ai-dock .ai-ph{color:rgba(0,0,0,.35)}"
     + "#th{scroll-behavior:smooth}#th::-webkit-scrollbar{display:none}"
-    + ".pg{position:absolute;inset:0;overflow:hidden;background:#fff;will-change:transform}.pg.off{visibility:hidden}.pgin{min-height:100%;will-change:transform}.pgin>img.shot{display:block;width:100%}";
+    + ".pg{position:absolute;inset:0;overflow:hidden;background:#fff;will-change:transform}.pg.off{visibility:hidden}.pgin{min-height:100%;will-change:transform}.pgin>img.shot{display:block;width:100%;filter:grayscale(1)}";
   const SB = '<div class="sb"><span>9:41</span><span class="bt"></span></div>';
   /* Lucide's icons (lucide.dev, ISC), inline: the reel's glyphs in place of
      the product's emoji (his note, 29 Sept: "lucide icons vs emoji's") */
@@ -847,13 +851,27 @@
       t += sec.d;
     });
   });
-  /* a paper tag beside a phone, whose words turn over under a band of ink
-     as the section changes */
-  const tagAt = (c, s, x, y, right) => {
-    const g = c.el("div", "ptag" + (right ? " r" : "")); g.style.cssText = (right ? "right:" + x : "left:" + x) + "px;top:" + y + "px";
-    const tt = c.el("div", "lab"); g.appendChild(tt); g.style.visibility = "hidden"; s.appendChild(g);
+  /* a pair's section names set large up the frame's edges, as spines (his
+     note, 29 Sept: "more graphic? maybe they're running up the sides and
+     large?"): the left reads up from the foot, the right down from the
+     head, one size for both, fitted so the longest name either will carry
+     fits the frame's height and the margin beside its phone; each change
+     crossed by a band of ink running along the words */
+  const spineSize = (c, s, names, margin) => {
+    const g = c.el("div", "spine r"), tt = c.el("div", "sp-t"); g.appendChild(tt); g.style.visibility = "hidden"; tt.style.fontSize = "100px"; s.appendChild(g);
+    let long = 1; names.forEach((n) => { tt.textContent = n; long = Math.max(long, g.offsetHeight); });
+    g.remove();
+    return Math.max(10, Math.min((100 * (c.H - 2 * c.pad)) / long, (margin * 0.8) / 0.92));
+  };
+  const spineAt = (c, s, right, fs, margin) => {
+    const g = c.el("div", "spine" + (right ? " r" : "")), tt = c.el("div", "sp-t");
+    const x = Math.max(2, (margin - fs * 0.92) / 2);
+    tt.style.fontSize = fs.toFixed(1) + "px"; g.appendChild(tt);
+    g.style.cssText = (right ? `right:${x.toFixed(1)}px;top:${c.pad}px` : `left:${x.toFixed(1)}px;bottom:${c.pad}px`) + ";visibility:hidden";
+    s.appendChild(g);
     return (text, at) => c.T(Math.max(0, at), () => {
-      const b = c.el("i", "bd go"); g.appendChild(b);
+      if (g.style.visibility === "hidden") tt.textContent = text;
+      const b = c.el("i", "bd go"); b.style.visibility = "visible"; g.appendChild(b);
       c.T(330, () => { tt.textContent = text; g.style.visibility = ""; });
       c.T(720, () => b.remove());
     });
@@ -869,9 +887,10 @@
     const R = phone(c, s, c.W * 0.715, c.H * (m ? 0.6 : 0.42), h, { pages: right });
     const drift = (P, a, b) => c.anim(P.cam, [{ transform: "translateY(" + (a * c.H).toFixed(1) + "px) scale(1)" }, { transform: "translateY(" + (b * c.H).toFixed(1) + "px) scale(1.035)" }], { duration: d + 900, easing: "linear", fill: "forwards" });
     if (m) { drift(L, -0.02, 0.05); drift(R, 0.03, -0.05); } else { drift(L, 0.03, -0.05); drift(R, -0.02, 0.05); }
-    /* the tags both sit at the top, over each phone's head: at the foot
-       they covered a roster's names */
-    const tl = tagAt(c, s, c.pad, c.top, false), tr = tagAt(c, s, c.pad, c.top, true);
+    /* the names run up the margins beside the phones */
+    const margin = c.W * 0.285 - (DW * h / DH) / 2, names = [...left, ...right].map((x) => x.tag).filter(Boolean);
+    const fs = spineSize(c, s, names, margin);
+    const tl = spineAt(c, s, false, fs, margin), tr = spineAt(c, s, true, fs, margin);
     return (t0) => { sections(c, L, t0, left, tl); sections(c, R, t0 + (o.lag || 260), right, tr); return 0; };
   } });
 
@@ -1050,7 +1069,8 @@
     T.style.cssText = `left:${c.pad}px;top:${c.top}px;width:${c.W - 2 * c.pad}px`;
     s.appendChild(T);
     const room = c.H - c.top - c.pad;
-    c.fit(T, 4, Math.max(18, c.W * 0.05), Math.min(c.W * 0.15, room / 4));
+    const lines = (o && o.lines) || 4;
+    c.fit(T, lines, Math.max(18, c.W * 0.05), Math.min(c.W * 0.15, room / lines));
     T.style.top = Math.round(c.H - c.pad - T.offsetHeight) + "px";
     if (o && o.drift) { T.style.transformOrigin = "0 100%"; c.anim(T, [{ transform: "scale(1)" }, { transform: "scale(1.03)" }], { duration: (o.d || 2000) + 700, easing: "linear", fill: "forwards" }); }
     return (t0) => c.wipe(T, { at: t0, kind: "ink", dur: 760 });
@@ -1188,10 +1208,10 @@
        fast going through it") */
     pairShot({ name: "The front door", d: 7300, cut: "flash", mirror: true, pics: ["app-landing", "dash-full", "trainers-list"],
       left: [{ screen: "leads", d: 3600, tag: "Leads" }, { screen: "waiver", d: 3400, tag: "Waiver" }],
-      right: [{ screen: "signup", d: 2700, tag: "Sign-up" }, { img: "dash-full", d: 2200, tag: "The athlete app", scroll: [300] }, { img: "trainers-list", d: 2100, tag: "Trainers", scroll: [300] }] }),
+      right: [{ screen: "signup", d: 2700, tag: "Sign-up" }, { img: "dash-full", d: 2200, tag: "Athlete app", scroll: [300] }, { img: "trainers-list", d: 2100, tag: "Trainers", scroll: [300] }] }),
     /* a second dark statement, so the first act's isn't the only one (his
        note, 29 Sept), arriving the same way, by a blink */
-    sayShot(SAY.live, "live at both locations,", { name: "Live", d: 2300, cut: "blink", drift: true }),
+    sayShot(SAY.runs, "more than a hundred athletes,", { name: "Two locations", d: 2800, lines: 5, cut: "blink", drift: true }),
   ];
   /* the second act alone, a bench (play.html?v=_act2), not in the row */
   V._act2 = { shots: [...ACT2, markShot({ d: 1400, cut: "band" })], loopCut: "burn", poster: 1 };
