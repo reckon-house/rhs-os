@@ -20,7 +20,7 @@
   --ink: #000; --paper: #fff; --grey: rgba(0, 0, 0, 0.42); --hair: rgba(0, 0, 0, 0.13); --mist: #ECECEC;
   --pad: 4.4cqw; --top: max(34px, 8.5cqh);
   --lab: clamp(6.5px, 1.22cqw, 11px); --sm: clamp(9px, 1.86cqw, 16px); --mid: clamp(10.5px, 2.15cqw, 19px);
-  --ez: cubic-bezier(0.45, 0, 0.2, 1); --ezo: cubic-bezier(0.16, 1, 0.3, 1); }
+  --ez: cubic-bezier(0.45, 0, 0.2, 1); --ezo: cubic-bezier(0.16, 1, 0.3, 1); --knock: #F2F2F0; }
 .stage.off { display: none; }
 .shots { position: absolute; inset: 0; }
 .stage * { box-sizing: border-box; }
@@ -34,7 +34,7 @@
 /* the index's dot grid, so a page of paper still reads as a frame
    against the room's own paper */
 .dots { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='5' height='5'%3E%3Crect width='1' height='1' fill='%23000' fill-opacity='0.11'/%3E%3C/svg%3E"); background-size: 5px 5px; }
-.ink { background: #000; color: #fff; --grey: rgba(255, 255, 255, 0.52); --hair: rgba(255, 255, 255, 0.2); }
+.ink { background: #000; color: #fff; --grey: rgba(255, 255, 255, 0.52); --hair: rgba(255, 255, 255, 0.2); --knock: #000; }
 .mist { background: var(--mist); color: var(--ink); }
 .photo { background: #151515; }
 
@@ -106,10 +106,16 @@
 .abs { position: absolute; }
 
 /* ── a tick, drawn ── */
-.tk { width: 1.05em; height: 0.9em; flex: none; overflow: visible; }
-.tk path { fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: square; stroke-dasharray: 16; stroke-dashoffset: 16; }
-.tk.go path { stroke-dashoffset: 0; transition: stroke-dashoffset 0.32s var(--ez) var(--d, 0ms); }
-.tk.now path { stroke-dashoffset: 0; }
+/* a check that passes (29 Sept, his "something more stylized"): a
+   square that fills from the left on the house's curve, the way a band
+   crosses a line, with the tick knocked out of it in the ground's colour */
+.tk { width: 0.86em; height: 0.86em; flex: none; overflow: visible; }
+.tk .sq { fill: currentColor; clip-path: inset(0 100% 0 0); }
+.tk .ch { fill: none; stroke: var(--knock); stroke-width: 1.6; stroke-linecap: square; stroke-dasharray: 11; stroke-dashoffset: 11; }
+.tk.go .sq { clip-path: inset(0 0 0 0); transition: clip-path 0.26s var(--ez) var(--d, 0ms); }
+.tk.go .ch { stroke-dashoffset: 0; transition: stroke-dashoffset 0.22s var(--ez) calc(var(--d, 0ms) + 0.2s); }
+.tk.now .sq { clip-path: none; }
+.tk.now .ch { stroke-dashoffset: 0; }
 
 /* ── the checks: every booking, one engine (the study's abstract) ── */
 .checks { position: absolute; }
@@ -219,11 +225,15 @@
 /* a layer over the shots, for what crosses a cut (the request, flying
    from the athlete's phone to the owner's) */
 .ovl { position: absolute; inset: 0; z-index: 25; pointer-events: none; }
-.flyc { position: absolute; left: 0; top: 0; transform-origin: 0 0; padding: 12px 14px; border-radius: 18px; background: #fff; color: #000; width: 240px;
-  font-size: 13px; line-height: 1.35; box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.14); }
-.flyc b { font-weight: 600; }
-.flyc .g { color: rgba(0, 0, 0, 0.5); }
-.flyc .lab { display: block; margin-top: 4px; font-size: 9px; color: rgba(0, 0, 0, 0.45); }
+/* the request, lifted out of the athlete's chat: the owner app's own
+   request card at its own measure (324 wide, admin/page.tsx 589-665),
+   scaled to the phone it will land in, so the handoff lines up */
+.flyc { position: absolute; left: 0; top: 0; transform-origin: 0 0; width: 324px; padding: 12px; border-radius: 16px; background: #fff; color: #000;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.12); }
+.flyc .n { font-size: 14px; line-height: 20px; font-weight: 500; }
+.flyc .n .g { color: rgba(0, 0, 0, 0.5); font-weight: 400; }
+.flyc .wh { margin-top: 2px; font-size: 12px; line-height: 16px; color: rgba(0, 0, 0, 0.6); }
+.flyc .v { margin-left: 8px; font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(0, 0, 0, 0.4); }
 
 /* notes: the spread's column, beside a phone, a line or a trace at a
    time under a hairline */
@@ -253,3 +263,11 @@
 .ptag .lab { color: var(--ink); white-space: nowrap; }
 .ptag > .bd { position: absolute; inset: 0; z-index: 2; background: var(--ink); clip-path: inset(0 100% 0 0); }
 .ptag > .bd.go { animation: szlwipe 0.66s linear both; }
+
+/* a slide's seam (29 Sept, his "the blurs on the transitions"): the new
+   shot comes in sharp, an ink rule on its leading edge */
+.seam { position: absolute; top: 0; bottom: 0; left: 0; width: 2px; background: #000; z-index: 40; pointer-events: none; }
+.seam.r { left: auto; right: 0; }
+.ink > .seam { background: #fff; }
+/* a statement as large as the frame takes it, one phrase lit */
+.say-big { font-weight: 600; letter-spacing: -0.045em; line-height: 0.96; }

@@ -52,7 +52,7 @@
    a row of the versions sits under it, as the looks rows did, until he
    picks one. */
 (() => {
-  const BASE = "/lab/dsc-sizzle/", IMG = BASE + "img/", VQ = "?v=14";
+  const BASE = "/lab/dsc-sizzle/", IMG = BASE + "img/", VQ = "?v=15";
   const VERSIONS = [
     { id: "mix", name: "Mix", weight: "the app in use" },
     { id: "caption", name: "Caption", weight: "light" },
@@ -682,14 +682,46 @@
     + ".ai-reply{font-size:14px;line-height:1.55;color:#1a1a1a;margin:0 0 14px;white-space:pre-wrap}.ai-reply strong{font-weight:650}"
     + ".ai-tool{display:flex;align-items:center;gap:8px;margin:0 0 10px;padding:6px 10px;border:1px solid rgba(0,0,0,.09);border-radius:10px;width:fit-content;max-width:100%;font-size:12px;color:rgba(0,0,0,.55);background:rgba(0,0,0,.02)}"
     + ".ai-tool code{font-family:'SF Mono',Menlo,monospace;font-size:11px;color:rgba(0,0,0,.65);background:rgba(0,0,0,.05);border-radius:5px;padding:1px 5px;white-space:nowrap}"
-    + ".ai-tool .ai-spin{width:10px;height:10px;border:1.5px solid rgba(0,0,0,.2);border-top-color:rgba(0,0,0,.6);border-radius:99px;animation:ai-rot .7s linear infinite;flex:none}"
-    + ".ai-tool.done .ai-spin{display:none}.ai-tool .ai-check{display:none;color:#16a34a;flex:none}.ai-tool.done .ai-check{display:inline}"
+    + ".lc{display:inline-block;flex:none;vertical-align:-2px}"
+    + ".ai-tool .ai-spin{width:13px;height:13px;color:rgba(0,0,0,.5);animation:ai-rot .8s linear infinite}"
+    + ".ai-tool.done .ai-spin{display:none}.ai-tool .ai-check{display:none;width:13px;height:13px;color:rgba(0,0,0,.72)}.ai-tool.done .ai-check{display:inline-block}"
+    /* the owner's chat, set the way it reads (md() below) */
+    + ".md p{margin:0}.md>*+*{margin-top:8px}.md .mh{display:flex;align-items:center;gap:6px;font-weight:600}.md .mh .lc{width:15px;height:15px}"
+    + ".md ul{margin:4px 0 0;padding-left:18px}.md ul li{margin:1px 0}.md .mh+ul,.md .mh+p{margin-top:4px}"
     + "@keyframes ai-rot{to{transform:rotate(360deg)}}"
     + ".ai-dockrow{padding:10px 12px 14px;border-top:1px solid rgba(0,0,0,.08)}"
     + ".ai-dock{display:flex;align-items:center;gap:8px;border:1px solid rgba(0,0,0,.12);border-radius:14px;padding:10px 14px;font-size:14px;color:#111;min-height:20px}.ai-dock .ai-ph{color:rgba(0,0,0,.35)}"
     + "#th{scroll-behavior:smooth}#th::-webkit-scrollbar{display:none}"
     + ".pg{position:absolute;inset:0;overflow:hidden;background:#fff;will-change:transform}.pg.off{visibility:hidden}.pgin{min-height:100%;will-change:transform}.pgin>img.shot{display:block;width:100%}";
   const SB = '<div class="sb"><span>9:41</span><span class="bt"></span></div>';
+  /* Lucide's icons (lucide.dev, ISC), inline: the reel's glyphs in place of
+     the product's emoji (his note, 29 Sept: "lucide icons vs emoji's") */
+  const LC = (cls, body) => '<svg class="lc ' + cls + '" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' + body + "</svg>";
+  const ICON = {
+    spin: LC("ai-spin", '<path d="M21 12a9 9 0 1 1-6.219-8.56"/>'),
+    done: LC("ai-check", '<circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/>'),
+    check: LC("", '<circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/>'),
+    alert: LC("", '<path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/>'),
+  };
+  /* the owner's chat, set the way it reads. The product prints its
+     markdown raw (**bold**, _calling `tool`..._, emoji; NOTES.md), which in
+     a reel reads as broken (his note, 29 Sept: "less 'code'"): here bold is
+     bold, a list is a list, and a heading's emoji is Lucide's. Tool calls
+     are taken out and shown as status rows (bot() in ownerChatShot) */
+  const md = (t) => t.split("\n\n").map((bk) => {
+    let out = "", list = [];
+    const flush = () => { if (list.length) { out += "<ul>" + list.map((x) => "<li>" + esc(x) + "</li>").join("") + "</ul>"; list = []; } };
+    bk.split("\n").forEach((ln) => {
+      const h = ln.match(/^\*\*(.+)\*\*$/);
+      if (h) {
+        flush(); let txt = h[1], ic = "";
+        if (/^✅/.test(txt)) { ic = ICON.check; txt = txt.replace(/^✅\s*/, ""); } else if (/^⚠/.test(txt)) { ic = ICON.alert; txt = txt.replace(/^⚠\uFE0F?\s*/, ""); }
+        out += '<div class="mh">' + ic + "<span>" + esc(txt) + "</span></div>";
+      } else if (/^- /.test(ln)) list.push(ln.slice(2));
+      else { flush(); if (ln.trim()) out += "<p>" + esc(ln) + "</p>"; }
+    });
+    flush(); return out;
+  }).join("");
   const MARKSRC = "/lab/dsc-demos/assets/logo-mark.png";
   const CHEV = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>';
 
@@ -944,7 +976,7 @@
       script(c, P, t0, (doc, at) => {
         const sc = doc.getElementById("sc"), dock = doc.getElementById("dock");
         const scroll = () => { sc.scrollTop = sc.scrollHeight; };
-        const tool = (code, label) => addIn(doc, sc, "ai-tool", '<span class="ai-spin"></span><span class="ai-check">✓</span><code>' + esc(code) + "</code><span>" + esc(label) + "</span>");
+        const tool = (code, label) => addIn(doc, sc, "ai-tool", ICON.spin + ICON.done + "<code>" + esc(code) + "</code><span>" + esc(label) + "</span>");
         typeIn(c, doc, dock, REAL.ask, at, 14);
         at(1150, () => { dock.innerHTML = '<span class="ai-ph">Message…</span>'; addIn(doc, sc, "ai-user", esc(REAL.ask)); scroll(); });
         let t1 = null;
@@ -961,54 +993,67 @@
         let r2 = null;
         at(4350, () => { r2 = addIn(doc, sc, "ai-reply", "Done, your request is in. Here are the details:"); scroll(); });
         DETAILS.forEach((line, i) => at(4550 + i * 110, () => { if (r2) { r2.insertAdjacentHTML("beforeend", "\n" + line); scroll(); } }));
-        /* the request leaves the athlete's phone for the owner's, and lands
-           a moment after the whip where the owner's card comes in */
-        at(d - t0 - 300, () => { if (r2) c.fly(onStage(c, P, r2), ownerTarget(c), 1000); });
+        /* the request lifts out of the reply as the owner app's card and
+           holds where it is; the owner's screen slides in under it */
+        at(d - t0 - 460, () => { if (r2) { const q = onStage(c, P, r2); c.lift({ x: q.x, y: q.y }, ownW(c)); } });
       });
       N.add(t0 + 1400, { trace: "my_trainer_availability", say: esc("It reads the gym's real schedule.") });
       N.add(t0 + 3850, { trace: "request_session", say: esc(SAY.onlyRequest.replace("An athlete's AI", "It")) });
       return 0;
     };
   } };
-  /* the owner's console: the request lands, one tap approves it */
-  const OWN = { cx: 0.29, cy: 0.53, h: 1.0, fy: 0.39 };
-  /* where the request box sits on the owner's phone as the shot opens:
-     under the status bar (50), the header (84) and the check-in box
-     (116), inside the bezel (11), the box as wide as the screen less its
-     margins (358) */
-  const ownerTarget = (c) => { const h = c.H * OWN.h, k = h / DH, top = c.H * OWN.cy - h / 2, w = 358 * k; return { x: c.W * OWN.cx - w / 2, y: top + 261 * k, w }; };
-  const ownerShot = { name: "The owner console", d: 2900, cut: "whip", ground: "paper dots", app: true, build(c, s) {
-    const d = this.d;
-    const P = phone(c, s, c.W * OWN.cx, c.H * OWN.cy, c.H * OWN.h, { body: UI.home });
-    const N = notesAt(c, s, c.W * 0.56, c.top, c.W * 0.4, "The owner console", d);
-    camera(c, P, d + 800, [
-      { t: 0, s: 1 },
-      { t: 0.45, s: 1.2, fx: 0.5, fy: OWN.fy, tx: c.W * OWN.cx, ty: c.H * 0.42, k: 0.7 },
-      { t: 1, s: 1.32, fx: 0.5, fy: OWN.fy, tx: c.W * OWN.cx, ty: c.H * 0.45, k: 0.9 },
-    ]);
+  /* the owner's console, lined up under the request the athlete's chat let
+     go of: the phone is placed so the app's own request card (44 by 301.7
+     device pixels into the phone, 324 wide, measured) lands exactly under
+     the lifted one; the camera holds while it does, then leans in on it */
+  const OWN = { h: 1.2 }, INNER = { x: 44, y: 301.7, w: 324, h: 102.7 };
+  const ownW = (c) => INNER.w * (c.H * OWN.h / DH);
+  const ownerShot = { name: "The owner console", d: 2900, cut: "whip", needsPrev: true, ground: "paper dots", app: true, build(c, s) {
+    const d = this.d, k = c.H * OWN.h / DH, h = DH * k, w = DW * k;
+    const card = c.card || { x: c.W * 0.56, y: c.H * 0.46, w: ownW(c) };
+    const left = card.x - INNER.x * k, top = card.y - INNER.y * k;
+    const P = phone(c, s, left + w / 2, top + h / 2, h, { body: UI.home });
+    const N = notesAt(c, s, c.pad, c.top, Math.max(c.W * 0.26, Math.min(c.W * 0.4, left - c.pad * 2)), "The owner console", d);
+    const fx = (INNER.x + INNER.w / 2) / DW, fy = (INNER.y + INNER.h / 2) / DH, tx = left + fx * w, ty = top + fy * h;
+    camera(c, P, d + 800, [{ t: 0, s: 1 }, { t: 0.32, s: 1, fx, fy, tx, ty, k: 1 }, { t: 1, s: 1.08, fx, fy, tx, ty, k: 1 }]);
     return (t0) => {
       N.head(t0);
       N.add(t0 + 300, { lab: "Booking requests", say: esc("The request lands as a card to approve.") });
-      script(c, P, t0, (doc, at) => {
-        const al = doc.getElementById("alerts");
-        let box = null;
-        at(360, () => { box = addIn(doc, al, "px-4 py-3 rounded-2xl bg-black/[0.05] border border-black/10 max-w-3xl mx-auto", UI.box); });
-        at(1300, () => {
+      script(c, P, 0, (doc, at) => {
+        /* the box is there as the screen arrives, so the card lands on it */
+        const al = doc.getElementById("alerts"), box = doc.createElement("div");
+        box.className = "px-4 py-3 rounded-2xl bg-black/[0.05] border border-black/10 max-w-3xl mx-auto"; box.innerHTML = UI.box; al.appendChild(box);
+        at(t0 + 320, () => { const cd = c.card; if (!cd) return; c.anim(cd.el, [{ opacity: 1 }, { opacity: 0 }], { duration: 220, fill: "forwards" }); c.T(240, () => { cd.el.remove(); if (c.card === cd) c.card = null; }); });
+        at(t0 + 1300, () => {
           const b = doc.getElementById("ok"); if (!b) return;
           const r = b.getBoundingClientRect(), t = doc.createElement("i"); t.className = "tap";
           t.style.left = r.left + r.width / 2 + "px"; t.style.top = r.top + r.height / 2 + "px"; doc.body.appendChild(t);
           b.classList.add("press");
           const q = onStage(c, P, b); c.focus = { x: q.x + q.w / 2, y: q.y + q.h / 2 };
         });
-        at(1480, () => { const b = doc.getElementById("ok"); if (b) b.classList.remove("press"); if (box) box.classList.add("gone"); });
-        at(1800, () => { if (box) box.remove(); });
+        at(t0 + 1480, () => { const b = doc.getElementById("ok"); if (b) b.classList.remove("press"); box.classList.add("gone"); });
+        at(t0 + 1800, () => box.remove());
       });
       N.add(t0 + 1550, { say: twoTone(REAL.approved[0], REAL.approved[1]) });
       return 0;
     };
   } };
+  /* a statement as large as the frame takes it, wrapped down, the phrase
+     that matters lit and the rest in grey (his note, 29 Sept: "make the
+     full statement really large and wrap down"), set on the frame's foot */
+  const sayShot = (text, hi, o) => Object.assign({ name: hi, ground: "ink", d: 2000, cut: "blink", build(c, s) {
+    const i = text.lastIndexOf(hi);
+    const T = c.el("div", "say-big abs", '<span class="g">' + esc(text.slice(0, i)) + "</span>" + esc(text.slice(i)));
+    T.style.cssText = `left:${c.pad}px;top:${c.top}px;width:${c.W - 2 * c.pad}px`;
+    s.appendChild(T);
+    const room = c.H - c.top - c.pad;
+    c.fit(T, 4, Math.max(18, c.W * 0.05), Math.min(c.W * 0.15, room / 4));
+    T.style.top = Math.round(c.H - c.pad - T.offsetHeight) + "px";
+    if (o && o.drift) { T.style.transformOrigin = "0 100%"; c.anim(T, [{ transform: "scale(1)" }, { transform: "scale(1.03)" }], { duration: (o.d || 2000) + 700, easing: "linear", fill: "forwards" }); }
+    return (t0) => c.wipe(T, { at: t0, kind: "ink", dur: 760 });
+  } }, o || {});
   /* the engine: every check, quickly, on black */
-  const checksShot = { name: "The checks", d: 1500, cut: "iris", ground: "ink", build(c, s) {
+  const checksShot = { name: "The checks", d: 1500, cut: "split", ground: "ink", build(c, s) {
     const K = kicker(c, s, c.pad, c.top, c.W * 0.5, "One engine");
     const k = checksAt(c, s, c.pad, c.top + K.h() + c.H * 0.06, Math.min(c.W * 0.62, 560), { size: "lg", gap: 115 });
     c.anim(k.box, [{ transform: "translateY(0px)" }, { transform: "translateY(" + (-c.H * 0.03).toFixed(1) + "px)" }], { duration: this.d + 800, easing: "linear", fill: "forwards" });
@@ -1032,7 +1077,19 @@
         const th = doc.getElementById("th"), inp = doc.getElementById("in"), send = doc.getElementById("send"), bn = doc.getElementById("bn");
         const scroll = () => { th.scrollTop = th.scrollHeight; };
         const user = (t) => { const row = addIn(doc, th, "flex justify-end"); const b = doc.createElement("div"); b.className = "max-w-[88%] px-3.5 py-2.5 text-[15px] leading-snug whitespace-pre-wrap bg-black text-white rounded-2xl rounded-tr-md"; b.textContent = t; row.appendChild(b); scroll(); };
-        const bot = (t) => { const row = addIn(doc, th, "flex justify-start"); const b = doc.createElement("div"); b.className = "max-w-[88%] px-3.5 py-2.5 text-[15px] leading-snug whitespace-pre-wrap bg-black/5 text-black rounded-2xl rounded-tl-md"; b.textContent = t; row.appendChild(b); scroll(); return row; };
+        const bot = (t) => {
+          th.querySelectorAll(".ai-tool:not(.done)").forEach((x) => x.classList.add("done"));
+          const calls = [], words = [];
+          t.split("\n\n").forEach((bk) => { const m = bk.match(/^_calling `([^`]+)`…_$/); if (m) calls.push(m[1]); else words.push(bk); });
+          let row = null;
+          if (words.length) {
+            row = addIn(doc, th, "flex justify-start");
+            const b = doc.createElement("div"); b.className = "max-w-[88%] px-3.5 py-2.5 text-[15px] leading-snug bg-black/5 text-black rounded-2xl rounded-tl-md md";
+            b.innerHTML = md(words.join("\n\n")); row.appendChild(b);
+          }
+          calls.forEach((name) => addIn(doc, th, "ai-tool", ICON.spin + ICON.done + "<code>" + esc(name) + "</code>"));
+          scroll(); return row;
+        };
         const press = (ms) => { at(ms, () => send.classList.add("press")); at(ms + 140, () => send.classList.remove("press")); };
         typeIn(c, doc, inp, REAL.batch, at, 11);
         press(1130);
@@ -1042,7 +1099,7 @@
         at(2150, () => bot(BATCH[1]));
         at(2700, () => bot(BATCH[2]));
         let ban = null;
-        at(3150, () => { ban = addIn(doc, bn, "px-4 py-2 border-b border-blue-200 bg-blue-50 flex items-center gap-2 shrink-0", '<span class="w-2 h-2 rounded-full bg-blue-500"></span><span class="dsc-label text-blue-900">13 pending · say “commit” to confirm</span>'); });
+        at(3150, () => { ban = addIn(doc, bn, "px-4 py-2 border-b border-black/10 bg-black/[0.05] flex items-center gap-2 shrink-0", '<span class="w-2 h-2 rounded-full bg-black"></span><span class="dsc-label text-black">13 pending · say “commit” to confirm</span>'); });
         typeIn(c, doc, inp, REAL.commit, (ms, f) => at(3450 + ms, f), 45);
         press(3760);
         at(3820, () => { inp.textContent = ""; user(REAL.commit); });
@@ -1118,9 +1175,11 @@
       right: [{ screen: "injuries", d: 2400, tag: "Injuries" }, { screen: "timeoffHome", d: 1400, tag: "Time off" }, { screen: "timeoffCal", d: 1600 }] }),
     /* the front door: a lead becomes an athlete and his mother signs the
        waiver; a family signs up, into the athlete app */
-    pairShot({ name: "The front door", d: 5600, cut: "flash", mirror: true, pics: ["app-landing", "dash-full", "trainers-list"],
-      left: [{ screen: "leads", d: 2900, tag: "Leads" }, { screen: "waiver", d: 2600, tag: "Waiver" }],
-      right: [{ screen: "signup", d: 2000, tag: "Sign-up" }, { img: "dash-full", d: 1700, tag: "The athlete app", scroll: [300] }, { img: "trainers-list", d: 1700, tag: "Trainers", scroll: [300] }] }),
+    /* a little slower than the floor (his note, 29 Sept: "not QUITE as
+       fast going through it") */
+    pairShot({ name: "The front door", d: 7300, cut: "flash", mirror: true, pics: ["app-landing", "dash-full", "trainers-list"],
+      left: [{ screen: "leads", d: 3600, tag: "Leads" }, { screen: "waiver", d: 3400, tag: "Waiver" }],
+      right: [{ screen: "signup", d: 2700, tag: "Sign-up" }, { img: "dash-full", d: 2200, tag: "The athlete app", scroll: [300] }, { img: "trainers-list", d: 2100, tag: "Trainers", scroll: [300] }] }),
   ];
   /* the second act alone, a bench (play.html?v=_act2), not in the row */
   V._act2 = { shots: [...ACT2, markShot({ d: 1400, cut: "band" })], loopCut: "burn", poster: 1 };
@@ -1133,7 +1192,7 @@
       aiShot,
       ownerShot,
       checksShot,
-      figShot("1 tap", SAY.approve, { d: 1250, cut: "blink", drift: true }),
+      sayShot(SAY.approve, "one tap.", { name: "1 tap", d: 2000, cut: "blink", drift: true }),
       mixHead("A week by chat", SAY.weekSay, { d: 1600, cut: "pinch" }),
       glideShot("phone-chat", { name: "The chat, in hand", d: 1000, cut: "mask", op: "40% 50%", glide: [[1.04, 0, 0], [1.14, -1.5, -1]] }),
       ownerChatShot,
@@ -1206,7 +1265,7 @@
     };
     /* go: the class that starts a thing's own transition, at a time */
     ctx.go = (node, at) => { if (!node) return; if (still) { node.classList.add("now"); return; } T(at, () => { void node.offsetWidth; node.classList.add("go"); }); };
-    ctx.tick = () => { const s = document.createElementNS("http://www.w3.org/2000/svg", "svg"); s.setAttribute("viewBox", "0 0 12 10"); s.setAttribute("class", "tk"); s.innerHTML = '<path d="M1 5.2 4.4 8.4 11 1.4"/>'; return s; };
+    ctx.tick = () => { const s = document.createElementNS("http://www.w3.org/2000/svg", "svg"); s.setAttribute("viewBox", "0 0 12 12"); s.setAttribute("class", "tk"); s.innerHTML = '<rect class="sq" width="12" height="12"/><path class="ch" d="M3.1 6.3 5.2 8.4 9 4.3"/>'; return s; };
     ctx.pic = (name, box, o) => {
       o = o || {};
       const [x, y, w, h] = box;
@@ -1311,18 +1370,19 @@
     const seq = () => (V[ver] ? V[ver].shots : []);
     /* the request crossing a cut: a card of the app's own look, from where
        it was said to where it lands */
-    ctx.fly = (from, to, dur) => {
-      if (still || !ovl || !from || !to) return;
-      const cd = el("div", "flyc", '<b>Marcus Chen</b> <span class="g">wants</span> <b>Scott</b><span class="lab">' + esc(REAL.when) + " · via AI</span>");
+    /* the request lifted out of the athlete's chat as the owner app's own
+       card, where it was said; it holds there while the owner's screen
+       slides in under it (his note, 29 Sept: "can the message stay exactly
+       where it is and the next screen slide 'under' it"), and the next shot
+       lines its box up beneath and lets the card go */
+    ctx.lift = (from, w) => {
+      if (still || !ovl || !from) return null;
+      const cd = el("div", "flyc", '<div class="n">' + esc(REAL.who[0]) + ' <span class="g">' + esc(REAL.who[1]) + "</span> " + esc(REAL.who[2]) + '</div><div class="wh">Mon, Jun 15 · 8:00 AM · 60min<span class="v">via AI</span></div>');
       ovl.appendChild(cd);
-      const k0 = from.w / 240, k1 = to.w / 240;
-      anim(cd, [
-        { transform: `translate(${from.x}px, ${from.y}px) scale(${k0})`, opacity: 0, easing: "cubic-bezier(0.16, 1, 0.3, 1)" },
-        { transform: `translate(${from.x}px, ${from.y - 10}px) scale(${k0 * 1.04})`, opacity: 1, offset: 0.18, easing: "cubic-bezier(0.7, 0, 0.15, 1)" },
-        { transform: `translate(${to.x}px, ${to.y}px) scale(${k1})`, opacity: 1, offset: 0.92 },
-        { transform: `translate(${to.x}px, ${to.y}px) scale(${k1})`, opacity: 0 },
-      ], { duration: dur || 1000, fill: "forwards" });
-      T((dur || 1000) + 60, () => cd.remove());
+      const k = w / 324, x = Math.min(from.x, ctx.W - ctx.pad - w), y = from.y;
+      anim(cd, [{ opacity: 0, transform: `translate(${x}px, ${y + 8}px) scale(${k * 0.97})` }, { opacity: 1, transform: `translate(${x}px, ${y}px) scale(${k})` }], { duration: 300, easing: "cubic-bezier(0.16, 1, 0.3, 1)", fill: "forwards" });
+      ctx.card = { el: cd, x, y, w };
+      return ctx.card;
     };
     /* ── the cuts. The room's own three (the mask, the band, the blink),
        and Faux Reel's (SizzleReel.tsx, as the dsc-sizzle film ports them):
@@ -1349,17 +1409,27 @@
           return 60;
         }
         case "whip": {
-          put(); const d = 620, dir = S.dir || 1;
-          anim(prev, [{ transform: "translateX(0%)", filter: "blur(0px)" }, { transform: `translateX(${-50 * dir}%)`, filter: "blur(12px)", offset: 0.5 }, { transform: `translateX(${-100 * dir}%)`, filter: "blur(0px)" }], { duration: d, easing: RE, fill: "forwards" });
-          anim(node, [{ transform: `translateX(${100 * dir}%)`, filter: "blur(0px)" }, { transform: `translateX(${50 * dir}%)`, filter: "blur(12px)", offset: 0.5 }, { transform: "translateX(0%)", filter: "blur(0px)" }], { duration: d, easing: RE });
+          /* a slide, sharp all the way, an ink rule on the new shot's
+             leading edge (his note, 29 Sept: the blurs don't suit the site) */
+          put(); const d = 640, dir = S.dir || 1;
+          anim(prev, [{ transform: "translateX(0%)" }, { transform: `translateX(${-100 * dir}%)` }], { duration: d, easing: RE, fill: "forwards" });
+          anim(node, [{ transform: `translateX(${100 * dir}%)` }, { transform: "translateX(0%)" }], { duration: d, easing: RE });
+          const seam = el("i", "seam" + (dir < 0 ? " r" : "")); node.appendChild(seam); T(d + 20, () => seam.remove());
           drop(d + 30);
           return 330;
         }
-        case "iris": {
-          put(); const R = Math.hypot(Math.max(at.x, ctx.W - at.x), Math.max(at.y, ctx.H - at.y)) + 4;
-          anim(node, [{ clipPath: `circle(0px at ${at.x}px ${at.y}px)` }, { clipPath: `circle(${R}px at ${at.x}px ${at.y}px)` }], { duration: 720, easing: RE });
-          drop(740);
-          return 280;
+        case "split": {
+          /* from the last thing touched, in straight lines (his note, 29
+             Sept: the circle "feels out of place"): a rule drawn across the
+             frame at the tap, then the new shot opening from it */
+          put(); const y = Math.round(Math.max(0, Math.min(ctx.H - 2, at.y))), b = ctx.H - y - 2;
+          anim(node, [
+            { clipPath: `inset(${y}px ${ctx.W}px ${b}px 0px)`, easing: "cubic-bezier(0.45, 0, 0.2, 1)" },
+            { clipPath: `inset(${y}px 0px ${b}px 0px)`, offset: 0.4, easing: RE },
+            { clipPath: "inset(0px 0px 0px 0px)" },
+          ], { duration: 860 });
+          drop(880);
+          return 400;
         }
         case "flash": {
           put(true); const f = over("flash");
@@ -1402,7 +1472,7 @@
         }
         case "burn": {
           put(); const w = over("burnw");
-          anim(node, [{ opacity: 0, filter: "brightness(1.5) saturate(2.2) contrast(1.4) blur(4px)", transform: "scale(1.02)" }, { opacity: 1, filter: "brightness(1.35) saturate(2) contrast(1.3) blur(3px)", transform: "scale(1.015)", offset: 0.22 }, { opacity: 1, filter: "brightness(1) saturate(1) contrast(1) blur(0px)", transform: "scale(1)" }], { duration: 820, easing: "ease-out" });
+          anim(node, [{ opacity: 0, filter: "brightness(1.5) saturate(2.2) contrast(1.4)", transform: "scale(1.02)" }, { opacity: 1, filter: "brightness(1.35) saturate(2) contrast(1.3)", transform: "scale(1.015)", offset: 0.22 }, { opacity: 1, filter: "brightness(1) saturate(1) contrast(1)", transform: "scale(1)" }], { duration: 820, easing: "ease-out" });
           anim(w, [{ opacity: 0 }, { opacity: 0.95, offset: 0.16 }, { opacity: 0.3, offset: 0.4 }, { opacity: 0 }], { duration: 820 });
           drop(210); T(840, () => w.remove());
           return 200;
@@ -1452,7 +1522,7 @@
     /* a clean stage: the shots, the caption tab, the overlay the request
        flies across */
     const restage = () => {
-      halt(); cur = null; curS = null; idx = -1;
+      halt(); cur = null; curS = null; idx = -1; ctx.card = null;
       stage.replaceChildren();
       tab = null;
       shots = el("div", "shots"); stage.appendChild(shots);
@@ -1506,7 +1576,7 @@
       t = Math.max(0, Math.min(total - 1, t));
       let n = 0; while (n + 1 < starts.length && starts[n + 1] <= t) n++;
       if (curS && t >= vnow && n <= idx + 1) { await advanceTo(t); return; }
-      const from = n > 0 && t - starts[n] < 1500 ? n - 1 : n;
+      const from = n > 0 && (t - starts[n] < 1500 || seq()[n].needsPrev) ? n - 1 : n;
       restage(); vnow = starts[from]; playing = true;
       show(from, "none");
       await advanceTo(t);
