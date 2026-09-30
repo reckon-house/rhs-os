@@ -52,7 +52,7 @@
    a row of the versions sits under it, as the looks rows did, until he
    picks one. */
 (() => {
-  const BASE = "/lab/dsc-sizzle/", IMG = BASE + "img/", VQ = "?v=18";
+  const BASE = "/lab/dsc-sizzle/", IMG = BASE + "img/", VQ = "?v=19";
   const VERSIONS = [
     { id: "mix", name: "Mix", weight: "the app in use" },
     { id: "caption", name: "Caption", weight: "light" },
@@ -851,6 +851,38 @@
       t += sec.d;
     });
   });
+  /* how a pair names its sections (his notes, 29 Sept): "small" unless
+     asked, "list", or "large", the spines he tried first. ?labels= picks
+     one, and the review page switches them */
+  const LABEL_KINDS = ["small", "list", "large"];
+  let LABELS = (() => { const k = (new URLSearchParams(location.search).get("labels") || "").toLowerCase(); return LABEL_KINDS.includes(k) ? k : "small"; })();
+  /* the names small (his note on the spines, 29 Sept: "eh, this didnt
+     workout like i thought, the sideways type ... maybe it's small
+     sideways type that feels like a simple label?"): the reel's label on
+     its side, on the reel's margin, or nearer the phone where the margin
+     is narrow; the right reads down from the head, the left, turned, up
+     from the foot. As a list, every section the phone will show is set,
+     the one on screen in ink and the rest grey. A change is crossed by a
+     small band of ink running along the name */
+  const labelAt = (c, s, right, names, list, edge) => {
+    const g = c.el("div", "plab lab" + (right ? " r" : ""));
+    const items = (list ? names : [names[0] || ""]).map((n) => { const it = c.el("span", "pl-i" + (list ? " g" : "")); it.textContent = n; g.appendChild(it); return it; });
+    g.style.visibility = "hidden"; s.appendChild(g);
+    const x = Math.max(3, Math.min(c.pad, edge - g.offsetWidth * 1.8));
+    g.style[right ? "right" : "left"] = x.toFixed(1) + "px";
+    g.style[right ? "top" : "bottom"] = c.pad + "px";
+    let on = -1;
+    return (text, at) => c.T(Math.max(0, at), () => {
+      const k = list ? Math.max(0, names.indexOf(text)) : 0, it = items[k], first = g.style.visibility === "hidden";
+      if (!list && first) it.textContent = text;
+      const b = c.el("i", "bd go"); b.style.visibility = "visible"; (first && list ? g : it).appendChild(b);
+      c.T(330, () => {
+        if (list) { if (on >= 0) items[on].classList.add("g"); it.classList.remove("g"); on = k; } else it.textContent = text;
+        g.style.visibility = "";
+      });
+      c.T(720, () => b.remove());
+    });
+  };
   /* a pair's section names set large up the frame's edges, as spines (his
      note, 29 Sept: "more graphic? maybe they're running up the sides and
      large?"): the left reads up from the foot, the right down from the
@@ -887,10 +919,17 @@
     const R = phone(c, s, c.W * 0.715, c.H * (m ? 0.6 : 0.42), h, { pages: right });
     const drift = (P, a, b) => c.anim(P.cam, [{ transform: "translateY(" + (a * c.H).toFixed(1) + "px) scale(1)" }, { transform: "translateY(" + (b * c.H).toFixed(1) + "px) scale(1.035)" }], { duration: d + 900, easing: "linear", fill: "forwards" });
     if (m) { drift(L, -0.02, 0.05); drift(R, 0.03, -0.05); } else { drift(L, 0.03, -0.05); drift(R, -0.02, 0.05); }
-    /* the names run up the margins beside the phones */
-    const margin = c.W * 0.285 - (DW * h / DH) / 2, names = [...left, ...right].map((x) => x.tag).filter(Boolean);
-    const fs = spineSize(c, s, names, margin);
-    const tl = spineAt(c, s, false, fs, margin), tr = spineAt(c, s, true, fs, margin);
+    /* the names run up the margins beside the phones, as LABELS says */
+    const w = DW * h / DH, margin = c.W * 0.285 - w / 2, names = (list) => list.map((x) => x.tag).filter(Boolean);
+    let tl, tr;
+    if (LABELS === "large") {
+      const fs = spineSize(c, s, [...names(left), ...names(right)], margin);
+      tl = spineAt(c, s, false, fs, margin); tr = spineAt(c, s, true, fs, margin);
+    } else {
+      /* the phone's outer edge where its drift leaves it, a little larger */
+      const edge = c.W * 0.285 - (w / 2) * 1.035;
+      tl = labelAt(c, s, false, names(left), LABELS === "list", edge); tr = labelAt(c, s, true, names(right), LABELS === "list", edge);
+    }
     return (t0) => { sections(c, L, t0, left, tl); sections(c, R, t0 + (o.lag || 260), right, tr); return 0; };
   } });
 
@@ -1710,6 +1749,8 @@
         play() { if (running || dead) return; running = true; lastReal = performance.now(); nextFrame(frame); emit(); },
         pause() { running = false; emit(); },
         seek: (t) => requestSeek(t),
+        /* the moment on screen built again, after a switch (the labels) */
+        rebuild: () => { curS = null; return requestSeek(vnow); },
         rate(r) { rate = r; emit(); },
         onTick(cb) { tickers.add(cb); return () => tickers.delete(cb); },
         idle: () => lock,
@@ -1758,5 +1799,5 @@
     return () => { p.destroy(); if (r) r.remove(); };
   };
 
-  window.DSCSizzle = { mount, set, versions: VERSIONS, current };
+  window.DSCSizzle = { mount, set, versions: VERSIONS, current, labels: (k) => { if (LABEL_KINDS.includes(k)) LABELS = k; return LABELS; } };
 })();

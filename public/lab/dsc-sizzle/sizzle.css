@@ -271,6 +271,16 @@
 /* the checks as a plain list (his note, 29 Sept: "maybe we just do bullets") */
 .checks .blt { display: inline-block; width: 1.05em; }
 
+/* a pair's section names, small (his note, 29 Sept: "small sideways type
+   that feels like a simple label"): the reel's label on its side, the
+   right reading down, the left turned to read up; as a list, the names
+   not on screen are grey */
+.plab { position: absolute; z-index: 6; writing-mode: vertical-rl; white-space: nowrap; color: var(--ink); }
+.plab:not(.r) { transform: rotate(180deg); }
+.plab .pl-i { position: relative; display: inline-block; }
+.plab .pl-i + .pl-i { margin-inline-start: 2.4em; }
+.plab .bd { position: absolute; inset: 0; z-index: 2; background: var(--ink); clip-path: inset(0 0 100% 0); }
+.plab .bd.go { animation: szlwipev 0.7s linear both; }
 /* a pair's section names, large up the frame's edges (his note, 29 Sept):
    the right reads down from the head, the left, turned, up from the foot */
 .spine { position: absolute; z-index: 6; writing-mode: vertical-rl; color: var(--ink); line-height: 0.92; white-space: nowrap; }
