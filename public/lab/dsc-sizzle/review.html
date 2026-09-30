@@ -76,7 +76,7 @@
   <span id="where"></span>
   <span class="sp"></span>
   <span class="grp"><span class="lab">Speed</span><button type="button" data-rate="1" class="on">1×</button><button type="button" data-rate="0.5">½×</button><button type="button" data-rate="0.25">¼×</button></span>
-  <span class="grp"><span class="lab">Labels</span><button type="button" data-labels="small">Small</button><button type="button" data-labels="list">List</button><button type="button" data-labels="large">Large</button></span>
+  <span class="grp"><span class="lab">Labels</span><button type="button" data-labels="list">List</button><button type="button" data-labels="small">Small</button><button type="button" data-labels="large">Large</button></span>
   <span class="grp"><span class="lab">Size</span><button type="button" data-w="358">Phone</button><button type="button" data-w="717">Room</button><button type="button" data-w="1100">Large</button></span>
 </div>
 <div id="tl" class="tl" aria-label="Timeline"></div>
@@ -162,13 +162,13 @@
     R.rate(+b.dataset.rate); document.querySelectorAll("[data-rate]").forEach((x) => x.classList.toggle("on", x === b));
   }));
   document.querySelectorAll("[data-w]").forEach((b) => b.addEventListener("click", () => setSize(+b.dataset.w)));
-  /* the pairs' labels (his notes, 29 Sept): small, as a list, or large;
-     the moment on screen is built again with the other kind */
+  /* the pairs' labels (his notes, 29 Sept): a list (his pick), small, or
+     large; the moment on screen is built again with the other kind */
   const showLabels = () => { const k = DSCSizzle.labels(); document.querySelectorAll("[data-labels]").forEach((b) => b.classList.toggle("on", b.dataset.labels === k)); return k; };
   showLabels();
   document.querySelectorAll("[data-labels]").forEach((b) => b.addEventListener("click", () => {
     DSCSizzle.labels(b.dataset.labels); const k = showLabels();
-    const u = new URL(location.href); if (k === "small") u.searchParams.delete("labels"); else u.searchParams.set("labels", k);
+    const u = new URL(location.href); if (k === DSCSizzle.labelsDefault) u.searchParams.delete("labels"); else u.searchParams.set("labels", k);
     history.replaceState(null, "", u); R.rebuild();
   }));
   addEventListener("resize", () => setSize(W));
@@ -226,7 +226,7 @@
   $("add").addEventListener("click", addNote);
   $("nt").addEventListener("keydown", (e) => { if (e.key === "Enter") { e.preventDefault(); addNote(); } });
 
-  const link = (t) => location.origin + "/lab/dsc-sizzle/review.html?v=" + encodeURIComponent(V) + (DSCSizzle.labels() !== "small" ? "&labels=" + DSCSizzle.labels() : "") + (t != null ? "&t=" + (t / 1000).toFixed(2) : "");
+  const link = (t) => location.origin + "/lab/dsc-sizzle/review.html?v=" + encodeURIComponent(V) + (DSCSizzle.labels() !== DSCSizzle.labelsDefault ? "&labels=" + DSCSizzle.labels() : "") + (t != null ? "&t=" + (t / 1000).toFixed(2) : "");
   const flash = (m) => { $("msg").textContent = m; clearTimeout(flash.t); flash.t = setTimeout(() => ($("msg").textContent = ""), 2600); };
   const copy = (text, done) => navigator.clipboard.writeText(text).then(() => flash(done), () => flash("Copy failed: select and copy by hand"));
   $("copy").addEventListener("click", () => {

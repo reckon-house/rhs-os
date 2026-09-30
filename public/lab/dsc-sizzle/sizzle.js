@@ -52,7 +52,7 @@
    a row of the versions sits under it, as the looks rows did, until he
    picks one. */
 (() => {
-  const BASE = "/lab/dsc-sizzle/", IMG = BASE + "img/", VQ = "?v=19";
+  const BASE = "/lab/dsc-sizzle/", IMG = BASE + "img/", VQ = "?v=20";
   const VERSIONS = [
     { id: "mix", name: "Mix", weight: "the app in use" },
     { id: "caption", name: "Caption", weight: "light" },
@@ -851,11 +851,12 @@
       t += sec.d;
     });
   });
-  /* how a pair names its sections (his notes, 29 Sept): "small" unless
-     asked, "list", or "large", the spines he tried first. ?labels= picks
-     one, and the review page switches them */
-  const LABEL_KINDS = ["small", "list", "large"];
-  let LABELS = (() => { const k = (new URLSearchParams(location.search).get("labels") || "").toLowerCase(); return LABEL_KINDS.includes(k) ? k : "small"; })();
+  /* how a pair names its sections (his notes, 29 Sept): "list" unless
+     asked (his pick: "list is a cool idea - let's use it"), "small", or
+     "large", the spines he tried first. ?labels= picks one, and the
+     review page switches them */
+  const LABEL_KINDS = ["list", "small", "large"], LABEL_DEFAULT = "list";
+  let LABELS = (() => { const k = (new URLSearchParams(location.search).get("labels") || "").toLowerCase(); return LABEL_KINDS.includes(k) ? k : LABEL_DEFAULT; })();
   /* the names small (his note on the spines, 29 Sept: "eh, this didnt
      workout like i thought, the sideways type ... maybe it's small
      sideways type that feels like a simple label?"): the reel's label on
@@ -1799,5 +1800,5 @@
     return () => { p.destroy(); if (r) r.remove(); };
   };
 
-  window.DSCSizzle = { mount, set, versions: VERSIONS, current, labels: (k) => { if (LABEL_KINDS.includes(k)) LABELS = k; return LABELS; } };
+  window.DSCSizzle = { mount, set, versions: VERSIONS, current, labels: (k) => { if (LABEL_KINDS.includes(k)) LABELS = k; return LABELS; }, labelsDefault: LABEL_DEFAULT };
 })();
