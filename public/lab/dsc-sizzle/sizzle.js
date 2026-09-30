@@ -1204,10 +1204,11 @@
      and its links, then into Groups, where a roster's next eight weeks go
      on the calendar in one tap. Beside it, each part named as the page
      reaches it (every other one in a narrow frame) */
-  const TOUR = [[150, "Lead follow-ups"], [330, "Time off requests"], [510, "Class requests"], [1080, "Who hasn't been in"], [1680, "Attendance not taken"], [1900, "New registrations"], [3400, "Groups"]];
-  const tourShot = { name: "The owner's home", d: 4900, cut: "shutter", ground: "paper dots", app: true, scr: true, build(c, s) {
-    const d = this.d, O = screenOf({ screen: "owner" }), G = screenOf({ screen: "groups" });
-    const P = phone(c, s, c.W * 0.29, c.H * 0.55, c.H * 1.04, { pages: [O, G] });
+  /* the tour's notes; Money and Who owes since his yes, 29 Sept */
+  const TOUR = [[150, "Lead follow-ups"], [330, "Time off requests"], [510, "Class requests"], [1080, "Who hasn't been in"], [1680, "Attendance not taken"], [1900, "New registrations"], [3400, "Money"], [5260, "Who owes"], [5820, "Groups"]];
+  const tourShot = { name: "The owner's home", d: 7300, cut: "shutter", ground: "paper dots", app: true, scr: true, build(c, s) {
+    const d = this.d, O = screenOf({ screen: "owner" }), M = screenOf({ screen: "money" }), G = screenOf({ screen: "groups" });
+    const P = phone(c, s, c.W * 0.29, c.H * 0.55, c.H * 1.04, { pages: [O, M, G] });
     const N = notesAt(c, s, c.W * 0.56, c.top, c.W * 0.4, "The owner console", d);
     camera(c, P, d + 700, [
       { t: 0, s: 1.02 },
@@ -1219,7 +1220,9 @@
       script(c, P, t0, (doc, at) => {
         O.run(doc, at, c);
         at(3300, () => flip(c, doc, 1));
-        G.run(doc, (ms, f) => at(3620 + ms, f), c);
+        M.run(doc, (ms, f) => at(3620 + ms, f), c);
+        at(5720, () => flip(c, doc, 2));
+        G.run(doc, (ms, f) => at(6040 + ms, f), c);
       });
       TOUR.forEach(([ms, lab], i) => { if (!few || i % 2 === 0) N.add(t0 + ms, { lab }); });
       return 0;

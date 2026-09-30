@@ -13,8 +13,8 @@
 
    The people are the project's own seed athletes (prisma/seed.ts), the
    parents and the lead's details fictional (555 numbers, @email.com),
-   the trainers by first name as the study names them; no money, no real
-   registrant. The second act is one day, Tuesday 23 June, the week after
+   the trainers by first name as the study names them; every amount of
+   money masked, no real registrant. The second act is one day, Tuesday 23 June, the week after
    the first act's booking, so the screens agree with each other: Priya's
    ankle is on the coach's roster, in the PT's thread and on Zeke's time
    off; Marcus checks in for the Tuesday 4pm slot the first act set;
@@ -442,9 +442,8 @@ ${BOX("oh-newreg", "bg-black/[0.05] border border-black/10", "bg-black", ["New r
 </div></div>`,
     /* the stops down the page, each with the time the page arrives there:
        the requests, who hasn't been in and what is owed, the launcher,
-       the links; then Groups is tapped. The shot reads the same list to
-       keep its notes in step */
-    stops: [["oh-booking", 1050], ["oh-owed", 1650], ["oh-cards", 2250], ["oh-link-injuries", 2800]],
+       the links from Money down; then Money is tapped */
+    stops: [["oh-booking", 1050], ["oh-owed", 1650], ["oh-cards", 2250], ["oh-link-money", 2800]],
     run(doc, at, c) {
       const oh = $(doc, "oh"), max = Math.max(0, oh.offsetHeight - 750);
       let prev = 0;
@@ -452,7 +451,67 @@ ${BOX("oh-newreg", "bg-black/[0.05] border border-black/10", "bg-black", ["New r
         const y = Math.min(max, Math.max(0, depth(oh, $(doc, id)) - 24)), from = prev; prev = y;
         at(ms - 480, () => glide(c, oh, from, y, 480));
       });
-      at(3100, () => tap(doc, $(doc, "oh-link-groups"), c));
+      at(3100, () => tap(doc, $(doc, "oh-link-money"), c));
+    },
+  };
+
+  /* ── Money, owners only ─────────────────────────────────────────────
+     His answer, 29 Sept: "we can add the money screen yes", with every
+     amount masked, as asked of him: this is a real gym's business, so
+     no figure is shown, real or made up, and every one has the same
+     mask so none hints at its size. src/app/admin/money/page.tsx 47-66
+     (root, tabs), 95-104 (This week runs from Monday), 106-114 (a tile),
+     135-207 (the range, the four tiles, the note), 209-271 (the three
+     breakdowns), 320-379 (Who owes); AdminHeader.tsx 11-30. What it is,
+     from lib/money.ts: a ledger, paid outside the app and recorded here;
+     Earned is visits at today's prices, Collected what was recorded, Not
+     confirmed the visits in sessions nobody took attendance for. The
+     week is the one the act lives in, Monday and Tuesday, so its counts
+     agree with the other screens: the calendar's 12 and 10 sessions are
+     its 22, the two sessions the owner home says had no attendance taken
+     (the Basketball group's six, Dante's one) are its seven unconfirmed
+     visits, and the coaches are the calendar's. The app's own "avg 1
+     athletes" is kept. The balance the app sets in
+     red is black, as every colour in this act is. Changed: the page
+     scrolls under its header in a box of its own; the date inputs can't
+     take focus. */
+  const MASK = "$&nbsp;••,•••";
+  const STAT = (label, value, sub) => `<div class="rounded-2xl bg-black/[0.04] p-4"><div class="dsc-label text-black/50">${label}</div><div class="dsc-headline text-2xl text-black mt-1">${value}</div>${sub ? `<div class="text-xs text-black/50 mt-0.5">${sub}</div>` : ""}</div>`;
+  const LINE = (name, sub, per) => `<div class="rounded-2xl bg-black/[0.04] px-4 py-3 flex items-center justify-between gap-3"><div class="min-w-0"><div class="font-semibold text-black truncate">${name}</div><div class="text-xs text-black/50 truncate">${sub}</div></div><div class="text-right shrink-0"><div class="font-semibold text-black">${MASK}</div><div class="text-xs text-black/50">${MASK}${per}</div></div></div>`;
+  const SECT = (id, title, rows) => `<div id="${id}"><div class="dsc-label text-black/50 mb-2">${title}</div><div class="space-y-1.5">${rows}</div></div>`;
+  const TOGGLE = (on) => "rounded-full text-sm " + (on ? "bg-black text-white" : "bg-black/5 text-black/70");
+  const OWES = (name, sub, owed) => `<div class="rounded-2xl bg-black/[0.04] px-4 py-3 flex items-center justify-between gap-3"><span class="min-w-0"><div class="font-semibold text-black truncate">${name}</div><div class="text-xs text-black/50 truncate">${sub}</div></span><div class="flex items-center gap-3 shrink-0">${owed ? `<span class="font-semibold text-black">${MASK}</span>` : ""}<button class="h-9 px-3 rounded-full bg-black text-white text-xs font-semibold">Record payment</button></div></div>`;
+  S.money = {
+    html: `<div style="height:750px;overflow:hidden;background:#fff"><div class="bg-white">
+<header class="sticky top-0 z-10 bg-white/95 backdrop-blur px-4 py-3 flex items-center gap-3 border-b border-black/10"><span class="w-9 h-9 flex items-center justify-center rounded-full hover:bg-black/5 text-black/70" aria-label="Back to home">${CHEV}</span><div class="dsc-headline text-lg md:text-xl text-black">Money</div></header>
+<div style="height:689px;overflow:hidden"><div id="mbody" class="max-w-3xl mx-auto w-full px-4 py-4 space-y-4">
+<div class="flex gap-1.5"><button id="tab-revenue" class="h-10 px-4 font-semibold ${TOGGLE(true)}">Revenue</button><button id="tab-owed" class="h-10 px-4 font-semibold ${TOGGLE(false)}">Who owes</button><button class="h-10 px-4 font-semibold ${TOGGLE(false)}">Prices</button></div>
+<div id="rev" class="space-y-4">
+<div class="flex flex-wrap gap-1.5 items-center"><button class="h-9 px-3 ${TOGGLE(true)}">This week</button><button class="h-9 px-3 ${TOGGLE(false)}">This month</button><button class="h-9 px-3 ${TOGGLE(false)}">Last month</button><input type="date" tabindex="-1" value="2026-06-22" class="h-9 px-2 bg-black/5 rounded-full text-sm" aria-label="From"><input type="date" tabindex="-1" value="2026-06-23" class="h-9 px-2 bg-black/5 rounded-full text-sm" aria-label="To"></div>
+<div class="grid grid-cols-2 gap-2">${STAT("Earned", MASK, "46 visits") + STAT("Collected", MASK, "Payments recorded") + STAT("Per coach hour", MASK, "22 h coached") + STAT("Not confirmed", MASK, "7 visits with no attendance taken")}</div>
+<p class="text-xs text-black/50">Earned = athletes who came × today’s prices. Monthly members’ visits are valued at the session rate.</p>
+${SECT("m-type", "By class type", LINE("Private", "12 sessions · 12 visits · 12 h", "/h") + LINE("Semi-private", "5 sessions · 12 visits · 5 h", "/h") + LINE("Group", "5 sessions · 22 visits · 5 h", "/h"))}
+${SECT("m-coach", "By coach", LINE("Scott", "8 sessions · 8 h", "/h") + LINE("Brenden", "5 sessions · 5 h", "/h") + LINE("Justin", "4 sessions · 4 h", "/h") + LINE("Zeke", "3 sessions · 3 h", "/h") + LINE("Sara", "2 sessions · 2 h", "/h"))}
+${SECT("m-class", "By class", LINE("Group · 60 min", "5 sessions · avg 4.4 athletes", "/session") + LINE("Semi-private · 60 min", "5 sessions · avg 2.4 athletes", "/session") + LINE("Private · 60 min", "12 sessions · avg 1 athletes", "/session"))}
+</div>
+<div id="owed" class="space-y-3 hidden">
+<div class="grid grid-cols-2 gap-2">${STAT("Behind", "2", "families to follow up") + STAT("Owed (per session)", MASK, "since 2026-06-01")}</div>
+<div class="flex items-center justify-between"><div class="dsc-label text-black/50">Behind</div><button class="dsc-label text-black/50 hover:text-black">Show everyone</button></div>
+<div class="space-y-1.5">${OWES("Marcus Chen", "3 visits · paid " + MASK, true) + OWES("Derek Thompson", "Monthly · no payment recorded", false)}</div>
+</div>
+</div></div></div></div>`,
+    /* the week's breakdown and back, then Who owes */
+    run(doc, at, c) {
+      const b = $(doc, "mbody"), y = Math.max(0, depth(b, $(doc, "m-coach")) - 20);
+      at(180, () => glide(c, b, 0, y, 640));
+      at(1000, () => glide(c, b, y, 0, 420));
+      at(1480, () => tap(doc, $(doc, "tab-owed"), c));
+      at(1620, () => {
+        swap($(doc, "tab-revenue"), "bg-black text-white", "bg-black/5 text-black/70");
+        swap($(doc, "tab-owed"), "bg-black/5 text-black/70", "bg-black text-white");
+        $(doc, "rev").classList.add("hidden");
+        const o = $(doc, "owed"); o.classList.remove("hidden"); reveal(o);
+      });
     },
   };
   /* Groups: a named roster with a standing time; Materialize puts the
