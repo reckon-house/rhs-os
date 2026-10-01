@@ -581,7 +581,7 @@
 
   /* the shoutouts: each verb once, its names after it, as a line (the
      default) or a band */
-  const PRESS_HOW = { posted: "Posted by", wrote: "Written about by" };
+  const PRESS_HOW = { posted: "Posted by", wrote: "Written about by", spotted: "Spotted by" };
   const PRESS_MODE = () => { const m = (new URLSearchParams(location.search).get("press") || "").toLowerCase(); return m === "band" || m === "ticker" ? m : "note"; };
   const pressGroups = (list) => {
     const gs = [];
