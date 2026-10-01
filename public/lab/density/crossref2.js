@@ -975,6 +975,10 @@
     const cols = IX === "d" && IDX.querySelector(".dcols");
     if (cols) cols.insertBefore(top, cols.firstChild);
     wireTextures(); wireGrid();
+    /* the index scrolls as the rooms do (30 Sept, his "let's just make
+       anything in the content column scroll the same as the case
+       studies"); on a phone the page itself scrolls, so it keeps that */
+    if (!phone()) heavy(IDX);
   };
   const setIndex = (x) => {
     if (x === IX || !IXS.includes(x)) return;
@@ -2359,10 +2363,11 @@
      Where it stands is kept across the hovers that rebuild it ── */
   /* ── the content side's weight (30 Sept 2026, his "do all sections on
      the content side have the lenis scroll? the categories feel like they
-     dont quite scroll as 'heavy' as the case studies"). Only the rooms
-     had it (study-panel.js, the live site's settings); the shelves and
-     the home take the same now, the numbers copied from there, not
-     re-derived. naiveDimensions reads the box's height live, so a shelf
+     dont quite scroll as 'heavy' as the case studies", then "let's just
+     make anything in the content column scroll the same"). Only the rooms
+     had it (study-panel.js, the live site's settings); the shelves, the
+     home and the index take the same now, the numbers copied from there,
+     not re-derived. naiveDimensions reads the box's height live, so a shelf
      still loading its pictures scrolls to its true end; a box that has
      left the page takes its Lenis with it ── */
   const heavy = (box) => {
