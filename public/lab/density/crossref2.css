@@ -979,8 +979,8 @@ html[data-ix="e"] #idx .e .dk { font-size: 12px; font-weight: 400; line-height: 
    them", and his ask: "what would a version on the TOC/index look like
    with cards? ... if it would make the TOC look a little more modern yet
    still keep that dense busy look". E's sections and order, unchanged;
-   each section is a warm card with no border and no shadow, the cards
-   packed ten pixels apart so the page stays busy, the pictures rounded
+   each section is a warm card with no border, no shadow and no rules
+   inside, at the site's 4px corner, the cards packed ten pixels apart so the page stays busy, the pictures rounded
    inside them. What the mark lights lifts onto white, as a chip sits in
    one of those cards, with no node, since there are no rules for one to
    sit on. The cell grid stays out of the cards unless ?grid=on.
@@ -992,29 +992,33 @@ html[data-cards="on"][data-ix="e"] .ecol { gap: 10px; }
 html[data-cards="on"][data-ix="e"] .ecol > .c-feat + .c-feat,
 html[data-cards="on"][data-ix="e"] .ecol:nth-child(3) > .c-feat:first-child,
 html[data-cards="on"][data-ix="e"] .ecol:nth-child(4) > .c-feat:first-child { margin-top: 0; }
-html[data-cards="on"][data-ix="e"] .grp.ec { padding: 15px 15px 13px; border-radius: 18px; background: var(--card); }
+/* the corners are the site's soft corner, his 4px (?round=N moves them
+   with every picture) */
+html[data-cards="on"][data-ix="e"] .grp.ec { padding: 15px 15px 13px; border-radius: var(--pr, 4px); background: var(--card); }
 html.stack[data-cards="on"][data-ix="e"] .emas { gap: 10px; }
-/* the section's head inside its card: its number, name and count over a
-   hairline, the ink rule left to the page */
-html[data-cards="on"][data-ix="e"] .grp h2.eh { margin-bottom: 12px; padding-bottom: 7px; background: linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1)) no-repeat 0 100% / 100% 1px; }
+/* no thin rules in a card (his "let's remove any thin rules in the
+   cards"): the section's head is its name and count alone, a lead study's
+   line name sits over its year with no hairline, and the work list runs
+   without its dotted leaders */
+html[data-cards="on"][data-ix="e"] .grp h2.eh { margin-bottom: 14px; padding-bottom: 0; background: none; }
 /* a lead study: its picture rounded inside the card */
-html[data-cards="on"][data-ix="e"] .e.ef .kk { border-bottom-color: rgba(0, 0, 0, 0.1); }
-html[data-cards="on"][data-ix="e"] .e.ef .th.fth { border-radius: 11px; }
+html[data-cards="on"][data-ix="e"] .e.ef .kk { padding-bottom: 0; border-bottom: 0; }
+html[data-cards="on"][data-ix="e"] .e.ef .th.fth { border-radius: var(--pr, 4px); }
 html[data-cards="on"][data-ix="e"] .grp.ec .e.el:last-child { padding-bottom: 4px; }
 /* the tools' bars as tracks, the years' pips as dots on the card */
 html[data-cards="on"][data-ix="e"] .e.etool .bar { height: 4px; margin-top: 5px; border-radius: 2px; background: var(--lift); }
 html[data-cards="on"][data-ix="e"] .e.etool .bar i { top: 0; height: 4px; border-radius: 2px; }
 html[data-cards="on"][data-ix="e"] .e.ey .pips i { background: var(--lift); box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.12); }
 html[data-cards="on"][data-ix="e"] body.x .e.ey.on .pips i { box-shadow: none; }
-html[data-cards="on"][data-ix="e"] .e.ew .ld { border-bottom-color: rgba(0, 0, 0, 0.22); }
+html[data-cards="on"][data-ix="e"] #idx .grp.ec .e.ew .ld { border-bottom-color: transparent !important; }
 
 /* the mark, as a lift: the row's cell fills white and rounds, inside the
    card's padding, and the node that sat on a column rule goes */
 html[data-cards="on"][data-mk="grey"][data-ix="e"] #idx .grp.ec :is(.e:is(.el, .ef, .ea, .efig) .nr, .e:is(.ew, .etool) .er, .e.ey, .e.ecap)::before {
-  left: -7px; right: -7px; border-radius: 7px; background: var(--lift); }
+  left: -7px; right: -7px; border-radius: var(--pr, 4px); background: var(--lift); }
 html[data-cards="on"][data-mk="grey"][data-ix="e"] #idx .grp.ec :is(.e:is(.el, .ef, .ea, .efig) .nr, .e:is(.ew, .etool) .er, .e.ey, .e.ecap)::after { display: none; }
-html[data-cards="on"][data-mk="grey"][data-ix="e"] #idx .erun .e { background-image: linear-gradient(var(--lift), var(--lift)); border-radius: 4px; }
-html[data-cards="on"][data-mk="cell"][data-ix="e"] #idx .grp.ec :is(.e:is(.el, .ef, .ea, .efig) .nr, .e:is(.ew, .etool) .er, .e.ey, .e.ecap)::before { left: -7px; right: -7px; border-radius: 7px; }
+html[data-cards="on"][data-mk="grey"][data-ix="e"] #idx .erun .e { background-image: linear-gradient(var(--lift), var(--lift)); border-radius: var(--pr, 4px); }
+html[data-cards="on"][data-mk="cell"][data-ix="e"] #idx .grp.ec :is(.e:is(.el, .ef, .ea, .efig) .nr, .e:is(.ew, .etool) .er, .e.ey, .e.ecap)::before { left: -7px; right: -7px; border-radius: var(--pr, 4px); }
 /* the grid, when asked for, over the cards and inside them */
 html[data-cards="on"] #idx .egrid { z-index: 1; }
 html[data-cards="on"] #idx .egrid i { background: rgba(0, 0, 0, 0.06); }
