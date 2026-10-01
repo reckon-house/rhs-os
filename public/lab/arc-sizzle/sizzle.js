@@ -17,10 +17,13 @@
      values are the production model's own output for that photograph;
    - every sentence is the study's (src/data/arc-case-study.ts), as a
      whole sentence, a section header with its held line, or a column's
-     list; no model is named, since the study names one the code no
-     longer calls;
-   - its grounds are the study's declared palette: cream, black, sage,
-     olive. Its mark is his own outlined lockup;
+     list, except where his review notes gave the words (the capture
+     note, 1 Oct); no model is named, since the study names one the code
+     no longer calls;
+   - its grounds are the study's declared palette: cream, black, olive,
+     and the two warm ones, the Warm Register and Oak Tan (his notes,
+     1 Oct: "change the color to something warm" where the sage was).
+     Its mark is his own outlined lockup;
    - its frame is portrait. The room's A.R.C. cover is the board's tall
      phone, so the reel is laid out tall (notes beside a phone, a pair
      with its names over it) and falls back to the DSC reel's layouts
@@ -40,7 +43,7 @@
    cover) it mounts over the cover's own picture, so the board's tile
    still flies into the same box and the first frame is that picture. */
 (() => {
-  const BASE = "/lab/arc-sizzle/", IMG = BASE + "img/", VID = BASE + "vid/", VQ = "?v=1";
+  const BASE = "/lab/arc-sizzle/", IMG = BASE + "img/", VID = BASE + "vid/", VQ = "?v=2";
   const VERSIONS = [{ id: "mix", name: "Mix", weight: "the app in use" }];
   const IDS = VERSIONS.map((v) => v.id);
   const DEF = "mix";
@@ -97,21 +100,32 @@
        receipt." (The Insurance Reality), its clauses as a list */
     chores: ["Open a spreadsheet", "Walk room to room", "Describe each item", "Look up what it would cost to replace", "Photograph it", "Attach the receipt"],
     hours: "Done properly for an average home, that takes 40+ hours, and hardly anyone finishes.",
-    /* the editorial headline, and the column it heads */
+    /* the turn, plainly (his note, 1 Oct: "'show the camera the room...'
+       this kinda feels like AI-talk ... there's a more straightforward
+       way to say this"): the abstract's own sentence, under the column
+       that says how */
     turnK: "The vision layer",
-    turn: "Show the camera the room and review what it found",
+    turn: "A.R.C. works from the camera.",
     /* the method section's header and its held line */
     photo: "One photo of a room comes back as a list of what is in it.",
-    capture: "The app needs no special hardware and no calibration.",
+    /* his words (1 Oct: "maybe for image capture it's more about the
+       technology? 'the app uses computer vision and needs no tuning...'"),
+       with the study's "no special hardware" kept */
+    capture: "The app uses computer vision and needs no tuning or special hardware.",
     names: "A.R.C. names each item, puts a value on it, and sorts it into a category.",
     replace: "The estimate is what the item would cost to replace today, which is the number insurance runs on.",
-    money: "Every screen puts the money first: what you own, what it is worth, and whether it is covered.",
+    /* "value first", his word over "money first" (1 Oct), in the study too */
+    money: "Every screen puts the value first: what you own, what it is worth, and whether it is covered.",
     rooms: "Each room is its own archive.",
     finK: "Financial intelligence",
     compares: "A.R.C. compares what you own against your policy limit.",
     gap: "Any gap between your documented total and your coverage shows as a dollar amount.",
     limit: "The policy limit A.R.C. uses is your personal property limit, which you enter yourself.",
-    minutes: "Documenting a 73-item home in A.R.C. takes under 30 minutes.",
+    /* the study's whole-home figure since his note (1 Oct: "73 item home
+       seems low - it's probably 73 items per room ... let's calculate
+       something higher"): eight rooms of 73 at the app's pace, 73 items
+       in under 30 minutes */
+    minutes: "Documenting a 584-item home in A.R.C. takes under four hours.",
     weeks: "Ten weeks after the first idea, A.R.C. was live on the App Store.",
   };
 
@@ -183,7 +197,10 @@
     s.appendChild(box);
     /* the size at which every row fits the page */
     const avail = c.H - y - c.pad;
-    let lo = 10, hi = Math.min(48, c.W * 0.075), best = lo;
+    /* set a size down from filling the page, so the list sits in air
+       (his note, 1 Oct: "make the font smaller here so there's some
+       negative space vs it basically filling the screen") */
+    let lo = 10, hi = Math.min(34, c.W * (tall(c) ? 0.05 : 0.04)), best = lo;
     for (let i = 0; i < 12; i++) { const mid = (lo + hi) / 2; box.style.fontSize = mid + "px"; if (box.offsetHeight <= avail) { best = mid; lo = mid; } else hi = mid; }
     box.style.fontSize = Math.floor(best * 2) / 2 + "px";
     c.anim(box, [{ transform: "translateY(0px)" }, { transform: "translateY(" + (-c.H * 0.025).toFixed(1) + "px)" }], { duration: this.d + 800, easing: "linear", fill: "forwards" });
@@ -195,7 +212,7 @@
     };
   } }, o || {});
   /* the mark: his lockup, a.r.c. over "archive ready cloud" */
-  const markShot = (o) => Object.assign({ name: "The mark", ground: "sage", build(c, s) {
+  const markShot = (o) => Object.assign({ name: "The mark", ground: "warm", build(c, s) {
     const w = Math.round(Math.min(c.W * 0.6, 520)), h = Math.round(w / 2.95);
     const m = c.el("i", "mark fd"); m.style.cssText = `left:${(c.W - w) / 2}px;top:${(c.H - h) / 2}px;width:${w}px;height:${h}px`;
     s.appendChild(m);
@@ -379,15 +396,15 @@
       glideShot("cover", { name: "Cover", d: 1400, glide: [[1, 0, 0], [1.07, 0, -1]] }),
       sayShot(SAY.never, "written down what they own.", { name: "Never written down", d: 2200, cut: "band", drift: true }),
       listShot(SAY.paperwork, SAY.chores, { d: 2600, cut: "split", gap: 185 }),
-      figShot("40+ hours", SAY.hours, { d: 2000, cut: "blink", ground: "sage", drift: true }),
+      figShot("40+ hours", SAY.hours, { d: 2000, cut: "blink", ground: "warm", drift: true }),
       mixHead(SAY.turnK, SAY.turn, { d: 2200, cut: "band" }),
       scanShot,
       sayShot(SAY.photo, "a list of what is in it.", { name: "A list", d: 2100, cut: "blink", drift: true }),
       glideShot("kitchen", { name: "The counter", d: 1100, cut: "mask", glide: [[1.08, 0, 1], [1.16, 0, -1.5]] }),
       homeShot,
-      mixHead(SAY.finK, SAY.compares, { d: 2200, cut: "pinch", ground: "sage" }),
+      mixHead(SAY.finK, SAY.compares, { d: 2200, cut: "pinch", ground: "oak" }),
       coverShot,
-      sayShot(SAY.minutes, "under 30 minutes.", { name: "Under 30 minutes", d: 2300, cut: "blink", ground: "olive", drift: true }),
+      sayShot(SAY.minutes, "under four hours.", { name: "Under four hours", d: 2300, cut: "blink", ground: "olive", drift: true }),
       pairShot({ name: "Items, documents, reports", d: 6400, cut: "flash", lag: 260,
         left: [{ clip: "item", d: 3400, tag: "Item" }, { clip: "docs", d: 3000, tag: "Document AI" }],
         right: [{ clip: "reports", tag: "Reports" }] }),
