@@ -159,7 +159,7 @@
   const local = /^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname);
   document.getElementById("here").textContent = local
     ? "Try them on a phone on the same Wi-Fi: open this page with the Mac's network address in place of " + location.hostname + ", and use Open."
-    : "Try them on a phone: open " + location.host + "/lab/phone/ and use Open.";
+    : "Try them on a phone: open " + location.host + "/lab/phone/index.html and use Open.";
   /* Again: a frame back to where it started */
   document.querySelectorAll(".card").forEach((c) => {
     const f = c.querySelector("iframe"), b = c.querySelector(".again");
