@@ -1218,8 +1218,11 @@
      corner, so neighbouring sections line up), still kept inside each
      section. The marks per section (stars, code, brackets) are
      ?texture=glyphs */
-  /* 0.2 of ink at first; "even more subtle", 27 Sept */
-  const DOT_P = 5, DOT_A = 0.11;
+  /* 0.2 of ink at first; "even more subtle", 27 Sept (0.11); under the
+     grid, "can we bring the texture pattern down in opacity some?", 30
+     Sept (0.07). ?dots= tries another, for tuning by eye */
+  const QDOT = parseFloat(new URLSearchParams(location.search).get("dots"));
+  const DOT_P = 5, DOT_A = QDOT > 0 && QDOT < 1 ? QDOT : 0.07;
   const drawDots = (cv, g, sec, W, H, dpr) => {
     const P = Math.round(DOT_P * dpr), d = Math.max(1, Math.round(dpr));
     const tile = document.createElement("canvas"); tile.width = tile.height = P;
@@ -1329,11 +1332,12 @@
      fills, and one more under the last. A run's entries share a rule
      when they share a line. Drawn from layout, never from rects, so a
      section still settling in is measured where it will rest; drawn
-     again whenever a section's size moves. Off unless ?grid=on, or
-     XREF.setGrid("on") ── */
+     again whenever a section's size moves. On since his "i actually
+     kinda like the grid!" (30 Sept); ?grid=off, or XREF.setGrid("off"),
+     shows the page without it ── */
   const GRIDS = ["off", "on"];
   const QGR = (new URLSearchParams(location.search).get("grid") || "").toLowerCase();
-  let GRID = GRIDS.includes(QGR) ? QGR : "off";
+  let GRID = GRIDS.includes(QGR) ? QGR : "on";
   HTML.dataset.grid = GRID;
   /* where a node sits inside another, by offsets, so no transform counts */
   const offIn = (node, root) => {
