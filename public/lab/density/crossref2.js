@@ -2357,10 +2357,31 @@
      carry on from there, line after line. Scrolling back up out of the
      first shelf comes back here at the end; Close comes back to the top.
      Where it stands is kept across the hovers that rebuild it ── */
+  /* ── the content side's weight (30 Sept 2026, his "do all sections on
+     the content side have the lenis scroll? the categories feel like they
+     dont quite scroll as 'heavy' as the case studies"). Only the rooms
+     had it (study-panel.js, the live site's settings); the shelves and
+     the home take the same now, the numbers copied from there, not
+     re-derived. naiveDimensions reads the box's height live, so a shelf
+     still loading its pictures scrolls to its true end; a box that has
+     left the page takes its Lenis with it ── */
+  const heavy = (box) => {
+    if (box._lenis !== undefined) return box._lenis;
+    box._lenis = null;
+    if (!window.Lenis || matchMedia("(prefers-reduced-motion: reduce)").matches) return null;
+    let L = null;
+    try { L = new window.Lenis({ wrapper: box, content: box, smoothWheel: true, duration: 1.65, easing: (t) => 1 - Math.pow(1 - t, 6), wheelMultiplier: 0.65, touchMultiplier: 1.4, naiveDimensions: true }); } catch (e) { return null; }
+    const tick = (t) => { if (!box.isConnected) { L.destroy(); box._lenis = undefined; return; } L.raf(t); requestAnimationFrame(tick); };
+    requestAnimationFrame(tick);
+    return (box._lenis = L);
+  };
+  /* a scroll set where Lenis owns the box goes through it, or it is undone */
+  const setY = (box, y) => { if (box._lenis) box._lenis.scrollTo(y, { immediate: true, force: true }); else box.scrollTop = y; };
   let homeY = 0, homeAt = null;
   const homeBuild = (lay, main, wrap, folio) => {
     const first = G.lines && G.lines.items[0];
     lay.classList.add("home");
+    heavy(lay);
     const cover = el("div", "hm-cover");
     if (folio) cover.appendChild(folio);
     cover.appendChild(wrap);
@@ -2385,8 +2406,8 @@
       if (ev.metaKey || ev.ctrlKey || ev.shiftKey || ev.button) return;
       ev.preventDefault(); go({ v: "shelf", key: first.key }, { push: true });
     });
-    if (homeAt === "end") { lay.scrollTop = lay.scrollHeight; armed = false; homeAt = null; }
-    else lay.scrollTop = homeY;
+    if (homeAt === "end") { setY(lay, lay.scrollHeight); armed = false; homeAt = null; }
+    else setY(lay, homeY);
     check();
   };
 
@@ -2522,6 +2543,8 @@
     layer.dataset.key = o.key;
     if (held) layer.style.visibility = "hidden";
     (opt.host || STAGE).appendChild(layer);
+    /* a preview is looked at, not scrolled; it takes its weight on stage */
+    if (!opt.pv) heavy(layer);
     const S = { key: o.key, o, layer, ks: shelfOrder(o), view: null, lid: null, visible: !held, clicked: null, hovK: null, hovAt: null, fade: null,
       pv: !!opt.pv, host: opt.host ? opt.host.parentNode : null };
     frameShelf(S);
@@ -2557,7 +2580,7 @@
     if (!SH.visible) { SH.stale = true; return; }
     if (SH.lid === id) { drawSwitch(SH); return; }
     clearWires(); hov = null;
-    SH.layer.scrollTop = 0; mountLayout(SH);
+    setY(SH.layer, 0); mountLayout(SH);
     paint(SH.o.rel, SH.o);
     shelfEnter(SH, { delay: 0 });
   };
@@ -2690,7 +2713,7 @@
     P.pv = false; P.visible = true;
     if (P.host && P.host._pv === P) P.host._pv = null;
     STAGE.appendChild(P.layer);
-    P.layer.scrollTop = top;
+    heavy(P.layer); setY(P.layer, top);
     P.layer.classList.remove("pv");
     P.bar.querySelectorAll("[tabindex]").forEach((n) => n.removeAttribute("tabindex"));
     pastCheck(P);
@@ -3244,7 +3267,7 @@
       if (SH && SH.visible && SH.view) {
         if (SH.view.onResize) { try { SH.view.onResize(); } catch (e) { /* the layout's own */ } }
         else if (Math.abs(SH.layer.clientWidth - SH.W) > 30 || Math.abs(SH.layer.clientHeight - SH.V) > 80) {
-          const f = SH.layer.scrollTop / Math.max(1, SH.layer.scrollHeight); mountLayout(SH); SH.layer.scrollTop = f * SH.layer.scrollHeight;
+          const f = SH.layer.scrollTop / Math.max(1, SH.layer.scrollHeight); mountLayout(SH); setY(SH.layer, f * SH.layer.scrollHeight);
         }
         SH.W = SH.layer.clientWidth; SH.V = SH.layer.clientHeight; pastCheck(SH);
       }
