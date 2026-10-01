@@ -870,7 +870,10 @@ html[data-tx="none"] #idx .stx { display: none; }
 [data-ix="e"] .ecr { display: flex; align-items: center; min-height: 33px; }
 [data-ix="e"] .ecr img { display: block; height: var(--mh, 15px); width: auto; max-width: 100%; filter: brightness(0); }
 [data-ix="e"] .ecr img.asis { filter: grayscale(1) contrast(1.15); mix-blend-mode: multiply; }
-[data-ix="e"] .ecr .t { font-size: 15px; font-weight: 500; letter-spacing: -0.01em; }
+/* typed, the default since 30 Sept: a name a cell, in the work list's
+   own type, so the credits read as part of the index */
+[data-ix="e"] .ecr .t { font-weight: 400; letter-spacing: -0.003em; }
+html:not([data-credits="marks"])[data-ix="e"] .ecr { min-height: 0; padding: 0.55em 0 0.6em; }
 
 /* ── the grid (30 Sept, a lever pull, ?grid=on): E's sections ruled into
    cells, fainter than the gutter rules, under everything, so a lit

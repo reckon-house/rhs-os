@@ -807,12 +807,17 @@
        PressingCredits.tsx), in its order, a cell each, the brand's mark
        standing for its name at the footer's tuned height; a credit with
        no mark is set as its name. Not an entry: it lights nothing */
+    /* typed since his "can we try typing them out and look? something
+       about the logos just look out of place" (30 Sept); ?credits=marks
+       sets the marks again, for comparing */
     const CR = window.DENSITY_CREDITS || [];
+    const CREDM = (new URLSearchParams(location.search).get("credits") || "").toLowerCase() === "marks" ? "marks" : "names";
+    HTML.dataset.credits = CREDM;
     if (CR.length) {
       const cl = el("div", "ecred");
       CR.forEach((c) => {
         const r = el("div", "ecr"); r.title = c.name;
-        if (c.src) {
+        if (CREDM === "marks" && c.src) {
           const im = el("img"); im.src = c.src; im.alt = c.name; im.decoding = "async"; im.loading = "lazy";
           if (c.height) im.style.setProperty("--mh", c.height + "px");
           if (c.asis) im.classList.add("asis");
