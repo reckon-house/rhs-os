@@ -5,8 +5,9 @@
    as the credits set them (credits.js); how is "posted", "wrote" or,
    where he named the study but not what was done, "spotted" (his
    heading's own word; his "spotted by works great"). Then: "DWR,
-   Lostine: Hill Country home, living room". Visual Comfort's and
-   Kingston Brass's studies wait on him. */
+   Lostine: Hill Country home, living room", and "Hill Country home,
+   primary bath: Kingston brass, Rejuvenation, Floor and Decor". Visual
+   Comfort's study waits on him. */
 window.DENSITY_FEATURES = {
   "hill-country-kitchen": [
     { by: "Crate & Barrel", how: "posted" },
@@ -17,5 +18,10 @@ window.DENSITY_FEATURES = {
   "hill-country-living": [
     { by: "Design Within Reach", how: "spotted" },
     { by: "Lostine Home", how: "spotted" },
+  ],
+  "hill-country-bath": [
+    { by: "Kingston Brass", how: "spotted" },
+    { by: "Rejuvenation", how: "spotted" },
+    { by: "Floor & Decor", how: "spotted" },
   ],
 };
