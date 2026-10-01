@@ -1018,5 +1018,13 @@ html[data-cards="on"][data-mk="cell"][data-ix="e"] #idx .grp.ec :is(.e:is(.el, .
 /* the grid, when asked for, over the cards and inside them */
 html[data-cards="on"] #idx .egrid { z-index: 1; }
 html[data-cards="on"] #idx .egrid i { background: rgba(0, 0, 0, 0.06); }
-/* a card keeps its texture inside its own rounded edge, never in a gap */
+/* a card keeps its texture, when asked for, inside its own rounded edge */
 html[data-cards="on"][data-ix="e"] #idx .grp.ec { overflow: hidden; }
+/* the wires over the cards (his "move the wires so they're above the
+   cards"): the layer that runs under the index rises over it, since a
+   card's fill would hide every wire but the bits in the gaps. Nothing
+   passes behind a word any more, so the paper halo that parted a wire
+   there comes off, and with it every white outline on the type (his
+   "remove all the white outlines around the text") */
+html[data-cards="on"] #wiresBack { z-index: 3; }
+html[data-cards="on"][data-ix="e"] #idx, html[data-cards="on"][data-ix="e"] #idx * { text-shadow: none !important; }

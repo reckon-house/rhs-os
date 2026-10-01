@@ -504,6 +504,17 @@
   let IX = (new URLSearchParams(location.search).get("index") || "e").toLowerCase();
   if (!IXS.includes(IX)) IX = "e";
   HTML.dataset.ix = IX;
+  /* cards (1 Oct 2026, a lever pull): his xAI Grok Voice references,
+     "these light/warm containers with content in them", then "what would
+     a version on the TOC/index look like with cards? ... if it would make
+     the TOC look a little more modern yet still keep that dense busy
+     look". E as it is, each section a warm card packed tight against the
+     next, the pictures rounded inside them, and an entry the mark lights
+     lifting onto white the way a chip sits in one of those cards. Plain
+     cards, his "can we try it without the dots?": the texture and the
+     cell grid stay out unless asked (?texture=on, ?grid=on). ?cards=on */
+  const CARDS = ["on", "1"].includes((new URLSearchParams(location.search).get("cards") || "").toLowerCase());
+  if (CARDS) HTML.dataset.cards = "on";
   let THUMBS = [], STRIPS = [], tio = null;
 
   /* a study's board picture, small. It loads when it nears the view; the
@@ -1170,7 +1181,7 @@
      turns it off (the row that did came off with the other switches). ── */
   const TXS = ["none", "on", "glyphs"];
   const QTX = (new URLSearchParams(location.search).get("texture") || "").toLowerCase();
-  let TX = TXS.includes(QTX) ? QTX : "on";
+  let TX = TXS.includes(QTX) ? QTX : CARDS ? "none" : "on";
   HTML.dataset.tx = TX;
   const toB64 = (s) => {
     const u = new TextEncoder().encode(s); let bin = "";
@@ -1370,16 +1381,6 @@
     const r = q === "" || q === "on" ? 4 : q === "off" ? 0 : parseFloat(q);
     if (r > 0 && r <= 40) { HTML.dataset.round = "on"; HTML.style.setProperty("--pr", r + "px"); }
   }
-  /* cards (1 Oct 2026, a lever pull): his xAI Grok Voice references,
-     "these light/warm containers with content in them", then "what would
-     a version on the TOC/index look like with cards? ... if it would make
-     the TOC look a little more modern yet still keep that dense busy
-     look". E as it is, each section a warm card packed tight against the
-     next, the pictures rounded inside them, and an entry the mark lights
-     lifting onto white the way a chip sits in one of those cards. The
-     cell grid stays out of the cards unless asked (?grid=on). ?cards=on */
-  const CARDS = ["on", "1"].includes((new URLSearchParams(location.search).get("cards") || "").toLowerCase());
-  if (CARDS) HTML.dataset.cards = "on";
   const GRIDS = ["off", "on"];
   const QGR = (new URLSearchParams(location.search).get("grid") || "").toLowerCase();
   let GRID = GRIDS.includes(QGR) ? QGR : CARDS ? "off" : "on";
