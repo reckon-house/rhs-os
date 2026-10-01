@@ -866,7 +866,8 @@ html[data-tx="none"] #idx .stx { display: none; }
 /* ── the credits (30 Sept): the footer's brands, a cell each, each mark
    in ink on the paper at the footer's own tuned height (its 15px unless
    it says), the one photographed mark left as it is ── */
-[data-ix="e"] .ecr { display: flex; align-items: center; min-height: 40px; }
+/* 40px tall at first; "a tiny bit closer together", 30 Sept */
+[data-ix="e"] .ecr { display: flex; align-items: center; min-height: 33px; }
 [data-ix="e"] .ecr img { display: block; height: var(--mh, 15px); width: auto; max-width: 100%; filter: brightness(0); }
 [data-ix="e"] .ecr img.asis { filter: grayscale(1) contrast(1.15); mix-blend-mode: multiply; }
 [data-ix="e"] .ecr .t { font-size: 15px; font-weight: 500; letter-spacing: -0.01em; }
