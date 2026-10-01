@@ -429,6 +429,18 @@
      from the study itself (Robert's "Blazer Pink" and "Polka Dot Cream"
      from its own picture, Sally's hair colours, the kitchen's sage and
      marble). An empty name shows the hex ── */
+  /* a quote's ground where his eye asked for another than the study's
+     first colour (30 Sept 2026, A.R.C.: "can we adjust this color to a
+     cremy beige or something that works better with the warmer tones?"):
+     A.R.C.'s own Oak Tan (#BAA383, observed in its photographs, from its
+     declared palette) taken half way to the paper. ?qfill=hex tries
+     another by eye */
+  const QUOTE_FILL = { arc: "#DDD1C1" };
+  const quoteFill = (k, s) => {
+    const q = new URLSearchParams(location.search).get("qfill");
+    if (q && /^#?[0-9a-f]{6}$/i.test(q)) return (q[0] === "#" ? "" : "#") + q;
+    return QUOTE_FILL[k] || s.fill || "#000";
+  };
   const PAL_OWN = {
     "amber-shockey-co": { "#1F4D78": "Cobalt", "#D87A82": "Blush", "#8E3F40": "Burgundy", "#1F2434": "Charcoal", "#ECE6D5": "Cream" },
     "arc": { "#B1BC94": "Primary", "#000000": "Ground", "#F1F0EE": "Cream", "#C4A265": "Warm Register", "#4A463A": "Olive", "#BAA383": "Oak Tan" },
@@ -1441,14 +1453,15 @@
             const lk = first ? LOOK() : null;
             const onFill = lk === "field" || lk === "takeover" || lk === "repeat" || lk === "combo";
             const q = el("blockquote", "sp-pull" + (onFill ? " sp-field" : "") + (first ? " sp-brk sp-brk-q lk-" + lk : ""));
-            if (first) { q.style.setProperty("--fill", s.fill || "#000"); q.style.setProperty("--fink", s.ink || D.ink(s.fill || "#000")); }
+            const qf = quoteFill(k, s);
+            if (first) { q.style.setProperty("--fill", qf); q.style.setProperty("--fink", QUOTE_FILL[k] ? D.ink(qf) : s.ink || D.ink(qf)); }
             if (lk === "repeat") q.insertAdjacentHTML("beforeend", wallHtml(halves(b.f.text)[0], 6));
             if (lk === "icons" || lk === "combo") q.insertAdjacentHTML("beforeend", '<div class="sp-ico sp-qmark" aria-hidden="true"><svg viewBox="0 0 120 92" width="120" height="92"><path d="M0 92V56C0 22 16 4 48 0l5 13C35 18 27 29 26 46h24v46H0Zm70 0V56C70 22 86 4 118 0l5 13c-18 5-26 16-27 33h24v46H70Z"/></svg></div>');
             if (lk === "air") q.insertAdjacentHTML("beforeend", '<i class="sp-dot" aria-hidden="true"></i>');
             const t = el("p", "sp-pq", inkGrey(b.f.text)); q.appendChild(t); P.pulls.push(t);
             if (first) q.appendChild(el("div", "sp-fcap", esc(D.title(k)) + '<span class="y">' + esc(s.y) + "</span>" + lookRow()));
             tag(q, b.f);
-            return lk === "fill" ? knock(q, s.fill || "#000", s.ink || D.ink(s.fill || "#000")) : q;
+            return lk === "fill" ? knock(q, qf, QUOTE_FILL[k] ? D.ink(qf) : s.ink || D.ink(qf)) : q;
           }
           case "closing": {
             const c = el("div", "sp-closing");

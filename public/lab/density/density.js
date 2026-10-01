@@ -16,6 +16,11 @@
      never adds to them. */
 (() => {
   const DATA = window.DENSITY;
+  /* pictures he has taken out of the new site, by file (30 Sept 2026,
+     A.R.C.'s chromatic brand circle: "let's remove this"). Gone from every
+     view here; the live case study keeps it until he says */
+  const SKIP_PICS = new Set(["/case-studies/arc/chromatic-brand-circle.png"]);
+  DATA.frags = DATA.frags.filter((f) => !(f.kind === "pic" && SKIP_PICS.has(f.src)));
   const FR = DATA.frags;
   const STUDY = {}; DATA.studies.forEach((s) => { STUDY[s.k] = s; });
   const el = (t, c, h) => { const e = document.createElement(t); if (c) e.className = c; if (h != null) e.innerHTML = h; return e; };
