@@ -99,7 +99,11 @@
        up what it would cost to replace, photograph it, and attach the
        receipt." (The Insurance Reality), its clauses as a list */
     chores: ["Open a spreadsheet", "Walk room to room", "Describe each item", "Look up what it would cost to replace", "Photograph it", "Attach the receipt"],
-    hours: "Done properly for an average home, that takes 40+ hours, and hardly anyone finishes.",
+    /* the same home by hand, so the reel's two figures are one home (his
+       pick, 1 Oct: "let's switch to 128", over the study's 40+ hours for
+       an average home): the usage sentence up to its comma, its "16 to
+       24 times faster" left for the close */
+    byHand: "By hand, a 1,168-item inventory is an estimated 128 to 192 hours of work.",
     /* the turn, plainly (his note, 1 Oct: "'show the camera the room...'
        this kinda feels like AI-talk ... there's a more straightforward
        way to say this"): the abstract's own sentence, under the column
@@ -396,7 +400,7 @@
       glideShot("cover", { name: "Cover", d: 1400, glide: [[1, 0, 0], [1.07, 0, -1]] }),
       sayShot(SAY.never, "written down what they own.", { name: "Never written down", d: 2200, cut: "band", drift: true }),
       listShot(SAY.paperwork, SAY.chores, { d: 2600, cut: "split", gap: 185 }),
-      figShot("40+ hours", SAY.hours, { d: 2000, cut: "blink", ground: "warm", drift: true }),
+      figShot("128-192 hours", SAY.byHand, { d: 2000, cut: "blink", ground: "warm", drift: true }),
       mixHead(SAY.turnK, SAY.turn, { d: 2200, cut: "band" }),
       scanShot,
       sayShot(SAY.photo, "a list of what is in it.", { name: "A list", d: 2100, cut: "blink", drift: true }),
