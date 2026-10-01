@@ -1,0 +1,159 @@
+/* ── THE A.R.C. HERO SIZZLE: its page (30 Sept 2026) ────────────────────
+   The DSC reel's page (dsc-sizzle/sizzle.css), carried over for A.R.C.:
+   the same shadow root, the same five type roles, the same wipe and cuts.
+   What changes is A.R.C.'s own. Its grounds are the study's declared
+   palette (src/data/arc-case-study.ts): the cream it observed in nearly
+   half the photography, black, the sage, the olive. Its frame is
+   portrait (the room's A.R.C. cover is the board's tall phone), so the
+   type is sized a step up against the frame's width. Its phones are the
+   simulator's own, 440 by 956 points, and play film. */
+
+:host { all: initial; position: absolute; inset: 0; display: block; z-index: 2; contain: strict; }
+.stage { position: absolute; inset: 0; overflow: hidden; container: szl / size; background: #111;
+  font-family: "Avenir Next", "Helvetica Neue", Helvetica, Arial, sans-serif; color: #000;
+  -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; font-kerning: normal;
+  --ink: #000; --paper: #F1F0EE; --grey: rgba(0, 0, 0, 0.45); --hair: rgba(0, 0, 0, 0.14);
+  --pad: 4.4cqw; --top: max(34px, 8.5cqh);
+  --lab: clamp(7px, 1.45cqw, 11px); --sm: clamp(9.5px, 2.1cqw, 16px); --mid: clamp(11px, 2.5cqw, 19px);
+  --ez: cubic-bezier(0.45, 0, 0.2, 1); --ezo: cubic-bezier(0.16, 1, 0.3, 1); --knock: #F1F0EE; }
+.stage.off { display: none; }
+.shots { position: absolute; inset: 0; }
+.stage * { box-sizing: border-box; }
+
+/* ── the shots, on A.R.C.'s grounds ── */
+.shot { position: absolute; inset: 0; overflow: hidden; z-index: 0; }
+/* cream, the study's "observed, 48% of sampled values" */
+.paper { background: #F1F0EE; color: var(--ink); }
+.dots { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='5' height='5'%3E%3Crect width='1' height='1' fill='%23000' fill-opacity='0.11'/%3E%3C/svg%3E"); background-size: 5px 5px; }
+.ink { background: #000; color: #F1F0EE; --ink: #F1F0EE; --grey: rgba(241, 240, 238, 0.5); --hair: rgba(241, 240, 238, 0.2); --knock: #000; }
+/* the brand's Primary, A.R.C. sage */
+.sage { background: #B1BC94; color: #000; --grey: rgba(0, 0, 0, 0.5); --hair: rgba(0, 0, 0, 0.16); --knock: #B1BC94; }
+/* olive, the study's "observed, 19%" */
+.olive { background: #4A463A; color: #F1F0EE; --ink: #F1F0EE; --grey: rgba(241, 240, 238, 0.52); --hair: rgba(241, 240, 238, 0.2); --knock: #4A463A; }
+.photo { background: #151515; }
+
+/* a cut: the next shot opens from the left, on the house's curve */
+.shot.cm { clip-path: inset(0 100% 0 0); }
+.shot.cm.go { clip-path: inset(0 0 0 0); transition: clip-path 0.72s var(--ez); }
+.blink { position: absolute; inset: 0; z-index: 30; background: #000; pointer-events: none; animation: szlblink 110ms steps(1) both; }
+@keyframes szlblink { 0% { opacity: 1; } 100% { opacity: 0; } }
+.fband { position: absolute; inset: 0; z-index: 30; background: var(--bc, #000); pointer-events: none;
+  animation: szlwipe var(--bd, 900ms) linear both; }
+
+/* ── the wipe, the room's own (study-panel.css, rvwipe) ── */
+@keyframes szlwipe {
+  0% { clip-path: inset(0 100% 0 0); animation-timing-function: cubic-bezier(0.45, 0, 0.2, 1); }
+  48% { clip-path: inset(0 0 0 0); }
+  52% { clip-path: inset(0 0 0 0); animation-timing-function: cubic-bezier(0.45, 0, 0.2, 1); }
+  100% { clip-path: inset(0 0 0 100%); }
+}
+.wp { position: relative; }
+.wp .w { opacity: 0; }
+.wp.go .w { opacity: 1; transition: opacity 0s linear var(--d, 0ms); }
+.wp > .bd { position: absolute; z-index: 1; pointer-events: none; clip-path: inset(0 100% 0 0); }
+/* "solid", not "ink": a band classed ink would match the black ground's
+   rule and take its cream (the DSC reel's bands do, which is why they
+   read white on its paper) */
+.wp > .bd.solid { background: currentColor; }
+.wp > .bd.tint { background: color-mix(in srgb, currentColor 10%, transparent); }
+.wp.go > .bd { animation: szlwipe var(--bd, 760ms) linear var(--d, 0ms) both; }
+.now .w, .now.w { opacity: 1 !important; transition: none !important; }
+.now > .bd { display: none; }
+.rule { display: block; height: 1px; background: currentColor; transform: scaleX(0); transform-origin: 0 50%; }
+.rule.hair { background: var(--hair); }
+.rule.go { transform: none; transition: transform 0.42s var(--ez) var(--d, 0ms); }
+.rule.now { transform: none; }
+.fd { opacity: 0; }
+.fd.go { opacity: 1; transition: opacity 0.4s ease var(--d, 0ms); }
+.fd.now { opacity: 1; }
+
+/* ── pictures: at most half their pixels, the room's rule ── */
+.pic { position: absolute; overflow: hidden; background: rgba(0, 0, 0, 0.06); }
+.pic img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: var(--op, 50% 50%); display: block; }
+
+/* ── type, the room's five roles ── */
+.lab { font-size: var(--lab); font-weight: 700; letter-spacing: 0.2em; line-height: 1.3; text-transform: uppercase; }
+.g { color: var(--grey); }
+.sm { font-size: var(--sm); font-weight: 400; line-height: 1.45; letter-spacing: -0.003em; }
+.mid { font-size: var(--mid); font-weight: 500; line-height: 1.3; letter-spacing: -0.01em; }
+.dsp { font-weight: 600; letter-spacing: -0.045em; line-height: 1; }
+.fig { font-weight: 600; letter-spacing: -0.055em; line-height: 0.84; white-space: nowrap; }
+.abs { position: absolute; }
+.ink .g.lt, .olive .g.lt { color: rgba(241, 240, 238, 0.68); }
+
+/* ── a list, the paperwork by hand: rows between hairlines ── */
+.rows { position: absolute; font-weight: 500; letter-spacing: -0.02em; line-height: 1.12; }
+.rows .rw { position: relative; display: flex; gap: 0.5em; padding: 0.42em 0 0.46em; }
+.rows .rw .rule { position: absolute; left: 0; right: 0; bottom: 0; }
+.rows .blt { display: inline-block; width: 0.78em; }
+
+/* ── a running head ── */
+.rh { position: absolute; left: var(--pad); right: var(--pad); top: var(--top); display: flex; justify-content: space-between; align-items: baseline; gap: 2em; padding-bottom: 0.9em; }
+.rh .rule { position: absolute; left: 0; right: 0; bottom: 0; }
+
+/* ── the mark: the a.r.c. lockup, his own outlined SVG, drawn in
+   whatever colour its ground wants ── */
+.mark { position: absolute; background: currentColor; -webkit-mask: url("/case-studies/arc/demo/patterns/logo-lockup-currentcolor.svg") center / contain no-repeat; mask: url("/case-studies/arc/demo/patterns/logo-lockup-currentcolor.svg") center / contain no-repeat; }
+.mark.fd { transition-duration: 0.6s; }
+
+/* ── the motion that never stops ── */
+.paper.dots { animation: szldots 26s linear infinite; }
+@keyframes szldots { from { background-position: 0 0; } to { background-position: 65px -40px; } }
+
+/* ── a phone, drawn, playing film: the simulator's own 440 by 956 point
+   screen (his recordings carry their status bar and island, so none is
+   drawn), inside an eleven-pixel bezel, flat ── */
+.cam { position: absolute; transform-origin: 50% 50%; will-change: transform; }
+.dev { position: absolute; left: 0; top: 0; width: 462px; height: 978px; padding: 11px; border-radius: 66px; background: #0c0c0c; transform-origin: 0 0;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.07); }
+.ink .dev, .olive .dev { box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.2); }
+.dev .scr { position: relative; width: 440px; height: 956px; border-radius: 55px; overflow: hidden; background: #fff; }
+.vpg { position: absolute; inset: 0; overflow: hidden; background: #fff; will-change: transform; }
+.vpg.off { visibility: hidden; }
+.vp { position: absolute; inset: 0; width: 100%; height: 100%; display: block; object-fit: cover; background: #fff; pointer-events: none; }
+/* where the films wait, loading, before a shot takes them */
+.vpark { position: absolute; left: 0; top: 0; width: 2px; height: 2px; overflow: hidden; opacity: 0; pointer-events: none; }
+
+/* notes: the spread's column beside a phone, a line at a time under a
+   hairline */
+.notes { position: absolute; }
+.note { position: relative; padding: 0.85em 0 0; margin-bottom: 1.2em; }
+.note > .rule { position: absolute; left: 0; right: 0; top: 0; }
+.note .lab { color: var(--grey); margin-bottom: 0.5em; }
+.note .say { font-size: clamp(10.5px, 2.6cqw, 20px); font-weight: 500; line-height: 1.22; letter-spacing: -0.015em; }
+@container szl (width < 520px) { .note { margin-bottom: 0.8em; padding-top: 0.6em; } .note .lab { margin-bottom: 0.3em; } }
+
+/* the cuts that need a body of their own */
+.cutc { position: absolute; inset: 0; z-index: 30; pointer-events: none; }
+.slats { display: flex; }
+.slats > i { flex: 1; height: 100%; background: var(--bc, #000); transform: scaleY(0); transform-origin: 50% 0; }
+.pinch > i { position: absolute; left: 0; right: 0; height: 50.5%; background: var(--bc, #000); }
+.pinch > i:first-child { top: 0; transform: translateY(-101%); }
+.pinch > i:last-child { bottom: 0; transform: translateY(101%); }
+.flash { background: #fff; opacity: 0; }
+.burnw { background: #F3F0ED; opacity: 0; }
+.seam { position: absolute; top: 0; bottom: 0; left: 0; width: 2px; background: #000; z-index: 40; pointer-events: none; }
+.seam.r { left: auto; right: 0; }
+.ink > .seam, .olive > .seam { background: #F1F0EE; }
+/* a statement as large as the frame takes it, one phrase lit */
+.say-big { font-weight: 600; letter-spacing: -0.045em; line-height: 0.96; }
+
+/* a pair's section names. Beside the phones where the frame is wide,
+   the reel's label on its side (the DSC reel's list); over them where
+   it is tall, read across, the one on screen in ink and the rest grey.
+   A change is crossed by a small band of ink running along the name */
+.plab { position: absolute; z-index: 6; white-space: nowrap; color: var(--ink); }
+.plab.v { writing-mode: vertical-rl; }
+.plab.v:not(.r) { transform: rotate(180deg); }
+.plab .pl-i { position: relative; display: inline-block; }
+.plab .pl-i + .pl-i { margin-inline-start: 2.4em; }
+.plab .bd { position: absolute; inset: 0; z-index: 2; background: var(--ink); clip-path: inset(0 100% 0 0); }
+.plab .bd.go { animation: szlwipe 0.7s linear both; }
+.plab.v .bd { clip-path: inset(0 0 100% 0); }
+.plab.v .bd.go { animation: szlwipev 0.7s linear both; }
+@keyframes szlwipev {
+  0% { clip-path: inset(0 0 100% 0); animation-timing-function: cubic-bezier(0.45, 0, 0.2, 1); }
+  48% { clip-path: inset(0 0 0 0); }
+  52% { clip-path: inset(0 0 0 0); animation-timing-function: cubic-bezier(0.45, 0, 0.2, 1); }
+  100% { clip-path: inset(100% 0 0 0); }
+}

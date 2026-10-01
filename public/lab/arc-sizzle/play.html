@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex">
+<title>A.R.C. sizzle · one version · Reckon*House lab</title>
+<!-- A test bench: one version playing at a width. play.html?w=598&h=810 -->
+<link rel="stylesheet" href="/lab/density/density.css">
+<style>body { margin: 20px; background: #fff; } #f { position: relative; background: #111; overflow: hidden; }</style>
+</head>
+<body>
+<div id="f"></div>
+<script src="/lab/arc-sizzle/sizzle.js"></script>
+<script>
+  const q = new URLSearchParams(location.search), w = +(q.get("w") || 598), h = +(q.get("h") || 810), f = document.getElementById("f");
+  f.style.width = w + "px"; f.style.height = h + "px";
+  ARCSizzle.mount(f, { fixed: true });
+</script>
+</body>
+</html>
