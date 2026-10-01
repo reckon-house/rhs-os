@@ -1038,3 +1038,16 @@ html[data-cards="on"][data-ix="e"] #idx .grp.ec { overflow: hidden; }
 /* the wires run over the cards and the type has no halo, as on the page
    itself since 1 Oct; inside a card, nothing even the ink mark asks for */
 html[data-cards="on"][data-ix="e"] #idx * { text-shadow: none !important; }
+
+/* ── faux reels (1 Oct 2026, ?reels=on): a term whose studies' pictures
+   look like it stands in its section as a feature, its picture a
+   <sizzle-reel> cutting through them, its kind over it, its name and its
+   homepage line under it ── */
+[data-ix="e"] .grp.ec .e.ereel { display: block; margin: 16px 0 18px; padding: 0; }
+[data-ix="e"] .e.ereel .kk { display: flex; justify-content: space-between; align-items: baseline; margin: 0 0 8px; color: var(--grey); }
+[data-ix="e"] .e.ereel .kk .wn { color: var(--ink); }
+[data-ix="e"] .e.ereel .rl { display: block; width: 100%; margin: 0 0 10px; overflow: hidden; border-radius: var(--pr, 4px); background: #F2F2F0; }
+[data-ix="e"] .e.ereel sizzle-reel { display: block; width: 100%; }
+[data-ix="e"] .e.ereel .t { font-size: 17px; font-weight: 700; letter-spacing: -0.035em; line-height: 1.05; }
+[data-ix="e"] .e.ereel .dk { margin: 6px 0 0; }
+[data-ix="e"] .e.ereel { --pb: 4px; }

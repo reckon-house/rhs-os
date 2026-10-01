@@ -515,6 +515,20 @@
      cell grid stay out unless asked (?texture=on, ?grid=on). ?cards=on */
   const CARDS = ["on", "1"].includes((new URLSearchParams(location.search).get("cards") || "").toLowerCase());
   if (CARDS) HTML.dataset.cards = "on";
+  /* faux reels in the index (1 Oct 2026, a lever pull): his "the bottom
+     half of the TOC is obviously text heavy...i am wondering if we work a
+     few 'faux reels' in as thumbnails just like the ones as the top that
+     are static. for instance 'ecommerce design' might cycle through a few
+     images that are within that term". Four terms whose studies' board
+     pictures look like the term leave their runs and stand as features in
+     their own sections, each a <sizzle-reel> (the Faux Reel study's own
+     product, as its tile plays) cutting through those pictures in the
+     studies' own colours. The pictures load as the index nears them.
+     ?reels=on */
+  const REEL_KEYS = ["on", "1"].includes((new URLSearchParams(location.search).get("reels") || "").toLowerCase())
+    ? ["cap/ecommerce-design", "cap/photography-direction", "tool/sketchup", "credit/nordstrom"] : [];
+  const isReel = (o) => REEL_KEYS.includes(o.key);
+  let REELS = [], rio = null;
   /* the highlight's colour by eye: ?hl=ece7de (hex, with or without #) */
   { const hl = (new URLSearchParams(location.search).get("hl") || "").replace(/^#/, ""); if (/^([0-9a-f]{3}|[0-9a-f]{6})$/i.test(hl)) HTML.style.setProperty("--hl", "#" + hl); }
   let THUMBS = [], STRIPS = [], tio = null;
@@ -555,6 +569,23 @@
     }, { root: phone() ? null : IDX, rootMargin: "0px 0px -6% 0px" });
     groups.forEach((g) => { if (!g.classList.contains("seen")) sio.observe(g); });
     seenT = setTimeout(() => groups.forEach((g) => g.classList.add("seen")), 2000);
+  };
+  /* a reel's pictures: its studies' board leads in the shelf's order, eight
+     at most, at the rung its box is drawn at, and its colour frames in
+     those studies' own fills */
+  const loadReel = (R) => {
+    if (R.done || !R.r.isConnected) return; R.done = true;
+    const ks = byRank([...R.o.rel]).filter((k) => leadOf(k)).slice(0, 8);
+    const big = (R.r.offsetWidth || 160) * Math.min(2, window.devicePixelRatio || 1) > 384;
+    R.r.setAttribute("colors", [...new Set(ks.map((k) => (D.study(k) || {}).fill).filter(Boolean))].slice(0, 5).join(", ") || "#ECECEC, #000000");
+    R.r.setAttribute("images", ks.map((k) => { const f = leadOf(k); return encodeURI((big ? f.t768 : f.t384) || f.t768 || f.src); }).join(", "));
+  };
+  const watchReels = () => {
+    if (rio) rio.disconnect();
+    if (!REELS.length) return;
+    rio = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { rio.unobserve(e.target); loadReel(e.target._reel); } }),
+      { root: phone() ? null : IDX, rootMargin: "320px 0px 420px 0px" });
+    REELS.forEach((R) => { R.a._reel = R; if (!R.done) rio.observe(R.a); });
   };
   const watchThumbs = () => {
     if (tio) tio.disconnect();
@@ -754,6 +785,17 @@
     } else if (mode === "Eyear") {
       a.classList.add("ey");
       a.innerHTML = '<span class="t">' + mk(esc(o.label)) + '</span><span class="pips" aria-hidden="true">' + [...Array(o.rel.size)].map((_, j) => '<i style="--d:' + j + '"></i>').join("") + "</span>";
+    } else if (mode === "Ereel") {
+      /* the reel stands where a feature's picture would, between its kind
+         and its name; marked on its name's row, as an About section is */
+      const kind = { capabilities: "Capability", tools: "Tool", credits: "Worked with" }[g] || "";
+      a.classList.add("ea", "ereel");
+      a.innerHTML = '<span class="kk caps"><span>' + esc(kind) + '</span><span class="wn">' + o.rel.size + "</span></span>";
+      const box = el("span", "rl"), r = document.createElement("sizzle-reel");
+      r.setAttribute("aspect", "1.4"); r.setAttribute("radius", "var(--pr, 4px)"); r.setAttribute("offset", String(REELS.length * 3));
+      box.appendChild(r); a.appendChild(box); REELS.push({ a, r, o });
+      a.appendChild(el("span", "nr", '<span class="t">' + esc(o.label) + "</span>"));
+      if (LINES[o.key]) a.appendChild(el("span", "dk", twoTone(LINES[o.key])));
     } else if (mode === "Eabout") {
       a.classList.add("ea");
       a.innerHTML = '<span class="nr"><span class="t">' + esc(o.label) + '</span></span><span class="dk">' + esc(o.about.lede || "") + "</span>";
@@ -846,17 +888,18 @@
     const bl = el("div", "ebig"); big.forEach((o, i) => { const a = entryEl(o, "Efig"); a.style.setProperty("--i", i); bl.appendChild(a); });
     put(cellE("figures", 1, [headE("05", "figures"), bl, runE(G.figures.items.filter((o) => !big.includes(o)))]));
     const tc = featuredCaps(), tt = featuredTools();
+    const reels = (g) => G[g].items.filter(isReel).map((o) => entryEl(o, "Ereel"));
     const cl = el("div", "ecaps"); tc.forEach((o, i) => { const a = entryEl(o, "Ecap"); a.style.setProperty("--d", i); cl.appendChild(a); });
-    put(cellE("capabilities", 1, [headE("06", "capabilities"), cl, runE(G.capabilities.items.filter((o) => !tc.includes(o)))]));
+    put(cellE("capabilities", 1, [headE("06", "capabilities"), cl, ...reels("capabilities"), runE(G.capabilities.items.filter((o) => !tc.includes(o) && !isReel(o)))]));
     const tl = el("div", "etools"); tt.forEach((o, i) => { const a = entryEl(o, "Etool"); a.style.setProperty("--d", i); tl.appendChild(a); });
-    put(cellE("tools", 1, [headE("07", "tools"), tl, runE(G.tools.items.filter((o) => !tt.includes(o)))]));
+    put(cellE("tools", 1, [headE("07", "tools"), tl, ...reels("tools"), runE(G.tools.items.filter((o) => !tt.includes(o) && !isReel(o)))]));
     /* 08 the credits (30 Sept 2026, his "we need the section that
        currently says 'Worked with, spotted by & featured in.' showing the
        brands"): the live footer's own list, in its order, a cell each,
        as entries since his "yes link them in the index too" */
     if (G.credits.items.length) {
-      const cl = el("div", "ecred"); G.credits.items.forEach((o) => cl.appendChild(entryEl(o, "Ecred")));
-      put(cellE("credits", 1, [headE("08", "credits"), cl]));
+      const cl = el("div", "ecred"); G.credits.items.filter((o) => !isReel(o)).forEach((o) => cl.appendChild(entryEl(o, "Ecred")));
+      put(cellE("credits", 1, [headE("08", "credits"), ...reels("credits"), cl]));
     }
     return wrap;
   };
@@ -973,7 +1016,7 @@
     f: () => [buildF()],
   };
   const buildIndex = () => {
-    THUMBS = []; STRIPS = [];
+    THUMBS = []; STRIPS = []; REELS = [];
     GROUPS.forEach((g) => { g.count = null; });
     const markIn = IDX.contains(MARK);
     IDX.replaceChildren();
@@ -1112,7 +1155,7 @@
     else if (top && top.firstChild !== MARK) top.insertBefore(MARK, top.firstChild);
     sizeIndex();
     fitFeat();
-    if (fresh || stack !== was || !tio) { watchThumbs(); watchSeen(); }
+    if (fresh || stack !== was || !tio) { watchThumbs(); watchReels(); watchSeen(); }
   };
 
   /* ── the cross-reference: how what shares a study is marked. Ink, a
