@@ -295,11 +295,13 @@ window.ENTRY_LINES = {
   "fig/50-000": "A home covered five years ago might be $50,000 short today, because the coverage gets set once while the things inside keep changing. A.R.C. puts what you own now against the policy and shows that gap in dollars.",
   /* A.R.C.: "A.R.C. is an iPhone app I designed and built for home inventory"; "Weeks 9-10 were the brand identity and visual system, the marketing site and the go-to-market work, and then launch" */
   "fig/weeks-9-10": "Weeks 9-10 closed the ten-week build of A.R.C., an iPhone app for home inventory. They covered the identity and visual system, the marketing site and the go-to-market work, then the launch.",
-  /* "Both bars are for the same 73-item home. The 8-12 hours by hand is an
-     estimate, and the 30 minutes is how long the app takes."; "Documenting
-     a 73-item home in A.R.C. takes under 30 minutes." */
-  "fig/8-12-hours": "Documenting a 73-item home by hand is an estimated 8-12 hours. A.R.C. does the same home in under 30 minutes.",
-  "fig/30-minutes": "A.R.C. documents a 73-item home in under 30 minutes. By hand it's an estimated 8 to 12 hours, so the app is 16 to 24 times faster.",
+  /* "Both bars are for the same 584-item home. The hours by hand are an
+     estimate, and the A.R.C. bar is the app's own pace across the whole
+     home."; "Documenting a 584-item home in A.R.C. takes under four hours."
+     (the study's whole-home figures since 1 Oct 2026, his "73 item home
+     seems low - it's probably 73 items per room": eight rooms of 73) */
+  "fig/64-96-hours": "Documenting a 584-item home by hand is an estimated 64 to 96 hours. A.R.C. does the same home in under four hours.",
+  "fig/4-hours": "A.R.C. documents a 584-item home in under four hours. By hand it's an estimated 64 to 96 hours, so the app is 16 to 24 times faster.",
   "fig/10-weeks": "A.R.C. took 10 weeks from concept to launch, in five two-week steps. They were validation, architecture, the interface, the financial layer, and the brand and go-to-market.",
   "fig/2-wks": "Each step of A.R.C.'s build took two weeks. There were five of them, from validating the concept through the brand and the launch.",
   /* Robert Rodriguez: "One model and four setups stretched into ..."; "The

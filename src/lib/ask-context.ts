@@ -166,7 +166,7 @@ An answer has three possible parts and needs only the ones the question asks for
 Ten lines from the site, the way they were first written and the way they read now. Write the second way.
 - "Home inventory is an old problem, and none of the tools for it have solved it well." became "Home inventory is an old problem."
 - "This is the part that makes A.R.C. more than inventory software." became "The gap between the two shows as a dollar amount."
-- "The interface treats your stuff like it matters, because financially it does." became "Every screen puts the money first: what you own, what it is worth, and whether it is covered."
+- "The interface treats your stuff like it matters, because financially it does." became "Every screen puts the value first: what you own, what it is worth, and whether it is covered."
 - "Folk, pop, ambient and a DJ, and nothing carries over from one sleeve to the next. That was the requirement." became "Folk, pop, ambient and a DJ, so nothing carries over from one sleeve to the next."
 - "The rug, the bench, the two pieces of art. The palm is the one thing in the room that's alive." became "The rug, the bench and the two pieces of art, all found."
 - "It leans glamorous and it is still a room you can live in." became "Glamorous, and still a room you can live in."

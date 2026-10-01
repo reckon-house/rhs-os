@@ -29,7 +29,7 @@ const CATEGORIES = [
 const ROOMS = ["Living", "Bedroom", "Bath", "Kitchen", "Hallway", "Laundry", "Garage"];
 
 const TOTALS = [
-  { value: "73", label: "ITEMS DOCUMENTED", sub: "Average per home" },
+  { value: "73", label: "ITEMS DOCUMENTED", sub: "In the sample home" },
   { value: "$49,630", label: "TOTAL VALUE", sub: "Tracked assets" },
   { value: "$680", label: "AVG ITEM VALUE", sub: "Across categories" },
   { value: "13", label: "CATEGORIES", sub: "Classification depth" },
