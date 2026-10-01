@@ -815,9 +815,12 @@ html:not([data-type="bold"]) .sp .sp-pchl { font-size: 8.5px; font-weight: 700; 
 html:not([data-type="bold"]) .sp .sp-pchl b { font-weight: 700; }
 html:not([data-type="bold"]) .sp .sp-bar-in { font-weight: 500; }
 
-/* ── the shoutouts (30 Sept 2026): who posted or wrote about the work, a
-   band of ink under the cover, each verb small and grey, the names in
-   paper; ?press=ticker runs the band as a ticker ── */
+/* ── the shoutouts (30 Sept 2026): who posted or wrote about the work.
+   A line under the cover, as a picture's credit sits (his "smaller more
+   footnotes"), the verbs grey and the names ink; ?press=band sets a band
+   of ink there instead, the names in paper, and ?press=ticker runs it ── */
+.sp-pr-fn { margin: 12px var(--m) 0; max-width: 46em; font-size: 12px; font-weight: 500; line-height: 1.45; letter-spacing: -0.002em; color: var(--ink); }
+.sp-pr-fn .sp-g { color: var(--grey); }
 .sp-press { position: relative; overflow: hidden; background: var(--ink); color: var(--paper); }
 .sp-pr-in { display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px 30px; padding: 14px var(--m) 15px; }
 .sp-pr-g { display: inline-flex; flex-wrap: wrap; align-items: baseline; gap: 4px 11px; }

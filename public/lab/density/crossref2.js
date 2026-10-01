@@ -372,6 +372,8 @@
     { id: "capabilities", name: "Capabilities", mode: "run", pre: "cap" },
     { id: "tools", name: "Tools", mode: "run", pre: "tool" },
     { id: "figures", name: "Figures", mode: "run", pre: "fig" },
+    /* the footer's credits (30 Sept), each reaching its studies */
+    { id: "credits", name: "Worked with, spotted by & featured in", mode: "list", pre: "credit" },
   ];
   const G = {}; GROUPS.forEach((g) => { G[g.id] = g; g.items = []; });
   const KEYMAP = new Map(); const WORK = {};
@@ -399,6 +401,26 @@
   const FIG_SKIP = new Set(["$680", "$425", "$580", "$890", "$310", "$185", "$695", "$5,000+", "20fps", "3.667\"", "300ms", "24 per page"]);
   [...FIGS.values()].filter((g) => !bare(g.s) && !FIG_SKIP.has(g.s)).sort((a, b) => a.order - b.order).forEach((g) => add("figures", { label: g.s, fig: g, rel: g.rel,
     make: () => g.src.map((x) => x.item) }, slug(g.s)));
+  /* the credits (30 Sept 2026, his "yes link them in the index too"):
+     each brand the footer names (credits.js) reaches the studies whose
+     own words name it, a client's work, and the ones it posted or wrote
+     about (features.js, his words). A brand with neither waits on him:
+     it lights nothing and opens nothing. Typed, as he chose; the marks
+     again under ?credits=marks */
+  const CREDM = (new URLSearchParams(location.search).get("credits") || "").toLowerCase() === "marks" ? "marks" : "names";
+  HTML.dataset.credits = CREDM;
+  const brandIn = (name) => {
+    const out = new Set(), n = String(name).toLowerCase();
+    D.frags.forEach((f) => { if (f.k !== "about" && D.study(f.k) && [f.text, f.label, f.value, f.alt, f.sub].some((v) => v && String(v).toLowerCase().includes(n))) out.add(f.k); });
+    return out;
+  };
+  const FEAT_BY = {};
+  Object.entries(window.DENSITY_FEATURES || {}).forEach(([k, list]) => (list || []).forEach((x) => { (FEAT_BY[x.by] = FEAT_BY[x.by] || new Set()).add(k); }));
+  (window.DENSITY_CREDITS || []).forEach((c) => {
+    const rel = brandIn(c.name.split(" by ")[0]);
+    (FEAT_BY[c.name] || new Set()).forEach((k) => { if (D.study(k)) rel.add(k); });
+    add("credits", { label: c.name, credit: c, rel, make: () => clusters(facesOf(byRank([...rel])), true) }, slug(c.name));
+  });
   ENTRIES.forEach((o) => (o.alias || []).forEach((k) => { if (!KEYMAP.has(k)) KEYMAP.set(k, o); }));
   /* where each entry reaches beyond the studies' own lists (entry-reach.js,
      his "lean towards OVER doing it rather than under"): studies are only
@@ -727,6 +749,15 @@
     } else if (mode === "Ecap") {
       a.classList.add("ecap");
       a.innerHTML = '<span class="t">' + esc(o.label) + '</span><sup class="cnt">' + o.rel.size + "</sup>";
+    } else if (mode === "Ecred") {
+      /* a credit: its name in the work list's type, or its mark under
+         ?credits=marks; one that reaches no study yet cannot be opened */
+      const c = o.credit || {};
+      a.classList.add("ecap", "ecrd");
+      if (!o.rel.size) a.classList.add("bare");
+      a.innerHTML = CREDM === "marks" && c.src
+        ? '<span class="t"><img src="' + D.esc(c.src) + '" alt="' + esc(o.label) + '" decoding="async" style="--mh:' + (c.height || 15) + "px\"" + (c.asis ? ' class="asis"' : "") + "></span>"
+        : '<span class="t">' + esc(o.label) + "</span>";
     } else if (mode === "Etool") {
       const max = toolMax || Math.max(...G.tools.items.map((x) => x.rel.size));
       a.classList.add("etool");
@@ -803,29 +834,11 @@
     put(cellE("tools", 1, [headE("07", "tools"), tl, runE(G.tools.items.filter((o) => !tt.includes(o)))]));
     /* 08 the credits (30 Sept 2026, his "we need the section that
        currently says 'Worked with, spotted by & featured in.' showing the
-       brands"): the live footer's own list (credits.js, read from
-       PressingCredits.tsx), in its order, a cell each, the brand's mark
-       standing for its name at the footer's tuned height; a credit with
-       no mark is set as its name. Not an entry: it lights nothing */
-    /* typed since his "can we try typing them out and look? something
-       about the logos just look out of place" (30 Sept); ?credits=marks
-       sets the marks again, for comparing */
-    const CR = window.DENSITY_CREDITS || [];
-    const CREDM = (new URLSearchParams(location.search).get("credits") || "").toLowerCase() === "marks" ? "marks" : "names";
-    HTML.dataset.credits = CREDM;
-    if (CR.length) {
-      const cl = el("div", "ecred");
-      CR.forEach((c) => {
-        const r = el("div", "ecr"); r.title = c.name;
-        if (CREDM === "marks" && c.src) {
-          const im = el("img"); im.src = c.src; im.alt = c.name; im.decoding = "async"; im.loading = "lazy";
-          if (c.height) im.style.setProperty("--mh", c.height + "px");
-          if (c.asis) im.classList.add("asis");
-          r.appendChild(im);
-        } else r.appendChild(el("span", "t", esc(c.name)));
-        cl.appendChild(r);
-      });
-      put(cellE("credits", 1, [el("h2", "eh", "<span><b>08</b>" + esc("Worked with, spotted by & featured in") + '</span><span class="n">' + CR.length + "</span>"), cl]));
+       brands"): the live footer's own list, in its order, a cell each,
+       as entries since his "yes link them in the index too" */
+    if (G.credits.items.length) {
+      const cl = el("div", "ecred"); G.credits.items.forEach((o) => cl.appendChild(entryEl(o, "Ecred")));
+      put(cellE("credits", 1, [headE("08", "credits"), cl]));
     }
     return wrap;
   };

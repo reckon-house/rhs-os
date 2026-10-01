@@ -863,17 +863,13 @@ html[data-tx="none"] #idx .stx { display: none; }
 /* its switch takes a line of its own, under Mark */
 .txsw { flex-basis: 100%; justify-content: flex-end; }
 
-/* ── the credits (30 Sept): the footer's brands, a cell each, each mark
-   in ink on the paper at the footer's own tuned height (its 15px unless
-   it says), the one photographed mark left as it is ── */
-/* 40px tall at first; "a tiny bit closer together", 30 Sept */
-[data-ix="e"] .ecr { display: flex; align-items: center; min-height: 33px; }
-[data-ix="e"] .ecr img { display: block; height: var(--mh, 15px); width: auto; max-width: 100%; filter: brightness(0); }
-[data-ix="e"] .ecr img.asis { filter: grayscale(1) contrast(1.15); mix-blend-mode: multiply; }
-/* typed, the default since 30 Sept: a name a cell, in the work list's
-   own type, so the credits read as part of the index */
-[data-ix="e"] .ecr .t { font-weight: 400; letter-spacing: -0.003em; }
-html:not([data-credits="marks"])[data-ix="e"] .ecr { min-height: 0; padding: 0.55em 0 0.6em; }
+/* ── the credits (30 Sept): the footer's brands as entries, a cell each,
+   in the work list's own type (typed, his pick), or each brand's mark in
+   ink under ?credits=marks; one that reaches no study yet is inert ── */
+[data-ix="e"] #idx .e.ecap.ecrd { font-size: inherit; font-weight: 400; letter-spacing: -0.003em; line-height: 1.27; padding: 0.55em 0 0.6em; }
+[data-ix="e"] #idx .e.ecrd.bare { pointer-events: none; }
+[data-ix="e"] #idx .e.ecrd img { display: block; height: var(--mh, 15px); width: auto; max-width: 100%; filter: brightness(0); }
+[data-ix="e"] #idx .e.ecrd img.asis { filter: grayscale(1) contrast(1.15); mix-blend-mode: multiply; }
 
 /* ── the grid (30 Sept, a lever pull, ?grid=on): E's sections ruled into
    cells, fainter than the gutter rules, under everything, so a lit
