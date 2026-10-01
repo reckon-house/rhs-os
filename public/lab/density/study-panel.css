@@ -815,4 +815,16 @@ html:not([data-type="bold"]) .sp .sp-pchl { font-size: 8.5px; font-weight: 700; 
 html:not([data-type="bold"]) .sp .sp-pchl b { font-weight: 700; }
 html:not([data-type="bold"]) .sp .sp-bar-in { font-weight: 500; }
 
-
+/* ── the shoutouts (30 Sept 2026): who posted or wrote about the work, a
+   band of ink under the cover, each verb small and grey, the names in
+   paper; ?press=ticker runs the band as a ticker ── */
+.sp-press { position: relative; overflow: hidden; background: var(--ink); color: var(--paper); }
+.sp-pr-in { display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px 30px; padding: 14px var(--m) 15px; }
+.sp-pr-g { display: inline-flex; flex-wrap: wrap; align-items: baseline; gap: 4px 11px; }
+.sp-pr-h { font-size: 9.5px; font-weight: 600; letter-spacing: 0.14em; line-height: 1.2; text-transform: uppercase; color: rgba(255, 255, 255, 0.55); }
+.sp-pr-n { font-size: clamp(14px, 1.6cqw, 18px); font-weight: 500; letter-spacing: -0.012em; line-height: 1.25; }
+.sp-press.tick .sp-pr-track { display: flex; width: max-content; animation: sp-tick 36s linear infinite; }
+.sp-press.tick .sp-pr-run { display: flex; align-items: baseline; gap: 30px; padding: 14px 15px 15px; white-space: nowrap; }
+.sp-press.tick .sp-pr-g { flex-wrap: nowrap; }
+@keyframes sp-tick { to { transform: translateX(-50%); } }
+@media (prefers-reduced-motion: reduce) { .sp-press.tick .sp-pr-track { animation: none; } }

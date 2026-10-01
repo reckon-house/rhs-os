@@ -579,6 +579,20 @@
   /* ── the room ── */
   const cover = (k) => { const s = D.study(k); return s && s.lead ? { src: s.lead.src, w: s.lead.w, h: s.lead.h, t384: s.lead.t384 || null, t768: s.lead.t768 || null } : null; };
 
+  /* the shoutouts' band: each verb once, its names after it */
+  const PRESS_HOW = { posted: "Posted by", wrote: "Written about by" };
+  const pressBand = (list) => {
+    const gs = [];
+    list.forEach((x) => { let g = gs.find((y) => y.how === x.how); if (!g) gs.push((g = { how: x.how, by: [] })); g.by.push(x.by); });
+    const and = (a) => (a.length < 2 ? a.join("") : a.slice(0, -1).join(", ") + " and " + a[a.length - 1]);
+    const inner = gs.map((g) => '<span class="sp-pr-g"><span class="sp-pr-h">' + esc(PRESS_HOW[g.how] || g.how) + '</span><span class="sp-pr-n">' + esc(and(g.by)) + "</span></span>").join("");
+    const tick = (new URLSearchParams(location.search).get("press") || "").toLowerCase() === "ticker";
+    const b = el("aside", "sp-press" + (tick ? " tick" : ""));
+    if (tick) { const t = el("div", "sp-pr-track"); for (let i = 0; i < 4; i++) t.appendChild(el("div", "sp-pr-run", inner)); b.appendChild(t); }
+    else b.appendChild(el("div", "sp-pr-in", inner));
+    return b;
+  };
+
   function render(container, k, opts) {
     const o = opts || {};
     const M = compose(k);
@@ -1056,6 +1070,15 @@
         if (live) { try { const off = live(box, cv, { still: !mo }); if (typeof off === "function") P.stops.push(off); } catch (e) { /* the cover stays a picture */ } }
       }
       frag.appendChild(cv);
+
+      /* who posted or wrote about the work (30 Sept 2026, his "i'd like to
+         callout the projects that did get the shoutouts...for example this
+         kitchen was posted by crate and barrel, rejuvination and written
+         about by Haven and Vivir home...we need a banner"): a band of ink
+         under the cover, in his own verbs, the names as the credits set
+         them (features.js). ?press=ticker runs it as a ticker */
+      const FE = (window.DENSITY_FEATURES || {})[k];
+      if (FE && FE.length) frag.appendChild(pressBand(FE));
 
       /* the title, the subtitle, and the quiet facts (held in the cover
          above when the room moves as the site does) */
