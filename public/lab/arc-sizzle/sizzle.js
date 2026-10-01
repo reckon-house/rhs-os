@@ -121,11 +121,11 @@
     compares: "A.R.C. compares what you own against your policy limit.",
     gap: "Any gap between your documented total and your coverage shows as a dollar amount.",
     limit: "The policy limit A.R.C. uses is your personal property limit, which you enter yourself.",
-    /* the study's whole-home figure since his note (1 Oct: "73 item home
-       seems low - it's probably 73 items per room ... let's calculate
-       something higher"): eight rooms of 73 at the app's pace, 73 items
-       in under 30 minutes */
-    minutes: "Documenting a 584-item home in A.R.C. takes under four hours.",
+    /* the study's whole-home figure since his notes (1 Oct: "73 item
+       home seems low - it's probably 73 items per room ... let's
+       calculate something higher", and his home's sixteen rooms): 1,168
+       items at the app's pace, 73 items in under 30 minutes */
+    minutes: "Documenting a 1,168-item home in A.R.C. takes under eight hours.",
     weeks: "Ten weeks after the first idea, A.R.C. was live on the App Store.",
   };
 
@@ -404,7 +404,7 @@
       homeShot,
       mixHead(SAY.finK, SAY.compares, { d: 2200, cut: "pinch", ground: "oak" }),
       coverShot,
-      sayShot(SAY.minutes, "under four hours.", { name: "Under four hours", d: 2300, cut: "blink", ground: "olive", drift: true }),
+      sayShot(SAY.minutes, "under eight hours.", { name: "Under eight hours", d: 2300, cut: "blink", ground: "olive", drift: true }),
       pairShot({ name: "Items, documents, reports", d: 6400, cut: "flash", lag: 260,
         left: [{ clip: "item", d: 3400, tag: "Item" }, { clip: "docs", d: 3000, tag: "Document AI" }],
         right: [{ clip: "reports", tag: "Reports" }] }),

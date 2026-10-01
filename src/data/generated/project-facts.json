@@ -513,12 +513,12 @@
      "section": "stats"
     },
     {
-     "value": "64-96 hours",
+     "value": "128-192 hours",
      "label": "Manual Inventory",
      "section": "speed-comparison"
     },
     {
-     "value": "~4 hours",
+     "value": "~8 hours",
      "label": "A.R.C. Documentation",
      "section": "speed-comparison"
     }
@@ -528,7 +528,7 @@
      {
       "facet": "room",
       "term": "kitchen",
-      "n": 15,
+      "n": 16,
       "cites": [
        {
         "section": "meta",
@@ -550,7 +550,7 @@
      {
       "facet": "room",
       "term": "living room",
-      "n": 11,
+      "n": 12,
       "cites": [
        {
         "section": "meta",
@@ -588,6 +588,23 @@
      },
      {
       "facet": "room",
+      "term": "garage",
+      "n": 3,
+      "cites": [
+       {
+        "section": "stats",
+        "field": "items.3.description",
+        "quote": "Most common rooms: Kitchen, Laundry, Garage"
+       },
+       {
+        "section": "stats",
+        "field": "items.7.description",
+        "quote": "Location: Garage, Driveway, Storage"
+       }
+      ]
+     },
+     {
+      "facet": "room",
       "term": "dining room",
       "n": 2,
       "cites": [
@@ -617,23 +634,6 @@
         "section": "stats",
         "field": "items.6.description",
         "quote": "Most common rooms: Office, Display areas"
-       }
-      ]
-     },
-     {
-      "facet": "room",
-      "term": "garage",
-      "n": 2,
-      "cites": [
-       {
-        "section": "stats",
-        "field": "items.3.description",
-        "quote": "Most common rooms: Kitchen, Laundry, Garage"
-       },
-       {
-        "section": "stats",
-        "field": "items.7.description",
-        "quote": "Location: Garage, Driveway, Storage"
        }
       ]
      },

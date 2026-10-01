@@ -883,18 +883,19 @@ export const arcCaseStudy: CaseStudy = {
       id: "usage-header",
       type: "section-header",
       label: "SECTION 09: USAGE DATA",
-      /* A whole home, worked out (his note, 1 Oct 2026: "73 item home
+      /* A whole home, worked out (his notes, 1 Oct 2026: "73 item home
          seems low - it's probably 73 items per room, honestly...let's
-         calculate something higher"). The app's pace stays the study's
-         own, 73 items in under 30 minutes, and by hand 8 to 12 hours for
-         the same 73; a home is eight rooms of 73 (the Sample Home's eight
-         rooms), so 584 items: 8 x 30 minutes is under four hours, and
-         8 x 8-12 hours is 64 to 96. The ratio, 16 to 24 times, is the
-         same. The footnote says how it was worked out. */
-      title: "Documenting a 584-item home",
+         calculate something higher", then the home: "5 bedrooms, living
+         room, kitchen, game room, a garage, 4 closets and 3 bathrooms").
+         The app's pace stays the study's own, 73 items in under 30
+         minutes, and by hand 8 to 12 hours for the same 73; his home is
+         sixteen rooms of 73, so 1,168 items: 16 x 30 minutes is under
+         eight hours, and 16 x 8-12 hours is 128 to 192. The ratio, 16 to
+         24 times, is the same. The footnote says how it was worked out. */
+      title: "Documenting a 1,168-item home",
       pressing: {
         mark: { n: "13", name: "Usage data" },
-        heldLine: "in A.R.C. takes under four hours.",
+        heldLine: "in A.R.C. takes under eight hours.",
         /* Pinned: the headline holds while the reduction numbers travel,
            and the pin reserves ClimbRoom for the plate below. */
         choreo: { pin: true },
@@ -905,7 +906,7 @@ export const arcCaseStudy: CaseStudy = {
       type: "text",
       size: "xl",
       content:
-        "By hand, a 584-item inventory is an estimated 64 to 96 hours of work, so the app is 16 to 24 times faster.",
+        "By hand, a 1,168-item inventory is an estimated 128 to 192 hours of work, so the app is 16 to 24 times faster.",
     },
     {
       id: "usage-footnote",
@@ -913,7 +914,7 @@ export const arcCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "A.R.C. documents 73 items, about one room, in under 30 minutes. The figures above are eight rooms at that pace, by hand and in the app. The usage numbers are V1 figures from launch onward, and it is still early.",
+        "A.R.C. documents 73 items, about one room, in under 30 minutes. The home above is sixteen rooms of 73 items, by hand and in the app: five bedrooms, three bathrooms, four closets, a living room, kitchen, game room and garage. The usage numbers are V1 figures from launch onward, and it is still early.",
     },
     /* ── FLOW PLATE — the last photograph, climbing the usage brief ──
        Moved up over the two charts it used to follow. A chart holds
@@ -944,19 +945,19 @@ export const arcCaseStudy: CaseStudy = {
         mark: { n: "13", name: "Usage data" },
         /* Provenance, not invented. The brief above this chart states it,
            worked out to a whole home (1 Oct 2026, see usage-header):
-           eight rooms of 73 items at the study's own pace. Estimated is
+           his sixteen rooms of 73 items at the study's own pace. Estimated is
            the study's own word and it stays. An earlier draft of this line
            had the manual figure coming from a homeowner and the A.R.C.
            figure from a measured run over the same house; the study says
            neither. */
         caption:
-          "Both bars are for the same 584-item home. The hours by hand " +
+          "Both bars are for the same 1,168-item home. The hours by hand " +
           "are an estimate, and the A.R.C. bar is the app's own pace across the whole home.",
       },
       title: "DOCUMENTATION SPEED",
       items: [
-        { label: "Manual Inventory", value: "64-96 hours", width: 95, color: "#9a9a92" },
-        { label: "A.R.C. Documentation", value: "~4 hours", width: 6, color: "#B1BC94" },
+        { label: "Manual Inventory", value: "128-192 hours", width: 95, color: "#9a9a92" },
+        { label: "A.R.C. Documentation", value: "~8 hours", width: 6, color: "#B1BC94" },
       ],
       callout: "16-24x",
       calloutSuffix: "faster",
