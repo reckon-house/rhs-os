@@ -125,6 +125,17 @@ html:not([data-mark="ink"]) .e.lock { background: var(--ink); box-shadow: 0 0 0 
 .e.lock .t { text-decoration: none; }
 .e.lock .th { opacity: 1 !important; }
 body.staged .e:not(.on):hover .t, body.staged .grp.run .e:not(.on):hover, body.staged .grp.wall .e:not(.on):hover { text-decoration: underline; text-decoration-color: var(--faint); text-underline-offset: 0.2em; }
+/* in E, that underline is drawn (30 Sept, his "it's a grey underline that
+   just sort of 'blinks' in...can we at least have that animate/swipe in?
+   maybe the left to right swipe?"): it sweeps in from the left under
+   every line of the name and leaves to the right, on the grey cell's
+   own curve and time, its weight the type's own (about what an
+   underline of that size would be) */
+html[data-ix="e"]:not([data-mk="bar"]) body.staged #idx .e:not(.on) .t {
+  background-image: linear-gradient(var(--faint), var(--faint)); background-repeat: no-repeat;
+  background-size: 0% max(1px, 0.07em); background-position: 100% 100%;
+  transition: background-size 0.36s cubic-bezier(0.45, 0, 0.2, 1); }
+html[data-ix="e"]:not([data-mk="bar"]) body.staged #idx .e:not(.on):hover .t { text-decoration: none; background-size: 100% max(1px, 0.07em); background-position: 0 100%; }
 
 /* the switch, on the mark's line: four letters */
 .ixtop { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 8px 16px; margin: 0 0 30px; }
