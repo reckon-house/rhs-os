@@ -487,8 +487,10 @@
      figures AI first too"): the marketing brain's scale, the deck that
      went from half a day to three minutes, the home A.R.C. documents in
      about thirty, then Nordstrom's $3M as the one proof from before the
-     AI work. The rest run on in the Figures run */
-  const BIGFIG = ["2,000+ stores", "three minutes", "~30 minutes", "$3M"];
+     AI work. The rest run on in the Figures run. A.R.C.'s is the whole
+     home since 1 Oct (his sixteen rooms, 1,168 items, under eight hours),
+     which replaced the 73-item home's ~30 minutes */
+  const BIGFIG = ["2,000+ stores", "three minutes", "~8 hours", "$3M"];
   /* the homepage lines (entry-lines.js): one line per entry, written for
      this page, used in place of a sentence pulled from a study */
   const LINES = window.ENTRY_LINES || {};
@@ -1368,9 +1370,19 @@
     const r = q === "" || q === "on" ? 4 : q === "off" ? 0 : parseFloat(q);
     if (r > 0 && r <= 40) { HTML.dataset.round = "on"; HTML.style.setProperty("--pr", r + "px"); }
   }
+  /* cards (1 Oct 2026, a lever pull): his xAI Grok Voice references,
+     "these light/warm containers with content in them", then "what would
+     a version on the TOC/index look like with cards? ... if it would make
+     the TOC look a little more modern yet still keep that dense busy
+     look". E as it is, each section a warm card packed tight against the
+     next, the pictures rounded inside them, and an entry the mark lights
+     lifting onto white the way a chip sits in one of those cards. The
+     cell grid stays out of the cards unless asked (?grid=on). ?cards=on */
+  const CARDS = ["on", "1"].includes((new URLSearchParams(location.search).get("cards") || "").toLowerCase());
+  if (CARDS) HTML.dataset.cards = "on";
   const GRIDS = ["off", "on"];
   const QGR = (new URLSearchParams(location.search).get("grid") || "").toLowerCase();
-  let GRID = GRIDS.includes(QGR) ? QGR : "on";
+  let GRID = GRIDS.includes(QGR) ? QGR : CARDS ? "off" : "on";
   HTML.dataset.grid = GRID;
   /* where a node sits inside another, by offsets, so no transform counts */
   const offIn = (node, root) => {
@@ -1386,7 +1398,9 @@
     let out = "";
     eg.querySelectorAll(".grp.ec").forEach((sec) => {
       if (!sec.offsetHeight) return;
-      const s = offIn(sec, eg), x = Math.round(s.x - (lone ? 0 : gap / 2)), w = Math.round(sec.offsetWidth + (lone ? 0 : gap));
+      /* in a card the rules stay inside it, between its own padding */
+      const cs = CARDS ? getComputedStyle(sec) : null, pl = cs ? parseFloat(cs.paddingLeft) || 0 : 0, pr = cs ? parseFloat(cs.paddingRight) || 0 : 0;
+      const s = offIn(sec, eg), x = Math.round(CARDS ? s.x + pl : s.x - (lone ? 0 : gap / 2)), w = Math.round(CARDS ? sec.clientWidth - pl - pr : sec.offsetWidth + (lone ? 0 : gap));
       /* each row: an entry's words, top to foot, less the air it keeps
          under itself; entries on one line are one row */
       const rows = [];

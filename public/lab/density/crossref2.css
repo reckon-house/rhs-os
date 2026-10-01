@@ -972,3 +972,51 @@ html.stack .sh-foot-s { font-size: 14px; }
 html[data-ix="e"] #idx .grp h2.eh { font-size: 8.5px; font-weight: 700; letter-spacing: 0.2em; }
 html[data-ix="e"] #idx .e .kk.caps, html[data-ix="e"] #idx .e .cr.caps { font-size: 8.5px; font-weight: 700; letter-spacing: 0.2em; }
 html[data-ix="e"] #idx .e .dk { font-size: 12px; font-weight: 400; line-height: 1.45; }
+
+/* ════════════════════════════════════════════════════════════════════
+   CARDS (1 Oct 2026, a lever pull, ?cards=on). His references were
+   xAI's Grok Voice pages, "these light/warm containers with content in
+   them", and his ask: "what would a version on the TOC/index look like
+   with cards? ... if it would make the TOC look a little more modern yet
+   still keep that dense busy look". E's sections and order, unchanged;
+   each section is a warm card with no border and no shadow, the cards
+   packed ten pixels apart so the page stays busy, the pictures rounded
+   inside them. What the mark lights lifts onto white, as a chip sits in
+   one of those cards, with no node, since there are no rules for one to
+   sit on. The cell grid stays out of the cards unless ?grid=on.
+   ════════════════════════════════════════════════════════════════════ */
+html[data-cards="on"][data-ix="e"] #idx { --eg: 10px; --card: #F4F3EF; --lift: #fff; }
+html[data-cards="on"][data-ix="e"] .vr { display: none; }
+html[data-cards="on"][data-ix="e"] .ixtop { margin-bottom: 18px; }
+html[data-cards="on"][data-ix="e"] .ecol { gap: 10px; }
+html[data-cards="on"][data-ix="e"] .ecol > .c-feat + .c-feat,
+html[data-cards="on"][data-ix="e"] .ecol:nth-child(3) > .c-feat:first-child,
+html[data-cards="on"][data-ix="e"] .ecol:nth-child(4) > .c-feat:first-child { margin-top: 0; }
+html[data-cards="on"][data-ix="e"] .grp.ec { padding: 15px 15px 13px; border-radius: 18px; background: var(--card); }
+html.stack[data-cards="on"][data-ix="e"] .emas { gap: 10px; }
+/* the section's head inside its card: its number, name and count over a
+   hairline, the ink rule left to the page */
+html[data-cards="on"][data-ix="e"] .grp h2.eh { margin-bottom: 12px; padding-bottom: 7px; background: linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1)) no-repeat 0 100% / 100% 1px; }
+/* a lead study: its picture rounded inside the card */
+html[data-cards="on"][data-ix="e"] .e.ef .kk { border-bottom-color: rgba(0, 0, 0, 0.1); }
+html[data-cards="on"][data-ix="e"] .e.ef .th.fth { border-radius: 11px; }
+html[data-cards="on"][data-ix="e"] .grp.ec .e.el:last-child { padding-bottom: 4px; }
+/* the tools' bars as tracks, the years' pips as dots on the card */
+html[data-cards="on"][data-ix="e"] .e.etool .bar { height: 4px; margin-top: 5px; border-radius: 2px; background: var(--lift); }
+html[data-cards="on"][data-ix="e"] .e.etool .bar i { top: 0; height: 4px; border-radius: 2px; }
+html[data-cards="on"][data-ix="e"] .e.ey .pips i { background: var(--lift); box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.12); }
+html[data-cards="on"][data-ix="e"] body.x .e.ey.on .pips i { box-shadow: none; }
+html[data-cards="on"][data-ix="e"] .e.ew .ld { border-bottom-color: rgba(0, 0, 0, 0.22); }
+
+/* the mark, as a lift: the row's cell fills white and rounds, inside the
+   card's padding, and the node that sat on a column rule goes */
+html[data-cards="on"][data-mk="grey"][data-ix="e"] #idx .grp.ec :is(.e:is(.el, .ef, .ea, .efig) .nr, .e:is(.ew, .etool) .er, .e.ey, .e.ecap)::before {
+  left: -7px; right: -7px; border-radius: 7px; background: var(--lift); }
+html[data-cards="on"][data-mk="grey"][data-ix="e"] #idx .grp.ec :is(.e:is(.el, .ef, .ea, .efig) .nr, .e:is(.ew, .etool) .er, .e.ey, .e.ecap)::after { display: none; }
+html[data-cards="on"][data-mk="grey"][data-ix="e"] #idx .erun .e { background-image: linear-gradient(var(--lift), var(--lift)); border-radius: 4px; }
+html[data-cards="on"][data-mk="cell"][data-ix="e"] #idx .grp.ec :is(.e:is(.el, .ef, .ea, .efig) .nr, .e:is(.ew, .etool) .er, .e.ey, .e.ecap)::before { left: -7px; right: -7px; border-radius: 7px; }
+/* the grid, when asked for, over the cards and inside them */
+html[data-cards="on"] #idx .egrid { z-index: 1; }
+html[data-cards="on"] #idx .egrid i { background: rgba(0, 0, 0, 0.06); }
+/* a card keeps its texture inside its own rounded edge, never in a gap */
+html[data-cards="on"][data-ix="e"] #idx .grp.ec { overflow: hidden; }
