@@ -2,7 +2,9 @@
    files yet, so this is the one place it is kept; his words are the
    source, nothing here is inferred: "this kitchen was posted by crate and
    barrel, rejuvination and written about by Haven and Vivir home". Names
-   as the credits set them (credits.js); how is "posted", "wrote" or,
+   as the credits set them (credits.js); how is "posted", "wrote",
+   "featured" (a feature article, his words for Floor & Decor's on the
+   bath: "that was a feature article by Floor and Decor") or,
    where he named the study but not what was done, "spotted" (his
    heading's own word; his "spotted by works great"). Then: "DWR,
    Lostine: Hill Country home, living room", and "Hill Country home,
@@ -20,8 +22,8 @@ window.DENSITY_FEATURES = {
     { by: "Lostine Home", how: "spotted" },
   ],
   "hill-country-bath": [
+    { by: "Floor & Decor", how: "featured" },
     { by: "Kingston Brass", how: "spotted" },
     { by: "Rejuvenation", how: "spotted" },
-    { by: "Floor & Decor", how: "spotted" },
   ],
 };
