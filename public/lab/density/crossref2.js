@@ -515,6 +515,8 @@
      cell grid stay out unless asked (?texture=on, ?grid=on). ?cards=on */
   const CARDS = ["on", "1"].includes((new URLSearchParams(location.search).get("cards") || "").toLowerCase());
   if (CARDS) HTML.dataset.cards = "on";
+  /* the highlight's colour by eye: ?hl=ece7de (hex, with or without #) */
+  { const hl = (new URLSearchParams(location.search).get("hl") || "").replace(/^#/, ""); if (/^([0-9a-f]{3}|[0-9a-f]{6})$/i.test(hl)) HTML.style.setProperty("--hl", "#" + hl); }
   let THUMBS = [], STRIPS = [], tio = null;
 
   /* a study's board picture, small. It loads when it nears the view; the
@@ -734,8 +736,11 @@
       a.classList.add("w", "ef");
       /* .nr is the name's own row, so a mark can fill the cell around it */
       a.innerHTML = '<span class="kk caps"><span>' + esc(L ? L.l.name : "") + '</span><span class="wn">' + D.num(o.k) + '</span></span><span class="fy">' + mk(D.year(o.k)) + '</span><span class="nr"><span class="t">' + esc(o.label) + "</span></span>";
+      /* the picture first, then the name (1 Oct 2026, his "can we try
+         moving the image first, then headline - flipping them. it might
+         be a little cleaner"): under the line's label, over its name */
       const th = thumb(o.k, "fth");
-      if (th) { th.style.setProperty("--r", Math.max(0.78, Math.min(1.5, ratio(th._f))).toFixed(3)); a.appendChild(th); }
+      if (th) { th.style.setProperty("--r", Math.max(0.78, Math.min(1.5, ratio(th._f))).toFixed(3)); a.insertBefore(th, a.querySelector(".nr")); }
       if (s && s.fact) a.appendChild(el("span", "dk", esc(s.fact)));
       if (s && s.s) a.appendChild(el("span", "cr caps", esc(s.s)));
     } else if (mode === "Ework") {

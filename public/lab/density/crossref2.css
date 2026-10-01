@@ -237,13 +237,15 @@ html.dscroll[data-ix="d"] #idx { display: block; overflow-y: auto; padding-botto
 html.dscroll[data-ix="d"] .dcols { overflow: visible; column-fill: balance; }
 
 /* ── the wires: from each related entry to the thing in focus ── */
-/* the same wires twice (27 Sept): #wiresBack under the index, clipped to
-   the index and its gutter, where the words' paper halos let a wire pass
-   behind them; #wires over the stage, clipped to the stage, so a wire
-   into a shelf or a room lands on the picture */
+/* the same wires twice (27 Sept): #wiresBack over the index, clipped to
+   the index and its gutter; #wires over the stage, clipped to the stage,
+   so a wire into a shelf or a room lands on the picture. #wiresBack ran
+   under the index, the words' paper halos letting a wire pass behind
+   them, until his "let's move the wires to the top index" (1 Oct 2026):
+   it sits over the index now (the same z as #idx, after it in the page) */
 #wires, #wiresBack { position: fixed; inset: 0; width: 100%; height: 100%; pointer-events: none; }
 #wires { z-index: 6; clip-path: inset(0 0 0 var(--stl)); }
-#wiresBack { z-index: 2; clip-path: inset(0 calc(100% - var(--stl)) 0 0); }
+#wiresBack { z-index: 3; clip-path: inset(0 calc(100% - var(--stl)) 0 0); }
 /* a touch darker (27 Sept, his "can we make them just a teeny tiny bit
    dark - just a touch"): 0.13 to 0.17, its own entry's 0.55 to 0.62.
    How they draw in and out is set in crossref2.js (draw, clearWires) */
@@ -254,10 +256,16 @@ html.dscroll[data-ix="d"] .dcols { overflow: visible; column-fill: balance; }
 #wires g.in, #wires g.live, #wiresBack g.in, #wiresBack g.live { opacity: 1; }
 #wires g.live, #wiresBack g.live { transition: none; }
 /* the halo: a hair of paper around every letter in the index, the way a
-   map sets its labels over its roads. It is invisible on paper and only
-   shows as a wire breaking where it passes a word */
+   map sets its labels over its roads, so a wire passing behind a word
+   broke there. The wires run over the index since 1 Oct, so the index
+   sets none: on a lit cell it only showed as a white outline round the
+   words. Kept for the ink mark's runs, which still ask for it */
 :root { --halo: -1px 0 var(--paper), 1px 0 var(--paper), 0 -1px var(--paper), 0 1px var(--paper), -1px -1px var(--paper), 1px 1px var(--paper), -1px 1px var(--paper), 1px -1px var(--paper), 0 0 3px var(--paper); }
-#idx { text-shadow: var(--halo); }
+#idx { text-shadow: none; }
+/* the highlight, one colour for every lit cell and run. A warm beige was
+   tried (1 Oct 2026, #EDE8DF) and he went back: "i like the grey we had
+   more". ?hl= tries another by eye (hex, with or without #) */
+:root { --hl: #ECECEC; }
 .e.lock, html[data-mark="ink"] body.x .e.on { text-shadow: none; }
 
 /* ── the open half at hover ── */
@@ -527,7 +535,10 @@ html:not(.stack)[data-ix="e"] #idx { left: calc(var(--m) - 14px); width: calc(va
 [data-ix="e"] .e.ef .kk { display: block; margin: 0 0 9px; padding: 0 0 5px; border-bottom: 1px solid var(--hair); color: var(--grey); }
 [data-ix="e"] .e.ef .fy { display: block; margin: 0 0 5px -0.035em; font-size: 31px; font-weight: 700; letter-spacing: -0.05em; line-height: 0.92; font-variant-numeric: tabular-nums; }
 [data-ix="e"] .e.ef .t { font-size: 13px; font-weight: 600; letter-spacing: -0.02em; line-height: 1.2; }
-[data-ix="e"] .e.ef .th.fth { width: 100%; height: auto; aspect-ratio: var(--r, 1.4); margin: 10px 0 9px; }
+/* the picture sits under the line's label and over the name (1 Oct), so
+   its air is below it, and the sentence keeps a little from the name */
+[data-ix="e"] .e.ef .th.fth { width: 100%; height: auto; aspect-ratio: var(--r, 1.4); margin: 2px 0 11px; }
+[data-ix="e"] .e.ef .nr + .dk { margin-top: 8px; }
 [data-ix="e"] .e.ef .cr { margin: 7px 0 0; }
 
 /* 02: the rest of the work as a contents list, a leader of dots to the year */
@@ -646,7 +657,7 @@ html[data-mk="cell"][data-ix="e"] body.x #idx .grp.ec .e.on.ey .pips i, html[dat
 html[data-mk="grey"][data-ix="e"] #idx .grp.ec :is(.e .nr, .e .er, .e.ey, .e.ecap) { position: relative; z-index: 0; }
 html[data-mk="grey"][data-ix="e"] #idx .grp.ec :is(.e:is(.el, .ef, .ea, .efig) .nr, .e:is(.ew, .etool) .er, .e.ey, .e.ecap)::before {
   content: ""; position: absolute; z-index: -1; top: calc(-1 * var(--pb)); bottom: calc(-1 * var(--pb)); left: calc(var(--eg) / -2 + 0.5px); right: calc(var(--eg) / -2 + 0.5px);
-  background: #ECECEC; transform: scaleX(0); transform-origin: 100% 50%; transition: transform 0.36s cubic-bezier(0.45, 0, 0.2, 1); pointer-events: none; }
+  background: var(--hl); transform: scaleX(0); transform-origin: 100% 50%; transition: transform 0.36s cubic-bezier(0.45, 0, 0.2, 1); pointer-events: none; }
 html[data-mk="grey"][data-ix="e"] #idx .grp.ec :is(.e:is(.el, .ef, .ea, .efig) .nr, .e:is(.ew, .etool) .er, .e.ey, .e.ecap)::after {
   content: ""; position: absolute; top: 50%; left: calc(var(--eg) / -2 - 2.5px); width: 5px; height: 5px; margin-top: -2.5px; border-radius: 50%;
   background: var(--ink); transform: scale(0); transition: transform 0.3s cubic-bezier(0.2, 0.7, 0.2, 1); pointer-events: none; }
@@ -661,7 +672,7 @@ html[data-mk="grey"][data-ix="e"] #idx .grp.ec :is(.e.lock:is(.el, .ef, .ea, .ef
    TOC"). A run shares its lines, so the grey sits on the words with a
    little room either side rather than filling the cell; the entries a
    hover lights around it stay bold */
-html[data-mk="grey"][data-ix="e"] #idx .erun .e { background-image: linear-gradient(#ECECEC, #ECECEC); box-shadow: none;
+html[data-mk="grey"][data-ix="e"] #idx .erun .e { background-image: linear-gradient(var(--hl), var(--hl)); box-shadow: none;
   padding: 0.12em 0.26em 0.14em; margin: -0.12em -0.26em -0.14em; }
 html[data-mk="grey"][data-ix="e"] body.x #idx .erun .e.on, html[data-mk="grey"][data-ix="e"] #idx .erun .e.lock { color: var(--ink) !important; box-shadow: none; }
 
@@ -854,7 +865,7 @@ html.anim .layer.dark:not(.out) .folio { animation: lift 0.6s var(--ease) 0.25s 
 html[data-ix="f"] #idx .e { background-image: none !important; box-shadow: none !important; padding-inline: 0 !important; margin-inline: 0 !important; -webkit-text-stroke: 0 !important; text-shadow: none !important; }
 html[data-ix="f"] #idx .e.on, html[data-ix="f"] #idx .e.lock { color: var(--ink) !important; }
 html[data-ix="f"] #idx .e :is(.fy, .fd, .fl) { color: var(--grey) !important; }
-html[data-ix="f"] #idx .e .t { background-image: linear-gradient(#ECECEC, #ECECEC); background-repeat: no-repeat; background-size: 0% 100%; background-position: 100% 0;
+html[data-ix="f"] #idx .e .t { background-image: linear-gradient(var(--hl), var(--hl)); background-repeat: no-repeat; background-size: 0% 100%; background-position: 100% 0;
   padding: 0.1em 0.25em 0.12em; margin: -0.1em -0.25em -0.12em; -webkit-box-decoration-break: clone; box-decoration-break: clone;
   transition: background-size 0.3s cubic-bezier(0.45, 0, 0.2, 1); }
 html[data-ix="f"] body.x #idx .e.on .t, html[data-ix="f"] #idx .e.lock .t { background-size: 100% 100%; background-position: 0 0; }
@@ -1024,11 +1035,6 @@ html[data-cards="on"] #idx .egrid { z-index: 1; }
 html[data-cards="on"] #idx .egrid i { background: rgba(0, 0, 0, 0.06); }
 /* a card keeps its texture, when asked for, inside its own rounded edge */
 html[data-cards="on"][data-ix="e"] #idx .grp.ec { overflow: hidden; }
-/* the wires over the cards (his "move the wires so they're above the
-   cards"): the layer that runs under the index rises over it, since a
-   card's fill would hide every wire but the bits in the gaps. Nothing
-   passes behind a word any more, so the paper halo that parted a wire
-   there comes off, and with it every white outline on the type (his
-   "remove all the white outlines around the text") */
-html[data-cards="on"] #wiresBack { z-index: 3; }
-html[data-cards="on"][data-ix="e"] #idx, html[data-cards="on"][data-ix="e"] #idx * { text-shadow: none !important; }
+/* the wires run over the cards and the type has no halo, as on the page
+   itself since 1 Oct; inside a card, nothing even the ink mark asks for */
+html[data-cards="on"][data-ix="e"] #idx * { text-shadow: none !important; }
