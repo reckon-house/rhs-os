@@ -863,6 +863,21 @@ html[data-tx="none"] #idx .stx { display: none; }
 /* its switch takes a line of its own, under Mark */
 .txsw { flex-basis: 100%; justify-content: flex-end; }
 
+/* ── the credits (30 Sept): the footer's brands, a cell each, each mark
+   in ink on the paper at the footer's own tuned height (its 15px unless
+   it says), the one photographed mark left as it is ── */
+[data-ix="e"] .ecr { display: flex; align-items: center; min-height: 40px; }
+[data-ix="e"] .ecr img { display: block; height: var(--mh, 15px); width: auto; max-width: 100%; filter: brightness(0); }
+[data-ix="e"] .ecr img.asis { filter: grayscale(1) contrast(1.15); mix-blend-mode: multiply; }
+[data-ix="e"] .ecr .t { font-size: 15px; font-weight: 500; letter-spacing: -0.01em; }
+
+/* ── the grid (30 Sept, a lever pull, ?grid=on): E's sections ruled into
+   cells, fainter than the gutter rules, under everything, so a lit
+   row's fill covers its cell's rule as a selected cell does ── */
+html[data-grid="on"][data-ix="e"] #idx .eg { isolation: isolate; }
+#idx .egrid { position: absolute; inset: 0; z-index: -1; pointer-events: none; }
+#idx .egrid i { position: absolute; height: 1px; background: rgba(0, 0, 0, 0.075); }
+
 /* ── Faux Reel, running (27 Sept): the product fills whatever box its
    picture would have, over paper, in any layout, the focus and its room */
 sizzle-reel.live { position: absolute !important; inset: 0; width: 100% !important; height: 100% !important; aspect-ratio: auto !important; z-index: 1; }

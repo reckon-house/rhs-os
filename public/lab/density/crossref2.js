@@ -801,6 +801,27 @@
     put(cellE("capabilities", 1, [headE("06", "capabilities"), cl, runE(G.capabilities.items.filter((o) => !tc.includes(o)))]));
     const tl = el("div", "etools"); tt.forEach((o, i) => { const a = entryEl(o, "Etool"); a.style.setProperty("--d", i); tl.appendChild(a); });
     put(cellE("tools", 1, [headE("07", "tools"), tl, runE(G.tools.items.filter((o) => !tt.includes(o)))]));
+    /* 08 the credits (30 Sept 2026, his "we need the section that
+       currently says 'Worked with, spotted by & featured in.' showing the
+       brands"): the live footer's own list (credits.js, read from
+       PressingCredits.tsx), in its order, a cell each, the brand's mark
+       standing for its name at the footer's tuned height; a credit with
+       no mark is set as its name. Not an entry: it lights nothing */
+    const CR = window.DENSITY_CREDITS || [];
+    if (CR.length) {
+      const cl = el("div", "ecred");
+      CR.forEach((c) => {
+        const r = el("div", "ecr"); r.title = c.name;
+        if (c.src) {
+          const im = el("img"); im.src = c.src; im.alt = c.name; im.decoding = "async"; im.loading = "lazy";
+          if (c.height) im.style.setProperty("--mh", c.height + "px");
+          if (c.asis) im.classList.add("asis");
+          r.appendChild(im);
+        } else r.appendChild(el("span", "t", esc(c.name)));
+        cl.appendChild(r);
+      });
+      put(cellE("credits", 1, [el("h2", "eh", "<span><b>08</b>" + esc("Worked with, spotted by & featured in") + '</span><span class="n">' + CR.length + "</span>"), cl]));
+    }
     return wrap;
   };
   /* where the blocks still to place go: every way of sending them to the
@@ -935,7 +956,7 @@
        first version's mark did, so the other three run to the top */
     const cols = IX === "d" && IDX.querySelector(".dcols");
     if (cols) cols.insertBefore(top, cols.firstChild);
-    wireTextures();
+    wireTextures(); wireGrid();
   };
   const setIndex = (x) => {
     if (x === IX || !IXS.includes(x)) return;
@@ -998,7 +1019,7 @@
     const root = HTML.style;
     root.removeProperty("--ts"); root.removeProperty("--lw"); root.removeProperty("--gc");
     root.removeProperty("--fs"); root.removeProperty("--fl"); root.removeProperty("--cols");
-    if (IX === "e") { fitE(); packE(); }
+    if (IX === "e") { fitE(); packE(); gridSoon(); }
     else if (IX === "d") fitD();
     else if (IX === "a") {
       const strips = [...IDX.querySelectorAll(".strip")]; if (!strips.length) return;
@@ -1298,6 +1319,74 @@
     history.replaceState(history.state, "", u.pathname + u.search + u.hash);
     IDX.querySelectorAll(".txsw a").forEach((a) => { const on = a.dataset.tx === x; a.classList.toggle("on", on); if (on) a.setAttribute("aria-current", "true"); else a.removeAttribute("aria-current"); });
     wireTextures();
+  };
+  /* ── THE GRID (30 Sept 2026, a lever pull): his "can we try a super
+     faint grid - so it looks like a spreadsheet with true cells? we're
+     already filling the space with the hover which is nice - i was
+     wondering what it would look like with the lines...FAINT ones". So
+     E's sections are ruled into cells: a faint rule between every row,
+     out to the gutter rules either side, the same cell a row's hover
+     fills, and one more under the last. A run's entries share a rule
+     when they share a line. Drawn from layout, never from rects, so a
+     section still settling in is measured where it will rest; drawn
+     again whenever a section's size moves. Off unless ?grid=on, or
+     XREF.setGrid("on") ── */
+  const GRIDS = ["off", "on"];
+  const QGR = (new URLSearchParams(location.search).get("grid") || "").toLowerCase();
+  let GRID = GRIDS.includes(QGR) ? QGR : "off";
+  HTML.dataset.grid = GRID;
+  /* where a node sits inside another, by offsets, so no transform counts */
+  const offIn = (node, root) => {
+    const at = (n) => { let x = 0, y = 0; while (n) { x += n.offsetLeft; y += n.offsetTop; n = n.offsetParent; } return { x, y }; };
+    const a = at(node), b = at(root); return { x: a.x - b.x, y: a.y - b.y };
+  };
+  const drawGrid = () => {
+    const eg = IDX.querySelector(".eg");
+    let lay = eg && eg.querySelector(":scope > .egrid");
+    if (!eg || GRID !== "on" || IX !== "e") { if (lay) lay.remove(); return; }
+    if (!lay) { lay = el("div", "egrid"); lay.setAttribute("aria-hidden", "true"); eg.prepend(lay); }
+    const gap = parseFloat(getComputedStyle(IDX).getPropertyValue("--eg")) || 20, lone = phone();
+    let out = "";
+    eg.querySelectorAll(".grp.ec").forEach((sec) => {
+      if (!sec.offsetHeight) return;
+      const s = offIn(sec, eg), x = Math.round(s.x - (lone ? 0 : gap / 2)), w = Math.round(sec.offsetWidth + (lone ? 0 : gap));
+      /* each row: an entry's words, top to foot, less the air it keeps
+         under itself; entries on one line are one row */
+      const rows = [];
+      sec.querySelectorAll(".e, .ecr").forEach((e) => {
+        if (!e.offsetHeight) return;
+        const p = offIn(e, eg), pb = parseFloat(getComputedStyle(e).paddingBottom) || 0;
+        rows.push([p.y, p.y + e.offsetHeight - pb]);
+      });
+      rows.sort((a, b) => a[0] - b[0]);
+      const m = [];
+      rows.forEach(([t, b]) => { const r = m[m.length - 1]; if (r && t < r[1] - 2) r[1] = Math.max(r[1], b); else m.push([t, b]); });
+      const gaps = m.slice(1).map((r, i) => r[0] - m[i][1]).filter((g) => g > 0).sort((a, b) => a - b);
+      const half = gaps.length ? gaps[gaps.length >> 1] / 2 : 5;
+      m.forEach((r, i) => {
+        const y = i + 1 < m.length ? (r[1] + m[i + 1][0]) / 2 : r[1] + Math.max(4, half);
+        out += '<i style="left:' + x + "px;width:" + w + "px;top:" + Math.round(y) + 'px"></i>';
+      });
+    });
+    lay.innerHTML = out;
+  };
+  let gridT = 0, gridRO = null;
+  const gridSoon = () => { clearTimeout(gridT); gridT = setTimeout(drawGrid, 40); };
+  const wireGrid = () => {
+    if (gridRO) { gridRO.disconnect(); gridRO = null; }
+    if (GRID === "on" && IX === "e" && "ResizeObserver" in window) {
+      gridRO = new ResizeObserver(gridSoon);
+      IDX.querySelectorAll(".eg, .grp.ec").forEach((n) => gridRO.observe(n));
+    }
+    drawGrid();
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(gridSoon);
+  };
+  const setGrid = (x) => {
+    if (!GRIDS.includes(x) || x === GRID) return;
+    GRID = x; HTML.dataset.grid = x;
+    const u = new URL(location.href); u.searchParams.set("grid", x);
+    history.replaceState(history.state, "", u.pathname + u.search + u.hash);
+    wireGrid();
   };
   /* ── MOTION (27 Sept, his "maybe before we do we do some animation
      explorations? ... put together 5-6 different animations options for
@@ -3155,5 +3244,5 @@
     if (st.v !== "rest") apply(st, { curtain: false });
   };
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(start); else start();
-  window.XREF = { ENTRIES, GROUPS, FIGS, KEYMAP, show, fit, go, setIndex, setMark, setTexture, setMotion, get ix() { return IX; }, get view() { return VIEW; }, get shelf() { return SH; }, get room() { return RM; }, shelves: SHELVES, get layout() { return SH ? SH.lid : layoutId(); }, setShelf: setShelfLayout };
+  window.XREF = { ENTRIES, GROUPS, FIGS, KEYMAP, show, fit, go, setIndex, setMark, setTexture, setMotion, setGrid, get ix() { return IX; }, get view() { return VIEW; }, get shelf() { return SH; }, get room() { return RM; }, shelves: SHELVES, get layout() { return SH ? SH.lid : layoutId(); }, setShelf: setShelfLayout };
 })();
