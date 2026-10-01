@@ -7,6 +7,9 @@ window.DENSITY_CREDITS = [
   "src": "/brands/crate-barrel.svg"
  },
  {
+  "name": "CB2"
+ },
+ {
   "name": "Nordstrom",
   "src": "/brands/nordstrom.svg",
   "height": 12

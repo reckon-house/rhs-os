@@ -8,8 +8,8 @@
    where he named the study but not what was done, "spotted" (his
    heading's own word; his "spotted by works great"). Then: "DWR,
    Lostine: Hill Country home, living room", and "Hill Country home,
-   primary bath: Kingston brass, Rejuvenation, Floor and Decor". Visual
-   Comfort's study waits on him. */
+   primary bath: Kingston brass, Rejuvenation, Floor and Decor", and
+   "Visual comfort, CB2, : The Fairview, foyer". */
 window.DENSITY_FEATURES = {
   "hill-country-kitchen": [
     { by: "Crate & Barrel", how: "posted" },
@@ -25,5 +25,9 @@ window.DENSITY_FEATURES = {
     { by: "Floor & Decor", how: "featured" },
     { by: "Kingston Brass", how: "spotted" },
     { by: "Rejuvenation", how: "spotted" },
+  ],
+  "fairview-entry": [
+    { by: "Visual Comfort", how: "spotted" },
+    { by: "CB2", how: "spotted" },
   ],
 };

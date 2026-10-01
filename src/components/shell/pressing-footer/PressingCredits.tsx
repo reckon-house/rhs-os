@@ -89,6 +89,9 @@ type Credit = {
    edited, not alphabetical or chronological. */
 export const CREDITS: Credit[] = [
   { name: "Crate & Barrel", src: "/brands/crate-barrel.svg" },
+  /* spotted The Fairview's foyer (his note, 30 Sept 2026); no mark yet,
+     so it is set as its name, as Haven is */
+  { name: "CB2" },
   { name: "Nordstrom", src: "/brands/nordstrom.svg", height: 12 },
   { name: "Design Within Reach", src: "/brands/dwr.jpg", height: 17, asis: true },
   { name: "Ivy Park by Beyoncé", src: "/brands/ivy-park.svg" },
