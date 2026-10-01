@@ -1357,6 +1357,16 @@
      again whenever a section's size moves. On since his "i actually
      kinda like the grid!" (30 Sept); ?grid=off, or XREF.setGrid("off"),
      shows the page without it ── */
+  /* soft corners (30 Sept 2026, a lever pull): his reference "ever so
+     slightly rounds the corners of the images - can you see it JUST
+     enough to take the edge off and make it feel slightly soft/modern".
+     ?round=4 (pixels, or on for 4) rounds every picture box a little:
+     the index, the focus, the shelves and the rooms */
+  {
+    const q = (new URLSearchParams(location.search).get("round") || "").toLowerCase();
+    const r = q === "on" ? 4 : parseFloat(q);
+    if (r > 0 && r <= 40) { HTML.dataset.round = "on"; HTML.style.setProperty("--pr", r + "px"); }
+  }
   const GRIDS = ["off", "on"];
   const QGR = (new URLSearchParams(location.search).get("grid") || "").toLowerCase();
   let GRID = GRIDS.includes(QGR) ? QGR : "on";
