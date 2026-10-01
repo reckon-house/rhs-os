@@ -1360,11 +1360,12 @@
   /* soft corners (30 Sept 2026, a lever pull): his reference "ever so
      slightly rounds the corners of the images - can you see it JUST
      enough to take the edge off and make it feel slightly soft/modern".
-     ?round=4 (pixels, or on for 4) rounds every picture box a little:
-     the index, the focus, the shelves and the rooms */
+     Every picture box is rounded a little: the index, the focus, the
+     shelves and the rooms. 4px is his pick ("let's try 4"); ?round=N
+     tries another, ?round=0 shows them square */
   {
     const q = (new URLSearchParams(location.search).get("round") || "").toLowerCase();
-    const r = q === "on" ? 4 : parseFloat(q);
+    const r = q === "" || q === "on" ? 4 : q === "off" ? 0 : parseFloat(q);
     if (r > 0 && r <= 40) { HTML.dataset.round = "on"; HTML.style.setProperty("--pr", r + "px"); }
   }
   const GRIDS = ["off", "on"];

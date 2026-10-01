@@ -883,9 +883,9 @@ html[data-tx="none"] #idx .stx { display: none; }
 [data-ix="e"] #idx .e.ecrd img { display: block; height: var(--mh, 15px); width: auto; max-width: 100%; filter: brightness(0); }
 [data-ix="e"] #idx .e.ecrd img.asis { filter: grayscale(1) contrast(1.15); mix-blend-mode: multiply; }
 
-/* ── soft corners (30 Sept, a lever pull, ?round=4): every picture box
-   rounded just enough to take the edge off, his reference's few pixels;
-   each box already clips its picture ── */
+/* ── soft corners (30 Sept): every picture box rounded just enough to
+   take the edge off, 4px his pick (?round=0 squares them again); each
+   box already clips its picture ── */
 html[data-round="on"] :is(.th, .pic, .tpic, .xs-pic, .xk-pic, .sp-pic) { border-radius: var(--pr, 4px); }
 
 /* ── the grid (30 Sept, a lever pull, ?grid=on): E's sections ruled into
