@@ -252,7 +252,7 @@ export const neimanMarcusCaseStudy: CaseStudy = {
     {
       id: "headline-tone",
       type: "editorial-headline",
-      text: "A story first,\nthen the price",
+      text: "Sometimes the type broke the grid,\nand the shopper was trusted\nto find the price",
     },
 
     // ── TYPOGRAPHY AS SIGNATURE ──
