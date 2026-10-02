@@ -11,6 +11,8 @@ rewrites.
 - `colorfest.html`: Colorfest (concept 4), with the only-at-Sally brands as the festival lineup
 - `pride.html`: the Pride takeover (concept 6), the looks on cards in their own shades, the $250,000 pledge as the one number
 - `the-color-issue.html`: The Edit (concept 10) as a magazine issue
+- `lookbook.html`: The Lookbook (concept 11), ten numbered looks on an offset grid, captioned with his shade names and codes
+- `punch-volume.html`, `punch-candy.html`, `punch-soft-pop.html`: the punch emails, one chassis leaning on type, color and charm
 - `the-gloss.html`, `the-sale.html`: the editorial and sale emails
 - `push.css`: tokens, type, both layouts; the vivid shades (violet, teal, cherry, blue) are sampled from his photographs
 
