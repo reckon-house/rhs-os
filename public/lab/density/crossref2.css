@@ -274,9 +274,13 @@ html.dscroll[data-ix="d"] .dcols { overflow: visible; column-fill: balance; }
 .e.lock, html[data-mark="ink"] body.x .e.on { text-shadow: none; }
 
 /* ── the open half at hover ── */
-#field { position: fixed; top: 0; right: 0; bottom: 0; left: var(--stl); z-index: 1; background: var(--fc, var(--paper));
-  clip-path: inset(100% 0 0 0); transition: clip-path 0.55s var(--ease); }
-#field.on { clip-path: inset(0 0 0 0); }
+/* the field sits in the site's margin with the pictures' corner (1 Oct
+   2026, his "can we make the black flood here have padding like the
+   images? also the slight radius too?"): 20px off the top, right and
+   foot, flush with the open half's left edge as a shelf's pictures are */
+#field { position: fixed; top: var(--m); right: var(--m); bottom: var(--m); left: var(--stl); z-index: 1; background: var(--fc, var(--paper));
+  clip-path: inset(100% 0 0 0 round var(--pr, 4px)); transition: clip-path 0.55s var(--ease); }
+#field.on { clip-path: inset(0 0 0 0 round var(--pr, 4px)); }
 #focus { position: fixed; top: var(--m); right: var(--m); bottom: var(--m); left: calc(var(--m) + var(--idxw) + var(--gut)); z-index: 4;
   transition: opacity 0.28s ease; }
 body.staged #focus { opacity: 0; pointer-events: none; }
@@ -997,13 +1001,14 @@ html.stack .sh-foot-t.stand { flex-basis: 100%; }
 .layer.home::-webkit-scrollbar { display: none; }
 .layer.home .main { max-width: none; }
 /* --peek is how much of the paper foot shows at the bottom of the
-   cover's screen. The cover keeps its words above it (1 Oct 2026): the
-   contact links used to fill that strip, under the paper, and when they
-   moved to the head the statement's last line slid in under it */
-.layer.home { --peek: 44px; }
+   cover's screen: the site's margin, since the black became a card in it
+   (1 Oct 2026; it was 44px). The cover keeps its words above it */
+.layer.home { --peek: var(--m); }
 .hm-cover { position: relative; box-sizing: border-box; display: flex; flex-direction: column; justify-content: flex-end; align-items: flex-start;
-  height: 100vh; height: 100dvh; padding: var(--m) var(--m) calc(var(--m) + var(--peek)) calc(var(--gut) / 2); }
-.layer.home .folio { top: var(--m); left: calc(var(--gut) / 2); right: var(--m); }
+  height: 100vh; height: 100dvh; padding: var(--m) calc(var(--m) * 2) calc(var(--m) + var(--peek)) calc(var(--gut) / 2); }
+/* the words keep 20px inside the black: the head's links a margin below
+   its top edge, the statement a margin above its foot */
+.layer.home .folio { top: calc(var(--m) * 2); left: calc(var(--gut) / 2); right: calc(var(--m) * 2); }
 .hm-foot { min-height: calc(100vh - var(--peek)); min-height: calc(100dvh - var(--peek)); background: var(--paper); color: var(--ink); box-shadow: 0 calc(-1 * var(--peek)) 0 var(--paper); }
 
 /* ── NUMBER LABELS (27 Sept, his "there are a lot of number labels on
