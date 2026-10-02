@@ -252,7 +252,7 @@ export const neimanMarcusCaseStudy: CaseStudy = {
     {
       id: "headline-tone",
       type: "editorial-headline",
-      text: "Sometimes the type broke the grid,\nand the shopper was trusted\nto find the price",
+      text: "InSite told fashion stories\non the Neiman Marcus website\nthe way a magazine would",
     },
 
     // ── TYPOGRAPHY AS SIGNATURE ──
