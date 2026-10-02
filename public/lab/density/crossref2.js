@@ -1194,8 +1194,12 @@
        keep the node? but maybe the node is a circle vs a square?" (27
        Sept): the cell's fill in a light grey, the words staying ink, and
        a circle of ink on the rule at the row's left edge.
-     The runs of capabilities, tools and figures stay bold in all four. */
-  const MKS = ["grey", "cell", "bar", "node"];
+     The runs of capabilities, tools and figures stay bold in all four.
+     - box (1 Oct 2026, ?mark=box): his "can we try filling the entire
+       'section' when things are selected or highlighted? right now it's
+       just the headline...let's try the entire box". The grey's fill and
+       its node, the fill now the whole entry. */
+  const MKS = ["grey", "cell", "bar", "node", "box"];
   let MK = MKS.includes(QMARK) ? QMARK : QMARK === "ink" ? "bar" : "grey";
   HTML.dataset.mk = MK;
   const setMark = (x) => {
