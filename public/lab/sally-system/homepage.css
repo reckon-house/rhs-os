@@ -1,0 +1,1437 @@
+/* ============================================================
+   SALLY BEAUTY — Homepage content concepts (web scale)
+   Inherits fonts + tokens from styles.css. Web-native layout
+   in the email system's visual language. Site header/footer
+   injected by site-header.js / site-footer.js.
+   ============================================================ */
+
+body{ margin:0; background:#fff; }
+
+.hp{
+  font-family:var(--sb-sans);
+  color:var(--sb-ink);
+  background:#FFFFFF;
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+}
+
+/* ============================================================
+   ADA / WCAG AA CONTRAST PASS  (homepage surface only)
+   Scoped here because email pages never load homepage.css, so the
+   approved email values are untouched.
+
+   1. Lightest text tier (--sb-ink-45) measured ~2.8-3.1:1 on the
+      warm tints — below the 4.5:1 AA floor for small text. Darkened
+      to .64 alpha => >=4.65:1 on every field. The "muted" read now
+      comes from CAPS + tracking + size, not lightness alone.
+   2. Small RED text (eyebrows, tags, kicker labels) fell to 3.3-4.3:1
+      on tinted fields. Small red text uses the deeper scarlet
+      (--sb-red-deep, >=4.76:1 everywhere). Red FILLS, white-on-red
+      CTAs (4.86:1) and LARGE headline emphasis keep brand scarlet.
+   ============================================================ */
+:root{ --sb-ink-45: rgba(28,20,19,.64); }
+.hp-eyebrow.red,
+.hp-howto-tag,
+.hp-kit-total .save,
+.hp-step,
+.hp-svc .lbl b,
+.hp-mosaic-copy .kicker,
+.hp-tabcard .tag{ color:var(--sb-red-deep); }
+.hp *{ box-sizing:border-box; }
+.hp img{ display:block; max-width:100%; }
+/* Packshot tile = the exact background our product photos are shot on (#F1F0ED),
+   so the product's own background blends into the tile with no visible inner edge. */
+.hp{ --sb-sku-tile:#F1F0ED; }
+
+/* layout shells */
+.hp-section{ width:100%; }
+.hp-inner{ max-width:1360px; margin:0 auto; padding:96px 48px; }
+.hp-inner.tight{ padding:72px 48px; }
+
+/* shared atoms (web scale) */
+.hp-eyebrow{
+  font-family:var(--sb-mono); font-size:12px; font-weight:500;
+  letter-spacing:.2em; text-transform:uppercase; color:var(--sb-ink-45); margin:0;
+}
+.hp-eyebrow.red{ color:var(--sb-red); }
+.hp-h{
+  font-family:var(--sb-ed-display); font-weight:300; letter-spacing:-.02em;
+  line-height:1.02; color:var(--sb-ink); margin:0; text-wrap:balance;
+}
+.hp-h em{ font-style:normal; font-weight:600; }
+.hp-body{
+  font-family:var(--sb-cond); font-weight:400; font-size:19px; line-height:1.5;
+  color:var(--sb-ink-70); margin:0; text-wrap:pretty;
+}
+.hp-btn{
+  display:inline-flex; align-items:center; justify-content:center;
+  background:var(--sb-ink); color:#fff; text-decoration:none;
+  font-family:var(--sb-sans); font-size:14px; font-weight:600; letter-spacing:.01em;
+  padding:16px 34px; border-radius:var(--sb-btn-radius); line-height:1;
+}
+.hp-link{
+  display:inline-flex; align-items:center; gap:9px; text-decoration:none;
+  color:var(--sb-ink); font-family:var(--sb-sans); font-size:14px; font-weight:600;
+  letter-spacing:.01em;
+}
+.hp-link .arr{ color:var(--sb-ink); transition:transform .3s cubic-bezier(.16,1,.3,1); }
+.hp-link:hover .arr{ transform:translateX(4px); }
+
+.hp-head{ display:flex; align-items:flex-end; justify-content:space-between; gap:24px; margin-bottom:42px; }
+.hp-head .hp-eyebrow{ margin-bottom:14px; }
+.hp-head .hp-h{ font-size:42px; }
+
+/* ---- tone fields ---- */
+.t-oat{ background:#FFFFFF; }           /* default = white (matches the live site) */
+.t-paper{ background:#FFFFFF; }
+.t-cream{ background:var(--sb-cream); }
+.t-shell{ background:var(--sb-shell); }
+.t-rose{ background:var(--sb-rose); }
+.t-blush{ background:var(--sb-blush); }
+.t-sand{ background:var(--sb-sandn); }
+
+/* ============================================================
+   HERO — split: full-bleed photo + copy panel (copy off image)
+   ============================================================ */
+.hp-hero{ display:grid; grid-template-columns:1fr 1fr; min-height:640px; }
+.hp-hero-img{ position:relative; overflow:hidden; background:var(--sb-blush); }
+.hp-hero-img img{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
+.hp-hero-copy{
+  background:var(--sb-cream); display:flex; flex-direction:column;
+  justify-content:center; align-items:flex-start; padding:80px 72px;
+}
+.hp-hero-copy .hp-eyebrow{ margin-bottom:22px; }
+.hp-hero-copy .hp-h{ font-size:68px; margin-bottom:24px; }
+.hp-hero-copy .hp-body{ font-size:21px; max-width:30ch; margin-bottom:34px; }
+
+/* ---- slim promo strip (the one red moment) ---- */
+.hp-promo{
+  background:var(--sb-red); color:#fff; text-align:center;
+  padding:15px 24px; display:flex; align-items:center; justify-content:center;
+  gap:18px; flex-wrap:wrap;
+}
+.hp-promo .big{
+  font-family:var(--sb-cond); font-size:18px; font-weight:500;
+  letter-spacing:.02em; text-transform:uppercase;
+}
+.hp-promo .sub{ font-family:var(--sb-mono); font-size:12px; letter-spacing:.16em; text-transform:uppercase; opacity:.85; }
+
+/* ============================================================
+   CATEGORY GRID — shop by aisle
+   ============================================================ */
+.hp-cats{ display:grid; grid-template-columns:repeat(6,1fr); gap:20px; }
+.hp-cat{ text-decoration:none; color:var(--sb-ink); }
+.hp-cat-pic{
+  aspect-ratio:3/4; overflow:hidden; background:var(--sb-sku-tile);
+  border-radius:var(--sb-pic-radius); margin-bottom:16px;
+}
+.hp-cat-pic img{ width:100%; height:100%; object-fit:cover; transition:transform .5s cubic-bezier(.16,1,.3,1); }
+.hp-cat:hover .hp-cat-pic img{ transform:scale(1.04); }
+.hp-cat-label{ font-family:var(--sb-cond); font-weight:500; font-size:18px; letter-spacing:-.01em; text-align:center; }
+.hp-cat-sub{ font-family:var(--sb-mono); font-size:11px; letter-spacing:.12em; text-transform:uppercase; color:var(--sb-ink-45); text-align:center; margin-top:5px; }
+
+/* ============================================================
+   PRODUCT ROW — trending SKUs
+   ============================================================ */
+.hp-prods{ display:grid; grid-template-columns:repeat(4,1fr); gap:28px; }
+.hp-prod{ text-decoration:none; color:var(--sb-ink); }
+.hp-prod-pic{
+  aspect-ratio:1/1; overflow:hidden; background:var(--sb-sku-tile);
+  border-radius:var(--sb-pic-radius); margin-bottom:18px;
+}
+.hp-prod-pic img{ width:100%; height:100%; object-fit:cover; transition:transform .5s cubic-bezier(.16,1,.3,1); }
+.hp-prod:hover .hp-prod-pic img{ transform:scale(1.04); }
+.hp-prod-tag{ font-family:var(--sb-mono); font-size:11px; font-weight:500; letter-spacing:.14em; text-transform:uppercase; color:var(--sb-ink-45); margin:0 0 7px; }
+.hp-prod-name{ font-family:var(--sb-sans); font-size:16px; font-weight:500; line-height:1.3; letter-spacing:-.01em; margin:0 0 6px; text-wrap:pretty; min-height:2.6em; }
+.hp-prod-price{ font-family:var(--sb-sans); font-size:15px; font-weight:600; color:var(--sb-ink); margin:0; }
+
+/* ============================================================
+   EDITORIAL BAND — brand / education moment
+   ============================================================ */
+.hp-ed{ display:grid; grid-template-columns:1fr 1fr; align-items:stretch; min-height:560px; }
+.hp-ed.flip .hp-ed-img{ order:2; }
+.hp-ed-img{ position:relative; overflow:hidden; background:var(--sb-blush); }
+.hp-ed-img img{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
+.hp-ed-copy{ display:flex; flex-direction:column; justify-content:center; padding:88px 80px; }
+.hp-ed-copy .hp-eyebrow{ margin-bottom:24px; }
+.hp-ed-copy .hp-h{ font-size:54px; margin-bottom:26px; }
+.hp-ed-copy .hp-body{ max-width:38ch; margin-bottom:34px; }
+
+/* ============================================================
+   SHOP THE LOOK — lifestyle, look-led (no price)
+   ============================================================ */
+.hp-looks{ display:grid; grid-template-columns:repeat(3,1fr); gap:24px; }
+.hp-look{ text-decoration:none; color:var(--sb-ink); }
+.hp-look-pic{
+  aspect-ratio:4/5; overflow:hidden; background:var(--sb-sku-tile);
+  border-radius:var(--sb-pic-radius); margin-bottom:18px;
+}
+.hp-look-pic img{ width:100%; height:100%; object-fit:cover; transition:transform .5s cubic-bezier(.16,1,.3,1); }
+.hp-look:hover .hp-look-pic img{ transform:scale(1.04); }
+.hp-look-tag{ font-family:var(--sb-mono); font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:var(--sb-red); margin:0 0 8px; }
+.hp-look-name{ font-family:var(--sb-cond); font-weight:400; font-size:24px; line-height:1.1; letter-spacing:-.01em; margin:0 0 12px; }
+
+/* ============================================================
+   REWARDS BAND — wide statement + CTA
+   ============================================================ */
+.hp-rewards{ display:grid; grid-template-columns:1fr 1fr; align-items:stretch; min-height:480px; }
+.hp-rewards-copy{ display:flex; flex-direction:column; justify-content:center; padding:80px 72px; }
+.hp-rewards-copy .hp-eyebrow{ margin-bottom:22px; }
+.hp-rewards-copy .hp-h{ font-size:56px; margin-bottom:24px; }
+.hp-rewards-copy .hp-body{ max-width:34ch; margin-bottom:32px; }
+.hp-rewards-img{ position:relative; overflow:hidden; background:var(--sb-blush); }
+.hp-rewards-img img{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width:1100px){
+  .hp-inner{ padding:72px 32px; }
+  .hp-cats{ grid-template-columns:repeat(3,1fr); }
+  .hp-prods{ grid-template-columns:repeat(2,1fr); }
+  .hp-hero-copy .hp-h{ font-size:54px; }
+}
+@media (max-width:760px){
+  .hp-inner{ padding:56px 22px; }
+  .hp-hero,.hp-ed,.hp-ed.flip .hp-ed-img,.hp-rewards{ grid-template-columns:1fr; }
+  .hp-hero-img,.hp-ed-img,.hp-rewards-img{ min-height:420px; }
+  .hp-ed.flip .hp-ed-img{ order:0; }
+  .hp-hero-copy,.hp-ed-copy,.hp-rewards-copy{ padding:48px 28px; }
+  .hp-hero-copy .hp-h{ font-size:44px; }
+  .hp-ed-copy .hp-h,.hp-rewards-copy .hp-h{ font-size:40px; }
+  .hp-cats{ grid-template-columns:repeat(2,1fr); }
+  .hp-looks{ grid-template-columns:1fr; }
+  .hp-head{ flex-direction:column; align-items:flex-start; gap:16px; }
+  .hp-head .hp-h{ font-size:34px; }
+}
+
+/* ============================================================
+   CARD SYSTEM — modular slot-in cards (concept 2)
+   The atomic unit: image + tinted caption. Business slots any
+   campaign into any row. Tones pop on the oat page; red tag/
+   emphasis = limited-time/promo, ink = evergreen.
+   ============================================================ */
+.hpc-row{ display:grid; gap:24px; }
+.hpc-row.cols-2{ grid-template-columns:repeat(2,1fr); }
+.hpc-row.cols-3{ grid-template-columns:repeat(3,1fr); }
+.hpc-row.cols-4{ grid-template-columns:repeat(4,1fr); }
+.hpc-row + .hpc-row{ margin-top:24px; }
+
+.hpc-card{
+  display:flex; flex-direction:column; text-decoration:none; color:var(--sb-ink);
+  border-radius:var(--sb-pic-radius); overflow:hidden; background:var(--sb-cream);
+}
+.hpc-card.t-cream{ background:var(--sb-cream); }
+.hpc-card.t-shell{ background:var(--sb-shell); }
+.hpc-card.t-rose{ background:var(--sb-rose); }
+.hpc-card.t-blush{ background:var(--sb-blush); }
+.hpc-card.t-sand{ background:var(--sb-sandn); }
+
+.hpc-card-pic{ position:relative; aspect-ratio:4/3; overflow:hidden; background:var(--sb-sku-tile); }
+.hpc-card-pic img{ width:100%; height:100%; object-fit:cover; transition:transform .6s cubic-bezier(.16,1,.3,1); }
+.hpc-card:hover .hpc-card-pic img{ transform:scale(1.04); }
+
+.hpc-cap{ display:flex; flex-direction:column; align-items:flex-start; flex:1; padding:28px 30px 30px; }
+.hpc-tag{
+  font-family:var(--sb-mono); font-size:11px; font-weight:500; letter-spacing:.14em;
+  text-transform:uppercase; padding:5px 11px; border-radius:7px; margin-bottom:16px;
+  background:var(--sb-ink); color:#fff; line-height:1;
+}
+.hpc-tag.red{ background:var(--sb-red); }
+.hpc-tag.soft{ background:rgba(28,20,19,.07); color:var(--sb-ink-70); }
+.hpc-cap-h{ font-family:var(--sb-ed-display); font-weight:300; font-size:27px; line-height:1.05; letter-spacing:-.015em; margin:0 0 10px; text-wrap:balance; }
+.hpc-cap-h em{ font-style:normal; font-weight:600; }
+.hpc-card.promo .hpc-cap-h em{ color:var(--sb-red); }
+.hpc-cap-sub{ font-family:var(--sb-cond); font-weight:400; font-size:17px; line-height:1.45; color:var(--sb-ink-70); margin:0 0 22px; }
+.hpc-cap .hp-link{ margin-top:auto; }
+
+/* FEATURE ROW — the hero-replacement card row. One row of 3 LARGE
+   cards: near full-bleed container, tall portrait photo, hero-scale
+   caption type. Reads as the page's statement, not a tile strip. */
+.hp-inner.feature-wide{ max-width:none; padding:28px; }
+.hpc-row.feature .hpc-card-pic{ aspect-ratio:4/5; }
+.hpc-row.feature .hpc-cap{ padding:34px 36px 38px; }
+.hpc-row.feature .hpc-cap-h{ font-size:40px; }
+.hpc-row.feature .hpc-cap-sub{ font-size:19px; }
+
+/* wide 2-up: image + caption side by side */
+.hpc-card.wide{ flex-direction:row; align-items:stretch; }
+.hpc-card.wide .hpc-card-pic{ aspect-ratio:auto; width:50%; min-height:340px; }
+.hpc-card.wide .hpc-cap{ width:50%; justify-content:center; padding:48px 46px; }
+.hpc-card.wide .hpc-cap-h{ font-size:36px; }
+.hpc-card.wide .hpc-cap-sub{ font-size:18px; max-width:32ch; }
+
+@media (max-width:1100px){
+  .hpc-row.cols-4{ grid-template-columns:repeat(2,1fr); }
+}
+@media (max-width:760px){
+  .hpc-row.cols-2,.hpc-row.cols-3,.hpc-row.cols-4{ grid-template-columns:1fr; }
+  .hpc-row.feature .hpc-card-pic{ aspect-ratio:1/1; }
+  .hpc-row.feature .hpc-cap{ padding:24px 26px 28px; }
+  .hp-inner.feature-wide{ padding:22px; }
+  .hpc-card.wide{ flex-direction:column; }
+  .hpc-card.wide .hpc-card-pic,.hpc-card.wide .hpc-cap{ width:100%; }
+  .hpc-card.wide .hpc-card-pic{ aspect-ratio:4/3; min-height:0; }
+  .hpc-card.wide .hpc-cap{ padding:32px 28px; }
+
+  /* Concept 3 feature row → swipe carousel on mobile (opt-in via .swipe-mobile;
+     reuses the deals-rail scroll-snap pattern so nothing else is affected). */
+  .hp-svcbar.swipe-mobile{
+    display:flex; grid-template-columns:none; gap:14px;
+    overflow-x:auto; scroll-snap-type:x mandatory;
+    -webkit-overflow-scrolling:touch; scrollbar-width:none;
+    margin:0 -22px; padding:0 22px 4px;
+  }
+  .hp-svcbar.swipe-mobile::-webkit-scrollbar{ display:none; }
+  .hp-svcbar.swipe-mobile .hp-svc{ flex:0 0 80%; scroll-snap-align:center; }
+}
+
+/* ============================================================
+   SERVICE BAR — value props (delivery / pickup / advice)
+   ============================================================ */
+.hp-svcbar{ display:grid; grid-template-columns:repeat(3,1fr); gap:20px; }
+.hp-svc{
+  display:flex; align-items:center; gap:16px;
+  background:var(--sb-cream); border-radius:var(--sb-pic-radius);
+  padding:22px 28px; text-decoration:none; color:var(--sb-ink);
+}
+.hp-svc svg{ width:30px; height:30px; stroke:var(--sb-red); fill:none; stroke-width:1.6; stroke-linecap:round; stroke-linejoin:round; flex:0 0 auto; }
+.hp-svc .lbl{ font-family:var(--sb-sans); font-size:16px; font-weight:600; letter-spacing:-.01em; line-height:1.25; }
+.hp-svc .lbl b{ color:var(--sb-red); font-weight:700; }
+.hp-svc .sub{ font-family:var(--sb-cond); font-size:15px; color:var(--sb-ink-70); margin-top:2px; }
+.hp-svc .sub a{ color:var(--sb-ink); text-decoration:underline; }
+
+/* ============================================================
+   SHOPPABLE PRODUCT CARD — brand / name / price / rating / CTA
+   ============================================================ */
+.hp-shop{ display:grid; grid-template-columns:repeat(5,1fr); gap:24px; }
+.hp-shopcard{ display:flex; flex-direction:column; text-decoration:none; color:var(--sb-ink); }
+.hp-shopcard a{ color:inherit; text-decoration:none; }
+.hp-shopcard-pic{
+  aspect-ratio:1/1; overflow:hidden; background:var(--sb-sku-tile);
+  border-radius:var(--sb-pic-radius); margin-bottom:16px; position:relative;
+}
+.hp-shopcard-pic img{ width:100%; height:100%; object-fit:cover; transition:transform .5s cubic-bezier(.16,1,.3,1); }
+/* New arrivals: lighten packshot tile + image so the cool packshot bg doesn't clash with the warm cream field */
+[data-screen-label="New arrivals"] .hp-shopcard-pic{ background:#FAF9F5; }
+[data-screen-label="New arrivals"] .hp-shopcard-pic img{ filter:brightness(1.04); }
+.hp-shopcard:hover .hp-shopcard-pic img{ transform:scale(1.04); }
+.hp-shop-brand{ font-family:var(--sb-mono); font-size:11px; font-weight:500; letter-spacing:.14em; text-transform:uppercase; color:var(--sb-ink-45); margin:0 0 7px; }
+.hp-shop-name{ font-family:var(--sb-sans); font-size:15px; font-weight:500; line-height:1.32; letter-spacing:-.01em; margin:0 0 10px; text-wrap:pretty; min-height:2.64em; }
+.hp-shop-price{ font-family:var(--sb-sans); font-size:16px; font-weight:700; color:var(--sb-ink); margin:0 0 4px; }
+.hp-shop-price .bogo{ display:block; font-family:var(--sb-mono); font-size:11px; font-weight:500; letter-spacing:.08em; text-transform:uppercase; color:var(--sb-red); margin-top:4px; }
+.hp-rating{ display:flex; align-items:center; gap:7px; margin:6px 0 16px; }
+.hp-stars{ display:inline-flex; gap:1px; color:var(--sb-ink); }
+.hp-stars svg{ width:13px; height:13px; }
+.hp-stars .empty{ color:var(--sb-ink-15); }
+.hp-rating .count{ font-family:var(--sb-mono); font-size:11px; letter-spacing:.06em; color:var(--sb-ink-45); }
+.hp-addbag{
+  margin-top:auto; display:inline-flex; align-items:center; justify-content:center;
+  border:1.5px solid var(--sb-ink); border-radius:var(--sb-btn-radius);
+  padding:12px 18px; font-family:var(--sb-sans); font-size:13px; font-weight:600;
+  letter-spacing:.02em; color:var(--sb-ink); text-decoration:none; background:transparent;
+  transition:background .25s ease,color .25s ease;
+}
+.hp-addbag:hover{ background:var(--sb-ink); color:#fff; }
+
+/* ============================================================
+   DEAL CARD — tinted tile + deal name (no price)
+   ============================================================ */
+.hp-deals{ display:grid; grid-template-columns:repeat(4,1fr); gap:24px; }
+.hp-deal{ text-decoration:none; color:var(--sb-ink); }
+.hp-deal-pic{
+  aspect-ratio:1/1; overflow:hidden; background:var(--sb-sku-tile);
+  border-radius:var(--sb-pic-radius); margin-bottom:16px;
+}
+.hp-deal-pic img{ width:100%; height:100%; object-fit:cover; transition:transform .5s cubic-bezier(.16,1,.3,1); }
+.hp-deal:hover .hp-deal-pic img{ transform:scale(1.04); }
+.hp-deal-name{ font-family:var(--sb-cond); font-weight:500; font-size:19px; line-height:1.2; letter-spacing:-.01em; margin:0; text-wrap:pretty; min-height:2.4em; }
+/* Deals is a promo moment — headline scarlet (large, ADA-safe), offer text red-deep
+   (small text → AA on tints), matching the Cards carousel. Applies to every concept. */
+[data-screen-label="Can't-miss deals"] .hp-h{ color:var(--sb-red); }
+[data-screen-label="Can't-miss deals"] .hp-deal-name{ color:var(--sb-red-deep); }
+
+/* ============================================================
+   CIRCULAR CATEGORY TILES
+   ============================================================ */
+.hp-circles{ display:grid; grid-template-columns:repeat(6,1fr); gap:20px; }
+.hp-circle{ text-decoration:none; color:var(--sb-ink); text-align:center; }
+.hp-circle-pic{
+  aspect-ratio:3/4; border-radius:var(--sb-pic-radius); overflow:hidden; background:var(--sb-sku-tile);
+  margin-bottom:16px; position:relative;
+}
+.hp-circle-pic img{ width:100%; height:100%; object-fit:cover; transition:transform .6s cubic-bezier(.16,1,.3,1); }
+.hp-circle:hover .hp-circle-pic img{ transform:scale(1.05); }
+.hp-circle-pic .badge{
+  position:absolute; left:50%; transform:translateX(-50%);
+  top:calc(100% - 66px); width:180%; aspect-ratio:1/1; border-radius:50%;
+  background:var(--sb-red); color:#fff; overflow:hidden;
+  display:flex; align-items:flex-start; justify-content:center; padding-top:19px;
+  text-align:center; text-transform:uppercase; letter-spacing:.04em;
+  font-family:var(--sb-sans); font-size:11px; font-weight:700; line-height:1.15;
+}
+.hp-circle-pic .badge span{ display:block; max-width:15ch; }
+.hp-circle-label{ font-family:var(--sb-cond); font-weight:500; font-size:17px; letter-spacing:-.01em; }
+
+/* ============================================================
+   CONCEPT 2 ADDITIONS — A/B order toggle, delivery differentiator
+   band, and the "Why Sally" trio. (Partner feedback: category high
+   above deals; make 2-hour delivery + differentiators pop.)
+   ============================================================ */
+/* A/B layout toggle — a design-review affordance, not real chrome */
+.hp-abbar{
+  display:flex; align-items:center; justify-content:flex-end; gap:16px;
+  padding:14px 48px; background:var(--sb-oat);
+  border-bottom:1px solid rgba(28,20,19,.1);
+}
+.hp-abbar .lbl{ font-family:var(--sb-mono); font-size:11px; letter-spacing:.16em; text-transform:uppercase; color:var(--sb-ink); }
+.hp-abseg{ display:flex; background:#fff; border-radius:999px; padding:4px; box-shadow:inset 0 0 0 1px rgba(28,20,19,.12); }
+.hp-abseg button{
+  appearance:none; border:0; cursor:pointer; background:none; border-radius:999px;
+  font-family:var(--sb-sans); font-size:13px; font-weight:600; padding:8px 18px; color:var(--sb-ink);
+  transition:background-color .25s ease, color .25s ease;
+}
+.hp-abseg button.active{ background:var(--sb-ink); color:#fff; }
+
+/* swap wrapper — flips category vs deals order on toggle */
+.hp-swap{ display:flex; flex-direction:column; }
+.hp-swap.deals-first .swap-deals{ order:-1; }
+
+/* delivery differentiator band — premium capability (ink, not promo-red) */
+.hp-deliveryband{ background:var(--sb-ink); color:#fff; }
+.hp-deliveryband .in{
+  max-width:1400px; margin:0 auto; padding:24px 48px;
+  display:flex; align-items:center; justify-content:center; gap:18px; text-align:center; flex-wrap:wrap;
+}
+.hp-deliveryband svg{ width:27px; height:27px; stroke:#fff; fill:none; stroke-width:1.6; stroke-linecap:round; stroke-linejoin:round; flex:0 0 auto; }
+.hp-deliveryband .msg{ font-family:var(--sb-cond); font-weight:500; font-size:23px; letter-spacing:-.01em; }
+.hp-deliveryband .msg b{ font-weight:700; }
+.hp-deliveryband .sub{ font-family:var(--sb-mono); font-size:11px; letter-spacing:.14em; text-transform:uppercase; opacity:.72; padding-left:18px; border-left:1px solid rgba(255,255,255,.28); }
+
+/* "Why Sally" — three differentiator cards */
+.hp-why{ display:grid; grid-template-columns:repeat(3,1fr); gap:20px; }
+.hp-whycard{
+  border-radius:var(--sb-pic-radius); padding:40px 36px; text-decoration:none; color:var(--sb-ink);
+  display:flex; flex-direction:column; align-items:flex-start;
+}
+.hp-whycard .ic{ width:46px; height:46px; margin-bottom:22px; }
+.hp-whycard .ic svg{ width:100%; height:100%; stroke:var(--sb-ink); fill:none; stroke-width:1.5; stroke-linecap:round; stroke-linejoin:round; }
+.hp-whycard h3{ font-family:var(--sb-sans); font-size:23px; font-weight:700; letter-spacing:-.02em; line-height:1.1; margin:0 0 10px; }
+.hp-whycard p{ font-family:var(--sb-cond); font-weight:400; font-size:16px; line-height:1.45; color:var(--sb-ink-70); margin:0 0 18px; }
+.hp-whycard .hp-link{ margin-top:auto; }
+
+@media (max-width:1100px){
+  .hp-why{ grid-template-columns:1fr; }
+}
+@media (max-width:760px){
+  .hp-abbar{ padding:12px 22px; gap:10px; flex-wrap:wrap; justify-content:space-between; }
+  .hp-deliveryband .in{ padding:18px 22px; gap:12px; }
+  .hp-deliveryband .msg{ font-size:19px; }
+  .hp-deliveryband .sub{ padding-left:0; border-left:0; }
+}
+
+/* Deals carousel — mix of red lifestyle circle cards (stories/categories)
+   + product bundle tiles (items). The red circle is the Sally dot doing
+   merchandising; scarlet is sanctioned here (deals = the one loud place). */
+.hp-carohead{ display:flex; align-items:center; gap:16px; }
+.hp-caro-btn{
+  width:42px; height:42px; border-radius:999px; border:0; cursor:pointer; flex:0 0 auto;
+  background:#fff; box-shadow:inset 0 0 0 1.5px rgba(28,20,19,.18);
+  display:flex; align-items:center; justify-content:center; transition:background-color .2s ease;
+}
+.hp-caro-btn:hover{ background:var(--sb-blush); }
+.hp-caro-btn svg{ width:18px; height:18px; stroke:var(--sb-ink); fill:none; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round; }
+.hp-caro-btn[disabled]{ opacity:.28; cursor:default; }
+.hp-dealrail{
+  display:flex; gap:24px; overflow-x:auto; scroll-snap-type:x mandatory;
+  padding-bottom:4px; -webkit-overflow-scrolling:touch; scrollbar-width:none;
+}
+.hp-dealrail::-webkit-scrollbar{ display:none; }
+.hp-dealcard{ flex:0 0 clamp(240px, 30%, 320px); scroll-snap-align:start; text-decoration:none; color:var(--sb-ink); display:block; }
+.hp-dealcard .card-img{ border-radius:var(--sb-pic-radius); aspect-ratio:1/1; overflow:hidden; margin-bottom:16px; }
+.hp-dealcard .card-img img{ width:100%; height:100%; object-fit:cover; object-position:50% 18%; transition:transform .5s cubic-bezier(.16,1,.3,1); }
+.hp-dealcard.life:hover .card-img img{ transform:scale(1.05); }
+.hp-dealcard .deal-tile{
+  background:var(--sb-sku-tile); border-radius:var(--sb-pic-radius);
+  aspect-ratio:1/1; overflow:hidden; margin-bottom:16px;
+  display:flex; align-items:center; justify-content:center;
+}
+.hp-dealcard .deal-tile img{ width:78%; height:78%; object-fit:contain; transition:transform .5s cubic-bezier(.16,1,.3,1); }
+.hp-dealcard:hover .deal-tile img{ transform:scale(1.04); }
+.hp-deal-offer{ font-family:var(--sb-sans); font-size:17px; font-weight:600; letter-spacing:-.01em; line-height:1.3; margin:0; }
+/* deals are promo — red text does the promo lifting (red-deep keeps small text AA on tints) */
+.hp-dealrail .hp-deal-offer{ color:var(--sb-red-deep); }
+.hp-deal-sub{ font-family:var(--sb-cond); font-weight:400; font-size:14px; color:var(--sb-ink-70); margin:6px 0 0; }
+.hp-dots{ display:flex; gap:8px; justify-content:center; margin-top:26px; }
+.hp-dot{ width:7px; height:7px; border-radius:999px; background:rgba(28,20,19,.22); transition:background-color .25s ease, width .25s ease; }
+.hp-dot.active{ background:var(--sb-red); width:22px; }
+
+/* PROMO RULE — promo cards let the headline go fully red (the emphasis word
+   was already red; this carries it across the whole line). Large headline →
+   brand scarlet is AA-safe. Clean imagery + red text does the promo lifting. */
+.hpc-card.promo .hpc-cap-h{ color:var(--sb-red); }
+.hpc-card.promo .hpc-cap-h em{ color:inherit; }
+@media (max-width:760px){
+  .hp-dealcard{ flex:0 0 78%; }
+  .hp-carohead{ gap:10px; }
+}
+
+/* ============================================================
+   BRAND STORY CARD — image + brand + blurb ("only at Sally")
+   ============================================================ */
+.hp-brands{ display:grid; grid-template-columns:repeat(4,1fr); gap:24px; }
+.hp-brand{ text-decoration:none; color:var(--sb-ink); }
+.hp-brand-pic{
+  aspect-ratio:1/1; overflow:hidden; background:var(--sb-sku-tile);
+  border-radius:var(--sb-pic-radius); margin-bottom:18px;
+}
+.hp-brand-pic img{ width:100%; height:100%; object-fit:cover; transition:transform .5s cubic-bezier(.16,1,.3,1); }
+.hp-brand:hover .hp-brand-pic img{ transform:scale(1.04); }
+.hp-brand-name{ font-family:var(--sb-ed-display); font-weight:400; font-size:24px; line-height:1.05; letter-spacing:-.01em; margin:0 0 8px; }
+.hp-brand-blurb{ font-family:var(--sb-cond); font-weight:400; font-size:16px; line-height:1.4; color:var(--sb-ink-70); margin:0; text-wrap:pretty; }
+
+/* centered section header (for themed bands) */
+.hp-head.center{ flex-direction:column; align-items:center; text-align:center; gap:12px; }
+.hp-head.center .hp-body{ max-width:46ch; }
+
+@media (max-width:1100px){
+  .hp-svcbar{ grid-template-columns:1fr; }
+  .hp-shop{ grid-template-columns:repeat(3,1fr); }
+  .hp-deals{ grid-template-columns:repeat(2,1fr); }
+  .hp-circles{ grid-template-columns:repeat(3,1fr); }
+  .hp-brands{ grid-template-columns:repeat(2,1fr); }
+}
+@media (max-width:760px){
+  .hp-shop{ grid-template-columns:repeat(2,1fr); }
+  .hp-circles{ grid-template-columns:repeat(3,1fr); }
+  .hp-brands,.hp-deals{ grid-template-columns:1fr 1fr; }
+}
+
+/* ============================================================
+   THE EDIT (Concept 10) — editorial full-bleed + tabbed shop.
+   One product moment for the whole page: category tabs swap the
+   tray, so no stacked rails. Lifestyle imagery carries the rest.
+   ============================================================ */
+/* --- tabbed best sellers --- */
+.hp-tabshop{ display:grid; grid-template-columns:300px 1fr; gap:48px; align-items:start; }
+.hp-tabshop-rail h2{ margin:0 0 18px; }
+.hp-tabs{ display:flex; gap:32px; margin:0 0 36px; flex-wrap:wrap; }
+.hp-tab{
+  appearance:none; background:none; border:0; cursor:pointer; padding:0 0 10px;
+  font-family:var(--sb-mono); font-size:12px; font-weight:500;
+  letter-spacing:.18em; text-transform:uppercase; color:var(--sb-ink-45);
+  border-bottom:2px solid transparent; transition:color .2s, border-color .2s;
+}
+.hp-tab.active{ color:var(--sb-ink); border-bottom-color:var(--sb-red); }
+.hp-tab.sale{ color:var(--sb-red); }
+.hp-tab.sale.active{ color:var(--sb-red); border-bottom-color:var(--sb-red); }
+.hp-tabtray{ display:none; grid-template-columns:repeat(3,1fr); gap:24px; }
+.hp-tabtray.active{ display:grid; }
+/* entry animation only on a transient swap (never on the resting state,
+   so static captures always see the tray at full opacity) */
+@media (prefers-reduced-motion: no-preference){
+  .hp-tabtray.active.swap{ animation:hp-trayin .45s cubic-bezier(.16,1,.3,1); }
+}
+/* transform-only: a stuck/paused animation can offset the tray 10px
+   but can never make it invisible in capture contexts */
+@keyframes hp-trayin{ from{ transform:translateY(10px); } to{ transform:none; } }
+.hp-tabcard{ text-decoration:none; color:var(--sb-ink); display:flex; flex-direction:column; }
+.hp-tabcard .pic{
+  aspect-ratio:1/1.1; background:var(--sb-sku-tile); border-radius:var(--sb-pic-radius);
+  overflow:hidden; margin-bottom:16px; display:flex; align-items:center; justify-content:center;
+}
+.hp-tabcard .pic img{ width:100%; height:100%; object-fit:cover; }
+.hp-tabcard .tag{
+  font-family:var(--sb-mono); font-size:10.5px; font-weight:500; letter-spacing:.16em;
+  text-transform:uppercase; color:var(--sb-red); margin:0 0 6px;
+}
+.hp-tabcard .nm{ font-size:17px; font-weight:600; letter-spacing:-.005em; line-height:1.3; margin:0; }
+
+/* --- difference makers: two-up service band on tinted cards --- */
+.hp-svcduo{
+  max-width:1360px; margin:0 auto; padding:72px 48px 0;
+  display:grid; grid-template-columns:1fr 1fr; gap:8px;
+}
+.hp-svcduo a{
+  text-decoration:none; color:var(--sb-ink);
+  background:var(--sb-cream); border-radius:var(--sb-pic-radius);
+  padding:42px 44px;
+  display:flex; flex-direction:column; gap:8px;
+}
+.hp-svcduo a:nth-child(2){ background:var(--sb-blush); }
+.hp-svcduo .k{
+  font-family:var(--sb-mono); font-size:12px; font-weight:500;
+  letter-spacing:.18em; text-transform:uppercase; color:var(--sb-red); margin:0;
+}
+.hp-svcduo .d{ font-size:21px; font-weight:600; letter-spacing:-.01em; margin:0 0 4px; }
+
+/* --- feature story stack: big 50/50 image + copy stories, alternating sides --- */
+.hp-storystack{ display:flex; flex-direction:column; }
+.hp-storyrow{ display:grid; grid-template-columns:1fr 1fr; min-height:540px; }
+.hp-storyrow .story-pic{ position:relative; overflow:hidden; background:var(--sb-sku-tile); }
+.hp-storyrow .story-pic img{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
+.hp-storyrow .story-copy{ display:flex; flex-direction:column; justify-content:center; padding:64px 72px; background:var(--sb-paper); }
+.hp-storyrow.flip .story-pic{ order:2; }
+.hp-story-h{ font-family:var(--sb-sans); font-weight:700; font-size:42px; line-height:1.05; letter-spacing:-.01em; color:var(--sb-ink); margin:14px 0 0; }
+.hp-story-sub{ font-size:17px; line-height:1.5; color:var(--sb-ink); opacity:.82; margin:16px 0 0; max-width:38ch; }
+.hp-storyrow .hp-btn{ margin-top:26px; align-self:flex-start; }
+@media (max-width:760px){
+  .hp-storyrow{ grid-template-columns:1fr; min-height:0; }
+  .hp-storyrow.flip .story-pic{ order:0; }
+  .hp-storyrow .story-pic{ aspect-ratio:4/3; }
+  .hp-storyrow .story-copy{ padding:34px 26px 40px; }
+  .hp-story-h{ font-size:30px; }
+}
+
+/* --- full-bleed editorial category grid --- */
+.hp-fullgrid{ display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+.hp-fullgrid a{ position:relative; display:block; aspect-ratio:16/10; overflow:hidden; }
+.hp-fullgrid img{ width:100%; height:100%; object-fit:cover; display:block; }
+.hp-fullgrid .pills{
+  position:absolute; left:20px; right:20px; bottom:20px;
+  display:flex; justify-content:space-between; gap:12px;
+}
+.hp-pill{
+  font-family:var(--sb-mono); font-size:11px; font-weight:500; letter-spacing:.16em;
+  text-transform:uppercase; padding:11px 18px; border-radius:999px;
+  background:#fff; color:var(--sb-ink); white-space:nowrap;
+}
+.hp-pill.dark{ background:var(--sb-ink); color:#fff; }
+
+/* --- editorial statement + duo imagery --- */
+.hp-statement{ padding:120px 48px 0; max-width:1360px; margin:0 auto; }
+.hp-statement p{
+  font-family:var(--sb-ed-display); font-weight:300; font-size:88px; line-height:1.04;
+  letter-spacing:-.03em; color:var(--sb-ink); margin:0 0 72px; max-width:18ch; text-wrap:balance;
+}
+.hp-statement p .red{ color:var(--sb-red); }
+.hp-duo{ display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+.hp-duo img{ width:100%; height:560px; object-fit:cover; object-position:50% 18%; display:block; }
+.hp-story-video{ margin:0 0 8px; }
+.hp-story-video video{ width:100%; height:640px; object-fit:cover; object-position:50% 40%; display:block; background:var(--sb-ink); }
+
+@media (max-width:760px){
+  .hp-tabshop{ grid-template-columns:1fr; gap:8px; }
+  .hp-svcduo{ grid-template-columns:1fr; gap:8px; padding:48px 26px 0; }
+  .hp-svcduo a{ padding:30px 28px; }
+  .hp-tabs{ gap:22px; margin-bottom:28px; overflow-x:auto; flex-wrap:nowrap; scrollbar-width:none; }
+  .hp-tabs::-webkit-scrollbar{ display:none; }
+  .hp-tabtray, .hp-tabtray.active{ grid-template-columns:repeat(3,72%); overflow-x:auto; gap:14px; scrollbar-width:none; }
+  .hp-tabtray::-webkit-scrollbar{ display:none; }
+  .hp-fullgrid{ grid-template-columns:1fr; }
+  .hp-fullgrid a{ aspect-ratio:4/3; }
+  .hp-statement{ padding:64px 26px 0; }
+  .hp-statement p{ font-size:42px; margin-bottom:40px; }
+  .hp-duo img{ height:300px; }
+  .hp-story-video video{ height:420px; }
+}
+
+/* ============================================================
+   TAKEOVER MOSAIC — the grid version of the story takeover.
+   5-7 images tell the color story; copy lives on its own tile
+   (never over a photo). Solid pigment chips from the story
+   palette punctuate the photography. Tiles share --sb-pic-radius
+   so the Corners tweak applies.
+   ============================================================ */
+.hp-mosaic{
+  display:grid; grid-template-columns:repeat(6,1fr);
+  grid-auto-rows:410px; gap:10px; padding:28px;
+}
+.hp-mosaic-tile{ position:relative; overflow:hidden; border-radius:var(--sb-pic-radius); }
+.hp-mosaic-tile img{ width:100%; height:100%; object-fit:cover; display:block; }
+.hp-mosaic-tile.w2{ grid-column:span 2; }
+.hp-mosaic-tile.t2{ grid-row:span 2; }
+
+/* the copy tile — the story's voice, on a tinted field */
+.hp-mosaic-copy{
+  grid-column:span 2; grid-row:span 2;
+  background:var(--sb-blush); border-radius:var(--sb-pic-radius);
+  display:flex; flex-direction:column; justify-content:center;
+  padding:56px 48px;
+}
+.hp-mosaic-copy .kicker{
+  font-family:var(--sb-mono); font-size:12px; font-weight:500; letter-spacing:.24em;
+  text-transform:uppercase; margin:0 0 18px; color:var(--sb-red);
+  display:inline-flex; align-items:center; gap:12px;
+}
+.hp-mosaic-copy .kicker::before{
+  content:""; width:42px; height:3px; border-radius:2px;
+  background:linear-gradient(90deg,#E11324,#E8932A,#E7C84B,#1F8A5B,#2A6FDB,#7A3FA0);
+}
+.hp-mosaic-h{
+  font-family:var(--sb-ed-display); font-weight:300; font-size:58px; line-height:1.02;
+  letter-spacing:-.025em; margin:0 0 20px; text-wrap:balance; color:var(--sb-ink);
+}
+.hp-mosaic-sub{
+  font-family:var(--sb-cond); font-weight:400; font-size:20px; line-height:1.45;
+  color:rgba(28,20,19,.8); margin:0 0 32px; max-width:34ch;
+}
+.hp-mosaic-cta{ display:flex; gap:14px; flex-wrap:wrap; }
+.hp-btn.ghost-ink{ background:transparent; color:var(--sb-ink); box-shadow:inset 0 0 0 1.6px rgba(28,20,19,.35); }
+
+/* pigment chip — a solid swatch from the story palette */
+.hp-mosaic-chip{ display:flex; align-items:flex-end; padding:22px 24px; }
+.hp-mosaic-chip .nm{
+  font-family:var(--sb-mono); font-size:11px; font-weight:500; letter-spacing:.16em;
+  text-transform:uppercase; color:#fff; margin:0;
+}
+
+@media (max-width:760px){
+  .hp-mosaic{ grid-template-columns:repeat(2,1fr); grid-auto-rows:200px; gap:8px; padding:16px; }
+  .hp-mosaic-copy{ grid-column:span 2; grid-row:span 2; padding:36px 26px; }
+  .hp-mosaic-h{ font-size:38px; }
+  .hp-mosaic-tile.w2{ grid-column:span 2; }
+  .hp-mosaic-tile.t2{ grid-row:span 1; }
+}
+
+/* ============================================================
+   STORY TAKEOVER — big seasonal brand moment (Colorfest / Pride).
+   Full-bleed photo, copy sits in a panel over a soft scrim so it
+   never fights the image. The one place the system gets loud.
+   ============================================================ */
+.hp-takeover{ position:relative; min-height:900px; display:flex; align-items:flex-end; overflow:hidden; }
+.hp-takeover img.bg{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
+/* per-image art direction: shift a crop down on desktop only (mobile's
+   4/5 box has little overflow, so a px nudge would open a gap there).
+   min() clamps the shift so it can never exceed the cover overflow —
+   no white gap at intermediate viewport widths. */
+@media (min-width:761px){
+  .hp-takeover img.bg.nudge-down{ object-position:50% min(calc(20% + 100px), 0px); }
+}
+.hp-takeover .scrim{
+  position:absolute; inset:0;
+  background:linear-gradient(180deg, rgba(20,14,13,0) 48%, rgba(20,14,13,.06) 64%, rgba(20,14,13,.55) 100%);
+}
+.hp-takeover.left{ align-items:center; }
+.hp-takeover.left .scrim{ background:linear-gradient(90deg, rgba(20,14,13,.58) 0%, rgba(20,14,13,.18) 42%, rgba(20,14,13,0) 64%); }
+.hp-takeover-copy{ position:relative; z-index:1; padding:72px 56px; max-width:680px; color:#fff; }
+.hp-takeover .kicker{
+  font-family:var(--sb-mono); font-size:12px; font-weight:500; letter-spacing:.24em;
+  text-transform:uppercase; margin:0 0 18px; color:#fff; display:inline-flex; align-items:center; gap:12px;
+}
+.hp-takeover .kicker::before{ content:""; width:42px; height:3px; border-radius:2px; background:#fff; }
+.hp-takeover.spectrum .kicker::before{
+  background:linear-gradient(90deg,#E11324,#E8932A,#E7C84B,#1F8A5B,#2A6FDB,#7A3FA0);
+}
+.hp-takeover-h{
+  font-family:var(--sb-ed-display); font-weight:300; font-size:78px; line-height:.98;
+  letter-spacing:-.025em; margin:0 0 20px; text-wrap:balance; color:#fff;
+}
+.hp-takeover-h em{ font-style:normal; font-weight:600; }
+.hp-takeover-sub{
+  font-family:var(--sb-cond); font-weight:400; font-size:21px; line-height:1.45;
+  color:rgba(255,255,255,.9); margin:0 0 32px; max-width:42ch;
+}
+.hp-takeover-cta{ display:flex; gap:14px; flex-wrap:wrap; }
+.hp-btn.on-photo{ background:#fff; color:var(--sb-ink); }
+.hp-btn.ghost{ background:transparent; color:#fff; box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.7); }
+
+/* thin themed announce rule above a takeover (event branding) */
+.hp-eventbar{
+  background:var(--sb-ink); color:#fff; text-align:center; padding:13px 24px;
+  font-family:var(--sb-mono); font-size:12px; font-weight:500; letter-spacing:.2em; text-transform:uppercase;
+  display:flex; align-items:center; justify-content:center; gap:16px; flex-wrap:wrap;
+}
+.hp-eventbar .spectrum-dot{ width:9px; height:9px; border-radius:999px;
+  background:linear-gradient(90deg,#E11324,#E8932A,#1F8A5B,#2A6FDB,#7A3FA0); }
+
+/* ============================================================
+   OWNED-BRANDS LOGO BAR — "our brands" wordmark strip.
+   Wordmarks set in type (placeholder for real brand logos).
+   ============================================================ */
+.hp-logobar-wrap{ text-align:center; }
+.hp-logobar-label{
+  font-family:var(--sb-mono); font-size:11px; font-weight:500; letter-spacing:.2em;
+  text-transform:uppercase; color:var(--sb-ink-45); margin:0 0 30px;
+}
+.hp-logobar{
+  display:flex; align-items:center; justify-content:center; flex-wrap:wrap;
+  gap:30px 52px;
+}
+.hp-logobar a{
+  font-family:var(--sb-sans); font-weight:600; font-size:25px; letter-spacing:-.02em;
+  color:var(--sb-ink); text-decoration:none; opacity:.62;
+  transition:opacity .3s ease;
+}
+.hp-logobar a:hover{ opacity:1; }
+.hp-logobar a .reg{ font-size:.6em; vertical-align:super; opacity:.6; }
+.hp-logobar a em{ font-style:italic; font-weight:400; }
+
+/* ============================================================
+   COLORIST ON DEMAND — elevated service feature band.
+   Image + copy panel with a live "online now" indicator.
+   ============================================================ */
+.hp-colorist{ display:grid; grid-template-columns:1fr 1fr; align-items:stretch; min-height:520px; border-radius:var(--sb-pic-radius); overflow:hidden; }
+.hp-colorist.flip .hp-colorist-img{ order:2; }
+.hp-colorist-img{ position:relative; overflow:hidden; background:var(--sb-blush); }
+.hp-colorist-img img{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
+.hp-colorist-copy{ display:flex; flex-direction:column; justify-content:center; padding:72px 64px; background:var(--sb-cream); }
+.hp-live{
+  display:inline-flex; align-items:center; gap:9px; margin-bottom:22px;
+  font-family:var(--sb-mono); font-size:12px; font-weight:500; letter-spacing:.14em; text-transform:uppercase; color:var(--sb-ink-70);
+}
+.hp-live .dot{ width:9px; height:9px; border-radius:999px; background:#1F8A5B; position:relative; }
+.hp-live .dot::after{ content:""; position:absolute; inset:-4px; border-radius:999px; border:1.5px solid rgba(31,138,79,.4); }
+.hp-colorist-copy .hp-h{ font-size:50px; margin-bottom:22px; }
+.hp-colorist-copy .hp-body{ max-width:36ch; margin-bottom:18px; }
+.hp-colorist-feats{ list-style:none; margin:0 0 32px; padding:0; display:flex; flex-direction:column; gap:11px; }
+.hp-colorist-feats li{
+  font-family:var(--sb-cond); font-weight:400; font-size:18px; color:var(--sb-ink); display:flex; align-items:center; gap:13px;
+}
+.hp-colorist-feats li svg{ width:19px; height:19px; stroke:var(--sb-red); fill:none; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round; flex:0 0 auto; }
+.hp-colorist-cta{ display:flex; align-items:center; gap:20px; flex-wrap:wrap; }
+.hp-colorist-cta .note{ font-family:var(--sb-mono); font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--sb-ink-45); }
+
+/* ============================================================
+   OFFERS STORY — ONE editorial band → offers page (not deal tiles).
+   ============================================================ */
+.hp-offerstory{ display:grid; grid-template-columns:1fr 1fr; align-items:stretch; min-height:540px; }
+.hp-offerstory.flip .hp-offerstory-img{ order:2; }
+.hp-offerstory-img{ position:relative; overflow:hidden; background:var(--sb-peach); }
+.hp-offerstory-img img{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
+.hp-offerstory-copy{ display:flex; flex-direction:column; justify-content:center; padding:88px 76px; }
+.hp-offerstory-copy .hp-eyebrow{ margin-bottom:22px; }
+.hp-offerstory-copy .hp-h{ font-size:62px; margin-bottom:24px; }
+.hp-offerstory-copy .hp-body{ max-width:34ch; margin-bottom:18px; }
+.hp-offerstory-meta{
+  font-family:var(--sb-mono); font-size:12px; letter-spacing:.12em; text-transform:uppercase;
+  color:var(--sb-red-deep); margin:0 0 32px;
+}
+
+/* ============================================================
+   PERSONALIZED REC RAIL — "Picked for you" greeting treatment.
+   Reuses .hp-shop product grid below it.
+   ============================================================ */
+.hp-recs-head{ display:flex; align-items:center; gap:16px; margin-bottom:38px; }
+.hp-recs-avatar{
+  width:46px; height:46px; border-radius:999px; flex:0 0 auto;
+  background:var(--sb-red); color:#fff; display:flex; align-items:center; justify-content:center;
+  font-family:var(--sb-sans); font-weight:700; font-size:18px; letter-spacing:-.01em;
+}
+.hp-recs-head .txt .hp-eyebrow{ margin-bottom:7px; }
+.hp-recs-head .txt .hp-h{ font-size:34px; }
+.hp-recs-head .spacer{ flex:1; }
+.hp-recs-head .hp-link{ flex:0 0 auto; }
+
+/* personalized chips (signals the system reads) */
+.hp-chips{ display:flex; gap:10px; flex-wrap:wrap; margin-top:18px; }
+.hp-chip{
+  font-family:var(--sb-mono); font-size:11px; font-weight:500; letter-spacing:.1em; text-transform:uppercase;
+  color:var(--sb-ink-70); background:rgba(28,20,19,.05); border-radius:999px; padding:8px 15px; text-decoration:none;
+}
+.hp-chip:hover{ background:rgba(28,20,19,.09); }
+.hp-chip.active{ background:var(--sb-ink); color:#fff; }
+
+@media (max-width:1100px){
+  .hp-takeover-h{ font-size:60px; }
+  .hp-offerstory-copy .hp-h{ font-size:50px; }
+  .hp-colorist-copy .hp-h{ font-size:42px; }
+}
+@media (max-width:760px){
+  .hp-takeover{ min-height:540px; }
+  .hp-takeover-h{ font-size:44px; }
+  .hp-takeover-copy{ padding:40px 26px; }
+  .hp-colorist,.hp-offerstory{ grid-template-columns:1fr; }
+  .hp-colorist .hp-colorist-img,.hp-offerstory-img{ min-height:360px; }
+  .hp-colorist.flip .hp-colorist-img{ order:0; }
+  .hp-colorist-copy,.hp-offerstory-copy{ padding:48px 28px; }
+  .hp-offerstory-copy .hp-h{ font-size:40px; }
+  .hp-logobar{ gap:22px 32px; }
+  .hp-logobar a{ font-size:20px; }
+  .hp-recs-head{ flex-wrap:wrap; }
+}
+
+/* ============================================================
+   DIY PROJECT CARDS — "shop by project". The Sally wedge:
+   buy the whole at-home job (kit + steps), not loose SKUs.
+   ============================================================ */
+.hp-projects{ display:grid; grid-template-columns:repeat(3,1fr); gap:24px; }
+.hp-project{
+  display:flex; flex-direction:column; text-decoration:none; color:var(--sb-ink);
+  border-radius:var(--sb-pic-radius); overflow:hidden; background:var(--sb-cream);
+}
+.hp-project.t-shell{ background:var(--sb-shell); }
+.hp-project.t-rose{ background:var(--sb-rose); }
+.hp-project.t-blush{ background:var(--sb-blush); }
+.hp-project-pic{ position:relative; aspect-ratio:4/3; overflow:hidden; background:var(--sb-sku-tile); }
+.hp-project-pic img{ width:100%; height:100%; object-fit:cover; transition:transform .6s cubic-bezier(.16,1,.3,1); }
+.hp-project:hover .hp-project-pic img{ transform:scale(1.04); }
+.hp-project-level{
+  position:absolute; left:16px; top:16px; background:rgba(255,255,255,.92); color:var(--sb-ink);
+  font-family:var(--sb-mono); font-size:11px; font-weight:500; letter-spacing:.1em; text-transform:uppercase;
+  padding:6px 11px; border-radius:7px;
+}
+.hp-project-body{ display:flex; flex-direction:column; align-items:flex-start; flex:1; padding:26px 28px 28px; }
+.hp-project-eyebrow{ font-family:var(--sb-mono); font-size:11px; font-weight:500; letter-spacing:.14em; text-transform:uppercase; color:var(--sb-red); margin:0 0 12px; }
+.hp-project-name{ font-family:var(--sb-ed-display); font-weight:300; font-size:28px; line-height:1.04; letter-spacing:-.015em; margin:0 0 14px; text-wrap:balance; }
+.hp-project-name em{ font-style:normal; font-weight:600; }
+.hp-project-meta{ display:flex; flex-wrap:wrap; gap:8px 16px; margin:0 0 22px; }
+.hp-project-meta span{ font-family:var(--sb-mono); font-size:11px; letter-spacing:.08em; text-transform:uppercase; color:var(--sb-ink-45); display:inline-flex; align-items:center; gap:7px; }
+.hp-project-meta span svg{ width:14px; height:14px; stroke:var(--sb-ink-45); fill:none; stroke-width:1.6; stroke-linecap:round; stroke-linejoin:round; }
+.hp-project-body .hp-link{ margin-top:auto; }
+
+/* ============================================================
+   KIT BUILDER — bundle the whole formula, add it in one tap.
+   ============================================================ */
+.hp-kit{ display:grid; grid-template-columns:1fr 1fr; align-items:stretch; border-radius:var(--sb-pic-radius); overflow:hidden; min-height:560px; }
+.hp-kit.flip .hp-kit-img{ order:2; }
+.hp-kit-img{ position:relative; overflow:hidden; background:var(--sb-blush); }
+.hp-kit-img img{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
+.hp-kit-panel{ background:var(--sb-cream); padding:56px 52px; display:flex; flex-direction:column; justify-content:center; }
+.hp-kit-eyebrow{ font-family:var(--sb-mono); font-size:11px; font-weight:500; letter-spacing:.16em; text-transform:uppercase; color:var(--sb-red); margin:0 0 14px; }
+.hp-kit-h{ font-family:var(--sb-ed-display); font-weight:300; font-size:38px; line-height:1.02; letter-spacing:-.02em; margin:0 0 26px; text-wrap:balance; }
+.hp-kit-h em{ font-style:normal; font-weight:600; }
+.hp-kit-list{ list-style:none; margin:0 0 24px; padding:0; display:flex; flex-direction:column; }
+.hp-kit-item{ display:flex; align-items:center; gap:15px; padding:13px 0; border-top:1px solid var(--sb-ink-15); }
+.hp-kit-item:last-child{ border-bottom:1px solid var(--sb-ink-15); }
+.hp-kit-thumb{ width:50px; height:50px; border-radius:10px; overflow:hidden; background:var(--sb-sku-tile); flex:0 0 auto; }
+.hp-kit-thumb img{ width:100%; height:100%; object-fit:cover; }
+.hp-kit-item .nm{ flex:1; font-family:var(--sb-sans); font-size:14px; font-weight:500; line-height:1.3; letter-spacing:-.01em; }
+.hp-kit-item .nm b{ display:block; font-family:var(--sb-mono); font-size:10px; font-weight:500; letter-spacing:.12em; text-transform:uppercase; color:var(--sb-ink-45); margin-bottom:3px; }
+.hp-kit-item .pr{ font-family:var(--sb-sans); font-size:14px; font-weight:600; color:var(--sb-ink-70); flex:0 0 auto; }
+.hp-kit-total{ display:flex; align-items:baseline; gap:12px; margin-bottom:24px; }
+.hp-kit-total .now{ font-family:var(--sb-sans); font-size:26px; font-weight:700; color:var(--sb-ink); }
+.hp-kit-total .was{ font-family:var(--sb-sans); font-size:16px; color:var(--sb-ink-45); text-decoration:line-through; }
+.hp-kit-total .save{ font-family:var(--sb-mono); font-size:11px; font-weight:500; letter-spacing:.1em; text-transform:uppercase; color:var(--sb-red); }
+.hp-kit-cta{ display:flex; align-items:center; gap:20px; flex-wrap:wrap; }
+.hp-kit-cta .note{ font-family:var(--sb-mono); font-size:11px; letter-spacing:.08em; text-transform:uppercase; color:var(--sb-ink-45); }
+
+/* ============================================================
+   HOW-TO VIDEO ROW — DIY University, shoppable tutorials.
+   ============================================================ */
+.hp-howto{ display:grid; grid-template-columns:repeat(3,1fr); gap:24px; }
+.hp-howto-card{ text-decoration:none; color:var(--sb-ink); }
+.hp-howto-pic{ position:relative; aspect-ratio:16/10; overflow:hidden; border-radius:var(--sb-pic-radius); background:var(--sb-sku-tile); margin-bottom:18px; }
+.hp-howto-pic img{ width:100%; height:100%; object-fit:cover; transition:transform .6s cubic-bezier(.16,1,.3,1); }
+.hp-howto-card:hover .hp-howto-pic img{ transform:scale(1.04); }
+.hp-howto-play{
+  position:absolute; left:50%; top:50%; transform:translate(-50%,-50%);
+  width:64px; height:64px; border-radius:999px; background:rgba(255,255,255,.92);
+  display:flex; align-items:center; justify-content:center;
+}
+.hp-howto-play svg{ width:22px; height:22px; fill:var(--sb-ink); margin-left:3px; }
+.hp-howto-dur{ position:absolute; right:14px; bottom:14px; background:rgba(20,14,13,.78); color:#fff; font-family:var(--sb-mono); font-size:11px; letter-spacing:.06em; padding:5px 9px; border-radius:6px; }
+.hp-howto-tag{ font-family:var(--sb-mono); font-size:11px; font-weight:500; letter-spacing:.14em; text-transform:uppercase; color:var(--sb-red); margin:0 0 9px; }
+.hp-howto-title{ font-family:var(--sb-cond); font-weight:400; font-size:23px; line-height:1.12; letter-spacing:-.01em; margin:0 0 8px; text-wrap:balance; }
+.hp-howto-by{ font-family:var(--sb-mono); font-size:11px; letter-spacing:.08em; text-transform:uppercase; color:var(--sb-ink-45); margin:0; }
+
+/* ============================================================
+   SHADE FINDER — color authority. Level ramp + prompt.
+   ============================================================ */
+.hp-shade{ display:grid; grid-template-columns:1fr 1fr; align-items:center; gap:48px; border-radius:var(--sb-pic-radius); padding:64px 56px; background:var(--sb-cream); }
+.hp-shade-copy .hp-eyebrow{ margin-bottom:18px; }
+
+/* numbered step badge — ties multi-part stories into one (Sally dot) */
+.hp-step{
+  display:flex; align-items:center; gap:12px;
+  font-family:var(--sb-mono); font-size:12px; font-weight:500;
+  letter-spacing:.18em; text-transform:uppercase; color:var(--sb-red);
+  margin:0 0 18px;
+}
+.hp-step .n{
+  width:30px; height:30px; border-radius:999px; background:var(--sb-red);
+  color:#fff; display:flex; align-items:center; justify-content:center;
+  font-size:14px; letter-spacing:0; flex:0 0 auto;
+}
+.hp-shade-copy .hp-h{ font-size:46px; margin-bottom:20px; }
+.hp-shade-copy .hp-body{ max-width:34ch; margin-bottom:30px; }
+.hp-shade-ramp{ display:flex; flex-direction:column; gap:18px; }
+.hp-levels{ display:flex; gap:0; border-radius:14px; overflow:hidden; box-shadow:0 1px 0 rgba(0,0,0,.04); }
+.hp-level{ flex:1; aspect-ratio:1/2.4; position:relative; }
+.hp-level span{ position:absolute; left:50%; bottom:9px; transform:translateX(-50%); font-family:var(--sb-mono); font-size:11px; font-weight:500; }
+.hp-level.dark span{ color:rgba(255,255,255,.8); }
+.hp-level.light span{ color:rgba(28,20,19,.6); }
+.hp-shade-scale{ display:flex; justify-content:space-between; font-family:var(--sb-mono); font-size:11px; letter-spacing:.12em; text-transform:uppercase; color:var(--sb-ink-45); }
+/* flipped + tinted variants of the swatch-story card */
+.hp-shade.flip .hp-shade-copy{ order:2; }
+.hp-shade.blush{ background:var(--sb-blush); }
+/* bare: the card dissolves into the section field so multi-part
+   stories (steps, vivid intro + wall) read as ONE continuous story */
+.hp-shade.bare{ background:transparent; border-radius:0; padding:40px 0; }
+
+/* TONE CHIPS — same level, different tone (A/N/G/C/R codes).
+   Chips touch and read as ONE unit, like the level ramp. */
+.hp-tones{ display:flex; gap:0; }
+.hp-tone{ flex:1; text-align:center; }
+.hp-tone .chip{ aspect-ratio:1/1.2; border-radius:0; margin-bottom:12px; }
+.hp-tone:first-child .chip{ border-radius:14px 0 0 14px; }
+.hp-tone:last-child .chip{ border-radius:0 14px 14px 0; }
+.hp-tone .code{ font-family:var(--sb-mono); font-size:12px; font-weight:500; letter-spacing:.08em; color:var(--sb-ink); margin:0 0 3px; }
+.hp-tone .nm{ font-family:var(--sb-mono); font-size:10.5px; letter-spacing:.06em; text-transform:uppercase; color:var(--sb-ink-45); margin:0; }
+
+/* VIVID SPECTRUM — no levels, just pigment. Joined like the ramp. */
+.hp-vivids{ display:grid; grid-template-columns:repeat(8,1fr); gap:0; }
+.hp-vivid{ text-align:center; }
+.hp-vivid .chip{ aspect-ratio:1/1.92; border-radius:0; margin-bottom:10px; }
+.hp-vivid:first-child .chip{ border-radius:14px 0 0 14px; }
+.hp-vivid:last-child .chip{ border-radius:0 14px 14px 0; }
+.hp-vivid .nm{ font-family:var(--sb-mono); font-size:10.5px; letter-spacing:.04em; text-transform:uppercase; color:var(--sb-ink-70); margin:0; }
+@media (max-width:760px){
+  .hp-vivids{ grid-template-columns:repeat(4,1fr); row-gap:20px; }
+  .hp-vivid .chip{ aspect-ratio:1/0.96; }
+  /* two rows of four: round each row's outer corners */
+  .hp-vivid .chip{ border-radius:0; }
+  .hp-vivid:nth-child(4n+1) .chip{ border-radius:14px 0 0 14px; }
+  .hp-vivid:nth-child(4n) .chip{ border-radius:0 14px 14px 0; }
+  /* tones stay one continuous 5-chip ramp; matches the other ramps' height */
+  .hp-tones{ flex-wrap:nowrap; }
+  .hp-tone .nm{ font-size:9px; letter-spacing:.03em; }
+}
+
+/* ============================================================
+   BIG PULL-QUOTE — magazine editorial beat (content hub)
+   ============================================================ */
+.hp-quote{ text-align:center; padding:96px 48px; }
+.hp-quote .mark{ font-family:var(--sb-ed-display); font-size:60px; line-height:.5; color:var(--sb-red); display:block; margin-bottom:14px; height:34px; }
+.hp-quote p{ font-family:var(--sb-ed-display); font-weight:300; font-size:46px; line-height:1.14; letter-spacing:-.02em; color:var(--sb-ink); margin:0 auto 24px; max-width:20ch; text-wrap:balance; }
+.hp-quote p em{ font-style:normal; font-weight:600; }
+.hp-quote .by{ font-family:var(--sb-mono); font-size:12px; letter-spacing:.14em; text-transform:uppercase; color:var(--sb-ink-45); margin:0; }
+
+@media (max-width:1100px){
+  .hp-projects,.hp-howto{ grid-template-columns:1fr 1fr; }
+  .hp-shade{ grid-template-columns:1fr; gap:32px; padding:48px 36px; }
+  .hp-kit-h{ font-size:32px; }
+  .hp-quote p{ font-size:36px; }
+}
+@media (max-width:760px){
+  .hp-projects,.hp-howto{ grid-template-columns:1fr; }
+  .hp-kit{ grid-template-columns:1fr; }
+  .hp-kit.flip .hp-kit-img{ order:0; }
+  .hp-kit-img{ min-height:340px; }
+  .hp-kit-panel{ padding:40px 28px; }
+  .hp-quote{ padding:64px 26px; }
+  .hp-quote p{ font-size:30px; }
+}
+
+/* ============================================================
+   MOBILE HERO VARIANTS — copy OFF the image for legibility.
+   Shared CTA stack: full-width tap targets, stacked.
+   ============================================================ */
+.hp-herocta{ display:flex; flex-direction:column; gap:11px; align-items:stretch; }
+.hp-herocta .hp-btn{ width:100%; }
+.hp-btn.outline{ background:transparent; color:var(--sb-ink); box-shadow:inset 0 0 0 1.6px var(--sb-ink-15); }
+
+/* (A) CARD HERO — image + copy in one rounded card, inset with margins.
+   The "card design like desktop", made for phones. */
+.hp-herocard{ padding:18px 16px 6px; }
+.hp-herocard-inner{ border-radius:26px; overflow:hidden; background:var(--sb-cream); }
+.hp-herocard-img{ aspect-ratio:5/4; overflow:hidden; background:var(--sb-blush); }
+.hp-herocard-img img{ width:100%; height:100%; object-fit:cover; }
+.hp-herocard-copy{ padding:30px 26px 34px; }
+.hp-herocard-copy .hp-eyebrow{ margin-bottom:14px; }
+.hp-herocard-copy .hp-h{ font-size:38px; line-height:1.0; margin-bottom:15px; }
+.hp-herocard-copy .hp-body{ font-size:17px; margin-bottom:26px; }
+
+/* (B) STACK HERO — full-bleed photo, copy on a tint panel below. */
+.hp-herostack-img{ aspect-ratio:1/1; overflow:hidden; background:var(--sb-blush); }
+.hp-herostack-img img{ width:100%; height:100%; object-fit:cover; }
+.hp-herostack-copy{ background:var(--sb-cream); padding:38px 26px 42px; }
+.hp-herostack-copy .hp-eyebrow{ margin-bottom:14px; }
+.hp-herostack-copy .hp-h{ font-size:42px; line-height:1.0; margin-bottom:16px; }
+.hp-herostack-copy .hp-body{ font-size:17px; margin-bottom:26px; max-width:34ch; }
+
+/* (C) IMPROVED OVERLAY — image-dominant but readable. Copy pinned to a
+   strong bottom gradient base; headline short, kept out of the busy zone. */
+.hp-takeover.lower{ align-items:flex-end; min-height:900px; }
+.hp-takeover.lower .scrim{
+  background:linear-gradient(180deg, rgba(20,14,13,0) 52%, rgba(20,14,13,.3) 74%, rgba(20,14,13,.74) 100%);
+}
+.hp-takeover.lower .hp-takeover-copy{ padding:48px 26px 40px; }
+.hp-takeover.lower .hp-takeover-h{ font-size:46px; }
+.hp-takeover.lower .hp-takeover-sub{ font-size:18px; }
+/* desktop pages: .lower keeps full takeover type (the 46px sizing is for
+   the 390px hero-option page, restored by the mobile query below) */
+@media (min-width:761px){
+  .hp-takeover.lower .hp-takeover-h{ font-size:78px; }
+  .hp-takeover.lower .hp-takeover-sub{ font-size:21px; }
+  .hp-takeover.lower .hp-takeover-copy{ padding:72px 56px; }
+}
+
+/* mobile sizing for the card/stack heroes */
+@media (max-width:760px){
+  .hp-herocard-copy .hp-h{ font-size:36px; }
+  .hp-herostack-copy .hp-h{ font-size:38px; }
+
+  /* TAKEOVERS RESTRUCTURE ON MOBILE — never type over the photo.
+     Photo full-width on top, copy on a muted blush panel below. */
+  .hp-takeover, .hp-takeover.lower, .hp-takeover.left{
+    display:flex; flex-direction:column; min-height:0; align-items:stretch;
+  }
+  .hp-takeover img.bg{
+    position:static; width:100%; height:auto; aspect-ratio:4/5; object-fit:cover;
+  }
+  .hp-takeover .scrim{ display:none; }
+  .hp-takeover-copy, .hp-takeover.lower .hp-takeover-copy{
+    position:static; background:var(--sb-blush); max-width:none;
+    padding:38px 26px 44px;
+  }
+  .hp-takeover .kicker{ color:var(--sb-red); }
+  .hp-takeover .kicker::before{ background:var(--sb-red); }
+  .hp-takeover.spectrum .kicker::before{
+    background:linear-gradient(90deg,#E11324,#E8932A,#E7C84B,#1F8A5B,#2A6FDB,#7A3FA0);
+  }
+  .hp-takeover-h, .hp-takeover.lower .hp-takeover-h{ font-size:40px; color:var(--sb-ink); }
+  .hp-takeover-h em{ color:var(--sb-ink); }
+  .hp-takeover-sub, .hp-takeover.lower .hp-takeover-sub{ font-size:17px; color:rgba(28,20,19,.8); }
+  .hp-takeover-cta{ flex-direction:column; align-items:stretch; }
+  .hp-takeover-cta .hp-btn{ width:100%; text-align:center; }
+  .hp-takeover-cta .hp-btn.on-photo{ background:var(--sb-ink); color:#fff; }
+  .hp-takeover-cta .hp-btn.ghost{ color:var(--sb-ink); box-shadow:inset 0 0 0 1.6px rgba(28,20,19,.35); }
+}
+
+/* ================================================================
+   LOOKBOOK (Concept 11) — lifestyle-image-heavy homepage.
+   Full-bleed heroes (shared .hp-takeover scrim, the one loud place)
+   alternating with labeled image grids and look rows. Labels sit
+   BELOW the photos — copy stays off the image, per the system rule.
+   ================================================================ */
+/* centered hero copy */
+.hp-takeover.center{ align-items:center; text-align:center; justify-content:center; }
+.hp-takeover.center .hp-takeover-copy{ max-width:780px; }
+.hp-takeover.center .kicker{ justify-content:center; }
+.hp-takeover.center .hp-takeover-cta{ justify-content:center; }
+
+/* labeled lifestyle grid — image + centered label below */
+.hp-lookgrid{ display:grid; gap:10px; }
+.hp-lookgrid.cols-4{ grid-template-columns:repeat(4,1fr); }
+.hp-lookgrid.cols-6{ grid-template-columns:repeat(6,1fr); }
+.hp-lookcell{ text-decoration:none; color:var(--sb-ink); display:block; }
+.hp-lookcell .pic{
+  aspect-ratio:4/5; overflow:hidden; background:var(--sb-sku-tile);
+  border-radius:var(--sb-pic-radius); margin-bottom:14px;
+}
+.hp-lookgrid.tall .hp-lookcell .pic{ aspect-ratio:3/5; }
+.hp-lookgrid.wide .hp-lookcell .pic{ aspect-ratio:1/1; }
+.hp-lookcell .pic img{ width:100%; height:100%; object-fit:cover; object-position:50% 20%; transition:transform .5s cubic-bezier(.16,1,.3,1); }
+.hp-lookcell:hover .pic img{ transform:scale(1.04); }
+.hp-looklabel{ font-family:var(--sb-cond); font-weight:500; font-size:18px; letter-spacing:-.01em; text-align:center; }
+.hp-looksub{ font-family:var(--sb-mono); font-size:11px; letter-spacing:.12em; text-transform:uppercase; color:var(--sb-ink-45); text-align:center; margin-top:4px; }
+
+/* "catch the highlights" editorial cards — image + title + body */
+.hp-hl{ display:grid; grid-template-columns:repeat(3,1fr); gap:10px 24px; }
+.hp-hl + .hp-hl{ margin-top:40px; }
+.hp-hlcard{ text-decoration:none; color:var(--sb-ink); display:block; }
+.hp-hlcard .pic{
+  aspect-ratio:5/4; overflow:hidden; background:var(--sb-sku-tile);
+  border-radius:var(--sb-pic-radius); margin-bottom:18px;
+}
+.hp-hlcard .pic img{ width:100%; height:100%; object-fit:cover; object-position:50% 30%; transition:transform .5s cubic-bezier(.16,1,.3,1); }
+.hp-hlcard:hover .pic img{ transform:scale(1.04); }
+.hp-hl-title{ font-family:var(--sb-ed-display); font-weight:300; font-size:26px; line-height:1.05; letter-spacing:-.015em; margin:0 0 10px; text-wrap:balance; }
+.hp-hl-body{ font-family:var(--sb-cond); font-weight:400; font-size:16px; line-height:1.45; color:var(--sb-ink-70); margin:0; text-wrap:pretty; }
+
+@media (max-width:760px){
+  .hp-lookgrid.cols-4{ grid-template-columns:repeat(2,1fr); }
+  .hp-lookgrid.cols-6{ grid-template-columns:repeat(3,1fr); }
+  .hp-takeover.center{ text-align:left; }
+  .hp-takeover.center .hp-takeover-copy{ text-align:left; }
+  .hp-hl{ grid-template-columns:1fr 1fr; }
+  .hp-hl + .hp-hl{ margin-top:10px; }
+  .hp-hl-title{ font-size:20px; }
+}
+
+/* ================================================================
+   LOOKBOOK MOTION — scoped to .lookbook. Scroll-driven effects arm
+   ONLY when the page is genuinely scrollable (standalone view): JS
+   adds .motion. In the review canvas the iframe is full-height and
+   non-scrolling, so .motion is never added and the page renders
+   fully static + correct (no reliance on IntersectionObserver,
+   which doesn't fire in the canvas iframes). Hover/tap are always on.
+   ================================================================ */
+/* desktop hover — always safe */
+@media (hover:hover) and (min-width:761px){
+  .lookbook .hp-btn{ transition:transform .4s cubic-bezier(.16,1,.3,1), background-color .35s ease, color .35s ease, box-shadow .35s ease; }
+  .lookbook .hp-btn:hover{ transform:translateY(-2px); box-shadow:0 10px 26px rgba(20,14,13,.16); }
+  .lookbook .hp-btn.on-photo:hover{ background:#fff; color:var(--sb-ink); }
+  .lookbook .hp-btn.ghost:hover{ background:rgba(255,255,255,.16); }
+  .lookbook .hp-link .arr{ transition:transform .3s cubic-bezier(.16,1,.3,1); }
+  .lookbook .hp-link:hover{ opacity:1; }
+  .lookbook .hp-link:hover .arr{ transform:translateX(6px); }
+  .lookbook .hp-looklabel{ transition:color .3s ease; }
+  .lookbook .hp-lookcell:hover .hp-looklabel{ color:var(--sb-red-deep); }
+  .lookbook .hp-hlcard .hp-hl-title{ transition:color .3s ease; }
+  .lookbook .hp-hlcard:hover .hp-hl-title{ color:var(--sb-red-deep); }
+}
+/* tap feedback — mobile + desktop */
+.lookbook .hp-btn{ transition:transform .3s cubic-bezier(.16,1,.3,1); }
+.lookbook .hp-btn:active{ transform:scale(.97); }
+.lookbook .hp-lookcell:active .pic img,
+.lookbook .hp-hlcard:active .pic img,
+.lookbook .hp-look:active .hp-look-pic img{ transform:scale(1.03); }
+
+/* armed scroll motion (standalone only) */
+@media (prefers-reduced-motion:no-preference){
+  .lookbook.motion [data-reveal]{ opacity:0; transform:translateY(28px); }
+  .lookbook.motion [data-reveal].in{ opacity:1; transform:none;
+    transition:opacity .9s cubic-bezier(.16,1,.3,1), transform .9s cubic-bezier(.16,1,.3,1); }
+  .lookbook.motion [data-stagger] > *{ opacity:0; transform:translateY(24px); }
+  .lookbook.motion [data-stagger].in > *{ opacity:1; transform:none;
+    transition:opacity .75s cubic-bezier(.16,1,.3,1), transform .75s cubic-bezier(.16,1,.3,1); }
+  .lookbook.motion [data-stagger].in > *:nth-child(2){ transition-delay:.07s; }
+  .lookbook.motion [data-stagger].in > *:nth-child(3){ transition-delay:.14s; }
+  .lookbook.motion [data-stagger].in > *:nth-child(4){ transition-delay:.21s; }
+  .lookbook.motion [data-stagger].in > *:nth-child(5){ transition-delay:.28s; }
+  .lookbook.motion [data-stagger].in > *:nth-child(6){ transition-delay:.35s; }
+  /* hero photo settles from a soft zoom (Ken Burns) on reveal */
+  .lookbook.motion .hp-takeover.kb img.bg{ scale:1.08; }
+  .lookbook.motion .hp-takeover.kb.in img.bg{ scale:1; transition:scale 2s cubic-bezier(.16,1,.3,1); }
+  /* desktop parallax needs vertical overflow room (translate set by JS) */
+  @media (min-width:761px){
+    .lookbook.motion .hp-takeover img.bg{ height:118%; top:-9%; bottom:auto; will-change:transform; }
+  }
+}
+
+/* ================================================================
+   CLEAN HEADLINES — no popped words (matches the email rule).
+   <em> inherits the surrounding type. Exceptions: the logo-bar
+   italic (brand lockup) and offer pops on .promo cards.
+   ================================================================ */
+.hp-h em, .hp-takeover-h em, .hpc-cap-h em, .hp-project-name em,
+.hp-kit-h em, .hp-quote p em{
+  font-weight:inherit; font-style:normal; color:inherit;
+}
+.hpc-card.promo .hpc-cap-h em{ color:var(--sb-red); font-weight:600; }
+
+/* ================================================================
+   FACE-SAFE CROPS — bias photo crops toward the top of the frame.
+   Default object-position (50% 50%) centers the crop, which slices
+   faces off portrait photos sitting in landscape/short masks. Faces
+   live in the upper part of these shots, so big photo modules pull
+   the image down in the mask (show the top ~fifth first).
+   Product tiles (.hp-prod, .hp-deal, .hp-shopcard, .hp-brand) stay
+   center-cropped — packshots are centered subjects.
+   ================================================================ */
+.hp-hero-img img, .hp-ed-img img, .hp-rewards-img img,
+.hp-takeover img.bg, .hp-colorist-img img, .hp-offerstory-img img,
+.hp-kit-img img, .hpc-card-pic img, .hp-project-pic img,
+.hp-look-pic img, .hp-circle-pic img, .hp-howto-pic img,
+.hp-cat-pic img, .hp-herocard-img img, .hp-herostack-img img,
+.hp-fullgrid img{
+  object-position:50% 20%;
+}
+
+/* ================================================================
+   SITE HEADER (.ush) — context chrome injected by site-header.js.
+   Mirrors the live sallybeauty.com header: dark utility bar, white
+   main bar (logo / search / account / bag), bold category nav.
+   System tokens + Founders; red wordmark stands in for the seasonal
+   rainbow logo.
+   ================================================================ */
+.ush{ font-family:var(--sb-sans); color:var(--sb-ink); background:#fff; }
+.ush a{ text-decoration:none; color:inherit; }
+
+.ush-util{
+  display:flex; align-items:center; justify-content:space-between; gap:24px;
+  background:var(--sb-ink); color:#fff; padding:11px 40px;
+  font-size:13.5px; font-weight:500; letter-spacing:.005em;
+}
+.ush-util-left{ display:flex; align-items:center; gap:16px; min-width:0; }
+.ush-store{ display:flex; align-items:center; gap:9px; text-decoration:underline; text-underline-offset:3px; white-space:nowrap; }
+.ush-store svg{ width:15px; height:15px; flex:0 0 auto; }
+.ush-vsep{ width:1px; height:16px; background:rgba(255,255,255,.35); flex:0 0 auto; }
+.ush-ship{ white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.ush-util-links{ display:flex; gap:28px; white-space:nowrap; }
+.ush-util-links a:hover{ opacity:.8; }
+
+.ush-main{
+  display:flex; align-items:center; gap:40px;
+  padding:26px 40px; border-bottom:1px solid var(--sb-ink-15);
+}
+.ush-logo{ flex:0 0 auto; }
+.ush-logo img{ display:block; width:148px; height:auto; }
+.ush-search{
+  flex:1; display:flex; align-items:center; gap:12px;
+  border:1.5px solid var(--sb-ink-30, rgba(28,20,19,.3)); border-radius:10px;
+  padding:13px 18px; color:var(--sb-ink-45); font-size:15px; max-width:680px;
+  margin:0 auto;
+}
+.ush-search svg{ width:17px; height:17px; flex:0 0 auto; }
+.ush-account{ display:flex; align-items:center; gap:12px; flex:0 0 auto; }
+.ush-account > svg{ width:24px; height:24px; }
+.ush-acct-copy{ display:flex; flex-direction:column; gap:1px; font-size:13.5px; line-height:1.3; }
+.ush-acct-copy b{ font-weight:600; }
+.ush-acct-copy a{ text-decoration:underline; text-underline-offset:3px; font-weight:500; }
+.ush-bag{ position:relative; display:flex; flex:0 0 auto; padding-left:24px; border-left:1px solid var(--sb-ink-15); margin-left:-8px; }
+.ush-bag svg{ width:25px; height:25px; }
+.ush-badge{
+  position:absolute; right:-10px; bottom:-4px; min-width:19px; height:19px;
+  border-radius:999px; background:var(--sb-red); color:#fff;
+  font-size:11px; font-weight:600; display:flex; align-items:center; justify-content:center; padding:0 5px;
+}
+
+.ush-nav{
+  display:flex; align-items:center; justify-content:space-between; gap:8px;
+  padding:17px 40px; border-bottom:1px solid var(--sb-ink-15);
+  font-size:16px; font-weight:600; letter-spacing:-.005em; white-space:nowrap;
+}
+.ush-nav a:hover{ color:var(--sb-red); }
+
+@media (max-width:760px){
+  .ush-util{ padding:10px 18px; font-size:12px; gap:12px; }
+  .ush-store, .ush-vsep, .ush-util-links a:not(:last-child){ display:none; }
+  .ush-util-links{ gap:0; }
+  .ush-main{ padding:16px 18px; gap:16px; }
+  .ush-logo img{ width:104px; }
+  .ush-search{ padding:10px 14px; font-size:14px; }
+  .ush-search span{ display:none; }
+  .ush-search{ flex:0 0 auto; border:0; padding:0; color:var(--sb-ink); margin:0 0 0 auto; }
+  .ush-search svg{ width:21px; height:21px; }
+  .ush-acct-copy{ display:none; }
+  .ush-account > svg{ width:22px; height:22px; }
+  .ush-bag{ padding-left:16px; }
+  .ush-bag svg{ width:22px; height:22px; }
+  .ush-nav{
+    justify-content:flex-start; gap:24px; padding:13px 18px;
+    overflow-x:auto; font-size:14px; scrollbar-width:none;
+  }
+  .ush-nav::-webkit-scrollbar{ display:none; }
+}
+
+/* ================================================================
+   SITE FOOTER (.usf) — context chrome injected by site-footer.js.
+   Close to sallybeauty.com: blush field, newsletter band, five link
+   columns, Follow Us social row, ghost SALLY watermark, copyright.
+   ================================================================ */
+.usf{
+  position:relative; overflow:hidden; background:var(--sb-blush);
+  color:var(--sb-ink); font-family:var(--sb-sans); padding:64px 64px 48px;
+}
+.usf a{ color:inherit; text-decoration:none; }
+.usf > *{ position:relative; z-index:1; }
+
+.usf-news{
+  display:flex; align-items:center; gap:36px; margin-bottom:72px; flex-wrap:wrap;
+}
+.usf-news h3{ font-size:24px; font-weight:600; letter-spacing:-.01em; margin:0; }
+.usf-news-form{ display:flex; flex:1; max-width:560px; min-width:300px; }
+.usf-email{
+  flex:1; background:#fff; border:1px solid var(--sb-ink-15); border-right:0;
+  border-radius:8px 0 0 8px; padding:14px 18px; font-size:15px; color:var(--sb-ink-45);
+}
+.usf-signup{
+  background:var(--sb-ink); color:#fff; border-radius:0 8px 8px 0;
+  padding:14px 26px; font-size:15px; font-weight:600; display:flex; align-items:center;
+}
+.usf-news-sep{ width:1px; align-self:stretch; background:var(--sb-ink-15); }
+.usf-sms .big{ font-size:21px; font-weight:600; letter-spacing:-.01em; margin:0 0 6px; }
+.usf-sms a{ font-size:15px; font-weight:600; text-decoration:underline; text-underline-offset:3px; }
+
+.usf-cols{
+  display:grid; grid-template-columns:repeat(5,1fr); gap:32px; margin-bottom:84px;
+}
+.usf-col h4{ font-size:19px; font-weight:600; letter-spacing:-.01em; margin:0 0 22px; }
+.usf-col a{ display:block; font-size:15px; line-height:1.4; margin-bottom:17px; }
+.usf-col a:hover{ text-decoration:underline; text-underline-offset:3px; }
+
+.usf-social{
+  display:flex; align-items:center; justify-content:center; gap:26px; margin-bottom:72px;
+}
+.usf-social .lbl{ font-size:19px; font-weight:600; margin-right:4px; }
+.usf-social a{ display:flex; }
+.usf-social svg{ width:23px; height:23px; }
+
+.usf-copy{ font-size:14px; margin:0; }
+
+.usf-ghost{
+  position:absolute; z-index:0; left:50%; bottom:-.34em; transform:translateX(-50%);
+  font-family:var(--sb-cond); font-weight:700; font-size:560px; line-height:1;
+  letter-spacing:-.02em; color:rgba(225,19,36,.05); pointer-events:none;
+  user-select:none; white-space:nowrap;
+}
+
+@media (max-width:760px){
+  .usf{ padding:44px 22px 36px; }
+  .usf-news{ flex-direction:column; align-items:stretch; gap:18px; margin-bottom:48px; }
+  .usf-news h3{ font-size:20px; }
+  .usf-news-form{ max-width:none; min-width:0; }
+  .usf-news-sep{ display:none; }
+  .usf-cols{ grid-template-columns:1fr 1fr; gap:28px 20px; margin-bottom:52px; }
+  .usf-col h4{ font-size:16px; margin-bottom:14px; }
+  .usf-col a{ font-size:13.5px; margin-bottom:12px; }
+  .usf-social{ flex-wrap:wrap; gap:20px; margin-bottom:44px; }
+  .usf-ghost{ font-size:240px; }
+}
+
+/* ============================================================
+   ADA CONTRAST OVERRIDES — must live at END of file so source
+   order beats the per-component color rules above (equal
+   specificity otherwise reverts these to brand scarlet, which
+   fails AA as small text on the warm tints). All small red TEXT
+   uses --sb-red-deep (#B30E1C, >=4.76:1 on every field). Red
+   FILLS, white-on-red CTAs, and LARGE headline emphasis keep
+   brand scarlet.
+   ============================================================ */
+.hp-eyebrow.red,
+.hp-look-tag,
+.hp-step,
+.hp-howto-tag,
+.hp-tabcard .tag,
+.hp-svcduo .k,
+.hp-svc .lbl b,
+.hp-mosaic-copy .kicker,
+.hp-project-eyebrow,
+.hp-kit-eyebrow,
+.hp-kit-total .save,
+.hp-shop-price .bogo,
+.hp-live,
+.hp-takeover .kicker{ color:var(--sb-red-deep); }
+/* light-swatch ramp numbers: .6 read 4.32:1 on the palest steps */
+.hp-level.light span{ color:rgba(28,20,19,.75); }
+
+/* ============================================================
+   ADA — NON-TEXT CONTRAST (1.4.11) + FOCUS VISIBLE (2.4.7)
+   3. Form-field borders read ~1.4-1.9:1 vs their white fill —
+      below the 3:1 floor for UI component boundaries. Bumped to
+      rgba(28,20,19,.5) (~3.1:1) so the input edges are perceivable.
+   4. No visible keyboard-focus indicator existed. Added a single
+      red-deep focus ring (2px + offset) on every interactive
+      element. :focus-visible keeps it keyboard-only (no mouse halo).
+   ============================================================ */
+.ush-search{ border-color:rgba(28,20,19,.5); }
+.usf-email{ border-color:rgba(28,20,19,.5); }
+
+.hp a:focus-visible,
+.hp button:focus-visible,
+.hp-tab:focus-visible,
+.hp-btn:focus-visible,
+.hp-link:focus-visible,
+.hp-addbag:focus-visible,
+.ush a:focus-visible,
+.ush-search:focus-visible,
+.usf a:focus-visible,
+.usf-signup:focus-visible{
+  outline:2px solid var(--sb-red-deep);
+  outline-offset:2px;
+  border-radius:2px;
+}
+/* on dark/photo fields the ring switches to white for visibility */
+.hp-takeover a:focus-visible,
+.hp-btn.on-photo:focus-visible,
+.hp-btn.ghost:focus-visible{
+  outline-color:#fff;
+}
+
+/* ============================================================
+   EYEBROWS → white / black only  (teammate ADA request)
+   Brand red on small eyebrow + kicker labels is dropped for
+   guaranteed contrast: INK on light fields, WHITE on dark/photo
+   fields. This also fixes the genuinely-failing case — the muted
+   --sb-ink-45 eyebrow on blush/rose panels measured ~4.3:1 (under
+   the 4.5 floor for small text). Solid ink clears AA on every
+   field. The brand-red accent now lives only in fills, rules, and
+   large headline emphasis — never small eyebrow type.
+   MUST stay at the END of the file to win source-order.
+   ============================================================ */
+.hp-eyebrow,
+.hp-eyebrow.red,
+.hp-mosaic-copy .kicker,
+.hp-recs-head .hp-eyebrow,
+.hp-shade-copy .hp-eyebrow{ color:var(--sb-ink); }
+/* desktop hero kicker sits over the photo + scrim → white */
+.hp-takeover .kicker{ color:#fff; }
+@media (max-width:760px){
+  /* mobile hero restructures to a light blush panel → ink */
+  .hp-takeover .kicker{ color:var(--sb-ink); }
+}
+
+

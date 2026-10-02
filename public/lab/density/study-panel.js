@@ -132,6 +132,7 @@
     "robert-rodriguez": "/case-studies/robert-rodriguez/neiman-marcus-robert-rodriguez-woman-cream-polka-dot-dress-pink-blazer-orange-yellow-backdrop-storefront-window-display-campaign.jpg",
     "sally-os": "/case-studies/sally-os/heroes/sally-os-asset-hub-platform-hero.jpg",
     "dsc": "/case-studies/dsc/dsc-marketing-site-laptop-stool-hero.jpg",
+    "sally-design-system": "/case-studies/sally-design-system/sally-design-system-homepage-concept-10-the-edit-desktop.jpg",
   };
 
   const el = (t, c, h) => { const e = document.createElement(t); if (c) e.className = c; if (h != null) e.innerHTML = h; return e; };
@@ -488,6 +489,8 @@
     "jeffrey-ecommerce": { "#1A1A1A": "Charcoal", "#F5F2ED": "Cream", "#FFFF40": "Brand Yellow", "#8C8578": "Soft Gray" },
     "jeffrey-spring": { "#F5F2EC": "Studio White", "#A8B8C8": "Striped Blue", "#E8C4B8": "Blush", "#3E5A39": "Monstera", "#1A1A18": "Soft Black" },
     "you-by-sally": { "#E91E63": "Hot Pink", "#00B8D4": "Cyan", "#141414": "Black", "#F5F2ED": "Cream" },
+    /* his own token names, from the system's styles.css and its notes (--sb-red "Sally scarlet", --sb-ink, --sb-blush, --sb-peach, --sb-cream) */
+    "sally-design-system": { "#E11324": "Sally Scarlet", "#1C1413": "Ink", "#F4E2DC": "Blush", "#FADDC0": "Peach", "#FFF0E0": "Cream" },
   };
   const PAL_DRAFT = {
     "branding-graphics": { "#DCDDDD": "Paper Grey", "#380F03": "Oxblood", "#9DB3AD": "Sage Mist", "#A89B8F": "Taupe", "#BBCFC9": "Sea Glass" },
@@ -529,6 +532,7 @@
         sec.items.push({ t: "pic", f }); continue;
       }
       if (f.kind === "num" || f.kind === "chart" || f.kind === "steps") { sec.items.push({ t: f.kind, f }); continue; }
+      if (f.kind === "live") { sec.items.push({ t: "live", f }); continue; }
       if (f.kind !== "line") continue;
       if (f.weight === "sub" && f.where === "meta" && !M.stand) { M.stand = f; continue; }
       if (f.weight === "body" && f.where === "abstract") { M.abs.push(f); continue; }
@@ -549,10 +553,13 @@
     });
     /* the reel: one or two frames after the abstract, the rest dealt to
        the sections with no picture of their own, set after their first
-       run of text so the section reads words, picture, words */
+       run of text so the section reads words, picture, words. A live
+       page counts as a section's own picture (2 Oct 2026: the Sally
+       design system shows its emails and homepages live, and the reel's
+       stills of them were being dealt in beside the pages themselves) */
     const pool = M.pool.slice();
     M.openPics = pool.splice(0, pool.length >= 6 ? 2 : 1);
-    const bare = M.secs.filter((x) => !x.open && !x.items.some((i) => i.t === "pic"));
+    const bare = M.secs.filter((x) => !x.open && !x.items.some((i) => i.t === "pic" || i.t === "live"));
     if (bare.length && pool.length) {
       const per = Math.min(3, Math.ceil(pool.length / bare.length));
       bare.forEach((x) => {
@@ -603,6 +610,7 @@
       run = null; para = null;
       const last = out[out.length - 1];
       if (it.t === "pic") { if (last && last.t === "pics") last.list.push(it.f); else out.push({ t: "pics", list: [it.f] }); continue; }
+      if (it.t === "live") { const ph = !!it.f.phone; if (last && last.t === "lives" && last.phone && ph) last.list.push(it.f); else out.push({ t: "lives", phone: ph, list: [it.f] }); continue; }
       if (it.t === "num") { if (last && last.t === "nums" && last.si === it.f.si) last.list.push(it.f); else out.push({ t: "nums", si: it.f.si, list: [it.f] }); continue; }
       if (it.t === "card") { if (last && last.t === "cards") last.list.push(it.f); else out.push({ t: "cards", list: [it.f] }); continue; }
       if (it.t === "closing") { if (last && last.t === "closing") last.list.push(it.f); else out.push({ t: "closing", list: [it.f] }); continue; }
@@ -1093,7 +1101,7 @@
       builtW = W;
       ids.length = 0; pending.clear();
       if (parts && parts.stops) parts.stops.forEach((f) => f());
-      const P = { rows: [], asides: [], figs: [], title: null, pulls: [], coverBox: null, coverFrame: null, knocks: [], stops: [], briefs: [] };
+      const P = { rows: [], asides: [], figs: [], title: null, pulls: [], coverBox: null, coverFrame: null, knocks: [], stops: [], briefs: [], lives: [] };
       const s = M.s;
       const frag = document.createDocumentFragment();
       const g = Math.max(5, Math.round(W * 0.011));
@@ -1436,6 +1444,88 @@
         });
         return b;
       }
+      /* ── live pages (1 Oct 2026, his "can we use live pages?") ────────
+         A page or a demo in a frame, laid out at its own width and scaled
+         to the room (never above 1). It loads as it nears and stands down
+         off screen. A page set to scroll walks itself down and back up; a
+         demo plays on its own clock and is paused through its
+         data-paused contract when hidden; a page set whole stands at its
+         full height. The frame never takes the wheel, and a click opens
+         the page itself in a new tab */
+      function livesEl(b) {
+        const wrap = el("div", "sp-lives" + (b.phone ? " phone" : ""));
+        const ls = b.list.map((f) => liveEl(f));
+        ls.forEach((L) => wrap.appendChild(L.fig));
+        P.lives.push({ wrap, phone: b.phone, ls });
+        return wrap;
+      }
+      function liveEl(f) {
+        const fig = tag(el("figure", "sp-live sp-live-" + (f.mode || "page") + (f.phone ? " phone" : "")), f);
+        const stage = el("div", "sp-live-stage");
+        const fr = document.createElement("iframe");
+        fr.title = f.title || "A live page"; fr.setAttribute("tabindex", "-1"); fr.setAttribute("aria-hidden", "true");
+        fr.style.width = f.w + "px"; fr.style.height = (f.h || 900) + "px";
+        stage.appendChild(fr);
+        const open = el("a", "sp-live-open"); open.href = f.src.replace(/[?&]framed=1/, ""); open.target = "_blank"; open.rel = "noopener";
+        open.setAttribute("aria-label", "Open " + (f.title || "the page") + " in a new tab");
+        stage.appendChild(open);
+        fig.appendChild(stage);
+        if (f.title || f.note) fig.appendChild(el("figcaption", "sp-cap sp-live-cap", (f.title ? "<b>" + esc(f.title) + "</b>" : "") + (f.note ? " " + esc(f.note) : "")));
+        const L = { f, fig, stage, fr, s: 1, docH: 0, vis: false, loaded: false, raf: 0, y: 0, phase: 0, t: 0, last: 0 };
+        L.size = () => liveSize(L); /* the layout calls it from outside the build */
+        const near = new IntersectionObserver(([e]) => {
+          if (!e.isIntersecting || L.loaded) return;
+          L.loaded = true; fr.src = f.src; near.disconnect();
+        }, { root: container, rootMargin: "900px 0px" });
+        const seen = new IntersectionObserver(([e]) => { L.vis = e.isIntersecting; liveRun(L); }, { root: container, threshold: 0 });
+        near.observe(fig); seen.observe(fig);
+        fr.addEventListener("load", () => { liveMeasure(L); setTimeout(() => liveMeasure(L), 1400); liveRun(L); });
+        P.stops.push(() => { near.disconnect(); seen.disconnect(); cancelAnimationFrame(L.raf); try { fr.src = "about:blank"; } catch (e) { /* gone */ } });
+        return L;
+      }
+      /* the frame's size: the page's own width scaled to the stage, the
+         height its viewport (a page that scrolls) or its measured document */
+      function liveSize(L) {
+        const sw = L.stage.clientWidth; if (!sw) return;
+        L.s = Math.min(1, sw / L.f.w);
+        const h = L.f.mode === "scroll" ? (L.f.h || 900) : (L.docH || L.f.h || 900);
+        L.fr.style.height = h + "px";
+        L.fr.style.transform = "scale(" + L.s.toFixed(5) + ")";
+        L.stage.style.height = Math.round(h * L.s) + "px";
+      }
+      function liveMeasure(L) {
+        let d = null; try { d = L.fr.contentDocument; } catch (e) { /* another origin: the declared height holds */ }
+        if (d && d.body && L.f.mode !== "scroll") L.docH = L.f.mode === "demo" ? d.body.scrollHeight : d.documentElement.scrollHeight;
+        liveSize(L);
+      }
+      /* a demo's host, the element its replay engine reads data-paused on */
+      function liveHost(L) {
+        let d = null; try { d = L.fr.contentDocument; } catch (e) { return null; }
+        if (!d || !d.body) return null;
+        const inner = d.querySelector("[data-stage]");
+        return (inner && inner.closest("body > *")) || d.body.firstElementChild;
+      }
+      const liveReduce = () => matchMedia("(prefers-reduced-motion: reduce)").matches;
+      function liveRun(L) {
+        const on = L.vis && !document.hidden;
+        if (L.f.mode === "demo") { const h = liveHost(L); if (h) { if (on) delete h.dataset.paused; else h.dataset.paused = "true"; } return; }
+        cancelAnimationFrame(L.raf); L.raf = 0;
+        if (L.f.mode !== "scroll" || !on || !L.loaded || liveReduce()) return;
+        L.last = 0; L.raf = requestAnimationFrame((t) => liveTick(L, t));
+      }
+      /* a page walks itself down at 160px a second, holds, eases back up, holds */
+      function liveTick(L, now) {
+        let w = null, d = null; try { w = L.fr.contentWindow; d = w && w.document; } catch (e) { return; }
+        if (!d || !d.documentElement) { L.raf = requestAnimationFrame((t) => liveTick(L, t)); return; }
+        const dt = L.last ? Math.min(64, now - L.last) : 0; L.last = now; L.t += dt;
+        const max = Math.max(0, d.documentElement.scrollHeight - (L.f.h || 900)), HOLD = 1800;
+        if (L.phase === 0) { if (L.t >= HOLD) { L.phase = 1; L.t = 0; } }
+        else if (L.phase === 1) { L.y = Math.min(max, L.y + 0.16 * dt); if (L.y >= max) { L.phase = 2; L.t = 0; } }
+        else if (L.phase === 2) { if (L.t >= HOLD) { L.phase = 3; L.t = 0; L.from = L.y; } }
+        else { const k = Math.min(1, L.t / 1400); L.y = L.from * Math.pow(1 - k, 3); if (k >= 1) { L.phase = 0; L.t = 0; L.y = 0; } }
+        try { w.scrollTo({ top: L.y, behavior: "instant" }); } catch (e) { w.scrollTo(0, L.y); }
+        L.raf = requestAnimationFrame((t) => liveTick(L, t));
+      }
       function picGroup(list, cls) {
         const wrap = el("div", cls || "sp-plates");
         partition(list, W, V, g).forEach((ps) => {
@@ -1545,6 +1635,7 @@
             return a;
           }
           case "pics": return picGroup(b.list);
+          case "lives": return livesEl(b);
           /* a deck that is one short line is set as a bold beat of its own */
           case "deck": return tag(el("p", "sp-deck" + (b.f.text.length <= 52 && b.f.text.indexOf(" | ") < 0 ? " sp-short" : ""), inkGrey(b.f.text)), b.f);
           case "pull": {
@@ -1705,6 +1796,18 @@
           else if (side === "l") { const cw = Math.min(250, Math.floor(left - gs)); R.cap.style.left = Math.round(ml - gs - cw) + "px"; R.cap.style.width = cw + "px"; }
           else { R.cap.style.marginLeft = Math.max(m, Math.round(ml)) + "px"; R.cap.style.maxWidth = Math.max(240, Math.min(C, Math.floor(w))) + "px"; }
         }
+      });
+      /* live frames run as wide as the pictures do; a row of phones and
+         emails starts at the copy's margin */
+      parts.lives.forEach((Lv) => {
+        Lv.wrap.style.width = Math.floor(Lv.phone ? Wf - m : Wf) + "px";
+        Lv.wrap.style.marginLeft = (Lv.phone ? m : 0) + "px";
+        Lv.ls.forEach((L) => {
+          L.size();
+          /* a caption keeps to the copy's margin, as a picture's does */
+          const c = L.fig.querySelector(".sp-live-cap");
+          if (c) { c.style.marginLeft = (Lv.phone ? 0 : m) + "px"; c.style.maxWidth = (Lv.phone ? "" : Math.max(240, Math.min(C, 640)) + "px"); }
+        });
       });
       parts.asides.forEach((A) => {
         const f = A.f, pw = Math.floor(Math.min(f.w / 2, (C - gc) / 2, V * 0.8 * ratio(f)));

@@ -670,9 +670,22 @@ export interface ProductDemoSection extends BaseSection {
    * engine contract at phone width; the frame is told the width via
    * `stageWidth`, not the folder.
    */
-  folder?: "sally-demos" | "dsc-demos";
+  folder?: "sally-demos" | "dsc-demos" | "sally-system";
   /** What the reader is watching, in the frame's chrome. */
   title: string;
+  /**
+   * How the room on the homepage frames it (1 Oct 2026). "demo" measures
+   * the replay and scales it whole, pausing it off screen (the default for
+   * the two replay folders); "scroll" shows a viewport of `viewHeight` and
+   * walks the page down and back up; "page" stands it at its full height.
+   */
+  mode?: "demo" | "scroll" | "page";
+  /** The viewport height a "scroll" frame shows, in the page's own px. */
+  viewHeight?: number;
+  /** A narrow frame (a phone, an email), set two to a row. */
+  phone?: boolean;
+  /** A fragment for the page's own address (homepage-blocks#tabshop). */
+  hash?: string;
   /**
    * The demo's own stage width in px. These are fixed-size desktop
    * interfaces (1120px frame inside a 20px gutter) with essentially no

@@ -15001,6 +15001,132 @@
    ]
   },
   {
+   "slug": "sally-design-system",
+   "title": "Sally Beauty Design System",
+   "subtitle": "A design system for Sally Beauty's emails and homepage, from type and color to the templates. I built the templates for Sally's internal AI tool to fill, so a request becomes a finished email in minutes.",
+   "category": "Digital",
+   "href": "/case-studies/sally-design-system",
+   "year": "2026",
+   "summary": [
+    {
+     "label": "Built",
+     "value": "A design system for email and the homepage: 11 homepage concepts, 21 homepage modules, 14 email building blocks and 15 example emails."
+    },
+    {
+     "label": "Scope",
+     "value": "Design system, art direction, email and homepage design, templates built for an AI tool to fill."
+    },
+    {
+     "label": "Tools",
+     "value": "Claude, Figma, HTML/CSS/JS. Founders Grotesk in regular, condensed and mono."
+    },
+    {
+     "label": "Angle",
+     "value": "The templates are a locked kit, and the AI tool fills them from a request."
+    }
+   ],
+   "disciplines": [
+    "Design Systems",
+    "Art Direction",
+    "Email Design",
+    "Homepage Design"
+   ],
+   "tools": [
+    "Claude",
+    "Figma",
+    "HTML/CSS/JS",
+    "Founders Grotesk"
+   ],
+   "keywords": [],
+   "stats": [],
+   "facets": {
+    "client": [
+     {
+      "facet": "client",
+      "term": "Sally Beauty",
+      "n": 4,
+      "cites": [
+       {
+        "section": "meta",
+        "field": "title",
+        "quote": "Sally Beauty Design System"
+       },
+       {
+        "section": "meta",
+        "field": "subtitle",
+        "quote": "A design system for Sally Beauty's emails and homepage, from type and color to the templates."
+       }
+      ]
+     }
+    ],
+    "material": [
+     {
+      "facet": "material",
+      "term": "copper",
+      "n": 3,
+      "cites": [
+       {
+        "section": "hero",
+        "field": "alt",
+        "quote": "Sally Beauty homepage concept, The Edit: a full-bleed portrait of a woman with copper curls under the Sally header and navigation"
+       },
+       {
+        "section": "concepts-grid-1",
+        "field": "left.alt",
+        "quote": "Concept 1, Editorial: Your brightest summer, sorted, beside a portrait with copper curls"
+       }
+      ]
+     }
+    ],
+    "colour": [
+     {
+      "facet": "colour",
+      "term": "blush",
+      "n": 2,
+      "cites": [
+       {
+        "section": "image-text",
+        "field": "content",
+        "quote": "On a phone, the takeover splits into the photo and a blush panel for the words."
+       },
+       {
+        "section": "contrast-text",
+        "field": "content",
+        "quote": "A teammate's ADA review of the homepage found muted text on blush failing at about 4.3 to 1, so no eyebrow or kicker there stays r…"
+       }
+      ]
+     },
+     {
+      "facet": "colour",
+      "term": "cream",
+      "n": 1,
+      "cites": [
+       {
+        "section": "color-footnote",
+        "field": "content",
+        "quote": "The color-blocked fields come from the brand's Natural scale: cream, shell, rose, peach, sand and dusty."
+       }
+      ]
+     }
+    ]
+   },
+   "text": "An email or a homepage at Sally Beauty used to take weeks to make.\n\nI designed a digital design system for both. It covers type, color, scale, when to use photography and when to use graphics, and the templates. Founders Grotesk carries the type in three cuts. Sally scarlet is kept for accents and sale emails, warm tints from the brand's Natural scale block out the rest, and copy never sits on a photograph. So far it holds 11 homepage concepts at desktop and phone sizes, 21 homepage modules, 14 email building blocks and 15 example emails.\n\nThe templates are built for Sally's internal AI tool, which fills them from a request form with photography, copy and products. Work that took weeks now takes minutes.\nFounders Grotesk sets every word\nin three cuts.\nThe regular cut sets headlines, body copy and buttons. The condensed cut sets the promo banners and the loud headlines, and the mono cut sets eyebrows, product tags, prices and promo codes.\nHeadlines run bold with tight tracking, and one word in each gets the emphasis.\nThe punch set leans on type: pure Founders, set big.\nThe same chassis, leaning on color.\nRed headlines are kept for the sale,\nand warm tints carry the rest.\nA new-arrivals or rewards email keeps its headlines in ink. Sally scarlet stays on the accents: the buttons, the banners and the dot motif.\nThe color-blocked fields come from the brand's Natural scale: cream, shell, rose, peach, sand and dusty. Two pale tints never sit next to each other, so peach or a bold field goes between them. Louder work pulls saturated steps from the official red ramp, never an off-brand hue.\nInk headlines on warm Natural fields.\nThe sale email is the one that turns red.\nEach homepage was drawn twice,\nat 1440 and at 390.\nIn the canvas each desktop concept sits beside its phone version, and every module has a desktop and a phone pair.\nOn desktop, splits divide the screen in exact halves, feature rows stop a thin margin short of the edges, and product photos crop to 4:5.\nLive at 1440. It scrolls itself; open it to use it.\nThe same page at 390.\nThe shade finder at 390.\nCopy never sits\non a photograph.\nA desktop takeover gets one light scrim, the one loud place in the system. On a phone, the takeover splits into the photo and a blush panel for the words.\nGraphics carry everything else: the color-blocked fields, the halftone dot burst from the brand guide, and the circle that crops the hero. Homepage products never show a price, because prices change too often.\nThe scrim is short and light.\nThe photo and the panel, apart.\nA story-led homepage at 390.\nThe emails stack up\nfrom fourteen blocks.\nA header, promo banners in three styles, heroes, rows, grids, an editorial block, categories and one footer, each designed to work on its own.\nThe homepage has its own kit of twenty-one modules, from a personalized hero and a shade finder to a kit builder. The product tray cycles through hair, nails and beauty by itself.\nOne shop moment where the stacked product rails used to be.\nHair color picked by level.\nEleven homepage concepts\ncame out of one kit.\nThree set the foundations. Three tried new directions: a story-led Colorfest, a personalized For You and a Pride takeover. Three are ideas Ulta and Sephora can't easily copy: a DIY studio, a color authority and a shoppable content hub.\nThe Edit puts one tabbed shop where the stacked product rails were, and The Lookbook leads with lifestyle photography.\nFour email sets\nshare one chassis.\nThe color-blocked set is the current direction. The editorial set treats Sally as a publication, a moment in the inbox and not a promo, and the punch set is the same chassis dialed up.\nEach punch email leans on something different: one on type, one on color, one on charm. The first white set is archived now. Every email ends on the same footer.\nA full issue: masthead, pull quotes, and prose around the products.\nPoints, picks and a restock.\nThe punch email that leans on charm.\nOne product, two ways to wear it, and the routine around it.\nThe eyebrows went solid,\nink on light fields and white on dark.\nA teammate's ADA review of the homepage found muted text on blush failing at about 4.3 to 1, so no eyebrow or kicker there stays red or muted.\nThe muted text tier was darkened to .64. Small red text that stays, like tags and prices, uses a deeper red, #B30E1C, which passes at about 4.76 to 1. Red fills, white-on-red buttons and large headline emphasis keep the brand scarlet, and text shadows came out everywhere.\nOne request form\nfills a whole email.\nThe request form connects the tool to the DAM, the product tool and the brand guidelines. It brings in lifestyle photography, writes the copy, pulls in the SKUs and rewrites their product descriptions.\nEach new email fills a template from a brief, and the templates stay locked, so the kit holds its shape at the volume Sally sends every month.\nA CRM request on the campaign board becomes an email with one press of Create Email.\nThe Figma plugin builds the requested emails in one press, the images first and then the copy.\nWhat took weeks now takes minutes,\nand it scales like the team\nnever could\nThe homepage kit grew out\nof the email system.\nBoth share the same tokens, the same fonts and the same voice.\nThe voice is Sally as the beauty-obsessed best friend, the one who makes salon-level results doable at home.",
+   "work": [
+    {
+     "term": "design system",
+     "declared": true
+    },
+    {
+     "term": "art direction",
+     "declared": true
+    },
+    {
+     "term": "email",
+     "declared": true
+    }
+   ]
+  },
+  {
    "slug": "sizzle",
    "title": "Faux Reel",
    "subtitle": "A tool that turns still photographs into a sizzle reel. Faux Reel has no video in it, just stills cut fast enough to look like motion.",

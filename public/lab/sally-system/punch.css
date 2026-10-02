@@ -1,0 +1,179 @@
+/* ============================================================
+   SALLY BEAUTY — "PUNCH" EXPLORATIONS
+   Three younger/louder directions on the same email.
+   A · VOLUME  — type is the design (huge condensed, red-dominant)
+   B · CANDY   — saturated color blocks, stickers, chunky pills
+   C · SOFT POP— airy white/pink, friendly lowercase, cheeky motifs
+   Relies on styles.css for @font-face + brand tokens.
+   ============================================================ */
+
+.sp{ width:600px; font-family:var(--sb-sans); color:var(--sb-ink); -webkit-font-smoothing:antialiased; }
+.sp img{ display:block; width:100%; }
+
+/* ─────────────────────────── A · VOLUME ─────────────────────────── */
+.spA{ background:#FFF2E8; }
+.spA .a-top{
+  display:flex; justify-content:space-between; align-items:center;
+  padding:16px 22px; font-family:var(--sb-mono); font-size:10.5px;
+  letter-spacing:.18em; text-transform:uppercase;
+}
+.spA .a-top .dot{ width:10px; height:10px; border-radius:999px; background:var(--sb-red); }
+.spA .a-mast{
+  font-family:var(--sb-cond); font-weight:700; text-transform:uppercase;
+  font-size:124px; line-height:.82; letter-spacing:-.015em; text-align:center;
+  padding:18px 0 26px; color:var(--sb-ink);
+}
+.spA .a-mast .alt{ color:var(--sb-red); }
+.spA .a-marquee{
+  background:var(--sb-red); color:#fff; white-space:nowrap; overflow:hidden;
+  font-family:var(--sb-mono); font-size:12px; letter-spacing:.22em;
+  text-transform:uppercase; padding:12px 0; text-align:center;
+}
+.spA .a-photo{ position:relative; }
+.spA .a-photo .stamp{
+  position:absolute; right:20px; top:20px; background:#fff; color:var(--sb-ink);
+  font-family:var(--sb-mono); font-size:11px; letter-spacing:.12em; text-transform:uppercase;
+  padding:8px 12px; transform:rotate(6deg);
+}
+.spA .a-block{ padding:44px 30px 50px; }
+.spA .a-h{
+  font-family:var(--sb-cond); font-weight:700; text-transform:uppercase;
+  font-size:56px; line-height:.92; letter-spacing:-.01em; margin:0 0 18px; text-wrap:balance;
+}
+.spA .a-h .ital{ font-family:var(--sb-cond); font-weight:300; font-style:normal; }
+.spA .a-body{ font-size:16px; line-height:1.5; color:rgba(28,20,19,.8); margin:0 0 26px; max-width:30em; }
+.spA .a-btn{
+  display:inline-block; background:var(--sb-ink); color:#fff; text-decoration:none;
+  font-family:var(--sb-cond); font-weight:700; text-transform:uppercase; letter-spacing:.06em;
+  font-size:17px; padding:16px 34px;
+}
+.spA .a-red{ background:var(--sb-red); color:#fff; text-align:center; padding:54px 30px; }
+.spA .a-red .a-h{ color:#fff; font-size:64px; margin-bottom:10px; }
+.spA .a-red .sub{ font-family:var(--sb-mono); font-size:12px; letter-spacing:.2em; text-transform:uppercase; color:rgba(255,255,255,.85); margin:0 0 26px; }
+.spA .a-red .a-btn{ background:#fff; color:var(--sb-red); }
+.spA .a-grid{ display:grid; grid-template-columns:1fr 1fr; gap:2px; }
+.spA .a-card{ background:#FFF2E8; padding-bottom:18px; }
+.spA .a-card .pic{ aspect-ratio:4/5; overflow:hidden; }
+.spA .a-card .pic img{ width:100%; height:100%; object-fit:cover; }
+.spA .a-card .nm{
+  font-family:var(--sb-cond); font-weight:700; text-transform:uppercase; font-size:19px;
+  line-height:1.02; margin:14px 16px 6px;
+}
+.spA .a-card .tag{ font-family:var(--sb-mono); font-size:10.5px; letter-spacing:.14em; text-transform:uppercase; color:var(--sb-red); margin:0 16px; }
+.spA .a-ink{ background:var(--sb-ink); color:#fff; text-align:center; padding:58px 34px; }
+.spA .a-ink .line{
+  font-family:var(--sb-cond); font-weight:300; font-style:normal;
+  font-size:46px; line-height:1.08; margin:0; color:#fff; text-wrap:balance;
+}
+.spA .a-foot{ overflow:hidden; padding-top:34px; }
+.spA .a-foot .links{
+  display:flex; justify-content:center; gap:26px; font-family:var(--sb-mono);
+  font-size:11px; letter-spacing:.16em; text-transform:uppercase; margin-bottom:26px;
+}
+.spA .a-foot .links a{ color:var(--sb-ink); text-decoration:none; }
+.spA .a-foot .giant{
+  font-family:var(--sb-cond); font-weight:700; text-transform:uppercase;
+  font-size:200px; line-height:.68; letter-spacing:-.02em; text-align:center;
+  color:var(--sb-red); margin-bottom:-58px;
+}
+
+/* ─────────────────────────── B · CANDY ───────────────────────────
+   Brand-only palette — Sally Red ramp + Naturals from the palette doc:
+   Red 30 #FF7582 · Red 70 #970719 · Blush 10 #FFE0E3 · Natural 01-20 #F5C99E */
+.spB{ background:#fff; }
+.spB .b-ship{
+  background:#970719; color:#fff; text-align:center; padding:12px 20px;
+  font-size:14px; font-weight:700; letter-spacing:.01em;
+}
+.spB .b-head{ display:flex; justify-content:space-between; align-items:center; padding:18px 24px; }
+.spB .b-head img{ height:24px; width:auto; }
+.spB .b-head .bag{ font-size:13px; font-weight:700; }
+.spB .b-hero{ background:#FF7582; padding:0 0 44px; position:relative; }
+.spB .b-sticker{
+  position:absolute; top:24px; right:24px; z-index:2; width:74px; height:74px; border-radius:999px;
+  background:#FFE0E3; color:var(--sb-ink); display:flex; align-items:center; justify-content:center;
+  font-weight:700; font-size:16px; transform:rotate(10deg); text-align:center; line-height:1.05;
+}
+/* full-bleed photo with the Sally circle-slice foot (matches .sb-curve) */
+.spB .b-hero .pic{ margin-bottom:30px; clip-path:circle(900px at 50% calc(100% - 900px)); }
+.spB .b-hero-copy{ padding:0 26px; }
+.spB .b-h{
+  font-size:54px; font-weight:700; letter-spacing:-.035em; line-height:.98;
+  margin:0 0 14px; color:var(--sb-ink);
+}
+.spB .b-hero .b-h{ color:#fff; }
+.spB .b-body{ font-size:17px; line-height:1.5; font-weight:500; margin:0 0 26px; }
+.spB .b-hero .b-body{ color:rgba(255,255,255,.95); }
+.spB .b-btn{
+  display:inline-block; background:var(--sb-ink); color:#fff; text-decoration:none;
+  font-size:16px; font-weight:700; padding:17px 34px; border-radius:999px;
+}
+.spB .b-strip{
+  display:flex; justify-content:center; gap:24px; background:#fff; padding:16px 20px;
+  font-family:var(--sb-mono); font-size:10.5px; letter-spacing:.12em; text-transform:uppercase;
+}
+.spB .b-sec{ padding:40px 26px 46px; }
+.spB .b-sec.yellow{ background:#F5C99E; }
+.spB .b-sec.blue{ background:#970719; }
+.spB .b-sec.blue .b-h, .spB .b-sec.blue .b-body{ color:#fff; }
+.spB .b-sec .b-h{ font-size:38px; }
+.spB .b-cards{ display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+.spB .b-card{ background:#fff; border-radius:22px; overflow:hidden; padding-bottom:18px; position:relative; }
+.spB .b-card .pic{ aspect-ratio:1/1; overflow:hidden; }
+.spB .b-card .pic img{ width:100%; height:100%; object-fit:cover; }
+.spB .b-card .badge{
+  position:absolute; top:12px; left:12px; background:var(--sb-red); color:#fff;
+  font-size:11px; font-weight:700; border-radius:999px; padding:6px 11px; transform:rotate(-5deg);
+}
+.spB .b-card .nm{ font-size:15px; font-weight:700; letter-spacing:-.01em; margin:13px 16px 4px; line-height:1.2; }
+.spB .b-card .pr{ font-size:13.5px; font-weight:500; color:rgba(28,20,19,.65); margin:0 16px 12px; }
+.spB .b-card .add{
+  display:block; margin:0 16px; text-align:center; background:#fff; color:var(--sb-ink);
+  border-radius:999px; box-shadow:inset 0 0 0 1.8px var(--sb-ink); text-decoration:none;
+  font-size:13px; font-weight:700; padding:11px 0;
+}
+.spB .b-foot{ background:var(--sb-ink); color:#fff; padding:44px 26px 40px; text-align:center; }
+.spB .b-foot .big{ font-size:34px; font-weight:700; letter-spacing:-.03em; margin:0 0 20px; }
+.spB .b-foot .big .hl{ color:#FF7582; }
+.spB .b-foot .links{ display:flex; justify-content:center; gap:22px; font-size:12.5px; font-weight:700; margin-bottom:20px; }
+.spB .b-foot .links a{ color:rgba(255,255,255,.85); text-decoration:none; }
+.spB .b-foot .fine{ font-size:11px; color:rgba(255,255,255,.45); margin:0; line-height:1.6; }
+
+/* ─────────────────────────── C · SOFT POP ─────────────────────────── */
+.spC{ background:#fff; }
+.spC .c-ship{
+  text-align:center; padding:11px 20px; font-size:12.5px; font-weight:500;
+  border-bottom:1px solid rgba(28,20,19,.1);
+}
+.spC .c-head{ display:flex; justify-content:center; padding:20px 24px; }
+.spC .c-head img{ height:22px; width:auto; }
+.spC .c-hero{ padding:8px 14px 0; }
+.spC .c-hero .pic{ border-radius:16px; overflow:hidden; }
+.spC .c-block{ padding:40px 30px 48px; text-align:center; }
+.spC .c-h{
+  font-family:var(--sb-cond); font-size:48px; font-weight:300; letter-spacing:-.015em; line-height:1.02;
+  margin:0 0 14px; text-wrap:balance;
+}
+.spC .c-h .ital{ font-weight:600; font-style:normal; }
+.spC .c-body{ font-size:16px; line-height:1.55; color:rgba(28,20,19,.7); margin:0 auto 26px; max-width:27em; }
+.spC .c-btn{
+  display:inline-block; background:var(--sb-ink); color:#fff; text-decoration:none;
+  font-size:14px; font-weight:600; padding:13px 26px; border-radius:10px;
+}
+.spC .c-btn.ghost{ background:#fff; color:var(--sb-ink); box-shadow:inset 0 0 0 1.4px rgba(28,20,19,.25); }
+.spC .c-pink{ background:#FFE9F0; }
+.spC .c-cards{ display:grid; grid-template-columns:1fr 1fr; gap:14px; padding:0 14px; }
+.spC .c-card{ background:#FFE9F0; border-radius:16px; padding:14px 14px 18px; text-align:center; }
+.spC .c-card .pic{ border-radius:10px; overflow:hidden; aspect-ratio:4/5; margin-bottom:14px; }
+.spC .c-card .pic img{ width:100%; height:100%; object-fit:cover; }
+.spC .c-card .nm{ font-size:14.5px; font-weight:600; letter-spacing:-.01em; margin:0 0 4px; line-height:1.25; }
+.spC .c-card .pr{ font-size:13px; color:rgba(28,20,19,.6); margin:0 0 12px; }
+.spC .c-card .add{ font-size:13px; font-weight:600; color:var(--sb-ink); text-decoration:underline; text-underline-offset:3px; }
+.spC .c-smile{ padding:50px 30px 8px; display:flex; justify-content:center; }
+.spC .c-smile svg{ width:74px; height:74px; stroke:var(--sb-red); fill:none; stroke-width:2; stroke-linecap:round; }
+.spC .c-foot{ background:#FFE9F0; padding:44px 30px 40px; text-align:center; margin-top:48px; }
+.spC .c-foot .line{ font-family:var(--sb-cond); font-size:30px; font-weight:300; letter-spacing:-.01em; margin:0 0 22px; }
+.spC .c-foot .line .ital{ font-weight:600; font-style:normal; }
+.spC .c-foot .links{ display:flex; justify-content:center; gap:20px; font-size:12.5px; font-weight:600; margin-bottom:18px; }
+.spC .c-foot .links a{ color:var(--sb-ink); text-decoration:none; }
+.spC .c-foot .fine{ font-size:11px; color:rgba(28,20,19,.45); margin:0; line-height:1.6; }

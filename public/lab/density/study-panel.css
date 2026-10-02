@@ -78,6 +78,20 @@
 /* rows at one height; their width and place are set from the pixels */
 .sp-plates { margin-top: clamp(44px, 9cqw, 88px); }
 .sp-row { display: flex; gap: var(--g, 8px); }
+/* ── a live page in a frame (study-panel.js livesEl; 1 Oct 2026, his "can
+   we use live pages?"): the page at its own width, scaled into a stage
+   with the pictures' corner; the frame never takes the wheel, and a
+   click on it opens the page. Phones and emails sit two to a row ── */
+.sp-lives { display: flex; flex-direction: column; gap: clamp(28px, 5cqw, 44px); margin-top: clamp(28px, 5cqw, 44px); }
+.sp-lives.phone { flex-direction: row; flex-wrap: wrap; align-items: flex-start; gap: clamp(20px, 4cqw, 36px) clamp(14px, 3cqw, 24px); }
+.sp-live { margin: 0; min-width: 0; }
+.sp-lives.phone .sp-live { flex: 0 1 calc(50% - clamp(7px, 1.5cqw, 12px)); max-width: 390px; }
+.sp-live-stage { position: relative; overflow: hidden; border-radius: var(--pr, 4px); background: #F4F2EE; box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.06); }
+.sp-live.phone .sp-live-stage { border-radius: 18px; }
+.sp-live-stage iframe { position: absolute; left: 0; top: 0; display: block; border: 0; background: #fff; transform-origin: 0 0; pointer-events: none; }
+.sp-live-open { position: absolute; inset: 0; z-index: 1; cursor: pointer; }
+.sp-live-cap { margin-top: 10px; }
+.sp-live-cap b { font-weight: 500; color: var(--ink); }
 .sp-row + .sp-row { margin-top: var(--g, 8px); }
 .sp-row > .sp-pic { flex: var(--r) 1 0; min-width: 0; aspect-ratio: var(--ar); }
 .sp-cap { margin-top: 10px; font-size: 11.5px; font-weight: 500; line-height: 1.45; letter-spacing: -0.002em; color: var(--grey); }

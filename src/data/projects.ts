@@ -82,6 +82,7 @@ export const projects: Project[] = [
   { id: "neimanMarcus", title: "Neiman Marcus", category: "Editorial direction, design", image: `${HP}/rhs-neiman-marcus-editorial-design-fashion-spreads.jpg`, href: "/case-studies/neiman-marcus", tags: ["digital", "creative"], keywords: "neiman marcus editorial fashion magazine spreads the rocker rainbow rose flora maxi derek lam glam rock" },
   { id: "variousDesign", title: "Various design", category: "Branding, art, apparel", image: `${HP}/rhs-various-design-branding-graphics-prints-apparel.jpg`, href: "/case-studies/branding-graphics", tags: ["creative", "branding"], keywords: "branding graphics prints florals hot air balloon letterform fashion illustration apparel" },
   { id: "bigBend", title: "West Texas", category: "Landscape photography", image: "/case-studies/big-bend/hero.jpg", href: "/case-studies/big-bend", tags: ["creative"], keywords: "chisos peak cactus" },
+  { id: "sallyDesignSystem", title: "Sally design system", category: "Design system, email, homepage", image: `${HP}/rhs-sally-design-system-homepage-the-edit.jpg`, href: "/case-studies/sally-design-system", tags: ["digital"], keywords: "sally beauty design system email homepage templates ai" },
 ];
 
 

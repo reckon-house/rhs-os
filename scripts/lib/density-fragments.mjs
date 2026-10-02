@@ -209,6 +209,26 @@ for (const s of Object.values(H.studies)) {
         break;
       case "typography": (sec.fonts || []).forEach((f) => add(k, "type", { name: clean(f.name), role: clean(f.role), note: clean(f.description), sample: clean(f.sample), where })); break;
       case "feature-cards": (sec.items || []).forEach((i) => add(k, "line", { text: clean(i.title), weight: "head", small: true, note: clean(i.description), where })); break;
+      /* a live page in a frame (1 Oct 2026, his "can we use live pages?"):
+         a replay the Sally and DSC studies carry (mode demo: measured,
+         scaled, paused when hidden), or one of the Sally system's own
+         pages, set to walk itself down a viewport (scroll) or to stand at
+         its full height (page). The room frames it; nothing is copied */
+      case "product-demo": {
+        const folder = sec.folder || "sally-demos";
+        const replay = folder === "sally-demos" || folder === "dsc-demos";
+        add(k, "live", {
+          src: "/lab/" + folder + "/" + sec.demo + ".html" + (replay ? "?framed=1" : "") + (sec.hash ? "#" + sec.hash : ""),
+          w: sec.stageWidth || (replay ? 1120 : 1440),
+          h: sec.viewHeight || 0,
+          mode: sec.mode || (replay ? "demo" : "page"),
+          phone: !!sec.phone || (sec.stageWidth || 1120) <= 600, /* a phone-width replay sits narrow */
+          title: clean(sec.title || ""),
+          note: clean(sec.note || ""),
+          where,
+        });
+        break;
+      }
       case "closing":
         paras(sec.content).forEach((p) => add(k, "line", { text: p, weight: "sub", where }));
         (sec.services || []).forEach((v) => add(k, "tool", { label: "Service", value: clean(v), where }));

@@ -124,6 +124,7 @@ ivy-park/ivy-park-campaign-assets-grid-overview
 
 # homes
 arc = app, digital, branding, systems
+sally-design-system = digital, systems
 sally-os = app, systems, digital
 dsc = app, systems, digital
 sizzle = app, systems, digital
