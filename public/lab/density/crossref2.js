@@ -1574,6 +1574,15 @@
       x.a.classList.toggle("on", on); x.a.classList.toggle("me", !!me && x === me);
       if (on && x !== me) lit.push(x);
     });
+    /* lit from the top down (1 Oct 2026, his "when the wipe comes in
+       they're all at the exact same rate - can the most top come in
+       slightly earlier than on down from there"): each lit entry waits by
+       how far down the glass it sits, a quarter second from top to foot.
+       The box mark sweeps by it; the others ignore it */
+    if (rel) {
+      const top = Math.max(0, IDX.getBoundingClientRect().top), H = innerHeight || 800;
+      ENTRIES.forEach((x) => { if (x.a && x.a.classList.contains("on")) x.a.style.setProperty("--wd", Math.round(Math.max(0, Math.min(1, (x.a.getBoundingClientRect().top - top) / H)) * 260) + "ms"); });
+    }
     /* a line's strip lights picture by picture: only the studies in play */
     STRIPS.forEach((s) => s.classList.toggle("hit", !!rel && rel.has(s.dataset.k)));
     GROUPS.forEach((g) => {

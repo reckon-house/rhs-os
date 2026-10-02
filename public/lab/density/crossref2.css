@@ -684,30 +684,34 @@ html:is([data-mk="grey"], [data-mk="box"])[data-ix="e"] body.x #idx .erun .e.on,
    sweeps in from the left as the grey does, out to the column rules, and
    the node stays on the name's row. Each kind says how far the fill stands
    above its first words (--bt) and how much of the air under it the fill
-   leaves (--bb), so two lit neighbours keep a sliver of paper between them */
+   leaves (--bb). Two lit neighbours keep paper between them (his "instead
+   of them touching and looking like one big section in places can we have
+   some padding between?"): eight pixels between lines, six between About's
+   sections and between reels, four or so in the dense rows */
 html[data-mk="box"][data-ix="e"] #idx .grp.ec .e:is(.el, .ef, .ea, .efig, .ew, .etool, .ey, .ecap) { position: relative; z-index: 0; }
 html[data-mk="box"][data-ix="e"] #idx .grp.ec .e:is(.el, .ef, .ea, .efig, .ew, .etool, .ey, .ecap)::before {
   content: ""; position: absolute; z-index: -1; top: calc(-1 * var(--bt, 6px)); bottom: var(--bb, 4px); left: calc(var(--eg) / -2 + 0.5px); right: calc(var(--eg) / -2 + 0.5px);
   background: var(--hl); transform: scaleX(0); transform-origin: 100% 50%; transition: transform 0.36s cubic-bezier(0.45, 0, 0.2, 1); pointer-events: none; }
 html[data-mk="box"][data-ix="e"] body.x #idx .grp.ec .e.on:is(.el, .ef, .ea, .efig, .ew, .etool, .ey, .ecap)::before,
-html[data-mk="box"][data-ix="e"] #idx .grp.ec .e.lock:is(.el, .ef, .ea, .efig, .ew, .etool, .ey, .ecap)::before { transform: scaleX(1); transform-origin: 0 50%; }
-[data-ix="e"] .e.el { --bt: 8px; --bb: 9px; }
+html[data-mk="box"][data-ix="e"] #idx .grp.ec .e.lock:is(.el, .ef, .ea, .efig, .ew, .etool, .ey, .ecap)::before { transform: scaleX(1); transform-origin: 0 50%; transition-delay: var(--wd, 0ms); }
+[data-ix="e"] .e.el { --bt: 4px; --bb: 12px; }
 [data-ix="e"] .e.ef { --bt: 9px; --bb: -9px; }
-[data-ix="e"] .e.ea { --bt: 7px; --bb: 5px; }
-[data-ix="e"] .e.ereel { --bt: 9px; --bb: -9px; }
-[data-ix="e"] .e.efig { --bt: 7px; --bb: -9px; }
-[data-ix="e"] .e.ew { --bt: 4px; --bb: 2px; }
-[data-ix="e"] .e.etool { --bt: 5px; --bb: 4px; }
-[data-ix="e"] .e.ey { --bt: 2px; --bb: 0px; }
-[data-ix="e"] .e.ecap { --bt: 3px; --bb: 1px; }
-/* the node, a circle of ink on the rule at the name's row, as the grey's */
+[data-ix="e"] .e.ea { --bt: 4px; --bb: 10px; }
+[data-ix="e"] .e.ereel { --bt: 6px; --bb: -6px; }
+[data-ix="e"] .e.efig { --bt: 6px; --bb: -8px; }
+[data-ix="e"] .e.ew { --bt: 2px; --bb: 5px; }
+[data-ix="e"] .e.etool { --bt: 3px; --bb: 7px; }
+[data-ix="e"] .e.ey { --bt: 0px; --bb: 3px; }
+[data-ix="e"] .e.ecap { --bt: 1px; --bb: 4px; }
+/* the node, a circle of ink on the rule at the name's row, as the grey's,
+   arriving a beat after its box */
 html[data-mk="box"][data-ix="e"] #idx .grp.ec :is(.e:is(.el, .ef, .ea, .efig) .nr, .e:is(.ew, .etool) .er) { position: relative; }
 html[data-mk="box"][data-ix="e"] #idx .grp.ec :is(.e:is(.el, .ef, .ea, .efig) .nr, .e:is(.ew, .etool) .er, .e:is(.ey, .ecap) > .t)::after {
   content: ""; position: absolute; top: 50%; left: calc(var(--eg) / -2 - 2.5px); width: 5px; height: 5px; margin-top: -2.5px; border-radius: 50%;
   background: var(--ink); transform: scale(0); transition: transform 0.3s cubic-bezier(0.2, 0.7, 0.2, 1); pointer-events: none; }
 html[data-mk="box"][data-ix="e"] #idx .grp.ec .e:is(.ey, .ecap) > .t { position: relative; }
 html[data-mk="box"][data-ix="e"] body.x #idx .grp.ec :is(.e.on:is(.el, .ef, .ea, .efig) .nr, .e.on:is(.ew, .etool) .er, .e.on:is(.ey, .ecap) > .t)::after,
-html[data-mk="box"][data-ix="e"] #idx .grp.ec :is(.e.lock:is(.el, .ef, .ea, .efig) .nr, .e.lock:is(.ew, .etool) .er, .e.lock:is(.ey, .ecap) > .t)::after { transform: none; transition-delay: 0.12s; }
+html[data-mk="box"][data-ix="e"] #idx .grp.ec :is(.e.lock:is(.el, .ef, .ea, .efig) .nr, .e.lock:is(.ew, .etool) .er, .e.lock:is(.ey, .ecap) > .t)::after { transform: none; transition-delay: calc(var(--wd, 0ms) + 0.12s); }
 
 /* BAR: the band on the words, as before, with room around them. It
    stands out a quarter of the type either side and a fifth above and
