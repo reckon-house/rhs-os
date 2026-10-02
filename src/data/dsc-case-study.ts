@@ -84,7 +84,7 @@ export const dscCaseStudy: CaseStudy = {
     {
       id: "intro-editorial",
       type: "editorial-headline",
-      text: "Enterprise plumbing\nfor a gym with six trainers",
+      text: "A hundred-plus athletes were booked\nover texts and a Google Sheet\nnobody fully trusted",
     },
 
     // ════════════════════════════════════════
@@ -233,7 +233,7 @@ export const dscCaseStudy: CaseStudy = {
     {
       id: "mcp-editorial",
       type: "editorial-headline",
-      text: "The athlete asks their own AI,\nand the AI asks the gym",
+      text: "An athlete's AI can read the schedule\nbut can only ask for changes",
     },
 
     // ════════════════════════════════════════
