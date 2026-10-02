@@ -138,7 +138,7 @@ export const youBySallyCaseStudy: CaseStudy = {
     {
       id: "headline-color",
       type: "editorial-headline",
-      text: "Hair color treated like\na creative decision",
+      text: "The brief was to make hair color\nsomething you'd choose on purpose",
     },
 
     // ════════════════════════════════════════
