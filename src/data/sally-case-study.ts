@@ -526,7 +526,7 @@ export const sallyCaseStudy: CaseStudy = {
     {
       id: "thinks-editorial",
       type: "editorial-headline",
-      text: "Four months ago\nthis was a spreadsheet\nand a group chat",
+      text: "I built the whole Marketing OS\nin about four months",
     },
 
     // ── ASSET HUB ──
