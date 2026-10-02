@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sally, pushed</title>
+<meta name="robots" content="noindex">
+<!-- Before and after for the editorial pass (2 Oct 2026). Each frame is
+     the live page scaled to fit; scroll inside it, or open it. -->
+<link rel="stylesheet" href="push.css">
+<style>
+  body { background: #fff; }
+  .top { padding: clamp(28px, 4vw, 56px) 0 clamp(36px, 4.6vw, 64px); border-bottom: 1px solid var(--ink); }
+  .top h1 { font-size: clamp(56px, 9vw, 136px); line-height: 0.86; font-weight: 600; letter-spacing: -0.058em; }
+  .top p { max-width: 62ch; margin-top: 22px; }
+  .what { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; margin-top: 32px; }
+  .what li { border-top: 1px solid var(--rule); padding-top: 12px; font-size: 15px; line-height: 1.5; color: var(--ink-2); }
+  .what b { display: block; color: var(--ink); font-weight: 600; margin-bottom: 4px; }
+  .cmp { padding: clamp(40px, 5vw, 72px) 0; border-bottom: 1px solid var(--rule); }
+  .cmp > .head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 22px; }
+  .cmp h2 { font-size: clamp(28px, 3vw, 44px); line-height: 1; font-weight: 600; letter-spacing: -0.035em; }
+  .two { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(16px, 2vw, 32px); align-items: start; }
+  .two.narrow { grid-template-columns: repeat(2, minmax(0, 420px)); justify-content: start; }
+  .two.phone { grid-template-columns: repeat(2, minmax(0, 300px)); justify-content: start; }
+  .fr figcaption { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 10px; }
+  .fr figcaption a { font-size: 13px; font-weight: 600; border-bottom: 1px solid currentColor; }
+  .stage { position: relative; overflow: hidden; border-radius: 6px; box-shadow: 0 0 0 1px var(--rule); background: #fff; }
+  .phone .stage { border-radius: 22px; }
+  .stage iframe { position: absolute; left: 0; top: 0; border: 0; transform-origin: 0 0; background: #fff; }
+  @media (max-width: 860px) { .two, .two.narrow, .two.phone { grid-template-columns: minmax(0, 1fr); } .what { grid-template-columns: minmax(0, 1fr); } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <p class="t-label grey" style="margin:0 0 18px">Sally Beauty · Lab · 2 Oct 2026</p>
+    <h1>Sally, pushed.</h1>
+    <p class="t-deck">The homepage and email concepts, taken as far as the work wanted to go. Each pair below is the original on the left and the pushed pass on the right, live. Scroll inside a frame, or open it.</p>
+    <ul class="what">
+      <li><b>Type</b>Satoshi in place of Founders Grotesk, set big and tight. No mono eyebrows.</li>
+      <li><b>Ground</b>White paper in place of the cream, shell, rose, peach and sand panels. Color comes from the photographs, one scarlet field and ink.</li>
+      <li><b>Story</b>The homepage reads as an issue with four numbered stories. Each email tells one story, top to bottom.</li>
+    </ul>
+  </header>
+
+  <section class="cmp">
+    <div class="head"><h2>Homepage, desktop</h2><span class="t-label grey">The Edit → The Color Issue</span></div>
+    <div class="two">
+      <figure class="fr" data-w="1440" data-h="1180"><figcaption><span class="t-label grey">Before</span><a href="../sally-system/homepage-edit.html" target="_blank">Open</a></figcaption><div class="stage"><iframe src="../sally-system/homepage-edit.html" loading="lazy" title="The Edit, before"></iframe></div></figure>
+      <figure class="fr" data-w="1440" data-h="1180"><figcaption><span class="t-label">Pushed</span><a href="the-color-issue.html" target="_blank">Open</a></figcaption><div class="stage"><iframe src="the-color-issue.html" loading="lazy" title="The Color Issue, pushed"></iframe></div></figure>
+    </div>
+  </section>
+
+  <section class="cmp">
+    <div class="head"><h2>Homepage, phone</h2><span class="t-label grey">390 wide</span></div>
+    <div class="two phone">
+      <figure class="fr" data-w="390" data-h="844"><figcaption><span class="t-label grey">Before</span><a href="../sally-system/homepage-edit.html" target="_blank">Open</a></figcaption><div class="stage"><iframe src="../sally-system/homepage-edit.html" loading="lazy" title="The Edit on a phone, before"></iframe></div></figure>
+      <figure class="fr" data-w="390" data-h="844"><figcaption><span class="t-label">Pushed</span><a href="the-color-issue.html" target="_blank">Open</a></figcaption><div class="stage"><iframe src="the-color-issue.html" loading="lazy" title="The Color Issue on a phone, pushed"></iframe></div></figure>
+    </div>
+  </section>
+
+  <section class="cmp">
+    <div class="head"><h2>The Gloss, the editorial email</h2><span class="t-label grey">600 wide</span></div>
+    <div class="two narrow">
+      <figure class="fr" data-w="600" data-h="1300"><figcaption><span class="t-label grey">Before</span><a href="../sally-system/email-editorial-the-gloss-full-issue.html" target="_blank">Open</a></figcaption><div class="stage"><iframe src="../sally-system/email-editorial-the-gloss-full-issue.html" loading="lazy" title="The Gloss, before"></iframe></div></figure>
+      <figure class="fr" data-w="600" data-h="1300"><figcaption><span class="t-label">Pushed</span><a href="the-gloss.html" target="_blank">Open</a></figcaption><div class="stage"><iframe src="the-gloss.html" loading="lazy" title="The Gloss, pushed"></iframe></div></figure>
+    </div>
+  </section>
+
+  <section class="cmp">
+    <div class="head"><h2>The sale email</h2><span class="t-label grey">600 wide</span></div>
+    <div class="two narrow">
+      <figure class="fr" data-w="600" data-h="1300"><figcaption><span class="t-label grey">Before</span><a href="../sally-system/email-color-blocked-sale.html" target="_blank">Open</a></figcaption><div class="stage"><iframe src="../sally-system/email-color-blocked-sale.html" loading="lazy" title="The sale email, before"></iframe></div></figure>
+      <figure class="fr" data-w="600" data-h="1300"><figcaption><span class="t-label">Pushed</span><a href="the-sale.html" target="_blank">Open</a></figcaption><div class="stage"><iframe src="the-sale.html" loading="lazy" title="The sale email, pushed"></iframe></div></figure>
+    </div>
+  </section>
+  <p class="t-cap" style="padding:28px 0 48px">Pictures and products are his concept assets in /lab/sally-system/assets. Satoshi is the site's own file.</p>
+</div>
+<script>
+  /* each frame lays its page out at the page's own width and scales it into the stage */
+  const fit = () => document.querySelectorAll(".fr").forEach((f) => {
+    const st = f.querySelector(".stage"), fr = f.querySelector("iframe");
+    const w = +f.dataset.w, h = +f.dataset.h, k = st.clientWidth / w;
+    fr.style.width = w + "px"; fr.style.height = h + "px"; fr.style.transform = "scale(" + k + ")";
+    st.style.height = Math.round(h * k) + "px";
+  });
+  fit(); addEventListener("resize", fit);
+</script>
+</body>
+</html>
