@@ -229,7 +229,7 @@ export const chaletCaseStudy: CaseStudy = {
     {
       id: "headline-quiet",
       type: "editorial-headline",
-      text: "The trees are the reason\nthe room is shaped this way",
+      text: "The furniture was kept plain\nso it wouldn't compete with the view",
     },
 
     // ── 2-up: group 2 verticals (sofa detail closer + A-frame skylight
