@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sally Beauty · The kit (module)</title>
+<meta name="robots" content="noindex">
+<!-- The kit on one board (2 Oct 2026): the six rule chapters of the study
+     (type, color, scale, image and graphics, templates, contrast) as one
+     page made for the room. The block and module names are his canvas
+     labels (main.jsx "Building blocks", homepage-main.jsx "Modules"); the
+     promo banner comes in three styles, so twelve labels are fourteen
+     blocks. The colors are his tokens, the pushed pass's soft grey, and
+     two vivids sampled from his photographs. -->
+<link rel="preload" href="/fonts/Satoshi-Variable.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="push.css">
+<link rel="stylesheet" href="m.css">
+<style>
+.board { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.cell { border-radius: 18px; background: var(--soft); padding: clamp(18px, 3vw, 26px); min-width: 0; }
+.cell.w { grid-column: 1 / -1; }
+.cell > .cap { display: flex; justify-content: space-between; gap: 12px; }
+.cell > .cap b { color: var(--ink); font-weight: 600; }
+/* type */
+.type { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: clamp(18px, 4vw, 40px); align-items: end; margin-top: 14px; }
+.aa { font-size: clamp(96px, 20vw, 168px); line-height: 0.76; font-weight: 600; letter-spacing: -0.07em; margin-left: -0.03em; }
+.weights { display: grid; gap: 4px; }
+.weights li { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; font-size: clamp(17px, 2.6vw, 22px); letter-spacing: -0.02em; }
+.weights small { font-size: 12px; font-weight: 600; letter-spacing: 0.06em; color: var(--grey); }
+.roles { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin-top: 18px; }
+.roles div { border-radius: 12px; background: #fff; padding: 12px 14px; }
+.roles .r-h { font-size: 22px; line-height: 1; font-weight: 600; letter-spacing: -0.045em; }
+.roles .r-l { font-size: 11.5px; font-weight: 600; letter-spacing: 0.09em; text-transform: uppercase; color: var(--red-deep); }
+.roles .r-b { font-size: 14px; line-height: 1.45; color: var(--ink-2); }
+.roles small { display: block; margin-top: 8px; font-size: 12px; color: var(--grey); }
+/* color */
+.chips { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin-top: 14px; }
+.chip i { display: block; aspect-ratio: 1; border-radius: 12px; }
+.chip b { display: block; margin-top: 7px; font-size: 13.5px; font-weight: 600; letter-spacing: -0.01em; }
+.chip small { display: block; font-size: 12px; color: var(--grey); }
+/* shape */
+.shapes { display: flex; align-items: flex-end; gap: 8px; margin-top: 16px; }
+.shapes span { display: grid; place-items: end start; padding: 6px 7px; border-radius: 10px; background: #fff; box-shadow: inset 0 0 0 1.5px rgba(28, 20, 19, 0.14); font-size: 11px; font-weight: 600; color: var(--grey); }
+.corner { display: flex; align-items: center; gap: 14px; margin-top: 18px; }
+.corner i { width: 54px; height: 54px; border-radius: 16px; background: var(--ink); flex: none; }
+.corner p { font-size: 14px; line-height: 1.45; color: var(--ink-2); }
+/* blocks and modules */
+.pills { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 14px; }
+.pills span { height: 30px; padding: 0 12px; border-radius: 999px; background: #fff; font-size: 13px; font-weight: 500; line-height: 30px; white-space: nowrap; }
+.pills span em { font-style: normal; color: var(--red-deep); font-weight: 600; }
+.groups { display: grid; gap: 12px; margin-top: 14px; }
+.groups p { font-size: 13.5px; line-height: 1.45; color: var(--ink-2); }
+.groups b { display: block; font-size: 14.5px; font-weight: 600; color: var(--ink); letter-spacing: -0.01em; }
+.corner .big { flex: none; font-size: clamp(40px, 7vw, 56px); line-height: 0.82; font-weight: 700; letter-spacing: -0.06em; color: var(--ink); }
+/* rules */
+.rules { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin-top: 14px; counter-reset: r; }
+.rules li { border-radius: 12px; background: #fff; padding: 14px 16px; font-size: 16px; line-height: 1.3; font-weight: 600; letter-spacing: -0.015em; }
+.rules li::before { counter-increment: r; content: counter(r, decimal-leading-zero); display: block; margin-bottom: 10px; font-size: 12px; font-weight: 600; color: var(--red-deep); }
+.rules small { display: block; margin-top: 6px; font-size: 13px; font-weight: 400; letter-spacing: 0; color: var(--grey); }
+@media (max-width: 560px) {
+  .board { grid-template-columns: minmax(0, 1fr); }
+  .type { grid-template-columns: minmax(0, 1fr); }
+  .roles, .rules { grid-template-columns: minmax(0, 1fr); }
+}
+</style>
+</head>
+<body>
+<div class="mod board">
+  <div class="cell w">
+    <p class="cap grey"><span>Type</span><b>Satoshi</b></p>
+    <div class="type">
+      <p class="aa">Aa</p>
+      <ol class="weights">
+        <li style="font-weight:300">Light<small>300</small></li>
+        <li style="font-weight:400">Regular<small>400</small></li>
+        <li style="font-weight:500">Medium<small>500</small></li>
+        <li style="font-weight:600">Semibold<small>600</small></li>
+        <li style="font-weight:700">Bold<small>700</small></li>
+        <li style="font-weight:900">Black<small>900</small></li>
+      </ol>
+    </div>
+    <div class="roles">
+      <div><p class="r-h">Go platinum.</p><small>Headline · semibold, tight</small></div>
+      <div><p class="r-l">The Platinum Kit</p><small>Label · semibold capitals</small></div>
+      <div><p class="r-b">Pro-grade color, tools and the steps to use them.</p><small>Body · regular</small></div>
+    </div>
+  </div>
+
+  <div class="cell">
+    <p class="cap grey"><span>Color</span><b>Paper and ink</b></p>
+    <div class="chips">
+      <div class="chip"><i style="background:#E11324"></i><b>Sally Scarlet</b><small>#E11324</small></div>
+      <div class="chip"><i style="background:#1C1413"></i><b>Ink</b><small>#1C1413</small></div>
+      <div class="chip"><i style="background:#F4F3F1;box-shadow:inset 0 0 0 1.5px rgba(28,20,19,.08)"></i><b>Soft Grey</b><small>#F4F3F1</small></div>
+      <div class="chip"><i style="background:#B30E1C"></i><b>Deeper red</b><small>Small red text</small></div>
+      <div class="chip"><i style="background:#442861"></i><b>Electric Violet</b><small>From the photo</small></div>
+      <div class="chip"><i style="background:#0E4043"></i><b>Deep Sea Teal</b><small>From the photo</small></div>
+    </div>
+  </div>
+
+  <div class="cell">
+    <p class="cap grey"><span>Shape</span><b>Five shapes</b></p>
+    <div class="shapes" aria-label="1:1, 4:5, 9:16, 16:9 and 3:1">
+      <span style="width:52px;height:52px">1:1</span>
+      <span style="width:46px;height:58px">4:5</span>
+      <span style="width:34px;height:60px">9:16</span>
+      <span style="width:84px;height:47px">16:9</span>
+      <span style="width:96px;height:32px">3:1</span>
+    </div>
+    <div class="corner"><i></i><p>Round corners on every picture and card, and space in place of rules.</p></div>
+    <div class="corner"><p class="big">1440</p><p>and 390: every homepage drawn twice, desktop and phone.</p></div>
+  </div>
+
+  <div class="cell">
+    <p class="cap grey"><span>Email</span><b>14 blocks</b></p>
+    <div class="pills">
+      <span>Header bar</span><span>Promo banner <em>× 3</em></span><span>Colorist OnDemand</span><span>Klarna financing</span><span>Hero + headline</span><span>Hero · statement</span><span>Editorial headline</span><span>Product row · 2-up</span><span>Category grid · 2×2</span><span>Category grid · 3-up</span><span>Category tiles</span><span>Footer</span>
+    </div>
+  </div>
+
+  <div class="cell">
+    <p class="cap grey"><span>Homepage</span><b>21 modules</b></p>
+    <div class="groups">
+      <p><b>Heroes and takeovers · 5</b>Split, editorial masthead, story takeover, takeover mosaic, event bar</p>
+      <p><b>Swatch stories · 3</b>Know your level, pick your tone, vivid spectrum</p>
+      <p><b>Story bands · 4</b>Colorist OnDemand, offers story, pull quote, editorial cards</p>
+      <p><b>Commerce · 6</b>Tabbed product tray, product row, personalized rail, DIY projects, kit builder, look cards</p>
+      <p><b>Utility strips · 3</b>Service bar, brand logo bar, category circles</p>
+    </div>
+  </div>
+
+  <div class="cell w">
+    <p class="cap grey"><span>Rules</span><b>Three that hold everywhere</b></p>
+    <ol class="rules">
+      <li>Copy never sits on a photograph.<small>A headline that meets a picture floats on a card.</small></li>
+      <li>Homepage products never show a price.<small>Prices change too often.</small></li>
+      <li>Small red text uses the deeper red.<small>It passes at about 4.76 to 1.</small></li>
+    </ol>
+  </div>
+</div>
+<script>
+  let framed = true; try { framed = window.top !== window; } catch (e) { framed = true; }
+  if (!framed) document.body.classList.add("solo");
+</script>
+</body>
+</html>

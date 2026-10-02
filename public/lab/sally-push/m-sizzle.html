@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sally Beauty · Three ideas (sizzle)</title>
+<meta name="robots" content="noindex">
+<!-- The strategy as a mini sizzle (2 Oct 2026, his "it's just stacked
+     homepage heros ... maybe it needs to be a mini sizzle"). Three beats,
+     one per idea, each in his concepts' own words, then the platform
+     line. About twenty seconds, looping. Made for the study's room
+     (fit mode): it pauses while the room marks it data-paused, and a
+     reader who asks for less motion gets the three ideas side by side. -->
+<link rel="preload" href="/fonts/Satoshi-Variable.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="push.css">
+<link rel="stylesheet" href="m.css">
+<style>
+.sz { position: relative; container-type: inline-size; aspect-ratio: 16 / 10; border-radius: 18px; background: var(--soft); overflow: hidden; }
+.stage { position: absolute; inset: 0 0 46px; }
+.sc { position: absolute; inset: 0; padding: 4.2cqw; opacity: 0; transition: opacity 0.5s ease; pointer-events: none; }
+.sc.on { opacity: 1; }
+.a { opacity: 0; transform: translateY(12px); transition: opacity 0.5s ease, transform 0.6s cubic-bezier(.2, .7, .2, 1); transition-delay: var(--d, 0ms); }
+.sc.on .a { opacity: 1; transform: none; }
+.lab { font-size: max(10px, 1.75cqw); font-weight: 600; letter-spacing: 0.09em; text-transform: uppercase; color: var(--red-deep); }
+.h { margin-top: 1.4cqw; font-size: 5.1cqw; line-height: 0.96; font-weight: 600; letter-spacing: -0.045em; }
+
+/* 01 · the doer's store */
+.s1 { display: grid; grid-template-columns: 40% minmax(0, 1fr); gap: 4cqw; }
+.s1 .ph { border-radius: 2.4cqw; height: 100%; }
+.s1 .ph img { object-position: 50% 28%; }
+.s1 .txt { display: flex; flex-direction: column; justify-content: center; min-width: 0; }
+.s1 .h { font-size: 4.5cqw; }
+.kit { display: grid; gap: 0.55cqw; margin-top: 2cqw; }
+.kit li { display: flex; justify-content: space-between; align-items: baseline; gap: 2cqw; border-radius: 1.4cqw; background: #fff; padding: 0.75cqw 1.6cqw; font-size: max(10px, 1.8cqw); }
+.kit li b { font-size: max(12px, 2.3cqw); font-weight: 700; letter-spacing: -0.05em; color: var(--word); }
+.kit li span { font-weight: 600; }
+.tot { display: flex; align-items: baseline; gap: 1.8cqw; margin-top: 1.4cqw; }
+.tot .now { font-size: 4cqw; font-weight: 700; letter-spacing: -0.05em; }
+.tot .save { font-size: max(9px, 1.6cqw); font-weight: 600; letter-spacing: 0.07em; text-transform: uppercase; color: var(--red-deep); }
+
+/* 02 · color expertise */
+.s2 { display: grid; grid-template-columns: 44% minmax(0, 1fr); gap: 4cqw; align-items: center; }
+.glyph { display: flex; align-items: flex-end; justify-content: center; height: 100%; border-radius: 2.4cqw; background: #fff; font-size: 27cqw; line-height: 0.78; font-weight: 700; letter-spacing: -0.08em; padding-bottom: 5cqw; }
+.glyph .c { color: #c07a45; display: inline-block; }
+.s2 .txt { min-width: 0; }
+.ramp { display: grid; grid-template-columns: repeat(10, minmax(0, 1fr)); gap: 0.6cqw; margin-top: 2.8cqw; }
+.ramp i { aspect-ratio: 3 / 4; border-radius: 1cqw; }
+.sc.on .ramp i.lift { transform: translateY(-1.4cqw); box-shadow: 0 1.2cqw 2.4cqw rgba(28, 20, 19, 0.2); }
+.tones { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 0.8cqw; margin-top: 2.2cqw; }
+.tones i { aspect-ratio: 1; border-radius: 1.2cqw; }
+.sc.on .tones i.lift { transform: translateY(-1.4cqw); box-shadow: 0 1.2cqw 2.4cqw rgba(28, 20, 19, 0.2); }
+.key { display: flex; justify-content: space-between; margin-top: 0.8cqw; font-size: max(9px, 1.5cqw); color: var(--grey); }
+
+/* 03 · education */
+.s3 { display: grid; grid-template-columns: minmax(0, 1fr) 46%; gap: 4cqw; align-items: center; }
+.chat { display: flex; flex-direction: column; gap: 1.2cqw; height: 100%; justify-content: center; border-radius: 2.4cqw; background: #fff; padding: 2.6cqw; }
+.chat .top { display: flex; align-items: center; gap: 1cqw; font-size: max(9px, 1.6cqw); font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; }
+.chat .top::before { content: ""; width: 1.3cqw; height: 1.3cqw; border-radius: 50%; background: #1F8A4C; box-shadow: 0 0 0 0.7cqw rgba(31, 138, 76, 0.16); }
+.b { max-width: 82%; border-radius: 2cqw; padding: 1.3cqw 1.8cqw; font-size: max(10px, 2cqw); line-height: 1.3; }
+.b.me { align-self: flex-end; background: var(--ink); color: #fff; }
+.b.pro { align-self: flex-start; background: var(--soft); }
+.b.pic { padding: 0.6cqw; background: var(--ink); }
+.b.pic img { width: 13cqw; aspect-ratio: 1; object-fit: cover; border-radius: 1.4cqw; }
+.b.card { align-self: flex-start; background: var(--soft); border: 0; }
+.b.card b { display: block; font-size: max(11px, 2.4cqw); letter-spacing: -0.03em; }
+
+/* the end card */
+.s4 { display: flex; flex-direction: column; justify-content: space-between; background: var(--red); color: #fff; }
+.s4 img { width: 16cqw; height: auto; filter: brightness(0) invert(1); }
+.s4 .h { font-size: 8.4cqw; line-height: 0.9; max-width: 14ch; }
+
+/* the three ideas, as a bar under the stage */
+.bar { position: absolute; left: 4.2cqw; right: 4.2cqw; bottom: 1.6cqw; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.2cqw; }
+.bar span { display: block; font-size: max(9.5px, 1.55cqw); font-weight: 600; letter-spacing: 0.02em; color: var(--grey); transition: color 0.3s ease; }
+.bar .on span { color: var(--ink); }
+.bar i { display: block; height: 3px; margin-top: 0.8cqw; border-radius: 3px; background: rgba(28, 20, 19, 0.12); overflow: hidden; }
+.bar i b { display: block; height: 100%; width: 0; background: var(--red); }
+
+/* the still version: the three ideas side by side */
+.still { display: none; }
+.sz.calm { aspect-ratio: auto; }
+.sz.calm .stage, .sz.calm .bar { display: none; }
+.sz.calm .still { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; padding: 14px; }
+.still div { border-radius: 14px; background: #fff; padding: 16px; }
+.still p { margin-top: 8px; font-size: 18px; line-height: 1.05; font-weight: 600; letter-spacing: -0.03em; }
+.sz.calm .end { display: block; margin: 0 14px 14px; border-radius: 14px; background: var(--red); color: #fff; padding: 18px; font-size: 22px; line-height: 1; font-weight: 600; letter-spacing: -0.04em; }
+.end { display: none; }
+
+/* a phone column: the stage stands up and each beat stacks */
+@media (max-width: 520px) {
+  .sz { aspect-ratio: 4 / 5; }
+  .sc { padding: 5cqw; }
+  .lab { font-size: max(10px, 2.9cqw); }
+  .h, .s1 .h { font-size: 8.2cqw; }
+  .s1 { grid-template-columns: minmax(0, 1fr); grid-template-rows: 36% minmax(0, 1fr); gap: 3.4cqw; }
+  .s1 .txt { justify-content: flex-start; }
+  .kit { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.4cqw; margin-top: 3cqw; }
+  .kit li { padding: 1.8cqw 2.4cqw; font-size: max(10px, 3cqw); }
+  .kit li span { display: none; }
+  .kit li b { font-size: max(12px, 3.8cqw); }
+  .tot .now { font-size: 7cqw; } .tot .save { font-size: max(9px, 2.6cqw); }
+  .s2 { grid-template-columns: minmax(0, 1fr); grid-template-rows: 38% minmax(0, 1fr); gap: 3.4cqw; align-items: stretch; }
+  .glyph { font-size: 34cqw; padding-bottom: 4cqw; }
+  .s3 { grid-template-columns: minmax(0, 1fr); grid-template-rows: auto minmax(0, 1fr); gap: 3.4cqw; align-items: stretch; }
+  .s3 .txt { order: -1; }
+  .b { font-size: max(10px, 3.3cqw); padding: 2cqw 2.8cqw; }
+  .b.pic img { width: 22cqw; }
+  .chat .top { font-size: max(9px, 2.6cqw); }
+  .s4 .h { font-size: 12cqw; }
+  .s4 img { width: 26cqw; }
+  .bar span { font-size: max(9px, 2.6cqw); }
+  .sz.calm .still { grid-template-columns: minmax(0, 1fr); }
+}
+</style>
+</head>
+<body>
+<div class="sz" id="sz">
+  <div class="stage">
+    <!-- 01: from the DIY Studio concept -->
+    <section class="sc s1" data-i="0">
+      <figure class="ph a"><img src="../sally-system/assets/img/blonde-port.jpg" alt="Long blonde waves, orange nails, outdoors"></figure>
+      <div class="txt">
+        <p class="lab a" style="--d:150ms">01 · The doer's store</p>
+        <p class="h a" style="--d:300ms">Do it yourself. We'll handle the how.</p>
+        <ol class="kit">
+          <li class="a" style="--d:1100ms"><b>lightener</b><span>$8.99</span></li>
+          <li class="a" style="--d:1350ms"><b>developer</b><span>$6.49</span></li>
+          <li class="a" style="--d:1600ms"><b>toner</b><span>$7.99</span></li>
+          <li class="a" style="--d:1850ms"><b>bowl &amp; brush</b><span>$4.99</span></li>
+          <li class="a" style="--d:2100ms"><b>bond protector</b><span>$12.99</span></li>
+        </ol>
+        <p class="tot a" style="--d:2700ms"><span class="now">$36.99</span><span class="save">The Platinum Kit · Save $4.46</span></p>
+      </div>
+    </section>
+    <!-- 02: from the Color Authority concept -->
+    <section class="sc s2" data-i="1">
+      <p class="glyph a" aria-label="8C"><span class="a" style="--d:300ms">8</span><span class="c a" style="--d:900ms">C</span></p>
+      <div class="txt">
+        <p class="lab a" style="--d:150ms">02 · Color expertise</p>
+        <p class="h a" style="--d:300ms">Nobody knows color like Sally.</p>
+        <div class="ramp" aria-label="Levels 1 to 10">
+          <i class="a" style="--d:1300ms;background:#1a1411"></i><i class="a" style="--d:1380ms;background:#2b1d16"></i><i class="a" style="--d:1460ms;background:#3d2a1c"></i><i class="a" style="--d:1540ms;background:#5a3a22"></i><i class="a" style="--d:1620ms;background:#6e4828"></i><i class="a" style="--d:1700ms;background:#8a5e34"></i><i class="a" style="--d:1780ms;background:#a87c4a"></i><i class="a lift" style="--d:1860ms;background:#c6a06a"></i><i class="a" style="--d:1940ms;background:#ddc394"></i><i class="a" style="--d:2020ms;background:#ece0bf"></i>
+        </div>
+        <div class="key a" style="--d:2100ms"><span>1 · Black</span><span>Level 8</span><span>10 · Lightest</span></div>
+        <div class="tones" aria-label="Tones A, N, G, C, R">
+          <i class="a" style="--d:2700ms;background:#b9aa8d"></i><i class="a" style="--d:2780ms;background:#c2a173"></i><i class="a" style="--d:2860ms;background:#cfa45e"></i><i class="a lift" style="--d:2940ms;background:#c07a45"></i><i class="a" style="--d:3020ms;background:#a8503c"></i>
+        </div>
+        <div class="key a" style="--d:3100ms"><span>A · Cool</span><span>C · Copper</span><span>R · Warm</span></div>
+      </div>
+    </section>
+    <!-- 03: the colorist, from the Colorfest and DIY Studio concepts -->
+    <section class="sc s3" data-i="2">
+      <div class="txt">
+        <p class="lab a" style="--d:150ms">03 · Education</p>
+        <p class="h a" style="--d:300ms">Stuck on a shade? Ask a pro, free.</p>
+      </div>
+      <div class="chat a" style="--d:500ms">
+        <p class="top">Colorists online now</p>
+        <p class="b me pic a" style="--d:1200ms"><img src="../sally-system/assets/img/copper-port.jpg" alt="A photo of copper curls, sent to a colorist"></p>
+        <p class="b pro a" style="--d:2100ms">Real licensed colorists, on demand.</p>
+        <p class="b pro a" style="--d:2900ms">Free, no appointment, no judgment.</p>
+        <p class="b card a" style="--d:3700ms"><b>Your formula</b>Built for your level.</p>
+      </div>
+    </section>
+    <!-- the platform -->
+    <section class="sc s4" data-i="3">
+      <img class="a" src="../sally-system/assets/brand/sally-logo-red.webp" alt="Sally Beauty" style="--d:200ms">
+      <p class="h a" style="--d:350ms">Salon-level results, doable at home.</p>
+    </section>
+  </div>
+  <div class="bar" aria-hidden="true">
+    <div><span>The doer's store</span><i><b></b></i></div>
+    <div><span>Color expertise</span><i><b></b></i></div>
+    <div><span>Education</span><i><b></b></i></div>
+  </div>
+  <div class="still">
+    <div><p class="lab">01 · The doer's store</p><p>Do it yourself. We'll handle the how.</p></div>
+    <div><p class="lab">02 · Color expertise</p><p>Nobody knows color like Sally.</p></div>
+    <div><p class="lab">03 · Education</p><p>Stuck on a shade? Ask a pro, free.</p></div>
+  </div>
+  <p class="end">Salon-level results, doable at home.</p>
+</div>
+<script>
+(() => {
+  let framed = true; try { framed = window.top !== window; } catch (e) { framed = true; }
+  if (!framed) document.body.classList.add("solo");
+  const sz = document.getElementById("sz");
+  if (matchMedia("(prefers-reduced-motion: reduce)").matches) { sz.classList.add("calm"); return; }
+  /* the beats: three ideas and the platform, in milliseconds */
+  const BEATS = [5600, 5600, 5800, 2800];
+  const scenes = [...sz.querySelectorAll(".sc")];
+  const segs = [...sz.querySelectorAll(".bar > div")];
+  const fills = segs.map((d) => d.querySelector("b"));
+  const total = BEATS.reduce((a, b) => a + b, 0);
+  let t = 0, last = 0, cur = -1;
+  const show = (i) => {
+    if (i === cur) return;
+    cur = i;
+    scenes.forEach((s, n) => s.classList.toggle("on", n === i));
+    segs.forEach((s, n) => s.classList.toggle("on", n === i));
+  };
+  const step = (now) => {
+    const dt = last ? Math.min(64, now - last) : 0; last = now;
+    /* the room pauses it off screen (data-paused on the root); so does a hidden tab */
+    if (!document.documentElement.dataset.paused && !document.hidden) t = (t + dt) % total;
+    let acc = 0, i = 0;
+    while (i < BEATS.length && t >= acc + BEATS[i]) { acc += BEATS[i]; i++; }
+    show(i);
+    fills.forEach((f, n) => { f.style.width = (n < i ? 100 : n === i ? ((t - acc) / BEATS[i]) * 100 : 0) + "%"; });
+    if (i === 3) fills.forEach((f) => { f.style.width = "100%"; });
+    requestAnimationFrame(step);
+  };
+  requestAnimationFrame(step);
+})();
+</script>
+</body>
+</html>

@@ -33,7 +33,16 @@ const IMG = "/case-studies/sally-design-system";
    (public/lab/sally-push/) where one exists and otherwise his page with
    the pushed skin (query skin=pushed, public/lab/sally-push/skin.css);
    the stills were recaptured from the same pages. The type, color and
-   image sections describe what is on screen now. */
+   image sections describe what is on screen now.
+
+   Three acts, same day (his "this case study isnt working but i cant put
+   my finger one why", "the strategy ... it's just stacked homepage
+   heros", "maybe we just show one really good homepage or two"): the
+   idea (a mini sizzle in place of the stacked heroes), the work (one
+   homepage and a second, the three stories, two emails) and the system
+   (the six rule chapters as one board, the engine with the reveal of the
+   same kit card with its slots lit, then every brief). Act 2 shows the
+   modules clean (?view=creative) so the reveal in act 3 lands. */
 
 /* the pushed palette: scarlet, ink, the one soft grey, and two of the vivids
    sampled from his photographs (violet, teal) */
@@ -64,13 +73,9 @@ export const sallyDesignSystemCaseStudy: CaseStudy = {
         caption: "Preview · 7 frames · 2026",
         colors: REEL_COLORS,
         /* The study page this reel was made for now redirects to the room,
-           and the room deals these frames in order: two emails after the
-           abstract, then two to the contrast section and two to the
-           closing, the sections with no live page of their own. Contrast
-           gets the two homepage phone stills because its ADA fixes are
-           homepage only. None of the frames is one of the ten concepts in
-           "Eleven homepages", so the reel takes no picture from that
-           section. The Edit closes it; in the room that frame is the
+           and the room deals these frames: two after the abstract, the
+           rest to the closing, the one section with no live page of its
+           own. The Edit closes the reel; in the room that frame is the
            cover (LEAD_SAME). */
         images: [
           `${IMG}/sally-design-system-email-color-blocked-sale.jpg`,
@@ -110,108 +115,184 @@ export const sallyDesignSystemCaseStudy: CaseStudy = {
     },
 
     // ════════════════════════════════════════
-    // SECTION 02 — THE STRATEGY
+    // ACT 1 · SECTION 02 — THE IDEA
     // ════════════════════════════════════════
     {
-      id: "strategy-header",
+      id: "idea-header",
       type: "section-header",
-      label: "SECTION 02: THE STRATEGY",
+      label: "SECTION 02: THE IDEA",
       title: "Three ideas Ulta and Sephora",
-      pressing: { mark: { n: "02", name: "The Sally Difference" }, heldLine: "can't easily copy." },
+      pressing: { mark: { n: "02", name: "The Idea" }, heldLine: "can't easily copy." },
     },
     {
-      id: "strategy-text",
+      id: "idea-text",
       type: "text",
       size: "subhead",
-      content: "The doer's store, color expertise and education, each with a homepage concept of its own.",
+      content: "The doer's store, color expertise and education, each one a story the templates can tell.",
     },
     {
-      id: "strategy-columns",
-      type: "three-column-text",
-      columns: [
-        { title: "The doer's store", content: "Pro-grade color, tools and the steps to use them. The DIY Studio sells a project with its kit." },
-        { title: "Color expertise", content: "Nobody knows color like Sally: 8,000+ shades and real chemistry. The Color Authority teaches the shade code before it sells a box." },
-        { title: "Education", content: "A licensed colorist checks the plan before anyone mixes, for free. The Mix is a shoppable content hub." },
-      ],
-    },
-    {
-      id: "strategy-concepts",
-      type: "triple-image",
-      images: [
-        { src: `${IMG}/sally-design-system-homepage-concept-7-diy-studio-desktop.jpg`, alt: "Concept 7, The DIY Studio: Do it yourself. We'll handle the how, beside a portrait" },
-        { src: `${IMG}/sally-design-system-homepage-concept-8-color-authority-desktop.jpg`, alt: "Concept 8, The Color Authority: Find your perfect shade, over a portrait with copper curls" },
-        { src: `${IMG}/sally-design-system-homepage-concept-9-the-mix-desktop.jpg`, alt: "Concept 9, The Mix: Color stories, worth shopping, beside a woman with a wave styler" },
-      ],
-    },
-
-    // ════════════════════════════════════════
-    // SECTION 03 — THE CONCEPTS
-    // ════════════════════════════════════════
-    {
-      id: "concepts-header",
-      type: "section-header",
-      label: "SECTION 03: THE CONCEPTS",
-      title: "Eleven homepages and four email sets",
-      pressing: { mark: { n: "03", name: "The Concepts" }, heldLine: "came out of one kit." },
-    },
-    {
-      id: "concepts-text",
-      type: "text",
-      size: "subhead",
-      content:
-        "Three set the foundations. Three tried new directions: a story-led Colorfest, a personalized For You and a Pride takeover. Three came from the strategy, and The Edit and The Lookbook make eleven.",
-    },
-    {
-      id: "concepts-footnote",
+      id: "idea-footnote",
       type: "text",
       size: "base",
       fullWidth: true,
-      content:
-        "The Edit runs like a magazine issue, with a cover story and a contents line, and The Lookbook leads with lifestyle photography.",
+      content: "Nobody knows color like Sally: 8,000+ shades and real chemistry, and a licensed colorist checks the plan before anyone mixes, for free.",
     },
     {
-      id: "concepts-grid-1",
-      type: "dual-image",
-      native: true,
-      left: { src: `${IMG}/sally-design-system-homepage-concept-1-editorial-desktop.jpg`, alt: "Concept 1, Editorial: Your brightest summer, sorted, beside a portrait with copper curls" },
-      right: { src: `${IMG}/sally-design-system-homepage-concept-2-card-system-desktop.jpg`, alt: "Concept 2, Card system: three portrait cards labelled New in, Ends Sunday and a third offer" },
-    },
-    {
-      id: "concepts-grid-2",
-      type: "dual-image",
-      native: true,
-      left: { src: `${IMG}/sally-design-system-homepage-concept-3-full-card-desktop.jpg`, alt: "Concept 3, Full card homepage: a service bar for delivery, pickup and color advice over three portrait cards" },
-      right: { src: `${IMG}/sally-design-system-homepage-concept-4-colorfest-story-desktop.jpg`, alt: "Concept 4, Colorfest: Wear your color out loud, on a blue card beside a woman with blue-streaked curls" },
-    },
-    {
-      id: "concepts-grid-3",
-      type: "dual-image",
-      native: true,
-      left: { src: `${IMG}/sally-design-system-homepage-concept-5-for-you-desktop.jpg`, alt: "Concept 5, For You: Let's finish what you started, beside a woman using a wave styler" },
-      right: { src: `${IMG}/sally-design-system-homepage-concept-6-pride-takeover-desktop.jpg`, alt: "Concept 6, Pride takeover: Express every shade of you, over three looks on cards in violet, teal and cherry" },
-    },
-    {
-      id: "concepts-lookbook",
-      type: "image",
-      src: `${IMG}/sally-design-system-homepage-concept-11-lookbook-desktop.jpg`,
-      alt: "Concept 11, The Lookbook: Vivids are back at it, on a white card over a portrait with copper curls",
+      id: "idea-sizzle",
+      type: "product-demo",
+      folder: "sally-push",
+      demo: "m-sizzle",
+      mode: "fit",
+      title: "Three ideas",
+      note: "The doer's store, color expertise and education, each in the concepts' own words.",
     },
 
+    // ════════════════════════════════════════
+    // ACT 2 · SECTION 03 — THE HOMEPAGE
+    // ════════════════════════════════════════
+    {
+      id: "homepage-header",
+      type: "section-header",
+      label: "SECTION 03: THE HOMEPAGE",
+      title: "The homepage leads",
+      pressing: { mark: { n: "03", name: "The Homepage" }, heldLine: "with the looks." },
+    },
+    {
+      id: "homepage-text",
+      type: "text",
+      size: "subhead",
+      content: "Eleven concepts came out of the kit. The Lookbook is the one to see: every row is a person, not a packshot.",
+    },
+    {
+      id: "homepage-footnote",
+      type: "text",
+      size: "base",
+      fullWidth: true,
+      content: "The Edit is the other, set as a magazine issue with a cover story and a contents line.",
+    },
+    {
+      id: "homepage-lookbook",
+      type: "product-demo",
+      folder: "sally-push",
+      demo: "lookbook-images",
+      title: "Concept 11 · The Lookbook, desktop",
+      note: "Live at 1440. It scrolls itself; open it to use it.",
+      stageWidth: 1440,
+      viewHeight: 900,
+      mode: "scroll",
+    },
+    {
+      id: "homepage-edit",
+      type: "product-demo",
+      folder: "sally-push",
+      demo: "the-color-issue",
+      title: "Concept 10 · The Edit, desktop",
+      note: "The homepage as a magazine issue.",
+      stageWidth: 1440,
+      viewHeight: 900,
+      mode: "scroll",
+    },
+    {
+      id: "homepage-lookbook-phone",
+      type: "product-demo",
+      folder: "sally-push",
+      demo: "lookbook-images",
+      title: "The Lookbook, phone",
+      note: "The same page at 390.",
+      stageWidth: 390,
+      viewHeight: 844,
+      mode: "scroll",
+      phone: true,
+    },
+    {
+      id: "homepage-edit-phone",
+      type: "product-demo",
+      folder: "sally-push",
+      demo: "the-color-issue",
+      title: "The Edit, phone",
+      note: "The issue at 390.",
+      stageWidth: 390,
+      viewHeight: 844,
+      mode: "scroll",
+      phone: true,
+    },
+
+    // ════════════════════════════════════════
+    // ACT 2 · SECTION 04 — THE STORIES
+    // ════════════════════════════════════════
+    {
+      id: "stories-header",
+      type: "section-header",
+      label: "SECTION 04: THE STORIES",
+      title: "Each idea becomes",
+      pressing: { mark: { n: "04", name: "The Stories" }, heldLine: "a story you can shop." },
+    },
+    {
+      id: "stories-text",
+      type: "text",
+      size: "subhead",
+      content: "Going platinum takes six steps and about two hours, so the doer's store sells it as one kit for $36.99. Color expertise becomes a code you can crack, and the vivids get a wall of their own.",
+    },
+    {
+      id: "stories-footnote",
+      type: "text",
+      size: "base",
+      fullWidth: true,
+      content: "A level and a tone name every shade. Vivids skip the levels and want a light base, so the lightener comes first.",
+    },
+    {
+      id: "stories-kit",
+      type: "product-demo",
+      folder: "sally-push",
+      demo: "m-kit",
+      query: "view=creative",
+      mode: "fit",
+      title: "The Platinum Kit",
+      note: "From the DIY Studio concept: the steps, the time and the kit.",
+    },
+    {
+      id: "stories-code",
+      type: "product-demo",
+      folder: "sally-push",
+      demo: "m-code",
+      query: "view=creative",
+      mode: "fit",
+      title: "8C, decoded",
+      note: "From the Color Authority concept, on its own level and tone swatches.",
+    },
+    {
+      id: "stories-vivids",
+      type: "product-demo",
+      folder: "sally-push",
+      demo: "m-vivids",
+      query: "view=creative",
+      mode: "fit",
+      title: "The vivids wall",
+      note: "Eight hues, warm side to cool side, with the three looks above their shades.",
+    },
+
+    // ════════════════════════════════════════
+    // ACT 2 · SECTION 05 — THE EMAILS
+    // ════════════════════════════════════════
+    {
+      id: "emails-header",
+      type: "section-header",
+      label: "SECTION 05: THE EMAILS",
+      title: "Four email sets",
+      pressing: { mark: { n: "05", name: "The Emails" }, heldLine: "share one chassis." },
+    },
     {
       id: "emails-text",
       type: "text",
-      size: "base",
-      fullWidth: true,
-      content:
-        "The color-blocked set is the current direction, with soft grey cards in place of the tints. The editorial set treats Sally as a publication, a moment in the inbox and not a promo, and the punch set is the same chassis dialed up.",
+      size: "subhead",
+      content: "The Gloss treats Sally as a publication, a moment in the inbox and not a promo. The sale is the one email that turns red.",
     },
     {
       id: "emails-footnote",
       type: "text",
       size: "base",
       fullWidth: true,
-      content:
-        "Each punch email leans on something different: one on type, one on color, one on charm. The first white set is archived now. Every email ends on the same footer.",
+      content: "The color-blocked set is the current direction, and the punch set dials the same chassis up three ways: type, color and charm. Every email ends on the same footer.",
     },
     {
       id: "emails-gloss",
@@ -226,232 +307,7 @@ export const sallyDesignSystemCaseStudy: CaseStudy = {
       phone: true,
     },
     {
-      id: "emails-rewards",
-      type: "product-demo",
-      folder: "sally-system",
-      query: "skin=pushed",
-      demo: "email-color-blocked-rewards",
-      title: "Color-blocked · Rewards",
-      note: "Points, picks and a restock.",
-      stageWidth: 600,
-      viewHeight: 1100,
-      mode: "scroll",
-      phone: true,
-    },
-    {
-      id: "emails-soft-pop",
-      type: "product-demo",
-      folder: "sally-push",
-      demo: "punch-soft-pop",
-      title: "Punch · Soft pop",
-      note: "The punch email that leans on charm.",
-      stageWidth: 600,
-      viewHeight: 1100,
-      mode: "scroll",
-      phone: true,
-    },
-    {
-      id: "emails-shoppable",
-      type: "product-demo",
-      folder: "sally-system",
-      query: "skin=pushed",
-      demo: "email-color-blocked-shoppable",
-      title: "Color-blocked · Shoppable",
-      note: "One product, two ways to wear it, and the routine around it.",
-      stageWidth: 600,
-      viewHeight: 1100,
-      mode: "scroll",
-      phone: true,
-    },
-
-    // ════════════════════════════════════════
-    // SECTION 04 — SHOP THE LOOK
-    // ════════════════════════════════════════
-    {
-      id: "m-kit-header",
-      type: "section-header",
-      label: "SECTION 04: SHOP THE LOOK",
-      title: "Every project comes with",
-      pressing: { mark: { n: "04", name: "Shop the Look" }, heldLine: "the kit to finish it." },
-    },
-    {
-      id: "m-kit-text",
-      type: "text",
-      size: "subhead",
-      content: "Going platinum is six steps and about two hours, and the Platinum Kit puts all five products in one bag for $36.99.",
-    },
-    {
-      id: "m-kit-footnote",
-      type: "text",
-      size: "base",
-      fullWidth: true,
-      content: "The gray-coverage project and a first vivid get the same card: the level, the steps, the time and the kit.",
-    },
-    {
-      id: "m-kit-module",
-      type: "product-demo",
-      folder: "sally-push",
-      demo: "m-kit",
-      mode: "fit",
-      title: "The Platinum Kit",
-      note: "From the DIY Studio concept. The red tags show what the Marketing OS fills; open it to switch them yourself.",
-    },
-
-    // ════════════════════════════════════════
-    // SECTION 05 — THE COLOR CODE
-    // ════════════════════════════════════════
-    {
-      id: "m-code-header",
-      type: "section-header",
-      label: "SECTION 05: THE COLOR CODE",
-      title: "Two steps",
-      pressing: { mark: { n: "05", name: "The Color Code" }, heldLine: "to your shade." },
-    },
-    {
-      id: "m-code-text",
-      type: "text",
-      size: "subhead",
-      content: "Every color starts with a level, 1 for black to 10 for the lightest blonde, and the letter after it is the tone.",
-    },
-    {
-      id: "m-code-footnote",
-      type: "text",
-      size: "base",
-      fullWidth: true,
-      content: "A cools it down, N keeps it honest, and G, C and R warm it up. Crack the code and the wall of boxes makes sense.",
-    },
-    {
-      id: "m-code-module",
-      type: "product-demo",
-      folder: "sally-push",
-      demo: "m-code",
-      mode: "fit",
-      title: "8C, decoded",
-      note: "From the Color Authority concept, on its own level and tone swatches.",
-    },
-
-    // ════════════════════════════════════════
-    // SECTION 06 — THE VIVIDS
-    // ════════════════════════════════════════
-    {
-      id: "m-vivids-header",
-      type: "section-header",
-      label: "SECTION 06: THE VIVIDS",
-      title: "Vivids skip",
-      pressing: { mark: { n: "06", name: "The Vivids" }, heldLine: "the levels." },
-    },
-    {
-      id: "m-vivids-text",
-      type: "text",
-      size: "subhead",
-      content: "No numbers here, just pigment. Most vivids want a level 8 or lighter base, so the lightener comes first.",
-    },
-    {
-      id: "m-vivids-footnote",
-      type: "text",
-      size: "base",
-      fullWidth: true,
-      content: "The wall runs sixty shades from the warm side to the cool side, led by Electric Violet, Deep Sea Teal and Cherry Cola.",
-    },
-    {
-      id: "m-vivids-module",
-      type: "product-demo",
-      folder: "sally-push",
-      demo: "m-vivids",
-      mode: "fit",
-      title: "The vivids wall",
-      note: "Eight hues, warm side to cool side, with the three looks above their shades.",
-    },
-
-    // ════════════════════════════════════════
-    // SECTION 07 — TYPE
-    // ════════════════════════════════════════
-    {
-      id: "type-header",
-      type: "section-header",
-      label: "SECTION 07: TYPE",
-      title: "Satoshi sets every word,",
-      pressing: { mark: { n: "07", name: "One Family" }, heldLine: "from the headline to the price tag." },
-    },
-    {
-      id: "type-text",
-      type: "text",
-      size: "subhead",
-      content:
-        "Headlines run semibold and tight, labels run in semibold capitals, and the body sits at the regular weight.",
-    },
-    {
-      id: "type-footnote",
-      type: "text",
-      size: "base",
-      fullWidth: true,
-      content: "Every type role in the system is a token, so the switch from three cuts of Founders Grotesk to Satoshi changed the tokens and left the layouts alone.",
-    },
-    {
-      id: "type-punch-a",
-      type: "product-demo",
-      folder: "sally-push",
-      demo: "punch-volume",
-      title: "Punch · Volume",
-      note: "The punch set leans on type: Satoshi, set as big as the width allows.",
-      stageWidth: 600,
-      viewHeight: 1100,
-      mode: "scroll",
-      phone: true,
-    },
-    {
-      id: "type-punch-b",
-      type: "product-demo",
-      folder: "sally-push",
-      demo: "punch-candy",
-      title: "Punch · Candy",
-      note: "The same chassis, leaning on color.",
-      stageWidth: 600,
-      viewHeight: 1100,
-      mode: "scroll",
-      phone: true,
-    },
-
-    // ════════════════════════════════════════
-    // SECTION 08 — COLOR
-    // ════════════════════════════════════════
-    {
-      id: "color-header",
-      type: "section-header",
-      label: "SECTION 08: COLOR",
-      title: "White paper, scarlet and ink,",
-      pressing: { mark: { n: "08", name: "Paper and Ink" }, heldLine: "and the photographs bring the rest." },
-    },
-    {
-      id: "color-text",
-      type: "text",
-      size: "subhead",
-      content:
-        "One soft grey holds the cards, and scarlet is the one loud field. The sale is the email that turns red.",
-    },
-    {
-      id: "color-footnote",
-      type: "text",
-      size: "base",
-      fullWidth: true,
-      content:
-        "The vivid shades come from the pictures themselves. The Colorfest card takes the blue of the curls beside it, and each Pride look sits on a card sampled from its own photograph.",
-    },
-    {
-      id: "color-new",
-      type: "product-demo",
-      folder: "sally-system",
-      query: "skin=pushed",
-      demo: "email-color-blocked-new-arrivals",
-      title: "Color-blocked · New Arrivals",
-      note: "Ink headlines on white, the fields as soft grey cards.",
-      stageWidth: 600,
-      viewHeight: 1100,
-      mode: "scroll",
-      phone: true,
-    },
-    {
-      id: "color-sale",
+      id: "emails-sale",
       type: "product-demo",
       folder: "sally-push",
       demo: "the-sale",
@@ -464,213 +320,47 @@ export const sallyDesignSystemCaseStudy: CaseStudy = {
     },
 
     // ════════════════════════════════════════
-    // SECTION 09 — SCALE
+    // ACT 3 · SECTION 06 — THE KIT
     // ════════════════════════════════════════
     {
-      id: "scale-header",
+      id: "kit-header",
       type: "section-header",
-      label: "SECTION 09: SCALE",
-      title: "Each homepage was drawn twice,",
-      pressing: { mark: { n: "09", name: "1440 and 390" }, heldLine: "at 1440 and at 390." },
+      label: "SECTION 06: THE KIT",
+      title: "Everything above comes",
+      pressing: { mark: { n: "06", name: "The Kit" }, heldLine: "out of one kit." },
     },
     {
-      id: "scale-text",
+      id: "kit-text",
       type: "text",
       size: "subhead",
-      content:
-        "In the canvas each desktop concept sits beside its phone version, and every module has a desktop and a phone pair.",
+      content: "One type family, white paper with scarlet and ink, round corners, five shapes, fourteen email blocks and twenty-one homepage modules.",
     },
     {
-      id: "scale-footnote",
+      id: "kit-footnote",
       type: "text",
       size: "base",
       fullWidth: true,
-      content:
-        "On desktop, splits divide the screen in exact halves, feature rows stop a thin margin short of the edges, and product photos crop to 4:5.",
+      content: "Every type role and color is a token, so the move to Satoshi changed the tokens and left the layouts alone. A teammate's ADA review of the homepage darkened the muted text and set every eyebrow in solid ink or white.",
     },
     {
-      id: "scale-edit-desk",
+      id: "kit-board",
       type: "product-demo",
       folder: "sally-push",
-      demo: "the-color-issue",
-      title: "Concept 10 · The Edit, desktop",
-      note: "Live at 1440, set as a magazine issue. It scrolls itself; open it to use it.",
-      stageWidth: 1440,
-      viewHeight: 900,
-      mode: "scroll",
-    },
-    {
-      id: "scale-edit-phone",
-      type: "product-demo",
-      folder: "sally-push",
-      demo: "the-color-issue",
-      title: "The Edit, phone",
-      note: "The same page at 390.",
-      stageWidth: 390,
-      viewHeight: 844,
-      mode: "scroll",
-      phone: true,
-    },
-    {
-      id: "scale-color-phone",
-      type: "product-demo",
-      folder: "sally-system",
-      query: "skin=pushed",
-      demo: "homepage-color",
-      title: "The Color Authority, phone",
-      note: "The shade finder at 390.",
-      stageWidth: 390,
-      viewHeight: 844,
-      mode: "scroll",
-      phone: true,
+      demo: "m-board",
+      mode: "fit",
+      title: "The kit, on one board",
+      note: "The block and module names are the canvas's own labels.",
     },
 
     // ════════════════════════════════════════
-    // SECTION 10 — IMAGE AND GRAPHICS
-    // ════════════════════════════════════════
-    {
-      id: "image-header",
-      type: "section-header",
-      label: "SECTION 10: IMAGE AND GRAPHICS",
-      title: "Copy never sits",
-      pressing: { mark: { n: "10", name: "Photo or Field" }, heldLine: "on a photograph." },
-    },
-    {
-      id: "image-text",
-      type: "text",
-      size: "subhead",
-      content:
-        "Where a headline meets a picture, it floats on a solid card, so the picture keeps its full size. On a phone, the card moves under the photo.",
-    },
-    {
-      id: "image-footnote",
-      type: "text",
-      size: "base",
-      fullWidth: true,
-      content:
-        "Graphics carry everything else: the cards, the halftone dot burst from the brand guide, and the circle that crops the email hero. Homepage products never show a price, because prices change too often.",
-    },
-    {
-      id: "image-takeover-desk",
-      type: "product-demo",
-      folder: "sally-push",
-      demo: "pride",
-      title: "Concept 6 · Pride takeover, desktop",
-      note: "The looks are the takeover, each on a card in its own shade.",
-      stageWidth: 1440,
-      viewHeight: 900,
-      mode: "scroll",
-    },
-    {
-      id: "image-takeover-phone",
-      type: "product-demo",
-      folder: "sally-push",
-      demo: "pride",
-      title: "Pride takeover, phone",
-      note: "Each look gets the screen to itself.",
-      stageWidth: 390,
-      viewHeight: 844,
-      mode: "scroll",
-      phone: true,
-    },
-    {
-      id: "image-story-phone",
-      type: "product-demo",
-      folder: "sally-push",
-      demo: "colorfest",
-      title: "Concept 4 · Colorfest, phone",
-      note: "The photo, then a card in its blue.",
-      stageWidth: 390,
-      viewHeight: 844,
-      mode: "scroll",
-      phone: true,
-    },
-
-    // ════════════════════════════════════════
-    // SECTION 11 — TEMPLATES
-    // ════════════════════════════════════════
-    {
-      id: "templates-header",
-      type: "section-header",
-      label: "SECTION 11: TEMPLATES",
-      title: "The emails stack up",
-      pressing: { mark: { n: "11", name: "The Kit" }, heldLine: "from fourteen blocks." },
-    },
-    {
-      id: "templates-text",
-      type: "text",
-      size: "subhead",
-      content:
-        "A header, promo banners in three styles, heroes, rows, grids, an editorial block, categories and one footer, each designed to work on its own.",
-    },
-    {
-      id: "templates-footnote",
-      type: "text",
-      size: "base",
-      fullWidth: true,
-      content:
-        "The homepage has its own kit of twenty-one modules, from a personalized hero and a shade finder to a kit builder. The product tray cycles through hair, nails and beauty by itself.",
-    },
-    {
-      id: "templates-tabshop",
-      type: "product-demo",
-      folder: "sally-system",
-      query: "skin=pushed",
-      demo: "homepage-blocks",
-      hash: "tabshop",
-      title: "Module · Tabbed product tray",
-      note: "One shop moment where the stacked product rails used to be.",
-      stageWidth: 1440,
-      mode: "page",
-    },
-    {
-      id: "templates-levels",
-      type: "product-demo",
-      folder: "sally-system",
-      query: "skin=pushed",
-      demo: "homepage-blocks",
-      hash: "levels",
-      title: "Module · Shade finder",
-      note: "Hair color picked by level.",
-      stageWidth: 1440,
-      mode: "page",
-    },
-
-    // ════════════════════════════════════════
-    // SECTION 12 — CONTRAST
-    // ════════════════════════════════════════
-    {
-      id: "contrast-header",
-      type: "section-header",
-      label: "SECTION 12: CONTRAST",
-      title: "The eyebrows went solid,",
-      pressing: { mark: { n: "12", name: "Ink and White" }, heldLine: "ink on light fields and white on dark." },
-    },
-    {
-      id: "contrast-text",
-      type: "text",
-      size: "subhead",
-      content:
-        "A teammate's ADA review of the homepage found muted text on blush failing at about 4.3 to 1, so no eyebrow or kicker there stays red or muted.",
-    },
-    {
-      id: "contrast-footnote",
-      type: "text",
-      size: "base",
-      fullWidth: true,
-      content:
-        "The muted text tier was darkened to .64. Small red text that stays, like tags and prices, uses a deeper red, #B30E1C, which passes at about 4.76 to 1. Red fills, white-on-red buttons and large headline emphasis keep the brand scarlet, and text shadows came out everywhere.",
-    },
-
-    // ════════════════════════════════════════
-    // SECTION 13 — THE ENGINE
+    // ACT 3 · SECTION 07 — THE ENGINE
     // ════════════════════════════════════════
     {
       id: "ai-header",
       type: "section-header",
-      label: "SECTION 13: THE ENGINE",
+      label: "SECTION 07: THE ENGINE",
       title: "One request",
-      pressing: { mark: { n: "13", name: "The Engine" }, heldLine: "fills every channel." },
+      pressing: { mark: { n: "07", name: "The Engine" }, heldLine: "fills every channel." },
     },
     {
       id: "ai-text",
@@ -688,10 +378,21 @@ export const sallyDesignSystemCaseStudy: CaseStudy = {
         "Each new email fills a template from a brief, and the templates stay locked, so the kit holds its shape at the volume Sally sends every month.",
     },
     {
+      id: "engine-reveal",
+      type: "product-demo",
+      folder: "sally-push",
+      demo: "m-kit",
+      query: "view=engine",
+      mode: "fit",
+      title: "The Platinum Kit, again",
+      note: "The same card as the story above. Every red tag is something the Marketing OS fills.",
+    },
+    {
       id: "engine-machine",
       type: "product-demo",
       folder: "sally-push",
       demo: "m-machine",
+      query: "view=engine",
       mode: "fit",
       title: "From a signal to a finished asset",
       note: "The parts as the Sally Marketing OS names them: the campaign board, the Asset Hub, the scanner.",
@@ -703,13 +404,6 @@ export const sallyDesignSystemCaseStudy: CaseStudy = {
       title: "From brief to email",
       note: "A CRM request on the campaign board becomes an email with one press of Create Email.",
     },
-    {
-      id: "ai-figma-demo",
-      type: "product-demo",
-      demo: "figma-build",
-      title: "From email to Figma",
-      note: "The Figma plugin builds the requested emails in one press, the images first and then the copy.",
-    },
 
     {
       id: "engine-link",
@@ -720,14 +414,14 @@ export const sallyDesignSystemCaseStudy: CaseStudy = {
     },
 
     // ════════════════════════════════════════
-    // SECTION 14 — EVERY BRIEF
+    // ACT 3 · SECTION 08 — EVERY BRIEF
     // ════════════════════════════════════════
     {
       id: "briefs-header",
       type: "section-header",
-      label: "SECTION 14: EVERY BRIEF",
+      label: "SECTION 08: EVERY BRIEF",
       title: "Seven kinds of brief,",
-      pressing: { mark: { n: "14", name: "Every Brief" }, heldLine: "five shapes each." },
+      pressing: { mark: { n: "08", name: "Every Brief" }, heldLine: "five shapes each." },
     },
     {
       id: "briefs-text",
@@ -747,6 +441,7 @@ export const sallyDesignSystemCaseStudy: CaseStudy = {
       type: "product-demo",
       folder: "sally-push",
       demo: "m-briefs",
+      query: "view=creative",
       mode: "fit",
       title: "Seven briefs, five shapes",
       note: "Square, 4:5, 9:16, 16:9 and the 3:1 split banner, from one set of templates.",
@@ -766,9 +461,9 @@ export const sallyDesignSystemCaseStudy: CaseStudy = {
     {
       id: "closing-header",
       type: "section-header",
-      label: "SECTION 15: CLOSING",
+      label: "SECTION 09: CLOSING",
       title: "The homepage kit grew out",
-      pressing: { mark: { n: "15", name: "One Stylesheet" }, heldLine: "of the email system." },
+      pressing: { mark: { n: "09", name: "One Stylesheet" }, heldLine: "of the email system." },
     },
     {
       id: "closing-text",
