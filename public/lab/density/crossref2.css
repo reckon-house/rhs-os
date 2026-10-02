@@ -505,7 +505,11 @@ html.stack[data-ix="d"] .grp.run .items { line-height: 1.6; }
 html:not(.stack)[data-ix="e"] #idx { left: calc(var(--m) - 14px); width: calc(var(--idxw) + 28px); padding-left: 14px; padding-right: 14px; }
 [data-ix="e"] .ixtop { margin: 0 0 26px; }
 [data-ix="e"] .eg { position: relative; }
-[data-ix="e"] .vr { position: absolute; top: 0; bottom: 0; width: 1px; background: var(--hair); pointer-events: none; }
+/* the column rules in the cell grid's own weight (1 Oct 2026, his "are the
+   vertical rules the same color as the horizontal ones? i feel like they're
+   darker", then "match them to the lighter one"): 7.5% of ink, where they
+   were the 13% hairline */
+[data-ix="e"] .vr { position: absolute; top: 0; bottom: 0; width: 1px; background: rgba(0, 0, 0, 0.075); pointer-events: none; }
 [data-ix="e"] .vr1 { left: calc((100% - 3 * var(--eg)) / 4 + var(--eg) / 2); }
 [data-ix="e"] .vr2 { left: calc((100% - 3 * var(--eg)) / 2 + var(--eg) * 1.5); }
 [data-ix="e"] .vr3 { left: calc((100% - 3 * var(--eg)) * 3 / 4 + var(--eg) * 2.5); }
