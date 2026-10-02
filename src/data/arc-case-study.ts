@@ -316,7 +316,7 @@ export const arcCaseStudy: CaseStudy = {
     {
       id: "problem-editorial",
       type: "editorial-headline",
-      text: "Show the camera the room\nand review what it found",
+      text: "A home inventory\nyou take with the camera\ninstead of typing it in by hand",
       pressing: {
         choreo: { quotePoster: true },
         indent: 1,
