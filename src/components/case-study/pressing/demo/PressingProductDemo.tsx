@@ -57,7 +57,7 @@ export interface PressingProductDemoProps {
   /** Which lab folder. The Sally set was here first and is the default;
    *  the DSC set (public/lab/dsc-demos/) runs the same engine contract
    *  at phone width, so it needs a `stageWidth` too. */
-  folder?: "sally-demos" | "dsc-demos" | "sally-system";
+  folder?: "sally-demos" | "dsc-demos" | "sally-system" | "sally-push";
   /** What the reader is watching, named in the frame's chrome. */
   title: string;
   /** Override only if a demo lays out at a different width. */

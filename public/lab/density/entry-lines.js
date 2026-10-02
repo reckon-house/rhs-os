@@ -67,6 +67,8 @@ window.ENTRY_LINES = {
      Sally Beauty Marketing OS from inside the team that uses it." About:
      "a marketing platform I came up with and built at Sally Beauty" */
   "fig/2-000-stores": "Sally Beauty has 2,000+ stores with regional variation, and it runs dozens of campaigns at once. I design, build and maintain the platform behind those campaigns, Sally Marketing OS, from inside the team that uses it.",
+  /* what it answered: Sally design system: "Nobody knows color like Sally: 8,000+ shades and real chemistry"; "Crack the code and the wall of boxes makes sense"; "The Color Authority teaches the shade code before it sells a box" */
+  "fig/8-000": "Sally carries 8,000+ shades, and the wall of boxes only makes sense once you can read the code on them. The Color Authority homepage teaches the level and the tone first, then sells the box.",
 
   /* A.R.C.: the whole-home dashboard, "$49,630 documented across 8 rooms and
      73 items"; A.R.C. "compares what you have documented against your

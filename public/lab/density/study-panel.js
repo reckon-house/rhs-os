@@ -533,6 +533,7 @@
       }
       if (f.kind === "num" || f.kind === "chart" || f.kind === "steps") { sec.items.push({ t: f.kind, f }); continue; }
       if (f.kind === "live") { sec.items.push({ t: "live", f }); continue; }
+      if (f.kind === "link") { sec.items.push({ t: "link", f }); continue; }
       if (f.kind !== "line") continue;
       if (f.weight === "sub" && f.where === "meta" && !M.stand) { M.stand = f; continue; }
       if (f.weight === "body" && f.where === "abstract") { M.abs.push(f); continue; }
@@ -610,7 +611,7 @@
       run = null; para = null;
       const last = out[out.length - 1];
       if (it.t === "pic") { if (last && last.t === "pics") last.list.push(it.f); else out.push({ t: "pics", list: [it.f] }); continue; }
-      if (it.t === "live") { const ph = !!it.f.phone; if (last && last.t === "lives" && last.phone && ph) last.list.push(it.f); else out.push({ t: "lives", phone: ph, list: [it.f] }); continue; }
+      if (it.t === "live") { const ph = !!it.f.phone, fit = it.f.mode === "fit"; if (!fit && last && last.t === "lives" && !last.fit && last.phone && ph) last.list.push(it.f); else out.push({ t: "lives", phone: ph, fit, list: [it.f] }); continue; }
       if (it.t === "num") { if (last && last.t === "nums" && last.si === it.f.si) last.list.push(it.f); else out.push({ t: "nums", si: it.f.si, list: [it.f] }); continue; }
       if (it.t === "card") { if (last && last.t === "cards") last.list.push(it.f); else out.push({ t: "cards", list: [it.f] }); continue; }
       if (it.t === "closing") { if (last && last.t === "closing") last.list.push(it.f); else out.push({ t: "closing", list: [it.f] }); continue; }
@@ -1453,10 +1454,10 @@
          full height. The frame never takes the wheel, and a click opens
          the page itself in a new tab */
       function livesEl(b) {
-        const wrap = el("div", "sp-lives" + (b.phone ? " phone" : ""));
+        const wrap = el("div", "sp-lives" + (b.phone ? " phone" : "") + (b.fit ? " fit" : ""));
         const ls = b.list.map((f) => liveEl(f));
         ls.forEach((L) => wrap.appendChild(L.fig));
-        P.lives.push({ wrap, phone: b.phone, ls });
+        P.lives.push({ wrap, phone: b.phone, fit: b.fit, ls });
         return wrap;
       }
       function liveEl(f) {
@@ -1464,7 +1465,8 @@
         const stage = el("div", "sp-live-stage");
         const fr = document.createElement("iframe");
         fr.title = f.title || "A live page"; fr.setAttribute("tabindex", "-1"); fr.setAttribute("aria-hidden", "true");
-        fr.style.width = f.w + "px"; fr.style.height = (f.h || 900) + "px";
+        if (f.mode === "fit") { fr.style.width = "100%"; fr.style.height = (f.h || 600) + "px"; }
+        else { fr.style.width = f.w + "px"; fr.style.height = (f.h || 900) + "px"; }
         stage.appendChild(fr);
         const open = el("a", "sp-live-open"); open.href = f.src.replace(/[?&]framed=1/, ""); open.target = "_blank"; open.rel = "noopener";
         open.setAttribute("aria-label", "Open " + (f.title || "the page") + " in a new tab");
@@ -1479,7 +1481,19 @@
         }, { root: container, rootMargin: "900px 0px" });
         const seen = new IntersectionObserver(([e]) => { L.vis = e.isIntersecting; liveRun(L); }, { root: container, threshold: 0 });
         near.observe(fig); seen.observe(fig);
-        fr.addEventListener("load", () => { liveMeasure(L); setTimeout(() => liveMeasure(L), 1400); liveRun(L); });
+        fr.addEventListener("load", () => {
+          liveMeasure(L); setTimeout(() => liveMeasure(L), 1400); liveRun(L);
+          /* a module for the column reflows with the room, so its height is
+             measured again whenever its fonts land or its window resizes */
+          if (f.mode === "fit") {
+            try {
+              const w = fr.contentWindow;
+              w.addEventListener("resize", () => liveMeasure(L));
+              if (w.document.fonts) w.document.fonts.ready.then(() => liveMeasure(L));
+              setTimeout(() => liveMeasure(L), 400);
+            } catch (e) { /* another origin: its declared height holds */ }
+          }
+        });
         P.stops.push(() => { near.disconnect(); seen.disconnect(); cancelAnimationFrame(L.raf); try { fr.src = "about:blank"; } catch (e) { /* gone */ } });
         return L;
       }
@@ -1487,6 +1501,15 @@
          height its viewport (a page that scrolls) or its measured document */
       function liveSize(L) {
         const sw = L.stage.clientWidth; if (!sw) return;
+        if (L.f.mode === "fit") {
+          /* the column's own width, the page's own height: it reads as part of the room */
+          L.s = 1; L.fr.style.width = sw + "px"; L.fr.style.transform = "none";
+          let d = null; try { d = L.fr.contentDocument; } catch (e) { /* another origin */ }
+          const mh = d && d.body ? Math.ceil(d.body.getBoundingClientRect().height) : 0;
+          const h = mh || L.docH || L.f.h || 600;
+          L.fr.style.height = h + "px"; L.stage.style.height = h + "px";
+          return;
+        }
         L.s = Math.min(1, sw / L.f.w);
         const h = L.f.mode === "scroll" ? (L.f.h || 900) : (L.docH || L.f.h || 900);
         L.fr.style.height = h + "px";
@@ -1509,6 +1532,11 @@
       function liveRun(L) {
         const on = L.vis && !document.hidden;
         if (L.f.mode === "demo") { const h = liveHost(L); if (h) { if (on) delete h.dataset.paused; else h.dataset.paused = "true"; } return; }
+        if (L.f.mode === "fit") {
+          let d = null; try { d = L.fr.contentDocument; } catch (e) { return; }
+          if (d && d.documentElement) { if (on && !liveReduce()) delete d.documentElement.dataset.paused; else d.documentElement.dataset.paused = "true"; }
+          return;
+        }
         cancelAnimationFrame(L.raf); L.raf = 0;
         if (L.f.mode !== "scroll" || !on || !L.loaded || liveReduce()) return;
         L.last = 0; L.raf = requestAnimationFrame((t) => liveTick(L, t));
@@ -1636,6 +1664,24 @@
           }
           case "pics": return picGroup(b.list);
           case "lives": return livesEl(b);
+          case "link": {
+            /* another study, opened in place as the foot's Next is (2 Oct 2026,
+               his "we could maybe link each case study to each other") */
+            const to = b.f.to;
+            if (!D.study(to)) return el("div");
+            const a = tag(el("a", "sp-xlink"), b.f); a.href = D.href(to);
+            a.appendChild(el("span", "sp-caps", esc(lbl(b.f.label || "See also"))));
+            a.appendChild(el("span", "sp-xlink-t", esc(D.title(to))));
+            if (b.f.note) a.appendChild(el("span", "sp-xlink-n", esc(b.f.note)));
+            const xc = cover(to);
+            if (xc) { const xb = picBox({ src: xc.src, w: xc.w, h: xc.h, t384: xc.t384, t768: xc.t768, alt: "" }, "sp-xlink-pic"); a.appendChild(xb); watch(xb); }
+            a.addEventListener("click", (ev) => {
+              if (ev.metaKey || ev.ctrlKey || ev.shiftKey || ev.button) return;
+              if (!o.onNext) return;
+              ev.preventDefault(); o.onNext(to);
+            });
+            return a;
+          }
           /* a deck that is one short line is set as a bold beat of its own */
           case "deck": return tag(el("p", "sp-deck" + (b.f.text.length <= 52 && b.f.text.indexOf(" | ") < 0 ? " sp-short" : ""), inkGrey(b.f.text)), b.f);
           case "pull": {
@@ -1800,13 +1846,14 @@
       /* live frames run as wide as the pictures do; a row of phones and
          emails starts at the copy's margin */
       parts.lives.forEach((Lv) => {
-        Lv.wrap.style.width = Math.floor(Lv.phone ? Wf - m : Wf) + "px";
-        Lv.wrap.style.marginLeft = (Lv.phone ? m : 0) + "px";
+        const inset = Lv.phone || Lv.fit;
+        Lv.wrap.style.width = Math.floor(inset ? Wf - m : Wf) + "px";
+        Lv.wrap.style.marginLeft = (inset ? m : 0) + "px";
         Lv.ls.forEach((L) => {
           L.size();
           /* a caption keeps to the copy's margin, as a picture's does */
           const c = L.fig.querySelector(".sp-live-cap");
-          if (c) { c.style.marginLeft = (Lv.phone ? 0 : m) + "px"; c.style.maxWidth = (Lv.phone ? "" : Math.max(240, Math.min(C, 640)) + "px"); }
+          if (c) { c.style.marginLeft = (inset ? 0 : m) + "px"; c.style.maxWidth = (Lv.phone ? "" : Math.max(240, Math.min(C, 640)) + "px"); }
         });
       });
       parts.asides.forEach((A) => {

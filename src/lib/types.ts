@@ -75,6 +75,7 @@ export type Section =
   | SystemArchitectureSection
   | LiveAppSection
   | ProductDemoSection
+  | StudyLinkSection
   | SpacerSection
   | EditorialHeadlineSection
   | AIHeatmapSection
@@ -670,7 +671,7 @@ export interface ProductDemoSection extends BaseSection {
    * engine contract at phone width; the frame is told the width via
    * `stageWidth`, not the folder.
    */
-  folder?: "sally-demos" | "dsc-demos" | "sally-system";
+  folder?: "sally-demos" | "dsc-demos" | "sally-system" | "sally-push";
   /** What the reader is watching, in the frame's chrome. */
   title: string;
   /**
@@ -678,8 +679,11 @@ export interface ProductDemoSection extends BaseSection {
    * the replay and scales it whole, pausing it off screen (the default for
    * the two replay folders); "scroll" shows a viewport of `viewHeight` and
    * walks the page down and back up; "page" stands it at its full height.
+   * "fit" (2 Oct 2026) lays the page out at the column's own width, never
+   * scaled, at its measured height: for a module made for the room, which
+   * should read as part of it rather than as a picture of a page.
    */
-  mode?: "demo" | "scroll" | "page";
+  mode?: "demo" | "scroll" | "page" | "fit";
   /** The viewport height a "scroll" frame shows, in the page's own px. */
   viewHeight?: number;
   /** A narrow frame (a phone, an email), set two to a row. */
@@ -695,6 +699,21 @@ export interface ProductDemoSection extends BaseSection {
    */
   stageWidth?: number;
   /** One line under the frame: what is being shown, in plain words. */
+  note?: string;
+}
+
+/**
+ * A link from one study to another (2 Oct 2026, his "we could maybe link
+ * each case study to each other"). In a room it is a card with the other
+ * study's cover that opens its room in place; the old pages skip it.
+ */
+export interface StudyLinkSection extends BaseSection {
+  type: "study-link";
+  /** The other study's key on the index (its slug, as in projects.ts). */
+  study: string;
+  /** What the other study is to this one, in a few words ("The engine"). */
+  label: string;
+  /** One line on why to go there. */
   note?: string;
 }
 

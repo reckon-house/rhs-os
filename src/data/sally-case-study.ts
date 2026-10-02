@@ -450,6 +450,15 @@ export const sallyCaseStudy: CaseStudy = {
       title: "From email to Figma",
       note: "The Figma plugin builds the four requested emails in one press. It clones an artboard per request, places each image and then that image's copy, and fills the headers last. Images go first because the plugin uses each image's position to find its section, and the text follows from there.",
     },
+    // a link to the creative these requests fill (2 Oct 2026, his "we
+    // could maybe link each case study to each other")
+    {
+      id: "brain-design-system-link",
+      type: "study-link",
+      study: "sally-design-system",
+      label: "The creative it builds",
+      note: "The Sally design system: the homepages, the emails and the templates these requests fill.",
+    },
 
     // ── INTELLIGENCE PIPELINE SANKEY ──
     {

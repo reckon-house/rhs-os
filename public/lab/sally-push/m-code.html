@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sally Beauty · The color code (module)</title>
+<meta name="robots" content="noindex">
+<!-- The color code, made for the study's room: 8C decoded on his level and tone swatches from the Color Authority concept (homepage-color.html). -->
+<link rel="preload" href="/fonts/Satoshi-Variable.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="push.css">
+<link rel="stylesheet" href="m.css">
+<style>
+
+.decode { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: clamp(18px, 4vw, 40px); align-items: end; padding: clamp(20px, 3.4vw, 32px); }
+.glyph { font-size: clamp(120px, 26vw, 220px); line-height: 0.76; font-weight: 700; letter-spacing: -0.08em; margin-left: -0.04em; }
+.glyph span { color: #c07a45; }
+.keys { display: grid; gap: 16px; padding-bottom: 6px; }
+.keys b { display: block; font-size: 18px; font-weight: 600; letter-spacing: -0.02em; }
+.keys small { display: block; margin-top: 2px; font-size: 13.5px; line-height: 1.35; color: var(--grey); }
+.row { padding: 22px clamp(16px, 3vw, 24px) 20px; }
+.row .head2 { display: flex; justify-content: space-between; align-items: baseline; }
+.row .head2 b { font-size: 17px; font-weight: 600; letter-spacing: -0.02em; }
+.ramp { display: grid; grid-template-columns: repeat(10, minmax(0, 1fr)); gap: 5px; margin-top: 22px; }
+.ramp li { aspect-ratio: 3 / 4; border-radius: 9px; display: flex; align-items: flex-end; padding: 6px; color: #fff; font-size: 11.5px; font-weight: 600; transition: transform 0.3s ease; }
+.ramp li:nth-child(n+8) { color: var(--ink); }
+.ramp li.on { transform: translateY(-10px); box-shadow: 0 10px 22px rgba(28, 20, 19, 0.2); }
+.key { display: flex; justify-content: space-between; margin-top: 8px; font-size: 12.5px; color: var(--grey); }
+.tones { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 7px; margin-top: 22px; }
+.tones li { display: grid; }
+.tones .sw { aspect-ratio: 1; border-radius: 11px; transition: transform 0.3s ease; }
+.tones li.on .sw { transform: translateY(-10px); box-shadow: 0 10px 22px rgba(28, 20, 19, 0.2); }
+.tones b { margin-top: 8px; font-size: 15px; font-weight: 600; }
+.tones small { font-size: 12.5px; color: var(--grey); }
+@media (max-width: 520px) { .decode { grid-template-columns: minmax(0, 1fr); } .ramp li { padding: 4px; font-size: 10px; border-radius: 7px; } }
+</style>
+</head>
+<body>
+<div class="mod">
+  <div class="decode soft" data-slot="Shade code · catalog data">
+    <p class="glyph" aria-label="8C">8<span>C</span></p>
+    <div class="keys"><div><b>8 is the level.</b><small>How light: 1 black, 10 the lightest blonde.</small></div><div><b>C is the tone.</b><small>The letter after the level, here copper.</small></div></div>
+  </div>
+  <div class="row soft">
+    <div class="head2"><b>1 · Find your level</b><span class="cap grey">Ten levels</span></div>
+    <ol class="ramp" data-slot="Levels · catalog data"><li style="background:#1a1411" class=""><span>1</span></li><li style="background:#2b1d16" class=""><span>2</span></li><li style="background:#3d2a1c" class=""><span>3</span></li><li style="background:#5a3a22" class=""><span>4</span></li><li style="background:#6e4828" class=""><span>5</span></li><li style="background:#8a5e34" class=""><span>6</span></li><li style="background:#a87c4a" class=""><span>7</span></li><li style="background:#c6a06a" class="on"><span>8</span></li><li style="background:#ddc394" class=""><span>9</span></li><li style="background:#ece0bf" class=""><span>10</span></li></ol>
+    <div class="key"><span>1 · Black</span><span>10 · Lightest</span></div>
+  </div>
+  <div class="row soft">
+    <div class="head2"><b>2 · Pick your tone</b><span class="cap grey">Level 8, five ways</span></div>
+    <ol class="tones" data-slot="Tones · catalog data"><li class=""><span class="sw" style="background:#b9aa8d"></span><b>8A</b><small>Ash</small></li><li class=""><span class="sw" style="background:#c2a173"></span><b>8N</b><small>Neutral</small></li><li class=""><span class="sw" style="background:#cfa45e"></span><b>8G</b><small>Gold</small></li><li class="on"><span class="sw" style="background:#c07a45"></span><b>8C</b><small>Copper</small></li><li class=""><span class="sw" style="background:#a8503c"></span><b>8R</b><small>Red</small></li></ol>
+    <div class="key"><span>Cool</span><span>Warm</span></div>
+  </div>
+</div>
+<script src="m.js"></script>
+</body>
+</html>

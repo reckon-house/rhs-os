@@ -1,0 +1,32 @@
+/* ── Sally modules for the study's room (2 Oct 2026) ─────────────────────
+   Small pages made for the room's column, framed there in "fit" mode:
+   laid out at the column's own width (about 650 on a desk, 360 on a
+   phone), never scaled, at their own height. Built on push.css's tokens.
+   Each piece the Sally Marketing OS fills carries data-slot, naming where
+   it comes from; m.js shows those slots (Engine) and hides them
+   (Creative). No page padding and no ground of their own: the room's
+   paper shows through, so a module reads as part of the room. */
+html, body { background: transparent; }
+body { padding: 20px 0 6px; }
+.mod { display: grid; gap: 14px; }
+.soft { border-radius: 18px; background: var(--soft); }
+.ink-card { border-radius: 18px; background: var(--ink); color: #fff; }
+.cap { font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; }
+.cap.red { color: var(--red-deep); }
+.cap.grey { color: var(--grey); }
+
+/* the engine's slots */
+[data-slot] { position: relative; }
+[data-slot]::before { content: ""; position: absolute; inset: -6px; z-index: 4; border-radius: 16px; background: rgba(225, 19, 36, 0.09); pointer-events: none; opacity: 0; transition: opacity 0.5s ease; }
+[data-slot]::after { content: attr(data-slot); position: absolute; left: 4px; top: -14px; z-index: 6; padding: 5px 11px; border-radius: 999px; background: var(--red); color: #fff; font: 600 11.5px/1.2 var(--font); letter-spacing: 0; text-transform: none; white-space: nowrap; box-shadow: 0 6px 16px rgba(225, 19, 36, 0.28); pointer-events: none; opacity: 0; transform: translateY(4px); transition: opacity 0.45s ease, transform 0.45s ease; }
+body.engine [data-slot]::before { opacity: 1; }
+body.engine [data-slot]::after { opacity: 1; transform: none; }
+.ph[data-slot]::before { inset: 0; border-radius: 0; }
+.ph[data-slot]::after { top: 12px; left: 12px; }
+.ink-card [data-slot]::before { background: rgba(255, 255, 255, 0.08); }
+
+/* opened on its own, the module gets the switch to press */
+.m-switch { position: fixed; left: 50%; bottom: 16px; z-index: 50; transform: translateX(-50%); display: flex; gap: 4px; padding: 4px; border-radius: 999px; background: rgba(28, 20, 19, 0.92); box-shadow: 0 10px 30px rgba(28, 20, 19, 0.25); }
+.m-switch button { height: 38px; padding: 0 18px; border: 0; border-radius: 999px; background: transparent; color: rgba(255, 255, 255, 0.72); font: 600 14px var(--font); cursor: pointer; }
+.m-switch button[aria-pressed="true"] { background: #fff; color: var(--ink); }
+body.solo { max-width: 760px; margin: 0 auto; padding: 32px 20px 96px; background: #fff; }

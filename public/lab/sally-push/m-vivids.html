@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sally Beauty · The vivids (module)</title>
+<meta name="robots" content="noindex">
+<!-- The vivids, made for the study's room: his eight hues from the Color Authority concept, warm side to cool side, with the three looks above. -->
+<link rel="preload" href="/fonts/Satoshi-Variable.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="push.css">
+<link rel="stylesheet" href="m.css">
+<style>
+
+.pins { display: grid; grid-template-columns: repeat(16, minmax(0, 1fr)); gap: 6px; align-items: end; }
+.pin { grid-row: 1; }
+.pin .ph { aspect-ratio: 4 / 5; border-radius: 14px; }
+.pin p { margin-top: 8px; font-size: 14.5px; font-weight: 600; letter-spacing: -0.015em; }
+.pin small { display: block; font-size: 12px; font-weight: 500; color: var(--grey); }
+.hues { display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); gap: 6px; margin-top: 16px; }
+.hues .sw { display: block; height: clamp(52px, 9vw, 84px); border-radius: 11px; }
+.hues small { display: block; margin-top: 6px; font-size: 11.5px; color: var(--grey); }
+.hueskey { display: flex; justify-content: space-between; margin-top: 4px; font-size: 12.5px; font-weight: 600; }
+.p1 { grid-column: 1 / span 5; } .p2 { grid-column: 6 / span 5; } .p3 { grid-column: 12 / span 5; }
+@media (max-width: 520px) { .hues { grid-template-columns: repeat(4, minmax(0, 1fr)); } .pin p { font-size: 13px; } }
+</style>
+</head>
+<body>
+<div class="mod">
+  <div class="pins" data-slot="Looks · Asset Hub">
+    <figure class="pin p1"><div class="ph"><img src="../sally-system/assets/img/cherry-nails-port.jpg" alt="Long dark waves and a red top"></div><p>Cherry Cola<small>Semi-permanent</small></p></figure>
+    <figure class="pin p2"><div class="ph"><img src="../sally-system/assets/img/purple-nails-port.jpg" alt="Violet curls"></div><p>Electric Violet<small>Semi-permanent</small></p></figure>
+    <figure class="pin p3"><div class="ph"><img src="../sally-system/assets/img/teal-nails-port.jpg" alt="Teal braids" style="object-position:64% 50%"></div><p>Deep Sea Teal<small>Semi-permanent</small></p></figure>
+  </div>
+  <div>
+    <ol class="hues" data-slot="Shades · catalog data"><li><span class="sw" style="background:#c4172c"></span><small>Cherry</small></li><li><span class="sw" style="background:#d1377f"></span><small>Magenta</small></li><li><span class="sw" style="background:#e58cb4"></span><small>Rose</small></li><li><span class="sw" style="background:#7a3fa0"></span><small>Violet</small></li><li><span class="sw" style="background:#33408f"></span><small>Indigo</small></li><li><span class="sw" style="background:#2a6fdb"></span><small>Blue</small></li><li><span class="sw" style="background:#14564f"></span><small>Teal</small></li><li><span class="sw" style="background:#1f8a5b"></span><small>Green</small></li></ol>
+    <div class="hueskey"><span>Warm side</span><span>Cool side</span></div>
+  </div>
+</div>
+<script src="m.js"></script>
+</body>
+</html>

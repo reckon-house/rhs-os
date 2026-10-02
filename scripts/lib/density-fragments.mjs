@@ -217,18 +217,23 @@ for (const s of Object.values(H.studies)) {
       case "product-demo": {
         const folder = sec.folder || "sally-demos";
         const replay = folder === "sally-demos" || folder === "dsc-demos";
+        const fit = sec.mode === "fit"; /* a module made for the column: its own width, its own height */
         add(k, "live", {
           src: "/lab/" + folder + "/" + sec.demo + ".html" + (replay ? "?framed=1" : "") + (sec.hash ? "#" + sec.hash : ""),
-          w: sec.stageWidth || (replay ? 1120 : 1440),
+          w: fit ? 0 : sec.stageWidth || (replay ? 1120 : 1440),
           h: sec.viewHeight || 0,
           mode: sec.mode || (replay ? "demo" : "page"),
-          phone: !!sec.phone || (sec.stageWidth || 1120) <= 600, /* a phone-width replay sits narrow */
+          phone: !fit && (!!sec.phone || (sec.stageWidth || 1120) <= 600), /* a phone-width replay sits narrow */
           title: clean(sec.title || ""),
           note: clean(sec.note || ""),
           where,
         });
         break;
       }
+      case "study-link":
+        /* a card to another study's room; the room draws it with that study's cover */
+        add(k, "link", { to: sec.study, label: clean(sec.label), note: clean(sec.note || ""), where });
+        break;
       case "closing":
         paras(sec.content).forEach((p) => add(k, "line", { text: p, weight: "sub", where }));
         (sec.services || []).forEach((v) => add(k, "tool", { label: "Service", value: clean(v), where }));

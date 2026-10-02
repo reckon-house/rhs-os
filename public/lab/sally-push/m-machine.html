@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sally Beauty · The machine (module)</title>
+<meta name="robots" content="noindex">
+<!-- The machine, made for the study's room: how a signal becomes finished work, with the parts named as the Sally Marketing OS study names them (the campaign board, COLORfest's CRM request, Create Email, the Asset Hub, the scanner). -->
+<link rel="preload" href="/fonts/Satoshi-Variable.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="push.css">
+<link rel="stylesheet" href="m.css">
+<style>
+
+.machine { padding: clamp(20px, 3.6vw, 32px); }
+.machine > .cap { color: rgba(255, 255, 255, 0.6); }
+.steps { display: grid; gap: 8px; margin-top: 18px; }
+.st { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr); gap: 16px; align-items: center; border-radius: 14px; background: rgba(255, 255, 255, 0.07); padding: 16px; }
+.st .n { font-size: 12px; font-weight: 600; color: rgba(255, 255, 255, 0.55); }
+.st h3 { margin-top: 6px; font-size: clamp(20px, 3.2vw, 27px); line-height: 1; font-weight: 600; letter-spacing: -0.035em; }
+.st p { margin-top: 6px; font-size: 13.5px; line-height: 1.4; color: rgba(255, 255, 255, 0.72); }
+.arrow { justify-self: center; width: 22px; height: 22px; margin: -4px 0; border-radius: 50%; background: var(--red); color: #fff; font-size: 12px; line-height: 22px; text-align: center; }
+.vis { min-height: 92px; }
+.chips { display: grid; gap: 6px; }
+.chip { display: flex; align-items: center; justify-content: space-between; gap: 10px; height: 30px; padding: 0 12px; border-radius: 999px; background: rgba(255, 255, 255, 0.12); font-size: 12.5px; font-weight: 600; }
+.bars { display: flex; align-items: flex-end; gap: 2px; height: 14px; }
+.bars i { width: 3px; border-radius: 1px; background: rgba(255, 255, 255, 0.7); }
+.req { border-radius: 12px; background: #fff; color: var(--ink); padding: 12px; }
+.req .top { display: flex; justify-content: space-between; align-items: center; }
+.req .tag { height: 22px; padding: 0 9px; border-radius: 999px; background: #E7F4EC; color: #1F7A46; font-size: 11px; font-weight: 700; line-height: 22px; }
+.req b { display: block; margin-top: 8px; font-size: 15px; letter-spacing: -0.015em; }
+.req .btn2 { display: inline-block; margin-top: 10px; height: 30px; padding: 0 14px; border-radius: 999px; background: var(--red); color: #fff; font-size: 12.5px; font-weight: 600; line-height: 30px; }
+.src { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; }
+.src > div { border-radius: 10px; overflow: hidden; background: #fff; color: var(--ink); }
+.src .pic { aspect-ratio: 1; }
+.src .pic img { width: 100%; height: 100%; object-fit: cover; }
+.src .sw3 { aspect-ratio: 1; display: grid; grid-template-rows: 2fr 1fr 1fr; }
+.src small { display: block; padding: 6px 8px; font-size: 10.5px; font-weight: 600; line-height: 1.2; }
+.tpl { display: grid; grid-template-columns: 0.9fr 1fr; gap: 6px; border-radius: 12px; background: #fff; padding: 8px; }
+.tpl .pic { border-radius: 8px; overflow: hidden; aspect-ratio: 4 / 5; }
+.tpl .pic img { width: 100%; height: 100%; object-fit: cover; }
+.tpl .txt { display: flex; flex-direction: column; gap: 5px; justify-content: center; }
+.tpl .l { height: 7px; border-radius: 4px; background: var(--ink); }
+.tpl .l.g { background: #D9D4D2; }
+.tpl .skus { display: flex; gap: 4px; margin-top: 4px; }
+.tpl .skus i { flex: 1; aspect-ratio: 1; border-radius: 4px; background: var(--studio); }
+.tpl .cta { align-self: flex-start; margin-top: 4px; height: 14px; width: 58%; border-radius: 99px; background: var(--ink); }
+.ok { display: inline-flex; align-items: center; gap: 6px; margin-top: 8px; height: 26px; padding: 0 10px; border-radius: 999px; background: rgba(255, 255, 255, 0.12); font-size: 11.5px; font-weight: 600; }
+.ok::before { content: "\2713"; color: #7FD39C; }
+.shapes { display: flex; align-items: flex-end; gap: 6px; }
+.shapes span { display: grid; place-items: center; border-radius: 6px; background: rgba(255, 255, 255, 0.16); font-size: 10.5px; font-weight: 600; color: rgba(255, 255, 255, 0.9); }
+@media (max-width: 560px) { .st { grid-template-columns: minmax(0, 1fr); } }
+</style>
+</head>
+<body>
+<div class="mod">
+  <div class="machine ink-card">
+    <p class="cap">From a signal to a finished asset</p>
+    <div class="steps">
+      <div class="st"><div><span class="n">01</span><h3>Signals</h3><p>Live signals, performance data and the go-to-market plan.</p></div>
+        <div class="vis chips" data-slot="Data · Marketing OS"><span class="chip">Live signals<span class="bars"><i style="height:5px"></i><i style="height:8px"></i><i style="height:6px"></i><i style="height:10px"></i><i style="height:9px"></i><i style="height:13px"></i><i style="height:11px"></i><i style="height:14px"></i></span></span><span class="chip">Performance data<span class="bars"><i style="height:5px"></i><i style="height:8px"></i><i style="height:6px"></i><i style="height:10px"></i><i style="height:9px"></i><i style="height:13px"></i><i style="height:11px"></i><i style="height:14px"></i></span></span><span class="chip">Go-to-market plan<span class="bars"><i style="height:5px"></i><i style="height:8px"></i><i style="height:6px"></i><i style="height:10px"></i><i style="height:9px"></i><i style="height:13px"></i><i style="height:11px"></i><i style="height:14px"></i></span></span></div></div>
+      <span class="arrow" aria-hidden="true">↓</span>
+      <div class="st"><div><span class="n">02</span><h3>Marketing OS</h3><p>Approve opens one request per channel.</p></div>
+        <div class="vis req" data-slot="Request · campaign board"><div class="top"><span class="cap grey">Campaign board</span><span class="tag">Approved</span></div><b>COLORfest · CRM request</b><span class="btn2">Create Email</span></div></div>
+      <span class="arrow" aria-hidden="true">↓</span>
+      <div class="st"><div><span class="n">03</span><h3>Sources</h3><p>The Asset Hub, the product tool, the brand guidelines.</p></div>
+        <div class="vis src"><div data-slot="Asset Hub"><div class="pic"><img src="../sally-system/assets/img/vivids-port.jpg" alt=""></div><small>Asset Hub</small></div><div data-slot="Product tool"><div class="pic" style="background:var(--studio)"><img src="../sally-system/assets/products/loreal-violet.jpg" alt="" style="object-fit:contain"></div><small>Product tool</small></div><div data-slot="Guidelines"><div class="sw3"><i style="background:#E11324"></i><i style="background:#1C1413"></i><i style="background:#F4F3F1"></i></div><small>Brand guidelines</small></div></div></div>
+      <span class="arrow" aria-hidden="true">↓</span>
+      <div class="st"><div><span class="n">04</span><h3>AI and the template</h3><p>Copy, SKUs and product descriptions, into a locked template.</p><span class="ok">Scanner checked</span></div>
+        <div class="vis tpl" data-slot="Locked template · AI fills it"><div class="pic"><img src="../sally-system/assets/img/vivids-port.jpg" alt=""></div><div class="txt"><i class="l" style="width:92%"></i><i class="l" style="width:70%"></i><i class="l g" style="width:96%"></i><i class="l g" style="width:80%"></i><span class="skus"><i></i><i></i><i></i></span><i class="cta"></i></div></div></div>
+      <span class="arrow" aria-hidden="true">↓</span>
+      <div class="st"><div><span class="n">05</span><h3>Every channel</h3><p>Homepage, email and social, in every shape.</p></div>
+        <div class="vis shapes" data-slot="Five shapes · one template set"><span style="width:44px;height:44px">1:1</span><span style="width:36px;height:45px">4:5</span><span style="width:28px;height:50px">9:16</span><span style="width:80px;height:45px">16:9</span><span style="width:90px;height:30px">3:1</span></div></div>
+    </div>
+  </div>
+</div>
+<script src="m.js"></script>
+</body>
+</html>
