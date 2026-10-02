@@ -208,7 +208,7 @@ export const lovedByNordstromCaseStudy: CaseStudy = {
     {
       id: "headline-editorial",
       type: "editorial-headline",
-      text: "Merchandising could raise or lower\na brand without touching the design",
+      text: "Nordstrom borrowed Instagram's heart\nto lift smaller designer labels",
     },
 
     // ── LOVED BY HIERARCHY ──
