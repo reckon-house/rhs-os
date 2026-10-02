@@ -257,10 +257,12 @@ html.dscroll[data-ix="d"] .dcols { overflow: visible; column-fill: balance; }
 #wires g.live, #wiresBack g.live { transition: none; }
 /* the halo: a hair of paper around every letter in the index, the way a
    map sets its labels over its roads, so a wire passing behind a word
-   broke there. The wires run over the index since 1 Oct, so the index
-   sets none: on a lit cell it only showed as a white outline round the
-   words. Kept for the ink mark's runs, which still ask for it */
-:root { --halo: -1px 0 var(--paper), 1px 0 var(--paper), 0 -1px var(--paper), 0 1px var(--paper), -1px -1px var(--paper), 1px 1px var(--paper), -1px 1px var(--paper), 1px -1px var(--paper), 0 0 3px var(--paper); }
+   broke there. The wires run over the index since 1 Oct, so there is no
+   halo anywhere any more: on a lit box it only ever showed as a white
+   outline round the words (his "i still see some of the headlines that
+   have white outlines around them"). The variable stays, empty, for the
+   rules that still name it */
+:root { --halo: none; }
 #idx { text-shadow: none; }
 /* the highlight, one colour for every lit cell and run. A warm beige was
    tried (1 Oct 2026, #EDE8DF) and he went back: "i like the grey we had
@@ -627,7 +629,9 @@ html[data-ix="e"]:is([data-mk="cell"], [data-mk="bar"]) body.x #idx .grp.ec .e.o
 html[data-ix="e"]:is([data-mk="cell"], [data-mk="bar"]) #idx .grp.ec .e.lock:is(.ew, .etool, .ecap) :is(.y, .cnt) { color: rgba(255, 255, 255, 0.62); }
 /* the mix (a hair of stroke and a paper halo) is for the runs; a top
    capability, tool or figure standing on its own takes the mark instead */
-html[data-mark="ink"][data-ix="e"] body.x #idx .grp.ec .e.on:is(.ecap, .etool, .efig):not(.me):not(.lock) { -webkit-text-stroke: 0; text-shadow: none; }
+/* a reel stands on its own like the top five, so it takes the box and not
+   the runs' hair of stroke */
+html[data-mark="ink"][data-ix="e"] body.x #idx .grp.ec .e.on:is(.ecap, .etool, .efig, .ereel):not(.me):not(.lock) { -webkit-text-stroke: 0; text-shadow: none; }
 html[data-ix="e"] #idx .grp.ec .e.lock:is(.el, .ef, .ew, .ey, .ea, .efig, .ecap, .etool) { background: none !important; box-shadow: none !important; color: var(--ink) !important; }
 html[data-ix="e"] #idx .grp.ec .e.lock .dk, html[data-ix="e"] #idx .grp.ec .e.lock .cr, html[data-ix="e"] #idx .grp.ec .e.lock .kk { color: var(--grey) !important; }
 /* where the mark leaves the words ink, a year stays grey, lit or held:
