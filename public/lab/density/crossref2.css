@@ -693,7 +693,11 @@ html[data-mk="box"][data-ix="e"] #idx .erun .e { border-radius: var(--pr, 0px); 
    sections and between reels, four or so in the dense rows */
 html[data-mk="box"][data-ix="e"] #idx .grp.ec .e:is(.el, .ef, .ea, .efig, .ew, .etool, .ey, .ecap) { position: relative; z-index: 0; }
 html[data-mk="box"][data-ix="e"] #idx .grp.ec .e:is(.el, .ef, .ea, .efig, .ew, .etool, .ey, .ecap)::before {
-  content: ""; position: absolute; z-index: -1; top: calc(-1 * var(--bt, 6px)); bottom: var(--bb, 4px); left: calc(var(--eg) / -2 + 0.5px); right: calc(var(--eg) / -2 + 0.5px);
+  /* a quarter of the gutter out either side, not to the rule (his "can we
+     give it some padding between the columns? see how the grey connect on
+     the left and right sides?"): half the gutter stays paper, the column
+     rule down its middle and the node on it */
+  content: ""; position: absolute; z-index: -1; top: calc(-1 * var(--bt, 6px)); bottom: var(--bb, 4px); left: calc(var(--eg) / -4); right: calc(var(--eg) / -4);
   background: var(--hl); transform: scaleX(0); transform-origin: 100% 50%; transition: transform 0.36s cubic-bezier(0.45, 0, 0.2, 1); pointer-events: none;
   /* the soft corner the pictures have (his "round the corners of the
      boxes too to match everything else"), and none under ?round=0 */
