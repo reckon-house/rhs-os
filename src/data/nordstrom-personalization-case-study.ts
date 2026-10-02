@@ -198,7 +198,7 @@ export const nordstromPersonalizationCaseStudy: CaseStudy = {
     {
       id: "headline-1",
       type: "editorial-headline",
-      text: "The customer never saw\nthe rules",
+      text: "The homepage was personalized\nfor millions of customers\nand still had to look designed",
     },
 
     // ════════════════════════════════════════

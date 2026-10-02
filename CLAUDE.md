@@ -210,7 +210,7 @@ These apply to every case study, every time. Non-negotiable.
 
 **Section labels:** ALL CAPS with section number. "SECTION 03: METHODOLOGY / HOW IT WORKS"
 
-**Editorial headlines:** 2-3 lines max. Pull quote / magazine spread feel. No periods. Add emotional resonance, don't restate the section above.
+**Editorial headlines:** 2-3 lines max. No periods. Say the point in plain words: what the project is, why it was unusual, or what it did. Not a mood line. Jeremy, on Nordstrom Personalization's "The customer never saw the rules" (1 Oct 2026): "it doesnt say what the project is, why it was unqiue or what it did, ya know? it's too 'editorial' instead of saying the point or something more interesting." Don't restate the section above.
 
 **Closing sections:** Every closing should feel distinct across the portfolio. Vary the emotional register. Some quiet, some punchy, some just state the result and stop. Don't reuse "The product proves [thesis]. [Restate scope]. [Forward-looking statement]."
 
