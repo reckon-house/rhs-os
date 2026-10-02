@@ -262,7 +262,7 @@ export const jChristiansonCaseStudy: CaseStudy = {
     {
       id: "headline-found",
       type: "editorial-headline",
-      text: "Fewer versions of the mark meant\nit could go more places\nwithout being redrawn",
+      text: "A brand built from the ground up,\nstarting with the name\nand a simple shape",
     },
 
     // ── OUTDOOR SIGN HERO — the last picture, grown to full size ──
