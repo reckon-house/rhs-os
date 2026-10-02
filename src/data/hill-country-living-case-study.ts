@@ -256,7 +256,7 @@ export const hillCountryLivingCaseStudy: CaseStudy = {
     {
       id: "headline-livedin",
       type: "editorial-headline",
-      text: "The fireplace gets used,\nthe records get played",
+      text: "Family heirlooms sit next to new finds,\nand none of it came as a set",
     },
 
     // ════════════════════════════════════════
