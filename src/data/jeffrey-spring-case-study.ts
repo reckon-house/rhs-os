@@ -116,7 +116,7 @@ export const jeffreySpringCaseStudy: CaseStudy = {
     {
       id: "headline-global",
       type: "editorial-headline",
-      text: "Two leaves\nand a typeface",
+      text: "The leaves were cropped big enough\nto read like architecture",
     },
 
     // ════════════════════════════════════════
