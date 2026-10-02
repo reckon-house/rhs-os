@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sally Beauty · Pride 2026 (pushed)</title>
+<meta name="robots" content="noindex">
+<!-- The Pride takeover (concept 6), pushed. The takeover is the three looks
+     themselves, each on a card in its own shade, sampled from its
+     photograph (--violet, --teal, --cherry). His pledge, the $250,000
+     goal, is the page's one number, set as big as the headline. -->
+<link rel="preload" href="/fonts/Satoshi-Variable.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="push.css">
+<style>
+  .pr-hero { margin-top: clamp(28px, 3.4vw, 52px); }
+  .pr-hero h1 { margin-top: 16px; font-size: clamp(64px, 11.6vw, 176px); }
+  .pr-hero .intro { margin-top: clamp(24px, 3vw, 44px); align-items: end; }
+  .pr-hero .intro .t-deck { grid-column: 1 / span 6; }
+  .pr-hero .intro .pills { grid-column: 8 / span 5; justify-content: flex-end; }
+  .pr-hero .looks { margin-top: clamp(40px, 5vw, 72px); }
+  .pledge .big { font-size: clamp(76px, 17.4vw, 262px); line-height: 0.8; font-weight: 700; letter-spacing: -0.07em; white-space: nowrap; margin-left: -0.04em; }
+  .pledge .under { margin-top: clamp(16px, 2vw, 24px); }
+  .pledge .grid { margin-top: clamp(48px, 6vw, 88px); align-items: end; }
+  .pledge h2 { grid-column: 1 / span 6; }
+  .pledge .say { grid-column: 8 / span 5; }
+  .vivids .card h2 { max-width: 12ch; }
+  @media (max-width: 860px) { .pr-hero .intro .pills { justify-content: flex-start; margin-top: 22px; } .pledge .say { margin-top: 24px; } }
+</style>
+</head>
+<body>
+
+<div class="util"><span>Pride 2026 · Color is for everyone</span><span>Free 2-hour delivery on orders $35+</span><span>Rewards · Find a store</span></div>
+<header class="navpill">
+  <a class="logo" href="#"><img src="../sally-system/assets/brand/sally-logo-red.webp" alt="Sally Beauty" width="400" height="100"></a>
+  <nav><a href="#">Hair Color</a><a href="#">Hair Care</a><a href="#">Nails</a><a href="#">Tools</a><a href="#">Cosmetics</a><a href="#">Brands</a><a href="#">Deals</a></nav>
+  <div class="r"><a href="#">Search</a><a href="#">Sign in</a><a href="#">Bag (0)</a></div>
+</header>
+
+<div class="wrap">
+  <!-- the takeover -->
+  <section class="pr-hero">
+    <div class="spectrum" aria-hidden="true"><i style="background:var(--violet)"></i><i style="background:var(--teal)"></i><i style="background:var(--cherry)"></i><i style="background:var(--blue)"></i><i style="background:var(--red)"></i></div>
+    <p class="t-label">Sally celebrates Pride</p>
+    <h1 class="t-cover">Express every shade of you.</h1>
+    <div class="grid intro">
+      <p class="t-deck">Color has always been ours to play with. This month we're celebrating self-expression in every hue, and giving back to the community that lives it out loud.</p>
+      <div class="pills"><a class="pill" href="#">Shop the Pride edit</a><a class="pill soft" href="#pledge">How we give back</a></div>
+    </div>
+    <div class="looks">
+      <a class="look" href="#" style="background:var(--violet)"><span class="ph"><img src="../sally-system/assets/img/purple-nails-port.jpg" alt="Violet curls, gold nails, a wide smile"></span><span class="say"><span><span class="lab">Vivid · Violet</span><span class="nm">Electric Violet</span></span><span class="go">Get the look</span></span></a>
+      <a class="look" href="#" style="background:var(--teal)"><span class="ph"><img src="../sally-system/assets/img/teal-nails-port.jpg" alt="Teal braids" style="object-position:64% 50%"></span><span class="say"><span><span class="lab">Vivid · Teal</span><span class="nm">Deep Sea Teal</span></span><span class="go">Get the look</span></span></a>
+      <a class="look" href="#" style="background:var(--cherry)"><span class="ph"><img src="../sally-system/assets/img/cherry-nails-port.jpg" alt="Long dark waves and a red top"></span><span class="say"><span><span class="lab">Vivid · Cherry</span><span class="nm">Cherry Cola Red</span></span><span class="go">Get the look</span></span></a>
+    </div>
+  </section>
+</div>
+
+<!-- the pledge -->
+<section class="band ink on-dark pledge" id="pledge">
+  <div class="in">
+    <p class="t-label grey">Our pledge</p>
+    <p class="big" style="margin-top:22px">$250,000</p>
+    <p class="under t-label grey">The goal · Donated at checkout</p>
+    <div class="grid">
+      <h2 class="t-d1">Every vivid shade gives back.</h2>
+      <div class="say">
+        <p class="t-body">Through June, 100% of profits from the ion Pride collection support LGBTQ+ youth programs. Color loud, do good.</p>
+        <a class="pill light" href="#" style="margin-top:26px">Read our commitment</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- new to vivids -->
+<section class="story vivids">
+  <div class="split">
+    <div class="card">
+      <div>
+        <p class="t-label live">Colorists online now</p>
+        <h2 class="t-d2" style="margin-top:20px">New to vivids? We've got you.</h2>
+        <p class="t-body" style="margin-top:18px;max-width:44ch">Vivid color takes a little know-how. Chat with a licensed colorist before you commit. Free, no appointment, no judgment.</p>
+        <ol class="how">
+          <li>Pre-lightening, done right</li>
+          <li>Shade-mixing for your base</li>
+          <li>Keep-it-bright aftercare</li>
+        </ol>
+      </div>
+      <div class="pills" style="margin-top:40px;align-items:center"><a class="pill" href="#">Chat with a colorist</a><span class="t-cap">Free · Average wait 2 min</span></div>
+    </div>
+    <figure class="ph"><img src="../sally-system/assets/img/vivids-port.jpg" alt="Blue curls, a wide smile" loading="lazy" style="object-position:50% 25%"></figure>
+  </div>
+</section>
+
+<div class="wrap">
+  <!-- the collection -->
+  <section class="story">
+    <div class="head"><div><p class="t-label grey">Wear it now</p><h2 class="t-d2" style="margin-top:12px">Shop the collection.</h2></div><a class="pill soft sm" href="#">View all</a></div>
+    <div class="pcs">
+      <a class="pc" href="#"><span class="card"><span class="word">violet</span><img src="../sally-system/assets/products/loreal-violet.jpg" alt="L'Oréal Excellence HiColor True Violet H19" loading="lazy"></span><span class="b">L’Oréal</span><span class="nm">Excellence HiColor · True Violet H19</span></a>
+      <a class="pc" href="#"><span class="card"><span class="word">gel</span><img src="../sally-system/assets/products/opi-cajun.jpg" alt="OPI GELement Cajun Shrimp" loading="lazy"></span><span class="b">OPI</span><span class="nm">GELement · Cajun Shrimp</span></a>
+      <a class="pc" href="#"><span class="card"><span class="word">crimson</span><img src="../sally-system/assets/products/nailboo-crimson.jpg" alt="Nailboo Premium Press-Ons Crimson Velour" loading="lazy"></span><span class="b">Nailboo</span><span class="nm">Premium Press-Ons · Crimson Velour</span></a>
+      <a class="pc" href="#"><span class="card"><span class="word">wheat</span><img src="../sally-system/assets/products/btartbox-nails.jpg" alt="BTArtbox Press-On Nails Wheat" loading="lazy"></span><span class="b">BTArtbox</span><span class="nm">Press-On Nails · Wheat</span></a>
+      <a class="pc" href="#"><span class="card"><span class="word">leave-in</span><img src="../sally-system/assets/products/asiam-leavein.jpg" alt="As I Am Classic Leave-In Conditioner" loading="lazy"></span><span class="b">As I Am</span><span class="nm">Classic Leave-In Conditioner</span></a>
+    </div>
+  </section>
+
+  <!-- made by Sally -->
+  <section class="story made">
+    <p class="t-label grey">Proudly made by Sally</p>
+    <p class="names"><span>ion</span> <span>Inspired by Nature</span> <span>Beyond the Zone</span> <span>ion Luxe</span> <span>GVP</span> <span>Strawberry Leopard</span></p>
+  </section>
+</div>
+
+<footer class="ft">
+  <div class="in">
+    <div class="grid">
+      <nav class="rows"><a href="#">Find a store</a><a href="#">Download the app</a><a href="#">Chat with a colorist</a></nav>
+      <div class="cols">
+        <div><h4>Help</h4><ul><li>Orders</li><li>Shipping</li><li>Returns</li><li>Contact us</li></ul></div>
+        <div><h4>Shop</h4><ul><li>Hair Color</li><li>Hair Care</li><li>Nails</li><li>Tools</li><li>Brands</li></ul></div>
+        <div><h4>About</h4><ul><li>Sally Beauty</li><li>Careers</li><li>Newsroom</li><li>Accessibility</li></ul></div>
+      </div>
+    </div>
+    <div class="legal"><span>© 2026 Sally Beauty Supply LLC</span><span>Privacy · Terms of Use · Your Privacy Choices</span></div>
+  </div>
+</footer>
+
+</body>
+</html>

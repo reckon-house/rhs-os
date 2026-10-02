@@ -5,28 +5,24 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Sally Beauty · The Color Issue (pushed)</title>
 <meta name="robots" content="noindex">
-<!-- The Edit (concept 10), pushed: the homepage as an issue. Satoshi, white
-     paper, stories in order. See push.css for what changed and why. -->
+<!-- The Edit (concept 10), pushed: the homepage as an issue. Round two:
+     no rules, rounded cards, the floating nav. See push.css. -->
 <link rel="preload" href="/fonts/Satoshi-Variable.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="push.css">
 </head>
 <body>
 
-<div class="wrap">
-  <div class="util">
-    <span>Free 2-hour delivery on orders $35+</span>
-    <span>Free advice from a licensed colorist</span>
-    <span class="r"><a href="#">Rewards</a><a href="#">Find a store</a></span>
-  </div>
-  <header class="hd">
-    <a class="logo" href="#"><img src="../sally-system/assets/brand/sally-logo-red.webp" alt="Sally Beauty" width="400" height="100"></a>
-    <nav><a href="#">Hair Color</a><a href="#">Hair Care</a><a href="#">Nails</a><a href="#">Tools</a><a href="#">Cosmetics</a><a href="#">Brands</a><a href="#">Deals</a></nav>
-    <div class="r"><a href="#">Search</a><a href="#">Sign in</a><a href="#">Bag (0)</a></div>
-  </header>
+<div class="util"><span>Free 2-hour delivery on orders $35+</span><span>Free advice from a licensed colorist</span><span>Rewards · Find a store</span></div>
+<header class="navpill">
+  <a class="logo" href="#"><img src="../sally-system/assets/brand/sally-logo-red.webp" alt="Sally Beauty" width="400" height="100"></a>
+  <nav><a href="#">Hair Color</a><a href="#">Hair Care</a><a href="#">Nails</a><a href="#">Tools</a><a href="#">Cosmetics</a><a href="#">Brands</a><a href="#">Deals</a></nav>
+  <div class="r"><a href="#">Search</a><a href="#">Sign in</a><a href="#">Bag (0)</a></div>
+</header>
 
+<div class="wrap">
   <!-- the cover -->
   <section class="cover">
-    <div class="run t-label"><span>No. 04</span><span>The Color Issue</span><span>Summer 2026</span></div>
+    <div class="run t-label"><span>No. 04</span><span class="grey">The Color Issue</span><span>Summer 2026</span></div>
     <div class="grid">
       <div class="cover-type">
         <h1 class="t-cover">The shade everyone will ask about.</h1>
@@ -41,7 +37,7 @@
 
   <!-- in this issue -->
   <section class="contents">
-    <div class="head"><h2 class="t-label">In this issue</h2><span class="t-label grey">Four stories</span></div>
+    <h2 class="t-label grey">In this issue</h2>
     <ol>
       <li><a href="#s1"><span class="ph"><img src="../sally-system/assets/img/copper-curly-land.jpg" alt="" loading="lazy"></span><span><span class="n">01</span><span class="t">Copper, by hand</span><span class="d">The how-to, from the chair to your sink.</span></span></a></li>
       <li><a href="#s2"><span class="ph"><img src="../sally-system/assets/img/vivids-port.jpg" alt="" loading="lazy"></span><span><span class="n">02</span><span class="t">Go louder than planned</span><span class="d">Blue, violet and teal, worn on purpose.</span></span></a></li>
@@ -51,7 +47,7 @@
   </section>
 
   <!-- 01 -->
-  <section class="s-howto" id="s1">
+  <section class="story s-howto" id="s1">
     <div class="grid">
       <figure class="ph"><img src="../sally-system/assets/img/copper-curly-land.jpg" alt="Copper curls, close, against a pale wall" loading="lazy" width="1500" height="1000"></figure>
       <div class="txt">
@@ -70,10 +66,10 @@
   </section>
 
   <!-- the colorist -->
-  <section class="pull">
+  <section class="story pull">
     <div class="grid">
       <div>
-        <svg class="mark" viewBox="0 0 64 48" aria-hidden="true"><path d="M0 48V29C0 13 8 3.5 24 0l3 6.5C17.5 9.5 13.5 15 13 23h11v25H0Zm37 0V29c0-16 8-25.5 24-29l3 6.5C54.5 9.5 50.5 15 50 23h11v25H37Z" fill="#E11324"/></svg>
+        <svg class="qmark" viewBox="0 0 64 48" aria-hidden="true"><path d="M0 48V29C0 13 8 3.5 24 0l3 6.5C17.5 9.5 13.5 15 13 23h11v25H0Zm37 0V29c0-16 8-25.5 24-29l3 6.5C54.5 9.5 50.5 15 50 23h11v25H37Z" fill="#E11324"/></svg>
         <p class="t-quote">Your hair is the one thing you get to rewrite whenever you want.</p>
         <p class="who t-label grey">Mara V. · Colorist, 14 years behind the chair</p>
       </div>
@@ -81,22 +77,22 @@
   </section>
 
   <!-- shop the issue -->
-  <section class="shop" id="shop">
-    <div class="head"><h2 class="t-d2">Shop the issue.</h2><a class="go" href="#">Shop all new</a></div>
-    <ol class="tiles">
-      <li class="tile"><a href="#"><span class="studio"><img src="../sally-system/assets/products/asiam-leavein.jpg" alt="As I Am Leave-In Conditioner" loading="lazy"></span><span class="n">01</span><span class="b">As I Am</span><span class="nm">Leave-In Conditioner</span></a></li>
-      <li class="tile"><a href="#"><span class="studio"><img src="../sally-system/assets/products/loreal-violet.jpg" alt="L'Oréal Excellence HiColor True Violet" loading="lazy"></span><span class="n">02</span><span class="b">L’Oréal</span><span class="nm">HiColor · True Violet</span></a></li>
-      <li class="tile"><a href="#"><span class="studio"><img src="../sally-system/assets/products/opi-cajun.jpg" alt="OPI GELement Cajun Shrimp" loading="lazy"></span><span class="n">03</span><span class="b">OPI</span><span class="nm">GELement · Cajun Shrimp</span></a></li>
-      <li class="tile"><a href="#"><span class="studio"><img src="../sally-system/assets/products/nailboo-crimson.jpg" alt="Nailboo press-on nails in Crimson Velour" loading="lazy"></span><span class="n">04</span><span class="b">Nailboo</span><span class="nm">Press-Ons · Crimson Velour</span></a></li>
-      <li class="tile"><a href="#"><span class="studio"><img src="../sally-system/assets/products/btartbox-nails.jpg" alt="BTArtbox press-on nails in Wheat" loading="lazy"></span><span class="n">05</span><span class="b">BTArtbox</span><span class="nm">Press-Ons · Wheat</span></a></li>
-      <li class="tile"><a href="#"><span class="studio"><img src="../sally-system/assets/products/ardell-lashes.jpg" alt="Ardell Naked Clusters 437" loading="lazy"></span><span class="n">06</span><span class="b">Ardell</span><span class="nm">Naked Clusters · 437</span></a></li>
-    </ol>
+  <section class="story" id="shop">
+    <div class="head"><h2 class="t-d2">Shop the issue.</h2><a class="pill soft sm" href="#">Shop all new</a></div>
+    <div class="pcs six">
+      <a class="pc" href="#"><span class="card"><span class="word">leave-in</span><img src="../sally-system/assets/products/asiam-leavein.jpg" alt="As I Am Leave-In Conditioner" loading="lazy"></span><span class="b">As I Am</span><span class="nm">Leave-In Conditioner</span></a>
+      <a class="pc" href="#"><span class="card"><span class="word">violet</span><img src="../sally-system/assets/products/loreal-violet.jpg" alt="L'Oréal Excellence HiColor True Violet" loading="lazy"></span><span class="b">L’Oréal</span><span class="nm">HiColor · True Violet</span></a>
+      <a class="pc" href="#"><span class="card"><span class="word">gel</span><img src="../sally-system/assets/products/opi-cajun.jpg" alt="OPI GELement Cajun Shrimp" loading="lazy"></span><span class="b">OPI</span><span class="nm">GELement · Cajun Shrimp</span></a>
+      <a class="pc" href="#"><span class="card"><span class="word">crimson</span><span class="tag">New</span><img src="../sally-system/assets/products/nailboo-crimson.jpg" alt="Nailboo press-on nails in Crimson Velour" loading="lazy"></span><span class="b">Nailboo</span><span class="nm">Press-Ons · Crimson Velour</span></a>
+      <a class="pc" href="#"><span class="card"><span class="word">wheat</span><img src="../sally-system/assets/products/btartbox-nails.jpg" alt="BTArtbox press-on nails in Wheat" loading="lazy"></span><span class="b">BTArtbox</span><span class="nm">Press-Ons · Wheat</span></a>
+      <a class="pc" href="#"><span class="card"><span class="word">clusters</span><img src="../sally-system/assets/products/ardell-lashes.jpg" alt="Ardell Naked Clusters 437" loading="lazy"></span><span class="b">Ardell</span><span class="nm">Naked Clusters · 437</span></a>
+    </div>
   </section>
 </div>
 
 <!-- 02: the issue goes dark -->
-<section class="s-vivid" id="s2">
-  <div class="wrap">
+<section class="band ink on-dark s-vivid" id="s2">
+  <div class="in">
     <div class="kick t-label"><span class="n">02</span><span class="grey">The vivids</span></div>
     <div class="grid">
       <h2 class="t-d1">Go louder than planned.</h2>
@@ -110,14 +106,14 @@
     <div class="vivid-shop">
       <div class="studio"><img src="../sally-system/assets/products/loreal-violet.jpg" alt="L'Oréal Excellence HiColor True Violet" loading="lazy"></div>
       <div><p class="b">The one we keep restocking</p><p class="nm">L’Oréal Excellence HiColor · True Violet H19</p></div>
-      <a class="go" href="#">Shop the vivids</a>
+      <a class="pill light" href="#">Shop the vivids</a>
     </div>
   </div>
 </section>
 
 <div class="wrap">
   <!-- 03 -->
-  <section class="s-nails" id="s3">
+  <section class="story s-nails" id="s3">
     <div class="kick t-label"><span class="n red">03</span><span class="grey">Nails</span></div>
     <div class="grid top">
       <h2 class="t-d1">Ten-minute nails.</h2>
@@ -128,33 +124,33 @@
       <figure><div class="ph"><img src="../sally-system/assets/img/wm3.jpeg" alt="Long almond nails in red and cream art, in dark hair" loading="lazy"></div><figcaption class="t-cap">Red and cream art, almond shape.</figcaption></figure>
     </div>
     <div class="nails-shop">
-      <a class="tile" href="#"><span class="studio" style="aspect-ratio:1"><img src="../sally-system/assets/products/nailboo-crimson.jpg" alt="" loading="lazy"></span><span><span class="b">Nailboo</span><span class="nm">Crimson Velour</span></span></a>
-      <a class="tile" href="#"><span class="studio" style="aspect-ratio:1"><img src="../sally-system/assets/products/btartbox-nails.jpg" alt="" loading="lazy"></span><span><span class="b">BTArtbox</span><span class="nm">Wheat</span></span></a>
-      <a class="tile" href="#"><span class="studio" style="aspect-ratio:1"><img src="../sally-system/assets/products/opi-cajun.jpg" alt="" loading="lazy"></span><span><span class="b">OPI</span><span class="nm">GELement · Cajun Shrimp</span></span></a>
+      <a class="pc" href="#"><span class="card"><span class="word">crimson</span><img src="../sally-system/assets/products/nailboo-crimson.jpg" alt="" loading="lazy"></span><span class="b">Nailboo</span><span class="nm">Press-Ons · Crimson Velour</span></a>
+      <a class="pc" href="#"><span class="card"><span class="word">wheat</span><img src="../sally-system/assets/products/btartbox-nails.jpg" alt="" loading="lazy"></span><span class="b">BTArtbox</span><span class="nm">Press-Ons · Wheat</span></a>
+      <a class="pc" href="#"><span class="card"><span class="word">gel</span><img src="../sally-system/assets/products/opi-cajun.jpg" alt="" loading="lazy"></span><span class="b">OPI</span><span class="nm">GELement · Cajun Shrimp</span></a>
       <a class="go" href="#">Shop nails</a>
     </div>
   </section>
 
   <!-- 04 -->
-  <section class="s-gray" id="s4">
+  <section class="story s-gray" id="s4">
     <div class="kick t-label"><span class="n red">04</span><span class="grey">Gray</span></div>
     <h2 class="t-d1">Gray, on your terms.</h2>
     <div class="ways">
       <figure>
         <div class="ph"><img src="../sally-system/assets/img/gray-shampoo-land.jpg" alt="A woman with long silver hair against pink tile" loading="lazy"></div>
-        <figcaption class="w"><span class="k">A.</span><span><h3 class="t-h3">Keep it bright.</h3><p class="t-body">A violet shampoo once a week keeps silver from going yellow.</p><a class="go" href="#" style="margin-top:14px">Shop gray care</a></span></figcaption>
+        <figcaption class="w"><span class="k">A.</span><span><h3 class="t-h3">Keep it bright.</h3><p class="t-body">A violet shampoo once a week keeps silver from going yellow.</p><a class="go" href="#">Shop gray care</a></span></figcaption>
       </figure>
       <figure>
         <div class="ph"><img src="../sally-system/assets/img/grey-coverage-land.jpg" alt="A woman with dark brown curls" loading="lazy"></div>
-        <figcaption class="w"><span class="k">B.</span><span><h3 class="t-h3">Cover it.</h3><p class="t-body">Permanent color in your shade, roots first, ends for the last ten minutes.</p><a class="go" href="#" style="margin-top:14px">Shop coverage</a></span></figcaption>
+        <figcaption class="w"><span class="k">B.</span><span><h3 class="t-h3">Cover it.</h3><p class="t-body">Permanent color in your shade, roots first, ends for the last ten minutes.</p><a class="go" href="#">Shop coverage</a></span></figcaption>
       </figure>
     </div>
   </section>
 </div>
 
 <!-- what Sally does for you -->
-<section class="s-band">
-  <div class="wrap">
+<section class="band red on-dark s-band">
+  <div class="in">
     <div class="grid">
       <h2 class="t-d1">Salon-level results, doable at home.</h2>
       <figure class="ph"><img src="../sally-system/assets/img/wm1.jpeg" alt="A woman with curls checking her hair at a Sally vanity" loading="lazy" style="object-position:30% 50%"></figure>
@@ -168,15 +164,19 @@
 </section>
 
 <div class="wrap">
-  <section class="s-letter">
+  <section class="story s-letter">
     <div class="grid">
       <h2 class="t-d2">The Gloss, a letter from Sally, in your inbox.</h2>
-      <form onsubmit="return false"><input type="email" placeholder="Your email" aria-label="Your email"><button type="submit">Sign up</button></form>
-      <p class="note t-cap">One issue a month. Shades, how-tos and the occasional sale. Unsubscribe whenever.</p>
+      <div class="form">
+        <form class="signup" onsubmit="return false"><input type="email" placeholder="Your email" aria-label="Your email"><button type="submit">Sign up</button></form>
+        <p class="t-cap">One issue a month. Shades, how-tos and the occasional sale. Unsubscribe whenever.</p>
+      </div>
     </div>
   </section>
+</div>
 
-  <footer class="ft">
+<footer class="ft">
+  <div class="in">
     <div class="grid">
       <nav class="rows"><a href="#">Find a store</a><a href="#">Download the app</a><a href="#">Chat with a colorist</a></nav>
       <div class="cols">
@@ -186,8 +186,8 @@
       </div>
     </div>
     <div class="legal"><span>© 2026 Sally Beauty Supply LLC</span><span>Privacy · Terms of Use · Your Privacy Choices</span></div>
-  </footer>
-</div>
+  </div>
+</footer>
 
 </body>
 </html>
