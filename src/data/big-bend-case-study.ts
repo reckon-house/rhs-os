@@ -114,7 +114,7 @@ export const bigBendCaseStudy: CaseStudy = {
     {
       id: "films-headline",
       type: "editorial-headline",
-      text: "There Will Be Blood\nand No Country for Old Men\nwere both filmed in West Texas",
+      text: "Big Bend is the largest national park\nin Texas and one of the least visited\nin the country",
     },
 
     // The range beside the canyon studies. chisos-range-panorama keeps its
