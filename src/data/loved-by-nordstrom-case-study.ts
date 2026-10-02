@@ -208,7 +208,7 @@ export const lovedByNordstromCaseStudy: CaseStudy = {
     {
       id: "headline-editorial",
       type: "editorial-headline",
-      text: "Weekly pushes went out as Liked\nand the seasonal flagships as Loved",
+      text: "Merchandising could raise or lower\na brand without touching the design",
     },
 
     // ── LOVED BY HIERARCHY ──
