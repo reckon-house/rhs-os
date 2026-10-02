@@ -461,3 +461,52 @@ body.mail { background: #fff; }
 .pk-chips span { height: 34px; padding: 0 14px; border-radius: 999px; background: var(--soft); font-size: 13px; font-weight: 600; line-height: 34px; }
 .center { text-align: center; }
 .center .pills { justify-content: center; }
+
+/* ── The Lookbook, image-led (2 Oct 2026, his "take the 'before' lookbook
+   and apply the new fonts, radius edges, new colors and opening up
+   generally but keep a similar layout ... it's so image heavy and focused
+   on the actual looks"): the original's sections and picture density,
+   in this language. Where the original laid type over a full-width
+   photograph, the type sits on a solid card floating over it, so the
+   picture stays as big and the copy stays off the photograph ── */
+.ll-hero, .ll-band { position: relative; margin: var(--gap) var(--inset) 0; border-radius: calc(var(--r) + 6px); overflow: hidden; }
+.ll-band { margin-top: var(--space); }
+.ll-hero .ph, .ll-band .ph { border-radius: 0; height: clamp(560px, 80vh, 860px); }
+.ll-band .ph { height: clamp(520px, 66vw, 820px); }
+.ll-float { position: absolute; left: clamp(14px, 1.6vw, 24px); bottom: clamp(14px, 1.6vw, 24px); width: min(540px, calc(100% - 28px)); border-radius: calc(var(--r) + 2px); background: #fff; color: var(--ink); padding: clamp(24px, 2.6vw, 38px); }
+.ll-float.ink { background: var(--ink); color: #fff; }
+.ll-float.ink .grey { color: rgba(255, 255, 255, 0.66); }
+.ll-float h1, .ll-float h2 { margin-top: 12px; font-size: clamp(40px, 4.6vw, 72px); line-height: 0.92; font-weight: 600; letter-spacing: -0.05em; }
+.ll-float .t-body { margin-top: 16px; }
+.ll-float.ink .t-body { color: rgba(255, 255, 255, 0.84); }
+.ll-float .pills { margin-top: 24px; }
+.ll-row { display: grid; gap: var(--gap); }
+.ll-row.c3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.ll-row.c4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.ll-row.c6 { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+.ll-cell { display: block; }
+.ll-cell .ph { aspect-ratio: 4 / 5; }
+.ll-row.tall .ph { aspect-ratio: 2 / 3; }
+.ll-row.c4 .ph { aspect-ratio: 3 / 4; }
+.ll-row.wide .ph { aspect-ratio: 4 / 3; }
+.ll-cap { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; margin-top: 12px; }
+.ll-cap .nm { font-size: 16.5px; line-height: 1.25; font-weight: 600; letter-spacing: -0.015em; }
+.ll-cap .sub { font-size: 14px; color: var(--grey); white-space: nowrap; }
+.ll-cell .lab { display: block; margin-top: 14px; font-size: 12px; font-weight: 600; letter-spacing: 0.09em; text-transform: uppercase; color: var(--red-deep); }
+.ll-cell .big { display: block; margin-top: 4px; font-size: clamp(22px, 2vw, 30px); line-height: 1.08; font-weight: 600; letter-spacing: -0.025em; }
+.ll-cell .go { margin-top: 10px; font-size: 15px; }
+.ll-cell .desc { display: block; margin-top: 6px; font-size: 14.5px; line-height: 1.45; color: var(--grey); max-width: 40ch; }
+.ll-cell .t { display: block; margin-top: 14px; font-size: 18px; line-height: 1.2; font-weight: 600; letter-spacing: -0.02em; }
+.ll-row + .ll-row { margin-top: clamp(28px, 3vw, 44px); }
+@media (max-width: 860px) {
+  .ll-hero .ph, .ll-band .ph { height: auto; aspect-ratio: 4 / 5; }
+  .ll-hero, .ll-band { overflow: visible; border-radius: 0; margin-left: 8px; margin-right: 8px; }
+  .ll-hero .ph, .ll-band .ph { border-radius: calc(var(--r) + 4px); }
+  .ll-float { position: static; width: auto; margin-top: 8px; padding: 26px 20px 24px; background: var(--soft); }
+  .ll-float.ink { background: var(--ink); }
+  /* the photo rows slide sideways on a phone, as a shop's rows do */
+  .ll-row.c4, .ll-row.c6, .ll-row.c3 { grid-auto-flow: column; grid-template-columns: none; grid-auto-columns: 64%; overflow-x: auto; scroll-snap-type: x mandatory; margin: 0 calc(-1 * var(--pad)); padding: 0 var(--pad); scrollbar-width: none; }
+  .ll-row::-webkit-scrollbar { display: none; }
+  .ll-row > * { scroll-snap-align: start; }
+  .ll-row.c3 { grid-auto-columns: 78%; }
+}
