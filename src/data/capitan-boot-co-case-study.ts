@@ -231,7 +231,7 @@ export const capitanBootCoCaseStudy: CaseStudy = {
     {
       id: "headline-heritage",
       type: "editorial-headline",
-      text: "The badge and the photograph\nhave the same mesa in them",
+      text: "Capitan needed a brand that could\ntake as much wear as its boots",
     },
 
     // ════════════════════════════════════════
