@@ -1130,6 +1130,11 @@ html[data-cards="on"][data-ix="e"] #idx * { text-shadow: none !important; }
 /* a reel straight under its section's head */
 [data-ix="e"] .grp.ec h2.eh + .e.ereel { margin-top: 2px; }
 
+/* the lab's own tools stay off a visitor's page (1 Oct 2026, when this
+   became the homepage): the sizzle's row of versions under a cover shows
+   only with the lab flag (a dev host, or ?lab) */
+html:not([data-lab]) .szl-row { display: none; }
+
 /* ── the small labels in title case (1 Oct 2026): his "all the labels that
    are ALL CAPS and tracked out...can we look at them just title case and
    normal tracking?". Out of capitals a label loses the cap height that

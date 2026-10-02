@@ -9,15 +9,16 @@ const isDev = process.env.NODE_ENV === "development";
 const LONG_CACHE = "public, max-age=31536000, immutable";
 
 const nextConfig: NextConfig = {
-  /* ── THE BOARD IS THE HOMEPAGE ────────────────────────────────────
-     public/lab/board.html, assembled by scripts/lib/assemble-board.py,
-     stands at / by rewrite. beforeFiles, so it wins over app/page.tsx
-     (the earlier home, which the case-study footers still render).
-     The query string rides along: ?open= and ?at= are the board's own
-     address. The page carries the site's head itself, since a static
-     file gets nothing from the app's layout. */
+  /* ── THE INDEX IS THE HOMEPAGE (1 Oct 2026) ───────────────────────
+     public/lab/density/crossref2.html, the index and its rooms, stands
+     at / by rewrite (his "let's make it the main site at reckon.house
+     now!"). beforeFiles, so it wins over app/page.tsx. Its addresses
+     are hashes (#study/arc, #line/digital), so they ride along. The
+     page carries the site's head itself, since a static file gets
+     nothing from the app's layout. The board it replaced (7 Sept) is
+     still at /lab/board.html. */
   async rewrites() {
-    return { beforeFiles: [{ source: "/", destination: "/lab/board.html" }] };
+    return { beforeFiles: [{ source: "/", destination: "/lab/density/crossref2.html" }] };
   },
   /* ── THE CATEGORY PAGES ARE THE BOARD'S SHELVES NOW ─────────────
      /category/digital and its two siblings were the old site's
@@ -29,14 +30,15 @@ const nextConfig: NextConfig = {
 
      A permanent redirect, rather than a delete, because the three
      have been indexed for months and an inbound link should land on
-     the thing itself. ?open=shelf: is the board's own address for a
-     line, and any tag works, so /category/branding answers too even
-     though that page never existed. */
+     the thing itself. #line/<tag> is the index's own address for a
+     line's shelf (it was the board's ?open=shelf:<tag> until 1 Oct
+     2026), and every line tag works: digital, app, systems, creative,
+     branding, interiors. */
   async redirects() {
     return [
       {
         source: "/category/:tag",
-        destination: "/?open=shelf::tag",
+        destination: "/#line/:tag",
         permanent: true,
       },
     ];
