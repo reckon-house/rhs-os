@@ -675,8 +675,11 @@ html[data-mk="grey"][data-ix="e"] #idx .grp.ec :is(.e.lock:is(.el, .ef, .ea, .ef
 html:is([data-mk="grey"], [data-mk="box"])[data-ix="e"] #idx .erun .e { background-image: linear-gradient(var(--hl), var(--hl)); box-shadow: none;
   padding: 0.12em 0.26em 0.14em; margin: -0.12em -0.26em -0.14em; }
 html:is([data-mk="grey"], [data-mk="box"])[data-ix="e"] body.x #idx .erun .e.on, html:is([data-mk="grey"], [data-mk="box"])[data-ix="e"] #idx .erun .e.lock { color: var(--ink) !important; box-shadow: none; }
+html[data-mk="box"][data-ix="e"] #idx .erun .e { border-radius: var(--pr, 0px); }
 
-/* BOX (1 Oct 2026, ?mark=box): his "can we try filling the entire
+/* BOX (1 Oct 2026, the default since his "make the box highlight and
+   reels the default"; ?mark=grey for the name's row alone): his "can we
+   try filling the entire
    'section' when things are selected or highlighted? right now it's just
    the headline...let's try the entire box". The grey's fill, now the whole
    entry: a lead study's label, picture, name and sentence; a line's count,
@@ -691,7 +694,10 @@ html:is([data-mk="grey"], [data-mk="box"])[data-ix="e"] body.x #idx .erun .e.on,
 html[data-mk="box"][data-ix="e"] #idx .grp.ec .e:is(.el, .ef, .ea, .efig, .ew, .etool, .ey, .ecap) { position: relative; z-index: 0; }
 html[data-mk="box"][data-ix="e"] #idx .grp.ec .e:is(.el, .ef, .ea, .efig, .ew, .etool, .ey, .ecap)::before {
   content: ""; position: absolute; z-index: -1; top: calc(-1 * var(--bt, 6px)); bottom: var(--bb, 4px); left: calc(var(--eg) / -2 + 0.5px); right: calc(var(--eg) / -2 + 0.5px);
-  background: var(--hl); transform: scaleX(0); transform-origin: 100% 50%; transition: transform 0.36s cubic-bezier(0.45, 0, 0.2, 1); pointer-events: none; }
+  background: var(--hl); transform: scaleX(0); transform-origin: 100% 50%; transition: transform 0.36s cubic-bezier(0.45, 0, 0.2, 1); pointer-events: none;
+  /* the soft corner the pictures have (his "round the corners of the
+     boxes too to match everything else"), and none under ?round=0 */
+  border-radius: var(--pr, 0px); }
 html[data-mk="box"][data-ix="e"] body.x #idx .grp.ec .e.on:is(.el, .ef, .ea, .efig, .ew, .etool, .ey, .ecap)::before,
 html[data-mk="box"][data-ix="e"] #idx .grp.ec .e.lock:is(.el, .ef, .ea, .efig, .ew, .etool, .ey, .ecap)::before { transform: scaleX(1); transform-origin: 0 50%; transition-delay: var(--wd, 0ms); }
 [data-ix="e"] .e.el { --bt: 4px; --bb: 12px; }

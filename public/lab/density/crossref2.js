@@ -528,9 +528,10 @@
      direction can we do ones that are more tech/ai focused? i want to
      lean that way": Engineering (AI-assisted) and Claude Code, whose
      studies are the four AI products alone, each ahead of its section's
-     other reel. ?reels=on */
-  const REEL_KEYS = ["on", "1"].includes((new URLSearchParams(location.search).get("reels") || "").toLowerCase())
-    ? ["cap/engineering-ai-assisted", "cap/ecommerce-design", "tool/claude-code", "credit/nordstrom"] : [];
+     other reel. On by default since his "make the box highlight and reels
+     the default"; ?reels=off shows the index without them */
+  const REEL_KEYS = ["off", "0"].includes((new URLSearchParams(location.search).get("reels") || "").toLowerCase())
+    ? [] : ["cap/engineering-ai-assisted", "cap/ecommerce-design", "tool/claude-code", "credit/nordstrom"];
   const isReel = (o) => REEL_KEYS.includes(o.key);
   let REELS = [], rio = null;
   /* the highlight's colour by eye: ?hl=ece7de (hex, with or without #) */
@@ -1195,12 +1196,14 @@
        Sept): the cell's fill in a light grey, the words staying ink, and
        a circle of ink on the rule at the row's left edge.
      The runs of capabilities, tools and figures stay bold in all four.
-     - box (1 Oct 2026, ?mark=box): his "can we try filling the entire
-       'section' when things are selected or highlighted? right now it's
-       just the headline...let's try the entire box". The grey's fill and
-       its node, the fill now the whole entry. */
+     - box (1 Oct 2026): his "can we try filling the entire 'section'
+       when things are selected or highlighted? right now it's just the
+       headline...let's try the entire box". The grey's fill and its node,
+       the fill now the whole entry. The default since his "make the box
+       highlight and reels the default"; ?mark=grey is the name's row
+       alone, as it was. */
   const MKS = ["grey", "cell", "bar", "node", "box"];
-  let MK = MKS.includes(QMARK) ? QMARK : QMARK === "ink" ? "bar" : "grey";
+  let MK = MKS.includes(QMARK) ? QMARK : QMARK === "ink" ? "bar" : "box";
   HTML.dataset.mk = MK;
   const setMark = (x) => {
     if (!MKS.includes(x) || x === MK) return;
