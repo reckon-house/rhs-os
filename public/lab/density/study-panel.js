@@ -929,7 +929,7 @@
       if (B) {
         const pp = c01((H - (parts.coverFrame.getBoundingClientRect().top - cr.top)) / H);
         B.style.transform = "scale(" + (0.95 + 0.05 * pp).toFixed(4) + ")";
-        B.style.borderRadius = (B.offsetWidth >= root.clientWidth - 1 ? Math.round(44 * (1 - pp)) : 44) + "px";
+        B.style.borderRadius = (B.offsetWidth >= root.clientWidth - (root.clientWidth >= 560 ? 20 : 0) - 1 ? Math.round(44 * (1 - pp)) : 44) + "px";
       }
     }
     const onChoreo = () => { if (!chT) chT = requestAnimationFrame(choreo); };
@@ -1557,6 +1557,12 @@
       const W = root.clientWidth, V = container.clientHeight || window.innerHeight;
       if (W < 60) return;
       const m = margin(W), C = W - 2 * m;
+      /* Wf, the widest a picture runs: from the room's left edge to 20px
+         short of the window's right one on a desk (1 Oct 2026, his "keep
+         the text as-is for case studies but let's bring the images in to
+         the 20", after the index took 20px margins). The copy keeps m; the
+         colour fields still run to the edge; a phone still bleeds */
+      const Wf = W >= 560 ? W - 20 : W;
       root.style.setProperty("--m", m + "px");
       root.style.setProperty("--vh", V + "px");
 
@@ -1568,9 +1574,9 @@
         const f = parts.lead, r = ratio(f), hon = f.w / 2, capH = Math.max(260, Math.round(V * 0.9));
         const box = parts.coverBox, frame = parts.coverFrame;
         let side = false;
-        if (hon >= W - 0.5) {
+        if (hon >= Wf - 0.5) {
           frame.classList.remove("small");
-          box.style.width = W + "px"; box.style.height = Math.round(Math.min(W / r, capH)) + "px";
+          box.style.width = Wf + "px"; box.style.height = Math.round(Math.min(Wf / r, capH)) + "px";
         } else {
           frame.classList.add("small");
           let w = Math.min(hon, C), h = w / r;
@@ -1601,19 +1607,19 @@
         const Hc = Math.min(Math.min(...R.ps.map((f) => f.h / 2)), V * 0.84);
         const maxW = Hc * sum + g * (n - 1);
         let w, ml;
-        if (maxW >= W - 0.5) { w = W; ml = 0; }
-        else if (maxW > C) { w = maxW; ml = (W - w) / 2; }
+        if (maxW >= Wf - 0.5) { w = Wf; ml = 0; }
+        else if (maxW > C) { w = maxW; ml = Math.min((W - w) / 2, Wf - w); }
         else {
           w = maxW;
           if (R.air === "t" && wide) ml = w <= tw + 0.5 ? tx : W - m - w;
           else ml = R.air === "r" ? W - m - w : m;
         }
-        R.row.classList.toggle("bleed", w >= W - 0.5);
+        R.row.classList.toggle("bleed", w >= Wf - 0.5);
         R.row.style.width = Math.floor(w) + "px"; R.row.style.marginLeft = Math.round(ml) + "px";
         /* a lone picture across the room drifts, when a tenth more of it
            is still honest */
         const pb = R.row.firstElementChild;
-        if (pb) pb.classList.toggle("par", mo && n === 1 && w >= W - 0.5 && R.ps[0].w / 2 >= 1.1 * w && !pb._still);
+        if (pb) pb.classList.toggle("par", mo && n === 1 && w >= Wf - 0.5 && R.ps[0].w / 2 >= 1.1 * w && !pb._still);
         /* a pair or more, as the live site's plates pair: each a tenth
            taller and the neighbours drifting against each other, where a
            tenth more is still honest */
