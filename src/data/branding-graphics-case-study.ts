@@ -294,7 +294,7 @@ export const brandingGraphicsCaseStudy: CaseStudy = {
     {
       id: "headline-1",
       type: "editorial-headline",
-      text: "Cover art for music\nthat didn't exist yet",
+      text: "Some of the album covers were made\nwithout anyone asking for them",
     },
 
     // ════════════════════════════════════════
