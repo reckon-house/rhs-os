@@ -116,7 +116,7 @@ export const jeffreySpringCaseStudy: CaseStudy = {
     {
       id: "headline-global",
       type: "editorial-headline",
-      text: "The leaves were cropped big enough\nto read like architecture",
+      text: "A spring campaign shot in the studio\nthat had to look like a location",
     },
 
     // ════════════════════════════════════════
