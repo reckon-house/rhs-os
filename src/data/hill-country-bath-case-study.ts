@@ -152,7 +152,7 @@ export const hillCountryBathCaseStudy: CaseStudy = {
       // which nothing in the file supports; nobody weighed anything. The
       // painting line is in the file twice and is the truest thing about
       // the room, so it moves up here and the closing lets it go.
-      text: "The painting is older\nthan the house",
+      text: "The bath looked lived in\nthe day it was finished",
     },
 
     // ── THE SHOWER ──
