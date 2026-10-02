@@ -737,6 +737,18 @@
      are one entry, so it lights, locks and wires like any other.
      ════════════════════════════════════════════════════════════════════ */
   const LEAD_OF = {}; (DATA.lines || []).forEach((l, i) => { if (D.study(l.lead) && !LEAD_OF[l.lead]) LEAD_OF[l.lead] = { l, i }; });
+  /* one feature swapped (1 Oct 2026), his "instead of highlighting the
+     amber project let's show the Nordstrom personalization project - i
+     think it's more relevant to the work i'm doing today". It takes
+     Branding's place under a line it is on, Systems ("Design systems,
+     internal tools and new ways of working"); Amber Shockey goes back to
+     the work list. The index only: the Branding line still opens on its
+     own lead */
+  [["amber-shockey-co", "nordstrom-personalization", "systems"]].forEach(([was, k, tag]) => {
+    const l = (DATA.lines || []).find((x) => x.tag === tag);
+    if (!LEAD_OF[was] || LEAD_OF[k] || !D.study(k) || !l || !l.studies.includes(k)) return;
+    LEAD_OF[k] = { l, i: LEAD_OF[was].i }; delete LEAD_OF[was];
+  });
   const two = (n) => String(n).padStart(2, "0");
   /* a large word in a mask of its own, so it can rise into place the
      first time its section is seen (27 Sept, the load pass) */
