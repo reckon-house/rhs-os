@@ -262,7 +262,7 @@ export const jChristiansonCaseStudy: CaseStudy = {
     {
       id: "headline-found",
       type: "editorial-headline",
-      text: "All four seasons\nlit up on one sign",
+      text: "Fewer versions of the mark meant\nit could go more places\nwithout being redrawn",
     },
 
     // ── OUTDOOR SIGN HERO — the last picture, grown to full size ──
