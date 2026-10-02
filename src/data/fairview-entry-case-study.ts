@@ -224,7 +224,7 @@ export const fairviewEntryCaseStudy: CaseStudy = {
     {
       id: "headline-threshold",
       type: "editorial-headline",
-      text: "The entry is the first room\nanyone walks into",
+      text: "Every piece in the foyer was picked\nto leave the light alone",
     },
 
     // ════════════════════════════════════════
