@@ -272,7 +272,7 @@ export const hillCountryKitchenCaseStudy: CaseStudy = {
     {
       id: "headline-system",
       type: "editorial-headline",
-      text: "What you notice in the kitchen\nis where the materials meet",
+      text: "Every decision came back to how\na family uses a kitchen day to day",
     },
 
     // ── MATERIAL INTERACTION CHART ──
@@ -429,7 +429,7 @@ export const hillCountryKitchenCaseStudy: CaseStudy = {
     {
       id: "headline-room",
       type: "editorial-headline",
-      text: "A year in, the brass shows\nwhich drawers get used",
+      text: "The brass darkens where hands go,\nso it shows which drawers get used",
     },
 
     // ── CLOSING ──
