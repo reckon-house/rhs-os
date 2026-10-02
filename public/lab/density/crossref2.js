@@ -3296,8 +3296,13 @@
   /* ── pointer and keys ── */
   let restT = 0, intentT = 0;
   const hoverIn = (o) => { if (staged()) { if (hov !== o) stageHover(o); } else show(o, 0); };
+  /* only a moving pointer hovers. A scroll carries entries under a still
+     one, and each used to take the open half in turn, a new picture each
+     time; the preview now stays until the pointer moves (1 Oct 2026) */
+  let lastX = -1, lastY = -1;
+  const moved = (ev) => { const m = ev.clientX !== lastX || ev.clientY !== lastY; lastX = ev.clientX; lastY = ev.clientY; return m; };
   IDX.addEventListener("pointerover", (ev) => {
-    if (ev.pointerType !== "mouse") return;
+    if (ev.pointerType !== "mouse" || !moved(ev)) return;
     const o = entryOf(ev.target);
     clearTimeout(intentT);
     if (!o) return;
@@ -3305,7 +3310,7 @@
     intentT = setTimeout(() => hoverIn(o), staged() ? (VIEW.v === "study" ? 150 : 70) : cur ? 90 : 0);
   });
   IDX.addEventListener("pointermove", (ev) => {
-    if (ev.pointerType !== "mouse") return;
+    if (ev.pointerType !== "mouse" || !moved(ev)) return;
     const o = entryOf(ev.target); if (!o) return;
     if (staged() ? hov === o : cur && cur.o === o) return;
     clearTimeout(intentT); intentT = setTimeout(() => hoverIn(o), staged() && VIEW.v === "study" ? 150 : 90);
@@ -3375,18 +3380,26 @@
     }
     if (cur) open(cur.o);
   });
-  let wheelAcc = 0, wheelAt = 0;
+  /* the wheel over a study's pictures turns one picture per gesture (1 Oct
+     2026, his "lots of stuttering and weird images trying to load"). A
+     trackpad keeps sending wheel events through its momentum, and the old
+     accumulator, reset to 400 the other way after a step, crossed its
+     threshold backwards on the next event: every event stepped, back and
+     forth, each one a new picture. Now a step holds until the wheel has
+     been still for a moment */
+  let wheelAcc = 0, wheelAt = 0, wheelHeld = false;
   FOCUS.addEventListener("wheel", (ev) => {
     if (phone() || !cur || staged()) return;
     /* a preview scrolls, as its shelf will */
     const lp = layerOf(); if (lp && lp._pv) return;
     ev.preventDefault();
-    const now = performance.now();
-    if (now - wheelAt > 260) wheelAcc = 0;
-    wheelAcc += ev.deltaY || ev.deltaX; wheelAt = now;
+    const now = performance.now(), gap = now - wheelAt; wheelAt = now;
+    if (gap > 220) { wheelHeld = false; wheelAcc = 0; }
+    if (wheelHeld) return;
+    wheelAcc += ev.deltaY || ev.deltaX;
     if (Math.abs(wheelAcc) < 60) return;
-    const d = wheelAcc > 0 ? 1 : -1; wheelAcc = -d * 400;
-    step(d);
+    wheelHeld = true;
+    step(wheelAcc > 0 ? 1 : -1);
   }, { passive: false });
   document.addEventListener("keydown", (ev) => {
     if (ev.key === "Escape") {
