@@ -250,7 +250,7 @@ export const blackWhiteTypeCaseStudy: CaseStudy = {
     {
       id: "headline-constraint",
       type: "editorial-headline",
-      text: "The whole pattern library\nis six shapes",
+      text: "A personal project to see\nhow far six patterns could go\nin black and white",
     },
 
     // ── POSTER 2: "highball stepper" — the zoom. A print photographed in a room is
