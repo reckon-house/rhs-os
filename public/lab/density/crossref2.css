@@ -878,6 +878,12 @@ html.anim .layer.bleed:not(.out) .mos .tile img { animation: settle 1.1s var(--e
 .layer .folio b { margin-left: 0.45em; font-weight: 700; color: var(--paper); font-variant-numeric: tabular-nums; }
 .layer:not(.dark) .folio { display: none; }
 html.anim .layer.dark:not(.out) .folio { animation: lift 0.6s var(--ease) 0.25s both; }
+/* the folio as the contact (1 Oct 2026): the links in paper, a hairline
+   under each as the statement's links had; the address never in capitals */
+.layer .folio.contact { pointer-events: auto; }
+.layer .folio.contact a { color: var(--paper); border-bottom: 1px solid rgba(255, 255, 255, 0.28); transition: border-color 0.2s ease; }
+.layer .folio.contact a:hover { border-bottom-color: var(--paper); }
+.layer .folio.contact a.em { text-transform: none; letter-spacing: 0; }
 
 /* ════════════════════════════════════════════════════════════════════
    INDEX F, THE BACK OF THE BOOK (27 Sept 2026, a lever pull). The

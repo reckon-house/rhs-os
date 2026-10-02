@@ -1913,14 +1913,20 @@
       /* the board's two-tone lead: his first sentence in ink, the rest in
          grey, one size and one weight */
       const say = el("div", "say", esc(st.ink) + (st.grey ? ' <span class="g">' + esc(st.grey) + "</span>" : "")); wrap.appendChild(say);
-      if (DATA.links) wrap.appendChild(el("div", "links", DATA.links.map((l) => '<a href="' + D.esc(l.v) + '">' + esc(l.k) + "</a>").join("")));
-      /* the folio (27 Sept, the editorial pass): the half at rest is the
-         cover, so its head carries the index's own counts, as a cover
-         carries its lines. Counted here, never typed */
-      const ys = DATA.studies.map((x) => +x.y).filter(Boolean);
+      /* the folio is the contact (1 Oct 2026). It carried the index's counts
+         (Work 30, What I Make 6, Figures 58, the years) until his "let's
+         remove these and put contact info in here - i think at some point
+         we lost contact": the links under the statement had been pushed
+         below the fold by its size. On a desk they take the cover's head,
+         the email as its address; a phone has no folio, so they stay under
+         the statement there */
       const lay = main.parentNode;
-      const f = lay && !phone() && ys.length ? el("div", "caps folio", ["work", "lines", "figures"].map((id) => "<span>" + esc(LBL(G[id].name)) + " <b>" + G[id].items.length + "</b></span>").join("") +
-        "<span>" + Math.min(...ys) + "\u2013" + Math.max(...ys) + "</span>") : null;
+      const links = DATA.links || [];
+      const f = lay && !phone() && links.length ? el("div", "caps folio contact", links.map((l) => {
+        const mail = /^mailto:/.test(l.v);
+        return '<a href="' + D.esc(l.v) + '"' + (mail ? ' class="em"' : "") + ">" + esc(mail ? l.v.slice(7) : LBL(l.k)) + "</a>";
+      }).join("")) : null;
+      if (links.length && !f) wrap.appendChild(el("div", "links", links.map((l) => '<a href="' + D.esc(l.v) + '">' + esc(l.k) + "</a>").join("")));
       /* on a desk, the home: the cover, then the work (homeBuild) */
       if (lay && !phone()) homeBuild(lay, main, wrap, f);
       else { main.appendChild(wrap); if (f) lay.appendChild(f); }
