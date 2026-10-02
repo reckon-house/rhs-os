@@ -1108,3 +1108,15 @@ html[data-cards="on"][data-ix="e"] #idx * { text-shadow: none !important; }
 [data-ix="e"] .e.ereel { --pb: 4px; }
 /* a reel straight under its section's head */
 [data-ix="e"] .grp.ec h2.eh + .e.ereel { margin-top: 2px; }
+
+/* ── the small labels in title case (1 Oct 2026): his "all the labels that
+   are ALL CAPS and tracked out...can we look at them just title case and
+   normal tracking?". Out of capitals a label loses the cap height that
+   carried it at 8.5px, so it steps up to 11px, demi; a credit or a source,
+   grey under its entry, a weight lighter. ?labels=caps for the capitals,
+   ?labels=sentence for the words as written ── */
+html:is([data-labels="title"], [data-labels="sentence"]) #idx :is(.grp h2.eh, .e .kk.caps, .e .cr.caps) { font-size: 11px; font-weight: 600; letter-spacing: 0; line-height: 1.25; }
+html[data-labels="title"] #idx :is(.grp h2.eh, .e .kk.caps, .e .cr.caps) { text-transform: capitalize; }
+html[data-labels="sentence"] #idx :is(.grp h2.eh, .e .kk.caps, .e .cr.caps) { text-transform: none; }
+html:is([data-labels="title"], [data-labels="sentence"]) #idx .e .cr.caps { font-weight: 500; }
+html:is([data-labels="title"], [data-labels="sentence"]) #idx .grp h2.eh b { margin-right: 0.5em; }

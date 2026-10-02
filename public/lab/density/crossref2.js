@@ -534,6 +534,13 @@
     ? [] : ["cap/engineering-ai-assisted", "cap/ecommerce-design", "tool/claude-code", "credit/nordstrom"];
   const isReel = (o) => REEL_KEYS.includes(o.key);
   let REELS = [], rio = null;
+  /* the index's small labels (1 Oct 2026, his "all the labels that are ALL
+     CAPS and tracked out...can we look at them just title case and normal
+     tracking?"): a section's head, a lead study's line, a reel's kind, a
+     credit, a figure's source. Title case at normal tracking; ?labels=caps
+     is the rooms' label they were (8.5px bold, tracked 0.2em), and
+     ?labels=sentence leaves them as written ("What I make") */
+  { const q = (new URLSearchParams(location.search).get("labels") || "").toLowerCase(); HTML.dataset.labels = ["caps", "title", "sentence"].includes(q) ? q : "title"; }
   /* the highlight's colour by eye: ?hl=ece7de (hex, with or without #) */
   { const hl = (new URLSearchParams(location.search).get("hl") || "").replace(/^#/, ""); if (/^([0-9a-f]{3}|[0-9a-f]{6})$/i.test(hl)) HTML.style.setProperty("--hl", "#" + hl); }
   let THUMBS = [], STRIPS = [], tio = null;
