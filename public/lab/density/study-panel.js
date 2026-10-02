@@ -183,7 +183,7 @@
   /* a pressing headline carries its halves (ink, held); the room sets the
      held line grey, as the study page does */
   const inkGreyF = (f) => (f.held ? esc(f.ink) + ' <span class="sp-g">' + esc(f.held) + "</span>" : inkGrey(f.text));
-  const ratio = (f) => f.w / f.h;
+  const ratio = (f) => (markOf(f) ? 1 : f.w / f.h);
   const two = (n) => String(n).padStart(2, "0");
 
   /* ── MOTION (27 Sept, his "polish design and animation pass - text and
@@ -565,6 +565,20 @@
       });
     }
     M.openPics = M.openPics.concat(pool);
+    /* a mark goes under the picture it is set after, wherever that landed */
+    const moving = [];
+    M.secs.forEach((x) => { x.items = x.items.filter((i) => { const mk = i.t === "pic" && markOf(i.f); if (mk && mk.after) { moving.push(i); return false; } return true; }); });
+    M.openPics = M.openPics.filter((f) => { const mk = markOf(f); if (mk && mk.after) { moving.push({ t: "pic", f }); return false; } return true; });
+    moving.forEach((it) => {
+      const want = markOf(it.f).after;
+      for (const x of M.secs) {
+        let j = -1; x.items.forEach((i, n) => { if ((i.t === "pic" && fileOf(i.f) === want) || (i._after === want)) j = n; });
+        if (j >= 0) { it._after = want; x.items.splice(j + 1, 0, it); return; }
+      }
+      const o = M.openPics.findIndex((f) => fileOf(f) === want);
+      if (o >= 0) { let j = o; while (j + 1 < M.openPics.length && markOf(M.openPics[j + 1])) j++; M.openPics.splice(j + 1, 0, it.f); return; }
+      M.secs[M.secs.length - 1].items.push(it);
+    });
     return M;
   };
 
@@ -624,7 +638,22 @@
   ]);
   const fileOf = (f) => (f && f.src ? f.src.split("/").pop() : "");
   const full = (f) => FULL.has(fileOf(f));
-  const solo = (f) => SOLO.has(fileOf(f)) || full(f);
+  /* marks set small on a square of flat colour, edge to edge, with plenty
+     of air round them, and moved down under the brand-system picture
+     (1 Oct 2026, his "can we make the marks smaller centered on my larger
+     floods of solid color so there's plenty of negative space around
+     them? they can both be wide 1x1 too", then "they can also move down
+     below with this image", on Capitan's buffalo and badge). The colours
+     are the study's palette: the cream buffalo on its olive, the badge on
+     its cream. k is the mark's share of the square, about its honest
+     width at the room's full one */
+  const CAPITAN_SYSTEM = "capitan-boot-co-branding-system-color-palette-logo-western-original-bull-skull-horns-arrows-dark-green-beige-geometric-grid-design.jpg";
+  const MARKS = {
+    "buffalo-logo.png": { bg: "#5A5945", k: 0.46, after: CAPITAN_SYSTEM },
+    "capitan-boot-co-branding-western-logo-desert-cactus-rock-formation-vintage-outdoors-landscape-design.png": { bg: "#EFEAD9", k: 0.6, after: CAPITAN_SYSTEM },
+  };
+  function markOf(f) { return (f && f.src && MARKS[f.src.split("/").pop()]) || null; }
+  const solo = (f) => SOLO.has(fileOf(f)) || full(f) || !!markOf(f);
   const partition = (list, W, V, g) => {
     const n = list.length, T = W * 0.45, Vc = V * 0.84;
     /* a hero: honest across the whole room and not so tall that the glass
@@ -1049,8 +1078,10 @@
     const ids = [];
     const tag = (node, f) => { if (f && f.id) { node.dataset.f = f.id; ids.push(f.id); } return node; };
     const picBox = (f, cls) => {
-      const b = el("div", "sp-pic" + (f.alpha ? " alpha" : "") + (cls ? " " + cls : ""));
-      b._f = f; b.style.setProperty("--ar", f.w + " / " + f.h); b.style.setProperty("--r", ratio(f).toFixed(4));
+      const mk = markOf(f);
+      const b = el("div", "sp-pic" + (f.alpha ? " alpha" : "") + (mk ? " mark" : "") + (cls ? " " + cls : ""));
+      b._f = f; b.style.setProperty("--ar", mk ? "1 / 1" : f.w + " / " + f.h); b.style.setProperty("--r", ratio(f).toFixed(4));
+      if (mk) { b.style.background = mk.bg; b.style.setProperty("--mk", String(mk.k)); }
       return tag(b, f);
     };
 
@@ -1639,7 +1670,8 @@
       parts.rows.forEach((R) => {
         const n = R.ps.length, g = parseFloat(R.row.style.getPropertyValue("--g")) || 8;
         const sum = R.ps.reduce((s, f) => s + ratio(f), 0);
-        const Hc = Math.min(Math.min(...R.ps.map((f) => f.h / 2)), R.ps.every(full) ? Infinity : V * 0.84);
+        /* a mark's square is flat colour, so only the glass limits it */
+        const Hc = Math.min(Math.min(...R.ps.map((f) => (markOf(f) ? Infinity : f.h / 2))), R.ps.every(full) ? Infinity : V * 0.84);
         const maxW = Hc * sum + g * (n - 1);
         let w, ml;
         if (maxW >= Wf - 0.5) { w = Wf; ml = 0; }

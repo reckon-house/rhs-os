@@ -59,6 +59,9 @@
 .sp-pic { position: relative; overflow: hidden; background: rgba(0, 0, 0, 0.045); }
 .sp-pic.alpha { background: var(--cream); }
 .sp-pic img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 0.45s ease; }
+/* a mark on its square of flat colour (study-panel.js MARKS): set small in
+   the middle, the square's colour round it */
+.sp-pic.mark img { inset: 0; margin: auto; width: calc(var(--mk, 0.5) * 100%); height: calc(var(--mk, 0.5) * 100%); object-fit: contain; }
 .sp-pic.in img { opacity: 1; }
 
 /* the cover: edge to edge, or at its honest size with air */
