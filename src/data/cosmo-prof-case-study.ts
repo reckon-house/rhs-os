@@ -138,7 +138,7 @@ export const cosmoProfCaseStudy: CaseStudy = {
     {
       id: "headline-pros",
       type: "editorial-headline",
-      text: "Pictures for the stylists\nwho use the tools",
+      text: "The new look for working stylists\ncouldn't slow the store down",
     },
 
     // ════════════════════════════════════════
