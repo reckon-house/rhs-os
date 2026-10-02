@@ -311,7 +311,10 @@ class SizzleReelElement extends HTMLElement {
   #img(src, cls, dur) {
     const im = document.createElement("img");
     im.className = cls;
-    im.src = src;
+    // A reel can be on the page before its pictures are (the index sets
+    // them as it nears view): no src then, rather than a request for
+    // "undefined"
+    if (src != null) im.src = src;
     im.alt = "";
     im.setAttribute("aria-hidden", "true");
     if (dur != null) im.style.setProperty("--d", `${dur}ms`);
