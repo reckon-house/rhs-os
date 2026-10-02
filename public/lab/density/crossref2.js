@@ -71,7 +71,8 @@
                { id, k, src, w, h, t384, t768, alt, alpha } (alpha is a
                transparent file, which shows paper through)
      lead(k)   the board's lead picture in the same shape, lead: true
-     width, height   the stage's width, and its height under the running
+     width, height   the stage's width (less the 20px right margin on a
+               desk), and its height under the running
                head. Read live (they are getters)
      scroller  the element that scrolls vertically (the root for an
                IntersectionObserver that loads pictures as they near)
@@ -2456,7 +2457,9 @@
     studies: S.ks.slice(),
     pics: (k) => picsOf(k),
     lead: (k) => leadOf(k),
-    get width() { return S.layer.clientWidth || STAGE.clientWidth; },
+    /* less the site's 20px margin on a desk, so a shelf's pictures stop
+       where its type does instead of running off the right edge */
+    get width() { return (S.layer.clientWidth || STAGE.clientWidth) - (phone() ? 0 : 20); },
     get height() { return Math.max(0, (S.layer.clientHeight || innerHeight) - HEAD); },
     scroller: S.layer,
     head: HEAD,

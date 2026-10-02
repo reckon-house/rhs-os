@@ -26,7 +26,10 @@
    edge grid is shelf-grid.css now. The frame's rules are under "a
    shelf" below. */
 
-:root { --m: 28px; --fs: 12px; --idxw: min(46vw, 760px); --gut: 64px; --top: 22px;
+/* --m, the site's margin: 20px on both sides since 1 Oct 2026 (his "maybe
+   we do 20px on both sides (images too)"; it was 28px on the left and
+   nothing on the right, where the shelf's pictures ran to the edge) */
+:root { --m: 20px; --fs: 12px; --idxw: min(46vw, 760px); --gut: 64px; --top: 22px;
   --stl: calc(var(--m) + var(--idxw) + var(--gut) / 2); }
 html, body { height: 100%; }
 body { overflow: hidden; }
