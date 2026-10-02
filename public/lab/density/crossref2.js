@@ -1921,7 +1921,9 @@
          the email as its address; a phone has no folio, so they stay under
          the statement there */
       const lay = main.parentNode;
-      const links = DATA.links || [];
+      /* email and LinkedIn only (his "let's remove 'book 30min' and
+         instgram from the contact list too") */
+      const links = (DATA.links || []).filter((l) => /^mailto:|linkedin\.com/.test(l.v));
       const f = lay && !phone() && links.length ? el("div", "caps folio contact", links.map((l) => {
         const mail = /^mailto:/.test(l.v);
         return '<a href="' + D.esc(l.v) + '"' + (mail ? ' class="em"' : "") + ">" + esc(mail ? l.v.slice(7) : LBL(l.k)) + "</a>";

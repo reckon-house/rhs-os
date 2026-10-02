@@ -991,10 +991,15 @@ html.stack .sh-foot-t.stand { flex-basis: 100%; }
   overscroll-behavior: contain; scrollbar-width: none; }
 .layer.home::-webkit-scrollbar { display: none; }
 .layer.home .main { max-width: none; }
+/* --peek is how much of the paper foot shows at the bottom of the
+   cover's screen. The cover keeps its words above it (1 Oct 2026): the
+   contact links used to fill that strip, under the paper, and when they
+   moved to the head the statement's last line slid in under it */
+.layer.home { --peek: 44px; }
 .hm-cover { position: relative; box-sizing: border-box; display: flex; flex-direction: column; justify-content: flex-end; align-items: flex-start;
-  height: 100vh; height: 100dvh; padding: var(--m) var(--m) var(--m) calc(var(--gut) / 2); }
+  height: 100vh; height: 100dvh; padding: var(--m) var(--m) calc(var(--m) + var(--peek)) calc(var(--gut) / 2); }
 .layer.home .folio { top: var(--m); left: calc(var(--gut) / 2); right: var(--m); }
-.hm-foot { min-height: calc(100vh - 44px); min-height: calc(100dvh - 44px); background: var(--paper); color: var(--ink); box-shadow: 0 -44px 0 var(--paper); }
+.hm-foot { min-height: calc(100vh - var(--peek)); min-height: calc(100dvh - var(--peek)); background: var(--paper); color: var(--ink); box-shadow: 0 calc(-1 * var(--peek)) 0 var(--paper); }
 
 /* ── NUMBER LABELS (27 Sept, his "there are a lot of number labels on
    things - it's turning into an 'ai-tell' out in the design community
