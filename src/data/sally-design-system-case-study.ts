@@ -26,9 +26,18 @@ const IMG = "/case-studies/sally-design-system";
    engine and the range of briefs it fills, then the pushed pass. The
    stories, the machine and the brief grid are modules made for the room
    (public/lab/sally-push/m-*.html, framed in "fit" mode); the engine
-   links to the Sally Marketing OS study and that study links back. */
+   links to the Sally Marketing OS study and that study links back.
 
-const REEL_COLORS = ["#E11324", "#1C1413", "#F4E2DC", "#FADDC0", "#FFF0E0"];
+   The pushed pass, same day (his "let's do a pass so that everything has
+   satoshi and that new look"): every frame shows a pushed page
+   (public/lab/sally-push/) where one exists and otherwise his page with
+   the pushed skin (query skin=pushed, public/lab/sally-push/skin.css);
+   the stills were recaptured from the same pages. The type, color and
+   image sections describe what is on screen now. */
+
+/* the pushed palette: scarlet, ink, the one soft grey, and two of the vivids
+   sampled from his photographs (violet, teal) */
+const REEL_COLORS = ["#E11324", "#1C1413", "#F4F3F1", "#442861", "#0E4043"];
 
 export const sallyDesignSystemCaseStudy: CaseStudy = {
   slug: "sally-design-system",
@@ -42,7 +51,7 @@ export const sallyDesignSystemCaseStudy: CaseStudy = {
   status: "In progress",
   classification: ["Design Systems", "Art Direction", "Email Design", "Homepage Design"],
   services: ["Design Systems", "Art Direction", "Email Design", "Homepage Design"],
-  stack: ["Claude", "Figma", "HTML/CSS/JS", "Founders Grotesk"],
+  stack: ["Claude", "Figma", "HTML/CSS/JS", "Satoshi"],
   links: [],
   heroImage: "",
   style: "pressing",
@@ -84,7 +93,7 @@ export const sallyDesignSystemCaseStudy: CaseStudy = {
       summary: [
         { label: "Built", value: "A design system for email and the homepage: 11 homepage concepts, 21 homepage modules, 14 email building blocks and 15 example emails." },
         { label: "Scope", value: "Creative strategy, design system, art direction, email and homepage design, templates built for the Marketing OS to fill." },
-        { label: "Tools", value: "Claude, Figma, HTML/CSS/JS. Founders Grotesk in regular, condensed and mono." },
+        { label: "Tools", value: "Claude, Figma, HTML/CSS/JS. Satoshi, from light to black." },
         { label: "Angle", value: "The creative and the engine are one system: every template is a set of slots the Marketing OS fills from a request." },
       ],
       abstract:
@@ -96,7 +105,7 @@ export const sallyDesignSystemCaseStudy: CaseStudy = {
       id: "hero",
       type: "hero",
       image: `${IMG}/sally-design-system-homepage-concept-10-the-edit-desktop.jpg`,
-      alt: "Sally Beauty homepage concept, The Edit: a full-bleed portrait of a woman with copper curls under the Sally header and navigation",
+      alt: "Sally Beauty homepage concept 10, The Edit set as a magazine issue: The shade everyone will ask about, beside a portrait with copper curls",
       pressing: { choreo: { rise: true } },
     },
 
@@ -158,7 +167,7 @@ export const sallyDesignSystemCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "The Edit puts one tabbed shop where the stacked product rails were, and The Lookbook leads with lifestyle photography.",
+        "The Edit runs like a magazine issue, with a cover story and a contents line, and The Lookbook leads with lifestyle photography.",
     },
     {
       id: "concepts-grid-1",
@@ -172,20 +181,20 @@ export const sallyDesignSystemCaseStudy: CaseStudy = {
       type: "dual-image",
       native: true,
       left: { src: `${IMG}/sally-design-system-homepage-concept-3-full-card-desktop.jpg`, alt: "Concept 3, Full card homepage: a service bar for delivery, pickup and color advice over three portrait cards" },
-      right: { src: `${IMG}/sally-design-system-homepage-concept-4-colorfest-story-desktop.jpg`, alt: "Concept 4, Colorfest: Wear your color out loud, over a smiling woman with blue-streaked curls" },
+      right: { src: `${IMG}/sally-design-system-homepage-concept-4-colorfest-story-desktop.jpg`, alt: "Concept 4, Colorfest: Wear your color out loud, on a blue card beside a woman with blue-streaked curls" },
     },
     {
       id: "concepts-grid-3",
       type: "dual-image",
       native: true,
       left: { src: `${IMG}/sally-design-system-homepage-concept-5-for-you-desktop.jpg`, alt: "Concept 5, For You: Let's finish what you started, beside a woman using a wave styler" },
-      right: { src: `${IMG}/sally-design-system-homepage-concept-6-pride-takeover-desktop.jpg`, alt: "Concept 6, Pride takeover: Express every shade of you, over a woman with violet curls" },
+      right: { src: `${IMG}/sally-design-system-homepage-concept-6-pride-takeover-desktop.jpg`, alt: "Concept 6, Pride takeover: Express every shade of you, over three looks on cards in violet, teal and cherry" },
     },
     {
       id: "concepts-lookbook",
       type: "image",
       src: `${IMG}/sally-design-system-homepage-concept-11-lookbook-desktop.jpg`,
-      alt: "Concept 11, The Lookbook: Vivids are back at it, over a full-bleed portrait",
+      alt: "Concept 11, The Lookbook: Vivids are back at it, on a white card over a portrait with copper curls",
     },
 
     {
@@ -194,7 +203,7 @@ export const sallyDesignSystemCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "The color-blocked set is the current direction. The editorial set treats Sally as a publication, a moment in the inbox and not a promo, and the punch set is the same chassis dialed up.",
+        "The color-blocked set is the current direction, with soft grey cards in place of the tints. The editorial set treats Sally as a publication, a moment in the inbox and not a promo, and the punch set is the same chassis dialed up.",
     },
     {
       id: "emails-footnote",
@@ -207,8 +216,8 @@ export const sallyDesignSystemCaseStudy: CaseStudy = {
     {
       id: "emails-gloss",
       type: "product-demo",
-      folder: "sally-system",
-      demo: "email-editorial-the-gloss-full-issue",
+      folder: "sally-push",
+      demo: "the-gloss",
       title: "Editorial · The Gloss",
       note: "A full issue: masthead, pull quotes, and prose around the products.",
       stageWidth: 600,
@@ -220,6 +229,7 @@ export const sallyDesignSystemCaseStudy: CaseStudy = {
       id: "emails-rewards",
       type: "product-demo",
       folder: "sally-system",
+      query: "skin=pushed",
       demo: "email-color-blocked-rewards",
       title: "Color-blocked · Rewards",
       note: "Points, picks and a restock.",
@@ -231,8 +241,8 @@ export const sallyDesignSystemCaseStudy: CaseStudy = {
     {
       id: "emails-soft-pop",
       type: "product-demo",
-      folder: "sally-system",
-      demo: "email-punch-c-soft-pop",
+      folder: "sally-push",
+      demo: "punch-soft-pop",
       title: "Punch · Soft pop",
       note: "The punch email that leans on charm.",
       stageWidth: 600,
@@ -244,6 +254,7 @@ export const sallyDesignSystemCaseStudy: CaseStudy = {
       id: "emails-shoppable",
       type: "product-demo",
       folder: "sally-system",
+      query: "skin=pushed",
       demo: "email-color-blocked-shoppable",
       title: "Color-blocked · Shoppable",
       note: "One product, two ways to wear it, and the routine around it.",
@@ -359,30 +370,30 @@ export const sallyDesignSystemCaseStudy: CaseStudy = {
       id: "type-header",
       type: "section-header",
       label: "SECTION 07: TYPE",
-      title: "Founders Grotesk sets every word",
-      pressing: { mark: { n: "07", name: "Three Cuts" }, heldLine: "in three cuts." },
+      title: "Satoshi sets every word,",
+      pressing: { mark: { n: "07", name: "One Family" }, heldLine: "from the headline to the price tag." },
     },
     {
       id: "type-text",
       type: "text",
       size: "subhead",
       content:
-        "The regular cut sets headlines, body copy and buttons. The condensed cut sets the promo banners and the loud headlines, and the mono cut sets eyebrows, product tags, prices and promo codes.",
+        "Headlines run semibold and tight, labels run in semibold capitals, and the body sits at the regular weight.",
     },
     {
       id: "type-footnote",
       type: "text",
       size: "base",
       fullWidth: true,
-      content: "Headlines run bold with tight tracking, and one word in each gets the emphasis.",
+      content: "Every type role in the system is a token, so the switch from three cuts of Founders Grotesk to Satoshi changed the tokens and left the layouts alone.",
     },
     {
       id: "type-punch-a",
       type: "product-demo",
-      folder: "sally-system",
-      demo: "email-punch-a-volume",
+      folder: "sally-push",
+      demo: "punch-volume",
       title: "Punch · Volume",
-      note: "The punch set leans on type: pure Founders, set big.",
+      note: "The punch set leans on type: Satoshi, set as big as the width allows.",
       stageWidth: 600,
       viewHeight: 1100,
       mode: "scroll",
@@ -391,8 +402,8 @@ export const sallyDesignSystemCaseStudy: CaseStudy = {
     {
       id: "type-punch-b",
       type: "product-demo",
-      folder: "sally-system",
-      demo: "email-punch-b-candy",
+      folder: "sally-push",
+      demo: "punch-candy",
       title: "Punch · Candy",
       note: "The same chassis, leaning on color.",
       stageWidth: 600,
@@ -408,15 +419,15 @@ export const sallyDesignSystemCaseStudy: CaseStudy = {
       id: "color-header",
       type: "section-header",
       label: "SECTION 08: COLOR",
-      title: "Red headlines are kept for the sale,",
-      pressing: { mark: { n: "08", name: "The Tone Rule" }, heldLine: "and warm tints carry the rest." },
+      title: "White paper, scarlet and ink,",
+      pressing: { mark: { n: "08", name: "Paper and Ink" }, heldLine: "and the photographs bring the rest." },
     },
     {
       id: "color-text",
       type: "text",
       size: "subhead",
       content:
-        "A new-arrivals or rewards email keeps its headlines in ink. Sally scarlet stays on the accents: the buttons, the banners and the dot motif.",
+        "One soft grey holds the cards, and scarlet is the one loud field. The sale is the email that turns red.",
     },
     {
       id: "color-footnote",
@@ -424,15 +435,16 @@ export const sallyDesignSystemCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "The color-blocked fields come from the brand's Natural scale: cream, shell, rose, peach, sand and dusty. Two pale tints never sit next to each other, so peach or a bold field goes between them. Louder work pulls saturated steps from the official red ramp, never an off-brand hue.",
+        "The vivid shades come from the pictures themselves. The Colorfest card takes the blue of the curls beside it, and each Pride look sits on a card sampled from its own photograph.",
     },
     {
       id: "color-new",
       type: "product-demo",
       folder: "sally-system",
+      query: "skin=pushed",
       demo: "email-color-blocked-new-arrivals",
       title: "Color-blocked · New Arrivals",
-      note: "Ink headlines on warm Natural fields.",
+      note: "Ink headlines on white, the fields as soft grey cards.",
       stageWidth: 600,
       viewHeight: 1100,
       mode: "scroll",
@@ -441,10 +453,10 @@ export const sallyDesignSystemCaseStudy: CaseStudy = {
     {
       id: "color-sale",
       type: "product-demo",
-      folder: "sally-system",
-      demo: "email-color-blocked-sale",
-      title: "Color-blocked · Sale",
-      note: "The sale email is the one that turns red.",
+      folder: "sally-push",
+      demo: "the-sale",
+      title: "The Sale",
+      note: "The one email that turns red.",
       stageWidth: 600,
       viewHeight: 1100,
       mode: "scroll",
@@ -479,10 +491,10 @@ export const sallyDesignSystemCaseStudy: CaseStudy = {
     {
       id: "scale-edit-desk",
       type: "product-demo",
-      folder: "sally-system",
-      demo: "homepage-edit",
+      folder: "sally-push",
+      demo: "the-color-issue",
       title: "Concept 10 · The Edit, desktop",
-      note: "Live at 1440. It scrolls itself; open it to use it.",
+      note: "Live at 1440, set as a magazine issue. It scrolls itself; open it to use it.",
       stageWidth: 1440,
       viewHeight: 900,
       mode: "scroll",
@@ -490,8 +502,8 @@ export const sallyDesignSystemCaseStudy: CaseStudy = {
     {
       id: "scale-edit-phone",
       type: "product-demo",
-      folder: "sally-system",
-      demo: "homepage-edit",
+      folder: "sally-push",
+      demo: "the-color-issue",
       title: "The Edit, phone",
       note: "The same page at 390.",
       stageWidth: 390,
@@ -503,6 +515,7 @@ export const sallyDesignSystemCaseStudy: CaseStudy = {
       id: "scale-color-phone",
       type: "product-demo",
       folder: "sally-system",
+      query: "skin=pushed",
       demo: "homepage-color",
       title: "The Color Authority, phone",
       note: "The shade finder at 390.",
@@ -527,7 +540,7 @@ export const sallyDesignSystemCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "A desktop takeover gets one light scrim, the one loud place in the system. On a phone, the takeover splits into the photo and a blush panel for the words.",
+        "Where a headline meets a picture, it floats on a solid card, so the picture keeps its full size. On a phone, the card moves under the photo.",
     },
     {
       id: "image-footnote",
@@ -535,15 +548,15 @@ export const sallyDesignSystemCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "Graphics carry everything else: the color-blocked fields, the halftone dot burst from the brand guide, and the circle that crops the hero. Homepage products never show a price, because prices change too often.",
+        "Graphics carry everything else: the cards, the halftone dot burst from the brand guide, and the circle that crops the email hero. Homepage products never show a price, because prices change too often.",
     },
     {
       id: "image-takeover-desk",
       type: "product-demo",
-      folder: "sally-system",
-      demo: "homepage-takeover",
+      folder: "sally-push",
+      demo: "pride",
       title: "Concept 6 · Pride takeover, desktop",
-      note: "The scrim is short and light.",
+      note: "The looks are the takeover, each on a card in its own shade.",
       stageWidth: 1440,
       viewHeight: 900,
       mode: "scroll",
@@ -551,10 +564,10 @@ export const sallyDesignSystemCaseStudy: CaseStudy = {
     {
       id: "image-takeover-phone",
       type: "product-demo",
-      folder: "sally-system",
-      demo: "homepage-takeover",
+      folder: "sally-push",
+      demo: "pride",
       title: "Pride takeover, phone",
-      note: "The photo and the panel, apart.",
+      note: "Each look gets the screen to itself.",
       stageWidth: 390,
       viewHeight: 844,
       mode: "scroll",
@@ -563,10 +576,10 @@ export const sallyDesignSystemCaseStudy: CaseStudy = {
     {
       id: "image-story-phone",
       type: "product-demo",
-      folder: "sally-system",
-      demo: "homepage-story",
+      folder: "sally-push",
+      demo: "colorfest",
       title: "Concept 4 · Colorfest, phone",
-      note: "A story-led homepage at 390.",
+      note: "The photo, then a card in its blue.",
       stageWidth: 390,
       viewHeight: 844,
       mode: "scroll",
@@ -602,6 +615,7 @@ export const sallyDesignSystemCaseStudy: CaseStudy = {
       id: "templates-tabshop",
       type: "product-demo",
       folder: "sally-system",
+      query: "skin=pushed",
       demo: "homepage-blocks",
       hash: "tabshop",
       title: "Module · Tabbed product tray",
@@ -613,6 +627,7 @@ export const sallyDesignSystemCaseStudy: CaseStudy = {
       id: "templates-levels",
       type: "product-demo",
       folder: "sally-system",
+      query: "skin=pushed",
       demo: "homepage-blocks",
       hash: "levels",
       title: "Module · Shade finder",
@@ -746,84 +761,14 @@ export const sallyDesignSystemCaseStudy: CaseStudy = {
 
 
     // ════════════════════════════════════════
-    // SECTION 15 — PUSHED
-    // ════════════════════════════════════════
-    {
-      id: "pushed-header",
-      type: "section-header",
-      label: "SECTION 15: PUSHED",
-      title: "The same concepts,",
-      pressing: { mark: { n: "15", name: "Pushed" }, heldLine: "pushed further." },
-    },
-    {
-      id: "pushed-text",
-      type: "text",
-      size: "subhead",
-      content: "An editorial pass in Satoshi on white, with no rules: rounded cards and white space do the separating.",
-    },
-    {
-      id: "pushed-footnote",
-      type: "text",
-      size: "base",
-      fullWidth: true,
-      content: "The Lookbook keeps its layout and every picture, Colorfest gets a lineup, and Pride becomes a takeover made of its looks.",
-    },
-    {
-      id: "pushed-lookbook",
-      type: "product-demo",
-      folder: "sally-push",
-      demo: "lookbook-images",
-      title: "The Lookbook, pushed",
-      note: "His layout and his pictures, in the new finish.",
-      stageWidth: 1440,
-      viewHeight: 900,
-      mode: "scroll",
-    },
-    {
-      id: "pushed-colorfest",
-      type: "product-demo",
-      folder: "sally-push",
-      demo: "colorfest",
-      title: "Colorfest, pushed",
-      note: "The brands only Sally carries, set as the festival's lineup.",
-      stageWidth: 1440,
-      viewHeight: 900,
-      mode: "scroll",
-    },
-    {
-      id: "pushed-gloss",
-      type: "product-demo",
-      folder: "sally-push",
-      demo: "the-gloss",
-      title: "The Gloss, pushed",
-      note: "One story, top to bottom.",
-      stageWidth: 600,
-      viewHeight: 1100,
-      mode: "scroll",
-      phone: true,
-    },
-    {
-      id: "pushed-candy",
-      type: "product-demo",
-      folder: "sally-push",
-      demo: "punch-candy",
-      title: "Punch · Candy, pushed",
-      note: "Every block a color card.",
-      stageWidth: 600,
-      viewHeight: 1100,
-      mode: "scroll",
-      phone: true,
-    },
-
-    // ════════════════════════════════════════
     // CLOSING
     // ════════════════════════════════════════
     {
       id: "closing-header",
       type: "section-header",
-      label: "SECTION 16: CLOSING",
+      label: "SECTION 15: CLOSING",
       title: "The homepage kit grew out",
-      pressing: { mark: { n: "16", name: "One Stylesheet" }, heldLine: "of the email system." },
+      pressing: { mark: { n: "15", name: "One Stylesheet" }, heldLine: "of the email system." },
     },
     {
       id: "closing-text",
@@ -835,7 +780,7 @@ export const sallyDesignSystemCaseStudy: CaseStudy = {
       id: "closing",
       type: "closing",
       services: ["Design Systems", "Art Direction", "Email Design", "Homepage Design"],
-      stack: ["Claude", "Figma", "HTML/CSS/JS", "Founders Grotesk"],
+      stack: ["Claude", "Figma", "HTML/CSS/JS", "Satoshi"],
       links: [],
       content:
         "The voice is Sally as the beauty-obsessed best friend, the one who makes salon-level results doable at home.",

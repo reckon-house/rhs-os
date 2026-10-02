@@ -124,10 +124,18 @@ const rewrite = (s) => {
   return s.replace(/format\('opentype'\)/g, (m, i, all) => (all.slice(Math.max(0, i - 80), i).includes(".woff2") ? "format('woff2')" : m));
 };
 const OGG = /@font-face\s*\{[^}]*Ogg[^}]*\}\s*/g;
+/* the pushed pass (2 Oct 2026, his "let's do a pass so that everything
+   has satoshi and that new look"): any page here opened with ?skin=pushed
+   loads ../sally-push/skin.css after its own styles, which re-points his
+   system's feel levers and tints. Without the flag the page is his,
+   unchanged, so a before and after is one query string apart */
+const SKIN = `<script>if(/[?&]skin=pushed/.test(location.search)){document.documentElement.dataset.skin="pushed";document.write('<link rel="stylesheet" href="../sally-push/skin.css">')}</script>\n`;
+const skinned = (html) => (html.includes("sally-push/skin.css") ? html : html.replace("</head>", SKIN + "</head>"));
 for (const f of textFiles.concat(fs.existsSync(path.join(SRC, "punch.css")) ? ["punch.css"] : [])) {
   let s = fs.readFileSync(path.join(SRC, f), "utf8");
   s = rewrite(s);
   if (f === "styles.css") s = s.replace(OGG, "/* Ogg is not served here (Sharp Type licence); these pages never use it */\n");
+  if (f.endsWith(".html")) s = skinned(s);
   fs.mkdirSync(path.dirname(path.join(OUT, f)), { recursive: true });
   fs.writeFileSync(path.join(OUT, f), s);
 }
@@ -143,7 +151,7 @@ for (const e of emails) {
      rendered email, without React, Babel or a CDN -->
 <link rel="stylesheet" href="styles.css">
 <link rel="stylesheet" href="punch.css">
-<style>${emails.own}
+${SKIN}<style>${emails.own}
 html, body { margin: 0; background: #fff; }
 body { width: 600px; margin: 0 auto; }
 .email-frame { margin: 0; box-shadow: none; }</style>

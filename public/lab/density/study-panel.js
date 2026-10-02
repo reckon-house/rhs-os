@@ -489,8 +489,10 @@
     "jeffrey-ecommerce": { "#1A1A1A": "Charcoal", "#F5F2ED": "Cream", "#FFFF40": "Brand Yellow", "#8C8578": "Soft Gray" },
     "jeffrey-spring": { "#F5F2EC": "Studio White", "#A8B8C8": "Striped Blue", "#E8C4B8": "Blush", "#3E5A39": "Monstera", "#1A1A18": "Soft Black" },
     "you-by-sally": { "#E91E63": "Hot Pink", "#00B8D4": "Cyan", "#141414": "Black", "#F5F2ED": "Cream" },
-    /* his own token names, from the system's styles.css and its notes (--sb-red "Sally scarlet", --sb-ink, --sb-blush, --sb-peach, --sb-cream) */
-    "sally-design-system": { "#E11324": "Sally Scarlet", "#1C1413": "Ink", "#F4E2DC": "Blush", "#FADDC0": "Peach", "#FFF0E0": "Cream" },
+    /* the pushed palette (2 Oct 2026): his tokens --sb-red "Sally scarlet" and
+       --sb-ink, the one soft grey of the pushed pass, and two vivids sampled
+       from the photographs of his looks, named as his concepts name them */
+    "sally-design-system": { "#E11324": "Sally Scarlet", "#1C1413": "Ink", "#F4F3F1": "Soft Grey", "#442861": "Electric Violet", "#0E4043": "Deep Sea Teal" },
   };
   const PAL_DRAFT = {
     "branding-graphics": { "#DCDDDD": "Paper Grey", "#380F03": "Oxblood", "#9DB3AD": "Sage Mist", "#A89B8F": "Taupe", "#BBCFC9": "Sea Glass" },

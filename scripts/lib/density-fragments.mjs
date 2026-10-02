@@ -219,7 +219,7 @@ for (const s of Object.values(H.studies)) {
         const replay = folder === "sally-demos" || folder === "dsc-demos";
         const fit = sec.mode === "fit"; /* a module made for the column: its own width, its own height */
         add(k, "live", {
-          src: "/lab/" + folder + "/" + sec.demo + ".html" + (replay ? "?framed=1" : "") + (sec.hash ? "#" + sec.hash : ""),
+          src: "/lab/" + folder + "/" + sec.demo + ".html" + (replay ? "?framed=1" : sec.query ? "?" + sec.query : "") + (sec.hash ? "#" + sec.hash : ""),
           w: fit ? 0 : sec.stageWidth || (replay ? 1120 : 1440),
           h: sec.viewHeight || 0,
           mode: sec.mode || (replay ? "demo" : "page"),

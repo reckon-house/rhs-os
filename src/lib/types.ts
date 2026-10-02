@@ -691,6 +691,11 @@ export interface ProductDemoSection extends BaseSection {
   /** A fragment for the page's own address (homepage-blocks#tabshop). */
   hash?: string;
   /**
+   * A query for the page's own address, without the "?" (2 Oct 2026):
+   * "skin=pushed" opens a page in ../sally-system/ in the pushed look.
+   */
+  query?: string;
+  /**
    * The demo's own stage width in px. These are fixed-size desktop
    * interfaces (1120px frame inside a 20px gutter) with essentially no
    * media queries, so the frame SCALES them rather than reflowing them.
