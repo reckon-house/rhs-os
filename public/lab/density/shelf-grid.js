@@ -421,10 +421,10 @@
     const top = el("div", "xg-hl");
     const nm = el("h2", "xg-name" + (e.kind === "year" || e.kind === "fig" ? " num" : ""), S.esc(e.name || ""));
     top.appendChild(nm);
-    if (S.ks.length) top.appendChild(el("span", "xg-n caps", "Work<b>" + S.ks.length + "</b>"));
+    if (S.ks.length) top.appendChild(el("span", "xg-n caps", S.esc(S.lbl("Work")) + "<b>" + S.ks.length + "</b>"));
     h.appendChild(top);
     /* a figure from a table: its label in the label voice, its note under */
-    if (e.label) h.appendChild(el("p", "xg-lbl caps", S.esc(e.label)));
+    if (e.label) h.appendChild(el("p", "xg-lbl caps", S.esc(S.lbl(e.label))));
     if (e.sentence) h.appendChild(el("p", "xg-sent", markIn(S, e.sentence, e.mark)));
     S.nm = nm;
     return h;
@@ -521,7 +521,7 @@
   };
 
   const render = (container, ctx) => {
-    const S = { ctx, D: ctx.D || window.D, esc: ctx.esc || (ctx.D || window.D).esc, ks: (ctx.studies || []).slice(), root: el("div", "xg"), io: null, heroes: [] };
+    const S = { ctx, D: ctx.D || window.D, esc: ctx.esc || (ctx.D || window.D).esc, lbl: ctx.label || ((t) => t), ks: (ctx.studies || []).slice(), root: el("div", "xg"), io: null, heroes: [] };
     container.appendChild(S.root);
     layout(S);
     S.root.addEventListener("click", (ev) => {

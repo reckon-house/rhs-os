@@ -85,6 +85,8 @@
      hover(k|null, el?)   light the index for that study, with hairlines
                to el (else to tileFor(k)); null when the pointer leaves
      esc(s), clean(s)   escape for HTML / take out em dashes
+     label(s)  a small label's words in the page's case (title case
+               unless ?labels=caps or sentence; the rooms' own rule)
      D         the kit (density.js): D.img(f, cssW) with an honest
                srcset, D.maxCss(f) = w/2, D.rung, D.title(k), D.year(k),
                D.study(k)
@@ -541,6 +543,9 @@
      is the rooms' label they were (8.5px bold, tracked 0.2em), and
      ?labels=sentence leaves them as written ("What I make") */
   { const q = (new URLSearchParams(location.search).get("labels") || "").toLowerCase(); HTML.dataset.labels = ["caps", "title", "sentence"].includes(q) ? q : "title"; }
+  /* the words cased by the rooms' own rule (StudyPanel.label), so a label
+     reads the same in the index and in a room ("Worked With, Spotted by") */
+  const LBL = (window.StudyPanel && StudyPanel.label) || ((t) => t);
   /* the highlight's colour by eye: ?hl=ece7de (hex, with or without #) */
   { const hl = (new URLSearchParams(location.search).get("hl") || "").replace(/^#/, ""); if (/^([0-9a-f]{3}|[0-9a-f]{6})$/i.test(hl)) HTML.style.setProperty("--hl", "#" + hl); }
   let THUMBS = [], STRIPS = [], tio = null;
@@ -792,14 +797,14 @@
       const s = D.study(o.k), L = LEAD_OF[o.k];
       a.classList.add("w", "ef");
       /* .nr is the name's own row, so a mark can fill the cell around it */
-      a.innerHTML = '<span class="kk caps"><span>' + esc(L ? L.l.name : "") + '</span><span class="wn">' + D.num(o.k) + '</span></span><span class="fy">' + mk(D.year(o.k)) + '</span><span class="nr"><span class="t">' + esc(o.label) + "</span></span>";
+      a.innerHTML = '<span class="kk caps"><span>' + esc(LBL(L ? L.l.name : "")) + '</span><span class="wn">' + D.num(o.k) + '</span></span><span class="fy">' + mk(D.year(o.k)) + '</span><span class="nr"><span class="t">' + esc(o.label) + "</span></span>";
       /* the picture first, then the name (1 Oct 2026, his "can we try
          moving the image first, then headline - flipping them. it might
          be a little cleaner"): under the line's label, over its name */
       const th = thumb(o.k, "fth");
       if (th) { th.style.setProperty("--r", Math.max(0.78, Math.min(1.5, ratio(th._f))).toFixed(3)); a.insertBefore(th, a.querySelector(".nr")); }
       if (s && s.fact) a.appendChild(el("span", "dk", esc(s.fact)));
-      if (s && s.s) a.appendChild(el("span", "cr caps", esc(s.s)));
+      if (s && s.s) a.appendChild(el("span", "cr caps", esc(LBL(s.s))));
     } else if (mode === "Ework") {
       const s = D.study(o.k);
       a.classList.add("w", "ew");
@@ -816,7 +821,7 @@
          and its name; marked on its name's row, as an About section is */
       const kind = { capabilities: "Capability", tools: "Tool", credits: "Worked with" }[g] || "";
       a.classList.add("ea", "ereel");
-      a.innerHTML = '<span class="kk caps"><span>' + esc(kind) + '</span><span class="wn">' + o.rel.size + "</span></span>";
+      a.innerHTML = '<span class="kk caps"><span>' + esc(LBL(kind)) + '</span><span class="wn">' + o.rel.size + "</span></span>";
       const box = el("span", "rl"), r = document.createElement("sizzle-reel");
       r.setAttribute("aspect", "1.4"); r.setAttribute("radius", "var(--pr, 4px)"); r.setAttribute("offset", String(REELS.length * 3));
       box.appendChild(r); a.appendChild(box); REELS.push({ a, r, o });
@@ -830,8 +835,8 @@
       const src = figSource(o.fig, o.key);
       a.classList.add("fig", "efig");
       a.innerHTML = '<span class="nr"><span class="t"><span class="fn">' + mk(D.esc(m[1])) + "</span>" + (m[2] ? '<span class="fu">' + D.esc(m[2]) + "</span>" : "") + "</span></span>" +
-        (src.label ? '<span class="kk caps">' + esc(src.label) + "</span>" : "") + (src.html ? '<span class="dk">' + src.html + "</span>" : "") +
-        (src.credit ? '<span class="cr caps">' + esc(src.credit) + "</span>" : "");
+        (src.label ? '<span class="kk caps">' + esc(LBL(src.label)) + "</span>" : "") + (src.html ? '<span class="dk">' + src.html + "</span>" : "") +
+        (src.credit ? '<span class="cr caps">' + esc(LBL(src.credit)) + "</span>" : "");
     } else if (mode === "Ecap") {
       a.classList.add("ecap");
       a.innerHTML = '<span class="t">' + esc(o.label) + '</span><sup class="cnt">' + o.rel.size + "</sup>";
@@ -857,7 +862,7 @@
   };
   const headE = (n, id, name) => {
     const g = G[id];
-    const h = el("h2", "eh", '<span><b>' + n + "</b>" + esc(name || g.name) + '</span><span class="n">' + g.items.length + "</span>");
+    const h = el("h2", "eh", '<span><b>' + n + "</b>" + esc(LBL(name || g.name)) + '</span><span class="n">' + g.items.length + "</span>");
     g.count = h.querySelector(".n");
     return h;
   };
@@ -1892,7 +1897,7 @@
     rest(main, W, H) {
       const st = DATA.statement || {};
       const wrap = el("div", "rest");
-      if (DATA.practice && DATA.practice.length) wrap.appendChild(el("div", "caps prac", DATA.practice.map((p) => "<span>" + esc(p) + "</span>").join("")));
+      if (DATA.practice && DATA.practice.length) wrap.appendChild(el("div", "caps prac", DATA.practice.map((p) => "<span>" + esc(LBL(p)) + "</span>").join("")));
       /* the board's two-tone lead: his first sentence in ink, the rest in
          grey, one size and one weight */
       const say = el("div", "say", esc(st.ink) + (st.grey ? ' <span class="g">' + esc(st.grey) + "</span>" : "")); wrap.appendChild(say);
@@ -1902,7 +1907,7 @@
          carries its lines. Counted here, never typed */
       const ys = DATA.studies.map((x) => +x.y).filter(Boolean);
       const lay = main.parentNode;
-      const f = lay && !phone() && ys.length ? el("div", "caps folio", ["work", "lines", "figures"].map((id) => "<span>" + esc(G[id].name) + " <b>" + G[id].items.length + "</b></span>").join("") +
+      const f = lay && !phone() && ys.length ? el("div", "caps folio", ["work", "lines", "figures"].map((id) => "<span>" + esc(LBL(G[id].name)) + " <b>" + G[id].items.length + "</b></span>").join("") +
         "<span>" + Math.min(...ys) + "\u2013" + Math.max(...ys) + "</span>") : null;
       /* on a desk, the home: the cover, then the work (homeBuild) */
       if (lay && !phone()) homeBuild(lay, main, wrap, f);
@@ -1913,7 +1918,7 @@
     cluster(main, W, H, it) { main.appendChild(cluster(it.pics, W, H, { caps: it.multi, flip: !!cur && (cur.o.i + cur.n) % 2 === 1 })); },
     text(main, W, H, it) {
       const say = el("div", "say", it.hl ? greyHl(it.text, it.hl) : esc(it.text) + (it.grey ? ' <span class="g">' + esc(it.grey) + "</span>" : ""));
-      if (it.label) main.appendChild(el("div", "caps lk", esc(it.label)));
+      if (it.label) main.appendChild(el("div", "caps lk", esc(LBL(it.label))));
       main.appendChild(say);
       const len = it.text.length + (it.grey ? it.grey.length : 0);
       fitType(say, W, (H - (it.label ? 30 : 0)) * 0.78, len < 40 ? 104 : len < 90 ? 78 : len < 160 ? 56 : 42, 18);
@@ -1922,7 +1927,7 @@
     toolpics(main, W, H, it) {
       const top = it.pics.length ? cluster(it.pics, W, Math.min(H * 0.5, 330), { caps: true, flip: true }) : null;
       if (top) { main.appendChild(top); top.style.marginBottom = "30px"; }
-      if (it.label) main.appendChild(el("div", "caps lk", esc(it.label)));
+      if (it.label) main.appendChild(el("div", "caps lk", esc(LBL(it.label))));
       const say = el("div", "say", greyHl(it.text, it.hl)); main.appendChild(say);
       const used = (top ? top.offsetHeight + 30 : 0) + (it.label ? 30 : 0);
       fitType(say, W, Math.max(60, (H - used) * 0.9), it.text.length < 90 ? 60 : 44, 17);
@@ -1944,7 +1949,7 @@
       const big = el("div", "big", esc(it.fig)); wrap.appendChild(big);
       let under = null;
       if (it.sent) under = el("p", "sent", hl(it.sent, it.fig));
-      else if (it.label) under = el("p", "lbl", '<span class="caps">' + esc(it.label) + "</span>" + (it.sub ? '<span class="g">' + esc(it.sub) + "</span>" : ""));
+      else if (it.label) under = el("p", "lbl", '<span class="caps">' + esc(LBL(it.label)) + "</span>" + (it.sub ? '<span class="g">' + esc(it.sub) + "</span>" : ""));
       if (under) wrap.appendChild(under);
       main.appendChild(wrap);
       const uh = (under ? under.offsetHeight + 24 : 0) + (top ? top.offsetHeight + 30 : 0);
@@ -1983,7 +1988,7 @@
     },
     chart(main, W, H, it) {
       const f = it.f;
-      main.appendChild(el("div", "caps", esc(f.title)));
+      main.appendChild(el("div", "caps", esc(LBL(f.title))));
       const big = el("div", "big", esc(f.callout) + (f.suffix ? ' <span class="g">' + esc(f.suffix) + "</span>" : "")); big.style.whiteSpace = "nowrap"; big.style.fontWeight = "800";
       main.appendChild(big);
       const bars = el("div", "bars", f.bars.map((b) => '<div class="bar' + (it.hl && (b.value.includes(it.hl) || it.hl === f.callout) ? " hl" : "") + '"><span>' + esc(b.label) + "</span><span>" + esc(b.value) + '</span><i style="width:' + Math.max(1, b.width) + '%"></i></div>').join(""));
@@ -1992,7 +1997,7 @@
     },
     steps(main, W, H, it) {
       const f = it.f;
-      main.appendChild(el("div", "caps", esc(f.title)));
+      main.appendChild(el("div", "caps", esc(LBL(f.title))));
       const big = el("div", "big", esc(f.duration)); main.appendChild(big);
       const row = el("div", "steps", f.steps.map((s) => "<div>" + esc(s.title) + (s.note ? "<span>" + esc(s.note) + "</span>" : "") + "</div>").join(""));
       main.appendChild(row); main.style.width = W + "px";
@@ -2002,7 +2007,7 @@
       const cs = it.f.colors; const sw = el("div", "swatches");
       const w = Math.floor(Math.min(W, 640) / cs.length); const h = Math.min(H, 420);
       cs.forEach((c) => {
-        const d = el("div", "caps", esc(c.hex.toUpperCase()) + (c.name ? "<br>" + esc(c.name) : ""));
+        const d = el("div", "caps", esc(c.hex.toUpperCase()) + (c.name ? "<br>" + esc(LBL(c.name)) : ""));
         d.style.cssText = "width:" + w + "px;height:" + h + "px;background:" + c.hex + ";color:" + D.ink(c.hex);
         sw.appendChild(d);
       });
@@ -2446,6 +2451,7 @@
     locs: (k) => locsOf(S.o, k),
     hover: (k, at) => (S.pv ? pvHover(S, k, at) : shelfHover(S, k, at)),
     esc, clean, D,
+    label: LBL,
   });
 
   /* a foot's words: the entry's name, count, column and sentence, set
@@ -2457,12 +2463,12 @@
     const a = el("a", "sh-foot"); a.href = "#" + nx.key; a.dataset.key = nx.key;
     const ns = shelfSentence(nx), n = shelfOrder(nx).length;
     const run = nx.g.id === "lines" && ns && ns.text;
-    a.innerHTML = '<span class="sh-foot-k caps"><span>' + esc(label || "Next") + '</span><i></i></span>' +
+    a.innerHTML = '<span class="sh-foot-k caps"><span>' + esc(LBL(label || "Next")) + '</span><i></i></span>' +
       '<span class="sh-foot-hl">' + (run
         ? '<span class="sh-foot-t stand">' + esc(nameOf(nx)) + '. <span class="g">' + esc(clean(ns.text)) + "</span></span>"
         : '<span class="sh-foot-t' + (nx.g.id === "years" || nx.g.id === "figures" ? " num" : "") + '">' + esc(nameOf(nx)) + "</span>") +
-      (n ? '<span class="sh-foot-n caps">Work<b>' + n + "</b></span>" : "") + "</span>" +
-      (!run && ns && ns.label ? '<span class="sh-foot-l caps">' + esc(clean(ns.label)) + "</span>" : "") +
+      (n ? '<span class="sh-foot-n caps">' + esc(LBL("Work")) + "<b>" + n + "</b></span>" : "") + "</span>" +
+      (!run && ns && ns.label ? '<span class="sh-foot-l caps">' + esc(LBL(clean(ns.label))) + "</span>" : "") +
       (!run && ns && ns.text ? '<span class="sh-foot-s' + (ns.lead ? " lead" : "") + '">' + (ns.lead ? twoTone(clean(ns.text)) : esc(clean(ns.text))) + "</span>" : "");
     return a;
   };
@@ -2535,7 +2541,7 @@
   const frameShelf = (S) => {
     const o = S.o;
     const bar = el("div", "sh-bar");
-    bar.appendChild(el("span", "sh-bar-k caps", esc(o.g.name)));
+    bar.appendChild(el("span", "sh-bar-k caps", esc(LBL(o.g.name))));
     bar.appendChild(el("span", "sh-bar-t", esc(nameOf(o))));
     const sw = el("span", "sh-sw"); bar.appendChild(sw);
     const x = el("button", "sh-x", "Close"); x.type = "button"; x.addEventListener("click", (ev) => { ev.stopPropagation(); closeTo({ v: "rest" }); });

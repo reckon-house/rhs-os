@@ -145,7 +145,40 @@
   /* a section's label as the study writes it, "SECTION 02: PROBLEM
      STATEMENT", read as its number and its name, so the room can number
      its sections the way the index numbers its own ("01 LINES") */
-  const secLabel = (t) => { const m = /^\s*section\s+(\d+)\s*[:.]\s*(.+)$/i.exec(String(t || "")); return m ? { n: m[1].padStart(2, "0"), name: m[2].trim() } : { n: "", name: String(t || "").trim() }; };
+  const secLabel = (t) => { const m = /^\s*section\s+(\d+)\s*[:.]\s*(.+)$/i.exec(String(t || "")); return m ? { n: m[1].padStart(2, "0"), name: lbl(m[2].trim()) } : { n: "", name: lbl(String(t || "").trim()) }; };
+  /* the small labels' case (1 Oct 2026). crossref2 sets html[data-labels],
+     title by default: his "all the labels that are ALL CAPS and tracked
+     out...can we look at them just title case and normal tracking?", then
+     "yea do the rooms too". A study writes its section labels in capitals
+     ("PROBLEM STATEMENT"), which no stylesheet can lower, so the words are
+     cased here. Title case keeps the short joining words low ("Down to the
+     Studs"); sentence case lowers all but the names; an acronym stays one.
+     Words written in mixed case keep their own spelling. A page that sets
+     no data-labels gets its labels as they come. StudyPanel.label lends
+     this to the index, so the two read alike */
+  const LB_ACR = new Map("AI API AR CMS CRM CSS DSC DTC HTML iOS JS KPI LLM MCP NCAA NFL NYC OS PDF QR RGB ROI SEO SKU SKUs TV TX UI UX VR".split(" ").map((w) => [w.toUpperCase(), w]));
+  const LB_NAMES = ["A.R.C.", "Jim", "Prada Marfa", "Jack White", "West Texas", "The Fancy", "Highball Stepper"];
+  const LB_SMALL = new Set("a an and as at but by for in nor of off on or per so the to up via vs yet".split(" "));
+  function lbl(s) {
+    const mode = document.documentElement.dataset.labels;
+    let t = String(s == null ? "" : s);
+    if (mode !== "title" && mode !== "sentence") return t;
+    const caps = !/[a-z]/.test(t);
+    if (caps) {
+      t = t.toLowerCase().replace(/[a-z][a-z0-9]*/g, (w) => LB_ACR.get(w.toUpperCase()) || w).replace(/\bi\b/g, "I");
+      LB_NAMES.forEach((n) => { t = t.replace(new RegExp("(^|[^A-Za-z])" + n.replace(/\./g, "\\.") + "(?![A-Za-z])", "gi"), (m0, a) => a + n); });
+    }
+    if (mode === "sentence") return caps ? t.replace(/(^|[\/:]\s*)([a-z])/g, (m0, a, b) => a + b.toUpperCase()) : t;
+    const ws = t.split(" ");
+    let last = ws.length - 1; while (last > 0 && !/[A-Za-z]/.test(ws[last])) last--;
+    let open = true;
+    return ws.map((w, i) => {
+      if (!/[A-Za-z]/.test(w)) { if (/[\/:]$/.test(w)) open = true; return w; }
+      const small = !open && i !== last && LB_SMALL.has(w.replace(/[^A-Za-z]/g, "").toLowerCase());
+      open = /[\/:]$/.test(w);
+      return small ? w : w.replace(/[A-Za-z][A-Za-z'’.]*/g, (p) => (p === p.toLowerCase() ? p[0].toUpperCase() + p.slice(1) : p));
+    }).join(" ");
+  }
   const inkGrey = (t) => { const [a, b] = halves(t); return esc(a) + (b ? ' <span class="sp-g">' + esc(b) + "</span>" : ""); };
   /* a pressing headline carries its halves (ink, held); the room sets the
      held line grey, as the study page does */
@@ -604,7 +637,7 @@
   const pressNote = (list) => el("p", "sp-pr-fn", pressGroups(list).map((g) => '<span class="sp-g">' + esc(PRESS_HOW[g.how] || g.how) + "</span> " + esc(andList(g.by)) + ".").join(" "));
   const pressBand = (list) => {
     const gs = pressGroups(list), and = andList;
-    const inner = gs.map((g) => '<span class="sp-pr-g"><span class="sp-pr-h">' + esc(PRESS_HOW[g.how] || g.how) + '</span><span class="sp-pr-n">' + esc(and(g.by)) + "</span></span>").join("");
+    const inner = gs.map((g) => '<span class="sp-pr-g"><span class="sp-pr-h">' + esc(lbl(PRESS_HOW[g.how] || g.how)) + '</span><span class="sp-pr-n">' + esc(and(g.by)) + "</span></span>").join("");
     const tick = PRESS_MODE() === "ticker";
     const b = el("aside", "sp-press" + (tick ? " tick" : ""));
     if (tick) { const t = el("div", "sp-pr-track"); for (let i = 0; i < 4; i++) t.appendChild(el("div", "sp-pr-run", inner)); b.appendChild(t); }
@@ -1192,14 +1225,14 @@
       spec.appendChild(el("div", "sp-spec-h sp-kk", esc(D.title(k)) + '<span class="y">' + esc(s.y) + "</span>"));
       if (M.facts.length) {
         const tb = el("dl", "sp-tb");
-        M.facts.forEach((f) => { const r = el("div", "sp-tr"); r.appendChild(el("dt", null, esc(f.label))); r.appendChild(el("dd", null, esc(f.value))); tb.appendChild(tag(r, f)); });
+        M.facts.forEach((f) => { const r = el("div", "sp-tr"); r.appendChild(el("dt", null, esc(lbl(f.label)))); r.appendChild(el("dd", null, esc(f.value))); tb.appendChild(tag(r, f)); });
         spec.appendChild(tb);
       }
       const byLabel = new Map(); M.tools.forEach((f) => { if (!byLabel.has(f.label)) byLabel.set(f.label, []); byLabel.get(f.label).push(f); });
       if (byLabel.size) {
         const cols = el("div", "sp-tcols");
         byLabel.forEach((list, label) => {
-          const c = el("div", "sp-tcol"); c.appendChild(el("div", "sp-caps", esc(label)));
+          const c = el("div", "sp-tcol"); c.appendChild(el("div", "sp-caps", esc(lbl(label))));
           const ul = el("ul"); list.forEach((f) => ul.appendChild(tag(el("li", null, esc(f.value)), f)));
           c.appendChild(ul); cols.appendChild(c);
         });
@@ -1215,10 +1248,10 @@
       if (M.palette && M.palette.colors && M.palette.colors.length && pl === "swatch") {
         const pal = el("div", "sp-pal"); pal.style.setProperty("--n", M.palette.colors.length);
         M.palette.colors.forEach((c) => {
-          const sw = el("div", "sp-sw", '<i style="background:' + esc(c.hex) + '"></i><span>' + esc(String(c.hex).toUpperCase()) + "</span>" + (c.name ? "<span>" + esc(c.name) + "</span>" : ""));
+          const sw = el("div", "sp-sw", '<i style="background:' + esc(c.hex) + '"></i><span>' + esc(String(c.hex).toUpperCase()) + "</span>" + (c.name ? "<span>" + esc(lbl(c.name)) + "</span>" : ""));
           pal.appendChild(sw);
         });
-        const pw = el("div", "sp-palw"); if (M.palette.title) pw.appendChild(el("div", "sp-caps sp-palh", esc(M.palette.title) + palRow())); pw.appendChild(tag(pal, M.palette));
+        const pw = el("div", "sp-palw"); if (M.palette.title) pw.appendChild(el("div", "sp-caps sp-palh", esc(lbl(M.palette.title)) + palRow())); pw.appendChild(tag(pal, M.palette));
         spec.appendChild(pw);
       }
       frag.appendChild(spec);
@@ -1228,7 +1261,7 @@
       if (o.next && o.next.k && D.study(o.next.k)) {
         const nk = o.next.k;
         const a = el("a", "sp-next"); a.href = D.href(nk);
-        a.appendChild(el("span", "sp-caps", "Next"));
+        a.appendChild(el("span", "sp-caps", esc(lbl("Next"))));
         a.appendChild(el("span", "sp-next-t", esc(o.next.t || D.title(nk))));
         const nc = cover(nk);
         if (nc) { const nb = picBox({ src: nc.src, w: nc.w, h: nc.h, t384: nc.t384, t768: nc.t768, alt: "" }, "sp-next-pic"); a.appendChild(nb); watch(nb); }
@@ -1255,7 +1288,7 @@
         const seen = new Set();
         const pics = [M.lead].concat(D.byStudy(k).filter((f) => f.kind === "pic")).filter((f) => f && !f.alpha && f.src && !seen.has(f.src) && seen.add(f.src));
         const sec = el("section", "sp-palx lk-" + pl); sec.style.setProperty("--n", n);
-        sec.appendChild(el("div", "sp-caps sp-palh", esc(M.palette.title || "Palette") + palRow()));
+        sec.appendChild(el("div", "sp-caps sp-palh", esc(lbl(M.palette.title || "Palette")) + palRow()));
         const rgbT = (c) => "RGB " + c.rgb.join(" ");
         const box = (f, cls) => { const b = el("div", "sp-pic " + cls); b._f = f; watch(b); return b; };
         const slots = []; /* pictures the pairing will choose: [box, colour index or -1 for the best] */
@@ -1277,7 +1310,7 @@
         } else if (pl === "blocks") {
           const w = el("div", "sp-pbk n" + n);
           cols.forEach((c, i) => {
-            const bk = el("div", "sp-pb", "<b>" + esc(c.name || c.hex) + '</b><span class="sp-pbm">HEX ' + c.hex.slice(1) + "<br>" + rgbT(c) + "</span>"); bk.style.background = c.hex; bk.style.color = c.ink;
+            const bk = el("div", "sp-pb", "<b>" + esc(c.name || c.hex) + '</b><span class="sp-pbm">' + lbl("HEX") + " " + c.hex.slice(1) + "<br>" + rgbT(c) + "</span>"); bk.style.background = c.hex; bk.style.color = c.ink;
             const b = pic(i, "sp-pbp"); if (b) bk.appendChild(b);
             w.appendChild(bk);
           });
@@ -1480,7 +1513,7 @@
             big.forEach((f) => {
               const c = tag(el("div", "sp-fm"), f);
               const n = el("div", "sp-fn", esc(f.value)); c.appendChild(n);
-              c.appendChild(el("p", "sp-nl", esc(f.label)));
+              c.appendChild(el("p", "sp-nl", esc(lbl(f.label))));
               if (f.sub) c.appendChild(el("p", "sp-ns", esc(f.sub)));
               grid.appendChild(c); P.figs.push({ n, cell: c, group: grid });
             });
@@ -1494,7 +1527,7 @@
           }
           case "chart": {
             const f = b.f; const c = el("div", "sp-chart");
-            c.appendChild(el("div", "sp-caps", esc(f.title)));
+            c.appendChild(el("div", "sp-caps", esc(lbl(f.title))));
             const n = el("div", "sp-fn", esc(f.callout) + (f.suffix ? ' <span class="sp-g">' + esc(f.suffix) + "</span>" : ""));
             c.appendChild(n); P.figs.push({ n, cell: c, group: c });
             f.bars.forEach((x) => c.appendChild(el("div", "sp-bar2", '<span>' + esc(x.label) + '</span><span>' + esc(x.value) + '</span><i style="width:' + Math.max(1, x.width) + '%"></i>')));
@@ -1502,7 +1535,7 @@
           }
           case "steps": {
             const f = b.f; const c = el("div", "sp-steps");
-            c.appendChild(el("div", "sp-caps", esc(f.title)));
+            c.appendChild(el("div", "sp-caps", esc(lbl(f.title))));
             if (f.duration) c.appendChild(el("p", "sp-dur", esc(f.duration)));
             const row = el("ol", "sp-stl");
             f.steps.forEach((x) => row.appendChild(el("li", null, (x.n ? '<span class="sp-g">' + esc(x.n) + "</span> " : "") + "<b>" + esc(x.title) + "</b>" + (x.note ? "<span>" + esc(x.note) + "</span>" : ""))));
@@ -1809,5 +1842,5 @@
     return room;
   }
 
-  window.StudyPanel = { render, cover, setLook, looks: LOOKS, setPal, pals: PALS };
+  window.StudyPanel = { render, cover, setLook, looks: LOOKS, setPal, pals: PALS, label: lbl };
 })();

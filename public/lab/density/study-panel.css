@@ -815,6 +815,29 @@ html:not([data-type="bold"]) .sp .sp-pchl { font-size: 8.5px; font-weight: 700; 
 html:not([data-type="bold"]) .sp .sp-pchl b { font-weight: 700; }
 html:not([data-type="bold"]) .sp .sp-bar-in { font-weight: 500; }
 
+/* ── the labels in title case (1 Oct 2026, his "yea do the rooms too - i
+   like it more", after the index took them): out of capitals a label
+   loses the cap height that carried it at 8.5px, so it steps up to 11px,
+   demi, at normal tracking, as the index's. The words are cased in
+   study-panel.js (lbl), since a study writes its section labels in
+   capitals. Only where crossref2 asks (html[data-labels]); ?labels=caps
+   brings the capitals back. The sizzle's row of cuts under a cover goes
+   with them ── */
+html:is([data-labels="title"], [data-labels="sentence"]) .sp .sp-caps,
+html:is([data-labels="title"], [data-labels="sentence"]) .sp .sp-kick,
+html:is([data-labels="title"], [data-labels="sentence"]) .sp .sp-bar-s,
+html:is([data-labels="title"], [data-labels="sentence"]) .sp .sp-nl,
+html:is([data-labels="title"], [data-labels="sentence"]) .sp .sp-tr dt,
+html:is([data-labels="title"], [data-labels="sentence"]) .sp .sp-sw span,
+html:is([data-labels="title"], [data-labels="sentence"]) .sp .sp-pbm,
+html:is([data-labels="title"], [data-labels="sentence"]) .sp .sp-povb span,
+html:is([data-labels="title"], [data-labels="sentence"]) .sp .sp-pcc span,
+html:is([data-labels="title"], [data-labels="sentence"]) .sp .sp-pcyt span,
+html:is([data-labels="title"], [data-labels="sentence"]) .sp .sp-pchy,
+html:is([data-labels="title"], [data-labels="sentence"]) .sp .sp-pchl,
+html:is([data-labels="title"], [data-labels="sentence"]) .sp .sp-pr-h,
+html:is([data-labels="title"], [data-labels="sentence"]) .sp .szl-row { font-size: 11px; font-weight: 600; letter-spacing: 0; text-transform: none; }
+
 /* ── the shoutouts (30 Sept 2026): who posted or wrote about the work.
    A line under the cover, as a picture's credit sits (his "smaller more
    footnotes"), the verbs grey and the names ink; ?press=band sets a band

@@ -228,13 +228,13 @@
     const nm = el("h2", "xs-name" + (e.kind === "year" || e.kind === "fig" ? " num" : ""), S.esc(e.name || ""));
     hd.appendChild(nm);
     /* a figure from a table: its label, then its note */
-    if (e.label) hd.appendChild(el("p", "xs-lbl caps", S.esc(e.label)));
+    if (e.label) hd.appendChild(el("p", "xs-lbl caps", S.esc(S.lbl(e.label))));
     if (e.sentence) hd.appendChild(el("p", "xs-sent", markIn(S, e.sentence, e.mark)));
     top.appendChild(hd);
     S.nm = nm; S.units.push(hd);
     if (S.ks.length) {
       const toc = el("nav", "xs-toc"); toc.setAttribute("aria-label", "Contents");
-      toc.appendChild(el("div", "xs-toc-h caps", "<span>Work</span><b>" + S.ks.length + "</b>"));
+      toc.appendChild(el("div", "xs-toc-h caps", "<span>" + S.esc(S.lbl("Work")) + "</span><b>" + S.ks.length + "</b>"));
       const ol = el("ol", "xs-toc-l");
       S.ks.forEach((k) => {
         const li = el("li");
@@ -404,7 +404,7 @@
 
   const render = (container, ctx) => {
     const D = ctx.D || window.D;
-    const S = { ctx, D, esc: ctx.esc || D.esc, ks: (ctx.studies || []).filter((k) => D.study(k)), root: el("div", "xs"), io: null, light: null };
+    const S = { ctx, D, esc: ctx.esc || D.esc, lbl: ctx.label || ((t) => t), ks: (ctx.studies || []).filter((k) => D.study(k)), root: el("div", "xs"), io: null, light: null };
     container.appendChild(S.root);
     layout(S);
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => { if (S.root.isConnected) fitName(S); });
