@@ -229,7 +229,7 @@ export const chaletCaseStudy: CaseStudy = {
     {
       id: "headline-quiet",
       type: "editorial-headline",
-      text: "The furniture was kept plain\nso it wouldn't compete with the view",
+      text: "A 1968 chalet rebuilt from the studs\naround its view of the trees",
     },
 
     // ── 2-up: group 2 verticals (sofa detail closer + A-frame skylight
