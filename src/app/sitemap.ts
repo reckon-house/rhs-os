@@ -1,11 +1,10 @@
 import type { MetadataRoute } from "next";
-import { projects } from "@/data/projects";
 import { DAYBOOK } from "@/data/daybook";
 import { SITE_URL } from "@/lib/site";
 
 
-// Served at /sitemap.xml. Built from the projects list so new case studies
-// show up automatically. No manual upkeep.
+// Served at /sitemap.xml: the site's pages. The case studies live on the
+// homepage as rooms (#study/<key>), which a sitemap cannot list.
 export default function sitemap(): MetadataRoute.Sitemap {
   const lastModified = new Date();
 
@@ -26,22 +25,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   ];
 
 
-  // A few projects point at the same case study, so dedupe by href.
-  const caseStudyHrefs = Array.from(
-    new Set(
-      projects
-        .map((p) => p.href)
-        .filter((href): href is string =>
-          Boolean(href?.startsWith("/case-studies/")),
-        ),
-    ),
-  );
-  const caseStudyRoutes: MetadataRoute.Sitemap = caseStudyHrefs.map((href) => ({
-    url: `${SITE_URL}${href}`,
-    lastModified,
-    changeFrequency: "yearly",
-    priority: 0.7,
-  }));
-
-  return [...staticRoutes, ...caseStudyRoutes];
+  /* the case studies are rooms on the homepage since 1 Oct 2026, and their
+     old pages redirect there, so the sitemap no longer lists them */
+  return staticRoutes;
 }

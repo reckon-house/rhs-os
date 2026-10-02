@@ -41,6 +41,16 @@ const nextConfig: NextConfig = {
         destination: "/#line/:tag",
         permanent: true,
       },
+      /* ── THE OLD CASE STUDIES OPEN AS ROOMS (1 Oct 2026) ───────────
+         His "yea redirect the old case studies too", the day the index
+         became the homepage. Each /case-studies/<slug> page lands on its
+         room, /#study/<key>. The keys are the slugs but for two, named
+         first. The slug is letters, digits and hyphens only, so the
+         pictures under /case-studies/<slug>/ never match. */
+      { source: "/case-studies/sally", destination: "/#study/sally-os", permanent: true },
+      { source: "/case-studies/fairview-suite", destination: "/#study/fairview-bedroom", permanent: true },
+      { source: "/case-studies/:slug([a-z0-9-]+)", destination: "/#study/:slug", permanent: true },
+      { source: "/case-studies", destination: "/", permanent: true },
     ];
   },
   async headers() {
