@@ -538,6 +538,15 @@
       if (f.weight === "sub") { sec.items.push({ t: f.where === "closing" ? "closing" : "deck", f }); continue; }
       sec.items.push({ t: "body", f });
     }
+    /* a FULL picture leads its section's pictures: it moves up to where
+       the first of them stood, the words around them left in place */
+    M.secs.forEach((x) => {
+      const first = x.items.findIndex((i) => i.t === "pic"); if (first < 0) return;
+      const lead = x.items.filter((i, j) => j > first && i.t === "pic" && full(i.f));
+      if (!lead.length) return;
+      x.items = x.items.filter((i) => !lead.includes(i));
+      x.items.splice(first, 0, ...lead);
+    });
     /* the reel: one or two frames after the abstract, the rest dealt to
        the sections with no picture of their own, set after their first
        run of text so the section reads words, picture, words */
@@ -602,7 +611,20 @@
     "neiman-marcus-insite-the-rocker-typographic-spread.jpg", "neiman-marcus-insite-the-socialite-red-dress-spread.jpg",
     "neiman-marcus-insite-classic-beauty-spread.jpg",
   ]);
-  const solo = (f) => !!f && !!f.src && SOLO.has(f.src.split("/").pop());
+  /* pictures set at the room's full width whatever their height, and set
+     first among their section's pictures: Typography & Patterns' three
+     prints, flat (1 Oct 2026, his "let's do these full size and let's also
+     put them above the pattern blocks vs after in each of their
+     sections"). The files are 1860px, so the full width is still honest.
+     They hold still: the drift crops a tenth of a picture, and a print's
+     type runs to its edges */
+  const FULL = new Set([
+    "typography-patterns-the-fancy-poster-flat.png", "typography-patterns-stepper-poster-flat.png",
+    "typography-patterns-white-poster-flat.png",
+  ]);
+  const fileOf = (f) => (f && f.src ? f.src.split("/").pop() : "");
+  const full = (f) => FULL.has(fileOf(f));
+  const solo = (f) => SOLO.has(fileOf(f)) || full(f);
   const partition = (list, W, V, g) => {
     const n = list.length, T = W * 0.45, Vc = V * 0.84;
     /* a hero: honest across the whole room and not so tall that the glass
@@ -1617,7 +1639,7 @@
       parts.rows.forEach((R) => {
         const n = R.ps.length, g = parseFloat(R.row.style.getPropertyValue("--g")) || 8;
         const sum = R.ps.reduce((s, f) => s + ratio(f), 0);
-        const Hc = Math.min(Math.min(...R.ps.map((f) => f.h / 2)), V * 0.84);
+        const Hc = Math.min(Math.min(...R.ps.map((f) => f.h / 2)), R.ps.every(full) ? Infinity : V * 0.84);
         const maxW = Hc * sum + g * (n - 1);
         let w, ml;
         if (maxW >= Wf - 0.5) { w = Wf; ml = 0; }
@@ -1632,7 +1654,7 @@
         /* a lone picture across the room drifts, when a tenth more of it
            is still honest */
         const pb = R.row.firstElementChild;
-        if (pb) pb.classList.toggle("par", mo && n === 1 && w >= Wf - 0.5 && R.ps[0].w / 2 >= 1.1 * w && !pb._still);
+        if (pb) pb.classList.toggle("par", mo && n === 1 && w >= Wf - 0.5 && R.ps[0].w / 2 >= 1.1 * w && !pb._still && !full(R.ps[0]));
         /* a pair or more, as the live site's plates pair: each a tenth
            taller and the neighbours drifting against each other, where a
            tenth more is still honest */
