@@ -1,0 +1,361 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sally Beauty · One idea, every channel</title>
+<meta name="robots" content="noindex">
+<!-- A storyboard for how the Sally case study could run (2 Oct 2026): the
+     strategy, the stories it produced, one brief in every shape, and the
+     machine that fills the templates. His asks: "work into these concepts
+     in a new visual way? the shop the look and the two color stories",
+     "add conceptual creative story telling ... creative strategy", and
+     "show how it's one system. one 1x1, vertical, horizontal all work
+     across the channels and pull from our DAM ... coming from the sally
+     portal and being built into these templates via AI and data".
+     Every line of Sally copy is his, from the concepts; the machine's
+     parts are named as the Sally Marketing OS study names them. The kit's
+     products are set as words: his concept's thumbnails were placeholders
+     (a nail polish for the developer, press-ons for the bond protector). -->
+<link rel="preload" href="/fonts/Satoshi-Variable.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="push.css">
+<style>
+  .sb-top { padding-top: clamp(32px, 4.4vw, 72px); }
+  .sb-top h1 { font-size: clamp(60px, 10.4vw, 164px); line-height: 0.86; font-weight: 600; letter-spacing: -0.06em; }
+  .sb-top .t-deck { max-width: 52ch; margin-top: 24px; }
+  .toc { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: var(--gap); margin-top: clamp(36px, 4vw, 60px); }
+  .toc a { display: flex; flex-direction: column; justify-content: space-between; min-height: 132px; border-radius: var(--r); background: var(--soft); padding: 16px 18px; }
+  .toc .n { font-size: 13px; font-weight: 600; color: var(--red-deep); }
+  .toc .t { font-size: 19px; line-height: 1.1; font-weight: 600; letter-spacing: -0.02em; }
+  .ch-head { display: flex; gap: 14px; align-items: baseline; margin-bottom: 18px; }
+  .ch-head .n { font-weight: 600; color: var(--red-deep); }
+  /* 01 the strategy */
+  .pillars { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--gap); margin-top: clamp(32px, 4vw, 56px); }
+  .pillar { display: flex; flex-direction: column; justify-content: space-between; min-height: clamp(300px, 28vw, 420px); border-radius: calc(var(--r) + 4px); padding: clamp(22px, 2.4vw, 34px); background: var(--soft); }
+  .pillar h3 { font-size: clamp(34px, 3.6vw, 56px); line-height: 0.92; font-weight: 600; letter-spacing: -0.05em; }
+  .pillar p { margin-top: 16px; font-size: 16px; line-height: 1.5; color: var(--ink-2); max-width: 36ch; }
+  .pillar .to { font-size: 14px; font-weight: 600; color: var(--red-deep); }
+  .platform { margin-top: clamp(56px, 7vw, 104px); text-align: center; }
+  .platform p.big { font-size: clamp(44px, 7vw, 110px); line-height: 0.9; font-weight: 600; letter-spacing: -0.055em; }
+  /* 02 shop the look: the kit as a recipe */
+  .kit { display: grid; grid-template-columns: 5fr 7fr; gap: var(--gap); align-items: stretch; }
+  .kit > .ph { border-radius: calc(var(--r) + 6px); min-height: 100%; }
+  .kit .side { border-radius: calc(var(--r) + 6px); background: var(--soft); padding: clamp(28px, 3.2vw, 52px); display: flex; flex-direction: column; }
+  .nums { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--gap); margin-top: clamp(24px, 3vw, 40px); }
+  .nums .k { display: block; font-size: clamp(56px, 6.4vw, 104px); line-height: 0.8; font-weight: 700; letter-spacing: -0.07em; }
+  .nums .v { display: block; margin-top: 10px; font-size: 14px; color: var(--grey); }
+  .kitlist { display: grid; gap: 8px; margin-top: clamp(28px, 3.4vw, 44px); }
+  .kc { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr) auto; gap: 16px; align-items: center; border-radius: 14px; background: #fff; padding: 14px 18px; }
+  .kc .w { font-size: clamp(22px, 2.2vw, 32px); line-height: 1; font-weight: 700; letter-spacing: -0.05em; color: var(--word); }
+  .kc .b { display: block; font-size: 11.5px; font-weight: 600; letter-spacing: 0.09em; text-transform: uppercase; color: var(--grey); }
+  .kc .nm { display: block; font-size: 15px; font-weight: 500; }
+  .kc .pr { font-size: 16px; font-weight: 600; }
+  .total { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 22px; margin-top: auto; padding-top: clamp(24px, 3vw, 40px); }
+  .total .now { font-size: clamp(36px, 3.6vw, 52px); font-weight: 700; letter-spacing: -0.05em; }
+  .total s { font-size: 18px; color: var(--grey); }
+  .total .save { font-size: 12.5px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--red-deep); }
+  .projects { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--gap); margin-top: var(--gap); }
+  .proj { display: grid; grid-template-columns: 96px minmax(0, 1fr); gap: 16px; align-items: center; border-radius: var(--r); background: var(--soft); padding: 10px; }
+  .proj .ph { aspect-ratio: 1; border-radius: 10px; }
+  .proj .lv { font-size: 11.5px; font-weight: 600; letter-spacing: 0.09em; text-transform: uppercase; color: var(--red-deep); }
+  .proj .t { display: block; margin-top: 4px; font-size: 18px; line-height: 1.1; font-weight: 600; letter-spacing: -0.02em; }
+  .proj .s { display: block; margin-top: 6px; font-size: 13.5px; color: var(--grey); }
+  /* 03 the color code */
+  .code { display: grid; grid-template-columns: 5fr 7fr; gap: clamp(28px, 4vw, 72px); align-items: center; }
+  .decode { border-radius: calc(var(--r) + 6px); background: var(--soft); padding: clamp(28px, 3vw, 48px); }
+  .decode .glyph { font-size: clamp(150px, 19vw, 300px); line-height: 0.78; font-weight: 700; letter-spacing: -0.08em; }
+  .decode .glyph span { color: #c07a45; }
+  .decode .keys { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 24px; }
+  .decode .keys b { display: block; font-size: 20px; font-weight: 600; letter-spacing: -0.02em; }
+  .decode .keys small { font-size: 14px; color: var(--grey); }
+  .ramp { display: grid; grid-template-columns: repeat(10, minmax(0, 1fr)); gap: 6px; margin-top: 20px; }
+  .ramp li { aspect-ratio: 3 / 4; border-radius: 10px; display: flex; align-items: flex-end; padding: 8px; color: #fff; font-size: 12px; font-weight: 600; transition: transform 0.3s ease; }
+  .ramp li:nth-child(n+8) { color: var(--ink); }
+  .ramp li.on { transform: translateY(-12px); box-shadow: 0 10px 24px rgba(28, 20, 19, 0.18); }
+  .rampkey { display: flex; justify-content: space-between; margin-top: 10px; font-size: 13px; color: var(--grey); }
+  .tones { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 8px; margin-top: 20px; }
+  .tones li { display: grid; gap: 4px; }
+  .tones .sw { aspect-ratio: 1; border-radius: 12px; transition: transform 0.3s ease; }
+  .tones li.on .sw { transform: translateY(-12px); box-shadow: 0 10px 24px rgba(28, 20, 19, 0.18); }
+  .tones b { margin-top: 6px; font-size: 16px; font-weight: 600; }
+  .tones small { font-size: 13px; color: var(--grey); }
+  .step { margin-top: clamp(32px, 4vw, 52px); }
+  .step:first-child { margin-top: 0; }
+  .step .lab { font-size: 12px; font-weight: 600; letter-spacing: 0.09em; text-transform: uppercase; color: var(--red-deep); }
+  .step h3 { margin-top: 8px; font-size: clamp(28px, 2.8vw, 42px); line-height: 1; font-weight: 600; letter-spacing: -0.04em; }
+  .step p { margin-top: 12px; font-size: 16px; line-height: 1.55; color: var(--ink-2); max-width: 52ch; }
+  /* 04 the vivids */
+  .spec { position: relative; margin-top: clamp(36px, 4vw, 60px); }
+  .spec .pins { display: grid; grid-template-columns: repeat(16, minmax(0, 1fr)); gap: 8px; align-items: end; }
+  .pin { grid-row: 1; }
+  .pin .ph { aspect-ratio: 4 / 5; border-radius: var(--r); }
+  .pin p { margin-top: 10px; font-size: 16px; font-weight: 600; letter-spacing: -0.015em; }
+  .pin small { display: block; font-size: 13px; font-weight: 500; color: var(--grey); }
+  .hues { display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); gap: 8px; margin-top: 18px; }
+  .hues .sw { display: block; height: clamp(72px, 7vw, 110px); border-radius: 12px; }
+  .hues small { display: block; margin-top: 8px; font-size: 13px; color: var(--grey); }
+  .hueskey { display: flex; justify-content: space-between; margin-top: 6px; font-size: 13px; font-weight: 600; }
+  .vivid-copy { display: grid; grid-template-columns: 7fr 5fr; gap: var(--gap); align-items: end; }
+  /* 05 one brief, every shape */
+  .brief { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 8px; margin-top: clamp(28px, 3vw, 40px); }
+  .brief div { border-radius: 14px; background: var(--soft); padding: 14px 16px; }
+  .brief b { display: block; font-size: 11.5px; font-weight: 600; letter-spacing: 0.09em; text-transform: uppercase; color: var(--grey); }
+  .brief span { display: block; margin-top: 6px; font-size: 15px; line-height: 1.35; font-weight: 500; }
+  .brief em { display: block; margin-top: 6px; font-style: normal; font-size: 12.5px; color: var(--red-deep); font-weight: 600; }
+  .shapes { display: grid; grid-template-columns: 1fr 1fr 0.62fr 1.9fr; grid-template-rows: auto auto; gap: var(--gap); margin-top: var(--gap); align-items: start; }
+  .fx { min-width: 0; }
+  .fx.wide { grid-column: 4; }
+  .fx figcaption { margin-top: 10px; font-size: 13.5px; color: var(--grey); }
+  .fx figcaption b { color: var(--ink); font-weight: 600; margin-right: 6px; }
+  .fx-box { position: relative; overflow: hidden; border-radius: 14px; background: #fff; box-shadow: 0 0 0 1px rgba(28, 20, 19, 0.06), 0 12px 32px rgba(28, 20, 19, 0.08); container-type: inline-size; }
+  .fx-box.sq { aspect-ratio: 1; } .fx-box.v45 { aspect-ratio: 4 / 5; } .fx-box.v916 { aspect-ratio: 9 / 16; } .fx-box.h169 { aspect-ratio: 16 / 9; display: flex; } .fx-box.h31 { aspect-ratio: 3 / 1; display: flex; }
+  .fx-photo { position: absolute; inset: 0; }
+  .fx-photo img { width: 100%; height: 100%; object-fit: cover; }
+  .fx-photo.top { bottom: 38%; }
+  .fx-photo.half { position: relative; inset: auto; flex: 1 1 50%; }
+  .fx-photo.r { order: 2; }
+  .fx-card { position: absolute; left: 5cqw; right: 22cqw; bottom: 5cqw; border-radius: 4cqw; background: #fff; padding: 5cqw; }
+  .fx-card.low { right: 5cqw; }
+  .fx-under { position: absolute; left: 0; right: 0; bottom: 0; height: 38%; padding: 6cqw; display: flex; flex-direction: column; justify-content: center; }
+  .fx-side { flex: 1 1 50%; padding: 5cqw; display: flex; flex-direction: column; justify-content: center; align-items: flex-start; }
+  .fx-msg { flex: 1 1 50%; padding: 4cqw; display: flex; flex-direction: column; justify-content: center; align-items: flex-start; color: #fff; }
+  .fx-k { font-size: max(7px, 3.4cqw); font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--red-deep); }
+  .fx-msg .fx-k { color: rgba(255, 255, 255, 0.78); font-size: max(7px, 1.6cqw); }
+  .fx-h { margin-top: 1.6cqw; font-size: max(10px, 7.4cqw); line-height: 0.95; font-weight: 600; letter-spacing: -0.045em; }
+  .h169 .fx-k { font-size: max(7px, 1.6cqw); } .h169 .fx-h { font-size: max(10px, 4.4cqw); margin-top: 1cqw; }
+  .h31 .fx-h { font-size: max(10px, 3.4cqw); margin-top: 0.8cqw; }
+  .v916 .fx-k { font-size: max(7px, 4.4cqw); } .v916 .fx-h { font-size: max(10px, 10cqw); }
+  .fx-chip { display: inline-block; margin-top: 3cqw; padding: 1.2cqw 3cqw; border-radius: 99px; color: #fff; font-size: max(8px, 3.6cqw); font-weight: 700; }
+  .h169 .fx-chip { margin-top: 1.6cqw; padding: 0.7cqw 1.6cqw; font-size: max(8px, 1.8cqw); }
+  .fx-pill { display: inline-block; margin-top: 3.4cqw; padding: 2cqw 4.4cqw; border-radius: 99px; background: var(--ink); color: #fff; font-size: max(8px, 3.4cqw); font-weight: 600; }
+  .h169 .fx-pill { margin-top: 2cqw; padding: 1cqw 2.4cqw; font-size: max(8px, 1.7cqw); }
+  .v916 .fx-pill { font-size: max(8px, 4.6cqw); }
+  .fx-link { margin-top: 1.4cqw; font-size: max(8px, 1.5cqw); font-weight: 600; }
+  .fx-logo { position: absolute; left: 6cqw; top: 6cqw; width: 26cqw; height: auto; filter: brightness(0) invert(1); }
+  .row-lab { display: flex; justify-content: space-between; align-items: baseline; margin-top: clamp(40px, 5vw, 72px); }
+  /* 06 the machine */
+  .flow { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: var(--gap); margin-top: clamp(32px, 4vw, 56px); counter-reset: f; }
+  .flow li { position: relative; display: flex; flex-direction: column; justify-content: space-between; min-height: clamp(260px, 22vw, 320px); border-radius: calc(var(--r) + 4px); background: rgba(255, 255, 255, 0.08); padding: clamp(18px, 1.8vw, 26px); }
+  .flow li::before { counter-increment: f; content: counter(f, decimal-leading-zero); font-size: 13px; font-weight: 600; color: rgba(255, 255, 255, 0.6); }
+  .flow li:not(:last-child)::after { content: "\2192"; position: absolute; right: calc(var(--gap) * -0.5 - 9px); top: 50%; z-index: 1; width: 18px; height: 18px; margin-top: -9px; border-radius: 50%; background: var(--red); color: #fff; font-size: 11px; line-height: 18px; text-align: center; }
+  .flow h3 { font-size: clamp(24px, 2.2vw, 34px); line-height: 1; font-weight: 600; letter-spacing: -0.035em; }
+  .flow p { margin-top: 12px; font-size: 15px; line-height: 1.5; color: rgba(255, 255, 255, 0.8); }
+  .weeks { margin-top: clamp(56px, 7vw, 104px); }
+  .weeks p.big { font-size: clamp(48px, 7.6vw, 120px); line-height: 0.88; font-weight: 600; letter-spacing: -0.055em; }
+  .weeks p.big span { color: rgba(255, 255, 255, 0.5); }
+  .pushed { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--gap); margin-top: clamp(28px, 3vw, 44px); }
+  .pushed a { display: flex; flex-direction: column; justify-content: space-between; min-height: 150px; border-radius: var(--r); background: var(--soft); padding: 18px 20px; font-size: 21px; line-height: 1.1; font-weight: 600; letter-spacing: -0.02em; }
+  .pushed a small { font-size: 13.5px; font-weight: 500; letter-spacing: 0; color: var(--grey); }
+  @media (max-width: 860px) {
+    .toc { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .pillars, .projects, .flow, .pushed { grid-template-columns: minmax(0, 1fr); }
+    .pillar { min-height: 0; gap: 24px; }
+    .kit, .code, .vivid-copy { grid-template-columns: minmax(0, 1fr); }
+    .kit > .ph { aspect-ratio: 4 / 5; }
+    .kc { grid-template-columns: minmax(0, 1fr) auto; } .kc .kc-m { grid-column: 1; grid-row: 2; } .kc .pr { grid-row: 1 / 3; grid-column: 2; }
+    .spec .pins { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .pin { grid-column: auto !important; }
+    .hues { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    .brief { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .shapes { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .fx.wide { grid-column: 1 / -1; }
+    .flow li:not(:last-child)::after { display: none; }
+  }
+  /* Creative / Engine: the same page, with the engine's slots shown */
+  .switch { position: fixed; left: 50%; bottom: 18px; z-index: 50; transform: translateX(-50%); display: flex; gap: 4px; padding: 4px; border-radius: 999px; background: rgba(28, 20, 19, 0.92); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); box-shadow: 0 10px 30px rgba(28, 20, 19, 0.25); }
+  .switch button { height: 40px; padding: 0 20px; border: 0; border-radius: 999px; background: transparent; color: rgba(255, 255, 255, 0.72); font: inherit; font-size: 14.5px; font-weight: 600; cursor: pointer; }
+  .switch button[aria-pressed="true"] { background: #fff; color: var(--ink); }
+  [data-slot] { position: relative; }
+  body.engine [data-slot]::before { content: ""; position: absolute; inset: -6px; z-index: 4; border-radius: 16px; background: rgba(225, 19, 36, 0.09); pointer-events: none; }
+  body.engine [data-slot]::after { content: attr(data-slot); position: absolute; left: 4px; top: -18px; z-index: 6; padding: 6px 12px; border-radius: 999px; background: var(--red); color: #fff; font-size: 12px; font-weight: 600; line-height: 1.2; letter-spacing: 0; text-transform: none; font-style: normal; text-align: left; white-space: nowrap; box-shadow: 0 6px 16px rgba(225, 19, 36, 0.28); pointer-events: none; }
+  body.engine .pillars[data-slot]::after, body.engine p.big[data-slot]::after { left: 50%; transform: translateX(-50%); }
+  body.engine .pillars[data-slot]::after { left: 0; transform: none; }
+  /* a photograph clips its corners, so its tag sits inside */
+  body.engine .ph[data-slot]::before { inset: 0; border-radius: 0; }
+  body.engine .ph[data-slot]::after { top: 14px; left: 14px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="sb-top">
+    <p class="t-label grey">Sally Beauty · How the study could run · Draft</p>
+    <h1 style="margin-top:20px">One idea, every channel.</h1>
+    <p class="t-deck">The creative, and the engine that builds it. Every concept here is a story first and a set of slots second, made to be filled by the Sally Marketing OS: photography from the Asset Hub, products from the product tool, copy from the AI. Switch to Engine to see the slots.</p>
+    <nav class="toc">
+      <a href="#c1"><span class="n">01</span><span class="t">The strategy</span></a>
+      <a href="#c2"><span class="n">02</span><span class="t">Shop the look</span></a>
+      <a href="#c3"><span class="n">03</span><span class="t">The color code</span></a>
+      <a href="#c4"><span class="n">04</span><span class="t">The vivids</span></a>
+      <a href="#c5"><span class="n">05</span><span class="t">One brief, every shape</span></a>
+      <a href="#c6"><span class="n">06</span><span class="t">The machine</span></a>
+    </nav>
+  </header>
+
+  <!-- 01 -->
+  <section class="story" id="c1">
+    <div class="ch-head t-label"><span class="n">01</span><span class="grey">The strategy</span></div>
+    <h2 class="t-d1">Three ideas Ulta and Sephora can't easily copy.</h2>
+    <div class="pillars" data-slot="Strategy · written by the team">
+      <div class="pillar"><div><h3>The doer's store.</h3><p>Pro-grade color, tools, and the steps to use them. Pick a project, grab the kit, and we're with you the whole way.</p></div><span class="to">Chapter 02 · Shop the look</span></div>
+      <div class="pillar"><div><h3>Color expertise.</h3><p>Nobody knows color like Sally. 8,000+ shades, real chemistry, and the people to help you nail it the first time.</p></div><span class="to">Chapters 03 and 04 · The color code, the vivids</span></div>
+      <div class="pillar"><div><h3>Education.</h3><p>Watch, then shop it. A licensed colorist checks your plan, your formula, and your developer before you commit. Free.</p></div><span class="to">Runs through every story</span></div>
+    </div>
+    <div class="platform">
+      <p class="t-label grey">The platform</p>
+      <p class="big" data-slot="Platform · written by the team" style="margin-top:18px">Salon-level results, doable at&nbsp;home.</p>
+      <p class="t-deck grey" style="margin-top:20px">In the voice of the beauty-obsessed best friend.</p>
+    </div>
+  </section>
+
+  <!-- 02 -->
+  <section class="story" id="c2">
+    <div class="ch-head t-label"><span class="n">02</span><span class="grey">The doer's store · Shop the look</span></div>
+    <div class="kit">
+      <figure class="ph" data-slot="Photo · Asset Hub"><img src="../sally-system/assets/img/blonde-port.jpg" alt="Long blonde waves, orange nails, outdoors" loading="lazy"></figure>
+      <div class="side">
+        <p class="t-label red">The Platinum Kit · Everything you need</p>
+        <h2 class="t-d2" data-slot="Headline · AI, in the brand voice" style="margin-top:14px">Go platinum, nothing missing.</h2>
+        <div class="nums" data-slot="Steps and time · project data">
+          <div><span class="k">6</span><span class="v">steps, advanced</span></div>
+          <div><span class="k">~2</span><span class="v">hours, about</span></div>
+          <div><span class="k">5</span><span class="v">products in one bag</span></div>
+        </div>
+        <ol class="kitlist" data-slot="5 SKUs · product tool"><li class="kc"><span class="w">lightener</span><span class="kc-m"><span class="b">ion</span><span class="nm">Creme Lightener</span></span><span class="pr">$8.99</span></li><li class="kc"><span class="w">developer</span><span class="kc-m"><span class="b">ion</span><span class="nm">30 Vol Developer</span></span><span class="pr">$6.49</span></li><li class="kc"><span class="w">toner</span><span class="kc-m"><span class="b">Wella</span><span class="nm">T18 Toner</span></span><span class="pr">$7.99</span></li><li class="kc"><span class="w">bowl &amp; brush</span><span class="kc-m"><span class="b">GVP</span><span class="nm">Bowl &amp; Brush Set</span></span><span class="pr">$4.99</span></li><li class="kc"><span class="w">bond protector</span><span class="kc-m"><span class="b">ion</span><span class="nm">Bond Protector</span></span><span class="pr">$12.99</span></li></ol>
+        <div class="total" data-slot="Kit price · product tool"><span class="now">$36.99</span><s>$41.45</s><span class="save">Save $4.46 as a kit</span><a class="pill" href="#">Add all 5 to bag</a><a class="go" href="#">Or shop pieces</a></div>
+      </div>
+    </div>
+    <div class="projects" data-slot="One template, three projects">
+      <a class="proj" href="#"><span class="ph"><img src="../sally-system/assets/img/blonde-port.jpg" alt="" loading="lazy"></span><span><span class="lv">Advanced · Color, lighten</span><span class="t">Go platinum blonde</span><span class="s">6 steps · ~2 hrs</span></span></a>
+      <a class="proj" href="#"><span class="ph"><img src="../sally-system/assets/img/copper-port.jpg" alt="" loading="lazy"></span><span><span class="lv">Beginner · Color, cover</span><span class="t">Cover grays in 20 minutes</span><span class="s">4 steps · ~25 min</span></span></a>
+      <a class="proj" href="#"><span class="ph"><img src="../sally-system/assets/img/purple-nails-port.jpg" alt="" loading="lazy"></span><span><span class="lv">Intermediate · Color, vivid</span><span class="t">Try a vivid for the first time</span><span class="s">5 steps · ~90 min</span></span></a>
+    </div>
+  </section>
+
+  <!-- 03 -->
+  <section class="story" id="c3">
+    <div class="ch-head t-label"><span class="n">03</span><span class="grey">Color expertise · The color code</span></div>
+    <h2 class="t-d1" style="margin-bottom:clamp(28px,3.4vw,52px)">Two steps to your shade.</h2>
+    <div class="code">
+      <div class="decode" data-slot="Shade code · catalog data">
+        <p class="glyph" aria-label="8C">8<span>C</span></p>
+        <div class="keys"><div><b>8 is the level.</b><small>How light: 1 is black, 10 the lightest blonde.</small></div><div><b>C is the tone.</b><small>The letter after the level: here, copper.</small></div></div>
+      </div>
+      <div>
+        <div class="step">
+          <p class="lab">1 · Find your level</p>
+          <h3>Know your level, own your color.</h3>
+          <p>Every great color starts with your level, 1 (black) to 10 (lightest blonde). Find yours, and we'll match the formula, developer, and toner.</p>
+          <ol class="ramp" data-slot="Levels · catalog data"><li style="background:#1a1411" class=""><span>1</span></li><li style="background:#2b1d16" class=""><span>2</span></li><li style="background:#3d2a1c" class=""><span>3</span></li><li style="background:#5a3a22" class=""><span>4</span></li><li style="background:#6e4828" class=""><span>5</span></li><li style="background:#8a5e34" class=""><span>6</span></li><li style="background:#a87c4a" class=""><span>7</span></li><li style="background:#c6a06a" class="on"><span>8</span></li><li style="background:#ddc394" class=""><span>9</span></li><li style="background:#ece0bf" class=""><span>10</span></li></ol>
+          <div class="rampkey"><span>1 · Black</span><span>10 · Lightest</span></div>
+        </div>
+        <div class="step">
+          <p class="lab">2 · Pick your tone</p>
+          <h3>Same level, five personalities.</h3>
+          <p>Level 8, five ways. Tone is the letter after your level: A cools it down, N keeps it honest, G, C and R warm it up. Crack the code and the wall of boxes makes sense.</p>
+          <ol class="tones" data-slot="Tones · catalog data"><li class=""><span class="sw" style="background:#b9aa8d"></span><b>8A</b><small>Ash</small></li><li class=""><span class="sw" style="background:#c2a173"></span><b>8N</b><small>Neutral</small></li><li class=""><span class="sw" style="background:#cfa45e"></span><b>8G</b><small>Gold</small></li><li class="on"><span class="sw" style="background:#c07a45"></span><b>8C</b><small>Copper</small></li><li class=""><span class="sw" style="background:#a8503c"></span><b>8R</b><small>Red</small></li></ol>
+          <div class="rampkey"><span>Cool</span><span>Warm</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 04 -->
+  <section class="story" id="c4">
+    <div class="ch-head t-label"><span class="n">04</span><span class="grey">Color expertise · The vivids</span></div>
+    <div class="vivid-copy">
+      <h2 class="t-d1">Vivids skip the levels.</h2>
+      <div><p class="t-deck">No numbers here, just pigment. Most vivids want a level 8 or lighter base, so grab the lightener first. Then pick your loud.</p><a class="pill" href="#" style="margin-top:22px">All 60 shades</a></div>
+    </div>
+    <div class="spec">
+      <div class="pins" data-slot="Looks · Asset Hub">
+        <figure class="pin" style="grid-column:1 / span 4"><div class="ph"><img src="../sally-system/assets/img/cherry-nails-port.jpg" alt="Long dark waves and a red top" loading="lazy"></div><p>Cherry Cola<small>Semi-permanent</small></p></figure>
+        <figure class="pin" style="grid-column:6 / span 4"><div class="ph"><img src="../sally-system/assets/img/purple-nails-port.jpg" alt="Violet curls" loading="lazy"></div><p>Electric Violet<small>Semi-permanent</small></p></figure>
+        <figure class="pin" style="grid-column:12 / span 4"><div class="ph"><img src="../sally-system/assets/img/teal-nails-port.jpg" alt="Teal braids" loading="lazy" style="object-position:64% 50%"></div><p>Deep Sea Teal<small>Semi-permanent</small></p></figure>
+      </div>
+      <ol class="hues" data-slot="Shades · catalog data"><li><span class="sw" style="background:#c4172c"></span><small>Cherry</small></li><li><span class="sw" style="background:#d1377f"></span><small>Magenta</small></li><li><span class="sw" style="background:#e58cb4"></span><small>Rose</small></li><li><span class="sw" style="background:#7a3fa0"></span><small>Violet</small></li><li><span class="sw" style="background:#33408f"></span><small>Indigo</small></li><li><span class="sw" style="background:#2a6fdb"></span><small>Blue</small></li><li><span class="sw" style="background:#14564f"></span><small>Teal</small></li><li><span class="sw" style="background:#1f8a5b"></span><small>Green</small></li></ol>
+      <div class="hueskey"><span>Warm side</span><span>Cool side</span></div>
+    </div>
+  </section>
+
+  <!-- 05 -->
+  <section class="story" id="c5">
+    <div class="ch-head t-label"><span class="n">05</span><span class="grey">One system</span></div>
+    <h2 class="t-d1">One brief, every shape.</h2>
+    <p class="t-deck" style="margin-top:20px;max-width:56ch">A square, a vertical and a horizontal, from one locked template set, for every channel. The brief carries the story and the data; the templates do the rest.</p>
+    <div class="row-lab"><p class="t-label">The brief · The Platinum Kit</p><p class="t-label grey">Story 02</p></div>
+    <div class="brief">
+      <div><b>Story</b><span>Go platinum, nothing missing.</span></div>
+      <div><b>Photography</b><span>Blonde waves, outdoors</span><em>From the Asset Hub</em></div>
+      <div><b>Products</b><span>5 SKUs, $36.99 as a kit</span><em>From the product tool</em></div>
+      <div><b>Rules</b><span>Type, color, copy off the photo</span><em>From the brand guidelines</em></div>
+      <div><b>Channels</b><span>Homepage, email, social</span><em>One request per channel</em></div>
+    </div>
+    <div class="shapes" data-slot="Locked templates · five shapes">
+      <figure class="fx"><div class="fx-box sq"><div class="fx-photo"><img src="../sally-system/assets/img/blonde-port.jpg" alt="" loading="lazy" style="object-position:50% 30%"></div><div class="fx-card"><p class="fx-k">The Platinum Kit</p><p class="fx-h">Go platinum, nothing missing.</p><span class="fx-chip" style="background:#E11324">$36.99 kit</span></div></div><figcaption><b>1:1</b> Social feed</figcaption></figure>
+      <figure class="fx"><div class="fx-box v45"><div class="fx-photo top"><img src="../sally-system/assets/img/blonde-port.jpg" alt="" loading="lazy" style="object-position:50% 30%"></div><div class="fx-under"><p class="fx-k">The Platinum Kit</p><p class="fx-h">Go platinum, nothing missing.</p><span class="fx-pill">Shop the kit</span></div></div><figcaption><b>4:5</b> Email hero</figcaption></figure>
+      <figure class="fx"><div class="fx-box v916"><div class="fx-photo"><img src="../sally-system/assets/img/blonde-port.jpg" alt="" loading="lazy" style="object-position:50% 30%"></div><img class="fx-logo" src="../sally-system/assets/brand/sally-logo-red.webp" alt=""><div class="fx-card low"><p class="fx-k">The Platinum Kit</p><p class="fx-h">Go platinum, nothing missing.</p><span class="fx-pill">Shop the kit</span></div></div><figcaption><b>9:16</b> Stories</figcaption></figure>
+      <figure class="fx wide"><div class="fx-box h169"><div class="fx-photo half"><img src="../sally-system/assets/img/blonde-port.jpg" alt="" loading="lazy" style="object-position:50% 30%"></div><div class="fx-side"><p class="fx-k">The Platinum Kit</p><p class="fx-h">Go platinum, nothing missing.</p><span class="fx-chip" style="background:#E11324">$36.99 kit</span><span class="fx-pill">Shop the kit</span></div></div><figcaption><b>16:9</b> Homepage hero</figcaption></figure>
+      <figure class="fx wide"><div class="fx-box h31"><div class="fx-msg" style="background:#E11324"><p class="fx-k">The Platinum Kit</p><p class="fx-h">Go platinum, nothing missing.</p><span class="fx-link">Shop the kit →</span></div><div class="fx-photo half r"><img src="../sally-system/assets/img/blonde-port.jpg" alt="" loading="lazy" style="object-position:50% 30%"></div></div><figcaption><b>3:1</b> Split banner</figcaption></figure>
+    </div>
+    <div class="row-lab"><p class="t-label">The same templates · Colorfest</p><p class="t-label grey">A campaign on the Marketing OS board</p></div>
+    <div class="brief">
+      <div><b>Story</b><span>Wear your color out loud.</span></div>
+      <div><b>Photography</b><span>Blue curls, laughing</span><em>From the Asset Hub</em></div>
+      <div><b>Products</b><span>The vivids edit</span><em>From the product tool</em></div>
+      <div><b>Color</b><span>The card takes the photo's blue</span><em>Sampled from the photograph</em></div>
+      <div><b>Channels</b><span>Homepage, email, social</span><em>One request per channel</em></div>
+    </div>
+    <div class="shapes" data-slot="Locked templates · five shapes">
+      <figure class="fx"><div class="fx-box sq"><div class="fx-photo"><img src="../sally-system/assets/img/vivids-port.jpg" alt="" loading="lazy" style="object-position:50% 25%"></div><div class="fx-card"><p class="fx-k">Colorfest · Through July 6</p><p class="fx-h">Wear your color out loud.</p></div></div><figcaption><b>1:1</b> Social feed</figcaption></figure>
+      <figure class="fx"><div class="fx-box v45"><div class="fx-photo top"><img src="../sally-system/assets/img/vivids-port.jpg" alt="" loading="lazy" style="object-position:50% 25%"></div><div class="fx-under"><p class="fx-k">Colorfest · Through July 6</p><p class="fx-h">Wear your color out loud.</p><span class="fx-pill">Shop the edit</span></div></div><figcaption><b>4:5</b> Email hero</figcaption></figure>
+      <figure class="fx"><div class="fx-box v916"><div class="fx-photo"><img src="../sally-system/assets/img/vivids-port.jpg" alt="" loading="lazy" style="object-position:50% 25%"></div><img class="fx-logo" src="../sally-system/assets/brand/sally-logo-red.webp" alt=""><div class="fx-card low"><p class="fx-k">Colorfest · Through July 6</p><p class="fx-h">Wear your color out loud.</p><span class="fx-pill">Shop the edit</span></div></div><figcaption><b>9:16</b> Stories</figcaption></figure>
+      <figure class="fx wide"><div class="fx-box h169"><div class="fx-photo half"><img src="../sally-system/assets/img/vivids-port.jpg" alt="" loading="lazy" style="object-position:50% 25%"></div><div class="fx-side"><p class="fx-k">Colorfest · Through July 6</p><p class="fx-h">Wear your color out loud.</p><span class="fx-pill">Shop the edit</span></div></div><figcaption><b>16:9</b> Homepage hero</figcaption></figure>
+      <figure class="fx wide"><div class="fx-box h31"><div class="fx-msg" style="background:#102964"><p class="fx-k">Colorfest · Through July 6</p><p class="fx-h">Wear your color out loud.</p><span class="fx-link">Shop the edit →</span></div><div class="fx-photo half r"><img src="../sally-system/assets/img/vivids-port.jpg" alt="" loading="lazy" style="object-position:50% 25%"></div></div><figcaption><b>3:1</b> Split banner</figcaption></figure>
+    </div>
+  </section>
+</div>
+
+<!-- 06 -->
+<section class="band ink on-dark" id="c6">
+  <div class="in">
+    <div class="ch-head t-label"><span class="n" style="color:#fff">06</span><span class="grey">The machine</span></div>
+    <h2 class="t-d1">From a signal to a finished asset.</h2>
+    <ol class="flow">
+      <li><div><h3>Signals</h3><p>Live signals, performance data and the go-to-market plan.</p></div></li>
+      <li><div><h3>Marketing OS</h3><p>Proposes the campaign. Approve opens a production request for every channel.</p></div></li>
+      <li><div><h3>Sources</h3><p>Lifestyle photography from the Asset Hub, SKUs from the product tool, the rules from the brand guidelines.</p></div></li>
+      <li><div><h3>AI and the templates</h3><p>The AI writes the copy, pulls the SKUs, rewrites product descriptions and fills a locked template. A scanner checks it against the guidelines.</p></div></li>
+      <li><div><h3>Every channel</h3><p>Homepage, email and social, in every shape the channel asks for.</p></div></li>
+    </ol>
+    <div class="weeks"><p class="big">What took weeks now takes minutes, <span>and it scales like the team never could.</span></p></div>
+  </div>
+</section>
+
+<div class="wrap">
+  <section class="story">
+    <p class="t-label grey">Where it could go</p>
+    <h2 class="t-d2" style="margin-top:12px">The pushed pass.</h2>
+    <div class="pushed">
+      <a href="lookbook-images.html">The Lookbook<small>His layout, the new finish</small></a>
+      <a href="colorfest.html">Colorfest<small>The lineup</small></a>
+      <a href="pride.html">Pride<small>The looks are the takeover</small></a>
+      <a href="index.html">Everything, before and after<small>Live, side by side</small></a>
+    </div>
+  </section>
+</div>
+<div style="height:96px"></div>
+<div class="switch" role="group" aria-label="View"><button type="button" data-v="creative" aria-pressed="true">Creative</button><button type="button" data-v="engine" aria-pressed="false">Engine</button></div>
+<script>
+  /* the view is remembered on this device only; the page reads right without it */
+  const set = (v) => {
+    document.body.classList.toggle("engine", v === "engine");
+    document.querySelectorAll(".switch button").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.v === v)));
+    try { localStorage.setItem("sally-story-view", v); } catch (e) {}
+  };
+  document.querySelectorAll(".switch button").forEach((b) => b.addEventListener("click", () => set(b.dataset.v)));
+  let v = "creative"; try { v = localStorage.getItem("sally-story-view") || "creative"; } catch (e) {}
+  if (/[?&]view=engine/.test(location.search)) v = "engine";
+  set(v);
+</script>
+</body>
+</html>
