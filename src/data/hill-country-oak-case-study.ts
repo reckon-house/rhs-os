@@ -158,7 +158,7 @@ export const hillCountryOakCaseStudy: CaseStudy = {
     {
       id: "headline-craft",
       type: "editorial-headline",
-      text: "The Hill Country,\nan hour before sunset",
+      text: "The barrel maker wanted heritage\nwithout the Western cliché",
     },
 
     // ════════════════════════════════════════
