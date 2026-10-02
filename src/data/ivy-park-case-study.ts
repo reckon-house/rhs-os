@@ -294,7 +294,7 @@ export const ivyParkCaseStudy: CaseStudy = {
     {
       id: "headline-polygon",
       type: "editorial-headline",
-      text: "For everybody\nand every body",
+      text: "The launch page had to be the store,\nthe lookbook and the campaign\nat the same time",
     },
 
     // ── BRAND SYSTEM — built without a brand guide ──
