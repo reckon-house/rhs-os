@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sally Beauty · The vivids wall, working</title>
+<meta name="robots" content="noindex">
+<!-- The vivids wall as it works on the page (2 Oct 2026): the Color
+     Authority concept's eight hues and its three named looks, his words.
+     A hue with a look shows the look; the rest show their own swatch. The
+     lightener is his kit's (ion Creme Lightener, $8.99), offered as his
+     copy advises: "grab the lightener first". It plays itself in the room
+     (live.js) and works when clicked. -->
+<link rel="preload" href="/fonts/Satoshi-Variable.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="push.css">
+<link rel="stylesheet" href="m.css">
+<link rel="stylesheet" href="live.css">
+<style>
+.wall { display: grid; grid-template-columns: 44% minmax(0, 1fr); gap: 10px; }
+.stage { position: relative; aspect-ratio: 4 / 5; border-radius: 18px; overflow: hidden; background: var(--soft); }
+.stage .layer { position: absolute; inset: 0; opacity: 0; transition: opacity 0.45s ease; }
+.stage .layer.on { opacity: 1; }
+.stage img { width: 100%; height: 100%; object-fit: cover; }
+.stage .sw { display: flex; align-items: flex-end; padding: 18px; color: #fff; font-size: 13px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; }
+.info { display: flex; flex-direction: column; border-radius: 18px; background: var(--soft); padding: clamp(16px, 2.8vw, 24px); }
+.info .name { margin-top: 6px; font-size: clamp(30px, 5.4vw, 46px); line-height: 0.92; font-weight: 600; letter-spacing: -0.05em; transition: color 0.35s ease; }
+.info .kind { margin-top: 8px; font-size: 14px; color: var(--grey); }
+.info .row { display: flex; align-items: center; gap: 10px; margin-top: 18px; }
+.info .row .pill { height: 40px; padding: 0 18px; font-size: 14px; }
+.tip { margin-top: auto; border-radius: 14px; background: #fff; padding: 14px; }
+.tip p { font-size: 14px; line-height: 1.4; }
+.tip .pill { margin-top: 10px; height: 34px; padding: 0 14px; font-size: 13px; }
+.hues { display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); gap: 6px; }
+.hues button { display: grid; gap: 6px; }
+.hues .sw { height: clamp(44px, 8vw, 64px); border-radius: 11px; transition: transform 0.25s ease, box-shadow 0.25s ease; }
+.hues button.on .sw { transform: translateY(-8px); box-shadow: 0 8px 18px rgba(28, 20, 19, 0.22); }
+.hues small { font-size: 11.5px; color: var(--grey); }
+.hues button.on small { color: var(--ink); font-weight: 600; }
+.key { display: flex; justify-content: space-between; margin-top: -8px; font-size: 12px; font-weight: 600; }
+@media (max-width: 560px) {
+  .wall { grid-template-columns: minmax(0, 1fr); }
+  .stage { aspect-ratio: 4 / 3; }
+  .hues { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
+</style>
+</head>
+<body>
+<div class="mod lv">
+  <header class="lv-nav"><img src="../sally-system/assets/brand/sally-logo-red.webp" alt="Sally Beauty"><nav><a>Hair Color</a><a>Hair Care</a><a>Nails</a><a>Tools</a><a>Deals</a></nav><span class="lv-bag">Bag <b>0</b></span></header>
+  <div class="lv-head"><div><p class="cap red">Go bold</p><h2>The vivids wall</h2></div><a class="go">All 60 shades</a></div>
+  <div class="wall">
+    <div class="stage" id="stage" data-slot="Looks · Asset Hub"></div>
+    <div class="info">
+      <p class="cap grey">Shade</p>
+      <p class="name" id="name">Cherry Cola</p>
+      <p class="kind" id="kind">Semi-permanent</p>
+      <div class="row"><button class="pill" id="shop" type="button">Shop shade</button></div>
+      <div class="tip" data-slot="Copy · AI, in the brand voice"><p>No numbers here, just pigment. Most vivids want a level 8 or lighter base, so grab the lightener first.</p><button class="pill soft" id="lite" type="button">Add ion Creme Lightener · $8.99</button></div>
+    </div>
+  </div>
+  <div class="hues" id="hues" data-slot="Shades · catalog data"></div>
+  <p class="key"><span>Warm side</span><span>Cool side</span></p>
+</div>
+<script src="m.js"></script>
+<script src="live.js"></script>
+<script>
+(() => {
+  /* his eight hues, warm side to cool side; a look where his concepts have one */
+  const I = "../sally-system/assets/img/";
+  const HUES = [
+    ["Cherry", "#c4172c", { img: "cherry-nails-port.jpg", name: "Cherry Cola" }],
+    ["Magenta", "#d1377f"], ["Rose", "#e58cb4"],
+    ["Violet", "#7a3fa0", { img: "purple-nails-port.jpg", name: "Electric Violet" }],
+    ["Indigo", "#33408f"],
+    ["Blue", "#2a6fdb", { img: "vivids-port.jpg", name: "Blue" }],
+    ["Teal", "#14564f", { img: "teal-nails-port.jpg", name: "Deep Sea Teal", pos: "64% 50%" }],
+    ["Green", "#1f8a5b"],
+  ];
+  const stage = document.getElementById("stage"), hues = document.getElementById("hues");
+  const name = document.getElementById("name"), kind = document.getElementById("kind"), shop = document.getElementById("shop"), lite = document.getElementById("lite");
+  const layers = HUES.map(([h, c, look]) => {
+    const d = document.createElement("div"); d.className = "layer";
+    if (look) d.innerHTML = '<img src="' + I + look.img + '" alt="' + look.name + ' look"' + (look.pos ? ' style="object-position:' + look.pos + '"' : "") + ">";
+    else { d.classList.add("sw"); d.style.background = c; d.textContent = h; }
+    stage.appendChild(d); return d;
+  });
+  let cur = 0;
+  const btns = HUES.map(([h, c], i) => {
+    const b = document.createElement("button"); b.type = "button";
+    b.innerHTML = '<span class="sw" style="background:' + c + '"></span><small>' + h + "</small>";
+    b.addEventListener("click", () => { cur = i; draw(); });
+    hues.appendChild(b); return b;
+  });
+  const draw = () => {
+    const [h, c, look] = HUES[cur];
+    layers.forEach((l, i) => l.classList.toggle("on", i === cur));
+    btns.forEach((b, i) => b.classList.toggle("on", i === cur));
+    name.textContent = look ? look.name : h;
+    name.style.color = look ? "" : c;
+    kind.textContent = look && look.name !== h ? "Semi-permanent" : "Vivid";
+  };
+  shop.addEventListener("click", () => {
+    Live.fly([name]);
+    setTimeout(() => { Live.bag(Live.count + 1); Live.toast(name.textContent + " is in your bag."); }, 650);
+  });
+  lite.addEventListener("click", () => {
+    Live.fly([lite]);
+    setTimeout(() => { Live.bag(Live.count + 1); Live.toast("ion Creme Lightener is in your bag, $8.99."); }, 650);
+  });
+  draw();
+  Live.run({
+    reset: () => { cur = 0; draw(); },
+    still: () => { cur = 3; draw(); },
+    play: async () => {
+      await Live.tap(btns[1]); await Live.wait(650);
+      await Live.tap(btns[3]); await Live.wait(950);
+      await Live.tap(btns[5]); await Live.wait(850);
+      await Live.tap(btns[6]); await Live.wait(950);
+      await Live.tap(shop); await Live.wait(1300);
+      await Live.tap(lite); await Live.wait(1600);
+    },
+  });
+})();
+</script>
+</body>
+</html>

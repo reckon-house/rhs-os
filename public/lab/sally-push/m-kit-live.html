@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sally Beauty · Shop the look, working</title>
+<meta name="robots" content="noindex">
+<!-- Shop the look as it works on the page (2 Oct 2026): the DIY Studio
+     concept's projects and its Platinum Kit, his products and prices. The
+     pieces are a live sum, and the kit price holds only with all five in
+     ($41.45 less $4.46 is his $36.99). It plays itself in the room
+     (live.js) and works when clicked. The products are words, not
+     packshots: the concept's thumbnails were placeholders. -->
+<link rel="preload" href="/fonts/Satoshi-Variable.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="push.css">
+<link rel="stylesheet" href="m.css">
+<link rel="stylesheet" href="live.css">
+<style>
+.projs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.proj { display: grid; grid-template-columns: 52px minmax(0, 1fr); gap: 10px; align-items: center; border-radius: 14px; background: var(--soft); padding: 7px; box-shadow: inset 0 0 0 1.5px transparent; transition: box-shadow 0.25s ease, background 0.25s ease; }
+.proj .ph { aspect-ratio: 1; border-radius: 9px; }
+.proj .lvl { display: block; font-size: 10.5px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--red-deep); }
+.proj .t { display: block; margin-top: 2px; font-size: 14.5px; line-height: 1.12; font-weight: 600; letter-spacing: -0.02em; }
+.proj .s { display: block; margin-top: 3px; font-size: 12px; color: var(--grey); }
+.proj.on { background: #fff; box-shadow: inset 0 0 0 1.5px var(--ink); }
+.proj.pulse { animation: lv-pulse 0.5s ease; }
+@keyframes lv-pulse { 50% { transform: scale(0.97); } }
+.kit { display: grid; grid-template-columns: 38% minmax(0, 1fr); gap: 10px; }
+.kit > .ph { border-radius: 18px; min-height: 100%; }
+.kit > .ph img { object-position: 50% 30%; }
+.side { border-radius: 18px; background: var(--soft); padding: clamp(16px, 2.8vw, 24px); display: flex; flex-direction: column; }
+.side h3 { margin-top: 8px; font-size: clamp(24px, 3.8vw, 32px); line-height: 0.96; font-weight: 600; letter-spacing: -0.045em; }
+.nums { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin-top: 14px; }
+.nums .k { display: block; font-size: clamp(30px, 5vw, 42px); line-height: 0.8; font-weight: 700; letter-spacing: -0.07em; }
+.nums .v { display: block; margin-top: 6px; font-size: 12px; color: var(--grey); }
+.list { display: grid; gap: 5px; margin-top: 14px; }
+.row { display: grid; grid-template-columns: 22px minmax(0, 1fr) auto; gap: 10px; align-items: center; width: 100%; border-radius: 11px; background: #fff; padding: 8px 12px 8px 10px; transition: opacity 0.25s ease; }
+.row .box { width: 20px; height: 20px; border-radius: 6px; background: var(--ink); display: grid; place-items: center; transition: background 0.2s ease, box-shadow 0.2s ease; }
+.row .box::after { content: ""; width: 9px; height: 5px; border-left: 2px solid #fff; border-bottom: 2px solid #fff; transform: translateY(-1px) rotate(-45deg); }
+.row.off { opacity: 0.45; }
+.row.off .box { background: #fff; box-shadow: inset 0 0 0 1.5px rgba(28, 20, 19, 0.3); }
+.row.off .box::after { display: none; }
+.row .w { display: block; font-size: clamp(16px, 2.4vw, 20px); line-height: 1; font-weight: 700; letter-spacing: -0.05em; color: var(--word); }
+.row .n { display: block; margin-top: 2px; font-size: 12px; color: var(--grey); }
+.row .p { font-size: 14px; font-weight: 600; }
+.total { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; margin-top: auto; padding-top: 14px; }
+.total .now { font-size: clamp(26px, 4.2vw, 34px); font-weight: 700; letter-spacing: -0.05em; }
+.total s { font-size: 14px; color: var(--grey); }
+.total .save { font-size: 11px; font-weight: 600; letter-spacing: 0.07em; text-transform: uppercase; color: var(--red-deep); }
+.total .pill { height: 40px; padding: 0 18px; font-size: 14px; margin-left: auto; }
+.hide { display: none; }
+@media (max-width: 560px) {
+  .projs { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; }
+  .proj { grid-template-columns: minmax(0, 1fr); padding: 6px; }
+  .proj .ph { aspect-ratio: 4 / 3; }
+  .proj .s { display: none; }
+  .proj .t { font-size: 12.5px; }
+  .kit { grid-template-columns: minmax(0, 1fr); }
+  .kit > .ph { aspect-ratio: 4 / 3; min-height: 0; }
+  .total .pill { margin-left: 0; }
+}
+</style>
+</head>
+<body>
+<div class="mod lv">
+  <header class="lv-nav"><img src="../sally-system/assets/brand/sally-logo-red.webp" alt="Sally Beauty"><nav><a>Hair Color</a><a>Hair Care</a><a>Nails</a><a>Tools</a><a>Deals</a></nav><span class="lv-bag">Bag <b>0</b></span></header>
+  <div class="lv-head"><div><p class="cap red">The Sally difference</p><h2>What are you doing this weekend?</h2></div><a class="go">All projects</a></div>
+  <div class="projs" data-slot="One card, three projects">
+    <button class="proj on" id="p-plat" type="button"><span class="ph"><img src="../sally-system/assets/img/blonde-port.jpg" alt=""></span><span><span class="lvl">Advanced · Lighten</span><span class="t">Go platinum blonde</span><span class="s">6 steps · ~2 hrs</span></span></button>
+    <button class="proj" type="button" tabindex="-1"><span class="ph"><img src="../sally-system/assets/img/copper-port.jpg" alt=""></span><span><span class="lvl">Beginner · Cover</span><span class="t">Cover grays in 20 minutes</span><span class="s">4 steps · ~25 min</span></span></button>
+    <button class="proj" type="button" tabindex="-1"><span class="ph"><img src="../sally-system/assets/img/purple-nails-port.jpg" alt=""></span><span><span class="lvl">Intermediate · Vivid</span><span class="t">Try a vivid for the first time</span><span class="s">5 steps · ~90 min</span></span></button>
+  </div>
+  <div class="kit">
+    <figure class="ph" data-slot="Photo · Asset Hub"><img src="../sally-system/assets/img/blonde-port.jpg" alt="Long blonde waves, orange nails, outdoors"></figure>
+    <div class="side">
+      <p class="cap red">The Platinum Kit · Everything you need</p>
+      <h3 data-slot="Headline · AI, in the brand voice">Go platinum, nothing missing.</h3>
+      <div class="nums" data-slot="Steps and time · project data"><div><span class="k">6</span><span class="v">steps, advanced</span></div><div><span class="k">~2</span><span class="v">hours, about</span></div><div><span class="k" id="n-count">5</span><span class="v">products, one bag</span></div></div>
+      <ol class="list" id="list" data-slot="5 SKUs · product tool"></ol>
+      <div class="total" data-slot="Kit price · product tool"><span class="now" id="now">$36.99</span><s id="was">$41.45</s><span class="save" id="save">Save $4.46 as a kit</span><button class="pill" id="add" type="button">Add all 5 to bag</button></div>
+    </div>
+  </div>
+</div>
+<script src="m.js"></script>
+<script src="live.js"></script>
+<script>
+(() => {
+  /* his Platinum Kit, from the DIY Studio concept */
+  const KIT = [["lightener", "ion", "Creme Lightener", 8.99], ["developer", "ion", "30 Vol Developer", 6.49], ["toner", "Wella", "T18 Toner", 7.99], ["bowl & brush", "GVP", "Bowl & Brush Set", 4.99], ["bond protector", "ion", "Bond Protector", 12.99]];
+  const KIT_PRICE = 36.99;
+  const money = (n) => "$" + n.toFixed(2);
+  const list = document.getElementById("list");
+  const on = KIT.map(() => true);
+  const rows = KIT.map(([w, b, n, p], i) => {
+    const li = document.createElement("li");
+    const r = document.createElement("button");
+    r.type = "button"; r.className = "row"; r.setAttribute("aria-pressed", "true");
+    r.innerHTML = '<span class="box" aria-hidden="true"></span><span><span class="w"></span><span class="n"></span></span><span class="p"></span>';
+    r.querySelector(".w").textContent = w; r.querySelector(".n").textContent = b + " · " + n; r.querySelector(".p").textContent = money(p);
+    r.addEventListener("click", () => { on[i] = !on[i]; draw(); });
+    li.appendChild(r); list.appendChild(li); return r;
+  });
+  const now = document.getElementById("now"), was = document.getElementById("was"), save = document.getElementById("save"), add = document.getElementById("add"), cnt = document.getElementById("n-count");
+  const draw = () => {
+    const picked = KIT.filter((_, i) => on[i]);
+    const all = picked.length === KIT.length;
+    const sum = picked.reduce((a, k) => a + k[3], 0);
+    rows.forEach((r, i) => { r.classList.toggle("off", !on[i]); r.setAttribute("aria-pressed", String(on[i])); });
+    now.textContent = money(all ? KIT_PRICE : sum);
+    was.classList.toggle("hide", !all); save.classList.toggle("hide", !all);
+    cnt.textContent = String(picked.length);
+    add.disabled = picked.length === 0;
+    add.textContent = all ? "Add all 5 to bag" : picked.length ? "Add " + picked.length + " to bag" : "Pick a piece";
+  };
+  add.addEventListener("click", () => {
+    const picked = rows.filter((_, i) => on[i]);
+    if (!picked.length) return;
+    Live.fly(picked.map((r) => r.querySelector(".w")));
+    setTimeout(() => {
+      Live.bag(Live.count + picked.length);
+      Live.toast(picked.length === KIT.length ? "The Platinum Kit is in your bag, " + money(KIT_PRICE) + "." : picked.length + " pieces are in your bag.");
+    }, 650);
+  });
+  const plat = document.getElementById("p-plat");
+  plat.addEventListener("click", () => { plat.classList.remove("pulse"); void plat.offsetWidth; plat.classList.add("pulse"); });
+  draw();
+  Live.run({
+    reset: () => { on.fill(true); draw(); },
+    play: async () => {
+      await Live.tap(plat); await Live.wait(500);
+      await Live.tap(rows[2]); await Live.wait(1000);
+      await Live.tap(rows[2]); await Live.wait(700);
+      await Live.tap(add); await Live.wait(1600);
+    },
+  });
+})();
+</script>
+</body>
+</html>

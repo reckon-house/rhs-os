@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sally Beauty · The color code, working</title>
+<meta name="robots" content="noindex">
+<!-- The color code as it works on the page (2 Oct 2026): the Color
+     Authority concept's shade finder, his level and tone swatches and his
+     words. Pick a level, then a tone, and the code builds itself. His tone
+     swatches are drawn at level 8; at any other level each tone keeps its
+     relation to the level's own swatch. It plays itself in the room
+     (live.js) and works when clicked. -->
+<link rel="preload" href="/fonts/Satoshi-Variable.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="push.css">
+<link rel="stylesheet" href="m.css">
+<link rel="stylesheet" href="live.css">
+<style>
+.finder { display: grid; grid-template-columns: 40% minmax(0, 1fr); gap: 10px; }
+.code { display: flex; flex-direction: column; justify-content: space-between; border-radius: 18px; background: var(--soft); padding: clamp(16px, 2.8vw, 24px); min-height: 100%; }
+.big { font-size: clamp(96px, 17vw, 150px); line-height: 0.78; font-weight: 700; letter-spacing: -0.08em; margin-left: -0.04em; }
+.big .q { color: rgba(28, 20, 19, 0.18); }
+.big span { transition: color 0.35s ease; }
+.read b { display: block; font-size: 17px; font-weight: 600; letter-spacing: -0.02em; }
+.read small { display: block; margin-top: 2px; font-size: 13px; color: var(--grey); }
+.steps { display: grid; gap: 10px; }
+.step { border-radius: 18px; background: var(--soft); padding: 16px 16px 14px; transition: opacity 0.3s ease; }
+.step.wait { opacity: 0.45; }
+.step .hd { display: flex; justify-content: space-between; align-items: baseline; }
+.step .hd b { font-size: 15.5px; font-weight: 600; letter-spacing: -0.02em; }
+.ramp { display: grid; grid-template-columns: repeat(10, minmax(0, 1fr)); gap: 4px; margin-top: 14px; }
+.ramp button { aspect-ratio: 3 / 4; border-radius: 8px; display: flex; align-items: flex-end; padding: 5px; color: #fff; font-size: 11px; font-weight: 600; transition: transform 0.25s ease, box-shadow 0.25s ease; }
+.ramp button:nth-child(n+8) { color: var(--ink); }
+.ramp button.on { transform: translateY(-8px); box-shadow: 0 8px 18px rgba(28, 20, 19, 0.22); }
+.tones { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 6px; margin-top: 14px; }
+.tones button { display: grid; gap: 5px; }
+.tones .sw { aspect-ratio: 1; border-radius: 10px; transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.35s ease; }
+.tones button.on .sw { transform: translateY(-8px); box-shadow: 0 8px 18px rgba(28, 20, 19, 0.22); }
+.tones b { font-size: 14px; font-weight: 600; }
+.tones small { font-size: 12px; color: var(--grey); }
+.key { display: flex; justify-content: space-between; margin-top: 6px; font-size: 11.5px; color: var(--grey); }
+.match { border-radius: 18px; background: var(--soft); padding: 16px; transition: opacity 0.35s ease; }
+.match.wait { opacity: 0.45; }
+.match > p { font-size: 15.5px; font-weight: 600; letter-spacing: -0.02em; }
+.cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; margin-top: 12px; }
+.cards div { border-radius: 12px; background: #fff; padding: 12px; font-size: 13.5px; line-height: 1.3; font-weight: 500; }
+.cards i { display: block; width: 18px; height: 18px; margin-bottom: 10px; border-radius: 50%; background: var(--ink); }
+.cta { display: flex; align-items: center; gap: 12px; margin-top: 12px; }
+.cta .pill { height: 40px; padding: 0 18px; font-size: 14px; }
+@media (max-width: 560px) {
+  .finder { grid-template-columns: minmax(0, 1fr); }
+  .code { flex-direction: row; align-items: flex-end; gap: 16px; min-height: 0; }
+  .big { font-size: 96px; }
+  .cards { grid-template-columns: minmax(0, 1fr); }
+  .ramp button { padding: 3px; font-size: 10px; border-radius: 6px; }
+}
+</style>
+</head>
+<body>
+<div class="mod lv">
+  <header class="lv-nav"><img src="../sally-system/assets/brand/sally-logo-red.webp" alt="Sally Beauty"><nav><a>Hair Color</a><a>Hair Care</a><a>Nails</a><a>Tools</a><a>Deals</a></nav><span class="lv-bag">Bag <b>0</b></span></header>
+  <div class="lv-head"><div><p class="cap red">The color code</p><h2>Two steps to your shade.</h2></div><a class="go">Decode tone codes</a></div>
+  <div class="finder">
+    <div class="code" data-slot="Shade code · catalog data">
+      <p class="big" aria-live="polite"><span id="lv-l" class="q">?</span><span id="lv-t" class="q">?</span></p>
+      <p class="read"><b id="read-b">Find your level</b><small id="read-s">1 is black, 10 the lightest blonde.</small></p>
+    </div>
+    <div class="steps">
+      <div class="step"><p class="hd"><b>1 · Find your level</b><span class="cap grey">Ten levels</span></p><div class="ramp" id="ramp" data-slot="Levels · catalog data"></div><p class="key"><span>1 · Black</span><span>10 · Lightest</span></p></div>
+      <div class="step wait" id="step2"><p class="hd"><b>2 · Pick your tone</b><span class="cap grey" id="five">Five ways</span></p><div class="tones" id="tones" data-slot="Tones · catalog data"></div><p class="key"><span>Cool</span><span>Warm</span></p></div>
+    </div>
+  </div>
+  <div class="match wait" id="match" data-slot="Formula · product tool">
+    <p>We'll match the formula, developer, and toner.</p>
+    <div class="cards"><div><i></i>Formula built for your level</div><div><i></i>Right developer for your level</div><div><i></i>Whole formula to your bag</div></div>
+    <div class="cta"><button class="pill" id="chat" type="button" disabled>Chat with a colorist</button><span class="cap grey">Avg. wait 2 min</span></div>
+  </div>
+</div>
+<script src="m.js"></script>
+<script src="live.js"></script>
+<script>
+(() => {
+  /* his level swatches, 1 to 10, and his tone swatches at level 8 */
+  const LEVELS = ["#1a1411", "#2b1d16", "#3d2a1c", "#5a3a22", "#6e4828", "#8a5e34", "#a87c4a", "#c6a06a", "#ddc394", "#ece0bf"];
+  const TONES = [["A", "Ash", "#b9aa8d"], ["N", "Neutral", "#c2a173"], ["G", "Gold", "#cfa45e"], ["C", "Copper", "#c07a45"], ["R", "Red", "#a8503c"]];
+  const rgb = (h) => [1, 3, 5].map((i) => parseInt(h.slice(i, i + 2), 16));
+  const hex = (c) => "#" + c.map((v) => Math.max(0, Math.min(255, Math.round(v))).toString(16).padStart(2, "0")).join("");
+  const BASE8 = rgb(LEVELS[7]);
+  const toneAt = (lvl, t) => { if (lvl === 8) return t[2]; const b = rgb(LEVELS[lvl - 1]), r = rgb(t[2]).map((v, i) => v / BASE8[i]); return hex(b.map((v, i) => v * r[i])); };
+  const ramp = document.getElementById("ramp"), tones = document.getElementById("tones");
+  const L = document.getElementById("lv-l"), T = document.getElementById("lv-t"), rb = document.getElementById("read-b"), rs = document.getElementById("read-s");
+  const step2 = document.getElementById("step2"), match = document.getElementById("match"), chat = document.getElementById("chat"), five = document.getElementById("five");
+  let level = 0, tone = -1;
+  const lvBtns = LEVELS.map((c, i) => {
+    const b = document.createElement("button"); b.type = "button"; b.style.background = c; b.textContent = String(i + 1);
+    b.setAttribute("aria-label", "Level " + (i + 1));
+    b.addEventListener("click", () => { level = i + 1; tone = -1; draw(); });
+    ramp.appendChild(b); return b;
+  });
+  const tnBtns = TONES.map((t, i) => {
+    const b = document.createElement("button"); b.type = "button"; b.disabled = true;
+    b.innerHTML = '<span class="sw"></span><b>' + t[0] + "</b><small>" + t[1] + "</small>";
+    b.addEventListener("click", () => { if (!level) return; tone = i; draw(); });
+    tones.appendChild(b); return b;
+  });
+  const draw = () => {
+    lvBtns.forEach((b, i) => b.classList.toggle("on", i + 1 === level));
+    tnBtns.forEach((b, i) => { b.disabled = !level; b.classList.toggle("on", i === tone); b.querySelector(".sw").style.background = toneAt(level || 8, TONES[i]); });
+    step2.classList.toggle("wait", !level); five.textContent = level ? "Level " + level + ", five ways" : "Five ways";
+    L.textContent = level ? String(level) : "?"; L.classList.toggle("q", !level);
+    T.textContent = tone >= 0 ? TONES[tone][0] : "?"; T.classList.toggle("q", tone < 0);
+    T.style.color = tone >= 0 ? toneAt(level, TONES[tone]) : "";
+    const done = level && tone >= 0;
+    rb.textContent = done ? "Level " + level + ", tone " + TONES[tone][0] + ": " + TONES[tone][1].toLowerCase() + "." : level ? "Now pick your tone" : "Find your level";
+    rs.textContent = done ? "The letter after the level is the tone." : level ? "A cools it down, N keeps it honest, G, C and R warm it up." : "1 is black, 10 the lightest blonde.";
+    match.classList.toggle("wait", !done); chat.disabled = !done;
+  };
+  chat.addEventListener("click", () => Live.toast("Real licensed colorists, on demand."));
+  draw();
+  Live.run({
+    reset: () => { level = 0; tone = -1; draw(); },
+    still: () => { level = 8; tone = 3; draw(); },
+    play: async () => {
+      await Live.tap(lvBtns[3]); await Live.wait(380);
+      await Live.tap(lvBtns[5]); await Live.wait(380);
+      await Live.tap(lvBtns[7]); await Live.wait(700);
+      await Live.tap(tnBtns[0]); await Live.wait(800);
+      await Live.tap(tnBtns[3]); await Live.wait(900);
+      await Live.tap(chat); await Live.wait(1800);
+    },
+  });
+})();
+</script>
+</body>
+</html>

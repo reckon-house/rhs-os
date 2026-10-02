@@ -1,0 +1,32 @@
+/* Live stories: the shared nav, the cursor, the bag and its note.
+   See live.js. Built on push.css and m.css. */
+.lv { position: relative; display: grid; gap: 16px; }
+/* the page's own nav, as the pushed homepages have it */
+.lv-nav { display: flex; align-items: center; gap: 22px; height: 48px; padding: 0 14px 0 18px; border-radius: 14px; background: var(--soft); }
+.lv-nav img { width: 72px; height: auto; }
+.lv-nav nav { display: flex; gap: 18px; font-size: 13.5px; font-weight: 500; }
+.lv-nav nav a:last-child { color: var(--red-deep); }
+.lv-bag { margin-left: auto; display: inline-flex; align-items: center; gap: 8px; height: 32px; padding: 0 6px 0 12px; border-radius: 999px; background: #fff; font-size: 13.5px; font-weight: 600; }
+.lv-bag b { display: inline-grid; place-items: center; min-width: 22px; height: 22px; padding: 0 6px; border-radius: 999px; background: var(--ink); color: #fff; font-size: 12px; }
+.lv-bag b.bump { animation: lv-bump 0.5s ease; }
+@keyframes lv-bump { 0% { transform: scale(1); } 35% { transform: scale(1.35); background: var(--red); } 100% { transform: scale(1); } }
+.lv-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; }
+.lv-head h2 { margin-top: 6px; font-size: clamp(26px, 4.4vw, 38px); line-height: 0.98; font-weight: 600; letter-spacing: -0.045em; }
+.lv-head .go { font-size: 14px; white-space: nowrap; }
+/* the cursor that plays the page */
+.lv-cursor { position: absolute; left: 0; top: 0; z-index: 90; width: 22px; height: 22px; margin: -11px 0 0 -11px; border-radius: 50%; background: rgba(28, 20, 19, 0.82); box-shadow: 0 0 0 3px #fff, 0 6px 16px rgba(28, 20, 19, 0.28); opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
+.lv-cursor.on { opacity: 1; }
+.lv-cursor::after { content: ""; position: absolute; inset: -3px; border-radius: 50%; box-shadow: 0 0 0 0 rgba(225, 19, 36, 0.55); }
+.lv-cursor.down { background: var(--red); }
+.lv-cursor.down::after { animation: lv-ring 0.5s ease-out; }
+@keyframes lv-ring { from { box-shadow: 0 0 0 0 rgba(225, 19, 36, 0.55); } to { box-shadow: 0 0 0 18px rgba(225, 19, 36, 0); } }
+/* the bag's note */
+.lv-toast { position: absolute; right: 8px; top: 56px; z-index: 80; max-width: 300px; padding: 11px 14px; border-radius: 12px; background: var(--ink); color: #fff; font-size: 13.5px; font-weight: 500; line-height: 1.35; opacity: 0; transform: translateY(-6px); pointer-events: none; transition: opacity 0.3s ease, transform 0.3s ease; }
+.lv-toast.on { opacity: 1; transform: none; }
+/* what flies to the bag */
+.lv-fly { position: absolute; z-index: 85; margin: 0; pointer-events: none; transition: transform 0.75s cubic-bezier(.5, 0, .2, 1), opacity 0.75s ease; }
+/* controls read as controls */
+:where(.lv) button { font: inherit; color: inherit; border: 0; background: none; padding: 0; cursor: pointer; text-align: left; }
+.lv .pill { border: 0; cursor: pointer; }
+.lv .pill:disabled { opacity: 0.4; cursor: default; }
+@media (max-width: 560px) { .lv-nav nav { display: none; } .lv-head { flex-direction: column; align-items: flex-start; } }
