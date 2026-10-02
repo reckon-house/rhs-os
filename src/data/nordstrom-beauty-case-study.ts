@@ -197,7 +197,7 @@ export const nordstromBeautyCaseStudy: CaseStudy = {
     {
       id: "headline-editorial",
       type: "editorial-headline",
-      text: "Beauty content ages fast,\nwith new products every week",
+      text: "Beauty stories you could shop\nwithout leaving the page",
     },
 
     // ── SHOPPABLE STORIES ──
