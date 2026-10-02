@@ -104,7 +104,7 @@ export const floorAndDecorCaseStudy: CaseStudy = {
     {
       id: "headline-modern-farmhouse",
       type: "editorial-headline",
-      text: "Modern farmhouse,\nshiplap and brass on marble",
+      text: "The focus was the hard surfaces,\nthe tile and stone each room\nwas built around",
     },
     {
       id: "modern-farmhouse-hero",
@@ -210,7 +210,7 @@ export const floorAndDecorCaseStudy: CaseStudy = {
     {
       id: "headline-quiet-glam",
       type: "editorial-headline",
-      text: "Quiet glam,\nveined marble floor to ceiling",
+      text: "Each bathroom has something\nthe other two don't",
     },
     {
       id: "quiet-glam-text",
