@@ -524,9 +524,13 @@
      their own sections, each a <sizzle-reel> (the Faux Reel study's own
      product, as its tile plays) cutting through those pictures in the
      studies' own colours. The pictures load as the index nears them.
-     ?reels=on */
+     Then "i like the faux reels mixed in! instead of sketchup and photo
+     direction can we do ones that are more tech/ai focused? i want to
+     lean that way": Engineering (AI-assisted) and Claude Code, whose
+     studies are the four AI products alone, each ahead of its section's
+     other reel. ?reels=on */
   const REEL_KEYS = ["on", "1"].includes((new URLSearchParams(location.search).get("reels") || "").toLowerCase())
-    ? ["cap/ecommerce-design", "cap/photography-direction", "tool/sketchup", "credit/nordstrom"] : [];
+    ? ["cap/engineering-ai-assisted", "cap/ecommerce-design", "tool/claude-code", "credit/nordstrom"] : [];
   const isReel = (o) => REEL_KEYS.includes(o.key);
   let REELS = [], rio = null;
   /* the highlight's colour by eye: ?hl=ece7de (hex, with or without #) */
@@ -570,15 +574,24 @@
     groups.forEach((g) => { if (!g.classList.contains("seen")) sio.observe(g); });
     seenT = setTimeout(() => groups.forEach((g) => g.classList.add("seen")), 2000);
   };
-  /* a reel's pictures: its studies' board leads in the shelf's order, eight
-     at most, at the rung its box is drawn at, and its colour frames in
-     those studies' own fills */
+  /* a reel's pictures: eight at most, at the rung its box is drawn at.
+     Each study's board lead first, in the shelf's order, then up to two
+     more of each study's own pictures, taken in turn, so a term with only
+     three or four studies (the AI ones) still cuts through eight frames;
+     its colour frames are those studies' own fills */
   const loadReel = (R) => {
     if (R.done || !R.r.isConnected) return; R.done = true;
-    const ks = byRank([...R.o.rel]).filter((k) => leadOf(k)).slice(0, 8);
+    const ks = byRank([...R.o.rel]);
+    const lists = ks.map((k) => {
+      const l = leadOf(k), out = l ? [l] : [];
+      picsOf(k).filter((f) => !f.alpha && (f.t384 || f.t768) && (!l || f.src !== l.src)).slice(0, 2).forEach((f) => out.push(f));
+      return out;
+    }).filter((x) => x.length);
+    const frames = [];
+    for (let i = 0; frames.length < 8 && lists.some((x) => x[i]); i++) lists.forEach((x) => { if (x[i] && frames.length < 8) frames.push(x[i]); });
     const big = (R.r.offsetWidth || 160) * Math.min(2, window.devicePixelRatio || 1) > 384;
     R.r.setAttribute("colors", [...new Set(ks.map((k) => (D.study(k) || {}).fill).filter(Boolean))].slice(0, 5).join(", ") || "#ECECEC, #000000");
-    R.r.setAttribute("images", ks.map((k) => { const f = leadOf(k); return encodeURI((big ? f.t768 : f.t384) || f.t768 || f.src); }).join(", "));
+    R.r.setAttribute("images", frames.map((f) => encodeURI((big ? f.t768 : f.t384) || f.t768 || f.t384 || f.src)).join(", "));
   };
   const watchReels = () => {
     if (rio) rio.disconnect();
@@ -739,8 +752,8 @@
      order; a key that is missing is skipped and the count fills in */
   const FEATURED_CAPS = ["cap/ai-strategy", "cap/ai-integration", "cap/product-design", "cap/creative-direction", "cap/interior-design"];
   const featuredCaps = () => {
-    const picked = FEATURED_CAPS.map((k) => KEYMAP.get(k)).filter((o) => o && o.g && o.g.id === "capabilities");
-    return picked.concat(topBy("capabilities").filter((o) => !picked.includes(o))).slice(0, TOPN);
+    const picked = FEATURED_CAPS.map((k) => KEYMAP.get(k)).filter((o) => o && o.g && o.g.id === "capabilities" && !isReel(o));
+    return picked.concat(topBy("capabilities").filter((o) => !picked.includes(o) && !isReel(o))).slice(0, TOPN);
   };
   /* and the five tools set large, AI first, the same way (his "yes, AI
      tools first"). Their bars are sized against each other, not against
@@ -749,8 +762,13 @@
   const FEATURED_TOOLS = ["tool/claude-code", "tool/claude", "tool/gemini", "tool/openai", "tool/supabase-pgvector"];
   let toolMax = 0;
   const featuredTools = () => {
-    const picked = FEATURED_TOOLS.map((k) => KEYMAP.get(k)).filter((o) => o && o.g && o.g.id === "tools");
-    const list = picked.concat(topBy("tools").filter((o) => !picked.includes(o))).slice(0, TOPN);
+    /* a tool shown as a reel (Claude Code, under ?reels=on) leads the
+       section from its reel and is not set twice; the bars under it are
+       then the other AI tools alone, with no count-led filler, since a
+       Photoshop at 18 would shrink them back to barely used */
+    const picked = FEATURED_TOOLS.map((k) => KEYMAP.get(k)).filter((o) => o && o.g && o.g.id === "tools" && !isReel(o));
+    const fill = REEL_KEYS.some((k) => FEATURED_TOOLS.includes(k)) ? [] : topBy("tools").filter((o) => !picked.includes(o) && !isReel(o));
+    const list = picked.concat(fill).slice(0, TOPN);
     toolMax = Math.max(1, ...list.map((o) => o.rel.size));
     return list;
   };
@@ -888,11 +906,11 @@
     const bl = el("div", "ebig"); big.forEach((o, i) => { const a = entryEl(o, "Efig"); a.style.setProperty("--i", i); bl.appendChild(a); });
     put(cellE("figures", 1, [headE("05", "figures"), bl, runE(G.figures.items.filter((o) => !big.includes(o)))]));
     const tc = featuredCaps(), tt = featuredTools();
-    const reels = (g) => G[g].items.filter(isReel).map((o) => entryEl(o, "Ereel"));
+    const reels = (g) => G[g].items.filter(isReel).sort((x, y) => REEL_KEYS.indexOf(x.key) - REEL_KEYS.indexOf(y.key)).map((o) => entryEl(o, "Ereel"));
     const cl = el("div", "ecaps"); tc.forEach((o, i) => { const a = entryEl(o, "Ecap"); a.style.setProperty("--d", i); cl.appendChild(a); });
     put(cellE("capabilities", 1, [headE("06", "capabilities"), cl, ...reels("capabilities"), runE(G.capabilities.items.filter((o) => !tc.includes(o) && !isReel(o)))]));
     const tl = el("div", "etools"); tt.forEach((o, i) => { const a = entryEl(o, "Etool"); a.style.setProperty("--d", i); tl.appendChild(a); });
-    put(cellE("tools", 1, [headE("07", "tools"), tl, ...reels("tools"), runE(G.tools.items.filter((o) => !tt.includes(o) && !isReel(o)))]));
+    put(cellE("tools", 1, [headE("07", "tools"), ...reels("tools"), tl, runE(G.tools.items.filter((o) => !tt.includes(o) && !isReel(o)))]));
     /* 08 the credits (30 Sept 2026, his "we need the section that
        currently says 'Worked with, spotted by & featured in.' showing the
        brands"): the live footer's own list, in its order, a cell each,

@@ -1051,3 +1051,5 @@ html[data-cards="on"][data-ix="e"] #idx * { text-shadow: none !important; }
 [data-ix="e"] .e.ereel .t { font-size: 17px; font-weight: 700; letter-spacing: -0.035em; line-height: 1.05; }
 [data-ix="e"] .e.ereel .dk { margin: 6px 0 0; }
 [data-ix="e"] .e.ereel { --pb: 4px; }
+/* a reel straight under its section's head */
+[data-ix="e"] .grp.ec h2.eh + .e.ereel { margin-top: 2px; }
