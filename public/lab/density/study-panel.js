@@ -1393,7 +1393,10 @@
              of the row, so a 267px plate drew at 119 */
           const sum = ps.reduce((a, f) => a + ratio(f), 0);
           ps.forEach((f) => { const b = picBox(f); b.style.setProperty("--r", (ratio(f) / sum).toFixed(5)); row.appendChild(b); watch(b); });
-          const air = AIR[airSide++ % AIR.length];
+          /* a solo picture keeps one side, the copy's left margin, so a run
+             of them stacks in line instead of alternating (his "yea line
+             them up stacked vs alternating"); it takes no turn from the rest */
+          const air = ps.length === 1 && solo(ps[0]) ? "l" : AIR[airSide++ % AIR.length];
           /* a single picture keeps its own words as a caption, under it,
              or beside it when the picture leaves room on one side */
           let one = null, cap = null;
