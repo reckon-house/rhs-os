@@ -114,7 +114,7 @@ export const bigBendCaseStudy: CaseStudy = {
     {
       id: "films-headline",
       type: "editorial-headline",
-      text: "Big Bend is the largest national park\nin Texas and one of the least visited\nin the country",
+      text: "Family trip photographs,\na few of them later used\nin a boot campaign",
     },
 
     // The range beside the canyon studies. chisos-range-panorama keeps its
