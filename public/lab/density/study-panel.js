@@ -593,11 +593,21 @@
      comfortable one (0.45 of the panel), how much air an honest cap
      leaves, and a few tastes (pairs over quartets, a wide opener edge to
      edge, transparent and opaque kept apart) ── */
+  /* pictures that stand alone, never paired in a row: spreads whose type
+     is the point and reads only large (1 Oct 2026, his "let's stack these
+     so they are a single vs doing them in a grid - we miss the big type
+     with them being small", on Neiman Marcus's typography spreads) */
+  const SOLO = new Set([
+    "neiman-marcus-insite-minimalism-flat-spread.jpg", "neiman-marcus-insite-structure-piazza-sempione-spread.jpg",
+    "neiman-marcus-insite-the-rocker-typographic-spread.jpg", "neiman-marcus-insite-the-socialite-red-dress-spread.jpg",
+    "neiman-marcus-insite-classic-beauty-spread.jpg",
+  ]);
+  const solo = (f) => !!f && !!f.src && SOLO.has(f.src.split("/").pop());
   const partition = (list, W, V, g) => {
     const n = list.length, T = W * 0.45, Vc = V * 0.84;
     /* a hero: honest across the whole room and not so tall that the glass
-       would crop most of it. It never shares a row */
-    const hero = (f) => f.w / 2 >= W - 0.5 && W / ratio(f) <= Vc * 1.15;
+       would crop most of it. It never shares a row; nor does a solo */
+    const hero = (f) => (f.w / 2 >= W - 0.5 && W / ratio(f) <= Vc * 1.15) || solo(f);
     const cost = (a, b) => {
       const ps = list.slice(a, b), m = ps.length;
       const R = ps.reduce((s, f) => s + ratio(f), 0);
