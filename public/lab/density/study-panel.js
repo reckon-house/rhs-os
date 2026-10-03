@@ -226,7 +226,10 @@
     ["lines", ".sp-p"],
     ["pic", ".sp-pic:not(.sp-cpic)"],
     ["field", ".sp-black, .sp-field, .sp-pc, .sp-pb, .sp-povb, .sp-pcy, .sp-pchg, .sp-press"],
-    ["rule", ".sp-kick, .sp-open, .sp-run.sp-hasc, .sp-foot, .sp-spec, .sp-card, .sp-tcol, .sp-tr, .sp-nr"],
+    /* .sp-open is not here any more: the rule over a room's opening
+       block came off for every room (2 Oct 2026, his "this first one i
+       think we can drop from the system") */
+    ["rule", ".sp-kick, .sp-run.sp-hasc, .sp-foot, .sp-spec, .sp-card, .sp-tcol, .sp-tr, .sp-nr"],
     ["fade", ".sp-cap, .sp-fs, .sp-nl, .sp-ns, .sp-meta, .sp-spec-h, .sp-tcol > .sp-caps, .sp-tcol ul, .sp-palw, .sp-bar2, .sp-stl li, .sp-full, .sp-next > .sp-caps, .sp-fcap, .sp-bcap, .sp-card p, .sp-tr dd, .sp-tr dt"],
   ];
   /* words into masks: each word an inline-block clipped to its own line,
@@ -1630,6 +1633,12 @@
          colour fields still run to the edge; a phone still bleeds */
       const Wf = W >= 560 ? W - 20 : W;
       root.style.setProperty("--m", m + "px");
+      /* the solid blocks stop where the pictures do: the 20px a picture
+         stops short by on a desk, nothing on a phone, where both bleed
+         (2 Oct 2026, his "it runs off the side to the right edge when we
+         put padding on the case studies", on the black and colour
+         blocks, which had been left running to the edge) */
+      root.style.setProperty("--rm", (W - Wf) + "px");
       root.style.setProperty("--vh", V + "px");
 
       /* the cover: edge to edge if the lead can honestly fill it, cropped
