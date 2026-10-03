@@ -491,3 +491,93 @@ body.mail { background: #fff; }
   .arrive { opacity: 1; transform: none; transition: none; }
   .ph img, .pc .card img, .studio img, .pill, .pc .card::after { transition: none; }
 }
+
+/* ════════════════════════════════════════════════════════════════════
+   THE TAKEOVER STORY (3 Oct 2026, the image-led Lookbook)
+   His "make it a full takeover 'story' that is on the image focused
+   homepage - making it a long scrolling story ... so the images touch
+   but keep a masonry type of affect ... edge to edge of the screen".
+   One wall of touching pictures, starting under the nav (the pill floats
+   over it, as lululemon's does), four columns on a desk and two on a
+   phone, the seams staggered so no row lines up. Every tile is placed by
+   its own custom properties: --c/--r/--s on a desk, where a row is a
+   48th of the width (so a 12-unit column and a 12-row tile is a square),
+   --pc/--pr/--ps on a phone, where a row is a 24th. The bottom is flush.
+   ════════════════════════════════════════════════════════════════════ */
+.vs { position: relative; container-type: inline-size; margin-top: -70px; }
+.vs-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); grid-auto-rows: calc(100cqw / 48); }
+.vs-t { position: relative; display: block; overflow: hidden; min-width: 0; grid-column: var(--c); grid-row: var(--r) / span var(--s); background: #EEE9E7; color: #fff; }
+.vs-t > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transform: scale(var(--k, 1)); transition: transform 1.2s cubic-bezier(0.2, 0.7, 0.2, 1); }
+/* the pictures settle as they arrive (push.js adds .vs-live, then .in per tile; not .go, which is the arrow link), and breathe under the pointer */
+.vs.vs-live .vs-t { --k: 1.07; }
+.vs.vs-live .vs-t.in { --k: 1; }
+.vs .vs-t:hover, .vs.vs-live .vs-t.in:hover { --k: 1.035; }
+/* copy on the photograph: a soft dark gradient at its foot, white type */
+.vs-t.cp::after { content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  background: linear-gradient(to top, rgba(18, 12, 11, 0.62) 0%, rgba(18, 12, 11, 0.3) 30%, rgba(18, 12, 11, 0) 56%); }
+.vs-copy { position: absolute; left: clamp(16px, 1.6vw, 24px); right: clamp(16px, 1.6vw, 24px); bottom: clamp(16px, 1.6vw, 24px); z-index: 2; display: flex; flex-direction: column; align-items: flex-start; }
+.vs-t .t-label { color: rgba(255, 255, 255, 0.84); }
+/* the opening: the page's headline, on the vivids */
+.vs-open .vs-copy { left: clamp(22px, 3vw, 48px); right: clamp(22px, 3vw, 48px); bottom: clamp(26px, 3.2vw, 52px); }
+.vs-open h1 { margin-top: 14px; max-width: 11ch; font-size: clamp(46px, 6.2vw, 104px); line-height: 0.9; font-weight: 600; letter-spacing: -0.055em; text-wrap: balance; }
+.vs-open .dk { margin-top: 18px; max-width: 34ch; font-size: clamp(16.5px, 1.4vw, 20px); line-height: 1.4; color: rgba(255, 255, 255, 0.92); }
+.vs-open .pills { margin-top: 26px; }
+/* a shade on its photograph: the name, its code, the way in */
+.vs-shade .nm { display: flex; align-items: baseline; gap: 10px; font-size: clamp(21px, 1.9vw, 30px); line-height: 1; font-weight: 600; letter-spacing: -0.035em; }
+.vs-shade .cd { font-size: 0.55em; font-weight: 600; letter-spacing: 0.02em; color: rgba(255, 255, 255, 0.78); }
+.vs-t .go { margin-top: 10px; font-size: 14.5px; }
+/* a vivid's own color, set under its photograph, carrying its name */
+.vs-sw { background: var(--sw); padding: clamp(16px, 1.6vw, 24px); }
+.vs-sw .nm { font-size: clamp(26px, 2.9vw, 46px); line-height: 0.94; font-weight: 600; letter-spacing: -0.045em; }
+/* the shades' own head, in ink */
+.vs-ink { background: var(--ink); padding: clamp(16px, 1.6vw, 24px); }
+.vs-ink h2 { font-size: clamp(30px, 3.1vw, 50px); line-height: 0.95; font-weight: 600; letter-spacing: -0.045em; }
+.vs-ink .pill { margin-top: 18px; }
+/* the story's foot, and the page's next section after it */
+.vs + .ll-hero + .wrap > .story:first-child, .vs ~ .wrap > .story:first-child { margin-top: clamp(64px, 8vw, 128px); }
+@media (max-width: 860px) {
+  .vs { margin-top: -62px; }
+  .vs-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-auto-rows: calc(100cqw / 24); }
+  .vs-t { grid-column: var(--pc); grid-row: var(--pr) / span var(--ps); }
+  .vs-open h1 { font-size: clamp(40px, 11.4vw, 64px); }
+  .vs-open .pills .pill { height: 44px; padding: 0 18px; font-size: 14.5px; }
+  .vs-sw .nm { font-size: clamp(22px, 6.4vw, 30px); }
+  .vs-shade .nm { font-size: clamp(19px, 5.4vw, 24px); }
+  .vs-ink h2 { font-size: clamp(24px, 7vw, 32px); }
+  .vs-t .go { font-size: 13.5px; }
+}
+@media (prefers-reduced-motion: reduce) { .vs-t > img { transition: none; } .vs.vs-live .vs-t { --k: 1; } }
+
+/* the levers: ?story=off shows the hero and the shade row the story replaced */
+html:not([data-story="off"]) .v-was { display: none !important; }
+html[data-story="off"] .v-story { display: none !important; }
+
+/* ── copy on the photograph, no card (3 Oct 2026, his "these cards on the
+   images with copy - let's actually go ahead and figure out a way to get
+   the copy on the image without the 'card'", with two lululemon heroes as
+   the reference). This replaces his system's "never type over the photo"
+   on this page, at his word: the type is white, set on a soft dark
+   gradient that rises from the picture's foot, and the pills are white.
+   The members band sits centered, as lululemon's second hero does.
+   ?copy=card brings the floating cards back ── */
+html:not([data-copy="card"]) .ll-band::after, html:not([data-copy="card"]) .ll-hero::after {
+  content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  background: linear-gradient(to top, rgba(18, 12, 11, 0.64) 0%, rgba(18, 12, 11, 0.34) 32%, rgba(18, 12, 11, 0) 60%); }
+html:not([data-copy="card"]) .ll-float { z-index: 2; left: clamp(24px, 3.4vw, 56px); bottom: clamp(28px, 3.6vw, 60px); width: min(820px, calc(100% - 48px)); padding: 0; border-radius: 0; background: none; color: #fff; }
+html:not([data-copy="card"]) .ll-float .grey { color: rgba(255, 255, 255, 0.84); }
+html:not([data-copy="card"]) .ll-float :is(h1, h2) { margin-top: 14px; max-width: 13ch; font-size: clamp(44px, 5.6vw, 92px); line-height: 0.9; letter-spacing: -0.055em; text-wrap: balance; }
+html:not([data-copy="card"]) .ll-float .t-body { margin-top: 18px; max-width: 42ch; font-size: clamp(16.5px, 1.4vw, 20px); line-height: 1.4; color: rgba(255, 255, 255, 0.92); }
+html:not([data-copy="card"]) .ll-float .pills { margin-top: 26px; }
+html:not([data-copy="card"]) .ll-float .pill { background: #fff; color: var(--ink); box-shadow: none; }
+html:not([data-copy="card"]) .ll-float .pill:hover { background: var(--soft); }
+html:not([data-copy="card"]) .ll-float.mid { left: 50%; right: auto; transform: translateX(-50%); width: min(980px, calc(100% - 48px)); text-align: center; }
+html:not([data-copy="card"]) .ll-float.mid :is(h1, h2) { max-width: none; }
+html:not([data-copy="card"]) .ll-float.mid .t-body { margin-left: auto; margin-right: auto; }
+html:not([data-copy="card"]) .ll-float.mid .pills { justify-content: center; }
+@media (max-width: 860px) {
+  html:not([data-copy="card"]) .ll-band, html:not([data-copy="card"]) .ll-hero { overflow: hidden; border-radius: calc(var(--r) + 4px); }
+  html:not([data-copy="card"]) .ll-band .ph, html:not([data-copy="card"]) .ll-hero .ph { border-radius: 0; aspect-ratio: 4 / 5.4; }
+  html:not([data-copy="card"]) .ll-float, html:not([data-copy="card"]) .ll-float.ink { position: absolute; left: 20px; right: 20px; bottom: 24px; width: auto; margin: 0; padding: 0; background: none; }
+  html:not([data-copy="card"]) .ll-float.mid { left: 20px; transform: none; width: auto; }
+  html:not([data-copy="card"]) .ll-float :is(h1, h2) { font-size: clamp(36px, 10vw, 52px); }
+}

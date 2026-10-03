@@ -9,9 +9,13 @@
      in the same order, the same photographs in the same slots, as many
      pictures. What changed is the finish (push.css, .ll-*). Two changes to
      content: "Rich Brunette 4N" showed the teal nails on the boot and now
-     shows brunette curls; his two lululemon headlines are rewritten. -->
+     shows brunette curls; his two lululemon headlines are rewritten.
+     3 Oct 2026: the opening is a takeover story (the vivids and the six
+     shades as one edge-to-edge wall), and copy sits on the photographs,
+     no card (?story=off, ?copy=card bring back what was). -->
 <link rel="preload" href="/fonts/Satoshi-Variable.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="push.css">
+<script>(function(){var q=location.search,h=document.documentElement;if(/[?&]story=off/.test(q))h.dataset.story="off";if(/[?&]copy=card/.test(q))h.dataset.copy="card"})()</script>
 </head>
 <body>
 
@@ -24,8 +28,50 @@
 </header>
 <!-- /sk:header -->
 
-<section class="ll-hero">
-  <figure class="ph"><img src="../sally-system/assets/img/copper-curly-land.jpg" alt="Copper curls, close, against a pale wall" style="object-position:50% 30%"></figure>
+<!-- the takeover story (3 Oct 2026, his "make it a full takeover 'story'
+     that is on the image focused homepage - making it a long scrolling
+     story", after "the images touch but keep a masonry type of affect ...
+     edge to edge of the screen"): the opening and the six shades as one
+     wall of touching pictures, edge to edge and starting under the nav,
+     four columns whose seams never line up, each vivid paired with a
+     block of its own color. Placement is in each tile's --c/--r/--s
+     (desk, in units of a 48th of the width) and --pc/--pr/--ps (phone, a
+     24th). ?story=off shows the hero and shade row it replaced -->
+<section class="vs v-story" aria-label="Vivids are back at it">
+<div class="vs-grid">
+  <div class="vs-t vs-open cp" style="--c:1 / span 2;--r:1;--s:28;--pc:1 / span 2;--pr:1;--ps:30">
+    <img src="../sally-system/assets/img/vivids-port.jpg" alt="Blue curls and a camel coat" style="object-position:50% 28%">
+    <div class="vs-copy">
+      <p class="t-label">New this week</p>
+      <h1>Vivids are back at&nbsp;it.</h1>
+      <p class="dk">Salon shades, your hands. Pick a look, grab the how-to, go loud.</p>
+      <div class="pills"><a class="pill light" href="#">Shop new in</a><a class="pill light" href="#">Watch the how-to</a></div>
+    </div>
+  </div>
+  <a class="vs-t vs-ph" href="#" style="--c:3;--r:1;--s:18;--pc:2;--pr:39;--ps:20"><img src="../sally-system/assets/img/purple-nails-port.jpg" alt="Violet curls and gold nails" style="object-position:50% 30%"></a>
+  <a class="vs-t vs-sw" href="#" style="--c:3;--r:19;--s:14;--pc:2;--pr:59;--ps:12;--sw:var(--violet)"><span class="t-label">Vivid</span><span class="vs-copy"><span class="nm">Electric Violet</span><span class="go">Shop the shade</span></span></a>
+  <a class="vs-t vs-ph" href="#" style="--c:2;--r:77;--s:10;--pc:1;--pr:158;--ps:8"><img src="../sally-system/assets/img/copper-curly-land.jpg" alt="Copper curls, close, against a pale wall" style="object-position:50% 35%"></a>
+  <a class="vs-t vs-shade cp" href="#" style="--c:4;--r:13;--s:24;--pc:1;--pr:43;--ps:22"><img src="../sally-system/assets/img/copper-port.jpg" alt="Copper curls and a deep red lip" style="object-position:50% 30%"><span class="vs-copy"><span class="nm">Copper<span class="cd">7C</span></span><span class="go">Shop the shade</span></span></a>
+  <div class="vs-t vs-ink" style="--c:1;--r:29;--s:12;--pc:1;--pr:31;--ps:12"><p class="t-label">The Lookbook · Summer 2026</p><div class="vs-copy"><h2>Shop by shade.</h2><a class="pill light sm" href="#">All shades</a></div></div>
+  <a class="vs-t vs-shade cp" href="#" style="--c:1;--r:41;--s:23;--pc:1;--pr:65;--ps:22"><img src="../sally-system/assets/img/blonde-port.jpg" alt="Long blonde waves outdoors, orange nails" loading="lazy" style="object-position:50% 30%"><span class="vs-copy"><span class="nm">Cool Blonde<span class="cd">10N</span></span><span class="go">Shop the shade</span></span></a>
+  <a class="vs-t vs-ph" href="#" style="--c:1;--r:64;--s:17;--pc:1;--pr:138;--ps:20"><img src="../sally-system/assets/img/wm3.jpeg" alt="Long almond nails in red and cream art, in dark hair" loading="lazy" style="object-position:50% 45%"></a>
+  <a class="vs-t vs-ph" href="#" style="--c:1;--r:81;--s:6;--pc:1;--pr:166;--ps:7"><img src="../sally-system/assets/img/chiwaver-land.jpg" alt="Blonde waves and a rainbow wave styler" loading="lazy" style="object-position:50% 45%"></a>
+  <a class="vs-t vs-ph" href="#" style="--c:2;--r:29;--s:8;--pc:1;--pr:87;--ps:8"><img src="../sally-system/assets/img/teal-nails-port.jpg" alt="Teal braids, one friend braiding another" loading="lazy" style="object-position:64% 45%"></a>
+  <a class="vs-t vs-sw" href="#" style="--c:2;--r:37;--s:12;--pc:1;--pr:95;--ps:12;--sw:var(--teal)"><span class="t-label">Vivid</span><span class="vs-copy"><span class="nm">Deep Sea Teal</span><span class="go">Shop the shade</span></span></a>
+  <a class="vs-t vs-ph" href="#" style="--c:2;--r:49;--s:20;--pc:2;--pr:71;--ps:20"><img src="../sally-system/assets/img/protective-port.jpg" alt="A natural afro and a satin blouse" loading="lazy" style="object-position:50% 30%"></a>
+  <a class="vs-t vs-shade cp" href="#" style="--c:2;--r:69;--s:8;--pc:2;--pr:111;--ps:9"><img src="../sally-system/assets/img/grey-coverage-land.jpg" alt="Dark brown curls" loading="lazy" style="object-position:60% 40%"><span class="vs-copy"><span class="nm">Rich Brunette<span class="cd">4N</span></span><span class="go">Shop the shade</span></span></a>
+  <a class="vs-t vs-ph" href="#" style="--c:4;--r:1;--s:12;--pc:2;--pr:31;--ps:8"><img src="../sally-system/assets/img/wm1.jpeg" alt="A woman with curls checking her hair at a Sally vanity" loading="lazy" style="object-position:38% 45%"></a>
+  <a class="vs-t vs-ph" href="#" style="--c:3;--r:33;--s:22;--pc:2;--pr:91;--ps:20"><img src="../sally-system/assets/img/wm2.jpeg" alt="Teal cat-eye nails against a red western boot" loading="lazy" style="object-position:50% 50%"></a>
+  <a class="vs-t vs-ph" href="#" style="--c:3;--r:55;--s:18;--pc:1;--pr:107;--ps:20"><img src="../sally-system/assets/img/cherry-nails-port.jpg" alt="Long dark waves and a red top" loading="lazy" style="object-position:50% 30%"></a>
+  <a class="vs-t vs-sw" href="#" style="--c:3;--r:73;--s:14;--pc:1;--pr:127;--ps:11;--sw:var(--cherry)"><span class="t-label">Vivid</span><span class="vs-copy"><span class="nm">Cherry Cola</span><span class="go">Shop the shade</span></span></a>
+  <a class="vs-t vs-ph" href="#" style="--c:4;--r:37;--s:22;--pc:2;--pr:120;--ps:22"><img src="../sally-system/assets/img/chiwaver-port.jpg" alt="Long blonde waves" loading="lazy" style="object-position:50% 35%"></a>
+  <a class="vs-t vs-ph" href="#" style="--c:4;--r:59;--s:9;--pc:2;--pr:142;--ps:9"><img src="../sally-system/assets/img/gray-shampoo-land.jpg" alt="Long silver hair against pink tile" loading="lazy" style="object-position:50% 35%"></a>
+  <a class="vs-t vs-ph" href="#" style="--c:4;--r:68;--s:19;--pc:2;--pr:151;--ps:22"><img src="../sally-system/assets/img/backtoschool-port.jpg" alt="Long blonde crimped waves and lavender nails, at the wheel" loading="lazy" style="object-position:50% 30%"></a>
+</div>
+</section>
+
+<section class="ll-hero v-was">
+  <figure class="ph"><img src="../sally-system/assets/img/copper-curly-land.jpg" alt="Copper curls, close, against a pale wall" loading="lazy" style="object-position:50% 30%"></figure>
   <div class="ll-float">
     <p class="t-label grey">New this week</p>
     <h1>Vivids are back at&nbsp;it.</h1>
@@ -56,7 +102,7 @@
 </section>
 
 <div class="wrap">
-  <section class="story">
+  <section class="story v-was">
     <div class="head"><h2 class="t-d2">Shop by shade.</h2><a class="pill soft sm" href="#">All shades</a></div>
     <div class="ll-row c6 tall"><a class="ll-cell" href="#"><span class="ph"><img src="../sally-system/assets/img/blonde-port.jpg" alt="" loading="lazy"></span><span class="ll-cap"><span class="nm">Cool Blonde</span><span class="sub">10N</span></span></a><a class="ll-cell" href="#"><span class="ph"><img src="../sally-system/assets/img/copper-port.jpg" alt="" loading="lazy"></span><span class="ll-cap"><span class="nm">Copper</span><span class="sub">7C</span></span></a><a class="ll-cell" href="#"><span class="ph"><img src="../sally-system/assets/img/grey-coverage-land.jpg" alt="" loading="lazy" style="object-position:58% 40%"></span><span class="ll-cap"><span class="nm">Rich Brunette</span><span class="sub">4N</span></span></a><a class="ll-cell" href="#"><span class="ph"><img src="../sally-system/assets/img/purple-nails-port.jpg" alt="" loading="lazy"></span><span class="ll-cap"><span class="nm">Electric Violet</span><span class="sub">Vivid</span></span></a><a class="ll-cell" href="#"><span class="ph"><img src="../sally-system/assets/img/teal-nails-port.jpg" alt="" loading="lazy" style="object-position:64% 50%"></span><span class="ll-cap"><span class="nm">Deep Sea Teal</span><span class="sub">Vivid</span></span></a><a class="ll-cell" href="#"><span class="ph"><img src="../sally-system/assets/img/cherry-nails-port.jpg" alt="" loading="lazy"></span><span class="ll-cap"><span class="nm">Cherry Cola</span><span class="sub">Vivid</span></span></a></div>
   </section>
@@ -64,7 +110,7 @@
 
 <section class="ll-band">
   <figure class="ph"><img src="../sally-system/assets/img/wm1.jpeg" alt="A woman with curls checking her hair at a Sally vanity" loading="lazy" style="object-position:40% 45%"></figure>
-  <div class="ll-float ink">
+  <div class="ll-float ink mid">
     <p class="t-label grey">Sally Rewards</p>
     <h2>Members shop it first.</h2>
     <p class="t-body">Early access to the new drop plus double points all weekend. Free to join.</p>

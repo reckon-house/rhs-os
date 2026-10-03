@@ -9,7 +9,17 @@
    IntersectionObserver simply shows everything. */
 (function () {
   if (matchMedia("(prefers-reduced-motion: reduce)").matches || !("IntersectionObserver" in window)) return;
-  var els = document.querySelectorAll(".wrap > section, body > section, .band, .ll-hero, .ll-band, .lb-grid > figure, .lb-grid > .chapter");
+  /* the takeover story is the first screen, so it is never hidden for an
+     arrival; its pictures settle instead, each as it comes into view */
+  var els = Array.prototype.filter.call(document.querySelectorAll(".wrap > section, body > section, .band, .ll-hero, .ll-band, .lb-grid > figure, .lb-grid > .chapter"), function (el) { return !el.classList.contains("vs"); });
+  var tiles = document.querySelectorAll(".vs-t");
+  if (tiles.length) {
+    var tio = new IntersectionObserver(function (es) {
+      es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add("in"); tio.unobserve(e.target); } });
+    }, { rootMargin: "0px 0px -6% 0px", threshold: 0.04 });
+    tiles.forEach(function (t) { tio.observe(t); });
+    document.querySelectorAll(".vs").forEach(function (v) { v.classList.add("vs-live"); });
+  }
   if (!els.length) return;
   var io = new IntersectionObserver(function (es) {
     es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } });
