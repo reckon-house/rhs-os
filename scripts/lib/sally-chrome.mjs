@@ -155,7 +155,7 @@ if (args.has("--inject")) {
 if (args.has("--check")) {
   const bad = [];
   const pp = pushedPages();
-  if (pp.length < 10) bad.push(`only ${pp.length} pushed pages carry markers (expected 10)`);
+  if (pp.length < 11) bad.push(`only ${pp.length} pushed pages carry markers (expected 11)`);
   for (const f of pp) { const s = fs.readFileSync(f, "utf8"); if (filled(s) !== s) bad.push(rel(f) + ": chrome differs from sally-chrome.mjs (run --write)"); }
   if (!fs.existsSync(JS_FILE) || fs.readFileSync(JS_FILE, "utf8") !== chromeJs()) bad.push(rel(JS_FILE) + ": stale (run --js)");
   for (const f of sysPages()) { const s = fs.readFileSync(f, "utf8"); if (injectChrome(s) !== s) bad.push(rel(f) + ": no chrome.js (run --inject)"); }

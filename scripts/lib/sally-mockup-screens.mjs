@@ -40,6 +40,7 @@ const HOMEPAGES = [
   ["lookbook", PUSH("lookbook-images"), true],
   ["colorfest", PUSH("colorfest"), true],
   ["pride", PUSH("pride"), true],
+  ["the-sale", PUSH("promotion"), true],
   ["editorial", SKIN("homepage-editorial"), false],
   ["card-system", SKIN("homepage-cards"), false],
   ["full-card", SKIN("homepage-full"), false],
