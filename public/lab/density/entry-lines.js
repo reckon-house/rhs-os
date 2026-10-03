@@ -527,7 +527,15 @@ window.ENTRY_LINES = {
    are his, from that message and from the sentences quoted beside
    tool/claude-code above; "five to seven" is his estimate and keeps his
    "might have been". Draft for him to read aloud. To change it, change
-   the words; to take it away, delete the key. */
+   the words; to take it away, delete the key.
+
+   Then he named them, asked what they were: "Figma, animation tools,
+   research tools, coding tools, the need for webflow or framer, etc even
+   the need for Jira or project management - it builds and keeps track
+   of all of those things". Six, inside his five to seven, in his order;
+   "animation tools, research tools, coding tools" is set as "animation,
+   research and coding tools" so the word does not stand three times in
+   one list. */
 window.ENTRY_LONG = {
-  "tool/claude-code": "Claude Code is Anthropic's coding agent, and it's where I build: A.R.C. end to end, Sally Marketing OS, Dallas Sport Collective and Faux Reel, which took a single day. It's also my design tool, my thinking partner, this site's CMS and its build environment. It has taken what might have been five to seven other applications and put them in one tool.",
+  "tool/claude-code": "Claude Code is Anthropic's coding agent, and it's where I build: A.R.C. end to end, Sally Marketing OS, Dallas Sport Collective and Faux Reel, which took a single day. It's also my design tool, my thinking partner, this site's CMS and its build environment. It has taken what might have been five to seven other applications and put them in one tool: Figma, animation, research and coding tools, Webflow or Framer, even Jira and project management. It builds and keeps track of all of it.",
 };
