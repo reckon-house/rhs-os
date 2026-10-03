@@ -183,7 +183,11 @@
    number bold, its name in ink caps, a rule of ink under them. The room
    reads as the article its contents page promised (27 Sept, the
    editorial pass; it was a grey label under a rule) */
-.sp-kick { display: flex; align-items: baseline; margin: 0 var(--m); padding: 0 0 8px; border-bottom: 1px solid var(--ink);
+/* no rule under the label (2 Oct 2026, his "let's also try removing the
+   rule under the section labels in the case studies too"): the 8px and the
+   1px ink rule that sat under it are gone, so the label stands on the air
+   above its heading alone */
+.sp-kick { display: flex; align-items: baseline; margin: 0 var(--m); padding: 0; border-bottom: 0;
   font-size: 9.5px; letter-spacing: 0.09em; color: var(--ink); }
 .sp-kick b { margin-right: 0.8em; font-weight: 700; font-variant-numeric: tabular-nums; }
 .sp-h { max-width: 12.5em; margin: clamp(20px, 3.6cqw, 34px) var(--m) 0; font-size: clamp(32px, 6.4cqw, 60px); font-weight: 700; letter-spacing: -0.05em; line-height: 0.96; text-wrap: balance; margin-left: calc(var(--m) - 0.04em); }
@@ -362,9 +366,12 @@
 .sp.mo .rv-rule.rv-go::before { transform: none; }
 .sp.mo :is(.sp-kick, .sp-foot) { --rc: var(--ink); }
 .sp.mo .sp-black .sp-nr { --rc: rgba(255, 255, 255, 0.16); }
-/* the section's rule is under its number and name */
+/* the section's rule was under its number and name; it no longer draws
+   (2 Oct 2026). The label keeps its place in the rule kind for the way
+   its words come in, a beat after the line used to, so the timing of
+   everything after it is as it was */
 .sp.mo .sp-kick.rv-rule { border-bottom-color: transparent !important; }
-.sp.mo .sp-kick.rv-rule::before { top: auto; bottom: -1px; }
+.sp.mo .sp-kick.rv-rule::before { display: none; }
 .sp.mo .sp-kick.rv { transition: color 0.5s ease calc(var(--d, 0ms) + 0.12s); }
 .sp.mo .sp-kick.rv:not(.rv-go) { color: transparent; }
 .sp.mo .sp-nr.rv > * { transition: opacity 0.5s ease calc(var(--d, 0ms) + 0.12s); }
@@ -597,7 +604,11 @@ html[data-motion="scrub"] .sp.mo .sp-bar2.rv i { transform: scaleX(var(--p, 1));
 .sp-palx { position: relative; margin-top: clamp(90px, 16cqw, 160px); }
 .sp-palx > .sp-palh { margin: 0 var(--m) 14px; }
 /* inside the title block: edge to edge past its margins, the facts after */
-.sp-spec > .sp-palx { margin: 0 calc(-1 * var(--m)) clamp(44px, 8cqw, 72px); }
+.sp-spec > .sp-palx { margin: 0 calc(var(--rm, 0px) - var(--m)) clamp(44px, 8cqw, 72px) calc(-1 * var(--m)); }
+/* its right edge is the pictures' and the solid blocks' (2 Oct 2026, his
+   "bring the palette strip in to the margin too"): the spec's own right
+   margin is m, so the strip takes back all of it but --rm, the 20px the
+   room leaves on a desk and nothing on a phone */
 .sp-palx .sp-pic { background-color: transparent; }
 .sp-palx .sp-pic img { object-fit: cover; }
 
