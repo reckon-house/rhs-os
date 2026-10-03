@@ -1,0 +1,251 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Type & patterns · a take</title>
+<meta name="robots" content="noindex">
+<!-- ── TYPE & PATTERNS, A TAKE (3 Oct 2026) ─────────────────────────────
+     His ask, with three of his black-and-white studies attached: "a mix
+     of a script and sans serif font with a handful of patterns, layers,
+     and vary shades of grey to add depth. i was wondering how it would
+     work if we tried one here! ... what would one of these look like in
+     3d? ... maybe it's an animated piece too?!"
+
+     What his pieces are made of, as read from the three:
+       paper    a dot grid, 15 across, with wear on the ink
+       letters  a Didone, one letter large and one or two small, filled
+                with a pattern, a black slash or a solid cut across one
+       swashes  calligraphic ribbons, thick on one diagonal and thin on
+                the other, looping up into the empty top of the sheet;
+                one or two hairlines crossing the whole sheet
+       shapes   ellipses at an angle, each filled with its own pattern:
+                polka dots, a dot screen, a diamond lattice, a hatch,
+                ladder stripes, vertical stripes
+       depth    every black shape has a grey copy behind it, offset down
+                and right, the same light on everything
+       marks    a roman numeral top left, the caption in a small sans with
+                a Didone ampersand, one Didone word bottom right
+
+     This page composes one from those parts (seeded, so every take is a
+     different arrangement of the same language), then does the two
+     things paper cannot:
+       ?depth=on   the layers stand in real depth and lean with the pointer
+       ?motion=on  the piece draws itself: ribbons run on, letters settle,
+                   the grey copies slide into their offset
+     Space or "New take" reseeds; ?loop=on takes a new one every 8s.
+     Ogg is not used (licence); the Didone is Bodoni Moda from Google
+     Fonts, the sans is the site's Satoshi. -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&display=swap">
+<link rel="preload" href="/fonts/Satoshi-Variable.woff2" as="font" type="font/woff2" crossorigin>
+<style>
+  @font-face { font-family: "Satoshi"; src: url("/fonts/Satoshi-Variable.woff2") format("woff2"); font-weight: 300 900; font-display: swap; }
+  :root { --ink: #0E0E0E; --paper: #FAFAF8; --shade: #C4C4C2; --shade-2: #8E8E8B; }
+  html, body { margin: 0; background: #E9E8E4; color: var(--ink); font-family: "Satoshi", "Helvetica Neue", Arial, sans-serif; -webkit-font-smoothing: antialiased; }
+  .bar { position: fixed; left: 0; right: 0; top: 0; z-index: 10; display: flex; flex-wrap: wrap; align-items: center; gap: 8px 18px; padding: 14px 18px; font-size: 12.5px; font-weight: 500; color: #333; }
+  .bar b { font-weight: 700; margin-right: 6px; }
+  .bar button { font: inherit; font-weight: 600; color: var(--ink); background: #fff; border: 0; border-radius: 999px; padding: 7px 13px; cursor: pointer; }
+  .bar button[aria-pressed="true"] { background: var(--ink); color: #fff; }
+  .bar .seed { font-variant-numeric: tabular-nums; color: #777; }
+  .room { min-height: 100vh; display: grid; place-items: center; padding: 64px 20px 40px; box-sizing: border-box; perspective: 1700px; }
+  /* the sheet: his 7 by 10 */
+  .sheet { position: relative; width: min(calc(100vw - 40px), calc((100vh - 104px) * 0.7)); aspect-ratio: 7 / 10; background: var(--paper); box-shadow: 0 30px 80px rgba(0, 0, 0, 0.18), 0 2px 6px rgba(0, 0, 0, 0.08); transform-style: preserve-3d; transition: opacity 0.45s ease; }
+  .sheet svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+  .sheet.depth svg { transform: translateZ(calc(var(--z) * 44px)); transform-style: preserve-3d; }
+  .sheet.depth { will-change: transform; }
+  .sheet.out { opacity: 0; }
+
+  /* ── the arrival ── */
+  .sheet.motion .rise { opacity: 0; transform: translateY(26px); animation: rise 1s cubic-bezier(0.2, 0.7, 0.2, 1) var(--d, 0s) forwards; }
+  .sheet.motion .pop { transform-box: fill-box; transform-origin: center; transform: scale(0.62); opacity: 0; animation: pop 0.9s cubic-bezier(0.2, 0.8, 0.2, 1) var(--d, 0s) forwards; }
+  .sheet.motion .shadow { transform: translate(0, 0); animation: slide 1.2s cubic-bezier(0.2, 0.7, 0.2, 1) var(--d, 0s) forwards; }
+  .sheet.motion .draw { stroke-dasharray: 1; stroke-dashoffset: 1; animation: draw 1.7s cubic-bezier(0.45, 0, 0.2, 1) var(--d, 0s) forwards; }
+  .sheet.motion .fade { opacity: 0; animation: fade 0.8s ease var(--d, 0s) forwards; }
+  @keyframes rise { to { opacity: 1; transform: none; } }
+  @keyframes pop { to { opacity: 1; transform: scale(1); } }
+  @keyframes slide { to { transform: translate(16px, 12px); } }
+  .sheet.motion .shadow[style*="translate"] { animation-name: slideto; }
+  @keyframes slideto { from { transform: translate(0, 0); } }
+  @keyframes draw { to { stroke-dashoffset: 0; } }
+  @keyframes fade { to { opacity: 1; } }
+  .shadow { transform: translate(16px, 12px); }
+  @media (prefers-reduced-motion: reduce) {
+    .sheet.motion :is(.rise, .pop, .shadow, .draw, .fade) { animation: none !important; opacity: 1; transform: none; stroke-dashoffset: 0; }
+    .sheet.motion .shadow { transform: translate(16px, 12px); }
+    .sheet.depth { transform: none !important; }
+  }
+</style>
+</head>
+<body>
+<div class="bar">
+  <b>Type &amp; patterns</b>
+  <button id="new" type="button">New take</button>
+  <button id="depth" type="button" aria-pressed="false">Depth</button>
+  <button id="motion" type="button" aria-pressed="false">Motion</button>
+  <button id="loop" type="button" aria-pressed="false">Loop</button>
+  <button id="stack" type="button" aria-pressed="false">Stack</button>
+  <button id="save" type="button">Save SVG</button>
+  <span class="seed" id="seed"></span>
+</div>
+<div class="room"><div class="sheet" id="sheet"></div></div>
+
+<script>
+(() => {
+  const W = 1400, H = 2000, INK = "#0E0E0E", PAPER = "#FAFAF8", SHADE = "#C4C4C2", SHADE2 = "#8E8E8B";
+  const q = new URLSearchParams(location.search);
+  const state = {
+    seed: Math.max(1, parseInt(q.get("seed") || "7", 10) || 7),
+    depth: q.get("depth") === "on", motion: q.get("motion") === "on", loop: q.get("loop") === "on", stack: q.get("shade") === "stack",
+  };
+  const mulberry = (a) => () => { a |= 0; a = (a + 0x6D2B79F5) | 0; let t = Math.imul(a ^ (a >>> 15), 1 | a); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
+  const f1 = (n) => n.toFixed(1);
+
+  /* ── a calligraphic ribbon: a pen held at one angle, run along cubics ── */
+  const bez = (P, t) => { const u = 1 - t; return [u * u * u * P[0][0] + 3 * u * u * t * P[1][0] + 3 * u * t * t * P[2][0] + t * t * t * P[3][0], u * u * u * P[0][1] + 3 * u * u * t * P[1][1] + 3 * u * t * t * P[2][1] + t * t * t * P[3][1]]; };
+  const bezD = (P, t) => { const u = 1 - t; return [3 * u * u * (P[1][0] - P[0][0]) + 6 * u * t * (P[2][0] - P[1][0]) + 3 * t * t * (P[3][0] - P[2][0]), 3 * u * u * (P[1][1] - P[0][1]) + 6 * u * t * (P[2][1] - P[1][1]) + 3 * t * t * (P[3][1] - P[2][1])]; };
+  const ribbon = (segs, wmin, wmax, pen) => {
+    const L = [], R = [], N = 48;
+    const total = segs.length;
+    segs.forEach((P, si) => {
+      for (let i = 0; i <= N; i++) {
+        if (i === 0 && si > 0) continue;
+        const t = i / N, g = (si + t) / total;
+        const [x, y] = bez(P, t), [dx, dy] = bezD(P, t), m = Math.hypot(dx, dy) || 1;
+        const nx = -dy / m, ny = dx / m, ang = Math.atan2(dy, dx);
+        const taper = Math.pow(Math.sin(Math.PI * g), 0.22);
+        const w = wmin + (wmax - wmin) * (0.18 + 0.82 * Math.abs(Math.sin(ang - pen))) * taper;
+        L.push([x + nx * w / 2, y + ny * w / 2]); R.push([x - nx * w / 2, y - ny * w / 2]);
+      }
+    });
+    const pts = L.concat(R.reverse());
+    return "M" + pts.map(([x, y]) => f1(x) + " " + f1(y)).join("L") + "Z";
+  };
+  const centerline = (segs) => "M" + f1(segs[0][0][0]) + " " + f1(segs[0][0][1]) + segs.map((P) => "C" + [P[1], P[2], P[3]].map(([x, y]) => f1(x) + " " + f1(y)).join(" ")).join("");
+  const asterisk = (cx, cy, r) => { let d = ""; for (let i = 0; i < 6; i++) { const a = i * 60; d += `<path transform="translate(${cx} ${cy}) rotate(${a})" d="M0 0 C-${f1(r * 0.17)} -${f1(r * 0.4)} -${f1(r * 0.17)} -${f1(r * 0.74)} 0 -${r} C${f1(r * 0.17)} -${f1(r * 0.74)} ${f1(r * 0.17)} -${f1(r * 0.4)} 0 0Z"/>`; } return d; };
+
+  /* ── one take ── */
+  const build = (seed, stack) => {
+    const rnd = mulberry(seed), j = (a) => (rnd() * 2 - 1) * a, pick = (arr) => arr[Math.floor(rnd() * arr.length)];
+    const pats = ["polka", "screen", "lattice", "hatch", "ladder", "vstripes"].sort(() => rnd() - 0.5);
+    const letters = pick(["R", "R", "K", "E", "A", "H"]), small = pick(["H", "N", "E", "L"]);
+    const smallPat = ["ladder", "lattice", "vstripes", "polka"].sort(() => rnd() - 0.5)[0];
+    const word = pick(["house", "reckon", "staples", "index"]);
+    const numeral = pick(["IV", "V", "VI"]);
+    /* the big letter, its slash, the small letter, the asterisk, three ellipses */
+    const Rx = 150 + j(30), Ry = 1540 + j(20), Rs = 1140 + j(60), Rrot = -9 + j(5);
+    const Hx = 850 + j(50), Hy = 1770 + j(20), Hs = 520 + j(40);
+    const Ax = 1040 + j(60), Ay = 980 + j(70), Ar = 220 + j(30), Arot = j(30);
+    const ells = [
+      { x: 560 + j(40), y: 1190 + j(40), rx: 300 + j(30), ry: 150 + j(20), rot: -26 + j(8), p: pats[1], d: "0.55s" },
+      { x: 820 + j(40), y: 1420 + j(40), rx: 250 + j(30), ry: 125 + j(20), rot: 20 + j(8), p: pats[2], d: "0.75s" },
+      { x: 320 + j(40), y: 1470 + j(30), rx: 210 + j(20), ry: 112 + j(16), rot: -10 + j(8), p: pats[3], d: "0.4s" },
+    ];
+    const bandA = 1000 + j(80), bandB = 560 + j(80), bandT = 150 + j(40);
+    const pen = (28 + j(10)) * Math.PI / 180;
+    const ribA = [[[180 + j(40), 1760 + j(30)], [420 + j(60), 1500 + j(60)], [520 + j(60), 1240 + j(60)], [700 + j(40), 1120 + j(40)]],
+      [[700, 1120], [880 + j(60), 1000 + j(60)], [1240 + j(60), 560 + j(60)], [1180 + j(40), 440 + j(40)]],
+      [[1180, 440], [1120 + j(50), 320 + j(50)], [900 + j(60), 420 + j(60)], [980 + j(40), 620 + j(40)]]];
+    /* each curve leaves a joint the way the last one arrived, so the loop
+       has no kink: the next first handle mirrors the previous last one */
+    const smooth = (segs) => { for (let i = 1; i < segs.length; i++) { const p = segs[i - 1]; segs[i][0] = p[3]; segs[i][1] = [2 * p[3][0] - p[2][0], 2 * p[3][1] - p[2][1]]; } return segs; };
+    smooth(ribA);
+    const ribB = [[[1330 + j(30), 1700 + j(30)], [1100 + j(60), 1760 + j(60)], [760 + j(60), 1520 + j(60)], [560 + j(40), 1400 + j(40)]],
+      [[560, 1400], [380 + j(60), 1300 + j(60)], [240 + j(50), 1380 + j(50)], [300 + j(40), 1520 + j(40)]],
+      [[300, 1520], [340 + j(50), 1640 + j(50)], [520 + j(60), 1620 + j(60)], [640 + j(40), 1540 + j(40)]]];
+    smooth(ribB);
+    /* a wide grey sweep behind everything, the way a grey arc crosses his E */
+    const ribC = smooth([[[-40, 1080 + j(80)], [300 + j(80), 860 + j(80)], [700 + j(80), 1000 + j(80)], [1000 + j(60), 760 + j(60)]],
+      [[1000, 760], [1200, 600], [1420, 640], [1460, 520]]]);
+    const wA = 62 + j(10), wB = 50 + j(8), wC = 96 + j(16);
+    const hair1 = [[60, 900 + j(80)], [500 + j(80), 780 + j(80)], [900 + j(80), 1180 + j(80)], [1380, 1020 + j(80)]];
+    const hair2 = [[1000 + j(80), 250 + j(60)], [1200 + j(60), 900 + j(80)], [700 + j(80), 1500 + j(80)], [560 + j(80), 1980]];
+
+    const didone = `font-family="Bodoni Moda, Didot, 'Bodoni 72', serif" font-weight="900" style="font-variation-settings:'opsz' 96"`;
+    const big = (fill, extra = "") => `<text x="${f1(Rx)}" y="${f1(Ry)}" font-size="${f1(Rs)}" ${didone} fill="${fill}" transform="rotate(${f1(Rrot)} ${f1(Rx + Rs * 0.35)} ${f1(Ry - Rs * 0.35)})" ${extra}>${letters}</text>`;
+    const smallT = (fill, extra = "") => `<text x="${f1(Hx)}" y="${f1(Hy)}" font-size="${f1(Hs)}" ${didone} fill="${fill}" ${extra}>${small}</text>`;
+    const ell = (e, fill, extra = "") => `<ellipse cx="${f1(e.x)}" cy="${f1(e.y)}" rx="${f1(e.rx)}" ry="${f1(e.ry)}" transform="rotate(${f1(e.rot)} ${f1(e.x)} ${f1(e.y)})" fill="${fill}" ${extra}/>`;
+    const ast = (fill, extra = "") => `<g transform="rotate(${f1(Arot)} ${f1(Ax)} ${f1(Ay)})" fill="${fill}" ${extra}>${asterisk(Ax, Ay, Ar)}</g>`;
+    const dA = ribbon(ribA, 3, wA, pen), dB = ribbon(ribB, 3, wB, pen), dC = ribbon(ribC, 6, wC, pen + 0.5);
+    const cA = centerline(ribA), cB = centerline(ribB);
+    const hairD = (P) => `M${f1(P[0][0])} ${f1(P[0][1])}C${[P[1], P[2], P[3]].map(([x, y]) => f1(x) + " " + f1(y)).join(" ")}`;
+
+    const defs = `<defs>
+      <pattern id="grid" width="96" height="96" patternUnits="userSpaceOnUse"><circle cx="48" cy="48" r="3.2" fill="#1a1a1a"/></pattern>
+      <pattern id="polka" width="74" height="74" patternUnits="userSpaceOnUse"><circle cx="37" cy="37" r="22" fill="${INK}"/></pattern>
+      <pattern id="screen" width="14" height="14" patternUnits="userSpaceOnUse"><circle cx="7" cy="7" r="3.3" fill="${INK}"/></pattern>
+      <pattern id="lattice" width="24" height="24" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="12" height="12" fill="${INK}"/><rect x="12" y="12" width="12" height="12" fill="${INK}"/></pattern>
+      <pattern id="hatch" width="16" height="16" patternUnits="userSpaceOnUse" patternTransform="rotate(-35)"><rect width="3.5" height="16" fill="${INK}"/></pattern>
+      <pattern id="ladder" width="40" height="18" patternUnits="userSpaceOnUse"><rect width="40" height="7" fill="${INK}"/></pattern>
+      <pattern id="vstripes" width="16" height="40" patternUnits="userSpaceOnUse"><rect width="5" height="40" fill="${INK}"/></pattern>
+      <filter id="speck" x="0" y="0" width="1" height="1"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="${seed}" result="n"/><feColorMatrix in="n" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 11 -8.4" result="m"/><feComposite in="SourceGraphic" in2="m" operator="in"/></filter>
+      <mask id="wear" maskUnits="userSpaceOnUse" x="0" y="0" width="${W}" height="${H}"><rect width="${W}" height="${H}" fill="#fff"/><rect width="${W}" height="${H}" fill="#000" filter="url(#speck)" opacity="0.85"/></mask>
+      <clipPath id="bigclip">${big("#000")}</clipPath>
+      <mask id="drawA" maskUnits="userSpaceOnUse" x="0" y="0" width="${W}" height="${H}"><path class="draw" style="--d:0.2s" d="${cA}" pathLength="1" fill="none" stroke="#fff" stroke-width="${f1(wA + 14)}" stroke-linecap="round"/></mask>
+      <mask id="drawB" maskUnits="userSpaceOnUse" x="0" y="0" width="${W}" height="${H}"><path class="draw" style="--d:1.1s" d="${cB}" pathLength="1" fill="none" stroke="#fff" stroke-width="${f1(wB + 14)}" stroke-linecap="round"/></mask>
+    </defs>`;
+
+    /* the layers, back to front */
+    const layers = [
+      { z: 0, g: `<rect width="${W}" height="${H}" fill="url(#grid)"/>` },
+      /* the greys: one copy offset down and right (his), or, under ?shade=stack,
+         seven stepped copies from near-ink to light, so every shape is extruded */
+      { z: 1, g: stack
+        ? [6, 5, 4, 3, 2, 1, 0].map((k) => { const c = ["#2a2a28", "#48484a", "#66666a", "#84848a", "#a2a2a4", "#bcbcbc", SHADE][k]; return `<g class="shadow" style="--d:${(0.9 + k * 0.05).toFixed(2)}s;transform:translate(${(k + 1) * 3.2}px,${(k + 1) * 2.6}px)" fill="${c}">${ell(ells[2], c)}${big(c)}${ell(ells[0], c)}${ast(c)}${ell(ells[1], c)}${smallT(c)}<path d="${dA}"/><path d="${dB}"/></g>`; }).join("")
+        : `<g class="shadow" style="--d:0.9s" fill="${SHADE}">${ell(ells[2], SHADE)}${big(SHADE)}${ell(ells[0], SHADE)}${ast(SHADE)}${ell(ells[1], SHADE)}${smallT(SHADE)}<path d="${dA}"/><path d="${dB}"/></g>` },
+      { z: 1.5, g: `<path class="rise" style="--d:0.15s" d="${dC}" fill="${SHADE2}" opacity="0.55"/>` },
+      { z: 2, g: `<g mask="url(#wear)">${ell(ells[2], PAPER, `class="pop" style="--d:${ells[2].d}"`)}${ell(ells[2], `url(#${ells[2].p})`, `class="pop" style="--d:${ells[2].d}" stroke="${INK}" stroke-width="5"`)}${big(PAPER, `class="rise" style="--d:0.3s"`)}${big(`url(#${pats[0]})`, `class="rise" style="--d:0.3s"`)}<polygon class="rise" style="--d:0.5s" clip-path="url(#bigclip)" points="0,${f1(bandA)} ${W},${f1(bandB)} ${W},${f1(bandB + bandT)} 0,${f1(bandA + bandT)}" fill="${INK}"/><g class="rise" style="--d:0.3s" fill="none" stroke="${INK}" stroke-width="3">${big("none")}</g></g>` },
+      { z: 3, g: `<g mask="url(#wear)">${ell(ells[0], PAPER, `class="pop" style="--d:${ells[0].d}"`)}${ell(ells[0], `url(#${ells[0].p})`, `class="pop" style="--d:${ells[0].d}" stroke="${INK}" stroke-width="5"`)}${ast(PAPER, `class="pop" style="--d:0.65s"`)}${ast(`url(#${pats[5]})`, `class="pop" style="--d:0.65s" stroke="${INK}" stroke-width="6" stroke-linejoin="round"`)}</g>` },
+      { z: 4, g: `<g mask="url(#wear)">${ell(ells[1], PAPER, `class="pop" style="--d:${ells[1].d}"`)}${ell(ells[1], `url(#${ells[1].p})`, `class="pop" style="--d:${ells[1].d}" stroke="${INK}" stroke-width="5"`)}${smallT(PAPER, `class="rise" style="--d:0.45s"`)}${smallT(`url(#${smallPat})`, `class="rise" style="--d:0.45s" stroke="${INK}" stroke-width="4"`)}</g>` },
+      { z: 5, g: `<g mask="url(#drawA)"><path d="${dA}" fill="${INK}"/><path d="${cA}" fill="none" stroke="${SHADE2}" stroke-width="1.5" transform="translate(-10 -6)"/></g><g mask="url(#drawB)"><path d="${dB}" fill="${INK}"/></g>` },
+      { z: 6, g: `<path class="draw" style="--d:1.6s" d="${hairD(hair1)}" pathLength="1" fill="none" stroke="${INK}" stroke-width="2"/><path class="draw" style="--d:1.9s" d="${hairD(hair2)}" pathLength="1" fill="none" stroke="${INK}" stroke-width="1.6"/>` },
+      { z: 7, g: `<g class="fade" style="--d:2.1s" fill="${INK}"><text x="140" y="190" font-size="54" font-family="Bodoni Moda, Didot, serif" font-weight="500">${numeral}</text><text x="60" y="1930" font-size="22" font-family="Satoshi, Helvetica Neue, Arial, sans-serif" font-weight="500" letter-spacing="0.2">reckon*house &#160;|&#160; a study in typography <tspan font-family="Bodoni Moda, Didot, serif" font-size="34" font-weight="400">&amp;</tspan> pattern design &#160;|&#160; a take</text><text x="1340" y="1948" text-anchor="end" font-size="76" font-family="Bodoni Moda, Didot, serif" font-weight="500" letter-spacing="-1">${word}</text></g>` },
+    ];
+    return { defs, layers };
+  };
+
+  /* ── render ── */
+  const sheet = document.getElementById("sheet");
+  const svgOpen = (z) => `<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="--z:${z}">`;
+  let take = null;
+  const render = () => {
+    take = build(state.seed, state.stack);
+    sheet.className = "sheet" + (state.depth ? " depth" : "") + (state.motion ? " motion" : "");
+    if (state.depth) sheet.innerHTML = take.layers.map((l, i) => svgOpen(l.z) + (i === 0 ? take.defs : "") + l.g + "</svg>").join("");
+    else sheet.innerHTML = svgOpen(0) + take.defs + take.layers.map((l) => l.g).join("") + "</svg>";
+    document.getElementById("seed").textContent = "take " + state.seed;
+    const u = new URL(location.href);
+    u.searchParams.set("seed", state.seed); ["depth", "motion", "loop"].forEach((k) => { if (state[k]) u.searchParams.set(k, "on"); else u.searchParams.delete(k); });
+    if (state.stack) u.searchParams.set("shade", "stack"); else u.searchParams.delete("shade");
+    history.replaceState(null, "", u.pathname + u.search);
+    ["depth", "motion", "loop", "stack"].forEach((k) => document.getElementById(k).setAttribute("aria-pressed", String(state[k])));
+  };
+  const newTake = () => { sheet.classList.add("out"); setTimeout(() => { state.seed++; render(); }, 460); };
+  document.getElementById("new").addEventListener("click", newTake);
+  document.getElementById("depth").addEventListener("click", () => { state.depth = !state.depth; render(); });
+  document.getElementById("motion").addEventListener("click", () => { state.motion = !state.motion; render(); });
+  document.getElementById("loop").addEventListener("click", () => { state.loop = !state.loop; render(); });
+  document.getElementById("stack").addEventListener("click", () => { state.stack = !state.stack; render(); });
+  document.getElementById("save").addEventListener("click", () => {
+    const flat = `<?xml version="1.0" encoding="UTF-8"?>\n` + svgOpen(0).replace(' style="--z:0"', ` width="${W}" height="${H}"`) + take.defs + take.layers.map((l) => l.g.replace(/ class="[^"]*" style="--d:[^"]*"/g, "")).join("") + "</svg>";
+    const a = document.createElement("a"); a.href = URL.createObjectURL(new Blob([flat], { type: "image/svg+xml" })); a.download = `type-patterns-take-${state.seed}.svg`; a.click();
+  });
+  addEventListener("keydown", (e) => { if (e.code === "Space" && e.target === document.body) { e.preventDefault(); newTake(); } });
+  /* depth: the sheet leans with the pointer, and drifts a little on its own */
+  let px = 0.5, py = 0.5, t0 = performance.now();
+  addEventListener("pointermove", (e) => { px = e.clientX / innerWidth; py = e.clientY / innerHeight; });
+  const lean = (now) => {
+    if (sheet.classList.contains("depth")) {
+      const k = (now - t0) / 1000, dx = Math.sin(k * 0.5) * 0.06, dy = Math.cos(k * 0.37) * 0.05;
+      sheet.style.transform = `rotateX(${((0.5 - py) * 12 + dy * 10).toFixed(2)}deg) rotateY(${((px - 0.5) * 14 + dx * 10).toFixed(2)}deg)`;
+    } else sheet.style.transform = "";
+    requestAnimationFrame(lean);
+  };
+  requestAnimationFrame(lean);
+  setInterval(() => { if (state.loop) newTake(); }, 8000);
+  render();
+})();
+</script>
+</body>
+</html>
