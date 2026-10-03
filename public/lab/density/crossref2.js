@@ -544,6 +544,11 @@
      is the rooms' label they were (8.5px bold, tracked 0.2em), and
      ?labels=sentence leaves them as written ("What I make") */
   { const q = (new URLSearchParams(location.search).get("labels") || "").toLowerCase(); HTML.dataset.labels = ["caps", "title", "sentence"].includes(q) ? q : "title"; }
+  /* the rules under those labels, a section's head and a feature's line
+     (2 Oct 2026, his "can we try removing these thin rules under the
+     section labels? i'm not sure we need them"): off, the labels on air
+     alone; ?rules=on draws them again */
+  { const q = (new URLSearchParams(location.search).get("rules") || "").toLowerCase(); HTML.dataset.rules = ["on", "1"].includes(q) ? "on" : "off"; }
   /* the words cased by the rooms' own rule (StudyPanel.label), so a label
      reads the same in the index and in a room ("Worked With, Spotted by") */
   const LBL = (window.StudyPanel && StudyPanel.label) || ((t) => t);
