@@ -121,7 +121,11 @@
 
 /* ── the grid: a rail for small heads and facts, a column for text ── */
 .sp-grid { padding: 0 var(--m); }
-.sp-open { margin: clamp(36px, 7cqw, 64px) var(--m) 0; padding: 12px 0 0; border-top: 1px solid var(--hair); }
+/* no rule over the opening block (2 Oct 2026, his "in the case studies we
+   can remove some of the thin rules ... this first one i think we can
+   drop from the system"): white space does the separating, and the 12px
+   that sat under the rule goes with it */
+.sp-open { margin: clamp(36px, 7cqw, 64px) var(--m) 0; padding: 0; }
 .sp-solo .sp-meta { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 22px; margin: 0; }
 .sp-solo .sp-lines { margin: 0; flex-direction: row; }
 .sp-meta { margin-bottom: 22px; font-size: 12px; font-weight: 600; line-height: 1.45; letter-spacing: -0.004em; }
@@ -190,6 +194,13 @@
 .sp-black .sp-numt { border-color: rgba(255, 255, 255, 0.16); }
 .sp-black .sp-nr { border-color: rgba(255, 255, 255, 0.16); }
 .sp-black .sp-nr .s { color: rgba(255, 255, 255, 0.52); }
+/* the solid blocks end where the pictures do (2 Oct 2026, his "it runs
+   off the side to the right edge when we put padding on the case
+   studies"): the room sets --rm, 20px on a desk and 0 on a phone, where
+   pictures bleed too. A look that fills the glass (lk-fill) says its own
+   margins further down and wins. Their corners are the pictures' (the
+   round lever, in crossref2.css) */
+.sp-black, .sp-field { margin-right: var(--rm, 0px); }
 .sp-bcap { margin-top: clamp(40px, 7.4cqw, 68px); font-size: 12px; font-weight: 600; letter-spacing: -0.004em; line-height: 1.3; color: rgba(255, 255, 255, 0.55); }
 .sp-bcap .y { margin-left: 0.35em; color: rgba(255, 255, 255, 0.32); font-variant-numeric: tabular-nums; }
 
@@ -199,7 +210,11 @@
    number bold, its name in ink caps, a rule of ink under them. The room
    reads as the article its contents page promised (27 Sept, the
    editorial pass; it was a grey label under a rule) */
-.sp-kick { display: flex; align-items: baseline; margin: 0 var(--m); padding: 0 0 8px; border-bottom: 1px solid var(--ink);
+/* no rule under the label (2 Oct 2026, his "let's also try removing the
+   rule under the section labels in the case studies too"): the 8px and the
+   1px ink rule that sat under it are gone, so the label stands on the air
+   above its heading alone */
+.sp-kick { display: flex; align-items: baseline; margin: 0 var(--m); padding: 0; border-bottom: 0;
   font-size: 9.5px; letter-spacing: 0.09em; color: var(--ink); }
 .sp-kick b { margin-right: 0.8em; font-weight: 700; font-variant-numeric: tabular-nums; }
 .sp-h { max-width: 12.5em; margin: clamp(20px, 3.6cqw, 34px) var(--m) 0; font-size: clamp(32px, 6.4cqw, 60px); font-weight: 700; letter-spacing: -0.05em; line-height: 0.96; text-wrap: balance; margin-left: calc(var(--m) - 0.04em); }
@@ -378,9 +393,12 @@
 .sp.mo .rv-rule.rv-go::before { transform: none; }
 .sp.mo :is(.sp-kick, .sp-foot) { --rc: var(--ink); }
 .sp.mo .sp-black .sp-nr { --rc: rgba(255, 255, 255, 0.16); }
-/* the section's rule is under its number and name */
+/* the section's rule was under its number and name; it no longer draws
+   (2 Oct 2026). The label keeps its place in the rule kind for the way
+   its words come in, a beat after the line used to, so the timing of
+   everything after it is as it was */
 .sp.mo .sp-kick.rv-rule { border-bottom-color: transparent !important; }
-.sp.mo .sp-kick.rv-rule::before { top: auto; bottom: -1px; }
+.sp.mo .sp-kick.rv-rule::before { display: none; }
 .sp.mo .sp-kick.rv { transition: color 0.5s ease calc(var(--d, 0ms) + 0.12s); }
 .sp.mo .sp-kick.rv:not(.rv-go) { color: transparent; }
 .sp.mo .sp-nr.rv > * { transition: opacity 0.5s ease calc(var(--d, 0ms) + 0.12s); }
@@ -613,7 +631,11 @@ html[data-motion="scrub"] .sp.mo .sp-bar2.rv i { transform: scaleX(var(--p, 1));
 .sp-palx { position: relative; margin-top: clamp(90px, 16cqw, 160px); }
 .sp-palx > .sp-palh { margin: 0 var(--m) 14px; }
 /* inside the title block: edge to edge past its margins, the facts after */
-.sp-spec > .sp-palx { margin: 0 calc(-1 * var(--m)) clamp(44px, 8cqw, 72px); }
+.sp-spec > .sp-palx { margin: 0 calc(var(--rm, 0px) - var(--m)) clamp(44px, 8cqw, 72px) calc(-1 * var(--m)); }
+/* its right edge is the pictures' and the solid blocks' (2 Oct 2026, his
+   "bring the palette strip in to the margin too"): the spec's own right
+   margin is m, so the strip takes back all of it but --rm, the 20px the
+   room leaves on a desk and nothing on a phone */
 .sp-palx .sp-pic { background-color: transparent; }
 .sp-palx .sp-pic img { object-fit: cover; }
 
@@ -729,9 +751,16 @@ html[data-motion="scrub"] .sp.mo .sp-bar2.rv i { transform: scaleX(var(--p, 1));
    ground's own ink */
 .sp-brk.lk-combo { box-sizing: border-box; min-height: calc(var(--vh, 100vh) * 0.72); display: flex; flex-direction: column;
   padding: clamp(40px, 8cqw, 76px) var(--m) clamp(18px, 3.4cqw, 28px); }
-/* the top rule as thin as the section's others (his "i think we can make
-   this line thin like the others too", 27 Sept; it was 3px, full ink) */
-.sp-brk.lk-combo::before { content: ""; display: block; flex: none; height: 1px; margin-bottom: clamp(24px, 4.6cqw, 40px); background: color-mix(in srgb, currentColor 24%, transparent); }
+/* no thin rules in the solid blocks but the one over the caption (2 Oct
+   2026, his "let's try removing the thin rules EXCEPT for the one at the
+   bottom right above the label"). The rule across the top (27 Sept, his
+   "thin like the others too"; it was 3px, full ink) and the one between
+   two figures, further down, are gone, and the air that sat under the top
+   one with them. A stats table's row rules go the same way, kept as
+   transparent borders so its rows stay where they were */
+.sp-black.lk-combo .sp-nr { border-top-color: transparent; }
+.sp-black.lk-combo .sp-numt { border-bottom-color: transparent; }
+.sp.mo .sp-black.lk-combo .sp-nr::before { display: none; }
 .sp-brk.lk-combo :is(.sp-bcap, .sp-fcap) { margin-top: auto; padding-top: 14px; border-top: 1px solid color-mix(in srgb, currentColor 24%, transparent); }
 .sp-brk.lk-combo .sp-qmark { color: currentColor; }
 .sp-pull.lk-combo .sp-pq { max-width: 13em; margin-bottom: clamp(40px, 8cqw, 72px); }
@@ -745,7 +774,6 @@ html[data-motion="scrub"] .sp.mo .sp-bar2.rv i { transform: scaleX(var(--p, 1));
 .sp-brk-f.lk-combo .sp-fm { display: grid; grid-template-columns: minmax(0, 1fr); gap: 14px var(--gc); align-items: start; padding: clamp(32px, 6.4cqw, 60px) 0; }
 .sp-brk-f.lk-combo :is(.sp-fn, .sp-fs, .sp-nl) { text-box: trim-both cap alphabetic; }
 .sp-brk-f.lk-combo .sp-fm:first-child { padding-top: 0; }
-.sp-brk-f.lk-combo .sp-fm + .sp-fm { border-top: 1px solid rgba(255, 255, 255, 0.2); }
 .sp-brk-f.lk-combo .sp-fs { margin: 0; }
 @container sp (min-width: 560px) {
   .sp-brk-f.lk-combo .sp-fm { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: start; }

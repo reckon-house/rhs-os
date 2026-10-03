@@ -968,6 +968,16 @@ html[data-tx="none"] #idx .stx { display: none; }
    take the edge off, 4px his pick (?round=0 squares them again); each
    box already clips its picture ── */
 html[data-round="on"] :is(.th, .pic, .tpic, .xs-pic, .xk-pic, .sp-pic) { border-radius: var(--pr, 4px); }
+/* and the room's solid blocks, the black field of figures and the study's
+   colour under its quote (2 Oct 2026, his "add the border radius to it
+   that the others have") */
+html[data-round="on"] :is(.sp-black, .sp-field) { border-radius: var(--pr, 4px); }
+/* and the palette strip's outer corners (his "yes, round the outer corners
+   too"): the strip's blocks touch, so the box that holds them is rounded
+   and clips them, and the corners between blocks stay square. The four
+   looks that are blocks of colour (blocks, paired, overlay, cycle); the
+   lightness chart is bars on paper */
+html[data-round="on"] :is(.sp-pbk, .sp-ppr, .sp-pov, .sp-pcy) { border-radius: var(--pr, 4px); overflow: hidden; }
 
 /* ── the grid (30 Sept, a lever pull, ?grid=on): E's sections ruled into
    cells, fainter than the gutter rules, under everything, so a lit
@@ -1166,10 +1176,13 @@ html[data-rules="off"][data-ix="e"] .e.ef .kk { padding-bottom: 0; border-bottom
    category?"): the label's size and grey, just after the name, its top
    on the name's cap height, the way the capabilities carry theirs. The
    row it stood on above the name goes, unless ?nums=on still has a
-   number for it. ?count=above sets it back on that row ── */
-html[data-count="name"][data-ix="e"] .e.el .nr { white-space: nowrap; }
-html[data-count="name"][data-ix="e"] .e.el .nr .cnt { position: relative; top: calc((var(--fl, 26px) - 11px) * -0.7); margin-left: 4px;
-  font-size: 11px; font-weight: 600; letter-spacing: 0; line-height: 1; vertical-align: baseline; color: var(--grey); font-variant-numeric: tabular-nums; }
+   number for it. ?count=above sets it back on that row. Then his "can
+   we try making the numbers even smaller?": 9px, the size the
+   capabilities' counts are, down from the label's 11 (--cn), and the
+   lift follows the size so the top stays on the cap height ── */
+html[data-count="name"][data-ix="e"] .e.el .nr { --cn: 9px; white-space: nowrap; }
+html[data-count="name"][data-ix="e"] .e.el .nr .cnt { position: relative; top: calc((var(--fl, 26px) - var(--cn)) * -0.7); margin-left: 3px;
+  font-size: var(--cn); font-weight: 600; letter-spacing: 0; line-height: 1; vertical-align: baseline; color: var(--grey); font-variant-numeric: tabular-nums; }
 html[data-count="name"][data-ix="e"]:not([data-nums="on"]) .e.el .kk { display: none; }
 html[data-count="name"][data-mk="cell"][data-ix="e"] body.x #idx .grp.ec .e.on.el .nr .cnt,
 html[data-count="name"][data-mk="cell"][data-ix="e"] #idx .grp.ec .e.lock.el .nr .cnt { color: rgba(255, 255, 255, 0.62); }
