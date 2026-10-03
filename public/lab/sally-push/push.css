@@ -142,10 +142,10 @@ em { font-style: italic; }
 .cover-pic { grid-column: 8 / span 5; aspect-ratio: 2 / 3; }
 .contents { margin-top: clamp(64px, 8vw, 120px); }
 .contents ol { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--gap); margin-top: 18px; }
-.contents li a { display: grid; grid-template-columns: 104px minmax(0, 1fr); gap: 18px; align-items: start; }
+.contents li a { display: grid; grid-template-columns: 124px minmax(0, 1fr); gap: 20px; align-items: start; }
 .contents .ph { aspect-ratio: 4 / 5; border-radius: 10px; }
 .contents .n { display: block; margin-bottom: 6px; font-size: 13px; font-weight: 600; color: var(--red-deep); letter-spacing: 0.02em; }
-.contents .t { display: block; font-size: 21px; line-height: 1.1; font-weight: 600; letter-spacing: -0.022em; }
+.contents .t { display: block; font-size: 22px; line-height: 1.1; font-weight: 600; letter-spacing: -0.022em; }
 .contents .d { display: block; margin-top: 6px; font-size: 14px; line-height: 1.4; color: var(--grey); }
 .s-howto .ph { grid-column: 1 / span 7; aspect-ratio: 3 / 2; }
 .s-howto .txt { grid-column: 9 / span 4; align-self: end; }
@@ -463,4 +463,31 @@ body.mail { background: #fff; }
   .ll-row::-webkit-scrollbar { display: none; }
   .ll-row > * { scroll-snap-align: start; }
   .ll-row.c3 { grid-auto-columns: 78%; }
+}
+
+/* ── motion (3 Oct 2026): the small moves a live page makes. His "the
+   design overall isnt quite elevated to a rhode or lululemon level but
+   we're close": on those sites a picture breathes under the pointer, a
+   product card offers its add, a button answers, and a block rises as
+   it arrives (push.js sets .arrive and .in). None of it for anyone who
+   asked for reduced motion ── */
+.ph img, .pc .card img, .studio img { transition: transform 0.8s cubic-bezier(0.2, 0.7, 0.2, 1); }
+.ph:hover img, a:hover > .ph img, .pc:hover .card img { transform: scale(1.035); }
+.pc .card { transition: background-color 0.3s ease; }
+.pc:hover .card { background: #EAE8E5; }
+/* quick add, the way a shop's card shows it on hover (rhode) */
+.pc .card::after { content: "Quick add"; position: absolute; left: 12px; right: 12px; bottom: 12px; z-index: 2; height: 40px; border-radius: 999px; background: var(--ink); color: #fff; font-size: 13.5px; font-weight: 600; line-height: 40px; text-align: center; opacity: 0; transform: translateY(6px); transition: opacity 0.25s ease, transform 0.25s ease; pointer-events: none; }
+.pc:hover .card::after { opacity: 1; transform: none; }
+.pill { transition: background-color 0.25s ease, color 0.25s ease, transform 0.2s ease; }
+.pill:not(.light):not(.soft):not(.line):hover { background: #000; }
+.pill.light:hover { background: var(--soft); }
+.pill.soft:hover { background: #E9E7E4; }
+.pill:active { transform: scale(0.98); }
+.signup button, .sk-ft .letter button { transition: background-color 0.25s ease; }
+/* the arrival */
+.arrive { opacity: 0; transform: translateY(16px); transition: opacity 0.7s ease, transform 0.9s cubic-bezier(0.2, 0.7, 0.2, 1); }
+.arrive.in { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) {
+  .arrive { opacity: 1; transform: none; transition: none; }
+  .ph img, .pc .card img, .studio img, .pill, .pc .card::after { transition: none; }
 }

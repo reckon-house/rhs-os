@@ -70,8 +70,10 @@ html[data-skin="pushed"] {
   --sb-sku-tile: #F0EFEC;
   /* the rules go */
   --sb-ink-15: transparent;
-  --sk-r: 22px;
-  --sk-in: 12px;
+  /* the chrome's own inset and corner (chrome.css --skc-inset, --skc-r), so
+     the nav pill and a hero card line up at every width (3 Oct 2026) */
+  --sk-r: clamp(18px, calc(1.2vw + 6px), 24px);
+  --sk-in: clamp(10px, 1vw, 16px);
   font-synthesis: none;
 }
 html[data-skin="pushed"] .hp { --sb-sku-tile: #F0EFEC; }

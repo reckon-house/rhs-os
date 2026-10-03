@@ -104,3 +104,12 @@
   .sk-ft .letter { margin-top: 44px; }
   .sk-ft .legal { flex-direction: column; gap: 8px; }
 }
+
+/* ── motion (3 Oct 2026): a link answers the pointer ── */
+.sk-nav a, .sk-ft .cols li, .sk-ft .legal span, .sk-mhd nav a { transition: opacity 0.2s ease; }
+.sk-nav a:hover, .sk-mhd nav a:hover { opacity: 0.55; }
+.sk-ft .rows a::after, .sk-mft .row::after { transition: transform 0.25s ease; }
+.sk-ft .rows a:hover::after, .sk-mft .row:hover::after { transform: translateX(4px); }
+.sk-ft .letter button { transition: background-color 0.25s ease; }
+.sk-ft .letter button:hover { background: var(--skc-soft); }
+@media (prefers-reduced-motion: reduce) { .sk-nav a, .sk-ft .rows a::after, .sk-mft .row::after, .sk-ft .letter button { transition: none; } }
