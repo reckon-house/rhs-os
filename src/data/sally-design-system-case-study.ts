@@ -151,6 +151,18 @@ export const sallyDesignSystemCaseStudy: CaseStudy = {
       title: "Three ideas",
       note: "The doer's store, color expertise and education, each in the concepts' own words.",
     },
+    /* MOCKUP 1 OF 4, a placeholder (2 Oct 2026, his "could you add those
+       placeholders"): becomes an image section when his mockup arrives */
+    {
+      id: "mock-1-lookbook-laptop",
+      type: "product-demo",
+      folder: "sally-push",
+      demo: "m-mock",
+      query: "n=1",
+      mode: "fit",
+      title: "Mockup 1 of 4",
+      note: "Placeholder: the Lookbook on a laptop, in a real setting.",
+    },
 
     // ════════════════════════════════════════
     // ACT 2 · SECTION 03 — THE HOMEPAGE
@@ -197,29 +209,17 @@ export const sallyDesignSystemCaseStudy: CaseStudy = {
       viewHeight: 900,
       mode: "scroll",
     },
+    /* MOCKUP 2 OF 4, a placeholder (2 Oct 2026, his "could you add those
+       placeholders"): becomes an image section when his mockup arrives */
     {
-      id: "homepage-lookbook-phone",
+      id: "mock-2-edit-phone",
       type: "product-demo",
       folder: "sally-push",
-      demo: "lookbook-images",
-      title: "The Lookbook, phone",
-      note: "The same page at 390.",
-      stageWidth: 390,
-      viewHeight: 844,
-      mode: "scroll",
-      phone: true,
-    },
-    {
-      id: "homepage-edit-phone",
-      type: "product-demo",
-      folder: "sally-push",
-      demo: "the-color-issue",
-      title: "The Edit, phone",
-      note: "The issue at 390.",
-      stageWidth: 390,
-      viewHeight: 844,
-      mode: "scroll",
-      phone: true,
+      demo: "m-mock",
+      query: "n=2",
+      mode: "fit",
+      title: "Mockup 2 of 4",
+      note: "Placeholder: The Edit on a phone, in a hand.",
     },
 
     // ════════════════════════════════════════
@@ -299,6 +299,18 @@ export const sallyDesignSystemCaseStudy: CaseStudy = {
       fullWidth: true,
       content: "The color-blocked set is the current direction, and the punch set dials the same chassis up three ways: type, color and charm. Every email ends on the same footer.",
     },
+    /* MOCKUP 3 OF 4, a placeholder (2 Oct 2026, his "could you add those
+       placeholders"): becomes an image section when his mockup arrives */
+    {
+      id: "mock-3-two-phones",
+      type: "product-demo",
+      folder: "sally-push",
+      demo: "m-mock",
+      query: "n=3",
+      mode: "fit",
+      title: "Mockup 3 of 4",
+      note: "Placeholder: The Gloss and the sale on two phones.",
+    },
     {
       id: "emails-gloss",
       type: "product-demo",
@@ -346,6 +358,18 @@ export const sallyDesignSystemCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content: "Every type role and color is a token, so the move to Satoshi changed the tokens and left the layouts alone. A teammate's ADA review of the homepage darkened the muted text and set every eyebrow in solid ink or white.",
+    },
+    /* MOCKUP 4 OF 4, a placeholder (2 Oct 2026, his "could you add those
+       placeholders"): becomes an image section when his mockup arrives */
+    {
+      id: "mock-4-every-channel",
+      type: "product-demo",
+      folder: "sally-push",
+      demo: "m-mock",
+      query: "n=4",
+      mode: "fit",
+      title: "Mockup 4 of 4",
+      note: "Placeholder: every channel at once, from one brief.",
     },
     {
       id: "kit-board",
