@@ -52,7 +52,7 @@
    a row of the versions sits under it, as the looks rows did, until he
    picks one. */
 (() => {
-  const BASE = "/lab/dsc-sizzle/", IMG = BASE + "img/", VQ = "?v=20";
+  const BASE = "/lab/dsc-sizzle/", IMG = BASE + "img/", VQ = "?v=21";
   const VERSIONS = [
     { id: "mix", name: "Mix", weight: "the app in use" },
     { id: "caption", name: "Caption", weight: "light" },

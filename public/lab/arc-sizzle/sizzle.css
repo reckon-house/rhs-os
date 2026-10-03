@@ -14,7 +14,7 @@
   -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; font-kerning: normal;
   --ink: #000; --paper: #F1F0EE; --grey: rgba(0, 0, 0, 0.45); --hair: rgba(0, 0, 0, 0.14);
   --pad: 4.4cqw; --top: max(34px, 8.5cqh);
-  --lab: clamp(7px, 1.45cqw, 11px); --sm: clamp(9.5px, 2.1cqw, 16px); --mid: clamp(11px, 2.5cqw, 19px);
+  --lab: clamp(7px, 1.45cqw, 25.5px); --sm: clamp(9.5px, 2.1cqw, 37px); --mid: clamp(11px, 2.5cqw, 44px);
   --ez: cubic-bezier(0.45, 0, 0.2, 1); --ezo: cubic-bezier(0.16, 1, 0.3, 1); --knock: #F1F0EE; }
 .stage.off { display: none; }
 .shots { position: absolute; inset: 0; }
@@ -125,7 +125,7 @@
 .note { position: relative; padding: 0.85em 0 0; margin-bottom: 1.2em; }
 .note > .rule { position: absolute; left: 0; right: 0; top: 0; }
 .note .lab { color: var(--grey); margin-bottom: 0.5em; }
-.note .say { font-size: clamp(10.5px, 2.6cqw, 20px); font-weight: 500; line-height: 1.22; letter-spacing: -0.015em; }
+.note .say { font-size: clamp(10.5px, 2.6cqw, 45.8px); font-weight: 500; line-height: 1.22; letter-spacing: -0.015em; }
 @container szl (width < 520px) { .note { margin-bottom: 0.8em; padding-top: 0.6em; } .note .lab { margin-bottom: 0.3em; } }
 
 /* the cuts that need a body of their own */

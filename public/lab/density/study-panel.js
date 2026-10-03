@@ -1104,7 +1104,7 @@
       builtW = W;
       ids.length = 0; pending.clear();
       if (parts && parts.stops) parts.stops.forEach((f) => f());
-      const P = { rows: [], asides: [], figs: [], title: null, pulls: [], coverBox: null, coverFrame: null, knocks: [], stops: [], briefs: [], lives: [] };
+      const P = { rows: [], asides: [], figs: [], title: null, pulls: [], coverBox: null, coverFrame: null, coverLive: false, knocks: [], stops: [], briefs: [], lives: [] };
       const s = M.s;
       const frag = document.createDocumentFragment();
       const g = Math.max(5, Math.round(W * 0.011));
@@ -1193,7 +1193,7 @@
            tile still flies into this box and the first frame is the same
            picture. A rebuild stops it (P.stops) and this mounts it again */
         const live = window.SP_LIVE && window.SP_LIVE[k];
-        if (live) { try { const off = live(box, cv, { still: !mo }); if (typeof off === "function") P.stops.push(off); } catch (e) { /* the cover stays a picture */ } }
+        if (live) { try { const off = live(box, cv, { still: !mo }); P.coverLive = true; if (typeof off === "function") P.stops.push(off); } catch (e) { /* the cover stays a picture */ } }
       }
       frag.appendChild(cv);
 
@@ -1774,9 +1774,13 @@
       /* the cover: edge to edge if the lead can honestly fill it, cropped
          to nine tenths of the glass if it is taller (it was 0.62, so the
          title showed on arrival; he asked for more of the picture); else
-         at its own honest size, with air */
+         at its own honest size, with air. A cover that plays (a sizzle on
+         SP_LIVE) always runs edge to edge: the player lays itself out to
+         its box, so the lead's pixels no longer set its size (2 Oct 2026,
+         his "on a large screen those sizzle didnt fill the entire right
+         column"; DSC's lead is 1536px, honest only to 768) */
       if (parts.coverBox) {
-        const f = parts.lead, r = ratio(f), hon = f.w / 2, capH = Math.max(260, Math.round(V * 0.9));
+        const f = parts.lead, r = ratio(f), hon = parts.coverLive ? Infinity : f.w / 2, capH = Math.max(260, Math.round(V * 0.9));
         const box = parts.coverBox, frame = parts.coverFrame;
         let side = false;
         if (hon >= Wf - 0.5) {

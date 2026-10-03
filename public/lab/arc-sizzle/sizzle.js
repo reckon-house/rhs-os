@@ -43,7 +43,7 @@
    cover) it mounts over the cover's own picture, so the board's tile
    still flies into the same box and the first frame is that picture. */
 (() => {
-  const BASE = "/lab/arc-sizzle/", IMG = BASE + "img/", VID = BASE + "vid/", VQ = "?v=2";
+  const BASE = "/lab/arc-sizzle/", IMG = BASE + "img/", VID = BASE + "vid/", VQ = "?v=3";
   const VERSIONS = [{ id: "mix", name: "Mix", weight: "the app in use" }];
   const IDS = VERSIONS.map((v) => v.id);
   const DEF = "mix";
