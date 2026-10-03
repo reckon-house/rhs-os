@@ -1,0 +1,106 @@
+/* ── ONE CHROME FOR EVERY SALLY PAGE (3 Oct 2026) ─────────────────────────
+   His note on the concepts: "some have different navigations, some have
+   different footers...the design overall isnt quite elevated to a rhode
+   or lululemon level but we're close!". Twelve homepages carried two
+   headers and two footers (the five pushed pages one pair, his seven
+   skinned concepts the original site's), and the emails two heads.
+
+   So the header, the footer, the email head and the email foot live
+   here once, and the markup lives once too, in scripts/lib/sally-chrome.mjs:
+   written into the pushed pages as static HTML, and rendered into his
+   skinned pages and frozen emails by chrome.js, which that module emits.
+   `npm run sally:check` fails if any page drifts from it.
+
+   Self-contained on purpose: push.css and skin.css both import it, and
+   his own stylesheet is under the skinned pages, so nothing here leans
+   on a token from either. The tokens are --skc-*, the classes sk-*.
+
+   The chrome itself (the pushed pass, 2 Oct, kept): a quiet line over a
+   floating pill (lululemon), the footer an ink card off the page edge
+   with the sign-up in it (rhode), so every page carries one and no page
+   carries two. Never a rule: space and grouping separate. */
+
+@font-face { font-family: "Satoshi"; src: url("/fonts/Satoshi-Variable.woff2") format("woff2"); font-weight: 300 900; font-style: normal; font-display: swap; }
+
+:root {
+  --skc-ink: #1C1413;
+  --skc-ink-2: #463E3C;
+  --skc-grey: #6F6765;
+  --skc-soft: #F4F3F1;
+  --skc-red-deep: #B30E1C;
+  --skc-font: "Satoshi", "Helvetica Neue", Arial, sans-serif;
+  --skc-pad: clamp(20px, 3.4vw, 48px);        /* the page's side margin (push.css --pad) */
+  --skc-inset: clamp(10px, 1vw, 16px);        /* how far a card stands off the edge (--inset) */
+  --skc-gap: clamp(12px, 1.4vw, 20px);
+  --skc-r: clamp(18px, calc(1.2vw + 6px), 24px); /* the big cards' corner (--r + 6px) */
+  --skc-space: clamp(88px, 10.5vw, 168px);    /* the white space before the footer (--space) */
+}
+
+.sk-util, .sk-nav, .sk-ft, .sk-mpre, .sk-mhd, .sk-mft { box-sizing: border-box; font-family: var(--skc-font); font-weight: 400; color: var(--skc-ink); -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+:is(.sk-util, .sk-nav, .sk-ft, .sk-mpre, .sk-mhd, .sk-mft) * { box-sizing: border-box; }
+:is(.sk-util, .sk-nav, .sk-ft, .sk-mpre, .sk-mhd, .sk-mft) a { color: inherit; text-decoration: none; }
+:is(.sk-ft, .sk-mft) :is(h4, p, ul, form) { margin: 0; padding: 0; }
+:is(.sk-ft, .sk-mft) ul { list-style: none; }
+
+/* ── the homepage header: one quiet line, then the floating pill ── */
+.sk-util { display: flex; justify-content: center; gap: 28px; padding: 10px var(--skc-pad) 0; font-size: 12.5px; line-height: 1.4; font-weight: 500; color: var(--skc-ink-2); }
+.sk-nav { position: sticky; top: 10px; z-index: 20; display: flex; align-items: center; gap: 34px; height: 60px; margin: 10px var(--skc-inset) 0; padding: 0 24px; border-radius: 16px;
+  background: rgba(244, 243, 241, 0.88); -webkit-backdrop-filter: saturate(1.4) blur(16px); backdrop-filter: saturate(1.4) blur(16px); }
+.sk-nav .sk-logo img { display: block; width: 96px; height: auto; }
+.sk-nav .sk-links { display: flex; gap: 24px; font-size: 14.5px; font-weight: 500; line-height: 1; }
+.sk-nav .sk-links .deals { color: var(--skc-red-deep); }
+.sk-nav .sk-r { margin-left: auto; display: flex; gap: 22px; font-size: 14.5px; font-weight: 500; line-height: 1; }
+
+/* ── the homepage footer: an ink card off the page edge ── */
+.sk-ft { margin: var(--skc-space) var(--skc-inset) var(--skc-inset); border-radius: var(--skc-r); background: var(--skc-ink); color: #fff; padding: clamp(48px, 6vw, 88px) calc(var(--skc-pad) - var(--skc-inset)) 28px; }
+.sk-ft .in { max-width: calc(1536px - 2 * var(--skc-pad)); margin: 0 auto; }
+.sk-ft .top { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--skc-gap); }
+/* the three things a visit is usually for, set big */
+.sk-ft .rows { grid-column: 1 / span 5; display: grid; gap: 18px; align-content: start; }
+.sk-ft .rows a { display: inline-flex; gap: 0.4em; align-items: baseline; font-size: clamp(26px, 2.6vw, 38px); line-height: 1.05; font-weight: 500; letter-spacing: -0.03em; }
+.sk-ft .rows a::after { content: "\2192"; font-size: 0.7em; opacity: 0.7; }
+.sk-ft .cols { grid-column: 7 / span 6; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
+.sk-ft .cols h4 { margin-bottom: 14px; font-size: 12px; font-weight: 600; letter-spacing: 0.09em; text-transform: uppercase; color: rgba(255, 255, 255, 0.62); }
+.sk-ft .cols li { font-size: 15px; line-height: 1.95; color: rgba(255, 255, 255, 0.9); }
+/* the letter: the one sign-up, under the big rows, on every page */
+.sk-ft .letter { grid-column: 1 / span 5; margin-top: clamp(44px, 5.5vw, 80px); }
+.sk-ft .letter .lab { font-size: 12px; font-weight: 600; letter-spacing: 0.09em; text-transform: uppercase; color: rgba(255, 255, 255, 0.62); }
+.sk-ft .letter .say { margin-top: 10px; max-width: 24ch; font-size: clamp(20px, 1.9vw, 26px); line-height: 1.2; font-weight: 500; letter-spacing: -0.025em; }
+.sk-ft .letter form { display: flex; gap: 10px; max-width: 460px; margin-top: 18px; }
+.sk-ft .letter input { flex: 1; min-width: 0; height: 50px; padding: 0 20px; border: 0; outline: 0; border-radius: 999px; background: rgba(255, 255, 255, 0.1); font: inherit; font-size: 15px; color: #fff; }
+.sk-ft .letter input::placeholder { color: rgba(255, 255, 255, 0.55); }
+.sk-ft .letter button { height: 50px; padding: 0 22px; border: 0; border-radius: 999px; background: #fff; color: var(--skc-ink); font: inherit; font-size: 15px; font-weight: 600; cursor: pointer; }
+.sk-ft .letter .fine { margin-top: 10px; font-size: 12.5px; line-height: 1.45; color: rgba(255, 255, 255, 0.55); }
+.sk-ft .legal { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px 24px; margin-top: clamp(56px, 7vw, 96px); font-size: 12.5px; line-height: 1.4; color: rgba(255, 255, 255, 0.58); }
+
+/* ── the email head and foot, 600 wide ── */
+.sk-mpre { display: flex; justify-content: space-between; gap: 16px; padding: 12px 40px 0; font-size: 11.5px; line-height: 1.4; color: var(--skc-grey); }
+.sk-mhd { display: flex; align-items: center; justify-content: space-between; height: 56px; margin: 10px 12px 0; padding: 0 22px; border-radius: 14px; background: var(--skc-soft); }
+.sk-mhd img { display: block; width: 80px; height: auto; }
+.sk-mhd nav { display: flex; gap: 16px; font-size: 13px; font-weight: 600; line-height: 1; }
+.sk-mft { margin: 56px 12px 12px; padding: 36px 28px 26px; border-radius: 18px; background: var(--skc-soft); }
+.sk-mft .row { display: flex; width: max-content; gap: 0.4em; align-items: baseline; font-size: 24px; line-height: 1.05; font-weight: 500; letter-spacing: -0.03em; }
+.sk-mft .row + .row { margin-top: 14px; }
+.sk-mft .row::after { content: "\2192"; font-size: 0.72em; color: var(--skc-grey); }
+.sk-mft .svc { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 30px; }
+.sk-mft .svc span { height: 30px; padding: 0 12px; border-radius: 999px; background: #fff; font-size: 12px; font-weight: 600; line-height: 30px; }
+.sk-mft .legal { margin-top: 28px; font-size: 11.5px; line-height: 1.6; color: var(--skc-grey); }
+.sk-mft .legal p + p { margin-top: 10px; }
+.sk-mft .legal a { text-decoration: underline; }
+
+/* ── the phone ── */
+@media (max-width: 860px) {
+  .sk-util span:not(:first-child) { display: none; }
+  .sk-nav { height: 54px; gap: 14px; margin: 8px 8px 0; padding: 0 16px; border-radius: 14px; }
+  .sk-nav .sk-links { display: none; }
+  .sk-nav .sk-logo img { width: 82px; }
+  .sk-nav .sk-r { gap: 16px; font-size: 14px; }
+  .sk-nav .sk-r a:not(:last-child) { display: none; }
+  .sk-nav .sk-r::before { content: "Menu"; font-weight: 600; }
+  .sk-ft { padding: 44px 20px 24px; }
+  .sk-ft .top { grid-template-columns: minmax(0, 1fr); }
+  .sk-ft .rows, .sk-ft .cols, .sk-ft .letter { grid-column: 1 / -1; }
+  .sk-ft .cols { margin-top: 44px; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .sk-ft .letter { margin-top: 44px; }
+  .sk-ft .legal { flex-direction: column; gap: 8px; }
+}

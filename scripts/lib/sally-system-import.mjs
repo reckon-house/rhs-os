@@ -30,6 +30,7 @@ import os from "node:os";
 import { execFileSync } from "node:child_process";
 import { createRequire } from "node:module";
 import { fileURLToPath } from "node:url";
+import { injectChrome } from "./sally-chrome.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..");
 const require = createRequire(import.meta.url);
@@ -130,7 +131,11 @@ const OGG = /@font-face\s*\{[^}]*Ogg[^}]*\}\s*/g;
    system's feel levers and tints. Without the flag the page is his,
    unchanged, so a before and after is one query string apart */
 const SKIN = `<script>if(/[?&]skin=pushed/.test(location.search)){document.documentElement.dataset.skin="pushed";document.write('<link rel="stylesheet" href="../sally-push/skin.css">')}</script>\n`;
-const skinned = (html) => (html.includes("sally-push/skin.css") ? html : html.replace("</head>", SKIN + "</head>"));
+/* and the one chrome (3 Oct 2026): under the skin, chrome.js renders the
+   pushed pages' header and footer (or an email's head and foot) in place
+   of his own; sally-chrome.mjs owns the markup and this keeps the tag
+   through a re-import */
+const skinned = (html) => injectChrome(html.includes("sally-push/skin.css") ? html : html.replace("</head>", SKIN + "</head>"));
 for (const f of textFiles.concat(fs.existsSync(path.join(SRC, "punch.css")) ? ["punch.css"] : [])) {
   let s = fs.readFileSync(path.join(SRC, f), "utf8");
   s = rewrite(s);

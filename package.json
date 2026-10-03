@@ -14,6 +14,7 @@
     "columns:pack": "node --no-warnings scripts/pack-columns.mjs",
     "facts": "node --no-warnings scripts/build-facts.mjs",
     "facts:report": "node --no-warnings scripts/build-facts.mjs --report",
+    "sally:check": "node scripts/lib/sally-chrome.mjs --check",
     "port:home": "node scripts/port-home.mjs",
     "port:home:check": "node scripts/port-home.mjs --check",
     "dims:check": "node scripts/check-dimensions.mjs",

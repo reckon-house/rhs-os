@@ -15,12 +15,14 @@
 </head>
 <body>
 
-<div class="util"><span>New this week: the vivids</span><span>Free 2-hour delivery on orders $35+</span><span>Rewards · Find a store</span></div>
-<header class="navpill">
-  <a class="logo" href="#"><img src="../sally-system/assets/brand/sally-logo-red.webp" alt="Sally Beauty" width="400" height="100"></a>
-  <nav><a href="#">Hair Color</a><a href="#">Hair Care</a><a href="#">Nails</a><a href="#">Tools</a><a href="#">Cosmetics</a><a href="#">Brands</a><a href="#">Deals</a></nav>
-  <div class="r"><a href="#">Search</a><a href="#">Sign in</a><a href="#">Bag (0)</a></div>
+<!-- sk:header note="New this week: the vivids" -->
+<div class="sk-util"><span>New this week: the vivids</span><span>Free advice from a licensed colorist</span><span>Rewards · Find a store</span></div>
+<header class="sk-nav">
+  <a class="sk-logo" href="#"><img src="../sally-system/assets/brand/sally-logo-red.webp" alt="Sally Beauty" width="400" height="100"></a>
+  <nav class="sk-links"><a href="#">Hair Color</a><a href="#">Hair Care</a><a href="#">Nails</a><a href="#">Tools</a><a href="#">Cosmetics</a><a href="#">Brands</a><a class="deals" href="#">Deals</a></nav>
+  <div class="sk-r"><a href="#">Search</a><a href="#">Sign in</a><a href="#">Bag (0)</a></div>
 </header>
+<!-- /sk:header -->
 
 <section class="ll-hero">
   <figure class="ph"><img src="../sally-system/assets/img/copper-curly-land.jpg" alt="Copper curls, close, against a pale wall" style="object-position:50% 30%"></figure>
@@ -98,30 +100,29 @@
     <div class="ll-row c3"><a class="ll-cell" href="#"><span class="ph"><img src="../sally-system/assets/img/chiwaver-land.jpg" alt="" loading="lazy"></span><span class="t">Texture that lasts</span><span class="desc">Heat tools and finishers built for beachy waves that hold through the heat.</span></a><a class="ll-cell" href="#"><span class="ph"><img src="../sally-system/assets/img/purple-nails-port.jpg" alt="" loading="lazy"></span><span class="t">The vivid nail moment</span><span class="desc">Gels, chromes, and press-ons in the shades everyone is asking about right now.</span></a><a class="ll-cell" href="#"><span class="ph"><img src="../sally-system/assets/img/wm2.jpeg" alt="" loading="lazy"></span><span class="t">Rewards that do the work</span><span class="desc">Earn points on everything, redeem on anything. Free to join, easy to love.</span></a></div>
   </section>
 
-  <section class="story s-letter">
-    <div class="grid">
-      <h2 class="t-d2">Sign up for news and special offers.</h2>
-      <div class="form">
-        <form class="signup" onsubmit="return false"><input type="email" placeholder="Your email" aria-label="Your email"><button type="submit">Sign up</button></form>
-        <p class="t-cap">Get 15% off your next online order.</p>
-      </div>
-    </div>
-  </section>
 </div>
 
-<footer class="ft">
+<!-- sk:footer -->
+<footer class="sk-ft">
   <div class="in">
-    <div class="grid">
+    <div class="top">
       <nav class="rows"><a href="#">Find a store</a><a href="#">Download the app</a><a href="#">Chat with a colorist</a></nav>
       <div class="cols">
         <div><h4>Help</h4><ul><li>Orders</li><li>Shipping</li><li>Returns</li><li>Contact us</li></ul></div>
         <div><h4>Shop</h4><ul><li>Hair Color</li><li>Hair Care</li><li>Nails</li><li>Tools</li><li>Brands</li></ul></div>
         <div><h4>About</h4><ul><li>Sally Beauty</li><li>Careers</li><li>Newsroom</li><li>Accessibility</li></ul></div>
       </div>
+      <div class="letter">
+        <p class="lab">The Gloss</p>
+        <p class="say">A letter from Sally, in your inbox once a month.</p>
+        <form onsubmit="return false"><input type="email" placeholder="Your email" aria-label="Your email"><button type="submit">Sign up</button></form>
+        <p class="fine">Shades, how-tos and the occasional sale. Unsubscribe whenever.</p>
+      </div>
     </div>
-    <div class="legal"><span>© 2026 Sally Beauty Supply LLC</span><span>Privacy · Terms of Use · Your Privacy Choices</span></div>
+    <div class="legal"><span>© 2026 Sally Beauty Supply LLC</span><span>Instagram · TikTok · YouTube · Pinterest</span><span>Privacy · Terms of Use · Your Privacy Choices</span></div>
   </div>
 </footer>
+<!-- /sk:footer -->
 
 </body>
 </html>
