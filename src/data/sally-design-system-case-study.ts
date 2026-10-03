@@ -42,7 +42,12 @@ const IMG = "/case-studies/sally-design-system";
    homepage and a second, the three stories, two emails) and the system
    (the six rule chapters as one board, the engine with the reveal of the
    same kit card with its slots lit, then every brief). Act 2 shows the
-   modules clean (?view=creative) so the reveal in act 3 lands. */
+   modules clean (?view=creative) so the reveal in act 3 lands.
+
+   Later the same day, his "in the engine sections let's just show the OS
+   creating assets - i dont think we need the sections above": the engine
+   is the Marketing OS demos alone, brief to email and then the Figma
+   build, with the card to the Sally Marketing OS study under them. */
 
 /* the pushed palette: scarlet, ink, the one soft grey, and two of the vivids
    sampled from his photographs (violet, teal) */
@@ -378,31 +383,18 @@ export const sallyDesignSystemCaseStudy: CaseStudy = {
         "Each new email fills a template from a brief, and the templates stay locked, so the kit holds its shape at the volume Sally sends every month.",
     },
     {
-      id: "engine-reveal",
-      type: "product-demo",
-      folder: "sally-push",
-      demo: "m-kit-live",
-      query: "view=engine",
-      mode: "fit",
-      title: "The Platinum Kit, again",
-      note: "The same kit, working, with its slots lit. Every red tag is something the Marketing OS fills.",
-    },
-    {
-      id: "engine-machine",
-      type: "product-demo",
-      folder: "sally-push",
-      demo: "m-machine",
-      query: "view=engine",
-      mode: "fit",
-      title: "From a signal to a finished asset",
-      note: "The parts as the Sally Marketing OS names them: the campaign board, the Asset Hub, the scanner.",
-    },
-    {
       id: "ai-requests-demo",
       type: "product-demo",
       demo: "requests-email",
       title: "From brief to email",
       note: "A CRM request on the campaign board becomes an email with one press of Create Email.",
+    },
+    {
+      id: "ai-figma-demo",
+      type: "product-demo",
+      demo: "figma-build",
+      title: "From email to Figma",
+      note: "The Figma plugin builds the requested emails in one press, the images first and then the copy.",
     },
 
     {

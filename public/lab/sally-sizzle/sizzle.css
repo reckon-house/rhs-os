@@ -1,0 +1,201 @@
+/* ── THE SALLY DESIGN SYSTEM HERO SIZZLE: its page (2 Oct 2026) ─────────
+   The A.R.C. reel's page (arc-sizzle/sizzle.css), carried over: the same
+   shadow root, the same five type roles in the house's Avenir Next, the
+   same wipe and cuts. What changes is Sally's own. Its grounds are the
+   study's declared palette (src/data/sally-design-system-case-study.ts):
+   the soft grey, Sally's ink, Sally Scarlet, Electric Violet and Deep Sea
+   Teal. Its frame is wide (the room's cover is The Edit's homepage, 16 by
+   10). What it shows is set in Satoshi, the system's own face: the kit,
+   the shade code, the brief tiles. */
+
+:host { all: initial; position: absolute; inset: 0; display: block; z-index: 2; contain: strict; }
+.stage { position: absolute; inset: 0; overflow: hidden; container: szl / size; background: #111;
+  font-family: "Avenir Next", "Helvetica Neue", Helvetica, Arial, sans-serif; color: #1C1413;
+  -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; font-kerning: normal;
+  --ink: #1C1413; --paper: #F4F3F1; --grey: rgba(28, 20, 19, 0.5); --hair: rgba(28, 20, 19, 0.14);
+  --sat: "Satoshi SZL", "Avenir Next", "Helvetica Neue", Arial, sans-serif;
+  --pad: 4.4cqw; --top: max(34px, 8.5cqh);
+  --lab: clamp(6.5px, 1.25cqw, 22px); --sm: clamp(9px, 1.9cqw, 34px); --mid: clamp(10.5px, 2.2cqw, 39px);
+  --r: clamp(5px, 1.1cqw, 18px);
+  --ez: cubic-bezier(0.45, 0, 0.2, 1); --ezo: cubic-bezier(0.16, 1, 0.3, 1); --knock: #F4F3F1; }
+.stage.off { display: none; }
+.shots { position: absolute; inset: 0; }
+.stage * { box-sizing: border-box; }
+
+/* ── the shots, on the study's grounds ── */
+.shot { position: absolute; inset: 0; overflow: hidden; z-index: 0; }
+.paper { background: #F4F3F1; color: var(--ink); }
+.dots { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='5' height='5'%3E%3Crect width='1' height='1' fill='%231C1413' fill-opacity='0.1'/%3E%3C/svg%3E"); background-size: 5px 5px; }
+.ink { background: #1C1413; color: #F4F3F1; --ink: #F4F3F1; --grey: rgba(244, 243, 241, 0.55); --hair: rgba(244, 243, 241, 0.2); --knock: #1C1413; }
+.scarlet { background: #E11324; color: #fff; --ink: #fff; --grey: rgba(255, 255, 255, 0.7); --hair: rgba(255, 255, 255, 0.3); --knock: #E11324; }
+.violet { background: #442861; color: #fff; --ink: #fff; --grey: rgba(255, 255, 255, 0.66); --hair: rgba(255, 255, 255, 0.24); --knock: #442861; }
+.teal { background: #0E4043; color: #fff; --ink: #fff; --grey: rgba(255, 255, 255, 0.66); --hair: rgba(255, 255, 255, 0.24); --knock: #0E4043; }
+.photo { background: #151515; }
+
+/* a cut: the next shot opens from the left, on the house's curve */
+.shot.cm { clip-path: inset(0 100% 0 0); }
+.shot.cm.go { clip-path: inset(0 0 0 0); transition: clip-path 0.72s var(--ez); }
+.blink { position: absolute; inset: 0; z-index: 30; background: #000; pointer-events: none; animation: szlblink 110ms steps(1) both; }
+@keyframes szlblink { 0% { opacity: 1; } 100% { opacity: 0; } }
+.fband { position: absolute; inset: 0; z-index: 30; background: var(--bc, #000); pointer-events: none;
+  animation: szlwipe var(--bd, 900ms) linear both; }
+
+/* ── the wipe, the room's own ── */
+@keyframes szlwipe {
+  0% { clip-path: inset(0 100% 0 0); animation-timing-function: cubic-bezier(0.45, 0, 0.2, 1); }
+  48% { clip-path: inset(0 0 0 0); }
+  52% { clip-path: inset(0 0 0 0); animation-timing-function: cubic-bezier(0.45, 0, 0.2, 1); }
+  100% { clip-path: inset(0 0 0 100%); }
+}
+.wp { position: relative; }
+.wp .w { opacity: 0; }
+.wp.go .w { opacity: 1; transition: opacity 0s linear var(--d, 0ms); }
+.wp > .bd { position: absolute; z-index: 1; pointer-events: none; clip-path: inset(0 100% 0 0); }
+.wp > .bd.solid { background: currentColor; }
+.wp > .bd.tint { background: color-mix(in srgb, currentColor 10%, transparent); }
+.wp.go > .bd { animation: szlwipe var(--bd, 760ms) linear var(--d, 0ms) both; }
+.now .w, .now.w { opacity: 1 !important; transition: none !important; }
+.now > .bd { display: none; }
+.rule { display: block; height: 1px; background: currentColor; transform: scaleX(0); transform-origin: 0 50%; }
+.rule.hair { background: var(--hair); }
+.rule.go { transform: none; transition: transform 0.42s var(--ez) var(--d, 0ms); }
+.rule.now { transform: none; }
+.fd { opacity: 0; }
+.fd.go { opacity: 1; transition: opacity 0.4s ease var(--d, 0ms); }
+.fd.now { opacity: 1; }
+/* rises a little as it arrives */
+.rise { opacity: 0; transform: translateY(1.4cqw); }
+.rise.go { opacity: 1; transform: none; transition: opacity 0.45s ease, transform 0.7s var(--ezo); }
+.rise.now { opacity: 1; transform: none; }
+
+/* ── pictures: at most half their pixels, the room's rule ── */
+.pic { position: absolute; overflow: hidden; background: rgba(28, 20, 19, 0.06); }
+.pic img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: var(--op, 50% 50%); display: block; }
+.rd { border-radius: var(--r); }
+
+/* ── type, the room's five roles ── */
+.lab { font-size: var(--lab); font-weight: 700; letter-spacing: 0.2em; line-height: 1.3; text-transform: uppercase; }
+.g { color: var(--grey); }
+.sm { font-size: var(--sm); font-weight: 400; line-height: 1.45; letter-spacing: -0.003em; }
+.mid { font-size: var(--mid); font-weight: 500; line-height: 1.3; letter-spacing: -0.01em; }
+.dsp { font-weight: 600; letter-spacing: -0.045em; line-height: 1; }
+.fig { font-weight: 600; letter-spacing: -0.055em; line-height: 0.84; white-space: nowrap; }
+.abs { position: absolute; }
+.say-big { font-weight: 600; letter-spacing: -0.045em; line-height: 0.96; }
+
+/* ── a list: rows between hairlines ── */
+.rows { position: absolute; font-weight: 500; letter-spacing: -0.03em; line-height: 1.08; }
+.rows .rw { position: relative; display: flex; gap: 0.5em; padding: 0.4em 0 0.44em; }
+.rows .rw .rule { position: absolute; left: 0; right: 0; bottom: 0; }
+.rows .blt { display: inline-block; width: 0.7em; color: #E11324; }
+
+/* ── a running head and its notes ── */
+.rh { position: absolute; display: flex; justify-content: space-between; align-items: baseline; gap: 2em; padding-bottom: 0.9em; }
+.rh .rule { position: absolute; left: 0; right: 0; bottom: 0; }
+.notes { position: absolute; }
+.note { position: relative; padding: 0.85em 0 0; margin-bottom: 1.2em; }
+.note > .rule { position: absolute; left: 0; right: 0; top: 0; }
+.note .lab { color: var(--grey); margin-bottom: 0.5em; }
+.note .say { font-size: clamp(10px, 2.15cqw, 38px); font-weight: 500; line-height: 1.24; letter-spacing: -0.015em; }
+
+/* ── the motion that never stops ── */
+.paper.dots { animation: szldots 26s linear infinite; }
+@keyframes szldots { from { background-position: 0 0; } to { background-position: 65px -40px; } }
+
+/* ── a page in a window: a homepage scrolling, a film playing ── */
+.win { position: absolute; overflow: hidden; border-radius: var(--r); background: #fff; box-shadow: 0 0 0 1px rgba(28, 20, 19, 0.07), 0 1.4cqw 4cqw rgba(28, 20, 19, 0.14); transform-origin: 50% 50%; will-change: transform; }
+.win .page { position: absolute; left: 0; top: 0; display: block; max-width: none; will-change: transform; }
+.win .vp { position: absolute; inset: 0; width: 100%; height: 100%; display: block; object-fit: cover; background: #fff; pointer-events: none; }
+.vpark { position: absolute; left: 0; top: 0; width: 2px; height: 2px; overflow: hidden; opacity: 0; pointer-events: none; }
+/* a tab over the film: what it is and what it does, in one sentence */
+.tab { position: absolute; z-index: 5; padding: 1.3cqw 1.6cqw 1.4cqw; border-radius: var(--r); background: #fff; color: #1C1413; box-shadow: 0 1cqw 3cqw rgba(28, 20, 19, 0.16); }
+.tab .lab { color: #B30E1C; margin-bottom: 0.55em; }
+.tab .say { font-size: var(--mid); font-weight: 500; line-height: 1.24; letter-spacing: -0.012em; }
+
+/* ── a reel of homepages, panning ── */
+.reelrow { position: absolute; will-change: transform; }
+.fcard { position: absolute; top: 0; }
+.fcap { position: absolute; left: 0; white-space: nowrap; }
+
+/* ── emails, as cards ── */
+.mcard { position: absolute; overflow: hidden; border-radius: var(--r); background: #fff; box-shadow: 0 0 0 1px rgba(28, 20, 19, 0.06), 0 1cqw 3cqw rgba(28, 20, 19, 0.12); will-change: transform; }
+.mcard img { position: absolute; left: 0; top: 0; width: 100%; display: block; }
+
+/* ── the kit: Sally's own card, in Satoshi ── */
+.kit { position: absolute; font-family: var(--sat); color: #1C1413; }
+.krow { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr) auto; gap: 0.8em; align-items: center; padding: 0.5em 0.85em; margin-bottom: 0.32em; border-radius: 0.6em; background: #fff; }
+.krow b { font-size: 1.28em; font-weight: 700; letter-spacing: -0.05em; color: #5E5856; white-space: nowrap; }
+.krow .kn { font-size: 0.78em; color: rgba(28, 20, 19, 0.58); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.krow .kp { font-weight: 600; }
+.ktot { display: flex; align-items: baseline; gap: 0.8em; margin-top: 0.7em; }
+.ktot b { font-size: 2.1em; font-weight: 700; letter-spacing: -0.05em; }
+.ktot span { font-size: 0.7em; font-weight: 600; letter-spacing: 0.07em; text-transform: uppercase; color: #B30E1C; }
+
+/* ── the shade code ── */
+.sat { font-family: var(--sat); }
+.code8 { font-weight: 700; letter-spacing: -0.08em; }
+.cc { color: #c07a45; }
+.ramp, .tones { position: absolute; display: grid; gap: 0.7cqw; }
+.ramp { grid-template-columns: repeat(10, minmax(0, 1fr)); }
+.tones { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+.sw { position: relative; display: block; border-radius: 0.9cqw; transition: transform 0.5s var(--ezo), box-shadow 0.5s ease; }
+.ramp .sw { aspect-ratio: 3 / 4; }
+.tones .sw { aspect-ratio: 1; }
+.sw b { position: absolute; left: 0.55cqw; bottom: 0.45cqw; font: 600 clamp(6px, 1.15cqw, 19px) var(--sat); color: #fff; }
+.sw.lt b { color: #1C1413; }
+.sw.up { transform: translateY(-1.3cqw); box-shadow: 0 1.1cqw 2.2cqw rgba(28, 20, 19, 0.22); }
+.key { position: absolute; display: flex; justify-content: space-between; color: var(--grey); }
+
+/* ── the vivids wall ── */
+.stripe { position: absolute; top: 0; bottom: 0; clip-path: inset(100% 0 0 0); }
+.stripe.go { clip-path: inset(0 0 0 0); transition: clip-path 0.62s var(--ez) var(--d, 0ms); }
+.stripe.now { clip-path: none; }
+.vcard { position: absolute; overflow: hidden; border-radius: var(--r); box-shadow: 0 1.6cqw 4cqw rgba(0, 0, 0, 0.3); }
+.vlab { position: absolute; left: 0.9cqw; bottom: 0.9cqw; padding: 0.4em 0.75em; border-radius: 99px; background: #fff; color: #1C1413; font: 600 clamp(7px, 1.35cqw, 22px) var(--sat); letter-spacing: -0.01em; white-space: nowrap; }
+.inktab { position: absolute; z-index: 4; padding: 1.2cqw 1.5cqw; border-radius: var(--r); background: #1C1413; color: #F4F3F1; }
+.inktab .lab { color: rgba(244, 243, 241, 0.6); margin-bottom: 0.5em; }
+
+/* ── the brief tiles: one story in five shapes, Sally's own templates ── */
+.t { position: absolute; overflow: hidden; border-radius: clamp(4px, 0.8cqw, 12px); background: #fff; box-shadow: 0 0 0 1px rgba(28, 20, 19, 0.07), 0 0.8cqw 2cqw rgba(28, 20, 19, 0.1); container-type: inline-size; font-family: var(--sat); color: #1C1413; }
+.t.h169, .t.h31 { display: flex; }
+.t .tin { position: absolute; inset: 0; display: flex; transition: opacity 0.16s ease; }
+.t.swap .tin { opacity: 0; }
+.ph2 { position: absolute; inset: 0; display: block; overflow: hidden; }
+.ph2 img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.ph2.top { bottom: 38%; }
+.ph2.half { position: relative; inset: auto; flex: 1 1 50%; }
+.card2 { position: absolute; left: 6cqw; right: 20cqw; bottom: 6cqw; border-radius: 5cqw; background: #fff; padding: 6cqw; }
+.card2.low { right: 6cqw; }
+.under { position: absolute; left: 0; right: 0; bottom: 0; height: 38%; padding: 7cqw; display: flex; flex-direction: column; justify-content: center; background: #fff; }
+.side2 { flex: 1 1 50%; padding: 5cqw; display: flex; flex-direction: column; justify-content: center; align-items: flex-start; background: #fff; }
+.msg2 { flex: 1 1 50%; padding: 4cqw; display: flex; flex-direction: column; justify-content: center; align-items: flex-start; color: #fff; }
+.k2 { font-size: 4.2cqw; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: #B30E1C; }
+.h2 { margin-top: 2cqw; font-size: 9cqw; line-height: 0.95; font-weight: 600; letter-spacing: -0.045em; }
+.v916 .k2 { font-size: 5.4cqw; } .v916 .h2 { font-size: 12cqw; }
+.h169 .k2 { font-size: 2.1cqw; } .h169 .h2 { font-size: 5cqw; margin-top: 1.2cqw; }
+.h31 .k2 { font-size: 1.7cqw; color: rgba(255, 255, 255, 0.8); } .h31 .h2 { font-size: 3.6cqw; margin-top: 0.8cqw; }
+.chip2 { display: inline-block; margin-top: 3cqw; padding: 1.4cqw 3.4cqw; border-radius: 99px; color: #fff; font-size: 4cqw; font-weight: 700; }
+.h169 .chip2 { margin-top: 1.6cqw; padding: 0.8cqw 1.8cqw; font-size: 2cqw; }
+.pill2 { display: inline-block; margin-top: 3.4cqw; padding: 2.2cqw 4.8cqw; border-radius: 99px; background: #1C1413; color: #fff; font-size: 3.8cqw; font-weight: 600; }
+.h169 .pill2 { margin-top: 2cqw; padding: 1.1cqw 2.6cqw; font-size: 1.9cqw; }
+.v916 .pill2 { font-size: 5cqw; }
+.lk2 { margin-top: 1.4cqw; font-size: 1.7cqw; font-weight: 600; }
+.shp { position: absolute; z-index: 3; left: 4cqw; top: 4cqw; padding: 0.3em 0.6em; border-radius: 99px; background: rgba(28, 20, 19, 0.82); color: #fff; font: 600 clamp(6px, 4.5cqw, 14px) var(--sat); }
+.h169 .shp, .h31 .shp { font-size: clamp(6px, 1.6cqw, 14px); left: 1.4cqw; top: 1.4cqw; }
+
+/* ── the mark: Sally's own wordmark, drawn in whatever colour its ground wants ── */
+.mark { position: absolute; background: currentColor; -webkit-mask: url("/lab/sally-system/assets/brand/sally-logo-red.webp") center / contain no-repeat; mask: url("/lab/sally-system/assets/brand/sally-logo-red.webp") center / contain no-repeat; }
+.mark.fd { transition-duration: 0.6s; }
+
+/* the cuts that need a body of their own */
+.cutc { position: absolute; inset: 0; z-index: 30; pointer-events: none; }
+.slats { display: flex; }
+.slats > i { flex: 1; height: 100%; background: var(--bc, #000); transform: scaleY(0); transform-origin: 50% 0; }
+.pinch > i { position: absolute; left: 0; right: 0; height: 50.5%; background: var(--bc, #000); }
+.pinch > i:first-child { top: 0; transform: translateY(-101%); }
+.pinch > i:last-child { bottom: 0; transform: translateY(101%); }
+.flash { background: #fff; opacity: 0; }
+.burnw { background: #F4F3F1; opacity: 0; }
+.seam { position: absolute; top: 0; bottom: 0; left: 0; width: 2px; background: #1C1413; z-index: 40; pointer-events: none; }
+.seam.r { left: auto; right: 0; }
+.ink > .seam, .scarlet > .seam, .violet > .seam, .teal > .seam { background: #F4F3F1; }
