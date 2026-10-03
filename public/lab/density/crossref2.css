@@ -1160,3 +1160,20 @@ html:is([data-labels="title"], [data-labels="sentence"]) #idx .grp h2.eh b { mar
    took theirs off. ?rules=on draws them again ── */
 html[data-rules="off"][data-ix="e"] .grp h2.eh { padding-bottom: 0; background: none; }
 html[data-rules="off"][data-ix="e"] .e.ef .kk { padding-bottom: 0; border-bottom: 0; }
+
+/* ── a line's count locked up with its name (2 Oct 2026, his "can we
+   try moving these project number/labels locked up with the
+   category?"): the label's size and grey, just after the name, its top
+   on the name's cap height, the way the capabilities carry theirs. The
+   row it stood on above the name goes, unless ?nums=on still has a
+   number for it. ?count=above sets it back on that row ── */
+html[data-count="name"][data-ix="e"] .e.el .nr { white-space: nowrap; }
+html[data-count="name"][data-ix="e"] .e.el .nr .cnt { position: relative; top: calc((var(--fl, 26px) - 11px) * -0.7); margin-left: 4px;
+  font-size: 11px; font-weight: 600; letter-spacing: 0; line-height: 1; vertical-align: baseline; color: var(--grey); font-variant-numeric: tabular-nums; }
+html[data-count="name"][data-ix="e"]:not([data-nums="on"]) .e.el .kk { display: none; }
+html[data-count="name"][data-mk="cell"][data-ix="e"] body.x #idx .grp.ec .e.on.el .nr .cnt,
+html[data-count="name"][data-mk="cell"][data-ix="e"] #idx .grp.ec .e.lock.el .nr .cnt { color: rgba(255, 255, 255, 0.62); }
+/* with the row gone the name is the entry's first words, so a lit box
+   stands a little more above it and leaves a little more under the
+   sentence, keeping the eight pixels between two lit lines */
+html[data-count="name"][data-ix="e"] .e.el { --bt: 6px; --bb: 14px; }
