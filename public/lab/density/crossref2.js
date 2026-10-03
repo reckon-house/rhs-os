@@ -549,6 +549,12 @@
      section labels? i'm not sure we need them"): off, the labels on air
      alone; ?rules=on draws them again */
   { const q = (new URLSearchParams(location.search).get("rules") || "").toLowerCase(); HTML.dataset.rules = ["on", "1"].includes(q) ? "on" : "off"; }
+  /* a line's count (2 Oct 2026, his "can we try moving these project
+     number/labels locked up with the category?"): locked up with the
+     line's name, hung at its cap height the way the capabilities carry
+     theirs; ?count=above sets it on its own row over the name again */
+  const CNT_UP = (new URLSearchParams(location.search).get("count") || "").toLowerCase() === "above";
+  HTML.dataset.count = CNT_UP ? "above" : "name";
   /* the words cased by the rooms' own rule (StudyPanel.label), so a label
      reads the same in the index and in a room ("Worked With, Spotted by") */
   const LBL = (window.StudyPanel && StudyPanel.label) || ((t) => t);
@@ -808,8 +814,9 @@
     if (mode === "Eline") {
       const l = o.line, i = (DATA.lines || []).indexOf(l);
       a.classList.add("el");
-      a.innerHTML = '<span class="kk caps"><span>' + two(i + 1) + '</span><span class="cnt">' + l.studies.filter((k) => D.study(k)).length + "</span></span>" +
-        '<span class="nr"><span class="t">' + mk(esc(o.label)) + '</span></span><span class="dk">' + esc(l.sentence) + "</span>";
+      const n = l.studies.filter((k) => D.study(k)).length;
+      a.innerHTML = '<span class="kk caps"><span>' + two(i + 1) + "</span>" + (CNT_UP ? '<span class="cnt">' + n + "</span>" : "") + "</span>" +
+        '<span class="nr"><span class="t">' + mk(esc(o.label)) + "</span>" + (CNT_UP ? "" : '<sup class="cnt">' + n + "</sup>") + '</span><span class="dk">' + esc(l.sentence) + "</span>";
       a.style.setProperty("--i", i);
     } else if (mode === "Efeat") {
       const s = D.study(o.k), L = LEAD_OF[o.k];
@@ -1142,10 +1149,15 @@
     root.setProperty("--fs", phone() ? "12px" : "11px");
     const ls = [...IDX.querySelectorAll(".e.el")]; if (!ls.length) return;
     root.setProperty("--fl", "100px");
-    const w = Math.max(...ls.map((a) => a.querySelector(".t").offsetWidth));
-    const room = ls[0].clientWidth;
+    const room = ls[0].clientWidth * 0.97;
+    /* a count locked up with its name keeps its own size, so its width
+       comes off the room before the name is scaled into what is left */
+    const fl = Math.min(...ls.map((a) => {
+      const c = a.querySelector(".nr .cnt"), cw = c ? c.offsetWidth + (parseFloat(getComputedStyle(c).marginLeft) || 0) : 0;
+      return ((room - cw) / a.querySelector(".t").offsetWidth) * 100;
+    }));
     /* no larger than 26px, his size from the tweaks panel (27 Sept) */
-    root.setProperty("--fl", Math.floor(Math.min(26, (room / w) * 100 * 0.97) * 4) / 4 + "px");
+    root.setProperty("--fl", Math.floor(Math.min(26, fl) * 4) / 4 + "px");
   };
   const sizeIndex = () => {
     const root = HTML.style;
