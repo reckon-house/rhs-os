@@ -47,7 +47,17 @@ const IMG = "/case-studies/sally-design-system";
    Later the same day, his "in the engine sections let's just show the OS
    creating assets - i dont think we need the sections above": the engine
    is the Marketing OS demos alone, brief to email and then the Figma
-   build, with the card to the Sally Marketing OS study under them. */
+   build, with the card to the Sally Marketing OS study under them.
+
+   3 Oct 2026, his "on my case study we're going to do one homepage
+   sections with a tab - one will be the lookbook, one will be colorfest,
+   one will be a promotion - this should help clean up the confusion.
+   then we do 3 emails, same thing ... then below that we show the design
+   system and some of the other things we were working on": one homepage
+   frame with three tabs (the Lookbook with its takeover story, Colorfest,
+   and The Sale, a promotion homepage made for it), one email frame with
+   three tabs (The Gloss, Summer vivids, The Sale), then the kit, then the
+   stories, the engine and the briefs. The Edit left the study. */
 
 /* the pushed palette: scarlet, ink, the one soft grey, and two of the vivids
    sampled from his photographs (violet, teal) */
@@ -171,66 +181,162 @@ export const sallyDesignSystemCaseStudy: CaseStudy = {
       id: "homepage-header",
       type: "section-header",
       label: "SECTION 03: THE HOMEPAGE",
-      title: "The homepage leads",
-      pressing: { mark: { n: "03", name: "The Homepage" }, heldLine: "with the looks." },
+      title: "One homepage,",
+      pressing: { mark: { n: "03", name: "The Homepage" }, heldLine: "three kinds of week." },
     },
     {
       id: "homepage-text",
       type: "text",
       size: "subhead",
-      content: "Eleven concepts came out of the kit. The Lookbook is the one to see: every row is a person, not a packshot.",
+      content: "The Lookbook opens on a wall of the six shades. Colorfest bills the only-at-Sally brands like a festival lineup, and the sale turns the top of the page red.",
     },
     {
       id: "homepage-footnote",
       type: "text",
       size: "base",
       fullWidth: true,
-      content: "The Edit is the other, set as a magazine issue with a cover story and a contents line.",
+      content: "All three share one nav, one footer and one grid, so a new week changes the content and leaves the frame alone.",
     },
+    /* one frame, three tabs (3 Oct 2026, his "one homepage sections with a
+       tab - one will be the lookbook, one will be colorfest, one will be a
+       promotion - this should help clean up the confusion"). The Edit
+       (the-color-issue) came out of the study with this */
     {
-      id: "homepage-lookbook",
+      id: "homepage-tabs",
       type: "product-demo",
       folder: "sally-push",
       demo: "lookbook-images",
-      title: "Concept 11 · The Lookbook, desktop",
-      note: "Live at 1440. It scrolls itself; open it to use it.",
+      title: "Three homepages",
       stageWidth: 1440,
       viewHeight: 900,
       mode: "scroll",
-    },
-    {
-      id: "homepage-edit",
-      type: "product-demo",
-      folder: "sally-push",
-      demo: "the-color-issue",
-      title: "Concept 10 · The Edit, desktop",
-      note: "The homepage as a magazine issue.",
-      stageWidth: 1440,
-      viewHeight: 900,
-      mode: "scroll",
+      tabs: [
+        { label: "The Lookbook", demo: "lookbook-images", title: "The Lookbook", note: "A takeover story of the six shades, then the shop." },
+        { label: "Colorfest", demo: "colorfest", title: "Colorfest", note: "Two weeks of vivids, the only-at-Sally brands billed like a lineup." },
+        { label: "The Sale", demo: "promotion", title: "The Sale", note: "Forty-eight hours, thirty percent off sitewide." },
+      ],
     },
     /* MOCKUP 2 OF 4, a placeholder (2 Oct 2026, his "could you add those
        placeholders"): becomes an image section when his mockup arrives */
     {
-      id: "mock-2-edit-phone",
+      id: "mock-2-lookbook-phone",
       type: "product-demo",
       folder: "sally-push",
       demo: "m-mock",
       query: "n=2",
       mode: "fit",
       title: "Mockup 2 of 4",
-      note: "Placeholder: The Edit on a phone, in a hand.",
+      note: "Placeholder: the Lookbook story on a phone, in a hand.",
     },
 
     // ════════════════════════════════════════
-    // ACT 2 · SECTION 04 — THE STORIES
+    // ACT 2 · SECTION 04 — THE EMAILS
+    // ════════════════════════════════════════
+    {
+      id: "emails-header",
+      type: "section-header",
+      label: "SECTION 04: THE EMAILS",
+      title: "Three emails",
+      pressing: { mark: { n: "04", name: "The Emails" }, heldLine: "share one chassis." },
+    },
+    {
+      id: "emails-text",
+      type: "text",
+      size: "subhead",
+      content: "The Gloss treats Sally as a publication, a moment in the inbox and not a promo. Summer vivids sells the drop in big type, and the sale leads with its number.",
+    },
+    {
+      id: "emails-footnote",
+      type: "text",
+      size: "base",
+      fullWidth: true,
+      content: "The punch set dials the chassis up three ways, type, color and charm, and every email ends on the same footer.",
+    },
+    /* MOCKUP 3 OF 4, a placeholder (2 Oct 2026, his "could you add those
+       placeholders"): becomes an image section when his mockup arrives */
+    {
+      id: "mock-3-two-phones",
+      type: "product-demo",
+      folder: "sally-push",
+      demo: "m-mock",
+      query: "n=3",
+      mode: "fit",
+      title: "Mockup 3 of 4",
+      note: "Placeholder: The Gloss and the sale on two phones.",
+    },
+    /* one frame, three tabs (3 Oct 2026, his "then we do 3 emails, same
+       thing - a user can tab or toggle through") */
+    {
+      id: "emails-tabs",
+      type: "product-demo",
+      folder: "sally-push",
+      demo: "the-gloss",
+      title: "Three emails",
+      stageWidth: 600,
+      viewHeight: 1100,
+      mode: "scroll",
+      phone: true,
+      tabs: [
+        { label: "The Gloss", demo: "the-gloss", title: "The Gloss", note: "A full issue: masthead, pull quotes, and prose around the products." },
+        { label: "Summer vivids", demo: "punch-volume", title: "Summer vivids", note: "The punch chassis at full volume: one giant line, two looks on their own colors." },
+        { label: "The Sale", demo: "the-sale", title: "The Sale", note: "Forty-eight hours, one code, the whole store." },
+      ],
+    },
+
+    // ════════════════════════════════════════
+    // ACT 3 · SECTION 05 — THE KIT
+    // ════════════════════════════════════════
+    {
+      id: "kit-header",
+      type: "section-header",
+      label: "SECTION 05: THE KIT",
+      title: "Everything above comes",
+      pressing: { mark: { n: "05", name: "The Kit" }, heldLine: "out of one kit." },
+    },
+    {
+      id: "kit-text",
+      type: "text",
+      size: "subhead",
+      content: "One type family, white paper with scarlet and ink, round corners, five shapes, fourteen email blocks and twenty-one homepage modules.",
+    },
+    {
+      id: "kit-footnote",
+      type: "text",
+      size: "base",
+      fullWidth: true,
+      content: "Every type role and color is a token, so the move to Satoshi changed the tokens and left the layouts alone. A teammate's ADA review of the homepage darkened the muted text and set every eyebrow in solid ink or white.",
+    },
+    /* MOCKUP 4 OF 4, a placeholder (2 Oct 2026, his "could you add those
+       placeholders"): becomes an image section when his mockup arrives */
+    {
+      id: "mock-4-every-channel",
+      type: "product-demo",
+      folder: "sally-push",
+      demo: "m-mock",
+      query: "n=4",
+      mode: "fit",
+      title: "Mockup 4 of 4",
+      note: "Placeholder: every channel at once, from one brief.",
+    },
+    {
+      id: "kit-board",
+      type: "product-demo",
+      folder: "sally-push",
+      demo: "m-board",
+      mode: "fit",
+      title: "The kit, on one board",
+      note: "The block and module names are the canvas's own labels.",
+    },
+
+    // ════════════════════════════════════════
+    // ACT 3 · SECTION 06 — THE STORIES
     // ════════════════════════════════════════
     {
       id: "stories-header",
       type: "section-header",
-      label: "SECTION 04: THE STORIES",
+      label: "SECTION 06: THE STORIES",
       title: "Each idea becomes",
-      pressing: { mark: { n: "04", name: "The Stories" }, heldLine: "a story you can shop." },
+      pressing: { mark: { n: "06", name: "The Stories" }, heldLine: "a story you can shop." },
     },
     {
       id: "stories-text",
@@ -274,111 +380,6 @@ export const sallyDesignSystemCaseStudy: CaseStudy = {
       mode: "fit",
       title: "The vivids wall, working",
       note: "Each hue brings up its look, and the lightener sits one tap away.",
-    },
-
-    // ════════════════════════════════════════
-    // ACT 2 · SECTION 05 — THE EMAILS
-    // ════════════════════════════════════════
-    {
-      id: "emails-header",
-      type: "section-header",
-      label: "SECTION 05: THE EMAILS",
-      title: "Four email sets",
-      pressing: { mark: { n: "05", name: "The Emails" }, heldLine: "share one chassis." },
-    },
-    {
-      id: "emails-text",
-      type: "text",
-      size: "subhead",
-      content: "The Gloss treats Sally as a publication, a moment in the inbox and not a promo. The sale is the one email that turns red.",
-    },
-    {
-      id: "emails-footnote",
-      type: "text",
-      size: "base",
-      fullWidth: true,
-      content: "The color-blocked set is the current direction, and the punch set dials the same chassis up three ways: type, color and charm. Every email ends on the same footer.",
-    },
-    /* MOCKUP 3 OF 4, a placeholder (2 Oct 2026, his "could you add those
-       placeholders"): becomes an image section when his mockup arrives */
-    {
-      id: "mock-3-two-phones",
-      type: "product-demo",
-      folder: "sally-push",
-      demo: "m-mock",
-      query: "n=3",
-      mode: "fit",
-      title: "Mockup 3 of 4",
-      note: "Placeholder: The Gloss and the sale on two phones.",
-    },
-    {
-      id: "emails-gloss",
-      type: "product-demo",
-      folder: "sally-push",
-      demo: "the-gloss",
-      title: "Editorial · The Gloss",
-      note: "A full issue: masthead, pull quotes, and prose around the products.",
-      stageWidth: 600,
-      viewHeight: 1100,
-      mode: "scroll",
-      phone: true,
-    },
-    {
-      id: "emails-sale",
-      type: "product-demo",
-      folder: "sally-push",
-      demo: "the-sale",
-      title: "The Sale",
-      note: "The one email that turns red.",
-      stageWidth: 600,
-      viewHeight: 1100,
-      mode: "scroll",
-      phone: true,
-    },
-
-    // ════════════════════════════════════════
-    // ACT 3 · SECTION 06 — THE KIT
-    // ════════════════════════════════════════
-    {
-      id: "kit-header",
-      type: "section-header",
-      label: "SECTION 06: THE KIT",
-      title: "Everything above comes",
-      pressing: { mark: { n: "06", name: "The Kit" }, heldLine: "out of one kit." },
-    },
-    {
-      id: "kit-text",
-      type: "text",
-      size: "subhead",
-      content: "One type family, white paper with scarlet and ink, round corners, five shapes, fourteen email blocks and twenty-one homepage modules.",
-    },
-    {
-      id: "kit-footnote",
-      type: "text",
-      size: "base",
-      fullWidth: true,
-      content: "Every type role and color is a token, so the move to Satoshi changed the tokens and left the layouts alone. A teammate's ADA review of the homepage darkened the muted text and set every eyebrow in solid ink or white.",
-    },
-    /* MOCKUP 4 OF 4, a placeholder (2 Oct 2026, his "could you add those
-       placeholders"): becomes an image section when his mockup arrives */
-    {
-      id: "mock-4-every-channel",
-      type: "product-demo",
-      folder: "sally-push",
-      demo: "m-mock",
-      query: "n=4",
-      mode: "fit",
-      title: "Mockup 4 of 4",
-      note: "Placeholder: every channel at once, from one brief.",
-    },
-    {
-      id: "kit-board",
-      type: "product-demo",
-      folder: "sally-push",
-      demo: "m-board",
-      mode: "fit",
-      title: "The kit, on one board",
-      note: "The block and module names are the canvas's own labels.",
     },
 
     // ════════════════════════════════════════

@@ -705,6 +705,15 @@ export interface ProductDemoSection extends BaseSection {
   stageWidth?: number;
   /** One line under the frame: what is being shown, in plain words. */
   note?: string;
+  /**
+   * Pages a reader tabs between in the one frame (3 Oct 2026, his "one
+   * homepage section with a tab - one will be the lookbook, one will be
+   * colorfest, one will be a promotion ... then we do 3 emails, same
+   * thing"). The first tab is the section's own page; each tab takes the
+   * frame's width, height and mode, and brings its own title and note.
+   * The old study pages show the first tab alone.
+   */
+  tabs?: { label: string; demo: string; folder?: ProductDemoSection["folder"]; query?: string; title?: string; note?: string }[];
 }
 
 /**

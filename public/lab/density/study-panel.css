@@ -912,3 +912,14 @@ html:is([data-labels="title"], [data-labels="sentence"]) .sp .szl-row { font-siz
 .sp-press.tick .sp-pr-g { flex-wrap: nowrap; }
 @keyframes sp-tick { to { transform: translateX(-50%); } }
 @media (prefers-reduced-motion: reduce) { .sp-press.tick .sp-pr-track { animation: none; } }
+
+/* ── tabs over a live frame (3 Oct 2026, his "one homepage section with a
+   tab ... then we do 3 emails, same thing - a user can tab or toggle
+   through"): a row of pills in the room's own type, the active one in
+   ink, set right over the frame they switch ── */
+.sp-tabs { display: flex; flex-wrap: wrap; gap: 6px; margin: 0 0 12px; }
+.sp-tab { height: 34px; padding: 0 15px; border: 0; border-radius: 999px; background: rgba(0, 0, 0, 0.055); color: var(--ink, #111); font: inherit; font-size: 13px; font-weight: 600; letter-spacing: -0.005em; cursor: pointer; transition: background-color 0.2s ease, color 0.2s ease; }
+.sp-tab:hover { background: rgba(0, 0, 0, 0.1); }
+.sp-tab[aria-selected="true"] { background: var(--ink, #111); color: var(--paper, #fff); }
+.sp-tab:focus-visible { outline: 2px solid var(--ink, #111); outline-offset: 2px; }
+.sp-lives.phone .sp-live.tabbed { flex-basis: 100%; max-width: 420px; }

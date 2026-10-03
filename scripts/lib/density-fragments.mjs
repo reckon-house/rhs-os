@@ -226,6 +226,14 @@ for (const s of Object.values(H.studies)) {
           phone: !fit && (!!sec.phone || (sec.stageWidth || 1120) <= 600), /* a phone-width replay sits narrow */
           title: clean(sec.title || ""),
           note: clean(sec.note || ""),
+          /* pages to tab between in the one frame (3 Oct 2026), each with its
+             own address, title and note; the frame keeps its size and mode */
+          ...(Array.isArray(sec.tabs) && sec.tabs.length > 1 ? { tabs: sec.tabs.map((t) => ({
+            label: clean(t.label),
+            src: "/lab/" + (t.folder || folder) + "/" + t.demo + ".html" + (t.query ? "?" + t.query : ""),
+            title: clean(t.title || ""),
+            note: clean(t.note || ""),
+          })) } : {}),
           where,
         });
         break;

@@ -616,7 +616,7 @@
       run = null; para = null;
       const last = out[out.length - 1];
       if (it.t === "pic") { if (last && last.t === "pics") last.list.push(it.f); else out.push({ t: "pics", list: [it.f] }); continue; }
-      if (it.t === "live") { const ph = !!it.f.phone, fit = it.f.mode === "fit"; if (!fit && last && last.t === "lives" && !last.fit && last.phone && ph) last.list.push(it.f); else out.push({ t: "lives", phone: ph, fit, list: [it.f] }); continue; }
+      if (it.t === "live") { const ph = !!it.f.phone, fit = it.f.mode === "fit"; if (!fit && !it.f.tabs && last && last.t === "lives" && !last.fit && last.phone && ph && !last.list[0].tabs) last.list.push(it.f); else out.push({ t: "lives", phone: ph, fit, list: [it.f] }); continue; }
       if (it.t === "num") { if (last && last.t === "nums" && last.si === it.f.si) last.list.push(it.f); else out.push({ t: "nums", si: it.f.si, list: [it.f] }); continue; }
       if (it.t === "card") { if (last && last.t === "cards") last.list.push(it.f); else out.push({ t: "cards", list: [it.f] }); continue; }
       if (it.t === "closing") { if (last && last.t === "closing") last.list.push(it.f); else out.push({ t: "closing", list: [it.f] }); continue; }
@@ -1466,23 +1466,57 @@
         return wrap;
       }
       function liveEl(f) {
-        const fig = tag(el("figure", "sp-live sp-live-" + (f.mode || "page") + (f.phone ? " phone" : "")), f);
+        const fig = tag(el("figure", "sp-live sp-live-" + (f.mode || "page") + (f.phone ? " phone" : "") + (f.tabs ? " tabbed" : "")), f);
+        /* tabs (3 Oct 2026, his "one homepage section with a tab ... a user
+           can tab or toggle through"): the pages share the frame, and a tab
+           swaps the page in place; its title, its note and the open link
+           follow it, and a page that walks itself starts again from the top */
+        const tabs = f.tabs && f.tabs.length > 1 ? f.tabs : null;
+        const T0 = tabs ? tabs[0] : f;
+        let tabRow = null;
+        if (tabs) {
+          tabRow = el("div", "sp-tabs"); tabRow.setAttribute("role", "tablist"); tabRow.setAttribute("aria-label", f.title || "Pages");
+          tabs.forEach((t, i) => { const b = el("button", "sp-tab", esc(t.label)); b.type = "button"; b.setAttribute("role", "tab"); b.setAttribute("aria-selected", i ? "false" : "true"); b.tabIndex = i ? -1 : 0; tabRow.appendChild(b); });
+          fig.appendChild(tabRow);
+        }
         const stage = el("div", "sp-live-stage");
         const fr = document.createElement("iframe");
-        fr.title = f.title || "A live page"; fr.setAttribute("tabindex", "-1"); fr.setAttribute("aria-hidden", "true");
+        fr.title = T0.title || f.title || "A live page"; fr.setAttribute("tabindex", "-1"); fr.setAttribute("aria-hidden", "true");
         if (f.mode === "fit") { fr.style.width = "100%"; fr.style.height = (f.h || 600) + "px"; }
         else { fr.style.width = f.w + "px"; fr.style.height = (f.h || 900) + "px"; }
         stage.appendChild(fr);
-        const open = el("a", "sp-live-open"); open.href = f.src.replace(/[?&]framed=1/, ""); open.target = "_blank"; open.rel = "noopener";
-        open.setAttribute("aria-label", "Open " + (f.title || "the page") + " in a new tab");
+        const open = el("a", "sp-live-open"); open.href = (tabs ? T0.src : f.src).replace(/[?&]framed=1/, ""); open.target = "_blank"; open.rel = "noopener";
+        open.setAttribute("aria-label", "Open " + (T0.title || f.title || "the page") + " in a new tab");
         stage.appendChild(open);
         fig.appendChild(stage);
-        if (f.title || f.note) fig.appendChild(el("figcaption", "sp-cap sp-live-cap", (f.title ? "<b>" + esc(f.title) + "</b>" : "") + (f.note ? " " + esc(f.note) : "")));
-        const L = { f, fig, stage, fr, s: 1, docH: 0, vis: false, loaded: false, raf: 0, y: 0, phase: 0, t: 0, last: 0 };
+        const capHtml = (t) => (t.title ? "<b>" + esc(t.title) + "</b>" : "") + (t.note ? " " + esc(t.note) : "");
+        if (T0.title || T0.note || f.title || f.note) fig.appendChild(el("figcaption", "sp-cap sp-live-cap", capHtml(T0.title || T0.note ? T0 : f)));
+        const L = { f, fig, stage, fr, s: 1, docH: 0, vis: false, loaded: false, raf: 0, y: 0, phase: 0, t: 0, last: 0, tab: 0, src: tabs ? T0.src : f.src };
+        if (tabs) {
+          const btns = [...tabRow.children];
+          const pick = (i, focus) => {
+            const t = tabs[i]; if (!t || L.tab === i) return;
+            L.tab = i; L.src = t.src;
+            btns.forEach((b, j) => { b.setAttribute("aria-selected", j === i ? "true" : "false"); b.tabIndex = j === i ? 0 : -1; });
+            if (focus) btns[i].focus();
+            open.href = t.src; open.setAttribute("aria-label", "Open " + (t.title || t.label) + " in a new tab");
+            fr.title = t.title || t.label;
+            const cap = fig.querySelector(".sp-live-cap"); if (cap) cap.innerHTML = capHtml(t);
+            cancelAnimationFrame(L.raf); L.raf = 0; L.y = 0; L.phase = 0; L.t = 0; L.last = 0; L.docH = 0;
+            if (L.loaded) fr.src = t.src;
+          };
+          btns.forEach((b, i) => b.addEventListener("click", (e) => { e.preventDefault(); e.stopPropagation(); pick(i); }));
+          tabRow.addEventListener("keydown", (e) => {
+            const n = btns.length;
+            if (e.key === "ArrowRight" || e.key === "ArrowLeft") { e.preventDefault(); pick((L.tab + (e.key === "ArrowRight" ? 1 : n - 1)) % n, true); }
+            else if (e.key === "Home") { e.preventDefault(); pick(0, true); }
+            else if (e.key === "End") { e.preventDefault(); pick(n - 1, true); }
+          });
+        }
         L.size = () => liveSize(L); /* the layout calls it from outside the build */
         const near = new IntersectionObserver(([e]) => {
           if (!e.isIntersecting || L.loaded) return;
-          L.loaded = true; fr.src = f.src; near.disconnect();
+          L.loaded = true; fr.src = L.src; near.disconnect();
         }, { root: container, rootMargin: "900px 0px" });
         const seen = new IntersectionObserver(([e]) => { L.vis = e.isIntersecting; liveRun(L); }, { root: container, threshold: 0 });
         near.observe(fig); seen.observe(fig);
