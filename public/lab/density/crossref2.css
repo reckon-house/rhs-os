@@ -1152,3 +1152,11 @@ html:is([data-labels="title"], [data-labels="sentence"]) #idx :is(.grp h2.eh, .e
 html:is([data-labels="title"], [data-labels="sentence"]) .caps { font-size: 11px; font-weight: 600; letter-spacing: 0; text-transform: none; }
 html:is([data-labels="title"], [data-labels="sentence"]) #idx .e .cr.caps { font-weight: 500; }
 html:is([data-labels="title"], [data-labels="sentence"]) #idx .grp h2.eh b { margin-right: 0.5em; }
+
+/* ── no rules under the labels (2 Oct 2026, his "can we try removing
+   these thin rules under the section labels? i'm not sure we need
+   them"): a section's head and a feature's line stand on air, and the
+   room each rule kept above itself comes out with it, the way the cards
+   took theirs off. ?rules=on draws them again ── */
+html[data-rules="off"][data-ix="e"] .grp h2.eh { padding-bottom: 0; background: none; }
+html[data-rules="off"][data-ix="e"] .e.ef .kk { padding-bottom: 0; border-bottom: 0; }
