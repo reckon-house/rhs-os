@@ -923,3 +923,19 @@ html:is([data-labels="title"], [data-labels="sentence"]) .sp .szl-row { font-siz
 .sp-tab[aria-selected="true"] { background: var(--ink, #111); color: var(--paper, #fff); }
 .sp-tab:focus-visible { outline: 2px solid var(--ink, #111); outline-offset: 2px; }
 .sp-lives.phone .sp-live.tabbed { flex-basis: 100%; max-width: 420px; }
+
+/* ── a page you can enter (3 Oct 2026, his "make the container it's in a
+   lot taller and then when someone clicks into it they can scroll it"):
+   the hint shows on hover (always, faintly, on touch), a click hands the
+   frame the scroll and rings it in ink, and Done sits in its corner ── */
+.sp-live-scroll .sp-live-open { display: flex; align-items: center; justify-content: center; border: 0; padding: 0; background: transparent; font: inherit; }
+.sp-live-hint { display: inline-flex; align-items: center; height: 40px; padding: 0 18px; border-radius: 999px; background: rgba(17, 17, 17, 0.82); color: #fff; font-size: 13.5px; font-weight: 600; letter-spacing: -0.005em; opacity: 0; transform: translateY(4px); transition: opacity 0.2s ease, transform 0.2s ease; pointer-events: none; -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
+.sp-live-scroll .sp-live-open:hover .sp-live-hint, .sp-live-scroll .sp-live-open:focus-visible .sp-live-hint { opacity: 1; transform: none; }
+@media (hover: none) { .sp-live-scroll .sp-live-open { align-items: flex-end; padding-bottom: 12px; } .sp-live-hint { height: 34px; padding: 0 14px; font-size: 12.5px; opacity: 0.9; transform: none; } }
+.sp-live.on .sp-live-open { display: none; }
+.sp-live.on .sp-live-stage iframe { pointer-events: auto; }
+.sp-live.on .sp-live-stage { box-shadow: 0 0 0 2px var(--ink, #111); }
+.sp-live-done { position: absolute; bottom: 10px; right: 10px; z-index: 2; display: none; align-items: center; height: 34px; padding: 0 14px; border: 0; border-radius: 999px; background: rgba(17, 17, 17, 0.86); color: #fff; font: inherit; font-size: 13px; font-weight: 600; cursor: pointer; }
+.sp-live.on .sp-live-done { display: inline-flex; }
+.sp-live-ext { white-space: nowrap; color: var(--ink, #111); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 0.22em; }
+@media (prefers-reduced-motion: reduce) { .sp-live-hint { transition: none; } }

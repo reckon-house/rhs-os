@@ -1485,13 +1485,44 @@
         if (f.mode === "fit") { fr.style.width = "100%"; fr.style.height = (f.h || 600) + "px"; }
         else { fr.style.width = f.w + "px"; fr.style.height = (f.h || 900) + "px"; }
         stage.appendChild(fr);
-        const open = el("a", "sp-live-open"); open.href = (tabs ? T0.src : f.src).replace(/[?&]framed=1/, ""); open.target = "_blank"; open.rel = "noopener";
-        open.setAttribute("aria-label", "Open " + (T0.title || f.title || "the page") + " in a new tab");
+        /* a page that scrolls (3 Oct 2026, his "make the container it's in a
+           lot taller and then when someone clicks into it they can scroll
+           it"): a click hands the frame the scroll, and Done, Escape or
+           scrolling the frame out of view hands it back. Opening the page in
+           a new tab moves to the caption. Other frames still open on a click */
+        const isScroll = f.mode === "scroll";
+        const srcOf = (t) => (t.src || f.src).replace(/[?&]framed=1/, "");
+        const open = el(isScroll ? "button" : "a", "sp-live-open");
+        if (isScroll) {
+          open.type = "button";
+          open.setAttribute("aria-label", "Scroll " + (T0.title || f.title || "the page") + " inside the frame");
+          open.innerHTML = '<span class="sp-live-hint">' + (matchMedia("(hover: none)").matches ? "Tap to scroll" : "Click to scroll") + "</span>";
+        } else {
+          open.href = srcOf(T0); open.target = "_blank"; open.rel = "noopener";
+          open.setAttribute("aria-label", "Open " + (T0.title || f.title || "the page") + " in a new tab");
+        }
         stage.appendChild(open);
+        let done = null;
+        if (isScroll) { done = el("button", "sp-live-done", "Done"); done.type = "button"; stage.appendChild(done); }
         fig.appendChild(stage);
-        const capHtml = (t) => (t.title ? "<b>" + esc(t.title) + "</b>" : "") + (t.note ? " " + esc(t.note) : "");
+        const capHtml = (t) => (t.title ? "<b>" + esc(t.title) + "</b>" : "") + (t.note ? " " + esc(t.note) : "") +
+          (isScroll ? ' <a class="sp-live-ext" href="' + esc(srcOf(t)) + '" target="_blank" rel="noopener">Open the page</a>' : "");
         if (T0.title || T0.note || f.title || f.note) fig.appendChild(el("figcaption", "sp-cap sp-live-cap", capHtml(T0.title || T0.note ? T0 : f)));
-        const L = { f, fig, stage, fr, s: 1, docH: 0, vis: false, loaded: false, raf: 0, y: 0, phase: 0, t: 0, last: 0, tab: 0, src: tabs ? T0.src : f.src };
+        const L = { f, fig, stage, fr, s: 1, docH: 0, vis: false, loaded: false, raf: 0, y: 0, phase: 0, t: 0, last: 0, tab: 0, src: tabs ? T0.src : f.src, walkOff: false };
+        const engage = () => {
+          if (fig.classList.contains("on")) return;
+          fig.classList.add("on"); L.walkOff = true; cancelAnimationFrame(L.raf); L.raf = 0;
+          fr.removeAttribute("aria-hidden"); fr.setAttribute("tabindex", "0");
+          try { fr.focus(); } catch (e) { /* not yet */ }
+        };
+        const disengage = () => {
+          if (!fig.classList.contains("on")) return;
+          fig.classList.remove("on"); fr.setAttribute("aria-hidden", "true"); fr.setAttribute("tabindex", "-1");
+        };
+        if (isScroll) {
+          open.addEventListener("click", engage);
+          done.addEventListener("click", (e) => { e.stopPropagation(); disengage(); open.focus(); });
+        }
         if (tabs) {
           const btns = [...tabRow.children];
           const pick = (i, focus) => {
@@ -1499,7 +1530,8 @@
             L.tab = i; L.src = t.src;
             btns.forEach((b, j) => { b.setAttribute("aria-selected", j === i ? "true" : "false"); b.tabIndex = j === i ? 0 : -1; });
             if (focus) btns[i].focus();
-            open.href = t.src; open.setAttribute("aria-label", "Open " + (t.title || t.label) + " in a new tab");
+            if (isScroll) { open.setAttribute("aria-label", "Scroll " + (t.title || t.label) + " inside the frame"); disengage(); L.walkOff = false; }
+            else { open.href = srcOf(t); open.setAttribute("aria-label", "Open " + (t.title || t.label) + " in a new tab"); }
             fr.title = t.title || t.label;
             const cap = fig.querySelector(".sp-live-cap"); if (cap) cap.innerHTML = capHtml(t);
             cancelAnimationFrame(L.raf); L.raf = 0; L.y = 0; L.phase = 0; L.t = 0; L.last = 0; L.docH = 0;
@@ -1518,10 +1550,19 @@
           if (!e.isIntersecting || L.loaded) return;
           L.loaded = true; fr.src = L.src; near.disconnect();
         }, { root: container, rootMargin: "900px 0px" });
-        const seen = new IntersectionObserver(([e]) => { L.vis = e.isIntersecting; liveRun(L); }, { root: container, threshold: 0 });
+        const seen = new IntersectionObserver(([e]) => { L.vis = e.isIntersecting; if (!L.vis) disengage(); liveRun(L); }, { root: container, threshold: 0 });
         near.observe(fig); seen.observe(fig);
         fr.addEventListener("load", () => {
           liveMeasure(L); setTimeout(() => liveMeasure(L), 1400); liveRun(L);
+          /* inside an entered page: Escape hands the scroll back, and a link
+             that goes nowhere ("#") no longer jumps the page to its top */
+          if (isScroll) {
+            try {
+              const d = fr.contentDocument;
+              d.addEventListener("keydown", (e) => { if (e.key === "Escape") { disengage(); open.focus(); } });
+              d.addEventListener("click", (e) => { const a = e.target.closest && e.target.closest('a[href="#"]'); if (a) e.preventDefault(); });
+            } catch (e) { /* another origin */ }
+          }
           /* a module for the column reflows with the room, so its height is
              measured again whenever its fonts land or its window resizes */
           if (f.mode === "fit") {
@@ -1549,8 +1590,26 @@
           L.fr.style.height = h + "px"; L.stage.style.height = h + "px";
           return;
         }
+        if (L.f.mode === "scroll") {
+          /* most of the glass (3 Oct 2026, his "make the container it's in a
+             lot taller"): about 86% of the room's height, a phone frame 90%,
+             never less than its declared view. A homepage built for every
+             width (1000px and up) shows its own phone layout in a narrow
+             room, at its true size, instead of a desktop shrunk to a quarter */
+          const V = container.clientHeight || window.innerHeight;
+          let pw = L.f.w; L.s = Math.min(1, sw / pw);
+          const fluid = pw >= 1000 && sw < 600;
+          if (fluid) { pw = sw; L.s = 1; }
+          const want = Math.round(V * (L.f.phone ? 0.9 : 0.86));
+          const vh = fluid ? want : Math.max(L.f.h || 900, Math.round(want / L.s));
+          L.vh = vh;
+          L.fr.style.width = pw + "px"; L.fr.style.height = vh + "px";
+          L.fr.style.transform = L.s === 1 ? "none" : "scale(" + L.s.toFixed(5) + ")";
+          L.stage.style.height = Math.round(vh * L.s) + "px";
+          return;
+        }
         L.s = Math.min(1, sw / L.f.w);
-        const h = L.f.mode === "scroll" ? (L.f.h || 900) : (L.docH || L.f.h || 900);
+        const h = L.docH || L.f.h || 900;
         L.fr.style.height = h + "px";
         L.fr.style.transform = "scale(" + L.s.toFixed(5) + ")";
         L.stage.style.height = Math.round(h * L.s) + "px";
@@ -1577,7 +1636,7 @@
           return;
         }
         cancelAnimationFrame(L.raf); L.raf = 0;
-        if (L.f.mode !== "scroll" || !on || !L.loaded || liveReduce()) return;
+        if (L.f.mode !== "scroll" || !on || !L.loaded || liveReduce() || L.walkOff) return;
         L.last = 0; L.raf = requestAnimationFrame((t) => liveTick(L, t));
       }
       /* a page walks itself down at 160px a second, holds, eases back up, holds */
@@ -1585,7 +1644,7 @@
         let w = null, d = null; try { w = L.fr.contentWindow; d = w && w.document; } catch (e) { return; }
         if (!d || !d.documentElement) { L.raf = requestAnimationFrame((t) => liveTick(L, t)); return; }
         const dt = L.last ? Math.min(64, now - L.last) : 0; L.last = now; L.t += dt;
-        const max = Math.max(0, d.documentElement.scrollHeight - (L.f.h || 900)), HOLD = 1800;
+        const max = Math.max(0, d.documentElement.scrollHeight - (w.innerHeight || L.vh || L.f.h || 900)), HOLD = 1800;
         if (L.phase === 0) { if (L.t >= HOLD) { L.phase = 1; L.t = 0; } }
         else if (L.phase === 1) { L.y = Math.min(max, L.y + 0.16 * dt); if (L.y >= max) { L.phase = 2; L.t = 0; } }
         else if (L.phase === 2) { if (L.t >= HOLD) { L.phase = 3; L.t = 0; L.from = L.y; } }
