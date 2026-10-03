@@ -62,9 +62,13 @@ const EMAILS = [
 
 const b = await chromium.launch();
 const made = [];
-const save = async (buf, name) => {
+/* a phone screen is cut to exactly 1170 x 2532: a page a few pixels short
+   (an email at 2531) would otherwise not fill a phone mockup's screen */
+const save = async (buf, name, exact) => {
   const file = path.join(OUT, name);
-  await sharp(buf).jpeg({ quality: 95, chromaSubsampling: "4:4:4", mozjpeg: true }).toFile(file);
+  let img = sharp(buf);
+  if (exact) img = img.resize(exact[0], exact[1], { fit: "cover", position: "top" });
+  await img.jpeg({ quality: 95, chromaSubsampling: "4:4:4", mozjpeg: true }).toFile(file);
   const m = await sharp(file).metadata();
   made.push([name, m.width, m.height, fs.statSync(file).size]);
   console.log(name.padEnd(46), `${m.width}x${m.height}`);
@@ -93,7 +97,7 @@ for (const [name, url, long] of HOMEPAGES) {
   if (long) await save(await p.screenshot({ fullPage: true, clip: { x: 0, y: 0, width: 1440, height: 2700 } }), `homepage-${name}-desktop-long.jpg`);
   await p.close();
   p = await open(phone, url, long ? 3000 : 1200);
-  await save(await p.screenshot(), `homepage-${name}-mobile.jpg`);
+  await save(await p.screenshot(), `homepage-${name}-mobile.jpg`, [1170, 2532]);
   if (long) await save(await p.screenshot({ fullPage: true, clip: { x: 0, y: 0, width: 390, height: 2532 } }), `homepage-${name}-mobile-long.jpg`);
   await p.close();
 }
@@ -102,7 +106,7 @@ for (const [name, url] of EMAILS) {
   await save(await p.screenshot({ fullPage: true }), `email-${name}-full.jpg`);
   await p.close();
   p = await open(phone, url, 1600);
-  await save(await p.screenshot(), `email-${name}-phone.jpg`);
+  await save(await p.screenshot(), `email-${name}-phone.jpg`, [1170, 2532]);
   await p.close();
 }
 await b.close();
