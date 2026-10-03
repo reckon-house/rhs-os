@@ -93,8 +93,11 @@
     "cap/ai-strategy": ["arc", "sally-os", "dsc"],
     "cap/go-to-market-strategy": ["dsc", "ivy-park", "jeffrey-ecommerce"],
 
-    /* tools: where a study's own text shows it, or its family runs */
-    "tool/claude-code": ["sizzle"],
+    /* tools: where a study's own text shows it, or its family runs, or he
+       says so: Claude Code in Dallas Sport Collective (2 Oct 2026, his
+       "DSC is also a claude code project. we should move it under that
+       section"), which its study does not say in so many words */
+    "tool/claude-code": ["sizzle", "dsc"],
     "tool/supabase": ["sally-os"],
     "tool/openai": ["arc"],
     "tool/figma": ["sally-os"],

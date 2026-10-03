@@ -2431,6 +2431,12 @@
     if (s && s.mark) e.mark = clean(s.mark);
     if (s && s.label) e.label = clean(s.label);
     if (s && s.lead) e.lead = true;
+    /* the page's own longer line (entry-lines.js, ENTRY_LONG): a shelf's
+       head can say more than the index's card or the next-panel's, which
+       keep the short one (2 Oct 2026, his "in the description portion i
+       think we can say even more than what the TOC section has") */
+    const long = (window.ENTRY_LONG || {})[o.key];
+    if (long) { e.sentence = clean(long); e.lead = true; }
     const see = seeAlso(o); if (see.length) e.see = see.map((x) => ({ key: x.key, name: clean(nameOf(x)) }));
     return e;
   };

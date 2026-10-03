@@ -109,9 +109,11 @@ window.ENTRY_LINES = {
   /* A.R.C.: "Claude Code was my main environment from start to finish."
      Sally OS: "Claude Code was my development environment for all of it."
      About: "Claude Code is this site's CMS, design tool and build
-     environment at once." */
-  /* what it answered: A.R.C.: "Claude Code was my main environment from start to finish"; Faux Reel: "Faux Reel took a day to build with Claude Code"; About: "Claude Code is this site's CMS, design tool and build environment at once" */
-  "tool/claude-code": "Claude Code is Anthropic's coding agent, and it's where I build: A.R.C. end to end, Sally Marketing OS, and Faux Reel, which took a single day. It's also this site's CMS, design tool and build environment at once.",
+     environment at once."
+     Dallas Sport Collective, in his words (2 Oct 2026): "DSC is also a
+     claude code project." */
+  /* what it answered: A.R.C.: "Claude Code was my main environment from start to finish"; Faux Reel: "Faux Reel took a day to build with Claude Code"; About: "Claude Code is this site's CMS, design tool and build environment at once"; DSC, his word: "DSC is also a claude code project" */
+  "tool/claude-code": "Claude Code is Anthropic's coding agent, and it's where I build: A.R.C. end to end, Sally Marketing OS, Dallas Sport Collective and Faux Reel, which took a single day. It's also this site's CMS, design tool and build environment at once.",
   /* Faux Reel: "The whole reel runs in one box on the page, with CSS
      animation and no video file anywhere"; "The finished web component
      weighs 4.8KB gzipped" */
@@ -510,4 +512,22 @@ window.ENTRY_LINES = {
   "cap/visual-design": "Cosmo Prof's dated site needed to match the working stylists who shop it. The type moved to Jost, and the palette set soft neutrals against sharp black.",
   /* what it answered: DSC: "a brand that matched where the gym was headed"; "a marketing site in black and white, with big condensed type and photography of actual members training" */
   "cap/web-design": "Dallas Sport Collective's founder needed a brand that matched where the gym was headed. The marketing site carries it in black and white, with big condensed type and photography of actual members training.",
+};
+
+/* ── THE PAGE'S OWN LONGER LINE (2 Oct 2026) ──────────────────────────
+   His words, on Claude Code's shelf: "in the description portion i think
+   we can say even more than what the TOC section has - claude code has
+   become my design tool, thinking partner, CMS, etc. it's taken what
+   might have been 5-7 other applications and put them into one tool.
+   let's find a way to expand there some".
+
+   A shelf's head uses this where it has one; the index's card and the
+   next-panel at a shelf's foot keep the short line above. Same two-tone
+   as every line: the first sentence in ink, the rest in grey. The facts
+   are his, from that message and from the sentences quoted beside
+   tool/claude-code above; "five to seven" is his estimate and keeps his
+   "might have been". Draft for him to read aloud. To change it, change
+   the words; to take it away, delete the key. */
+window.ENTRY_LONG = {
+  "tool/claude-code": "Claude Code is Anthropic's coding agent, and it's where I build: A.R.C. end to end, Sally Marketing OS, Dallas Sport Collective and Faux Reel, which took a single day. It's also my design tool, my thinking partner, this site's CMS and its build environment. It has taken what might have been five to seven other applications and put them in one tool.",
 };
