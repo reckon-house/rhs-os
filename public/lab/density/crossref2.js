@@ -1293,10 +1293,14 @@
      code type of look mixed into some of them?": the patterns drawn as
      long lines (scan lines, a trellis, a hatch, tally marks) became the
      four above, two of them code. On, the settled choice; ?texture=none
-     turns it off (the row that did came off with the other switches). ── */
+     turns it off (the row that did came off with the other switches).
+     Then, 2 Oct 2026, his "let's try removing the tiny textured dots
+     behind the TOC column too - just clean surface": off by default, the
+     paper bare behind every section. ?texture=on puts the dots back,
+     ?texture=glyphs the marks. ── */
   const TXS = ["none", "on", "glyphs"];
   const QTX = (new URLSearchParams(location.search).get("texture") || "").toLowerCase();
-  let TX = TXS.includes(QTX) ? QTX : CARDS ? "none" : "on";
+  let TX = TXS.includes(QTX) ? QTX : "none";
   HTML.dataset.tx = TX;
   const toB64 = (s) => {
     const u = new TextEncoder().encode(s); let bin = "";

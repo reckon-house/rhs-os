@@ -1166,10 +1166,13 @@ html[data-rules="off"][data-ix="e"] .e.ef .kk { padding-bottom: 0; border-bottom
    category?"): the label's size and grey, just after the name, its top
    on the name's cap height, the way the capabilities carry theirs. The
    row it stood on above the name goes, unless ?nums=on still has a
-   number for it. ?count=above sets it back on that row ── */
-html[data-count="name"][data-ix="e"] .e.el .nr { white-space: nowrap; }
-html[data-count="name"][data-ix="e"] .e.el .nr .cnt { position: relative; top: calc((var(--fl, 26px) - 11px) * -0.7); margin-left: 4px;
-  font-size: 11px; font-weight: 600; letter-spacing: 0; line-height: 1; vertical-align: baseline; color: var(--grey); font-variant-numeric: tabular-nums; }
+   number for it. ?count=above sets it back on that row. Then his "can
+   we try making the numbers even smaller?": 9px, the size the
+   capabilities' counts are, down from the label's 11 (--cn), and the
+   lift follows the size so the top stays on the cap height ── */
+html[data-count="name"][data-ix="e"] .e.el .nr { --cn: 9px; white-space: nowrap; }
+html[data-count="name"][data-ix="e"] .e.el .nr .cnt { position: relative; top: calc((var(--fl, 26px) - var(--cn)) * -0.7); margin-left: 3px;
+  font-size: var(--cn); font-weight: 600; letter-spacing: 0; line-height: 1; vertical-align: baseline; color: var(--grey); font-variant-numeric: tabular-nums; }
 html[data-count="name"][data-ix="e"]:not([data-nums="on"]) .e.el .kk { display: none; }
 html[data-count="name"][data-mk="cell"][data-ix="e"] body.x #idx .grp.ec .e.on.el .nr .cnt,
 html[data-count="name"][data-mk="cell"][data-ix="e"] #idx .grp.ec .e.lock.el .nr .cnt { color: rgba(255, 255, 255, 0.62); }
