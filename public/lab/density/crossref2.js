@@ -553,6 +553,12 @@
      align the columns in the TOC section"); ?stagger=on drops the third
      and fourth columns' lead studies again, as they were */
   { const q = (new URLSearchParams(location.search).get("stagger") || "").toLowerCase(); HTML.dataset.stagger = ["on", "1"].includes(q) ? "on" : "off"; }
+  /* the cover's small line over the statement is his name and the contact
+     (4 Oct 2026, his "Work by Jeremy Prasatik hello@reckon.house LinkedIn
+     in the small section above the main statement - nothing at the top?").
+     ?by=off brings back the practice line, with the links at the top */
+  const BY = !["off", "0"].includes((new URLSearchParams(location.search).get("by") || "").toLowerCase());
+  const BY_LINE = "Work by Jeremy Prasatik";
   /* a line's count (2 Oct 2026, his "can we try moving these project
      number/labels locked up with the category?"): locked up with the
      line's name, hung at its cap height the way the capabilities carry
@@ -1942,7 +1948,13 @@
     rest(main, W, H) {
       const st = DATA.statement || {};
       const wrap = el("div", "rest");
-      if (DATA.practice && DATA.practice.length) wrap.appendChild(el("div", "caps prac", DATA.practice.map((p) => "<span>" + esc(LBL(p)) + "</span>").join("")));
+      /* email and LinkedIn only (his "let's remove 'book 30min' and
+         instgram from the contact list too"), the email as its address */
+      const links = (DATA.links || []).filter((l) => /^mailto:|linkedin\.com/.test(l.v));
+      const linkA = (l) => { const mail = /^mailto:/.test(l.v); return '<a href="' + D.esc(l.v) + '"' + (mail ? ' class="em"' : "") + ">" + esc(mail ? l.v.slice(7) : LBL(l.k)) + "</a>"; };
+      /* his name, then the contact, over the statement (BY, above) */
+      if (BY) wrap.appendChild(el("div", "caps prac by", "<span>" + esc(BY_LINE) + "</span>" + links.map(linkA).join("")));
+      else if (DATA.practice && DATA.practice.length) wrap.appendChild(el("div", "caps prac", DATA.practice.map((p) => "<span>" + esc(LBL(p)) + "</span>").join("")));
       /* the board's two-tone lead: his first sentence in ink, the rest in
          grey, one size and one weight */
       const say = el("div", "say", esc(st.ink) + (st.grey ? ' <span class="g">' + esc(st.grey) + "</span>" : "")); wrap.appendChild(say);
@@ -1954,14 +1966,10 @@
          the email as its address; a phone has no folio, so they stay under
          the statement there */
       const lay = main.parentNode;
-      /* email and LinkedIn only (his "let's remove 'book 30min' and
-         instgram from the contact list too") */
-      const links = (DATA.links || []).filter((l) => /^mailto:|linkedin\.com/.test(l.v));
-      const f = lay && !phone() && links.length ? el("div", "caps folio contact", links.map((l) => {
-        const mail = /^mailto:/.test(l.v);
-        return '<a href="' + D.esc(l.v) + '"' + (mail ? ' class="em"' : "") + ">" + esc(mail ? l.v.slice(7) : LBL(l.k)) + "</a>";
-      }).join("")) : null;
-      if (links.length && !f) wrap.appendChild(el("div", "links", links.map((l) => '<a href="' + D.esc(l.v) + '">' + esc(l.k) + "</a>").join("")));
+      /* with his line over the statement the cover's head is empty, and
+         a phone needs no links under the statement either */
+      const f = !BY && lay && !phone() && links.length ? el("div", "caps folio contact", links.map(linkA).join("")) : null;
+      if (!BY && links.length && !f) wrap.appendChild(el("div", "links", links.map((l) => '<a href="' + D.esc(l.v) + '">' + esc(l.k) + "</a>").join("")));
       /* on a desk, the home: the cover, then the work (homeBuild) */
       if (lay && !phone()) homeBuild(lay, main, wrap, f);
       else { main.appendChild(wrap); if (f) lay.appendChild(f); }
