@@ -1,0 +1,226 @@
+/* ============================================================
+   sally-utilities.css: the Utilities marketplace and its tool
+   embed, EXTRACTED VERBATIM from sally-portal/index.html
+   (3 Oct 2026). Class names and declarations are the product's;
+   each block below is a straight copy of the line range named in
+   its banner, original indentation kept, so a diff against the
+   portal stays trivial.
+
+   The product renamed this tab "Apps" on 2026-08-27 (commit
+   1cabfd6). Every rule here is byte-identical before and after
+   that commit; only the strings changed. The demo uses the
+   Utilities-era strings ("Utilities", "Back to Utilities")
+   because that is what the case study and its screenshots show.
+
+   Loads AFTER sally-portal-chrome.css (rail, frame, Satoshi).
+   Only the last section is not product CSS, and it says so.
+   ============================================================ */
+
+/* ---- index.html 427-443 · rail separator ----
+   Hidden unless the campaign panel is open. switchTab('utilities')
+   collapses that panel, so on this tab the line is not drawn.
+   (Overrides the always-on separator in sally-portal-chrome.css.) */
+        /* Vertical separator between rail and content — hidden by default, shown when secondary menu is open */
+        .rail-separator {
+            width: 1px;
+            background: rgba(0,0,0,0.1);
+            align-self: stretch;
+            margin: 30px 0;
+            flex-shrink: 0;
+            transform: scaleY(0);
+            transform-origin: top center;
+            opacity: 0;
+            transition: transform 0.4s ease, opacity 0.2s ease;
+        }
+        .rail-separator.visible {
+            transform: scaleY(1);
+            opacity: 1;
+            transition: transform 0.4s ease 0.05s, opacity 0.15s ease 0.05s;
+        }
+
+/* ---- index.html 500-516 · main content area + view containers ---- */
+        /* ========== MAIN CONTENT AREA ========== */
+        .main-content {
+            flex: 1;
+            overflow: hidden;
+            position: relative;
+            display: flex;
+        }
+        .view-content-area {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+            overflow: hidden;
+            position: relative;
+        }
+        .view-container { display: none; position: relative; flex: 1; min-width: 0; overflow: hidden; }
+        .view-container.active { display: flex; }
+
+/* ---- index.html 3137-3216 · the marketplace: page, header, card grid ----
+   renderUtilitiesGrid() writes .utilities-header + .utilities-grid of
+   .utility-card into #utilitiesGrid. Icons are lucide (createIcons()). */
+        /* ========== UTILITIES PAGE ========== */
+        .utilities-page {
+            padding: 32px;
+            padding-bottom: 120px;
+            overflow-y: auto;
+            flex: 1;
+            min-height: 0;
+            background: #f3f3f3;
+            border-radius: 20px;
+            margin: 14px;
+        }
+        .utilities-header {
+            margin-bottom: 28px;
+        }
+        .utilities-title {
+            font-size: 22px;
+            font-weight: 700;
+            color: #140002;
+            letter-spacing: -0.3px;
+            margin-bottom: 6px;
+        }
+        .utilities-subtitle {
+            font-size: 13.5px;
+            color: #9a7a80;
+        }
+        .utilities-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 16px;
+        }
+        .utility-card {
+            background: rgba(255, 255, 255, 0.92);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            border-radius: 16px;
+            padding: 24px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .utility-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(20, 0, 2, 0.08);
+            border-color: rgba(220, 30, 53, 0.15);
+        }
+        .utility-card-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            background: rgba(220, 30, 53, 0.08);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 14px;
+            color: #dc1e35;
+        }
+        .utility-card-icon svg { width: 20px; height: 20px; stroke-width: 1.8; }
+        .utility-card-name {
+            font-size: 15px;
+            font-weight: 600;
+            color: #140002;
+            margin-bottom: 6px;
+        }
+        .utility-card-desc {
+            font-size: 12.5px;
+            color: #9a7a80;
+            line-height: 1.5;
+            margin-bottom: 12px;
+        }
+        .utility-card-meta {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 11px;
+            color: #9a7a80;
+        }
+        .utility-card-author {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .utility-card-author svg { width: 12px; height: 12px; }
+
+/* ---- index.html 4648-4685 · the tool embed (openUtility, kind: 'iframe') ---- */
+        /* Utility embed (iframe view) */
+        .utility-embed-wrapper {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+        .utility-embed-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 20px;
+            border-bottom: 1px solid rgba(20, 0, 2, 0.06);
+            flex-shrink: 0;
+        }
+        .utility-back-btn {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: none;
+            border: none;
+            font-size: 13px;
+            color: #4a2028;
+            cursor: pointer;
+            padding: 6px 10px;
+            border-radius: 8px;
+            transition: background 0.15s;
+        }
+        .utility-back-btn:hover { background: rgba(20, 0, 2, 0.04); }
+        .utility-embed-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #140002;
+        }
+        .utility-iframe {
+            flex: 1;
+            width: 100%;
+            border: none;
+        }
+
+
+/* ============================================================
+   DEMO ONLY. Not product CSS. Everything above is copied; this
+   section is what a replay needs that a real browser supplies.
+   ============================================================ */
+
+/* The scripted cursor is not a pointer, so :hover never fires.
+   .is-hover repeats .utility-card:hover above, declaration for
+   declaration. */
+.utility-card.is-hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(20, 0, 2, 0.08);
+    border-color: rgba(220, 30, 53, 0.15);
+}
+
+/* The cards arrive. The product paints the grid in one innerHTML
+   write; the replay staggers it so the eye lands on the grid.
+   Driven by the independent `translate` property, because the
+   card's own hover owns `transform` and NOTES.md has paid twice
+   for two drivers on one transform. reveal() is NOT used on
+   cards for the same reason. */
+.utilities-grid.ut-staging .utility-card {
+    opacity: 0;
+    translate: 0 12px;
+}
+.utilities-grid.ut-staging .utility-card.ut-in {
+    opacity: 1;
+    translate: 0 0;
+    transition: opacity 0.42s ease, translate 0.42s cubic-bezier(0.22, 0.9, 0.3, 1),
+                transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+}
+
+/* Layout fill. In the product, .utility-embed-wrapper carries no
+   flex-grow, and inside `.view-container.active { display: flex }`
+   a flex item without one sizes to its content (index.html spells
+   this trap out at .campaign-sheet-panel). The replay gives the
+   embed the full view the tool is used in. */
+#utilityEmbed { flex: 1; min-width: 0; }
+
+/* The view swap. openUtility() toggles display; the replay fades
+   the same two elements so the cut reads as navigation. */
+.ut-view { transition: opacity 0.32s ease; }
+.ut-view.ut-out { opacity: 0; }

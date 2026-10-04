@@ -681,13 +681,19 @@ export const sallyCaseStudy: CaseStudy = {
     },
 
     // ── UTILITIES MARKETPLACE — climbs across the held Asset Hub zoom
+    /* the marketplace, live (3 Oct 2026, his "i would love to take the
+       screenshots and designs and bring them to live"): utilities.html
+       replays the Utilities grid and opens Shelf Talker Generator, the
+       Streamlit app the portal frames, through to its print sheet. It took
+       the place of sally-os-utilities-marketplace-hero.jpg */
     {
-      id: "utilities-hero-image",
-      type: "hero",
-      image: "/case-studies/sally-os/heroes/sally-os-utilities-marketplace-hero.jpg",
-      alt: "Utilities Marketplace, internal tools platform",
-      inline: true,
-      pressing: { choreo: { rise: true } },
+      id: "utilities-demo",
+      type: "product-demo",
+      demo: "utilities",
+      query: "laptop=1",
+      stageWidth: 1320,
+      title: "Utilities",
+      note: "the team's tools on one shelf. Shelf Talker Generator runs from brief to the English sheet of one past ion promo.",
     },
     {
       id: "utilities-header",

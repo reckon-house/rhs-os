@@ -1,0 +1,228 @@
+/* ============================================================
+   sally-shelftalker.css: the Shelf Talker Generator as the
+   portal shows it, inside the Utilities embed.
+
+   The tool is not portal code. It is its own Streamlit app
+   (shelftalker/store-printed-app/app.py), which the portal loads
+   in .utility-iframe with ?embedded=true. Three kinds of CSS
+   here, kept in separate sections:
+
+   1. RECONSTRUCTED: Streamlit's widget styling. Streamlit writes
+      that CSS at runtime, so there is no file to copy; it is
+      rebuilt from the framework's defaults and themed with the
+      app's .streamlit/config.toml (primary #dc1e35, background
+      #ffffff, secondary #f8f9fa, text #140002). Selectors stay
+      single-class or data-testid, so the app's own rules below
+      win exactly as they do over Streamlit's.
+   2. VERBATIM: the two <style> blocks app.py injects, copied as
+      written (app.py 26-33 and 42-96).
+   3. DEMO ONLY: the output viewer, a neutral surface for the PDF
+      the tool hands back. Not a clone of any viewer's chrome.
+
+   Type: app.py @imports Inter from Google Fonts (line 40, kept
+   below as a comment). The demo makes no third-party request:
+   Inter is named first and the stack falls back to the system
+   UI face.
+   ============================================================ */
+
+
+/* ---- 1. RECONSTRUCTED · Streamlit defaults, themed by config.toml ---- */
+
+.stApp {
+  --st-primary: #dc1e35;
+  --st-bg: #ffffff;
+  --st-bg2: #f8f9fa;
+  --st-text: #140002;
+  --st-text-60: rgba(20, 0, 2, 0.6);
+  --st-text-40: rgba(20, 0, 2, 0.4);
+  --st-border: rgba(20, 0, 2, 0.2);
+  min-height: 100%;
+  background: var(--st-bg);
+  color: var(--st-text);
+  font-size: 16px;
+  line-height: 1.6;
+  text-align: left;
+}
+.stApp *, .stApp *::before, .stApp *::after { box-sizing: border-box; }
+
+/* centered layout: 46rem column; app.py's embedded block trims top/bottom */
+.block-container { width: 100%; max-width: 46rem; margin: 0 auto; padding: 6rem 1rem 10rem; }
+.st-vblock { display: flex; flex-direction: column; gap: 1rem; }
+.st-el { min-width: 0; }
+
+/* markdown: the container pulls up 1rem so a trailing <p> margin nets out */
+.st-md { margin-bottom: -1rem; }
+.st-md p { margin: 0 0 1rem; }
+.st-md h2, .st-md h3, .st-md h4 { margin: 0; line-height: 1.2; font-weight: 600; color: inherit; }
+.st-md h2, .st-md h3 { letter-spacing: -0.005em; }
+.st-md h2 { font-size: 2.25rem; padding: 1rem 0; }
+.st-md h3 { font-size: 1.75rem; padding: 0.5rem 0 1rem; }
+.st-md h4 { font-size: 1.5rem; padding: 0.75rem 0 1rem; }
+.st-md hr { margin: 2em 0; padding: 0; border: none; border-bottom: 1px solid var(--st-border); }
+
+/* widget label + help icon */
+.st-label { display: flex; align-items: center; gap: 0.25rem; min-height: 1.5rem; margin-bottom: 0.25rem; font-size: 0.875rem; color: var(--st-text); }
+.st-help { display: inline-flex; color: var(--st-text-60); }
+.st-help svg { width: 1rem; height: 1rem; fill: currentColor; }
+
+/* expander (collapsed) */
+.st-expander { border: 1px solid var(--st-border); border-radius: 0.5rem; }
+.st-expander > summary { display: flex; align-items: center; padding: 0.75rem 1rem; list-style: none; cursor: default; }
+.st-expander > summary::-webkit-details-marker { display: none; }
+.st-expander > summary span { flex: 1; }
+.st-expander > summary svg { width: 1.25rem; height: 1.25rem; fill: var(--st-text-60); }
+
+/* file uploader */
+[data-testid="stFileUploaderDropzone"] { display: flex; align-items: center; padding: 1rem; background-color: var(--st-bg2); border-radius: 0.5rem; color: var(--st-text); }
+.st-dz-instr { display: flex; align-items: center; margin-right: auto; }
+.st-dz-icon { display: flex; margin-right: 1rem; color: var(--st-text-40); }
+.st-dz-icon svg { width: 2.25rem; height: 2.25rem; fill: currentColor; }
+.st-dz-col { display: flex; flex-direction: column; }
+.st-dz-col span { margin-bottom: 0.25rem; }
+.st-dz-col small { font-size: 0.875rem; color: var(--st-text-60); }
+.st-file { display: flex; align-items: center; margin-top: 0.5rem; }
+.st-file-icon { display: flex; padding: 0.25rem; color: var(--st-text-40); }
+.st-file-icon svg { width: 2rem; height: 2rem; fill: currentColor; }
+.st-file-data { display: flex; align-items: baseline; flex: 1; min-width: 0; padding-left: 1rem; overflow: hidden; }
+.st-file-name { margin-right: 0.5rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.st-file-data small { font-size: 0.875rem; color: var(--st-text-60); }
+.st-file-del { display: flex; padding: 0.375rem; color: var(--st-text-60); }
+.st-file-del svg { width: 1.25rem; height: 1.25rem; fill: currentColor; }
+
+/* buttons (secondary is the default kind) */
+.st-btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-height: 2.5rem; margin: 0; padding: 0.375rem 0.75rem;
+  border-radius: 0.5rem; border: 1px solid var(--st-border);
+  background-color: var(--st-bg); color: var(--st-text);
+  font-family: inherit; font-size: 1rem; font-weight: 400; line-height: 1.6;
+  white-space: nowrap; user-select: none; cursor: default;
+  transition: color 0.2s, border-color 0.2s, background-color 0.2s;
+}
+.st-btn-primary { background-color: var(--st-primary); border-color: var(--st-primary); color: #ffffff; }
+.st-btn-block { width: 100%; }
+
+/* multiselect */
+.st-select { display: flex; align-items: center; min-height: 2.5rem; padding: 0.25rem 0.25rem 0.25rem 0.5rem; background: var(--st-bg2); border: 1px solid var(--st-bg2); border-radius: 0.5rem; }
+.st-tags { display: flex; flex-wrap: wrap; gap: 0.25rem; flex: 1; }
+.st-tag { display: inline-flex; align-items: center; height: 1.5rem; padding: 0 0.25rem 0 0.5rem; border-radius: 0.25rem; background: var(--st-primary); color: #ffffff; font-size: 0.875rem; line-height: 1; }
+.st-tag svg { width: 0.875rem; height: 0.875rem; margin-left: 0.25rem; fill: currentColor; opacity: 0.85; }
+.st-select-icons { display: flex; align-items: center; gap: 0.125rem; color: var(--st-text-40); }
+.st-select-icons svg { width: 1.25rem; height: 1.25rem; fill: currentColor; }
+
+/* spinner + alerts */
+.st-spinner { display: flex; align-items: center; gap: 0.5rem; font-size: 0.875rem; }
+.st-spinner i { width: 1rem; height: 1rem; border-radius: 50%; border: 2px solid rgba(20, 0, 2, 0.12); border-top-color: var(--st-primary); animation: st-spin 0.8s linear infinite; }
+@keyframes st-spin { to { transform: rotate(360deg); } }
+.st-alert-success { padding: 1rem; border-radius: 0.5rem; background-color: rgba(33, 195, 84, 0.1); color: rgb(23, 114, 51); }
+
+
+/* ---- 2. VERBATIM · app.py 26-33 (embedded mode: "hide Streamlit chrome when inside portal") ---- */
+            #MainMenu {visibility: hidden;}
+            footer {visibility: hidden;}
+            header {visibility: hidden;}
+            .stApp > header {display: none;}
+            .block-container {
+                padding-top: 1.5rem;
+                padding-bottom: 0;
+            }
+
+/* ---- 2. VERBATIM · app.py 40-96 (custom styling) ---- */
+/* app.py 40, not loaded (third-party request):
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+*/
+        .stApp {
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* Upload area */
+        [data-testid="stFileUploader"] {
+            border: 2px dashed rgba(220, 30, 53, 0.2);
+            border-radius: 12px;
+            padding: 1rem;
+        }
+
+        /* Success/info boxes */
+        .version-card {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 16px 20px;
+            margin-bottom: 10px;
+            border-left: 4px solid #dc1e35;
+        }
+        .version-card h4 {
+            margin: 0 0 4px 0;
+            color: #140002;
+            font-size: 15px;
+        }
+        .version-card p {
+            margin: 0;
+            color: #4a2028;
+            font-size: 13px;
+        }
+
+        .stat-row {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+        .stat-box {
+            flex: 1;
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 14px 16px;
+            text-align: center;
+        }
+        .stat-box .num {
+            font-size: 28px;
+            font-weight: 700;
+            color: #dc1e35;
+            line-height: 1;
+        }
+        .stat-box .label {
+            font-size: 11px;
+            color: #9a7a80;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 4px;
+        }
+
+
+/* ---- 3. DEMO ONLY ---- */
+
+/* The font stack app.py's .stApp rule would reach with Inter loaded. */
+.stApp { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+
+/* The tool's document scrolls inside the frame, as an iframe would. */
+.ut-iframe { position: relative; overflow-x: hidden; overflow-y: auto; background: #ffffff; scrollbar-width: none; }
+.ut-iframe::-webkit-scrollbar { display: none; }
+/* the frame paints before the app does, the way an iframe loads */
+.ut-iframe .stApp { opacity: 0; transition: opacity 0.35s ease; }
+.ut-iframe.ut-loaded .stApp { opacity: 1; }
+
+/* scripted cursor states, mirroring Streamlit's own hover styling */
+.st-btn.is-hover { border-color: var(--st-primary); color: var(--st-primary); }
+.st-btn-primary.is-hover { background-color: #c41a2f; border-color: #c41a2f; color: #ffffff; }
+.st-btn.sd-press { background-color: rgba(220, 30, 53, 0.06); }
+.st-btn-primary.sd-press { background-color: #ad1729; border-color: #ad1729; }
+
+/* the output viewer: what opening the downloaded PDF shows. Opaque over
+   the content area; the rail stays in view so the portal is still the frame. */
+.ut-pdf {
+  position: absolute; inset: 0; z-index: 40;
+  display: flex; flex-direction: column;
+  background: #2b2726; /* the neutral work surface figma-build.html already uses */
+  opacity: 0; visibility: hidden;
+  transition: opacity 0.45s ease, visibility 0s linear 0.45s;
+}
+.ut-pdf.ut-on { opacity: 1; visibility: visible; transition: opacity 0.45s ease; }
+.ut-pdf-bar {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 18px 26px 0;
+  font-family: 'Satoshi', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 11.5px; letter-spacing: 0.02em; color: rgba(255, 255, 255, 0.62);
+}
+.ut-pdf-bar strong { color: rgba(255, 255, 255, 0.9); font-weight: 600; }
+.ut-pdf-stage { position: relative; flex: 1; min-height: 0; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+.ut-paper { width: 760px; aspect-ratio: 792 / 612; background: #ffffff; box-shadow: 0 26px 70px rgba(0, 0, 0, 0.5), 0 2px 10px rgba(0, 0, 0, 0.3); transform-origin: 0 0; transition: transform 1.3s cubic-bezier(0.65, 0, 0.25, 1); }
+.ut-paper img { display: block; width: 100%; height: 100%; }

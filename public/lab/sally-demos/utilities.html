@@ -1,0 +1,435 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sally demo · Utilities, Shelf Talker Generator</title>
+<link rel="stylesheet" href="sally-demo.css">
+<link rel="stylesheet" href="sally-portal-chrome.css">
+<link rel="stylesheet" href="sally-utilities.css">
+<link rel="stylesheet" href="sally-shelftalker.css">
+<style>
+  body { margin: 0; padding: 48px 20px; background: #f4f0ea; }
+  /* the click: the cursor dips, the same .rq-cursor everything else uses */
+  #utCursor { transition: transform 0.75s cubic-bezier(0.3, 0.9, 0.3, 1), opacity 0.4s ease, scale 0.12s ease; }
+  #utCursor.ut-click { scale: 0.84; }
+</style>
+</head>
+<body>
+
+<div id="utilDemo">
+  <div class="sp-frame">
+    <nav class="icon-rail" aria-hidden="true">
+      <div class="icon-rail-logo"><div class="icon-rail-logo-inner"><img src="assets/Sally-Logo.svg" alt="SALLY."></div></div>
+      <div class="icon-rail-nav">
+        <button class="rail-icon-btn">
+          <span class="rail-icon"><svg viewBox="0 0 24 24"><path d="M12 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.4 2.6a2.1 2.1 0 1 1 3 3L12 15l-4 1 1-4Z"/></svg></span>
+          <span class="rail-icon-label">Briefing</span>
+        </button>
+        <button class="rail-icon-btn">
+          <span class="rail-icon"><svg viewBox="0 0 24 24"><rect x="8" y="2" width="8" height="4" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M12 11h4M12 16h4M8 11h.01M8 16h.01"/></svg></span>
+          <span class="rail-icon-label">Requests</span>
+        </button>
+        <button class="rail-icon-btn">
+          <span class="rail-badge">11</span>
+          <span class="rail-icon"><svg viewBox="0 0 24 24"><path d="M4.9 19.1C1 15.2 1 8.8 4.9 4.9"/><path d="M7.8 16.2c-2.3-2.3-2.3-6.1 0-8.5"/><circle cx="12" cy="12" r="2"/><path d="M16.2 7.8c2.3 2.3 2.3 6.1 0 8.5"/><path d="M19.1 4.9C23 8.8 23 15.2 19.1 19.1"/></svg></span>
+          <span class="rail-icon-label">Trends</span>
+        </button>
+        <button class="rail-icon-btn">
+          <span class="rail-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></span>
+          <span class="rail-icon-label">Campaigns</span>
+        </button>
+        <button class="rail-icon-btn">
+          <span class="rail-icon"><svg viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14c0 1.7 4 3 9 3s9-1.3 9-3V5"/><path d="M3 12c0 1.7 4 3 9 3s9-1.3 9-3"/></svg></span>
+          <span class="rail-icon-label">Assets</span>
+        </button>
+        <button class="rail-icon-btn active">
+          <span class="rail-icon"><svg viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg></span>
+          <span class="rail-icon-label">Utilities</span>
+        </button>
+        <button class="rail-icon-btn">
+          <span class="rail-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg></span>
+          <span class="rail-icon-label">Dashboard</span>
+        </button>
+      </div>
+      <div class="rail-account"><div class="rail-account-btn">JP</div></div>
+      <div class="rail-app-label"><div class="rail-app-label-inner"><span class="rail-app-label-text">Utilities</span></div></div>
+    </nav>
+    <!-- no .visible: switchTab('utilities') collapses the campaign panel, which hides this line -->
+    <div class="rail-separator"></div>
+
+    <div class="sp-stage" data-stage>
+      <main class="sp-content">
+        <div class="view-content-area">
+          <div class="view-container active" id="viewUtilities">
+
+            <!-- renderUtilitiesGrid(): header + one .utility-card per registry entry.
+                 The ten tools the study names, in the reference screenshot's order,
+                 PDP Copy Studio last with the product's own description string.
+                 Icons are lucide, written out as createIcons() leaves them. -->
+            <div class="utilities-page ut-view" id="utilitiesGrid">
+              <div class="utilities-header">
+                <div class="utilities-title">Utilities</div>
+                <div class="utilities-subtitle">Specialized tools and apps built by the marketing team</div>
+              </div>
+              <div class="utilities-grid ut-staging">
+                <div class="utility-card" data-util="shelftalker-store-printed">
+                  <div class="utility-card-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-tag"><path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z"/><circle cx="7.5" cy="7.5" r=".5" fill="currentColor"/></svg></div>
+                  <div class="utility-card-name">Shelf Talker Generator</div>
+                  <div class="utility-card-desc">Generate print-ready 9-up shelf talker PDFs from a Sally Creative Brief spreadsheet. Upload your Excel file and download formatted PDF sheets.</div>
+                  <div class="utility-card-meta">
+                    <span class="utility-card-author"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-user"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Jeremy P.</span>
+                  </div>
+                </div>
+                <div class="utility-card" data-util="campaign-performance">
+                  <div class="utility-card-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chart-column"><path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg></div>
+                  <div class="utility-card-name">Campaign Performance Analyzer</div>
+                  <div class="utility-card-desc">Upload campaign data exports and get instant visual dashboards with ROAS, conversion funnels, and channel attribution breakdowns.</div>
+                  <div class="utility-card-meta">
+                    <span class="utility-card-author"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-user"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Maria S.</span>
+                  </div>
+                </div>
+                <div class="utility-card" data-util="exec-deck">
+                  <div class="utility-card-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-presentation"><path d="M2 3h20"/><path d="M21 3v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V3"/><path d="m7 21 5-5 5 5"/></svg></div>
+                  <div class="utility-card-name">Exec Deck Builder</div>
+                  <div class="utility-card-desc">Auto-generate executive presentation decks from campaign briefs. Pulls brand templates, populates key metrics, and exports polished PPTX files.</div>
+                  <div class="utility-card-meta">
+                    <span class="utility-card-author"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-user"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Jeremy P.</span>
+                  </div>
+                </div>
+                <div class="utility-card" data-util="image-compliance">
+                  <div class="utility-card-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-scan-eye"><path d="M3 7V5a2 2 0 0 1 2-2h2"/><path d="M17 3h2a2 2 0 0 1 2 2v2"/><path d="M21 17v2a2 2 0 0 1-2 2h-2"/><path d="M7 21H5a2 2 0 0 1-2-2v-2"/><circle cx="12" cy="12" r="1"/><path d="M18.944 12.33a1 1 0 0 0 0-.66 7.5 7.5 0 0 0-13.888 0 1 1 0 0 0 0 .66 7.5 7.5 0 0 0 13.888 0"/></svg></div>
+                  <div class="utility-card-name">Image Compliance Scanner</div>
+                  <div class="utility-card-desc">Scan creative assets against brand guidelines — checks logo placement, color accuracy, font usage, and legal disclaimer requirements.</div>
+                  <div class="utility-card-meta">
+                    <span class="utility-card-author"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-user"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Tanya R.</span>
+                  </div>
+                </div>
+                <div class="utility-card" data-util="promo-calendar">
+                  <div class="utility-card-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-calendar-sync"><path d="M11 10v4h4"/><path d="m11 14 1.535-1.605a5 5 0 0 1 8 1.5"/><path d="M16 2v4"/><path d="m21 18-1.535 1.605a5 5 0 0 1-8-1.5"/><path d="M21 22v-4h-4"/><path d="M21 8.5V6a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h4.3"/><path d="M3 10h4"/><path d="M8 2v4"/></svg></div>
+                  <div class="utility-card-name">Promo Calendar Sync</div>
+                  <div class="utility-card-desc">Sync promotional calendars across teams. Import from Excel or Google Sheets and export consolidated views with conflict detection.</div>
+                  <div class="utility-card-meta">
+                    <span class="utility-card-author"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-user"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> David K.</span>
+                  </div>
+                </div>
+                <div class="utility-card" data-util="social-copy">
+                  <div class="utility-card-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-message-square-text"><path d="M22 17a2 2 0 0 1-2 2H6.828a2 2 0 0 0-1.414.586l-2.202 2.202A.71.71 0 0 1 2 21.286V5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2z"/><path d="M7 11h10"/><path d="M7 15h6"/><path d="M7 7h8"/></svg></div>
+                  <div class="utility-card-name">Social Copy Generator</div>
+                  <div class="utility-card-desc">Generate platform-optimized social media copy from campaign briefs. Outputs character-counted posts for Instagram, TikTok, Facebook, and X.</div>
+                  <div class="utility-card-meta">
+                    <span class="utility-card-author"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-user"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Maria S.</span>
+                  </div>
+                </div>
+                <div class="utility-card" data-util="sku-lookup">
+                  <div class="utility-card-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-search"><path d="m21 21-4.34-4.34"/><circle cx="11" cy="11" r="8"/></svg></div>
+                  <div class="utility-card-name">SKU Lookup &amp; Enrichment</div>
+                  <div class="utility-card-desc">Paste a list of SKUs and get enriched product data — images, descriptions, pricing, brand, and category — ready to drop into briefs.</div>
+                  <div class="utility-card-meta">
+                    <span class="utility-card-author"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-user"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Jeremy P.</span>
+                  </div>
+                </div>
+                <div class="utility-card" data-util="email-previewer">
+                  <div class="utility-card-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-mail"><path d="m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7"/><rect x="2" y="4" width="20" height="16" rx="2"/></svg></div>
+                  <div class="utility-card-name">Email Template Previewer</div>
+                  <div class="utility-card-desc">Preview email templates across clients and devices. Upload HTML or select from the template library and see pixel-perfect renders.</div>
+                  <div class="utility-card-meta">
+                    <span class="utility-card-author"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-user"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Tanya R.</span>
+                  </div>
+                </div>
+                <div class="utility-card" data-util="competitor-ads">
+                  <div class="utility-card-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-radar"><path d="M19.07 4.93A10 10 0 0 0 6.99 3.34"/><path d="M4 6h.01"/><path d="M2.29 9.62A10 10 0 1 0 21.31 8.35"/><path d="M16.24 7.76A6 6 0 1 0 8.23 16.67"/><path d="M12 18h.01"/><path d="M17.99 11.66A6 6 0 0 1 15.77 16.67"/><circle cx="12" cy="12" r="2"/><path d="m13.41 10.59 5.66-5.66"/></svg></div>
+                  <div class="utility-card-name">Competitor Ad Tracker</div>
+                  <div class="utility-card-desc">Track and archive competitor advertising across digital channels. Auto-captures display ads, social promoted posts, and email campaigns.</div>
+                  <div class="utility-card-meta">
+                    <span class="utility-card-author"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-user"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> David K.</span>
+                  </div>
+                </div>
+                <div class="utility-card" data-util="pdp-copy-tool">
+                  <div class="utility-card-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-file-search"><path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"/><path d="M14 2v5a1 1 0 0 0 1 1h5"/><circle cx="11.5" cy="14.5" r="2.5"/><path d="M13.3 16.3 15 18"/></svg></div>
+                  <div class="utility-card-name">PDP Copy Studio</div>
+                  <div class="utility-card-desc">Paste live sallybeauty.com product pages (one or many) — audit each against SEO/AI-citability gaps, join Sally's search-demand database (volume, funnel stage, People-Also-Ask), rank by opportunity, then draft demand-informed title, meta, and FAQ. Saved to a workspace with versions and approval.</div>
+                  <div class="utility-card-meta">
+                    <span class="utility-card-author"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-user"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Jeremy P.</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- openUtility('shelftalker-store-printed'): kind 'iframe', so the grid
+                 hides and #utilityEmbed shows the tool at its own URL (?embedded=true).
+                 The div below stands in for that <iframe>; inside it is the tool's
+                 own interface (store-printed-app/app.py), not portal code. -->
+            <div class="utility-embed-wrapper ut-view ut-out" id="utilityEmbed" style="display:none">
+              <div class="utility-embed-header">
+                <button class="utility-back-btn">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-left" style="width:16px;height:16px;"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
+                  Back to Utilities
+                </button>
+                <span class="utility-embed-title" id="utilityEmbedTitle">Shelf Talker Generator</span>
+              </div>
+              <div class="utility-iframe ut-iframe" id="utilityIframe">
+                <div class="stApp" id="stApp">
+                  <div class="block-container">
+                    <div class="st-vblock" id="stBlock">
+                      <div class="st-el st-md"><h2>Store-Printed Shelf Talkers</h2></div>
+                      <div class="st-el st-md"><p>Upload a Sally Creative Brief spreadsheet to generate print-ready 9-up PDF sheets.</p></div>
+                      <div class="st-el">
+                        <details class="st-expander" data-testid="stExpander"><summary><span>Advanced settings</span><svg viewBox="0 0 24 24"><path d="M16.59 8.59 12 13.17 7.41 8.59 6 10l6 6 6-6z"/></svg></summary></details>
+                      </div>
+                      <div class="st-el">
+                        <div data-testid="stFileUploader">
+                          <label class="st-label">Upload Creative Brief (.xlsx) <span class="st-help"><svg viewBox="0 0 24 24"><path d="M11 18h2v-2h-2v2zm1-16C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-14c-2.21 0-4 1.79-4 4h2c0-1.1.9-2 2-2s2 .9 2 2c0 2-3 1.75-3 5h2c0-2.25 3-2.5 3-5 0-2.21-1.79-4-4-4z"/></svg></span></label>
+                          <section data-testid="stFileUploaderDropzone">
+                            <div class="st-dz-instr">
+                              <span class="st-dz-icon"><svg viewBox="0 0 24 24"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM14 13v4h-4v-4H7l5-5 5 5h-3z"/></svg></span>
+                              <div class="st-dz-col"><span>Drag and drop file here</span><small>Limit 200MB per file • XLSX, XLS</small></div>
+                            </div>
+                            <button class="st-btn" id="stBrowse">Browse files</button>
+                          </section>
+                          <div id="stFiles"></div>
+                        </div>
+                      </div>
+                      <!-- everything after the uploader is written by the script's rerun -->
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Not product UI: opening the downloaded PDF. The sheet is a real page
+             from the tool's engine (ENG_printables.pdf, page 1 of 4, the 12-16 Feb
+             2026 ion® event), converted to SVG with poppler's pdftocairo so it
+             stays vector when the view closes in on one card. -->
+        <div class="ut-pdf" id="utPdf">
+          <div class="ut-pdf-bar"><span><strong>ENG_printables.pdf</strong></span><span>Page 1 of 4</span></div>
+          <div class="ut-pdf-stage" id="utPdfStage">
+            <div id="utPaperIn">
+              <div class="ut-paper" id="utPaper"><img src="assets/util/shelf-talkers-eng-p1.svg" alt="A 9-up sheet of black and white ion shelf talkers: brand, offer, category, SKU lines and run dates on each card"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="rq-cursor gone" id="utCursor" style="transform: translate(860px, 590px)">
+          <svg viewBox="0 0 24 24"><path d="M5 3l14 8-6.5 1.5L9 19z" fill="#140002" stroke="#fff" stroke-width="1.4"/></svg>
+        </div>
+      </main>
+    </div>
+  </div>
+  <p class="sp-caption">Utilities, rebuilt on the Sally Marketing Portal's own interface code. Shelf Talker Generator is a separate app the portal loads in a frame, so its panel follows that app's code, and the sheet it ends on is a real page its engine generated for a February 2026 ion® promotion.</p>
+</div>
+
+<script src="sally-demo-kit.js"></script>
+<script>
+new SallyDemo(document.getElementById("utilDemo"), async function (t) {
+  var content = t.$(".sp-content");
+  var cursor  = t.$("#utCursor");
+  var market  = t.$("#utilitiesGrid");
+  var grid    = t.$(".utilities-grid");
+  var embed   = t.$("#utilityEmbed");
+  var frame   = t.$("#utilityIframe");
+  var block   = t.$("#stBlock");
+  t.scrollEl = null; // every scroll here is choreographed per beat
+
+  // Streamlit's Material icons, inline
+  var I_FILE  = '<svg viewBox="0 0 24 24"><path d="M6 2c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6H6zm7 7V3.5L18.5 9H13z"/></svg>';
+  var I_CLOSE = '<svg viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>';
+  var I_MORE  = '<svg viewBox="0 0 24 24"><path d="M16.59 8.59 12 13.17 7.41 8.59 6 10l6 6 6-6z"/></svg>';
+  var I_HELP  = '<svg viewBox="0 0 24 24"><path d="M11 18h2v-2h-2v2zm1-16C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-14c-2.21 0-4 1.79-4 4h2c0-1.1.9-2 2-2s2 .9 2 2c0 2-3 1.75-3 5h2c0-2.25 3-2.5 3-5 0-2.21-1.79-4-4-4z"/></svg>';
+
+  /* ---- cursor: the CSS-transitioned arrow requests-email uses ---- */
+  function aim(el, fx, fy) {
+    var r = el.getBoundingClientRect(), c = content.getBoundingClientRect();
+    var x = r.left - c.left + r.width * (fx == null ? 0.5 : fx) - 3;
+    var y = r.top - c.top + r.height * (fy == null ? 0.5 : fy) - 2;
+    cursor.style.transform = "translate(" + x.toFixed(1) + "px," + y.toFixed(1) + "px)";
+  }
+  var lit = null;
+  function light(el) {
+    if (lit && lit !== el) lit.classList.remove("is-hover");
+    lit = el;
+    if (el) el.classList.add("is-hover");
+  }
+  // travel, and light the hover state as the pointer crosses into the target
+  async function glide(el, fx, fy, dwell) {
+    light(null);
+    aim(el, fx, fy);
+    await t.wait(300);
+    light(el);
+    await t.wait(450 + (dwell || 0));
+  }
+  async function click(el) {
+    cursor.classList.add("ut-click");
+    await t.press(el);
+    cursor.classList.remove("ut-click");
+  }
+
+  /* ---- scrolling on the demo's own clock, so it pauses with the replay ---- */
+  function ease(p) { return p < 0.5 ? 4 * p * p * p : 1 - Math.pow(-2 * p + 2, 3) / 2; }
+  async function scrollTo(el, top, ms) {
+    var to = Math.max(0, Math.min(top, el.scrollHeight - el.clientHeight));
+    var from = el.scrollTop;
+    if (t.instant || Math.abs(to - from) < 1) { el.scrollTop = to; return; }
+    var n = Math.max(1, Math.round(ms / 16));
+    for (var i = 1; i <= n; i++) {
+      el.scrollTop = from + (to - from) * ease(i / n);
+      await t.wait(16);
+    }
+  }
+  // scrollTop that brings el's bottom edge into the tool's frame, with air
+  function showing(el, air) {
+    var r = el.getBoundingClientRect(), f = frame.getBoundingClientRect();
+    return frame.scrollTop + (r.bottom - f.bottom) + (air == null ? 28 : air);
+  }
+
+  /* ---- the tool's output, element by element, the way a rerun writes it ---- */
+  function out(html, md) {
+    var e = t.el("div", "st-el" + (md ? " st-md" : ""));
+    e.innerHTML = html;
+    block.appendChild(e);
+    t.reveal(e);
+    return e;
+  }
+  function spinner(text) {
+    return out('<div class="st-spinner"><i></i><span>' + text + '</span></div>');
+  }
+
+  var card = function (id) { return grid.querySelector('[data-util="' + id + '"]'); };
+
+  // 1. The marketplace. The header is there; the cards arrive.
+  var cards = grid.querySelectorAll(".utility-card");
+  await t.wait(650);
+  for (var i = 0; i < cards.length; i++) {
+    cards[i].classList.add("ut-in");
+    await t.wait(65);
+  }
+  await t.wait(500);
+
+  // 2. The cursor browses a few, in the product's hover state.
+  cursor.classList.remove("gone");
+  await t.wait(250);
+  await glide(card("exec-deck"), 0.5, 0.42, 150);
+  await glide(card("image-compliance"), 0.55, 0.45, 200);
+  light(null);
+  await scrollTo(market, 300, 950);
+  await glide(card("competitor-ads"), 0.5, 0.4, 150);
+  await glide(card("pdp-copy-tool"), 0.6, 0.4, 250);
+  light(null);
+  await scrollTo(market, 0, 850);
+  var shelf = card("shelftalker-store-printed");
+  await glide(shelf, 0.52, 0.4, 250);
+  await click(shelf);
+
+  // 3. openUtility(): the grid goes, the embed comes, the tool loads in its frame.
+  market.classList.add("ut-out");
+  await t.wait(320);
+  light(null);
+  market.style.display = "none";
+  embed.style.display = "flex";
+  void embed.offsetHeight;
+  embed.classList.remove("ut-out");
+  await t.wait(420);
+  frame.classList.add("ut-loaded");
+  await t.wait(650);
+
+  // 4. Upload the brief.
+  var browse = t.$("#stBrowse");
+  await glide(browse, 0.5, 0.5, 100);
+  await click(browse);
+  light(null);
+  await t.wait(600); // the file picker, off screen
+  var files = t.$("#stFiles");
+  files.innerHTML =
+    '<div class="st-file" data-testid="stFileUploaderFile">' +
+      '<div class="st-file-icon">' + I_FILE + '</div>' +
+      '<div class="st-file-data"><div class="st-file-name">Printable ST_WORKSHEET.xlsx</div><small>7.1MB</small></div>' +
+      '<div class="st-file-del">' + I_CLOSE + '</div>' +
+    '</div>';
+  t.reveal(files.firstChild);
+  await t.wait(250);
+
+  // 5. The rerun: parse, then stats, versions, the generate controls.
+  var parsing = spinner("Parsing spreadsheet...");
+  await t.wait(950);
+  block.removeChild(parsing);
+
+  out('<div class="stat-row">' +
+        '<div class="stat-box"><div class="num">58</div><div class="label">Rows found</div></div>' +
+        '<div class="stat-box"><div class="num">95</div><div class="label">Total cards</div></div>' +
+        '<div class="stat-box"><div class="num">12</div><div class="label">PDF pages</div></div>' +
+        '<div class="stat-box"><div class="num">3</div><div class="label">Versions</div></div>' +
+      '</div>', true);
+  await t.wait(260);
+  out('<h3>Versions</h3>', true);
+  await t.wait(150);
+  // sorted(versions.keys()): BIL, ENG, PR
+  var VERSIONS = [["Bilingual", 29], ["English (US/CA)", 33], ["Puerto Rico", 33]];
+  for (var v = 0; v < VERSIONS.length; v++) {
+    out('<div class="version-card"><h4>' + VERSIONS[v][0] + '</h4><p>' + VERSIONS[v][1] + ' cards &rarr; 4 pages</p></div>', true);
+    await t.wait(170);
+  }
+  out('<hr>', true);
+  out('<div data-testid="stMultiSelect">' +
+        '<label class="st-label">Generate PDFs for: <span class="st-help">' + I_HELP + '</span></label>' +
+        '<div class="st-select"><div class="st-tags">' +
+          '<span class="st-tag">BIL' + I_CLOSE + '</span>' +
+          '<span class="st-tag">ENG' + I_CLOSE + '</span>' +
+          '<span class="st-tag">PR' + I_CLOSE + '</span>' +
+        '</div><div class="st-select-icons">' + I_CLOSE + I_MORE + '</div></div>' +
+      '</div>');
+  var genEl = out('<div class="stButton"><button class="st-btn st-btn-primary st-btn-block">Generate PDFs</button></div>');
+  await t.wait(300);
+  await scrollTo(frame, showing(genEl, 36), 900);
+
+  // 6. Generate: one spinner per version, then its download button.
+  var gen = genEl.querySelector("button");
+  await glide(gen, 0.5, 0.5, 100);
+  await click(gen);
+  light(null);
+  var dlENG = null;
+  var DL = [["BIL", 29], ["ENG", 33], ["PR", 33]];
+  for (var d = 0; d < DL.length; d++) {
+    var sp = spinner("Generating " + DL[d][0] + "...");
+    await t.wait(80);
+    await scrollTo(frame, showing(sp), 260);
+    await t.wait(380);
+    block.removeChild(sp);
+    var dl = out('<div class="stDownloadButton"><button class="st-btn st-btn-block">Download ' +
+                 DL[d][0] + ' — ' + DL[d][1] + ' cards, 4 pages</button></div>');
+    if (DL[d][0] === "ENG") dlENG = dl.querySelector("button");
+  }
+  var done = out('<div class="st-alert-success">All PDFs generated!</div>');
+  await t.wait(80);
+  await scrollTo(frame, showing(done), 420);
+  await t.wait(450);
+
+  // 7. Download the English sheets and open them: the result.
+  await glide(dlENG, 0.5, 0.5, 150);
+  await click(dlENG);
+  light(null);
+  await t.wait(250);
+  cursor.classList.add("gone");
+  t.$("#utPdf").classList.add("ut-on");
+  t.reveal(t.$("#utPaperIn"));
+  await t.wait(1500);
+
+  // close in on the densest card (bottom right: seven SKU lines set on
+  // the engine's font metrics). Reduced motion keeps the whole sheet.
+  if (!t.instant) {
+    var paper = t.$("#utPaper"), stage = t.$("#utPdfStage");
+    var pr = paper.getBoundingClientRect(), sr = stage.getBoundingClientRect();
+    var W = paper.offsetWidth, H = paper.offsetHeight, s = 2.5;
+    var tx = sr.width / 2 - (pr.left - sr.left) - s * (W * 5 / 6);
+    var ty = sr.height / 2 - (pr.top - sr.top) - s * (H * 5 / 6);
+    paper.style.transform = "translate(" + tx.toFixed(1) + "px," + ty.toFixed(1) + "px) scale(" + s + ")";
+    await t.wait(1300);
+  }
+  await t.wait(1500);
+});
+</script>
+
+</body>
+</html>
