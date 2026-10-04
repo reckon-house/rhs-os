@@ -529,8 +529,11 @@ html:not(.stack)[data-ix="e"] #idx { left: calc(var(--m) - 14px); width: calc(va
 [data-ix="e"] .emas { position: relative; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); column-gap: var(--eg); align-items: start; }
 [data-ix="e"] .ecol { display: flex; flex-direction: column; gap: 50px; min-width: 0; }
 [data-ix="e"] .ecol > .c-feat + .c-feat { margin-top: -8px; }
-[data-ix="e"] .ecol:nth-child(3) > .c-feat:first-child { margin-top: 54px; }
-[data-ix="e"] .ecol:nth-child(4) > .c-feat:first-child { margin-top: 20px; }
+/* the columns start on one line (4 Oct 2026, his "let's also top align
+   the columns in the TOC section"); the lead studies of the third and
+   fourth had been dropped 54px and 20px. ?stagger=on drops them again */
+html[data-stagger="on"][data-ix="e"] .ecol:nth-child(3) > .c-feat:first-child { margin-top: 54px; }
+html[data-stagger="on"][data-ix="e"] .ecol:nth-child(4) > .c-feat:first-child { margin-top: 20px; }
 [data-ix="e"] .grp.ec { margin: 0; }
 [data-ix="e"] .grp h2.eh { display: flex; justify-content: space-between; align-items: baseline; margin: 0 0 14px; padding: 0 0 8px;
   border-bottom: 0; background: linear-gradient(var(--ink), var(--ink)) no-repeat 0 100% / 100% 1px;

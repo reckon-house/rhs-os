@@ -549,6 +549,10 @@
      section labels? i'm not sure we need them"): off, the labels on air
      alone; ?rules=on draws them again */
   { const q = (new URLSearchParams(location.search).get("rules") || "").toLowerCase(); HTML.dataset.rules = ["on", "1"].includes(q) ? "on" : "off"; }
+  /* the index's columns start on one line (4 Oct 2026, his "let's also top
+     align the columns in the TOC section"); ?stagger=on drops the third
+     and fourth columns' lead studies again, as they were */
+  { const q = (new URLSearchParams(location.search).get("stagger") || "").toLowerCase(); HTML.dataset.stagger = ["on", "1"].includes(q) ? "on" : "off"; }
   /* a line's count (2 Oct 2026, his "can we try moving these project
      number/labels locked up with the category?"): locked up with the
      line's name, hung at its cap height the way the capabilities carry
