@@ -609,21 +609,14 @@ html:not([data-copy="card"]) .ll-float.mid .pills { justify-content: center; }
   .pm-cc .nm { font-size: clamp(28px, 8vw, 40px); }
 }
 
-/* ── Colorfest's hero, a festival poster (3 Oct 2026). His "let's connect
-   the card and the image in the middle", the card "densely filled with
-   different sized colored circles" in layers, the type straight on it,
-   then "how do we connect the brand to the big hero above since it's all
-   together?": one block, rounded only on the outside, one field of
-   confetti behind all of it (confetti.js packs the whole block), her
-   photo laid over its top left, the headline on its top right and the
-   lineup across its foot, the way a festival poster bills its acts. The
-   ground is the reference's periwinkle; ?confetti=photo and
-   ?confetti=rainbow try the other palettes, ?lineup=below the lineup on
-   paper under the hero ── */
-.cf-hero { position: relative; isolation: isolate; overflow: hidden; height: auto; grid-template-rows: clamp(560px, 82vh, 880px) auto; border-radius: calc(var(--r) + 6px); background: #84A2CF; }
-.cf-hero > canvas.confetti { position: absolute; inset: 0; z-index: -1; display: block; pointer-events: none; }
-.cf-hero .ph { grid-row: 1; height: 100%; border-radius: 0; }
-.cf-hero .card { grid-row: 1; border-radius: 0; background: transparent; }
+/* ── Colorfest's hero (3 Oct 2026). His "let's connect the card and the
+   image in the middle", the card "densely filled with different sized
+   colored circles" in layers, the type straight on it: the photo and the
+   card meet as one block, rounded only on the outside, and confetti.js
+   fills the card. The ground is the reference's periwinkle;
+   ?confetti=photo and ?confetti=rainbow try the other palettes ── */
+.cf-hero .card { position: relative; overflow: hidden; isolation: isolate; border-radius: 0 calc(var(--r) + 6px) calc(var(--r) + 6px) 0; background: #84A2CF; }
+.cf-hero .card > canvas.confetti, .cf-hero > canvas.confetti { position: absolute; inset: 0; z-index: -1; display: block; pointer-events: none; }
 /* the type sits right on the confetti, no fade (his "let's just try the
    type on top of the confetti without the fade"); a soft shadow on the
    letters alone keeps them clear where they cross a light circle, and the
@@ -632,18 +625,44 @@ html:not([data-copy="card"]) .ll-float.mid .pills { justify-content: center; }
 .cf-hero :is(.card .t-deck, .card .top, .cf-lineup .when) { text-shadow: 0 1px 10px rgba(20, 10, 40, 0.75), 0 0 2px rgba(20, 10, 40, 0.5); }
 .cf-hero .card .t-deck { font-weight: 500; }
 .cf-hero .card .pill.line { background: rgba(24, 14, 44, 0.42); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); }
-/* the lineup at the poster's foot: the brands as white pills on the confetti */
-.cf-lineup { grid-column: 1 / -1; grid-row: 2; padding: clamp(36px, 4.4vw, 68px) calc(var(--pad) - var(--inset)) clamp(40px, 4.8vw, 76px); text-align: center; color: #fff; }
+@media (max-width: 860px) {
+  .cf-hero .ph { border-radius: calc(var(--r) + 6px) calc(var(--r) + 6px) 0 0; }
+  .cf-hero .card { border-radius: 0 0 calc(var(--r) + 6px) calc(var(--r) + 6px); }
+}
+
+/* ── the lineup on white, the pills carrying the colour (his "hmm, that's
+   a lot. maybe we can back to white but the pills are colors or filled
+   with confetti?"): each pill holds its own field of confetti, popping in
+   as it reaches the glass, the brand in white on it; ?pills=color gives
+   each a solid colour from the same palette instead ── */
+.lineup .names span[data-confetti] { position: relative; overflow: hidden; isolation: isolate; background: #84A2CF; color: #fff; text-shadow: 0 1px 10px rgba(20, 10, 40, 0.6), 0 0 2px rgba(20, 10, 40, 0.45); }
+.lineup .names span > canvas.confetti { position: absolute; inset: 0; z-index: -1; display: block; pointer-events: none; }
+html[data-pills="color"] .lineup .names span { color: #fff; }
+html[data-pills="color"] .lineup .names span:nth-child(6n+1) { background: #9A0819; }
+html[data-pills="color"] .lineup .names span:nth-child(6n+2) { background: #0E8A90; }
+html[data-pills="color"] .lineup .names span:nth-child(6n+3) { background: #A93783; }
+html[data-pills="color"] .lineup .names span:nth-child(6n+4) { background: #6F3B7C; }
+html[data-pills="color"] .lineup .names span:nth-child(6n+5) { background: #DC1D33; }
+html[data-pills="color"] .lineup .names span:nth-child(6n+6) { background: #E24C83; }
+
+/* ── ?lineup=poster: the hero is a festival poster (his "how do we connect
+   the brand to the big hero above since it's all together?"), one field
+   of confetti behind the whole block, her photo laid over its top left,
+   the lineup across its foot, the brands as white pills ── */
+.cf-lineup { display: none; }
+html[data-lineup="poster"] .lineup { display: none; }
+html[data-lineup="poster"] .cf-hero { position: relative; isolation: isolate; overflow: hidden; height: auto; grid-template-rows: clamp(560px, 82vh, 880px) auto; border-radius: calc(var(--r) + 6px); background: #84A2CF; }
+html[data-lineup="poster"] .cf-hero .ph { grid-row: 1; height: 100%; border-radius: 0; }
+html[data-lineup="poster"] .cf-hero .card { grid-row: 1; overflow: visible; border-radius: 0; background: transparent; }
+html[data-lineup="poster"] .cf-lineup { display: block; grid-column: 1 / -1; grid-row: 2; padding: clamp(36px, 4.4vw, 68px) calc(var(--pad) - var(--inset)) clamp(40px, 4.8vw, 76px); text-align: center; color: #fff; }
 .cf-lineup .when { display: flex; justify-content: center; gap: 28px; }
 .cf-lineup .names { margin-top: clamp(18px, 2vw, 28px); }
 .cf-lineup .names span { background: #fff; color: var(--ink); box-shadow: 0 8px 22px rgba(30, 10, 40, 0.22); }
 .cf-lineup .note { max-width: 46ch; margin: clamp(20px, 2.4vw, 34px) auto 0; font-size: clamp(16.5px, 1.4vw, 20px); line-height: 1.4; font-weight: 500; }
-html:not([data-lineup="below"]) .lineup.v-below { display: none; }
-html[data-lineup="below"] .cf-lineup { display: none; }
 @media (max-width: 860px) {
-  .cf-hero { grid-template-rows: auto auto auto; }
-  .cf-hero .ph { grid-row: 1; height: auto; }
-  .cf-hero .card { grid-row: 2; }
-  .cf-lineup { grid-row: 3; padding: 36px 20px 40px; }
+  html[data-lineup="poster"] .cf-hero { grid-template-rows: auto auto auto; }
+  html[data-lineup="poster"] .cf-hero .ph { grid-row: 1; height: auto; border-radius: 0; }
+  html[data-lineup="poster"] .cf-hero .card { grid-row: 2; border-radius: 0; }
+  html[data-lineup="poster"] .cf-lineup { grid-row: 3; padding: 36px 20px 40px; }
   .cf-lineup .when { flex-direction: column; gap: 4px; }
 }

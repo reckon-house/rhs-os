@@ -100,10 +100,16 @@
       dots = pack(w, h, seed);
       cancelAnimationFrame(raf); born = animate ? performance.now() : -1e9; raf = requestAnimationFrame(draw);
     }
-    layout(true);
+    /* the circles pop in when the field first reaches the glass, so a
+       field further down the page (the lineup's pills) is not spent unseen */
+    var shown = false;
+    if ("IntersectionObserver" in window && !reduce) {
+      var io = new IntersectionObserver(function (es) { if (es[0].isIntersecting && !shown) { shown = true; io.disconnect(); layout(true); } }, { threshold: 0.15 });
+      io.observe(el);
+    } else { shown = true; layout(true); }
     var tm = 0;
-    if ("ResizeObserver" in window) new ResizeObserver(function () { clearTimeout(tm); tm = setTimeout(function () { layout(false); }, 80); }).observe(el);
-    else addEventListener("resize", function () { layout(false); });
+    if ("ResizeObserver" in window) new ResizeObserver(function () { if (!shown) return; clearTimeout(tm); tm = setTimeout(function () { layout(false); }, 80); }).observe(el);
+    else addEventListener("resize", function () { if (shown) layout(false); });
   }
   function start() { document.querySelectorAll("[data-confetti]").forEach(mount); }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", start); else start();
