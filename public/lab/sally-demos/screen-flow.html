@@ -13,7 +13,8 @@
      and keeps its proportion (3048 by 1776). Every card is a moment from
      the live demos in this folder, captured at 2x and cropped
      (assets/flow/): the Trends page, the feed and Sally's Take, Jim, the
-     Requests board and its email, the Figma build, PDP Copy Studio. Three
+     Requests board and its email, the Figma build, PDP Copy Studio, and
+     since the same night the Asset Hub, Utilities and the brief builder. Three
      columns travel, the middle one the other way; every few seconds the
      wall eases to a stop for a beat and moves on, and inside each card the
      screen drifts on its own clock. It stands still while the room pauses
@@ -35,14 +36,14 @@
 </style>
 </head>
 <body>
-<div class="flow" id="flow" role="img" aria-label="Screens from the Sally Marketing OS moving past in three columns: the Trends page, the intelligence feed and Sally's Take, Jim's answers, the Requests board and an email it built, the Figma build and PDP Copy Studio"></div>
+<div class="flow" id="flow" role="img" aria-label="Screens from the Sally Marketing OS moving past in three columns: the Trends page, the intelligence feed and Sally's Take, Jim's answers and a brief he built, the Requests board and an email it built, the Figma build, the Asset Hub, Utilities and PDP Copy Studio"></div>
 <script>
 (() => {
   /* name, width, height of each crop in assets/flow/ */
   const COLS = [
-    [["trends-buzz", 1100, 763], ["email-products", 1100, 1289], ["jim-seed", 1100, 491], ["pdp-grades", 1100, 705], ["figma-panel", 605, 1186]],
-    [["figma-boards", 1100, 933], ["jim-answer", 1100, 589], ["trends-take", 1053, 1520], ["requests-board", 1100, 625], ["sally-take", 896, 988]],
-    [["intel-feed", 1100, 622], ["pdp-findings", 1100, 1008], ["trends-filtered", 1100, 539], ["pdp-rewrite", 1100, 871], ["jim-moves", 1100, 835]],
+    [["trends-buzz", 1100, 763], ["email-products", 1100, 1289], ["util-grid", 1100, 822], ["jim-seed", 1100, 491], ["pdp-grades", 1100, 705], ["brief-output", 1098, 1520], ["figma-panel", 605, 1186]],
+    [["figma-boards", 1100, 933], ["jim-answer", 1100, 589], ["hub-detail", 1100, 736], ["trends-take", 1053, 1520], ["requests-board", 1100, 625], ["util-sheet", 1100, 800], ["sally-take", 896, 988]],
+    [["intel-feed", 1100, 622], ["pdp-findings", 1100, 1008], ["hub-export", 1100, 1147], ["trends-filtered", 1100, 539], ["pdp-rewrite", 1100, 871], ["brief-flags", 1100, 804], ["jim-moves", 1100, 835]],
   ];
   const flow = document.getElementById("flow"), root = document.documentElement;
   const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
