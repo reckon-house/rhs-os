@@ -163,11 +163,13 @@ export const sallyDesignSystemCaseStudy: CaseStudy = {
     },
     /* MOCKUP 1 OF 4, his own (3 Oct 2026, "can you drop this into the case
        study as our first mockup?"): the Lookbook's takeover story on a
-       laptop, made from homepage-lookbook-desktop-tall.jpg */
+       laptop, made from homepage-lookbook-desktop-tall.jpg. Cropped to his
+       box ("can we crop like that and go edge to edge with it?"), the
+       laptop and the table's edge, so it runs the room's full width */
     {
       id: "mock-1-lookbook-laptop",
       type: "image",
-      src: `${IMG}/sally-design-system-mockup-lookbook-laptop.jpg`,
+      src: `${IMG}/sally-design-system-mockup-lookbook-laptop-wide.jpg`,
       alt: "The Lookbook homepage on a laptop on a wooden side table: Vivids are back at it, over a portrait with blue curls, beside Electric Violet and Copper",
       aspect: "native",
     },
