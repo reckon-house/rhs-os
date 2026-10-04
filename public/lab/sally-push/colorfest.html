@@ -6,8 +6,9 @@
 <title>Sally Beauty · Colorfest (pushed)</title>
 <meta name="robots" content="noindex">
 <!-- Colorfest (concept 4), pushed. A festival needs a lineup: his "Brands
-     you'll only find at Sally" set as the bill. The hero's card takes the
-     blue of the photograph beside it (--blue, sampled from vivids-port). -->
+     you'll only find at Sally" as soft pills, as Pride's are. The hero is
+     the violet curls (the blue curls lead the Lookbook), joined to a card
+     of confetti in colours sampled from his photographs (confetti.js). -->
 <link rel="preload" href="/fonts/Satoshi-Variable.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="push.css">
 <style>
@@ -28,8 +29,12 @@
 
 <!-- the hero: the photograph, and a card in its blue -->
 <section class="cf-hero">
-  <figure class="ph"><img src="../sally-system/assets/img/vivids-port.jpg" alt="A woman with blue curls, laughing" width="1000" height="1500"></figure>
-  <div class="card on-dark">
+  <!-- 3 Oct 2026, his "let's use her for the colorfest hero instead of the
+       girl with the blue in her hair (since we use her as the hero already",
+       "let's connect the card and the image in the middle" and the card
+       filled with confetti, the type on top (confetti.js) -->
+  <figure class="ph"><img src="../sally-system/assets/img/purple-nails-port.jpg" alt="A woman with violet curls and gold nails, laughing" width="1166" height="1500"></figure>
+  <div class="card on-dark" data-confetti="11">
     <div class="top t-label"><span>Colorfest 2026</span><span>Through July 6</span></div>
     <div class="bottom">
       <h1>Wear your color out loud.</h1>
@@ -145,6 +150,7 @@
 </footer>
 <!-- /sk:footer -->
 
+<script src="confetti.js"></script>
 <script src="push.js"></script>
 </body>
 </html>
