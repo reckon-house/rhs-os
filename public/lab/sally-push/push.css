@@ -612,9 +612,9 @@ html:not([data-copy="card"]) .ll-float.mid .pills { justify-content: center; }
 /* ── Colorfest's hero, joined and full of confetti (3 Oct 2026): the photo
    and the card meet in the middle as one block, rounded only on the
    outside; the card is filled with layers of circles in colours from the
-   photograph beside it (confetti.js), its ground her pink tile, so the
-   card and the photo meet in one colour ── */
-.cf-hero .card { position: relative; overflow: hidden; isolation: isolate; border-radius: 0 calc(var(--r) + 6px) calc(var(--r) + 6px) 0; background: #C69E96; }
+   reference he sent (confetti.js), its ground that reference's periwinkle;
+   ?confetti=photo and ?confetti=rainbow try the other palettes ── */
+.cf-hero .card { position: relative; overflow: hidden; isolation: isolate; border-radius: 0 calc(var(--r) + 6px) calc(var(--r) + 6px) 0; background: #84A2CF; }
 .cf-hero .card > canvas.confetti { position: absolute; inset: 0; z-index: -2; display: block; pointer-events: none; }
 /* the type sits right on the confetti, no fade (his "let's just try the
    type on top of the confetti without the fade"); a soft shadow on the

@@ -12,24 +12,35 @@
    arrival the circles pop in, the big layer first; nothing moves for
    anyone who asked for reduced motion. */
 (function () {
-  /* all from her photograph (purple-nails-port), his "let's try sampling
-     from just her photo color wise so it's a little more cohesive": the
-     violets and the denim lead, so white type holds on the field; the
-     copper, rose, pink tile and gold of her eyes and nails are the lights */
-  var PALETTE = [
-    ["#311F48", 3], /* the violet's shadow */
-    ["#5A3E98", 6], /* violet curls */
-    ["#634BBC", 4], /* the curls' blue-violet highlight */
-    ["#245893", 4], /* denim */
-    ["#6671AC", 3], /* the denim's light, periwinkle */
-    ["#9E757E", 3], /* rose, her lips */
-    ["#CD956C", 3], /* copper curls */
-    ["#B87E58", 2], /* caramel, the curls' shade */
-    ["#D1AFA7", 2], /* the pink tile */
-    ["#EDD1C9", 1], /* the tile's light */
-    ["#DEC674", 3], /* gold, her eyeshadow and nail tips */
-    ["#EADB97", 1], /* the yellow of her nail tips */
-  ];
+  /* the palettes, each with the ground that shows between the circles.
+     The default is his reference ("actually let's try from here....
+     something about these color arent working", with a field of piled
+     circles), each colour the median of its hue in that image and weighted
+     by how much of it the image holds. ?confetti=photo is her photograph
+     alone (his "sampling from just her photo"), ?confetti=rainbow the
+     first pass, across all of his photographs */
+  var PALETTES = {
+    reference: { ground: "#84A2CF", colors: [
+      ["#9A0819", 6], /* crimson */
+      ["#0E8A90", 6], /* teal */
+      ["#A93783", 5], /* magenta */
+      ["#6F3B7C", 4], /* plum */
+      ["#DC1D33", 3], /* scarlet */
+      ["#E24C83", 2], /* hot pink */
+      ["#EE614F", 2], /* coral */
+    ] },
+    photo: { ground: "#C69E96", colors: [
+      ["#311F48", 3], ["#5A3E98", 6], ["#634BBC", 4], ["#245893", 4], ["#6671AC", 3], ["#9E757E", 3],
+      ["#CD956C", 3], ["#B87E58", 2], ["#D1AFA7", 2], ["#EDD1C9", 1], ["#DEC674", 3], ["#EADB97", 1],
+    ] },
+    rainbow: { ground: "#8CD7ED", colors: [
+      ["#583C8F", 5], ["#0D4590", 4], ["#20ADA8", 4], ["#B9132B", 3], ["#E11324", 3], ["#F86029", 3],
+      ["#DFC97A", 3], ["#E090C1", 3], ["#8A67BB", 3], ["#8CD7ED", 2], ["#982D38", 1],
+    ] },
+  };
+  var qp = (location.search.match(/[?&]confetti=([a-z]+)/) || [])[1];
+  var PAL = PALETTES[qp] || PALETTES.reference;
+  var PALETTE = PAL.colors;
   var BAG = [];
   PALETTE.forEach(function (p) { for (var i = 0; i < p[1]; i++) BAG.push(p[0]); });
   var reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -63,6 +74,7 @@
 
   function mount(el) {
     var cv = document.createElement("canvas"); cv.className = "confetti"; cv.setAttribute("aria-hidden", "true");
+    if (qp && PALETTES[qp]) el.style.backgroundColor = PAL.ground;
     el.insertBefore(cv, el.firstChild);
     var seed = parseInt(el.getAttribute("data-confetti"), 10) || 7, dots = [], born = 0, raf = 0, lastW = 0, lastH = 0;
     function draw(now) {
