@@ -20,7 +20,7 @@
     "tail": "<a href=\"/daybook\">The daybook</a> · <a href=\"/book\">Book 30 minutes</a> · <a href=\"mailto:hello@reckon.house\">hello@reckon.house</a>"
   },
   "statement": {
-    "lead": "I'm Jeremy Prasatik. I make things across <u class=\"term\" data-ask=\"brand\">brand</u>, <u class=\"term\" data-ask=\"product\">product</u>, and <u class=\"term\" data-ask=\"place\">place</u>. <span class=\"q\"><u class=\"term\" data-ask=\"App Development\">Apps</u> and <u class=\"term\" data-ask=\"Digital\">ecommerce</u>, <u class=\"term\" data-ask=\"Campaign/Creative\">campaigns</u> and <u class=\"term\" data-ask=\"Branding\">brand systems</u>, <u class=\"term\" data-ask=\"photography\">photography and art direction</u>, <u class=\"term\" data-ask=\"Interiors\">custom interiors</u>, <u class=\"term\" data-ask=\"AI\">AI tools</u>.</span> ",
+    "lead": "This is an index of design across <u class=\"term\" data-ask=\"brand\">brand</u>, <u class=\"term\" data-ask=\"product\">product</u> and <u class=\"term\" data-ask=\"place\">place</u>. <span class=\"q\">Each project records the problem, the decisions and what was made, and is cross-referenced by discipline, capability, figure and tool.</span> ",
     "ask": "“Marble surfaces”",
     "longest": "“How do I reach you?”"
   },
