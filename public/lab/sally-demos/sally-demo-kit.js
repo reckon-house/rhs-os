@@ -95,22 +95,35 @@
       this._start();
       return;
     }
+    /* the frame loop runs only while the demo can be seen (4 Oct 2026, his
+       "we arent running and loading everything in the background"): it
+       stops itself when the demo is paused, off screen or the tab hidden,
+       and these wake it */
+    var looping = false;
+    var loop = function () {
+      if (looping || self._paused() || document.hidden) return;
+      looping = true; self._last = null;
+      requestAnimationFrame(function tick(now) {
+        if (self._paused() || document.hidden) { looping = false; self._last = null; return; }
+        self._tick(now);
+        requestAnimationFrame(tick);
+      });
+    };
     if ("IntersectionObserver" in window) {
       var io = new IntersectionObserver(function (entries) {
         var e = entries[0];
         self.visible = e.isIntersecting && e.intersectionRatio >= 0.25;
         if (self.visible && !self.running) self._start();
+        loop();
       }, { threshold: [0, 0.25, 0.6, 1] });
       io.observe(host);
     } else {
       this.visible = true;
       this._start();
     }
-
-    requestAnimationFrame(function tick(now) {
-      self._tick(now);
-      requestAnimationFrame(tick);
-    });
+    if ("MutationObserver" in window) new MutationObserver(loop).observe(host, { attributes: true, attributeFilter: ["data-paused"] });
+    document.addEventListener("visibilitychange", loop);
+    loop();
   }
 
   SallyDemo.prototype._paused = function () {

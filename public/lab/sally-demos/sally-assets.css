@@ -36,7 +36,9 @@
    The DAM's @font-face blocks are dropped: they point at its own
    /fonts/, and sally-portal-chrome.css loads the same Satoshi file.
 
-   Known, and kept: .glass carries only -webkit-backdrop-filter.
+   Removed 4 Oct 2026: every backdrop-filter. Over these flat grounds the
+   blur showed nothing, and inside a photographed laptop's perspective
+   (m-photo.html) it is the most expensive thing on the page.
    globals.css writes the unprefixed property first and the -webkit-
    one second, and lightningcss keeps only the last of the pair. That
    is the optimizer @tailwindcss/postcss runs on production builds by
@@ -1252,8 +1254,6 @@
 
   .backdrop-blur-sm {
     --tw-backdrop-blur: blur(var(--blur-sm));
-    -webkit-backdrop-filter: var(--tw-backdrop-blur, ) var(--tw-backdrop-brightness, ) var(--tw-backdrop-contrast, ) var(--tw-backdrop-grayscale, ) var(--tw-backdrop-hue-rotate, ) var(--tw-backdrop-invert, ) var(--tw-backdrop-opacity, ) var(--tw-backdrop-saturate, ) var(--tw-backdrop-sepia, );
-    backdrop-filter: var(--tw-backdrop-blur, ) var(--tw-backdrop-brightness, ) var(--tw-backdrop-contrast, ) var(--tw-backdrop-grayscale, ) var(--tw-backdrop-hue-rotate, ) var(--tw-backdrop-invert, ) var(--tw-backdrop-opacity, ) var(--tw-backdrop-saturate, ) var(--tw-backdrop-sepia, );
   }
 
   .transition-all {
@@ -1752,14 +1752,12 @@
 
 .glass {
   background: var(--glass-bg);
-  -webkit-backdrop-filter: blur(var(--glass-blur));
   border: 1px solid var(--glass-border);
   box-shadow: var(--glass-shadow);
 }
 
 .glass-strong {
   background: var(--glass-bg-strong);
-  -webkit-backdrop-filter: blur(var(--glass-blur-strong));
   border: 1px solid var(--glass-border-strong);
   box-shadow: var(--glass-shadow);
 }

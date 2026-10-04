@@ -69,10 +69,17 @@
      beat of stillness */
   const MOVE = 4000, REST = 1100, CYCLE = MOVE + REST;
   const vel = (t) => { const m = t % CYCLE; if (m >= MOVE) return 0; const k = m / MOVE; return Math.sin(Math.PI * k) * 1.57; };
-  let t = 0, last = 0;
+  /* the loop runs only while the grid can be seen (4 Oct 2026, his "we
+     arent running and loading everything in the background"): it stops when
+     the room pauses it or the tab hides, and wakes on either changing back */
+  let t = 0, last = 0, looping = false;
+  const wake = () => { if (looping || root.dataset.paused || document.hidden) return; looping = true; last = 0; requestAnimationFrame(tick); };
+  new MutationObserver(wake).observe(root, { attributes: true, attributeFilter: ["data-paused"] });
+  document.addEventListener("visibilitychange", wake);
   const tick = (now) => {
+    if (root.dataset.paused || document.hidden) { looping = false; return; }
     const dt = last ? Math.min(64, now - last) : 0; last = now;
-    if (!root.dataset.paused && !document.hidden) {
+    {
       t += dt;
       const W = flow.clientWidth, v = 0.07 * W / 1000;
       /* the set repeats every half track plus half a gap (the gap between the two copies) */
@@ -89,7 +96,7 @@
     }
     requestAnimationFrame(tick);
   };
-  requestAnimationFrame(tick);
+  wake();
 })();
 </script>
 </body>

@@ -9,7 +9,10 @@
      "here are two mockups we can use...maybe on some of the sally os screen
      we just made fake mockups?"). ?shot=console (the record console) or
      ?shot=oak (the oak desk), and ?demo= any replay in this folder. His
-     photographs are cropped wide to the other mockups' proportion; the
+     photographs are cropped in close around the laptop, near square (his
+     "let's crop in tighter here so the screen is visible - it's kinda tiny
+     now. we can make the image taller if needed too!"; the first crops
+     were wide, 2048 by 1720, and the screen was under half the width); the
      screen's four corners were measured off each one (every edge fitted
      where its brightness falls halfway to the bezel's, then crossed), and
      ../device.js maps the demo onto them. The demo opens with fill=1, so its
@@ -35,7 +38,7 @@
 </head>
 <body>
 <div class="dev" id="dev">
-  <img id="photo" alt="" width="2048" height="1720">
+  <img id="photo" alt="" width="1388" height="1480">
   <div class="glass" id="glass">
     <i class="under" aria-hidden="true"></i>
     <div class="screen"><iframe id="page" tabindex="-1" aria-hidden="true"></iframe></div>
@@ -45,20 +48,20 @@
 <script src="../device.js"></script>
 <script>
 (() => {
-  /* measured off his originals (2048 by 3072) and given here in the wide
-     crop's own pixels (2048 by 1720, cut from y0 down), TL TR BR BL */
+  /* measured off his originals (2048 by 3072) and given here in the crop's
+     own pixels (1388 by 1480, cut at x 330, y 940), TL TR BR BL */
   const SHOTS = {
     console: {
-      src: "/case-studies/sally-os/sally-os-mockup-laptop-record-console-wide.jpg",
+      src: "/case-studies/sally-os/sally-os-mockup-laptop-record-console.jpg",
       alt: "on a laptop standing on a walnut record console",
-      corners: [[530.4, 504.0], [1519.5, 504.2], [1516.1, 1172.4], [528.9, 1172.6]],
-      notch: { x: 966, y: 503, w: 120, h: 22, r: 6 },
+      corners: [[200.4, 249.0], [1189.5, 249.2], [1186.1, 917.4], [198.9, 917.6]],
+      notch: { x: 636, y: 248, w: 120, h: 22, r: 6 },
     },
     oak: {
-      src: "/case-studies/sally-os/sally-os-mockup-laptop-oak-desk-wide.jpg",
+      src: "/case-studies/sally-os/sally-os-mockup-laptop-oak-desk.jpg",
       alt: "on a laptop on an oak desk",
-      corners: [[531.4, 484.1], [1519.0, 484.7], [1517.7, 1161.1], [528.7, 1162.2]],
-      notch: { x: 966, y: 483, w: 119, h: 22, r: 6 },
+      corners: [[201.4, 254.1], [1189.0, 254.7], [1187.7, 931.1], [198.7, 932.2]],
+      notch: { x: 636, y: 253, w: 119, h: 22, r: 6 },
     },
   };
   const q = new URLSearchParams(location.search);
@@ -73,7 +76,7 @@
   frame.style.width = VW + "px"; frame.style.height = VH + "px";
   frame.title = "A Sally Marketing OS demo";
   Device.place({
-    box: document.getElementById("dev"), glass, photoW: 2048, view: [VW, VH], corners: c,
+    box: document.getElementById("dev"), glass, photoW: 1388, view: [VW, VH], corners: c,
     marks: [{ el: document.getElementById("notch"), x: S.notch.x, y: S.notch.y, w: S.notch.w, h: S.notch.h, r: S.notch.r, round: "bottom" }],
   });
   frame.src = demo + ".html?framed=1&fill=1";

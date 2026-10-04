@@ -86,19 +86,27 @@
       }
       return y;
     };
+    /* the loop runs only while the page can be seen (4 Oct 2026): it stops
+       when the room pauses it or the tab hides, and wakes when either
+       changes back */
     var tick = function (now) {
+      if (root.dataset.paused || document.hidden) { running = false; last = 0; return; }
       var dt = last ? Math.min(64, now - last) : 0; last = now;
       if (!plan) plan = build();
-      if (plan && !root.dataset.paused && !document.hidden) {
+      if (plan) {
         t = (t + dt) % plan.total;
         try { plan.w.scrollTo(0, Math.round(at(t))); } catch (e) { /* gone */ }
       }
       requestAnimationFrame(tick);
     };
+    var loaded = false;
+    var wake = function () { if (!loaded || running || root.dataset.paused || document.hidden) return; running = true; last = 0; requestAnimationFrame(tick); };
+    if ("MutationObserver" in window) new MutationObserver(wake).observe(root, { attributes: true, attributeFilter: ["data-paused"] });
+    document.addEventListener("visibilitychange", wake);
     var start = function () {
-      plan = null; t = 0;
+      plan = null; t = 0; loaded = true;
       try { frame.contentDocument.fonts.ready.then(function () { plan = null; }); } catch (e) { /* another origin */ }
-      if (!running) { running = true; requestAnimationFrame(tick); }
+      wake();
     };
     frame.addEventListener("load", start);
     /* the page may have loaded before this ran (an iframe's first document

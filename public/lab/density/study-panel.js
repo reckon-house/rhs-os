@@ -1557,13 +1557,27 @@
           });
         }
         L.size = () => liveSize(L); /* the layout calls it from outside the build */
+        /* load near, let go far (4 Oct 2026: his "when i scrolled down to this
+           one the entire page seemed to crash and reload", then "making sure
+           these are as performant as possible and we arent running and
+           loading everything in the background"). A frame loads its page
+           within 700px of the glass and lets it go once it is more than
+           1500px away, keeping its measured size, so only the few frames
+           around the reader are alive. A study of ten live demos used to keep
+           all ten, two of them nested, until the browser gave up */
         const near = new IntersectionObserver(([e]) => {
           if (!e.isIntersecting || L.loaded) return;
-          L.loaded = true; fr.src = L.src; near.disconnect();
-        }, { root: container, rootMargin: "900px 0px" });
+          L.loaded = true; fr.src = L.src;
+        }, { root: container, rootMargin: "700px 0px" });
+        const far = new IntersectionObserver(([e]) => {
+          if (e.isIntersecting || !L.loaded || fig.classList.contains("on")) return;
+          L.loaded = false; cancelAnimationFrame(L.raf); L.raf = 0;
+          try { fr.src = "about:blank"; } catch (err) { /* gone */ }
+        }, { root: container, rootMargin: "1500px 0px" });
         const seen = new IntersectionObserver(([e]) => { L.vis = e.isIntersecting; if (!L.vis) disengage(); liveRun(L); }, { root: container, threshold: 0 });
-        near.observe(fig); seen.observe(fig);
+        near.observe(fig); far.observe(fig); seen.observe(fig);
         fr.addEventListener("load", () => {
+          if (!L.loaded) return; /* the blank page a let-go frame loads: nothing to measure */
           liveMeasure(L); setTimeout(() => liveMeasure(L), 1400); liveRun(L);
           /* a frame with an anchor opens at it: scrolled so the section sits
              just under the page's sticky nav. Done by scrolling the frame's
@@ -1602,7 +1616,7 @@
             } catch (e) { /* another origin: its declared height holds */ }
           }
         });
-        P.stops.push(() => { near.disconnect(); seen.disconnect(); cancelAnimationFrame(L.raf); try { fr.src = "about:blank"; } catch (e) { /* gone */ } });
+        P.stops.push(() => { near.disconnect(); far.disconnect(); seen.disconnect(); cancelAnimationFrame(L.raf); try { fr.src = "about:blank"; } catch (e) { /* gone */ } });
         return L;
       }
       /* the frame's size: the page's own width scaled to the stage, the
@@ -1643,6 +1657,7 @@
         L.stage.style.height = Math.round(h * L.s) + "px";
       }
       function liveMeasure(L) {
+        if (!L.loaded) { liveSize(L); return; } /* a let-go frame keeps the size it had */
         let d = null; try { d = L.fr.contentDocument; } catch (e) { /* another origin: the declared height holds */ }
         if (d && d.body && L.f.mode !== "scroll") L.docH = L.f.mode === "demo" ? d.body.scrollHeight : d.documentElement.scrollHeight;
         liveSize(L);
