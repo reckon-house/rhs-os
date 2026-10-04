@@ -25,7 +25,7 @@
 /* ── the shots, on the study's grounds ── */
 .shot { position: absolute; inset: 0; overflow: hidden; z-index: 0; }
 .paper { background: #F4F3F1; color: var(--ink); }
-.dots { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='5' height='5'%3E%3Crect width='1' height='1' fill='%231C1413' fill-opacity='0.1'/%3E%3C/svg%3E"); background-size: 5px 5px; }
+:host([data-szdots="on"]) .dots { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='5' height='5'%3E%3Crect width='1' height='1' fill='%231C1413' fill-opacity='0.1'/%3E%3C/svg%3E"); background-size: 5px 5px; }
 .ink { background: #1C1413; color: #F4F3F1; --ink: #F4F3F1; --grey: rgba(244, 243, 241, 0.55); --hair: rgba(244, 243, 241, 0.2); --knock: #1C1413; }
 .scarlet { background: #E11324; color: #fff; --ink: #fff; --grey: rgba(255, 255, 255, 0.7); --hair: rgba(255, 255, 255, 0.3); --knock: #E11324; }
 .violet { background: #442861; color: #fff; --ink: #fff; --grey: rgba(255, 255, 255, 0.66); --hair: rgba(255, 255, 255, 0.24); --knock: #442861; }
@@ -99,7 +99,7 @@
 .note .say { font-size: clamp(10px, 2.15cqw, 38px); font-weight: 500; line-height: 1.24; letter-spacing: -0.015em; }
 
 /* ── the motion that never stops ── */
-.paper.dots { animation: szldots 26s linear infinite; }
+:host([data-szdots="on"]) .paper.dots { animation: szldots 26s linear infinite; }
 @keyframes szldots { from { background-position: 0 0; } to { background-position: 65px -40px; } }
 
 /* ── a page in a window: a homepage scrolling, a film playing ── */
@@ -199,3 +199,16 @@
 .seam { position: absolute; top: 0; bottom: 0; left: 0; width: 2px; background: #1C1413; z-index: 40; pointer-events: none; }
 .seam.r { left: auto; right: 0; }
 .ink > .seam, .scarlet > .seam, .violet > .seam, .teal > .seam { background: #F4F3F1; }
+
+/* ── solid grounds, fewer rules (3 Oct 2026). His "in the animated sizzle
+   heroes let's remove the texture grids in those - the graph paper look -
+   we'll go solid color backgrounds": the paper is solid now (the dot grid
+   and its drift answer only to ?szdots=on). Then his "let's remove the
+   overuse of thin line rules. i know there are times when they really work
+   but let's clean it up in all of those like we did across the site": the
+   rule under a kicker or a running head goes, as the site's label rules
+   did, and so does the hairline over each note; lists and checks keep the
+   hairlines between their rows, without the outer ones. ?szrules=all shows
+   every rule again. The reel lives in a shadow root, so these read the
+   levers off its host (mount() copies them there) ── */
+:host(:not([data-szrules="all"])) :is(.abs > .lab + .rule, .rh > .rule, .note > .rule, .checks > .rule:first-child, .rq > .rule.b, .ck-row:last-child > .rule, .rows > .rw:last-child .rule) { display: none; }

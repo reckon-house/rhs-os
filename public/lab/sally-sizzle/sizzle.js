@@ -1,3 +1,5 @@
+/* levers (3 Oct 2026): ?szdots=on brings back the paper's dot grid, ?szrules=all every thin rule */
+try { const q = location.search; if (/[?&]szdots=on/.test(q)) document.documentElement.dataset.szdots = "on"; if (/[?&]szrules=all/.test(q)) document.documentElement.dataset.szrules = "all"; } catch (e) { /* no address */ }
 /* ── THE SALLY DESIGN SYSTEM HERO SIZZLE (2 Oct 2026) ───────────────────
    His ask: "can we do a sizzle at the top? that might help - like we did
    for ARC and DSC." So it is those reels' grammar (the mix: show how it
@@ -465,7 +467,7 @@
   const LIVE = new Set();
   function mount(host, opts) {
     opts = opts || {};
-    const wrap = document.createElement("div"); wrap.className = "szl-host";
+    const wrap = document.createElement("div"); wrap.className = "szl-host"; { const R = document.documentElement.dataset; if (R.szdots) wrap.dataset.szdots = R.szdots; if (R.szrules) wrap.dataset.szrules = R.szrules; } /* the levers, for the shadow root's :host rules */
     wrap.style.cssText = "position:absolute;inset:0;z-index:2;display:block;pointer-events:none";
     host.appendChild(wrap);
     const sr = wrap.attachShadow({ mode: "open" });
