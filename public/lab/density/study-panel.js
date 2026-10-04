@@ -134,6 +134,13 @@
     "dsc": "/case-studies/dsc/dsc-marketing-site-laptop-stool-hero.jpg",
     "sally-design-system": "/case-studies/sally-design-system/sally-design-system-homepage-concept-10-the-edit-desktop.jpg",
   };
+  /* Studies whose cover reel stays on the cover: its stills are not dealt
+     into the room. The Sally design system shows its homepages and emails
+     live, so the reel's stills of them repeated the live pages, and two
+     showed concepts that left the study (3 Oct 2026, his "i'm not sure we
+     need these, do we?", of the three stills after the abstract; three
+     more were in the closing). The reel itself stays on the study. */
+  const REEL_STAYS = new Set(["sally-design-system"]);
 
   const el = (t, c, h) => { const e = document.createElement(t); if (c) e.className = c; if (h != null) e.innerHTML = h; return e; };
   /* the house rule: no em dash reaches the page. A range keeps its figures
@@ -563,7 +570,7 @@
        page counts as a section's own picture (2 Oct 2026: the Sally
        design system shows its emails and homepages live, and the reel's
        stills of them were being dealt in beside the pages themselves) */
-    const pool = M.pool.slice();
+    const pool = REEL_STAYS.has(k) ? [] : M.pool.slice();
     M.openPics = pool.splice(0, pool.length >= 6 ? 2 : 1);
     const bare = M.secs.filter((x) => !x.open && !x.items.some((i) => i.t === "pic" || i.t === "live"));
     if (bare.length && pool.length) {
