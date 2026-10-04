@@ -852,6 +852,7 @@ export const imageDimensions: Record<string, [number, number]> = {
   "/case-studies/sally-design-system/sally-design-system-homepage-concept-8-color-authority-desktop.jpg": [2880, 1800],
   "/case-studies/sally-design-system/sally-design-system-homepage-concept-9-the-mix-desktop.jpg": [2880, 1800],
   "/case-studies/sally-design-system/sally-design-system-mockup-lookbook-laptop-wide.jpg": [2000, 1680],
+  "/case-studies/sally-design-system/sally-design-system-mockup-lookbook-phone-wide.jpg": [2000, 1680],
   "/case-studies/sally-os/heroes/reel/sally-os-asset-hub-detail.avif": [512, 334],
   "/case-studies/sally-os/heroes/reel/sally-os-asset-hub-hero.avif": [512, 288],
   "/case-studies/sally-os/heroes/reel/sally-os-asset-hub-platform-hero.avif": [512, 334],

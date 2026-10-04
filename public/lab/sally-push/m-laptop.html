@@ -38,78 +38,32 @@
   <div class="screen" id="screen"><iframe id="page" src="lookbook-images.html" title="The Lookbook" tabindex="-1" aria-hidden="true"></iframe></div>
   <i class="notch" id="notch" aria-hidden="true"></i>
 </div>
+<script src="device.js"></script>
 <script>
 (() => {
-  /* measured off sally-design-system-mockup-lookbook-laptop-wide.jpg, 2000 by 1680 */
-  const PHOTO_W = 2000;
-  const CORNERS = [[312.5, 444.7], [1686.9, 443.1], [1691.4, 1328.5], [312.5, 1328.1]]; /* TL TR BR BL, half a pixel out */
-  const NOTCH = { x: 924, y: 443, w: 151, h: 16, r: 6 };
-  const VW = 1440, VH = 924;
-  const lap = document.getElementById("lap"), screen = document.getElementById("screen"), notch = document.getElementById("notch"), frame = document.getElementById("page");
-
-  /* the perspective transform that takes the viewport's rectangle onto the
-     four corners: solve the homography, write it as a matrix3d */
-  const solve = (A, b) => { const n = b.length; for (let i = 0; i < n; i++) { let p = i; for (let r = i + 1; r < n; r++) if (Math.abs(A[r][i]) > Math.abs(A[p][i])) p = r; [A[i], A[p]] = [A[p], A[i]]; [b[i], b[p]] = [b[p], b[i]]; for (let r = i + 1; r < n; r++) { const f = A[r][i] / A[i][i]; for (let c = i; c < n; c++) A[r][c] -= f * A[i][c]; b[r] -= f * b[i]; } } const x = Array(n).fill(0); for (let i = n - 1; i >= 0; i--) { let s = b[i]; for (let c = i + 1; c < n; c++) s -= A[i][c] * x[c]; x[i] = s / A[i][i]; } return x; };
-  const homography = (src, dst) => {
-    const A = [], b = [];
-    src.forEach(([x, y], i) => { const [u, v] = dst[i]; A.push([x, y, 1, 0, 0, 0, -u * x, -u * y]); b.push(u); A.push([0, 0, 0, x, y, 1, -v * x, -v * y]); b.push(v); });
-    const h = solve(A, b);
-    return [h[0], h[3], 0, h[6], h[1], h[4], 0, h[7], 0, 0, 1, 0, h[2], h[5], 0, 1];
-  };
-  const layout = () => {
-    const k = lap.clientWidth / PHOTO_W; if (!k) return;
-    const dst = CORNERS.map(([x, y]) => [x * k, y * k]);
-    const m = homography([[0, 0], [VW, 0], [VW, VH], [0, VH]], dst);
-    screen.style.transform = "matrix3d(" + m.map((v) => +v.toFixed(10)).join(",") + ")";
-    Object.assign(notch.style, { left: NOTCH.x * k + "px", top: NOTCH.y * k + "px", width: NOTCH.w * k + "px", height: NOTCH.h * k + "px", borderRadius: "0 0 " + NOTCH.r * k + "px " + NOTCH.r * k + "px" });
-  };
-  layout();
-  addEventListener("resize", layout);
-  if ("ResizeObserver" in window) new ResizeObserver(layout).observe(lap);
-
-  /* the scroll: stop by stop, the way a person reads a homepage. Its clock
-     stands still while the room pauses the module or the tab is hidden */
-  const root = document.documentElement;
-  if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-  const ease = (t) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
-  let plan = null, t = 0, last = 0;
-  const build = () => {
-    let w, d; try { w = frame.contentWindow; d = frame.contentDocument; } catch (e) { return null; }
-    if (!d || !d.body) return null;
-    const nav = d.querySelector(".sk-nav"), kit = d.getElementById("kit");
-    /* start with the nav pill just under the glass's top edge, as his
-       mockup does: the line over it scrolled away */
-    const y0 = nav ? Math.max(0, nav.getBoundingClientRect().top + w.scrollY - 10) : 0;
-    const yk = kit ? Math.round(kit.getBoundingClientRect().top + w.scrollY - (nav ? nav.offsetHeight + 30 : 90)) : y0 + 2400;
-    const stops = [y0, y0 + 760, y0 + 1520, Math.max(y0 + 2100, yk)];
-    const steps = [{ y: stops[0], hold: 1800 }];
-    for (let i = 1; i < stops.length; i++) steps.push({ y: stops[i], move: 1500, hold: i === stops.length - 1 ? 8600 : 1300 });
-    steps.push({ y: stops[0], move: 2200, hold: 600 });
-    return { w, steps, total: steps.reduce((a, s) => a + (s.move || 0) + s.hold, 0) };
-  };
-  const at = (ms) => {
-    let acc = 0, y = plan.steps[0].y;
-    for (const s of plan.steps) {
-      if (s.move) { if (ms < acc + s.move) return y + (s.y - y) * ease((ms - acc) / s.move); acc += s.move; }
-      y = s.y;
-      if (ms < acc + s.hold) return y;
-      acc += s.hold;
-    }
-    return y;
-  };
-  const tick = (now) => {
-    const dt = last ? Math.min(64, now - last) : 0; last = now;
-    if (!plan) plan = build();
-    if (plan && !root.dataset.paused && !document.hidden) {
-      t = (t + dt) % plan.total;
-      try { plan.w.scrollTo(0, Math.round(at(t))); } catch (e) { /* gone */ }
-    }
-    requestAnimationFrame(tick);
-  };
-  frame.addEventListener("load", () => {
-    plan = null; t = 0;
-    try { frame.contentDocument.fonts.ready.then(() => { plan = null; }); } catch (e) { /* another origin */ }
-    requestAnimationFrame(tick);
+  /* measured off sally-design-system-mockup-lookbook-laptop-wide.jpg, 2000 by 1680,
+     TL TR BR BL, half a pixel out; the mapping and the scroll live in device.js */
+  const lap = document.getElementById("lap"), frame = document.getElementById("page");
+  Device.place({
+    box: lap, glass: document.getElementById("screen"), photoW: 2000, view: [1440, 924],
+    corners: [[312.5, 444.7], [1686.9, 443.1], [1691.4, 1328.5], [312.5, 1328.1]],
+    marks: [{ el: document.getElementById("notch"), x: 924, y: 443, w: 151, h: 16, r: 6, round: "bottom" }],
+  });
+  /* the scroll: stop by stop, the way a person reads a homepage */
+  Device.scroll({
+    frame,
+    plan: (w, d) => {
+      const nav = d.querySelector(".sk-nav"), kit = d.getElementById("kit");
+      /* start with the nav pill just under the glass's top edge, as his
+         mockup does: the line over it scrolled away */
+      const y0 = nav ? Math.max(0, nav.getBoundingClientRect().top + w.scrollY - 10) : 0;
+      const yk = kit ? Math.round(kit.getBoundingClientRect().top + w.scrollY - (nav ? nav.offsetHeight + 30 : 90)) : y0 + 2400;
+      const stops = [y0, y0 + 760, y0 + 1520, Math.max(y0 + 2100, yk)];
+      const steps = [{ y: stops[0], hold: 1800 }];
+      for (let i = 1; i < stops.length; i++) steps.push({ y: stops[i], move: 1500, hold: i === stops.length - 1 ? 8600 : 1300 });
+      steps.push({ y: stops[0], move: 2200, hold: 600 });
+      return steps;
+    },
   });
 })();
 </script>

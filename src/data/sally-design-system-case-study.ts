@@ -214,17 +214,22 @@ export const sallyDesignSystemCaseStudy: CaseStudy = {
         { label: "The Sale", demo: "promotion", title: "The Sale", note: "Forty-eight hours, thirty percent off sitewide." },
       ],
     },
-    /* MOCKUP 2 OF 4, a placeholder (2 Oct 2026, his "could you add those
-       placeholders"): becomes an image section when his mockup arrives */
+    /* MOCKUP 2 OF 4, his own (3 Oct 2026, "i'm also attaching a mobile
+       image we can insert into the case study - i dropped a placeholder
+       image into it but i think we'll do the same thing - add a mockup to
+       it via code"): his phone on a wooden shelf, cropped wide like the
+       laptop, with m-phone.html laying the live Lookbook onto its screen
+       (device.js, shared with the laptop). It scrolls the phone layout
+       down the wall, then holds on the Platinum Kit while its story plays */
     {
       id: "mock-2-lookbook-phone",
       type: "product-demo",
       folder: "sally-push",
-      demo: "m-mock",
-      query: "n=2",
+      demo: "m-phone",
       mode: "fit",
-      title: "Mockup 2 of 4",
-      note: "Placeholder: the Lookbook story on a phone, in a hand.",
+      bleed: true,
+      title: "The Lookbook",
+      note: "on a phone, down the wall of shades to the Platinum Kit.",
     },
 
     // ════════════════════════════════════════
