@@ -96,30 +96,21 @@ export const sallyCaseStudy: CaseStudy = {
     },
 
     // ── PROBLEM STATEMENT - grouped in ECE6E1 container ──
+    /* the opening grid, moving (3 Oct 2026, Jeremy: "the first image you
+       could take a bunch of screenshots of the app or live builds and do an
+       animation of that grid - a continuous flow of screens - maybe it stops
+       for a second but then animates through continuously with some
+       movement on each one"). screen-flow.html: fifteen moments captured
+       from the live demos, in three columns that travel and breathe. It took
+       the place of sally-os-dashboard-grid-overview.png, at its proportion */
     {
-      id: "problem-image",
-      type: "image",
-      src: "/case-studies/sally-os/sally-os-dashboard-grid-overview.png",
-      alt: "Sally Marketing OS, five connected platforms overview",
-      bleedTop: true,
-      noRadius: true,
-      // The opening hero is still climbing when this arrives, so there is
-      // nothing here for a rise to cross. Zoom is what the frame wants
-      // anyway: five platform screens in one grid at 3048px native is a
-      // contact sheet of the whole system, and every one of them is a smear
-      // at plate size. Plate number follows the section mark it opens, the
-      // same convention the Asset Hub zoom uses below.
-      pressing: {
-        plate: "02",
-        captions: [
-          "Marketing OS",
-          "Dashboard grid overview",
-          "Five platforms on one screen",
-        ],
-        instruction: "Scroll. It fills the mat, then travels the frame",
-        choreo: { zoom: true },
-      },
-      group: { name: "problem", bg: "#ECE6E1", radius: 75, padding: "60px" },
+      id: "problem-flow",
+      type: "product-demo",
+      demo: "screen-flow",
+      mode: "fit",
+      bleed: true,
+      title: "Sally Marketing OS",
+      note: "each card is a moment from a live demo further down the page.",
     },
     {
       id: "problem-header",
@@ -179,13 +170,19 @@ export const sallyCaseStudy: CaseStudy = {
     },
 
     // ── TRENDS FEED / INTELLIGENCE ──
+    /* the Trends page, live (3 Oct 2026, Jeremy: "second image could show
+       the marketing trends, live - maybe a vertical scroll through it"):
+       trends-page.html replays the page the screenshot showed, on the
+       portal's own CSS, and reads down it. It took the place of
+       sally-os-briefing-portal-fullscreen.png */
     {
-      id: "trends-portal-hero",
-      type: "hero",
-      image: "/case-studies/sally-os/sally-os-briefing-portal-fullscreen.png",
-      alt: "Sally Marketing OS, intelligence feed and competitive dashboard",
-      inline: true,
-      pressing: { choreo: { rise: true } },
+      id: "trends-page-demo",
+      type: "product-demo",
+      demo: "trends-page",
+      query: "laptop=1",
+      stageWidth: 1320,
+      title: "The Trends page",
+      note: "the week's creator buzz, where each competitor was active, and the scanned reports with the market trends written across them.",
     },
     {
       id: "trends-header",

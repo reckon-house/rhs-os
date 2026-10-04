@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sally Marketing OS · the screens, flowing</title>
+<meta name="robots" content="noindex">
+<!-- The opening grid, moving (3 Oct 2026, Jeremy: "the first image you
+     could take a bunch of screenshots of the app or live builds and do an
+     animation of that grid - a continuous flow of screens - maybe it stops
+     for a second but then animates through continuously with some movement
+     on each one"). It took the place of sally-os-dashboard-grid-overview.png
+     and keeps its proportion (3048 by 1776). Every card is a moment from
+     the live demos in this folder, captured at 2x and cropped
+     (assets/flow/): the Trends page, the feed and Sally's Take, Jim, the
+     Requests board and its email, the Figma build, PDP Copy Studio. Three
+     columns travel, the middle one the other way; every few seconds the
+     wall eases to a stop for a beat and moves on, and inside each card the
+     screen drifts on its own clock. It stands still while the room pauses
+     it (data-paused on the root), while the tab is hidden, and for anyone
+     who asked for less motion. -->
+<style>
+  html, body { margin: 0; background: transparent; }
+  .flow { --gap: clamp(8px, 1.5vw, 22px); position: relative; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--gap); padding: 0 var(--gap); aspect-ratio: 3048 / 1776; overflow: hidden; border-radius: 4px; background: #F2EFEC; }
+  .col { position: relative; min-width: 0; }
+  .track { position: absolute; left: 0; right: 0; top: 0; display: flex; flex-direction: column; gap: var(--gap); will-change: transform; }
+  .card { position: relative; flex: none; overflow: hidden; aspect-ratio: var(--a); border-radius: clamp(8px, 1.1vw, 16px); background: #fff; box-shadow: 0 12px 32px rgba(20, 0, 2, 0.08), 0 2px 6px rgba(20, 0, 2, 0.04); }
+  /* the drift starts on the whole crop and leans in from a corner of it,
+     so nothing at an edge is cut until the screen is already moving */
+  .card img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transform-origin: var(--o, 50% 0%); animation: drift var(--d) ease-in-out var(--dl) infinite alternate; }
+  @keyframes drift { from { transform: scale(1); } to { transform: scale(1.05) translate(var(--x1), var(--y1)); } }
+  html[data-paused] .card img { animation-play-state: paused; }
+  @media (max-width: 520px) { .flow { grid-template-columns: repeat(2, minmax(0, 1fr)); aspect-ratio: 4 / 5; } .col:nth-child(3) { display: none; } }
+  @media (prefers-reduced-motion: reduce) { .card img { animation: none; } }
+</style>
+</head>
+<body>
+<div class="flow" id="flow" role="img" aria-label="Screens from the Sally Marketing OS moving past in three columns: the Trends page, the intelligence feed and Sally's Take, Jim's answers, the Requests board and an email it built, the Figma build and PDP Copy Studio"></div>
+<script>
+(() => {
+  /* name, width, height of each crop in assets/flow/ */
+  const COLS = [
+    [["trends-buzz", 1100, 763], ["email-products", 1100, 1289], ["jim-seed", 1100, 491], ["pdp-grades", 1100, 705], ["figma-panel", 605, 1186]],
+    [["figma-boards", 1100, 933], ["jim-answer", 1100, 589], ["trends-take", 1053, 1520], ["requests-board", 1100, 625], ["sally-take", 896, 988]],
+    [["intel-feed", 1100, 622], ["pdp-findings", 1100, 1008], ["trends-filtered", 1100, 539], ["pdp-rewrite", 1100, 871], ["jim-moves", 1100, 835]],
+  ];
+  const flow = document.getElementById("flow"), root = document.documentElement;
+  const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  /* each card's drift: its own length, phase and direction, set by its place so every pass is the same */
+  const card = (c, i, j) => {
+    const el = document.createElement("div"); el.className = "card";
+    const k = (i * 7 + j * 3) % 5, s = (i + j) % 2 ? 1 : -1;
+    const O = ["18% 12%", "82% 18%", "50% 0%", "28% 70%", "72% 85%"][k];
+    el.style.cssText = `--a:${c[1]}/${c[2]};--d:${9 + k * 1.7}s;--dl:-${(k * 2.3).toFixed(1)}s;--o:${O};--x1:${s * 0.9}%;--y1:${-s * 0.7}%`;
+    const img = document.createElement("img"); img.src = "assets/flow/" + c[0] + ".webp"; img.alt = ""; img.decoding = "async";
+    el.appendChild(img); return el;
+  };
+  const cols = COLS.map((list, i) => {
+    const col = document.createElement("div"); col.className = "col";
+    const track = document.createElement("div"); track.className = "track";
+    /* the set twice, so the column can wrap without a seam */
+    [0, 1].forEach(() => list.forEach((c, j) => track.appendChild(card(c, i, j))));
+    col.appendChild(track); flow.appendChild(col);
+    return { track, dir: i === 1 ? 1 : -1, speed: [1, 0.86, 1.12][i], y: i === 1 ? -0.5 : 0 };
+  });
+  if (reduce) return;
+  /* the wall's breath: four seconds of travel, easing in and out, then a
+     beat of stillness */
+  const MOVE = 4000, REST = 1100, CYCLE = MOVE + REST;
+  const vel = (t) => { const m = t % CYCLE; if (m >= MOVE) return 0; const k = m / MOVE; return Math.sin(Math.PI * k) * 1.57; };
+  let t = 0, last = 0;
+  const tick = (now) => {
+    const dt = last ? Math.min(64, now - last) : 0; last = now;
+    if (!root.dataset.paused && !document.hidden) {
+      t += dt;
+      const W = flow.clientWidth, v = 0.07 * W / 1000;
+      /* the set repeats every half track plus half a gap (the gap between the two copies) */
+      const gap = parseFloat(getComputedStyle(cols[0].track).rowGap) || 0;
+      cols.forEach((c) => {
+        const half = (c.track.scrollHeight + gap) / 2;
+        if (!half) return;
+        if (c.y === -0.5) c.y = -half / 2;
+        c.y += c.dir * v * c.speed * vel(t) * dt;
+        if (c.y <= -half) c.y += half;
+        if (c.y > 0) c.y -= half;
+        c.track.style.transform = "translate3d(0," + c.y.toFixed(2) + "px,0)";
+      });
+    }
+    requestAnimationFrame(tick);
+  };
+  requestAnimationFrame(tick);
+})();
+</script>
+</body>
+</html>

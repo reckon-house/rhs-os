@@ -1,0 +1,207 @@
+/* sally-trends-page.css — the Trends page's own sections, EXTRACTED
+   VERBATIM from sally-portal/index.html (3 Oct 2026): Social & Creator
+   Buzz, the Activity Heatmap and Category Breakdown row, the reports
+   header with its scan button and filter pills, the report card's top,
+   tags, time, source and relevance dots, and the pulled-quote Market Trend
+   card. Class names are the product's. The heatmap, buzz row and movers
+   are the renderers the portal used before its UX review folded them away
+   (still in the code: iv2RenderSocialBuzz, iv2RenderHeatmap,
+   iv2RenderMovers), which is the page the case study's screenshot shows.
+   Load BEFORE sally-trends.css: the portal declares .cat-* (which the card
+   carries too) before .iv2-card, so the card keeps its own white. Comments
+   in the source were dropped. */
+.insights-scan-btn { padding: 8px 16px; background: #ffffff; border: 1px solid rgba(220,30,53,0.3); border-radius: 8px; font-size: 13px; font-family: 'Satoshi', sans-serif; font-weight: 500; color: #dc1e35; cursor: pointer; transition: all 0.2s; }
+.insights-scan-btn:hover { background: rgba(220,30,53,0.06); }
+.insights-scan-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.insights-last-scan { font-size: 12px; color: rgba(0,0,0,0.4); }
+.iv2-social-buzz {
+            background: rgba(255, 255, 255, 0.92);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            border-radius: 18px;
+            padding: 24px 28px;
+            margin-bottom: 28px;
+            box-shadow: 0 4px 20px rgba(20, 0, 2, 0.04);
+        }
+.iv2-social-buzz-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+.iv2-social-buzz-title {
+            font-size: 15px;
+            font-weight: 600;
+            color: #140002;
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            letter-spacing: -0.2px;
+        }
+.iv2-social-buzz-title .buzz-icon { display: inline-flex; align-items: center; }
+.iv2-social-buzz-title .buzz-icon svg { width: 15px; height: 15px; stroke-width: 2; }
+.iv2-social-buzz-meta { font-size: 11px; color: #9a7a80; }
+.iv2-social-buzz-scroll {
+            display: flex;
+            gap: 14px;
+            overflow-x: auto;
+            padding-bottom: 6px;
+            scroll-snap-type: x mandatory;
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+.iv2-social-buzz-scroll::-webkit-scrollbar { display: none; }
+.iv2-social-buzz-card {
+            flex-shrink: 0;
+            width: 280px;
+            background: rgba(255, 224, 227, 0.25);
+            border: 1px solid rgba(255, 224, 227, 0.5);
+            border-radius: 14px;
+            padding: 16px 18px;
+            scroll-snap-align: start;
+            transition: all 0.2s;
+            cursor: default;
+        }
+.iv2-social-buzz-card:hover {
+            background: rgba(255, 224, 227, 0.45);
+            border-color: rgba(220, 30, 53, 0.2);
+        }
+.iv2-social-buzz-card-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+.iv2-social-buzz-card-competitor {
+            font-size: 11px;
+            font-weight: 600;
+            color: #dc1e35;
+        }
+.iv2-social-buzz-card-cat {
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+            color: #9a7a80;
+            background: rgba(20, 0, 2, 0.04);
+            padding: 2px 7px;
+            border-radius: 4px;
+        }
+.iv2-social-buzz-card-platform {
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+            color: #4a2028;
+            background: rgba(220, 30, 53, 0.08);
+            padding: 2px 7px;
+            border-radius: 4px;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+.iv2-social-buzz-card-platform svg { width: 11px; height: 11px; stroke-width: 2; }
+.iv2-social-buzz-card-title {
+            font-size: 13.5px;
+            font-weight: 600;
+            color: #140002;
+            line-height: 1.35;
+            margin-bottom: 6px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+.iv2-social-buzz-card-summary {
+            font-size: 12px;
+            color: #4a2028;
+            line-height: 1.55;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+.iv2-social-buzz-card-source {
+            margin-top: 10px;
+            font-size: 10.5px;
+            color: #9a7a80;
+        }
+.iv2-social-buzz-card-source a { color: #dc1e35; text-decoration: none; font-weight: 500; }
+.iv2-social-buzz-card-source a:hover { text-decoration: underline; }
+.iv2-social-buzz-empty {
+            font-size: 13px;
+            color: #9a7a80;
+            text-align: center;
+            padding: 20px;
+        }
+.insight-category-tag { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.4px; padding: 4px 10px; border-radius: 5px; white-space: nowrap; }
+.cat-pricing { background: rgba(255, 240, 224, 0.8); color: #9a3412; }
+.cat-promotions { background: rgba(255, 224, 227, 0.6); color: #9d174d; }
+.cat-products { background: rgba(220, 30, 53, 0.08); color: #dc1e35; }
+.cat-partnerships { background: rgba(74, 32, 40, 0.08); color: #4a2028; }
+.cat-social { background: rgba(255, 224, 227, 0.8); color: #b91c5a; }
+.cat-strategy { background: rgba(255, 240, 224, 0.6); color: #7c4a1a; }
+.cat-industry { background: rgba(20, 0, 2, 0.05); color: #4a2028; }
+.cat-editorial { background: rgba(220, 30, 53, 0.06); color: #dc1e35; }
+.relevance-dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255, 224, 227, 0.8); }
+.relevance-dot.filled { background: #dc1e35; }
+.iv2-filter-bar { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin-bottom: 8px; }
+.iv2-pill { padding: 7px 18px; border: none; border-radius: 999px; background: rgba(20, 0, 2, 0.05); font-size: 12px; font-family: 'Satoshi', sans-serif; font-weight: 500; color: #4a2028; cursor: pointer; transition: all 0.15s; white-space: nowrap; }
+.iv2-pill:hover { background: rgba(220, 30, 53, 0.08); color: #140002; }
+.iv2-pill.active { background: #dc1e35; color: #fff; }
+.iv2-pill-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: #9a7a80; margin-right: 8px; padding: 7px 0; }
+.iv2-toolbar-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; gap: 16px; }
+.iv2-toolbar-left { display: flex; flex-direction: column; gap: 4px; flex: 1; }
+.iv2-toolbar-right { display: flex; gap: 12px; align-items: center; flex-shrink: 0; padding-top: 4px; }
+.iv2-stats-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 28px; }
+@media (max-width: 900px) {
+  .iv2-stats-row { grid-template-columns: 1fr; }
+}
+.iv2-heatmap { background: rgba(255, 255, 255, 0.92); border: 1px solid rgba(255, 255, 255, 0.5); border-radius: 18px; padding: 24px 26px; box-shadow: 0 2px 12px rgba(20, 0, 2, 0.03); }
+.iv2-heatmap-title { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: #9a7a80; margin-bottom: 18px; }
+.iv2-heatmap-grid { display: grid; gap: 2px; }
+.iv2-heatmap-cell { display: flex; align-items: center; justify-content: center; height: 32px; border-radius: 5px; font-size: 11px; color: #9a7a80; transition: all 0.15s; cursor: default; position: relative; }
+.iv2-heatmap-cell.has-data { cursor: pointer; }
+.iv2-heatmap-cell.has-data:hover { transform: scale(1.1); z-index: 1; }
+.iv2-heatmap-cell .heat-dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(220,30,53,0.12); transition: all 0.15s; }
+.iv2-heatmap-cell.heat-1 .heat-dot { width: 8px; height: 8px; background: rgba(255, 224, 227, 0.9); }
+.iv2-heatmap-cell.heat-2 .heat-dot { width: 11px; height: 11px; background: rgba(220,30,53,0.25); }
+.iv2-heatmap-cell.heat-3 .heat-dot { width: 14px; height: 14px; background: rgba(220,30,53,0.45); }
+.iv2-heatmap-cell.heat-4 .heat-dot { width: 17px; height: 17px; background: rgba(220,30,53,0.65); }
+.iv2-heatmap-cell.heat-5 .heat-dot { width: 20px; height: 20px; background: #dc1e35; }
+.iv2-heatmap-label { font-size: 11px; color: #4a2028; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding: 0 6px; }
+.iv2-heatmap-label.row-label { text-align: right; font-weight: 500; }
+.iv2-heatmap-label.col-label { text-align: center; font-weight: 500; transform: rotate(-35deg); transform-origin: center; height: 54px; display: flex; align-items: flex-end; justify-content: center; }
+.iv2-movers { background: rgba(255, 255, 255, 0.92); border: 1px solid rgba(255, 255, 255, 0.5); border-radius: 18px; padding: 24px 26px; box-shadow: 0 2px 12px rgba(20, 0, 2, 0.03); }
+.iv2-movers-title { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: #9a7a80; margin-bottom: 18px; }
+.iv2-mover-row { display: flex; align-items: center; gap: 12px; padding: 8px 0; }
+.iv2-mover-label { font-size: 13px; color: #4a2028; font-weight: 500; min-width: 140px; }
+.iv2-mover-bar-bg { flex: 1; height: 7px; background: rgba(255, 224, 227, 0.4); border-radius: 4px; overflow: hidden; }
+.iv2-mover-bar { height: 100%; background: linear-gradient(90deg, #dc1e35, #e8475a); border-radius: 4px; transition: width 0.5s ease; }
+.iv2-mover-count { font-size: 12px; font-weight: 600; color: #4a2028; min-width: 28px; text-align: right; }
+.iv2-filters-section { margin-bottom: 24px; }
+.iv2-filters-section .iv2-filter-bar { margin-bottom: 12px; }
+.iv2-section-label { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: #9a7a80; margin-bottom: 18px; display: flex; align-items: center; gap: 10px; }
+.iv2-section-label::after { content: ''; flex: 1; height: 1px; background: rgba(20, 0, 2, 0.06); }
+.iv2-section-header-row { display: flex; align-items: center; gap: 16px; margin-bottom: 18px; }
+.iv2-section-header-row .iv2-section-label { flex: 1; margin-bottom: 0; }
+.iv2-section-header-row .iv2-toolbar-right { flex-shrink: 0; padding-top: 0; }
+.iv2-card-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; gap: 10px; }
+.iv2-card-tags { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.iv2-card-competitor { font-size: 11px; font-weight: 600; color: #4a2028; }
+.iv2-card-time { font-size: 11px; color: #9a7a80; white-space: nowrap; }
+.iv2-card-source { display: flex; align-items: center; gap: 8px; margin-top: 10px; font-size: 11px; color: #9a7a80; }
+.iv2-card-source a { color: #dc1e35; text-decoration: none; font-weight: 500; }
+.iv2-card-source a:hover { text-decoration: underline; }
+.iv2-card-relevance { display: flex; gap: 3px; margin-left: auto; }
+.iv2-card-full-summary { font-size: 13px; color: #4a2028; line-height: 1.7; padding-top: 14px; border-top: 1px solid rgba(20, 0, 2, 0.05); margin-top: 14px; }
+.iv2-sally-take { break-inside: avoid; margin-bottom: 18px; padding: 28px 30px; background: transparent; position: relative; }
+.iv2-sally-take-icon { font-size: 24px; color: #dc1e35; margin-bottom: 10px; display: block; font-style: normal; }
+.iv2-sally-take-quote { font-size: 12px; font-family: 'Satoshi', -apple-system, BlinkMacSystemFont, sans-serif; font-weight: 400; line-height: 170%; color: #4a2028; letter-spacing: -0.1px; font-style: normal; }
+.iv2-sally-take-headline { font-size: 32px; font-family: 'Satoshi', -apple-system, BlinkMacSystemFont, sans-serif; font-weight: 400; line-height: 1.25; color: #140002; letter-spacing: -0.5px; margin-bottom: 14px; }
+.iv2-sally-take-source { font-size: 11px; color: rgba(0,0,0,0.3); margin-top: 12px; font-style: normal; }
+.iv2-sally-take-label { display: inline-flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: #dc1e35; margin-top: 10px; font-style: normal; }
+.iv2-sally-take.loading .iv2-sally-take-quote { color: rgba(0,0,0,0.2); }
+.iv2-sally-take.loading .iv2-sally-take-icon { animation: iv2ShimmerTake 1.5s ease-in-out infinite; }
+.iv2-trend-meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 10px; }
+.iv2-trend-signal-count { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: rgba(0,0,0,0.35); background: rgba(0,0,0,0.04); padding: 3px 10px; border-radius: 10px; }
+.iv2-trend-competitor { font-size: 11px; font-weight: 500; color: rgba(0,0,0,0.45); background: rgba(220,30,53,0.06); padding: 3px 10px; border-radius: 10px; }
