@@ -521,7 +521,11 @@ clean and modern?"
   opened asset's fields, description, 21 tags and timestamp are copied from the
   product screenshot; the other library cards are representative. Email Hero is
   1200 by 400 in the code (not 480), and the real attention crop lands on lips,
-  nails and curls, above her eyes: kept, not faked. It shows the February 2026
+  nails and curls, above her eyes. The demo first ended on that crop; on his
+  "her face is completely out of the screen...can we select maybe the square
+  and make sure it's nicely centered?" (4 Oct) it ends on the Instagram Square,
+  cut on her face by hand (not by the attention strategy), in a modal narrowed
+  to 32rem so a square fits the window. It shows the February 2026
   panel (Vendor Uploads, before it became Review).
 - **`utilities.html`**: of the ten cards only Shelf Talker Generator and PDP Copy
   Studio have UI in any code; the other eight exist only in the old screenshot,

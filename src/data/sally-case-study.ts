@@ -617,8 +617,10 @@ export const sallyCaseStudy: CaseStudy = {
     /* the Asset Hub, live, on his oak desk photograph (3 Oct 2026, his "here
        are two mockups we can use...maybe on some of the sally os screen we
        just made fake mockups?"): asset-hub.html replays the DAM app the
-       portal frames, a search, one asset with its AI tags, and an Email Hero
-       export made with the DAM's own attention crop. It took the place of
+       portal frames, a search, one asset with its AI tags, and an export.
+       It ended on the Email Hero, whose attention crop cut her face off;
+       since his "can we select maybe the square and make sure it's nicely
+       centered?" it ends on an Instagram Square cut on her face. It took the place of
        the two asset detail screenshots */
     {
       id: "asset-hub-demo",
@@ -628,7 +630,7 @@ export const sallyCaseStudy: CaseStudy = {
       mode: "fit",
       bleed: true,
       title: "The Asset Hub",
-      note: "a search for curly hair, one asset opened with its AI tags, and an Email Hero crop made from it.",
+      note: "a search for curly hair, one asset opened with its AI tags, and an Instagram Square cut from it.",
     },
     {
       id: "asset-hero-image",

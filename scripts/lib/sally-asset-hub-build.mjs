@@ -69,7 +69,12 @@ const emailHero = await sharp(PURPLE)
   .resize(1200, 400, { fit: "cover", position: sharp.strategy.attention }).png().toBuffer();
 await sharp(emailHero).resize(900, 300)
   .jpeg({ quality: 82, mozjpeg: true }).toFile(path.join(HUB, "vivid-purple-curls-email-hero.jpg"));
-console.log("assets/hub: " + THUMBS.length + " thumbs, the detail photo, the Email Hero attention crop");
+/* the square the demo ends on (4 Oct 2026, his "make sure it's nicely
+   centered"): cut by hand on her face, the whole head and the curls, not by
+   the attention strategy, which lands below her eyes */
+await sharp(PURPLE).extract({ left: 0, top: 40, width: 1166, height: 1166 }).resize(900, 900)
+  .jpeg({ quality: 82, mozjpeg: true }).toFile(path.join(HUB, "vivid-purple-curls-square.jpg"));
+console.log("assets/hub: " + THUMBS.length + " thumbs, the detail photo, the Email Hero attention crop, the square on her face");
 
 // =========================================================== 2. the CSS
 // Two verbatim sources, nothing hand-written:
