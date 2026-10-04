@@ -15,6 +15,7 @@
      no card (?story=off, ?copy=card bring back what was). -->
 <link rel="preload" href="/fonts/Satoshi-Variable.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="push.css">
+<link rel="stylesheet" href="live.css">
 <script>(function(){var q=location.search,h=document.documentElement;if(/[?&]story=off/.test(q))h.dataset.story="off";if(/[?&]copy=card/.test(q))h.dataset.copy="card"})()</script>
 </head>
 <body>
@@ -24,7 +25,7 @@
 <header class="sk-nav">
   <a class="sk-logo" href="#"><img src="../sally-system/assets/brand/sally-logo-red.webp" alt="Sally Beauty" width="400" height="100"></a>
   <nav class="sk-links"><a href="#">Hair Color</a><a href="#">Hair Care</a><a href="#">Nails</a><a href="#">Tools</a><a href="#">Cosmetics</a><a href="#">Brands</a><a class="deals" href="#">Deals</a></nav>
-  <div class="sk-r"><a href="#">Search</a><a href="#">Sign in</a><a href="#">Bag (0)</a></div>
+  <div class="sk-r"><a href="#">Search</a><a href="#">Sign in</a><a class="sk-bag" href="#">Bag (<b>0</b>)</a></div>
 </header>
 <!-- /sk:header -->
 
@@ -79,6 +80,36 @@
     <div class="pills"><a class="pill" href="#">Shop new in</a><a class="pill soft" href="#">Watch the how-to</a></div>
   </div>
 </section>
+
+<div class="wrap">
+  <!-- the doer's store, as a section of this homepage (3 Oct 2026, his
+       "we have these stories but they're not in context and not exactly
+       'real' so i feel like it would be hard for a user to understand what
+       exactly they are", then "yea let's give it a try!"): the DIY Studio
+       concept's projects and its Platinum Kit, his products and prices,
+       under the looks. The pieces are a live sum; the kit price holds only
+       with all five in ($41.45 less $4.46 is his $36.99). Adding flies the
+       pieces to the nav's bag. It plays itself while on screen (live.js)
+       and hands over the moment a reader presses anything -->
+  <section class="story st-kit lv" id="kit">
+    <div class="head"><div><p class="t-label red">The doer's store</p><h2 class="t-d2" style="margin-top:12px">What are you doing this weekend?</h2></div><a class="pill soft sm" href="#">All projects</a></div>
+    <div class="st-projs">
+      <button class="st-proj on" id="kit-plat" type="button"><span class="ph"><img src="../sally-system/assets/img/blonde-port.jpg" alt="" loading="lazy"></span><span><span class="lvl">Advanced · Lighten</span><span class="t">Go platinum blonde</span><span class="s">6 steps · ~2 hrs</span></span></button>
+      <button class="st-proj" type="button" tabindex="-1"><span class="ph"><img src="../sally-system/assets/img/copper-port.jpg" alt="" loading="lazy"></span><span><span class="lvl">Beginner · Cover</span><span class="t">Cover grays in 20 minutes</span><span class="s">4 steps · ~25 min</span></span></button>
+      <button class="st-proj" type="button" tabindex="-1"><span class="ph"><img src="../sally-system/assets/img/purple-nails-port.jpg" alt="" loading="lazy"></span><span><span class="lvl">Intermediate · Vivid</span><span class="t">Try a vivid for the first time</span><span class="s">5 steps · ~90 min</span></span></button>
+    </div>
+    <div class="st-kitb">
+      <figure class="ph"><img src="../sally-system/assets/img/blonde-port.jpg" alt="Long blonde waves, orange nails, outdoors" loading="lazy"></figure>
+      <div class="st-side">
+        <p class="t-label red">The Platinum Kit · Everything you need</p>
+        <h3>Go platinum, nothing missing.</h3>
+        <div class="st-nums"><div><span class="k">6</span><span class="v">steps, advanced</span></div><div><span class="k">~2</span><span class="v">hours, about</span></div><div><span class="k" id="kit-count">5</span><span class="v">products, one bag</span></div></div>
+        <ol class="st-list" id="kit-list"></ol>
+        <div class="st-total"><span class="now" id="kit-now">$36.99</span><s id="kit-was">$41.45</s><span class="save" id="kit-save">Save $4.46 as a kit</span><button class="pill" id="kit-add" type="button">Add all 5 to bag</button></div>
+      </div>
+    </div>
+  </section>
+</div>
 
 <div class="wrap">
   <section class="story">
@@ -170,6 +201,55 @@
 </footer>
 <!-- /sk:footer -->
 
+<script src="live.js"></script>
+<script>
+(() => {
+  /* his Platinum Kit, from the DIY Studio concept */
+  const KIT = [["lightener", "ion", "Creme Lightener", 8.99], ["developer", "ion", "30 Vol Developer", 6.49], ["toner", "Wella", "T18 Toner", 7.99], ["bowl & brush", "GVP", "Bowl & Brush Set", 4.99], ["bond protector", "ion", "Bond Protector", 12.99]];
+  const KIT_PRICE = 36.99;
+  const money = (n) => "$" + n.toFixed(2);
+  const $ = (id) => document.getElementById(id);
+  const on = KIT.map(() => true);
+  const rows = KIT.map(([w, b, n, p], i) => {
+    const li = document.createElement("li"), r = document.createElement("button");
+    r.type = "button"; r.className = "st-row"; r.setAttribute("aria-pressed", "true");
+    r.innerHTML = '<span class="box" aria-hidden="true"></span><span><span class="w"></span><span class="n"></span></span><span class="p"></span>';
+    r.querySelector(".w").textContent = w; r.querySelector(".n").textContent = b + " · " + n; r.querySelector(".p").textContent = money(p);
+    r.addEventListener("click", () => { on[i] = !on[i]; draw(); });
+    li.appendChild(r); $("kit-list").appendChild(li); return r;
+  });
+  const now = $("kit-now"), was = $("kit-was"), save = $("kit-save"), add = $("kit-add"), cnt = $("kit-count");
+  const draw = () => {
+    const picked = KIT.filter((_, i) => on[i]), all = picked.length === KIT.length, sum = picked.reduce((a, k) => a + k[3], 0);
+    rows.forEach((r, i) => { r.classList.toggle("off", !on[i]); r.setAttribute("aria-pressed", String(on[i])); });
+    now.textContent = money(all ? KIT_PRICE : sum);
+    was.classList.toggle("st-hide", !all); save.classList.toggle("st-hide", !all);
+    cnt.textContent = String(picked.length);
+    add.disabled = picked.length === 0;
+    add.textContent = all ? "Add all 5 to bag" : picked.length ? "Add " + picked.length + " to bag" : "Pick a piece";
+  };
+  add.addEventListener("click", () => {
+    const picked = rows.filter((_, i) => on[i]); if (!picked.length) return;
+    Live.fly(picked.map((r) => r.querySelector(".w")));
+    setTimeout(() => {
+      Live.bag(Live.count + picked.length);
+      Live.toast(picked.length === KIT.length ? "The Platinum Kit is in your bag, " + money(KIT_PRICE) + "." : picked.length + " pieces are in your bag.");
+    }, 650);
+  });
+  const plat = $("kit-plat");
+  plat.addEventListener("click", () => { plat.classList.remove("pulse"); void plat.offsetWidth; plat.classList.add("pulse"); });
+  draw();
+  Live.run({
+    reset: () => { on.fill(true); draw(); },
+    play: async () => {
+      await Live.tap(plat); await Live.wait(500);
+      await Live.tap(rows[2]); await Live.wait(1000);
+      await Live.tap(rows[2]); await Live.wait(700);
+      await Live.tap(add); await Live.wait(1600);
+    },
+  });
+})();
+</script>
 <script src="push.js"></script>
 </body>
 </html>

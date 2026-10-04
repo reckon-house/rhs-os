@@ -233,6 +233,7 @@ for (const s of Object.values(H.studies)) {
             src: "/lab/" + (t.folder || folder) + "/" + t.demo + ".html" + (t.query ? "?" + t.query : ""),
             title: clean(t.title || ""),
             note: clean(t.note || ""),
+            at: t.at || "",
           })) } : {}),
           where,
         });

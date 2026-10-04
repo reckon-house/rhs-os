@@ -1515,7 +1515,10 @@
         const capHtml = (t) => (t.title ? "<b>" + esc(t.title) + "</b>" : "") + (t.note ? " " + esc(t.note) : "") +
           (isScroll ? ' <a class="sp-live-ext" href="' + esc(srcOf(t)) + '" target="_blank" rel="noopener">Open the page</a>' : "");
         if (T0.title || T0.note || f.title || f.note) fig.appendChild(el("figcaption", "sp-cap sp-live-cap", capHtml(T0.title || T0.note ? T0 : f)));
-        const L = { f, fig, stage, fr, s: 1, docH: 0, vis: false, loaded: false, raf: 0, y: 0, phase: 0, t: 0, last: 0, tab: 0, src: tabs ? T0.src : f.src, walkOff: false };
+        /* at: an element id on the page; the frame opens scrolled to it and
+           holds there instead of walking the page (3 Oct 2026, the stories,
+           each a section of a homepage) */
+        const L = { f, fig, stage, fr, s: 1, docH: 0, vis: false, loaded: false, raf: 0, y: 0, phase: 0, t: 0, last: 0, tab: 0, src: tabs ? T0.src : f.src, at: (tabs ? T0.at : f.at) || "", walkOff: !!((tabs ? T0.at : f.at)) };
         const engage = () => {
           if (fig.classList.contains("on")) return;
           fig.classList.add("on"); L.walkOff = true; cancelAnimationFrame(L.raf); L.raf = 0;
@@ -1537,7 +1540,8 @@
             L.tab = i; L.src = t.src;
             btns.forEach((b, j) => { b.setAttribute("aria-selected", j === i ? "true" : "false"); b.tabIndex = j === i ? 0 : -1; });
             if (focus) btns[i].focus();
-            if (isScroll) { open.setAttribute("aria-label", "Scroll " + (t.title || t.label) + " inside the frame"); disengage(); L.walkOff = false; }
+            L.at = t.at || "";
+            if (isScroll) { open.setAttribute("aria-label", "Scroll " + (t.title || t.label) + " inside the frame"); disengage(); L.walkOff = !!L.at; }
             else { open.href = srcOf(t); open.setAttribute("aria-label", "Open " + (t.title || t.label) + " in a new tab"); }
             fr.title = t.title || t.label;
             const cap = fig.querySelector(".sp-live-cap"); if (cap) cap.innerHTML = capHtml(t);
@@ -1561,6 +1565,23 @@
         near.observe(fig); seen.observe(fig);
         fr.addEventListener("load", () => {
           liveMeasure(L); setTimeout(() => liveMeasure(L), 1400); liveRun(L);
+          /* a frame with an anchor opens at it: scrolled so the section sits
+             just under the page's sticky nav. Done by scrolling the frame's
+             own window, never by a #hash, which would scroll the room too.
+             Again once fonts and pictures settle, unless the reader is in */
+          if (isScroll && L.at) {
+            const goAt = () => {
+              if (fig.classList.contains("on")) return;
+              try {
+                const w = fr.contentWindow, d = fr.contentDocument, el = d.getElementById(L.at); if (!el) return;
+                const nav = d.querySelector(".sk-nav"), off = nav ? nav.getBoundingClientRect().height + 30 : 90;
+                const y = Math.max(0, Math.round(el.getBoundingClientRect().top + w.scrollY - off));
+                L.y = y; w.scrollTo(0, y);
+              } catch (e) { /* another origin */ }
+            };
+            goAt(); setTimeout(goAt, 600);
+            try { fr.contentDocument.fonts.ready.then(goAt); } catch (e) { /* another origin */ }
+          }
           /* inside an entered page: Escape hands the scroll back, and a link
              that goes nowhere ("#") no longer jumps the page to its top */
           if (isScroll) {

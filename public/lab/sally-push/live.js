@@ -16,9 +16,18 @@ window.Live = (() => {
   const root = document.documentElement;
   const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
   let t = 0, last = 0, waiters = [], stopped = false, count = 0;
+  /* on a homepage the story is one section of a long page (3 Oct 2026):
+     its clock runs only while the section is on screen, so it plays where
+     it is seen and waits where it is not */
+  let vis = true;
+  const lvEl = document.querySelector(".lv");
+  if (lvEl && "IntersectionObserver" in window) {
+    vis = false;
+    new IntersectionObserver(([e]) => { vis = e.isIntersecting; }, { threshold: 0.2 }).observe(lvEl);
+  }
   const tick = (now) => {
     const dt = last ? Math.min(64, now - last) : 0; last = now;
-    if (!stopped && !root.dataset.paused && !document.hidden) t += dt;
+    if (!stopped && vis && !root.dataset.paused && !document.hidden) t += dt;
     if (waiters.length) waiters = waiters.filter((w) => (t >= w.end ? (w.res(), false) : true));
     requestAnimationFrame(tick);
   };
@@ -53,8 +62,9 @@ window.Live = (() => {
     await wait(180);
   };
 
-  /* the shared nav: the bag's count and a short note under it */
-  const badge = () => document.querySelector(".lv-bag b");
+  /* the shared nav: the bag's count and a short note under it. On a
+     homepage the bag is the page's own (the chrome's .sk-bag) */
+  const badge = () => document.querySelector(".lv-bag b, .sk-bag b");
   const bag = (n) => {
     count = n; const b = badge(); if (!b) return;
     b.textContent = String(n);
@@ -63,7 +73,13 @@ window.Live = (() => {
   let toastT = 0;
   const toast = (text, ms = 2200) => {
     let el = document.querySelector(".lv-toast");
-    if (!el) { el = document.createElement("div"); el.className = "lv-toast"; el.setAttribute("role", "status"); (document.querySelector(".lv") || document.body).appendChild(el); }
+    if (!el) {
+      el = document.createElement("div"); el.className = "lv-toast"; el.setAttribute("role", "status");
+      /* a module carries its own nav, so its note sits under it; on a
+         homepage the note sits under the page's nav, fixed */
+      if (document.querySelector(".lv-nav")) (document.querySelector(".lv") || document.body).appendChild(el);
+      else { el.classList.add("fixed"); document.body.appendChild(el); }
+    }
     el.textContent = text; el.classList.add("on");
     clearTimeout(toastT); toastT = setTimeout(() => el.classList.remove("on"), ms);
   };
@@ -86,14 +102,12 @@ window.Live = (() => {
 
   const run = ({ reset, play, still }) => {
     if (reduce) { (still || reset)(); return; }
-    /* opened on its own, a real press hands the page to the reader */
-    let framed = true; try { framed = window.top !== window; } catch (e) { framed = true; }
-    if (!framed) {
-      addEventListener("pointerdown", (e) => {
-        if (!e.isTrusted || stopped) return;
-        stopped = true; cur.classList.remove("on");
-      }, { capture: true });
-    }
+    /* a real press hands the page to the reader, framed or not: in the
+       study, clicking into the frame and touching the story stops the play */
+    addEventListener("pointerdown", (e) => {
+      if (!e.isTrusted || stopped) return;
+      stopped = true; cur.classList.remove("on");
+    }, { capture: true });
     (async () => { for (;;) { reset(); bag(0); await wait(700); await play(); await wait(1800); cur.classList.remove("on"); await wait(400); } })();
   };
   return { run, tap, wait, moveTo, bag, toast, fly, get count() { return count; } };

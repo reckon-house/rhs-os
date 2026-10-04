@@ -48,7 +48,7 @@ export function header({ assets = "../sally-system/assets/", note = DEFAULT_NOTE
 <header class="sk-nav">
   <a class="sk-logo" href="#">${LOGO(assets)}</a>
   <nav class="sk-links">${NAV.map((n) => `<a href="#">${n}</a>`).join("")}<a class="deals" href="#">Deals</a></nav>
-  <div class="sk-r"><a href="#">Search</a><a href="#">Sign in</a><a href="#">Bag (0)</a></div>
+  <div class="sk-r"><a href="#">Search</a><a href="#">Sign in</a><a class="sk-bag" href="#">Bag (<b>0</b>)</a></div>
 </header>`;
 }
 

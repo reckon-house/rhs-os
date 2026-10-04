@@ -713,7 +713,9 @@ export interface ProductDemoSection extends BaseSection {
    * frame's width, height and mode, and brings its own title and note.
    * The old study pages show the first tab alone.
    */
-  tabs?: { label: string; demo: string; folder?: ProductDemoSection["folder"]; query?: string; title?: string; note?: string }[];
+  tabs?: { label: string; demo: string; folder?: ProductDemoSection["folder"]; query?: string; title?: string; note?: string;
+    /** An element id on that page: the frame opens scrolled to it and holds there (3 Oct 2026, the stories) */
+    at?: string }[];
 }
 
 /**

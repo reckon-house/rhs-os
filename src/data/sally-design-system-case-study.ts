@@ -152,15 +152,6 @@ export const sallyDesignSystemCaseStudy: CaseStudy = {
       fullWidth: true,
       content: "Nobody knows color like Sally: 8,000+ shades and real chemistry, and a licensed colorist checks the plan before anyone mixes, for free.",
     },
-    {
-      id: "idea-sizzle",
-      type: "product-demo",
-      folder: "sally-push",
-      demo: "m-sizzle",
-      mode: "fit",
-      title: "Three ideas",
-      note: "The doer's store, color expertise and education, each in the concepts' own words.",
-    },
     /* MOCKUP 1 OF 4, his own (3 Oct 2026, "can you drop this into the case
        study as our first mockup?"): the Lookbook's takeover story on a
        laptop, made from homepage-lookbook-desktop-tall.jpg. Cropped to his
@@ -331,55 +322,48 @@ export const sallyDesignSystemCaseStudy: CaseStudy = {
     // ════════════════════════════════════════
     // ACT 3 · SECTION 06 — THE STORIES
     // ════════════════════════════════════════
+    /* the stories, as sections of the homepages (3 Oct 2026, his "we have
+       these stories but they're not in context and not exactly 'real' so i
+       feel like it would be hard for a user to understand what exactly they
+       are", then "yea let's give it a try!"): the doer's store is the
+       Platinum Kit on the Lookbook, color expertise the color code on
+       Colorfest, education the colorist band on The Sale. One frame, each
+       tab opening its homepage at its story, working. The Idea's animation
+       and the three stand-alone modules came out with this */
     {
       id: "stories-header",
       type: "section-header",
       label: "SECTION 06: THE STORIES",
       title: "Each idea becomes",
-      pressing: { mark: { n: "06", name: "The Stories" }, heldLine: "a story you can shop." },
+      pressing: { mark: { n: "06", name: "The Stories" }, heldLine: "a section of the homepage." },
     },
     {
       id: "stories-text",
       type: "text",
       size: "subhead",
-      content: "Going platinum takes six steps and about two hours, so the doer's store sells it as one kit for $36.99. Color expertise becomes a code you can crack, and the vivids get a wall of their own.",
+      content: "Going platinum takes six steps and about two hours, so the Lookbook sells it as one kit for $36.99. Colorfest turns color expertise into a code you can crack.",
     },
     {
       id: "stories-footnote",
       type: "text",
       size: "base",
       fullWidth: true,
-      content: "A level and a tone name every shade. Vivids skip the levels and want a light base, so the lightener comes first.",
+      content: "A level and a tone name each shade, and the level runs from one, black, to ten, the lightest blonde. Every page links to a free licensed colorist, and on The Sale the service gets a band of its own.",
     },
     {
-      id: "stories-kit",
+      id: "stories-tabs",
       type: "product-demo",
       folder: "sally-push",
-      demo: "m-kit-live",
-      query: "view=creative",
-      mode: "fit",
-      title: "Shop the look, working",
-      note: "The Platinum Kit on the page: take a piece out and the price follows, then the whole kit goes in the bag.",
-    },
-    {
-      id: "stories-code",
-      type: "product-demo",
-      folder: "sally-push",
-      demo: "m-code-live",
-      query: "view=creative",
-      mode: "fit",
-      title: "The color code, working",
-      note: "Pick a level, then a tone, and the code builds itself.",
-    },
-    {
-      id: "stories-vivids",
-      type: "product-demo",
-      folder: "sally-push",
-      demo: "m-vivids-live",
-      query: "view=creative",
-      mode: "fit",
-      title: "The vivids wall, working",
-      note: "Each hue brings up its look, and the lightener sits one tap away.",
+      demo: "lookbook-images",
+      title: "The three stories",
+      stageWidth: 1440,
+      viewHeight: 900,
+      mode: "scroll",
+      tabs: [
+        { label: "The doer's store", demo: "lookbook-images", at: "kit", title: "The doer's store", note: "On the Lookbook, under the looks: the Platinum Kit. Take a piece out and the price follows." },
+        { label: "Color expertise", demo: "colorfest", at: "code", title: "Color expertise", note: "On Colorfest, after the lineup: pick a level, then a tone, and the code builds itself." },
+        { label: "Education", demo: "promotion", at: "colorist", title: "Education", note: "On The Sale: free hair color advice from a licensed colorist." },
+      ],
     },
 
     // ════════════════════════════════════════

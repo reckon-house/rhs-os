@@ -30,3 +30,9 @@
 .lv .pill { border: 0; cursor: pointer; }
 .lv .pill:disabled { opacity: 0.4; cursor: default; }
 @media (max-width: 560px) { .lv-nav nav { display: none; } .lv-head { flex-direction: column; align-items: flex-start; } }
+/* on a homepage (3 Oct 2026): the note sits under the page's own nav, and
+   the nav's bag count bumps when something lands in it */
+.lv-toast.fixed { position: fixed; top: 84px; right: clamp(16px, 2vw, 28px); z-index: 60; }
+.sk-bag b { display: inline-block; font-weight: inherit; }
+.sk-bag b.bump { animation: lv-bump-text 0.5s ease; }
+@keyframes lv-bump-text { 0% { transform: scale(1); } 35% { transform: scale(1.45); color: var(--red); } 100% { transform: scale(1); } }

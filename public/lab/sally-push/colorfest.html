@@ -11,6 +11,7 @@
      of confetti in colours sampled from his photographs (confetti.js). -->
 <link rel="preload" href="/fonts/Satoshi-Variable.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="push.css">
+<link rel="stylesheet" href="live.css">
 <script>(function () { var q = location.search, h = document.documentElement; if (/[?&]lineup=poster/.test(q)) h.dataset.lineup = "poster"; if (/[?&]pills=confetti/.test(q)) h.dataset.pills = "confetti"; })();</script>
 <style>
   .offers .t-big { font-size: clamp(84px, 11vw, 176px); }
@@ -24,7 +25,7 @@
 <header class="sk-nav">
   <a class="sk-logo" href="#"><img src="../sally-system/assets/brand/sally-logo-red.webp" alt="Sally Beauty" width="400" height="100"></a>
   <nav class="sk-links"><a href="#">Hair Color</a><a href="#">Hair Care</a><a href="#">Nails</a><a href="#">Tools</a><a href="#">Cosmetics</a><a href="#">Brands</a><a class="deals" href="#">Deals</a></nav>
-  <div class="sk-r"><a href="#">Search</a><a href="#">Sign in</a><a href="#">Bag (0)</a></div>
+  <div class="sk-r"><a href="#">Search</a><a href="#">Sign in</a><a class="sk-bag" href="#">Bag (<b>0</b>)</a></div>
 </header>
 <!-- /sk:header -->
 
@@ -80,6 +81,33 @@
     /* under ?pills=confetti each pill gets its own confetti (a seed apiece) */
     if (document.documentElement.dataset.pills === "confetti") document.querySelectorAll(".lineup .names span").forEach(function (sp, i) { sp.setAttribute("data-confetti", String(21 + i)); });
   </script>
+
+  <!-- color expertise, as a section of this homepage (3 Oct 2026, his
+       "we have these stories but they're not in context and not exactly
+       'real'", then "yea let's give it a try!"): the Color Authority
+       concept's shade finder, his level and tone swatches and his words,
+       after the lineup. Pick a level, then a tone, and the code builds
+       itself. His tone swatches are drawn at level 8; at any other level
+       each tone keeps its relation to the level's own swatch. It plays
+       itself while on screen (live.js) and hands over on a press -->
+  <section class="story st-code lv" id="code">
+    <div class="head"><div><p class="t-label red">The color code</p><h2 class="t-d2" style="margin-top:12px">Two steps to your shade.</h2></div><a class="pill soft sm" href="#">Decode tone codes</a></div>
+    <div class="st-finder">
+      <div class="st-codebox">
+        <p class="big" aria-live="polite"><span id="code-l" class="q">?</span><span id="code-t" class="q">?</span></p>
+        <p class="read"><b id="code-rb">Find your level</b><small id="code-rs">1 is black, 10 the lightest blonde.</small></p>
+      </div>
+      <div class="st-steps">
+        <div class="st-step"><p class="hd"><b>1 · Find your level</b><span class="t-label grey">Ten levels</span></p><div class="st-ramp" id="code-ramp"></div><p class="key"><span>1 · Black</span><span>10 · Lightest</span></p></div>
+        <div class="st-step wait" id="code-step2"><p class="hd"><b>2 · Pick your tone</b><span class="t-label grey" id="code-five">Five ways</span></p><div class="st-tones" id="code-tones"></div><p class="key"><span>Cool</span><span>Warm</span></p></div>
+      </div>
+    </div>
+    <div class="st-match wait" id="code-match">
+      <p>We'll match the formula, developer, and toner.</p>
+      <div class="st-cards"><div><i></i>Formula built for your level</div><div><i></i>Right developer for your level</div><div><i></i>Whole formula to your bag</div></div>
+      <div class="st-cta"><button class="pill" id="code-chat" type="button" disabled>Chat with a colorist</button><span class="t-cap">Avg. wait 2 min</span></div>
+    </div>
+  </section>
 
   <!-- picked for you -->
   <section class="story cf-pick">
@@ -176,6 +204,59 @@
 </footer>
 <!-- /sk:footer -->
 
+<script src="live.js"></script>
+<script>
+(() => {
+  /* his level swatches, 1 to 10, and his tone swatches at level 8 */
+  const LEVELS = ["#1a1411", "#2b1d16", "#3d2a1c", "#5a3a22", "#6e4828", "#8a5e34", "#a87c4a", "#c6a06a", "#ddc394", "#ece0bf"];
+  const TONES = [["A", "Ash", "#b9aa8d"], ["N", "Neutral", "#c2a173"], ["G", "Gold", "#cfa45e"], ["C", "Copper", "#c07a45"], ["R", "Red", "#a8503c"]];
+  const rgb = (h) => [1, 3, 5].map((i) => parseInt(h.slice(i, i + 2), 16));
+  const hex = (c) => "#" + c.map((v) => Math.max(0, Math.min(255, Math.round(v))).toString(16).padStart(2, "0")).join("");
+  const BASE8 = rgb(LEVELS[7]);
+  const toneAt = (lvl, t) => { if (lvl === 8) return t[2]; const b = rgb(LEVELS[lvl - 1]), r = rgb(t[2]).map((v, i) => v / BASE8[i]); return hex(b.map((v, i) => v * r[i])); };
+  const $ = (id) => document.getElementById(id);
+  const L = $("code-l"), T = $("code-t"), rb = $("code-rb"), rs = $("code-rs"), step2 = $("code-step2"), match = $("code-match"), chat = $("code-chat"), five = $("code-five");
+  let level = 0, tone = -1;
+  const lvBtns = LEVELS.map((c, i) => {
+    const b = document.createElement("button"); b.type = "button"; b.style.background = c; b.textContent = String(i + 1);
+    b.setAttribute("aria-label", "Level " + (i + 1));
+    b.addEventListener("click", () => { level = i + 1; tone = -1; draw(); });
+    $("code-ramp").appendChild(b); return b;
+  });
+  const tnBtns = TONES.map((t, i) => {
+    const b = document.createElement("button"); b.type = "button"; b.disabled = true;
+    b.innerHTML = '<span class="sw"></span><b>' + t[0] + "</b><small>" + t[1] + "</small>";
+    b.addEventListener("click", () => { if (!level) return; tone = i; draw(); });
+    $("code-tones").appendChild(b); return b;
+  });
+  const draw = () => {
+    lvBtns.forEach((b, i) => b.classList.toggle("on", i + 1 === level));
+    tnBtns.forEach((b, i) => { b.disabled = !level; b.classList.toggle("on", i === tone); b.querySelector(".sw").style.background = toneAt(level || 8, TONES[i]); });
+    step2.classList.toggle("wait", !level); five.textContent = level ? "Level " + level + ", five ways" : "Five ways";
+    L.textContent = level ? String(level) : "?"; L.classList.toggle("q", !level);
+    T.textContent = tone >= 0 ? TONES[tone][0] : "?"; T.classList.toggle("q", tone < 0);
+    T.style.color = tone >= 0 ? toneAt(level, TONES[tone]) : "";
+    const done = level && tone >= 0;
+    rb.textContent = done ? "Level " + level + ", tone " + TONES[tone][0] + ": " + TONES[tone][1].toLowerCase() + "." : level ? "Now pick your tone" : "Find your level";
+    rs.textContent = done ? "The letter after the level is the tone." : level ? "A cools it down, N keeps it honest, G, C and R warm it up." : "1 is black, 10 the lightest blonde.";
+    match.classList.toggle("wait", !done); chat.disabled = !done;
+  };
+  chat.addEventListener("click", () => Live.toast("Real licensed colorists, on demand."));
+  draw();
+  Live.run({
+    reset: () => { level = 0; tone = -1; draw(); },
+    still: () => { level = 8; tone = 3; draw(); },
+    play: async () => {
+      await Live.tap(lvBtns[3]); await Live.wait(380);
+      await Live.tap(lvBtns[5]); await Live.wait(380);
+      await Live.tap(lvBtns[7]); await Live.wait(700);
+      await Live.tap(tnBtns[0]); await Live.wait(800);
+      await Live.tap(tnBtns[3]); await Live.wait(900);
+      await Live.tap(chat); await Live.wait(1800);
+    },
+  });
+})();
+</script>
 <script src="confetti.js"></script>
 <script src="push.js"></script>
 </body>
