@@ -161,17 +161,15 @@ export const sallyDesignSystemCaseStudy: CaseStudy = {
       title: "Three ideas",
       note: "The doer's store, color expertise and education, each in the concepts' own words.",
     },
-    /* MOCKUP 1 OF 4, a placeholder (2 Oct 2026, his "could you add those
-       placeholders"): becomes an image section when his mockup arrives */
+    /* MOCKUP 1 OF 4, his own (3 Oct 2026, "can you drop this into the case
+       study as our first mockup?"): the Lookbook's takeover story on a
+       laptop, made from homepage-lookbook-desktop-tall.jpg */
     {
       id: "mock-1-lookbook-laptop",
-      type: "product-demo",
-      folder: "sally-push",
-      demo: "m-mock",
-      query: "n=1",
-      mode: "fit",
-      title: "Mockup 1 of 4",
-      note: "Placeholder: the Lookbook on a laptop, in a real setting.",
+      type: "image",
+      src: `${IMG}/sally-design-system-mockup-lookbook-laptop.jpg`,
+      alt: "The Lookbook homepage on a laptop on a wooden side table: Vivids are back at it, over a portrait with blue curls, beside Electric Violet and Copper",
+      aspect: "native",
     },
 
     // ════════════════════════════════════════
