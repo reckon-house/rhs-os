@@ -501,3 +501,37 @@ clean and modern?"
   `.fg-frame` element), crop by fractions of the frame, WebP q80 at ≤1100px into
   `assets/flow/`, and list each crop with its size in COLS. Check every crop's
   edges: a crop that starts inside a card cuts its words.
+
+## 3 Oct 2026 (later) — his photographed laptops, and three demos from helper agents
+
+- **`m-photo.html`** (his "here are two mockups we can use...maybe on some of the
+  sally os screen we just made fake mockups?"). Both photos are cropped wide to
+  2048 by 1720 (`public/case-studies/sally-os/sally-os-mockup-laptop-*-wide.jpg`).
+  Each screen edge was fitted where brightness falls halfway between screen and
+  bezel, every point within 0.1px, and the edges crossed for the corners
+  (coordinates in the crop's pixels in SHOTS). Top corners round (14px in the
+  page's plane), bottom square; the notch is drawn back on. The kit's
+  **`?fill=1`** makes the window fill a viewport cut to the screen's proportion
+  (1120 by 758 console, 1120 by 768 oak: both within a percent of the portal's
+  1120 by 760). The room pauses m-photo; m-photo hands `data-paused` to the
+  demo's host. Trends sits on the console, the Asset Hub on the oak desk.
+- **`asset-hub.html`**: the Asset Hub is NOT in index.html; it is the separate
+  DAM app (`Sally DAM/sally-dam`) the portal frames. Panel CSS from index.html,
+  the DAM's compiled from its own Tailwind for exactly the classes used. The
+  opened asset's fields, description, 21 tags and timestamp are copied from the
+  product screenshot; the other library cards are representative. Email Hero is
+  1200 by 400 in the code (not 480), and the real attention crop lands on lips,
+  nails and curls, above her eyes: kept, not faked. It shows the February 2026
+  panel (Vendor Uploads, before it became Review).
+- **`utilities.html`**: of the ten cards only Shelf Talker Generator and PDP Copy
+  Studio have UI in any code; the other eight exist only in the old screenshot,
+  so their names and descriptions are copied from it. Shelf Talker is a real
+  Streamlit app; Streamlit styling is runtime, so the widgets are rebuilt in the
+  app's colours. The sheet is page 1 of a real generated file for a past,
+  public ion promo, as vector (768KB). "58 rows found" is inferred from the PDFs.
+- **`brief-builder.html`**: the Brief Output panel left the portal on 13 Mar 2026
+  (commit 3889b99); its markup comes from aed1010 (5 Mar 2026). The chat side is
+  still live. Field labels, order and strings are the product's; the brief's
+  content is representative, with no figures, forecasts or names. It uses the
+  portal's own box-sizing reset, so its dock buttons are 36px like the product;
+  the older demos draw them about 54px (the box-sizing gap noted above).
