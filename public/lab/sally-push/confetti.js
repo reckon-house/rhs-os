@@ -53,7 +53,9 @@
      then small ones over those, each layer in random order and colour, so
      circles sit on and inside each other. Sizes scale with the card */
   function pack(w, h, seed) {
-    var R = rng(seed), k = Math.max(0.55, Math.min(1.6, Math.sqrt(w * h) / 700)), out = [];
+    /* the circles' size follows the width (capped), not the area, so a tall
+       block of confetti gets more circles, not bigger ones */
+    var R = rng(seed), k = Math.max(0.55, Math.min(1.1, Math.min(w, 760) / 700)), out = [];
     var pick = function () { return BAG[Math.floor(R() * BAG.length)]; };
     function grid(rmin, rmax) {
       var step = (rmin + rmax) / 2 * k * 1.3, cols = Math.ceil(w / step) + 2, rows = Math.ceil(h / step) + 2, pts = [];

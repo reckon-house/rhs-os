@@ -11,6 +11,7 @@
      of confetti in colours sampled from his photographs (confetti.js). -->
 <link rel="preload" href="/fonts/Satoshi-Variable.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="push.css">
+<script>if (/[?&]lineup=below/.test(location.search)) document.documentElement.dataset.lineup = "below";</script>
 <style>
   .offers .t-big { font-size: clamp(84px, 11vw, 176px); }
   .cf-pick .head { align-items: flex-end; }
@@ -28,13 +29,16 @@
 <!-- /sk:header -->
 
 <!-- the hero: the photograph, and a card in its blue -->
-<section class="cf-hero">
+<section class="cf-hero" data-confetti="11">
   <!-- 3 Oct 2026, his "let's use her for the colorfest hero instead of the
        girl with the blue in her hair (since we use her as the hero already",
        "let's connect the card and the image in the middle" and the card
-       filled with confetti, the type on top (confetti.js) -->
+       filled with confetti, the type on top (confetti.js). Then his "how do
+       we connect the brand to the big hero above since it's all together?":
+       the hero is a festival poster, the lineup at its foot, one field of
+       confetti behind the copy and the lineup, her photo laid over it -->
   <figure class="ph"><img src="../sally-system/assets/img/purple-nails-port.jpg" alt="A woman with violet curls and gold nails, laughing" width="1166" height="1500"></figure>
-  <div class="card on-dark" data-confetti="11">
+  <div class="card on-dark">
     <div class="top t-label"><span>Colorfest 2026</span><span>Through July 6</span></div>
     <div class="bottom">
       <h1>Wear your color out loud.</h1>
@@ -42,11 +46,16 @@
       <div class="pills"><a class="pill light" href="#">Shop the edit</a><a class="pill line" href="#">See the lookbook</a></div>
     </div>
   </div>
+  <div class="cf-lineup on-dark">
+    <div class="when t-label"><span>The lineup</span><span>Now through July 6</span><span>Only at Sally</span></div>
+    <p class="names"><span>ion</span> <span>Inspired by Nature</span> <span>Beyond the Zone</span> <span>ion Luxe</span> <span>GVP</span> <span>Strawberry Leopard</span></p>
+    <p class="note">Brands you'll only find at Sally, headlined by ion's vivids.</p>
+  </div>
 </section>
 
 <div class="wrap">
   <!-- the lineup -->
-  <section class="story lineup">
+  <section class="story lineup v-below">
     <div class="when t-label"><span class="red">The lineup</span><span>Now through July 6</span><span class="grey">Only at Sally</span></div>
     <!-- the brands as soft pills, the Pride takeover's treatment (3 Oct 2026,
          his "on 'the lineup' list of brands on colorfest can we do this
