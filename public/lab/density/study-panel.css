@@ -97,6 +97,10 @@
 .sp-lives.fit { margin-top: clamp(32px, 6cqw, 56px); }
 .sp-live-fit .sp-live-stage { overflow: visible; border-radius: 0; background: transparent; box-shadow: none; }
 .sp-live-fit .sp-live-stage iframe { background: transparent; }
+/* a replay that draws its own laptop (3 Oct 2026, the Marketing OS demos):
+   no box behind it, the laptop stands on the room's paper */
+.sp-live-bare .sp-live-stage { border-radius: 0; background: transparent; box-shadow: none; }
+.sp-live-bare .sp-live-stage iframe { background: transparent; }
 /* a card to another study's room (study-link): its cover, what it is to
    this one, its name; it opens in place */
 .sp-xlink { display: grid; grid-template-columns: minmax(0, 1fr) auto; column-gap: clamp(16px, 3cqw, 28px); align-items: end; margin: clamp(32px, 6cqw, 56px) var(--m) 0; padding: clamp(18px, 3.4cqw, 28px); border-radius: 6px; background: #F4F3F1; cursor: pointer; }

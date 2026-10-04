@@ -47,8 +47,31 @@
     document.documentElement.setAttribute("data-framed", "");
   }
 
+  /* ?laptop=1 (3 Oct 2026, Jeremy: "maybe they need a little frame around
+     them - maybe it's a laptop illustration - not an actual laptop but
+     something vector that's clean and modern?"). The demo draws itself in
+     a flat laptop: its window becomes the screen inside a dark lid, with a
+     base under it. The parts wrap the window INSIDE the host, so the host
+     stays the body's child the case study pauses through, and the stage's
+     template (what each loop restores) is untouched. sally-demo.css draws it. */
+  var LAPTOP = /[?&]laptop=1/.test(window.location.search);
+  if (LAPTOP) document.documentElement.setAttribute("data-laptop", "");
+  function laptop(host) {
+    var win = host.firstElementChild;
+    if (!win || host.querySelector(".sd-lap")) return;
+    var lap = document.createElement("div"); lap.className = "sd-lap";
+    var lid = document.createElement("div"); lid.className = "sd-lap-lid";
+    var cam = document.createElement("i"); cam.className = "sd-lap-cam";
+    var base = document.createElement("div"); base.className = "sd-lap-base";
+    var notch = document.createElement("i"); notch.className = "sd-lap-notch";
+    host.insertBefore(lap, win);
+    lid.appendChild(cam); lid.appendChild(win); base.appendChild(notch);
+    lap.appendChild(lid); lap.appendChild(base);
+  }
+
   function SallyDemo(host, script) {
     if (!host) return;
+    if (LAPTOP) laptop(host);
     this.host = host;
     this.stage = host.querySelector("[data-stage]") || host;
     this.script = script;

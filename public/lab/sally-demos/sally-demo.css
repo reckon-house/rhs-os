@@ -587,3 +587,18 @@ html[data-framed] .sp-caption {
   .ps-kw-bar { display: none; }
   .fb-label { font-size: 8.5px; top: -16px; }
 }
+
+/* ---- the laptop (?laptop=1, see sally-demo-kit.js) ----------------------
+   A flat, drawn laptop rather than a photograph: the portal window is the
+   screen, set in a near-black lid with an even bezel and a camera dot, on a
+   light base with the thumb notch. Proportions after a 14" notebook, kept
+   simple; no gradients beyond a hint on the base, so it reads as an
+   illustration. The page goes transparent so the laptop sits on whatever
+   holds it. */
+html[data-laptop] body { padding: 18px 0 44px; background: transparent !important; }
+.sd-lap { display: flex; flex-direction: column; align-items: center; width: max-content; margin: 0 auto; }
+.sd-lap-lid { position: relative; padding: 24px 24px 26px; border-radius: 30px; background: #141416; box-shadow: inset 0 0 0 1px #2b2b30, inset 0 0 0 5px #141416, inset 0 0 0 6px #1d1d21; }
+.sd-lap-lid > :not(.sd-lap-cam) { width: 1120px; max-width: none; margin: 0 !important; border-radius: 5px !important; box-shadow: none !important; }
+.sd-lap-cam { position: absolute; top: 9px; left: 50%; width: 7px; height: 7px; margin-left: -3.5px; border-radius: 50%; background: #2a2a2f; box-shadow: inset 0 0 0 2px #1d1d22; }
+.sd-lap-base { position: relative; width: calc(100% + 136px); height: 24px; margin-top: -1px; border-radius: 3px 3px 22px 22px / 3px 3px 18px 18px; background: linear-gradient(#E9E9ED, #D3D3D9 70%, #C2C2C9); box-shadow: 0 26px 34px -22px rgba(20, 0, 2, 0.32); }
+.sd-lap-notch { position: absolute; top: 0; left: 50%; width: 168px; height: 10px; margin-left: -84px; border-radius: 0 0 12px 12px; background: #C3C3CA; }

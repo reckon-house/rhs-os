@@ -1,5 +1,10 @@
 import type { CaseStudy } from "@/lib/types";
 
+/* the live demos sit in a drawn laptop (3 Oct 2026, Jeremy: "maybe they
+   need a little frame around them - maybe it's a laptop illustration - not
+   an actual laptop but something vector that's clean and modern?"): each
+   replay opens with laptop=1 (sally-demo-kit.js draws the laptop around its
+   1120px window), so the page is 1320px wide */
 export const sallyCaseStudy: CaseStudy = {
   slug: "sally",
   title: "Sally Beauty Marketing OS",
@@ -304,6 +309,8 @@ export const sallyCaseStudy: CaseStudy = {
       id: "trends-to-jim-demo",
       type: "product-demo",
       demo: "trends-to-jim",
+      query: "laptop=1",
+      stageWidth: 1320,
       title: "The full arc · Feed to channel requests",
       note: "This demo runs the whole chain: the feed flags a competitor's move, Sally's Take reads it against the brand corpus, and the Brainstorm This button hands it to Jim, the AI strategy partner in Brand Brain. Three moves later, one prompt drafts a campaign with two finished billboards on real photography. A second model argues against the campaign's claim, and pressing Approve opens four production requests, one per channel.",
     },
@@ -402,6 +409,8 @@ export const sallyCaseStudy: CaseStudy = {
       id: "brain-jim-demo",
       type: "product-demo",
       demo: "jim-chat",
+      query: "laptop=1",
+      stageWidth: 1320,
       title: "Brand Brain · Jim",
       note: "A strategist pushes back on the tagline. Jim answers from the brand corpus, works out which persona the objection belongs to, then generates the homepage card from the line he settles on.",
     },
@@ -440,6 +449,8 @@ export const sallyCaseStudy: CaseStudy = {
       id: "brain-requests-demo",
       type: "product-demo",
       demo: "requests-email",
+      query: "laptop=1",
+      stageWidth: 1320,
       title: "From brief to email",
       note: "Open the August campaign board, take COLORfest's CRM request, and press Create Email. The email assembles out of the Marketing OS's own component library, so what lands on screen is what an email developer receives.",
     },
@@ -447,6 +458,8 @@ export const sallyCaseStudy: CaseStudy = {
       id: "brain-figma-demo",
       type: "product-demo",
       demo: "figma-build",
+      query: "laptop=1",
+      stageWidth: 1320,
       title: "From email to Figma",
       note: "The Figma plugin builds the four requested emails in one press. It clones an artboard per request, places each image and then that image's copy, and fills the headers last. Images go first because the plugin uses each image's position to find its section, and the text follows from there.",
     },
@@ -728,6 +741,8 @@ export const sallyCaseStudy: CaseStudy = {
       id: "utilities-pdp-demo",
       type: "product-demo",
       demo: "pdp-studio",
+      query: "laptop=1",
+      stageWidth: 1320,
       title: "Utilities · PDP Copy Studio",
       note: "Paste a product URL. The tool audits the live page, pulls search demand, looks for whitespace in the category that no competitor owns, and rewrites the copy against what it found. Then Gemini and Perplexity grade the rewrite in parallel, and neither one is shown Claude's reasoning.",
     },

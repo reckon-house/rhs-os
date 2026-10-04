@@ -219,12 +219,14 @@ for (const s of Object.values(H.studies)) {
         const replay = folder === "sally-demos" || folder === "dsc-demos";
         const fit = sec.mode === "fit"; /* a module made for the column: its own width, its own height */
         add(k, "live", {
-          src: "/lab/" + folder + "/" + sec.demo + ".html" + (replay ? "?framed=1" : sec.query ? "?" + sec.query : "") + (sec.hash ? "#" + sec.hash : ""),
+          src: "/lab/" + folder + "/" + sec.demo + ".html" + (replay ? "?framed=1" + (sec.query ? "&" + sec.query : "") : sec.query ? "?" + sec.query : "") + (sec.hash ? "#" + sec.hash : ""), /* a replay keeps its framed flag and takes a query too, e.g. laptop=1 (3 Oct 2026) */
           w: fit ? 0 : sec.stageWidth || (replay ? 1120 : 1440),
           h: sec.viewHeight || 0,
           mode: sec.mode || (replay ? "demo" : "page"),
           phone: !fit && (!!sec.phone || (sec.stageWidth || 1120) <= 600), /* a phone-width replay sits narrow */
           bleed: fit && !!sec.bleed, /* a fit module edge to edge, as a full-width picture */
+          /* a replay that draws its own laptop (laptop=1) sits on the room bare, no box behind it */
+          ...(replay && /(^|&)laptop=1(&|$)/.test(sec.query || "") ? { bare: true } : {}),
           title: clean(sec.title || ""),
           note: clean(sec.note || ""),
           /* pages to tab between in the one frame (3 Oct 2026), each with its

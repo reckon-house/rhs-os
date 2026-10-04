@@ -1473,7 +1473,7 @@
         return wrap;
       }
       function liveEl(f) {
-        const fig = tag(el("figure", "sp-live sp-live-" + (f.mode || "page") + (f.phone ? " phone" : "") + (f.tabs ? " tabbed" : "")), f);
+        const fig = tag(el("figure", "sp-live sp-live-" + (f.mode || "page") + (f.phone ? " phone" : "") + (f.tabs ? " tabbed" : "") + (f.bare ? " sp-live-bare" : "")), f);
         /* tabs (3 Oct 2026, his "one homepage section with a tab ... a user
            can tab or toggle through"): the pages share the frame, and a tab
            swaps the page in place; its title, its note and the open link
