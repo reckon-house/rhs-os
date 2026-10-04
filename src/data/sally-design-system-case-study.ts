@@ -57,7 +57,14 @@ const IMG = "/case-studies/sally-design-system";
    frame with three tabs (the Lookbook with its takeover story, Colorfest,
    and The Sale, a promotion homepage made for it), one email frame with
    three tabs (The Gloss, Summer vivids, The Sale), then the kit, then the
-   stories, the engine and the briefs. The Edit left the study. */
+   stories, the engine and the briefs. The Edit left the study.
+
+   Later on 3 Oct, his "these feel like one section - the design system
+   are the tokens and system that creates the assets in Jim, right? feels
+   like we can simplify it": Every Brief folded into The Kit, the briefs
+   module under the kit board as what the kit makes, and the closing became
+   section 08. The same evening the phone mockup turned to Colorfest and
+   both mockups tour their whole page. */
 
 /* the pushed palette: scarlet, ink, the one soft grey, and two of the vivids
    sampled from his photographs (violet, teal) */
@@ -160,7 +167,9 @@ export const sallyDesignSystemCaseStudy: CaseStudy = {
     /* and then the site scrolling in it (3 Oct 2026, his "is it possible to
        show the site scrolling in an image like this?"): m-laptop.html lays
        the live Lookbook onto the photograph's screen, mapped to its four
-       corners, and scrolls it through the looks to the Platinum Kit */
+       corners, and scrolls it through the looks to the Platinum Kit; since
+       his "can we scroll through the entire page for each?" it tours the
+       whole page, held on the kit while its story plays */
     {
       id: "mock-1-lookbook-laptop",
       type: "product-demo",
@@ -169,7 +178,7 @@ export const sallyDesignSystemCaseStudy: CaseStudy = {
       mode: "fit",
       bleed: true,
       title: "The Lookbook",
-      note: "on a laptop, scrolling through the looks to the Platinum Kit.",
+      note: "on a laptop, the whole page, with a stop at the Platinum Kit.",
     },
 
     // ════════════════════════════════════════
@@ -219,8 +228,11 @@ export const sallyDesignSystemCaseStudy: CaseStudy = {
        image into it but i think we'll do the same thing - add a mockup to
        it via code"): his phone on a wooden shelf, cropped wide like the
        laptop, with m-phone.html laying the live Lookbook onto its screen
-       (device.js, shared with the laptop). It scrolls the phone layout
-       down the wall, then holds on the Platinum Kit while its story plays */
+       (device.js, shared with the laptop). Then his "let's try colorfest
+       and can we scroll through the entire page for each?" and "on the
+       colorfest homepage let's highlight the free hair color advice LCOD
+       story": it plays Colorfest top to bottom, held on the free
+       colorist's chat */
     {
       id: "mock-2-lookbook-phone",
       type: "product-demo",
@@ -228,8 +240,8 @@ export const sallyDesignSystemCaseStudy: CaseStudy = {
       demo: "m-phone",
       mode: "fit",
       bleed: true,
-      title: "The Lookbook",
-      note: "on a phone, down the wall of shades to the Platinum Kit.",
+      title: "Colorfest",
+      note: "on a phone, top to bottom, stopping for free hair color advice.",
     },
 
     // ════════════════════════════════════════
@@ -330,6 +342,28 @@ export const sallyDesignSystemCaseStudy: CaseStudy = {
       title: "The kit, on one board",
       note: "The block and module names are the canvas's own labels.",
     },
+    /* what the kit makes, folded in from a section of its own (3 Oct 2026,
+       his "these feel like one section - the design system are the tokens
+       and system that creates the assets in Jim, right? feels like we can
+       simplify it"): every kind of brief in five shapes, under the board
+       whose tokens and templates make them */
+    {
+      id: "briefs-text",
+      type: "text",
+      size: "base",
+      fullWidth: true,
+      content: "The same templates take a campaign, a category drive, a sale, a cause, a loyalty push, a project and a new drop. The split banners alone were built to stamp a hundred at a time.",
+    },
+    {
+      id: "briefs-module",
+      type: "product-demo",
+      folder: "sally-push",
+      demo: "m-briefs",
+      query: "view=creative",
+      mode: "fit",
+      title: "Seven briefs",
+      note: "in square, 4:5, 9:16, 16:9 and the 3:1 split banner, from one set of templates.",
+    },
 
     // ════════════════════════════════════════
     // ACT 3 · SECTION 06 — THE STORIES
@@ -341,7 +375,10 @@ export const sallyDesignSystemCaseStudy: CaseStudy = {
        Platinum Kit on the Lookbook, color expertise the color code on
        Colorfest, education the colorist band on The Sale. One frame, each
        tab opening its homepage at its story, working. The Idea's animation
-       and the three stand-alone modules came out with this */
+       and the three stand-alone modules came out with this. Education moved
+       to Colorfest once the free colorist became a story there (3 Oct 2026,
+       his "let's highlight the free hair color advice LCOD story"), so the
+       tab shows it working as the other two do */
     {
       id: "stories-header",
       type: "section-header",
@@ -360,7 +397,7 @@ export const sallyDesignSystemCaseStudy: CaseStudy = {
       type: "text",
       size: "base",
       fullWidth: true,
-      content: "A level and a tone name each shade, and the level runs from one, black, to ten, the lightest blonde. Every page links to a free licensed colorist, and on The Sale the service gets a band of its own.",
+      content: "A level and a tone name each shade, and the level runs from one, black, to ten, the lightest blonde. Every page links to a free licensed colorist, and on Colorfest the chat plays itself.",
     },
     {
       id: "stories-tabs",
@@ -374,7 +411,7 @@ export const sallyDesignSystemCaseStudy: CaseStudy = {
       tabs: [
         { label: "The doer's store", demo: "lookbook-images", at: "kit", title: "The doer's store", note: "On the Lookbook, under the looks: the Platinum Kit. Take a piece out and the price follows." },
         { label: "Color expertise", demo: "colorfest", at: "code", title: "Color expertise", note: "On Colorfest, after the lineup: pick a level, then a tone, and the code builds itself." },
-        { label: "Education", demo: "promotion", at: "colorist", title: "Education", note: "On The Sale: free hair color advice from a licensed colorist." },
+        { label: "Education", demo: "colorfest", at: "lcod", title: "Education", note: "On Colorfest, under the picks: a licensed colorist answers a photo with a formula, and one tap shops it." },
       ],
     },
 
@@ -426,40 +463,6 @@ export const sallyDesignSystemCaseStudy: CaseStudy = {
       note: "How the campaign board, the Asset Hub and the AI behind these templates were built.",
     },
 
-    // ════════════════════════════════════════
-    // ACT 3 · SECTION 08 — EVERY BRIEF
-    // ════════════════════════════════════════
-    {
-      id: "briefs-header",
-      type: "section-header",
-      label: "SECTION 08: EVERY BRIEF",
-      title: "Seven kinds of brief,",
-      pressing: { mark: { n: "08", name: "Every Brief" }, heldLine: "five shapes each." },
-    },
-    {
-      id: "briefs-text",
-      type: "text",
-      size: "subhead",
-      content: "A campaign, a category drive, a sale, a cause, a loyalty push, a project and a new drop fill the same templates, square, vertical and horizontal.",
-    },
-    {
-      id: "briefs-footnote",
-      type: "text",
-      size: "base",
-      fullWidth: true,
-      content: "The split banners alone were built to stamp a hundred at a time.",
-    },
-    {
-      id: "briefs-module",
-      type: "product-demo",
-      folder: "sally-push",
-      demo: "m-briefs",
-      query: "view=creative",
-      mode: "fit",
-      title: "Seven briefs, five shapes",
-      note: "Square, 4:5, 9:16, 16:9 and the 3:1 split banner, from one set of templates.",
-    },
-
     // ── Editorial headline ──
     {
       id: "headline-weeks",
@@ -474,9 +477,9 @@ export const sallyDesignSystemCaseStudy: CaseStudy = {
     {
       id: "closing-header",
       type: "section-header",
-      label: "SECTION 09: CLOSING",
+      label: "SECTION 08: CLOSING",
       title: "The homepage kit grew out",
-      pressing: { mark: { n: "09", name: "One Stylesheet" }, heldLine: "of the email system." },
+      pressing: { mark: { n: "08", name: "One Stylesheet" }, heldLine: "of the email system." },
     },
     {
       id: "closing-text",
