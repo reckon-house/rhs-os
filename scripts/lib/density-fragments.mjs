@@ -224,6 +224,7 @@ for (const s of Object.values(H.studies)) {
           h: sec.viewHeight || 0,
           mode: sec.mode || (replay ? "demo" : "page"),
           phone: !fit && (!!sec.phone || (sec.stageWidth || 1120) <= 600), /* a phone-width replay sits narrow */
+          bleed: fit && !!sec.bleed, /* a fit module edge to edge, as a full-width picture */
           title: clean(sec.title || ""),
           note: clean(sec.note || ""),
           /* pages to tab between in the one frame (3 Oct 2026), each with its

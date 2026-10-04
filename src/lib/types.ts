@@ -706,6 +706,12 @@ export interface ProductDemoSection extends BaseSection {
   /** One line under the frame: what is being shown, in plain words. */
   note?: string;
   /**
+   * A fit module that runs the room's full picture width, edge to edge, as a
+   * full-width picture does, instead of sitting in from the copy's margin
+   * (3 Oct 2026: his laptop mockup, the site scrolling in it).
+   */
+  bleed?: boolean;
+  /**
    * Pages a reader tabs between in the one frame (3 Oct 2026, his "one
    * homepage section with a tab - one will be the lookbook, one will be
    * colorfest, one will be a promotion ... then we do 3 emails, same

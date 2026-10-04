@@ -1469,7 +1469,7 @@
         const wrap = el("div", "sp-lives" + (b.phone ? " phone" : "") + (b.fit ? " fit" : ""));
         const ls = b.list.map((f) => liveEl(f));
         ls.forEach((L) => wrap.appendChild(L.fig));
-        P.lives.push({ wrap, phone: b.phone, fit: b.fit, ls });
+        P.lives.push({ wrap, phone: b.phone, fit: b.fit, bleed: b.fit && b.list.every((f) => f.bleed), ls });
         return wrap;
       }
       function liveEl(f) {
@@ -1982,7 +1982,9 @@
       /* live frames run as wide as the pictures do; a row of phones and
          emails starts at the copy's margin */
       parts.lives.forEach((Lv) => {
-        const inset = Lv.phone || Lv.fit;
+        /* a module sits in from the copy's margin, unless it bleeds: then it
+           runs edge to edge as a full-width picture does */
+        const inset = (Lv.phone || Lv.fit) && !Lv.bleed;
         Lv.wrap.style.width = Math.floor(inset ? Wf - m : Wf) + "px";
         Lv.wrap.style.marginLeft = (inset ? m : 0) + "px";
         Lv.ls.forEach((L) => {

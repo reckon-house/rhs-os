@@ -157,12 +157,19 @@ export const sallyDesignSystemCaseStudy: CaseStudy = {
        laptop, made from homepage-lookbook-desktop-tall.jpg. Cropped to his
        box ("can we crop like that and go edge to edge with it?"), the
        laptop and the table's edge, so it runs the room's full width */
+    /* and then the site scrolling in it (3 Oct 2026, his "is it possible to
+       show the site scrolling in an image like this?"): m-laptop.html lays
+       the live Lookbook onto the photograph's screen, mapped to its four
+       corners, and scrolls it through the looks to the Platinum Kit */
     {
       id: "mock-1-lookbook-laptop",
-      type: "image",
-      src: `${IMG}/sally-design-system-mockup-lookbook-laptop-wide.jpg`,
-      alt: "The Lookbook homepage on a laptop on a wooden side table: Vivids are back at it, over a portrait with blue curls, beside Electric Violet and Copper",
-      aspect: "native",
+      type: "product-demo",
+      folder: "sally-push",
+      demo: "m-laptop",
+      mode: "fit",
+      bleed: true,
+      title: "The Lookbook",
+      note: "on a laptop, scrolling through the looks to the Platinum Kit.",
     },
 
     // ════════════════════════════════════════
