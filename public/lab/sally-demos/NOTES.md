@@ -469,3 +469,35 @@ back, forever. Measure `body.scrollHeight`.
 - The Asset Hub demo as a further panel is still open (assets already
   downloaded). The frame is generic now, so it is one file plus one section
   entry.
+
+## 3 Oct 2026 — the laptop, the Trends page, the flowing grid
+
+Jeremy, on the Marketing OS study: "using code and animating/showing how
+things work live has been a mental unlock for me. i dont need many static
+images of things", then "maybe they need a little frame around them - maybe
+it's a laptop illustration - not an actual laptop but something vector that's
+clean and modern?"
+
+- **`?laptop=1`** (sally-demo-kit.js + sally-demo.css): the demo wraps its
+  1120px window (the host's first child) in a flat drawn laptop, a near-black
+  lid with an even bezel and a camera dot, on a light base with the thumb
+  notch. The parts go INSIDE the host, so the host is still the body's child
+  the room pauses through (`liveHost`), and the stage's template is untouched.
+  The page goes transparent; the document is 1320px wide, so a study entry
+  takes `query: "laptop=1", stageWidth: 1320`. The fragment builder passes a
+  replay's query along with framed=1 and marks laptop replays `bare`, and the
+  room drops its grey box behind them.
+- **`trends-page.html`** replays the Trends page as the old screenshot had
+  it. ⚠️ The portal has since folded the buzz row, heatmap and movers away
+  ("REMOVED: low actionability per UX review" in `renderInsightsV2`), but their
+  renderers are still in index.html (`iv2RenderSocialBuzz`, `iv2RenderHeatmap`,
+  `iv2RenderMovers`), and the markup here is theirs. The report text is the
+  portal's own scanned summaries as the study's screenshots show them; where a
+  screenshot cut a summary off, the card says only what its title and the
+  visible text support. No Sally's Take on this page: the published one cites
+  an internal brief file.
+- **`screen-flow.html`** is the opening grid, moving. To refresh it: capture the
+  demos with `?framed=1&force=1` at deviceScaleFactor 2 (the `.sp-frame` /
+  `.fg-frame` element), crop by fractions of the frame, WebP q80 at ≤1100px into
+  `assets/flow/`, and list each crop with its size in COLS. Check every crop's
+  edges: a crop that starts inside a card cuts its words.

@@ -14,7 +14,7 @@ python3 -m http.server 4614 --directory public/lab/sally-demos
 Or, once committed, they're live at `reckon.house/lab/sally-demos/<name>.html`
 because `public/` is served as-is — watchable before any React port exists.
 
-## The five demos
+## The demos
 
 | file | ~length | what it shows |
 |---|---|---|
@@ -23,6 +23,8 @@ because `public/` is served as-is — watchable before any React port exists.
 | `requests-email.html` | ~16s | August campaign board → click COLORfest's CRM channel → request detail → Create Email → **a real email assembles from the product's own renderer** |
 | `figma-build.html` | ~25s | Sally OS plugin batch-builds four CRM emails onto a canvas — clone, then images first, then copy, exactly as the plugin does |
 | `trends-to-jim.html` | ~60s | **The full arc.** A dense scanned feed → **Get Sally Insight** → Sally's Take against Brand Brain → **Brainstorm This** → the app switches to Briefing with a seeded Jim chat → three strategic moves → *"draft it"* → a complete campaign play with two finished billboard concepts (real DAM photography, the product's own card component), an adversarial critic verdict, and **Approve → open 4 requests** |
+| `trends-page.html` | ~26s | **The Trends page itself** (3 Oct 2026), the one the study's old screenshot showed: Social & Creator Buzz slides, the Activity Heatmap's dots and the Category Breakdown's bars grow in, a cursor filters to Social and back, then the page reads down the reports and the two market trends. Its sections' CSS is `sally-trends-page.css` |
+| `screen-flow.html` | loops | **Not a replay** (3 Oct 2026): the study's opening grid, moving. Fifteen moments captured from the demos above (`assets/flow/*.webp`, 2x crops) in three columns that travel and breathe; it reads `data-paused` on its root (the room's fit mode) |
 
 `requests-email` and `figma-build` **chain** — the first ends on *"ready for the
 Figma build."* Present them in that order.
@@ -36,7 +38,8 @@ Figma build."* Present them in that order.
 | `sally-pdp-studio.css` | PDP Studio accordions, findings, grades — verbatim |
 | `sally-figma-plugin.css` | the Sally OS plugin panel — verbatim from `Sally Figma Plugin/ui.html` |
 | `sally-trends.css` | insight cards + Sally Signal + Brainstorm This — verbatim |
-| `sally-demo.css` | engine classes (`.sd-pop`, `.sd-caret`, `.sd-instant`) |
+| `sally-demo.css` | engine classes (`.sd-pop`, `.sd-caret`, `.sd-instant`), and the drawn laptop (`.sd-lap*`) |
+| `sally-trends-page.css` | the Trends page's sections, verbatim; load it BEFORE `sally-trends.css` (the portal declares `.cat-*` before `.iv2-card`) |
 | `render_demo_email.py` | regenerates `assets/email-multicategory.html` via the portal's real `email_components.py` |
 | `assets/` | Sally logo, Satoshi + Founders Grotesk woff2, real DAM photography and packshots |
 
