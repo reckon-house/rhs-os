@@ -8,6 +8,8 @@
      homepage-<name>-desktop-long.jpg   2880 x 5400  three screens, for a scrolling mockup
      homepage-<name>-mobile.jpg         1170 x 2532  a phone screen (390 x 844 at 3x)
      homepage-<name>-mobile-long.jpg    1170 x 7596  three screens
+     homepage-lookbook-desktop-tall.jpg    2880 x 2160  a taller screen (1440 x 1080 at 2x)
+     homepage-lookbook-desktop-taller.jpg  2880 x 2400  taller again (1440 x 1200 at 2x)
      email-<name>-full.jpg              1200 x the email's length (600 wide at 2x)
      email-<name>-phone.jpg             1170 x 2532  the email as a phone shows it
 
@@ -102,6 +104,19 @@ for (const [name, url, long] of HOMEPAGES) {
   if (long) await save(await p.screenshot({ fullPage: true, clip: { x: 0, y: 0, width: 390, height: 2532 } }), `homepage-${name}-mobile-long.jpg`);
   await p.close();
 }
+/* taller desktop screens (3 Oct 2026, his "let's save a image for a
+   desktop mockup - can we get it a little taller this time?"): the same
+   page at 1440 wide, 1080 and 1200 tall, at 2x */
+const TALL = [["lookbook", PUSH("lookbook-images")]];
+for (const [name, url] of TALL) {
+  for (const [vh, suffix] of [[1080, "tall"], [1200, "taller"]]) {
+    const ctx = await b.newContext({ viewport: { width: 1440, height: vh }, deviceScaleFactor: 2 });
+    const p = await open(ctx, url, 2400);
+    await p.waitForTimeout(900);
+    await save(await p.screenshot(), `homepage-${name}-desktop-${suffix}.jpg`);
+    await ctx.close();
+  }
+}
 for (const [name, url] of EMAILS) {
   let p = await open(mail, url, 9000);
   await save(await p.screenshot({ fullPage: true }), `email-${name}-full.jpg`);
@@ -121,6 +136,8 @@ fs.writeFileSync(path.join(OUT, "README.txt"), [
   "desktop-long  2880 x 5400  three screens, for a scrolling mockup",
   "mobile        1170 x 2532  a phone screen (390 x 844 at 3x)",
   "mobile-long   1170 x 7596  three screens",
+  "desktop-tall  2880 x 2160  a taller screen (1440 x 1080 at 2x), the Lookbook",
+  "desktop-taller 2880 x 2400 taller again (1440 x 1200 at 2x), the Lookbook",
   "email-full    1200 wide, the email's whole length (600 wide at 2x)",
   "email-phone   1170 x 2532  the email as a phone shows it",
   "",
