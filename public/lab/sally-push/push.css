@@ -611,20 +611,19 @@ html:not([data-copy="card"]) .ll-float.mid .pills { justify-content: center; }
 
 /* ── Colorfest's hero, joined and full of confetti (3 Oct 2026): the photo
    and the card meet in the middle as one block, rounded only on the
-   outside; the card is the deep violet of her curls, packed with circles
-   in colours from the photographs (confetti.js), and a soft fall of that
-   violet from the foot keeps the copy readable on top ── */
-.cf-hero .card { position: relative; overflow: hidden; isolation: isolate; border-radius: 0 calc(var(--r) + 6px) calc(var(--r) + 6px) 0; background: #2E1F55; }
+   outside; the card is filled with layers of circles in colours from the
+   photographs (confetti.js), its ground the sky blue, as his reference ── */
+.cf-hero .card { position: relative; overflow: hidden; isolation: isolate; border-radius: 0 calc(var(--r) + 6px) calc(var(--r) + 6px) 0; background: #8CD7ED; }
 .cf-hero .card > canvas.confetti { position: absolute; inset: 0; z-index: -2; display: block; pointer-events: none; }
-.cf-hero .card::after { content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none;
-  background: linear-gradient(to bottom, rgba(30, 18, 58, 0.6) 0%, rgba(30, 18, 58, 0) 15%),
-    linear-gradient(to top, rgba(30, 18, 58, 0.92) 0%, rgba(30, 18, 58, 0.76) 32%, rgba(30, 18, 58, 0.42) 56%, rgba(30, 18, 58, 0.1) 74%, rgba(30, 18, 58, 0) 84%); }
-.cf-hero .card h1 { text-shadow: 0 2px 28px rgba(20, 10, 40, 0.5); }
-.cf-hero .card :is(.t-deck, .top) { text-shadow: 0 1px 14px rgba(20, 10, 40, 0.6); }
+/* the type sits right on the confetti, no fade (his "let's just try the
+   type on top of the confetti without the fade"); a soft shadow on the
+   letters alone keeps them clear where they cross a light circle, and the
+   outlined pill takes a dark glass so its words hold */
+.cf-hero .card h1 { text-shadow: 0 2px 18px rgba(20, 10, 40, 0.5), 0 1px 3px rgba(20, 10, 40, 0.35); }
+.cf-hero .card :is(.t-deck, .top) { text-shadow: 0 1px 10px rgba(20, 10, 40, 0.75), 0 0 2px rgba(20, 10, 40, 0.5); }
+.cf-hero .card .t-deck { font-weight: 500; }
+.cf-hero .card .pill.line { background: rgba(24, 14, 44, 0.42); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); }
 @media (max-width: 860px) {
   .cf-hero .ph { border-radius: calc(var(--r) + 6px) calc(var(--r) + 6px) 0 0; }
   .cf-hero .card { border-radius: 0 0 calc(var(--r) + 6px) calc(var(--r) + 6px); }
-  /* the phone's copy runs most of the card's height, so the fall reaches higher */
-  .cf-hero .card::after { background: linear-gradient(to bottom, rgba(30, 18, 58, 0.62) 0%, rgba(30, 18, 58, 0) 16%),
-    linear-gradient(to top, rgba(30, 18, 58, 0.92) 0%, rgba(30, 18, 58, 0.8) 44%, rgba(30, 18, 58, 0.46) 66%, rgba(30, 18, 58, 0.12) 82%, rgba(30, 18, 58, 0) 92%); }
 }

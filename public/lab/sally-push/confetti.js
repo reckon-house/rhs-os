@@ -4,9 +4,8 @@
    circles - you can pick almost a rainbow of 'sally' colors from the
    images. then the type can lay on top of the confetti".
 
-   Any element with data-confetti gets a canvas behind its content, packed
-   with circles: a few large, more medium, many small, never touching,
-   placed largest first so the field reads dense. The colours are sampled
+   Any element with data-confetti gets a canvas behind its content, filled
+   with circles: big ones, medium ones over them, small ones over those. The colours are sampled
    from his photographs (the violet and blue curls, the teal cat-eye
    nails, the cherry top, the orange nails, the yellow nail tips, the wave
    styler's pink, the lavender nails, the sky, the red lip) plus Sally
@@ -34,29 +33,28 @@
 
   function rng(seed) { var a = seed | 0; return function () { a = (a + 0x6D2B79F5) | 0; var t = Math.imul(a ^ (a >>> 15), 1 | a); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }
 
-  /* pack circles into w by h: sizes scale with the card, largest first */
+  /* layers on layers (3 Oct 2026, his "the confetti can overlap - it
+     should be layers on layers on layers!"): a big layer laid on a
+     jittered grid so nothing shows through, then medium circles over it,
+     then small ones over those, each layer in random order and colour, so
+     circles sit on and inside each other. Sizes scale with the card */
   function pack(w, h, seed) {
-    var R = rng(seed), k = Math.max(0.55, Math.min(1.6, w / 640)), gap = 3 * k;
-    var tiers = [[34, 58, 14], [18, 32, 70], [9, 17, 260], [4, 8.5, 900]]; /* [min r, max r, tries per 100k px] */
-    var area = w * h, cell = 64 * k, cols = Math.ceil(w / cell) + 1, grid = {}, out = [];
-    function near(x, y, r) {
-      var c0 = Math.floor((x - r - 60 * k) / cell), c1 = Math.floor((x + r + 60 * k) / cell), r0 = Math.floor((y - r - 60 * k) / cell), r1 = Math.floor((y + r + 60 * k) / cell);
-      for (var cy = r0; cy <= r1; cy++) for (var cx = c0; cx <= c1; cx++) {
-        var list = grid[cy * cols + cx]; if (!list) continue;
-        for (var i = 0; i < list.length; i++) { var q = list[i], dx = q.x - x, dy = q.y - y, m = q.r + r + gap; if (dx * dx + dy * dy < m * m) return true; }
-      }
-      return false;
+    var R = rng(seed), k = Math.max(0.55, Math.min(1.6, Math.sqrt(w * h) / 700)), out = [];
+    var pick = function () { return BAG[Math.floor(R() * BAG.length)]; };
+    function grid(rmin, rmax) {
+      var step = (rmin + rmax) / 2 * k * 1.3, cols = Math.ceil(w / step) + 2, rows = Math.ceil(h / step) + 2, pts = [];
+      for (var y = -1; y < rows; y++) for (var x = -1; x < cols; x++) pts.push([x * step + (R() - 0.5) * step * 0.9, y * step + (R() - 0.5) * step * 0.9]);
+      for (var i = pts.length - 1; i > 0; i--) { var j = Math.floor(R() * (i + 1)), t = pts[i]; pts[i] = pts[j]; pts[j] = t; }
+      pts.forEach(function (p) { out.push({ x: p[0], y: p[1], r: (rmin + R() * (rmax - rmin)) * k, color: pick() }); });
     }
-    tiers.forEach(function (t) {
-      var tries = Math.round(t[2] * area / 100000) * 6;
-      for (var n = 0; n < tries; n++) {
-        var r = (t[0] + R() * (t[1] - t[0])) * k, x = -r * 0.4 + R() * (w + r * 0.8), y = -r * 0.4 + R() * (h + r * 0.8);
-        if (near(x, y, r)) continue;
-        var c = { x: x, y: y, r: r, color: BAG[Math.floor(R() * BAG.length)], d: out.length };
-        out.push(c);
-        var key = Math.floor(y / cell) * cols + Math.floor(x / cell); (grid[key] || (grid[key] = [])).push(c);
-      }
-    });
+    function scatter(rmin, rmax, cover) {
+      var ra = (rmin + rmax) / 2 * k, n = Math.round(cover * w * h / (Math.PI * ra * ra));
+      for (var c = 0; c < n; c++) out.push({ x: R() * w, y: R() * h, r: (rmin + R() * (rmax - rmin)) * k, color: pick() });
+    }
+    grid(62, 128);        /* the ground: big circles, no gaps */
+    scatter(26, 58, 0.9);  /* medium, over them */
+    scatter(10, 22, 0.26); /* small, over those, fewer, as his reference has them */
+    out.forEach(function (c, i) { c.d = i / out.length; });
     return out;
   }
 
@@ -69,7 +67,7 @@
       g.setTransform(dpr, 0, 0, dpr, 0, 0); g.clearRect(0, 0, w, h);
       var t = reduce ? 1e9 : now - born, done = true;
       for (var i = 0; i < dots.length; i++) {
-        var c = dots[i], at = Math.min(900, c.d * 1.1), p = Math.max(0, Math.min(1, (t - at) / 420));
+        var c = dots[i], at = c.d * 1100, p = Math.max(0, Math.min(1, (t - at) / 380));
         if (p < 1) done = false; if (p <= 0) continue;
         var e = 1 - Math.pow(1 - p, 3), s = e + Math.sin(e * Math.PI) * 0.12; /* a small overshoot, like a pop */
         g.beginPath(); g.arc(c.x, c.y, Math.max(0, c.r * s), 0, Math.PI * 2); g.fillStyle = c.color; g.fill();
