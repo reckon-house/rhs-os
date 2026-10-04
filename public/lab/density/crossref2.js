@@ -2081,7 +2081,15 @@
      consistent"), and About with them, whose shelf is set the same way.
      Every kind now; a phone keeps its band */
   const PREVIEWED = new Set(["lines", "years", "capabilities", "tools", "figures", "about"]);
-  const reelOf = (o) => (!phone() && PREVIEWED.has(o.g.id) && shelfIds().length ? o._sv || (o._sv = [{ t: "shelf", o }]) : o.reel());
+  /* a study hovered at rest shows its one picture (4 Oct 2026, his "maybe
+     it just loads the one image and a user either clicks into the
+     project or moves off and it goes back to the main homepage
+     statement?"). The wheel stepped on through its mosaics, display
+     lines, figures and palette, which out of their room read as awkward
+     crops and random statements. ?reel=all steps through them again */
+  const REEL_ALL = ["all", "on"].includes((new URLSearchParams(location.search).get("reel") || "").toLowerCase());
+  const reelOf = (o) => (!phone() && PREVIEWED.has(o.g.id) && shelfIds().length ? o._sv || (o._sv = [{ t: "shelf", o }])
+    : !phone() && !REEL_ALL && o.g.id === "work" ? o.reel().slice(0, 1) : o.reel());
   const itemOf = () => {
     const reel = cur ? reelOf(cur.o) : [];
     return { reel, it: cur && reel.length ? reel[(cur.n % reel.length + reel.length) % reel.length] : { t: "rest" } };
@@ -3413,7 +3421,7 @@
     if (ev.pointerType !== "mouse" || !moved(ev)) return;
     const o = entryOf(ev.target);
     clearTimeout(intentT);
-    if (!o) return;
+    if (!o) { offEntry(); return; }
     clearTimeout(restT);
     intentT = setTimeout(() => hoverIn(o), staged() ? (VIEW.v === "study" ? 150 : 70) : cur ? 90 : 0);
   });
@@ -3424,7 +3432,18 @@
     clearTimeout(intentT); intentT = setTimeout(() => hoverIn(o), staged() && VIEW.v === "study" ? 150 : 90);
   });
   IDX.addEventListener("focusin", (ev) => { const o = entryOf(ev.target); if (o && ev.target.matches(":focus-visible")) hoverIn(o); });
-  const goRest = () => { clearTimeout(restT); restT = setTimeout(() => { if (!staged()) show(null); }, 700); };
+  /* back to the statement a beat after the pointer leaves (it waited
+     700ms, long enough to read as stuck) */
+  const goRest = () => { clearTimeout(restT); restT = setTimeout(() => { if (!staged()) show(null); }, 380); };
+  /* off every entry while still over the index (the air between entries,
+     a section's head) counts as off the project too (4 Oct 2026, his
+     "when i move the mouse off the project it doesnt always go back to
+     the main screen"): only leaving the index used to bring the statement
+     back. Reaching another entry first keeps the preview going */
+  const offEntry = () => {
+    if (staged()) { if (hov) { clearTimeout(restT); restT = setTimeout(() => { if (hov) stageNeutral(); }, 380); } return; }
+    if (cur) goRest();
+  };
   IDX.addEventListener("pointerleave", (ev) => {
     if (ev.pointerType !== "mouse") return;
     clearTimeout(intentT);
