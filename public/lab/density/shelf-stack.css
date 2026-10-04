@@ -92,3 +92,13 @@
    last of them at its own height, which the carry-on is measured by ── */
 .sh-foot.peeks { overflow: hidden; }
 .xk-peek { position: absolute; left: 0; right: 0; }
+/* the honest file waits out of sight until it is whole and decoded, then
+   shows at once over the rung under it (load in shelf-stack.js, 4 Oct) */
+.xk-pic img.ld { visibility: hidden; }
+/* a foot with a preview keeps its name in ink under the pointer, as the
+   shelf's head does, so carrying on changes nothing there (4 Oct) */
+.sh-foot.peeks:hover .sh-foot-t { color: inherit; }
+/* a scroll is not a hover: while the page moves the picture under a still
+   pointer keeps its size, so a carry-on finds the foot's picture and the
+   shelf's alike; the zoom comes once the page is still (4 Oct) */
+html.scrolling .xk-it .xk-pic img { transform: scale(1.001); transition: none; }

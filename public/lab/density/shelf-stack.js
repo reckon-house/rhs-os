@@ -255,10 +255,17 @@
     box._loaded = true;
     if (quick && !pv) pv = add(quick, () => box.classList.add("in"), "high");
     const show = (im) => { im.classList.add("hi"); box.classList.add("in"); if (pv) setTimeout(() => pv.remove(), 400); };
+    /* the honest file over a rung already showing is kept out of sight
+       until it is whole and decoded, then shown at once (4 Oct 2026, his
+       "when i scroll i see the images which is great but then there's a
+       blink/fade when it reloads"). Most of the large files are
+       progressive JPEGs: drawn as they arrived, their first coarse pass
+       laid a blur over the sharp rung under it, then sharpened */
+    const whole = (im, then) => { const go = () => { im.classList.remove("ld"); then(im); }; if (im.decode) im.decode().then(go, go); else go(); };
     /* with a rung under it the honest file takes its turn in the lane;
        a box whose honest file is the smallest rung takes it at once */
     const honest = () => quick
-      ? lane(box, (done) => { const im = add(want, (x) => { show(x); done(); }, "low"); im.addEventListener("error", done, { once: true }); })
+      ? lane(box, (done) => { const im = add(want, (x) => whole(x, (y) => { show(y); done(); }), "low"); im.classList.add("ld"); im.addEventListener("error", done, { once: true }); })
       : add(want, show);
     if (quick && S && S.ctx && S.ctx.preview) setTimeout(() => { if (box.isConnected && !S.ctx.gone) honest(); }, 240);
     else honest();

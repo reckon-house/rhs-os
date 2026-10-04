@@ -1694,7 +1694,11 @@
       timers.push(setTimeout(() => {
         if (!box.isConnected) return;
         const im = D.img(f, w, { eager: true });
-        im.addEventListener("load", () => { pv.remove(); }, { once: true });
+        /* out of sight until whole and decoded: a progressive file drew
+           its coarse first pass over the sharp rung (4 Oct) */
+        im.style.visibility = "hidden";
+        const go = () => { im.style.visibility = ""; requestAnimationFrame(() => pv.remove()); };
+        im.addEventListener("load", () => { if (im.decode) im.decode().then(go, go); else go(); }, { once: true });
         box.appendChild(im);
       }, 260));
     } else box.appendChild(D.img(f, w, { eager: true }));
@@ -1903,7 +1907,10 @@
       timers.push(setTimeout(() => {
         if (!box.isConnected) return;
         const im = add(want); im.classList.add("hi");
-        im.addEventListener("load", () => { im.classList.add("in"); setTimeout(() => pv.remove(), 320); }, { once: true });
+        /* its fade starts once it is decoded, not merely arrived, so the
+           rung under it never goes while it is still blank (4 Oct) */
+        const go = () => { im.classList.add("in"); setTimeout(() => pv.remove(), 320); };
+        im.addEventListener("load", () => { if (im.decode) im.decode().then(go, go); else go(); }, { once: true });
       }, 220));
     } else add(want);
     return box;
@@ -2630,7 +2637,9 @@
       /* back from below, it waits until the reader has scrolled up off the foot */
       if (!armed && fb.top > lb.top + HEAD + 60) armed = true;
       const atEnd = lay.scrollTop + lay.clientHeight >= lay.scrollHeight - 2;
-      if (armed && atEnd && fb.top <= lb.top + HEAD + 12) { armed = false; go({ v: "shelf", key: first.key }, { push: true, via: "scroll", home: true }); }
+      /* the last pixels first: "at the end" allows two, and the shelf
+         lands where the very end puts the foot (4 Oct) */
+      if (armed && atEnd && fb.top <= lb.top + HEAD + 12) { armed = false; setY(lay, lay.scrollHeight); go({ v: "shelf", key: first.key }, { push: true, via: "scroll", home: true }); }
     };
     lay.addEventListener("scroll", () => { if (!t) t = requestAnimationFrame(check); }, { passive: true });
     foot.addEventListener("click", (ev) => {
@@ -2720,6 +2729,7 @@
   const carryOn = (S) => {
     if (!S.foot || S.gone2 || VIEW.v !== "shelf" || SH !== S || !S.visible || S.pv) return;
     S.contd = true; S.gone2 = true;
+    setY(S.layer, S.layer.scrollHeight);
     go({ v: "shelf", key: S.foot.dataset.key }, { push: true, via: "scroll" });
   };
   /* back up the way the reader came: past the top of a shelf reached by
@@ -2977,6 +2987,12 @@
        where it showed them, and stay still */
     if (how && how.via === "scroll" && ((old && old.visible && !oldRoom) || how.home)) {
       const from = how.home ? homeFoot : old && old.foot;
+      /* from the home, the home stays whole under the shelf while the
+         shelf comes up over it, and goes after. Both fading at once let
+         the paper through halfway, a blink over pictures that were
+         already there (4 Oct 2026, his "there's a blink/fade when it
+         reloads"); a shelf's own foot never faded, so it had none */
+      if (how.home) { FOCUS.style.transition = "none"; FOCUS.style.opacity = "1"; setTimeout(() => { FOCUS.style.opacity = ""; FOCUS.style.transition = ""; }, 260); }
       if (!still()) S.layer.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 200, easing: "ease" });
       shelfEnter(S, { delay: 0, keep: S.body.querySelector("header"), shown: from && from._peek ? from._peek.n : 0 });
       setTimeout(() => { if (old && old !== SH) destroyShelf(old); }, 240);
@@ -3380,6 +3396,13 @@
 
   /* ── pointer and keys ── */
   let restT = 0, intentT = 0;
+  /* a scroll is not a hover (4 Oct 2026): html.scrolling while the page
+     moves under the pointer, so a picture under a still one keeps its
+     size (shelf-stack.css); a carry-on had found the foot's picture
+     zoomed and the shelf's not */
+  { let t = 0; const on = () => { if (!HTML.classList.contains("scrolling")) HTML.classList.add("scrolling"); clearTimeout(t); t = setTimeout(() => HTML.classList.remove("scrolling"), 200); };
+    document.addEventListener("scroll", on, { capture: true, passive: true });
+    document.addEventListener("wheel", on, { capture: true, passive: true }); }
   const hoverIn = (o) => { if (staged()) { if (hov !== o) stageHover(o); } else show(o, 0); };
   /* only a moving pointer hovers. A scroll carries entries under a still
      one, and each used to take the open half in turn, a new picture each

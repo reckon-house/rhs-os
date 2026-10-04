@@ -1028,6 +1028,9 @@ html.stack .sh-foot-t.stand { flex-basis: 100%; }
    foot's top lands 24px higher than a shelf foot's, so its padding takes
    the difference back. They had been landing 24px above the head */
 .hm-foot { padding-top: calc(30px + 44px - var(--peek)); }
+/* and its label ("What I Make") on the running head's own line, 27px, so
+   when the shelf's head comes up with the same words they do not move */
+.hm-foot .sh-foot-k { top: calc(27px - var(--peek)); }
 
 /* ── NUMBER LABELS (27 Sept, his "there are a lot of number labels on
    things - it's turning into an 'ai-tell' out in the design community
