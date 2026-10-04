@@ -3,7 +3,9 @@
    the way a person reads it. Made for his laptop mockup (his "is it
    possible to show the site scrolling in an image like this?"), shared
    once the phone came (his "we'll do the same thing - add a mockup to it
-   via code"), so the two cannot drift apart.
+   via code"), so the two cannot drift apart. Moved up to /lab/ the same
+   night, when the Marketing OS demos went into his photographed laptops too
+   (sally-demos/m-photo.html).
 
    Device.place(o) maps the element holding the page's viewport (o.glass,
    o.view[0] by o.view[1] px) onto the photograph's screen. The screen's

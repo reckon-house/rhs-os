@@ -54,6 +54,10 @@
      base under it. The parts wrap the window INSIDE the host, so the host
      stays the body's child the case study pauses through, and the stage's
      template (what each loop restores) is untouched. sally-demo.css draws it. */
+  /* ?fill=1 (3 Oct 2026): the window fills the page's own viewport, edge to
+     edge, no corners, no shadow, so a photographed screen can show it whole
+     (m-photo.html sizes that viewport to the screen's proportion) */
+  if (/[?&]fill=1/.test(window.location.search)) document.documentElement.setAttribute("data-fill", "");
   var LAPTOP = /[?&]laptop=1/.test(window.location.search);
   if (LAPTOP) document.documentElement.setAttribute("data-laptop", "");
   function laptop(host) {

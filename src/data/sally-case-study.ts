@@ -175,12 +175,17 @@ export const sallyCaseStudy: CaseStudy = {
        trends-page.html replays the page the screenshot showed, on the
        portal's own CSS, and reads down it. It took the place of
        sally-os-briefing-portal-fullscreen.png */
+    /* and then on his photographed laptop (3 Oct 2026, his "here are two
+       mockups we can use...maybe on some of the sally os screen we just
+       made fake mockups?"): m-photo.html lays the same replay onto the
+       record console shot, edge to edge */
     {
       id: "trends-page-demo",
       type: "product-demo",
-      demo: "trends-page",
-      query: "laptop=1",
-      stageWidth: 1320,
+      demo: "m-photo",
+      query: "shot=console&demo=trends-page",
+      mode: "fit",
+      bleed: true,
       title: "The Trends page",
       note: "the week's creator buzz, where each competitor was active, and the scanned reports with the market trends written across them.",
     },
