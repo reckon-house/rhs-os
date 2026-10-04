@@ -30,8 +30,9 @@
 /* ── depth (3 Oct 2026, his "anyway to add some affects to that scroll?
    parallax or something simple but enough to bring it alive?") ──────────
    As the page scrolls, each photograph on the wall, on a band and in the
-   kit moves a little slower than its frame, by up to the 8% it runs past
-   the frame (push.css, "depth"), and the words on the wall drift up a
+   kit moves a little slower than its frame, by up to the 11% it runs past
+   the frame (push.css, "depth"; 8% at first, then his "we can do a
+   little stronger"), and the words on the wall drift up a
    little faster than theirs, never below where they were set. The
    opening photograph, framed on the glass when the page opens, stays put
    until it scrolls and then lags. Measured and written once a frame, only
@@ -40,17 +41,17 @@
    laptop in the study. */
 (function () {
   if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-  var R = 0.08, items = [];
+  var R = 0.11, items = [];
   var add = function (sel, kind, k) {
     document.querySelectorAll(sel).forEach(function (el) {
       var frame = /^lift/.test(kind) ? el.closest(".vs-t") : el.parentElement;
       if (frame) items.push({ el: el, frame: frame, kind: kind, k: k });
     });
   };
-  add(".vs-t:not(.vs-open) > img", "img", 0.9);
+  add(".vs-t:not(.vs-open) > img", "img", 1);
   add(".ll-band > .ph > img", "img", 1);
-  add(".st-kitb > .ph > img", "img", 0.8);
-  add(".vs-open > img", "open", 0.14);
+  add(".st-kitb > .ph > img", "img", 0.9);
+  add(".vs-open > img", "open", 0.2);
   add(".vs-sw .vs-copy", "lift");
   add(".vs-open .vs-copy", "lift-open");
   if (!items.length) return;
@@ -67,7 +68,7 @@
          of a frame that starts on the glass has scrolled off its top */
       var c = Math.max(-1, Math.min(1, ((vh - b.top) / (vh + b.height) - 0.5) * 2));
       var gone = Math.max(0, Math.min(1, -b.top / b.height));
-      var lift = Math.min(26, b.height * 0.05);
+      var lift = Math.min(34, b.height * 0.065);
       if (it.kind === "img") return c * R * b.height * it.k;
       if (it.kind === "open") return gone * b.height * it.k;
       if (it.kind === "lift") return -(c + 1) / 2 * lift;

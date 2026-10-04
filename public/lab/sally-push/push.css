@@ -766,12 +766,13 @@ html[data-lineup="poster"] .cf-lineup { display: block; grid-column: 1 / -1; gri
    so the wall reads as windows with something behind them, and the
    words on the wall drift a touch faster. push.js sets each one's
    translate, its own property, so the settle and hover zooms on
-   transform are left alone. For that a photograph runs 8% past its
-   frame top and bottom, the room it travels in. The opening photograph
+   transform are left alone. For that a photograph runs 11% past its
+   frame top and bottom, the room it travels in (8% at first; his "we
+   can do a little stronger but it's great!"). The opening photograph
    does not: it is on the glass when the page opens, so it starts where
    it was framed (her eyes clear of the nav) and only lags once it
    scrolls, and what that opens at its top is always above the glass.
    Still for anyone who asked for less motion ── */
-.vs-t:not(.vs-open) > img { top: -8%; bottom: auto; height: 116%; }
-.ll-band > .ph > img, .st-kitb > .ph > img { position: absolute; left: 0; top: -8%; width: 100%; height: 116%; }
+.vs-t:not(.vs-open) > img { top: -11%; bottom: auto; height: 122%; }
+.ll-band > .ph > img, .st-kitb > .ph > img { position: absolute; left: 0; top: -11%; width: 100%; height: 122%; }
 @media (prefers-reduced-motion: reduce) { .vs-t > img, .vs-copy, .ll-band > .ph > img, .st-kitb > .ph > img { translate: none !important; } }
