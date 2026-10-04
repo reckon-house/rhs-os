@@ -198,12 +198,6 @@ em { font-style: italic; }
 .cf-hero .pills { margin-top: 32px; }
 .lineup { text-align: center; }
 .lineup .when { display: flex; justify-content: center; gap: 28px; }
-.lineup .bill { margin-top: clamp(28px, 3.4vw, 52px); display: grid; gap: clamp(6px, 1vw, 14px); }
-.lineup .l1 { font-size: clamp(120px, 21vw, 340px); line-height: 0.78; font-weight: 800; letter-spacing: -0.08em; }
-.lineup .l2 { font-size: clamp(34px, 5.3vw, 82px); line-height: 0.95; font-weight: 600; letter-spacing: -0.05em; }
-.lineup .l3 { font-size: clamp(26px, 3.9vw, 60px); line-height: 1; font-weight: 500; letter-spacing: -0.04em; }
-.lineup .dot { display: inline-block; width: 0.24em; height: 0.24em; margin: 0 0.32em; border-radius: 50%; vertical-align: 0.24em; background: var(--red); }
-.lineup .nw { white-space: nowrap; }
 .lineup .note { max-width: 46ch; margin: clamp(28px, 3.4vw, 48px) auto 0; }
 .tabs { display: flex; flex-wrap: wrap; gap: 8px; }
 .split { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--gap); margin: 0 var(--inset); }
@@ -249,8 +243,8 @@ em { font-style: italic; }
 .how li::before { counter-increment: h; content: counter(h, decimal-leading-zero); font-size: 14px; font-weight: 600; color: var(--red-deep); }
 .made { text-align: center; }
 /* the brands as soft pills (rhode's "only at rhode"), so no separator ever starts a line */
-.made .names { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; max-width: 1100px; margin: 22px auto 0; }
-.made .names span { display: inline-flex; align-items: center; height: clamp(52px, 5vw, 76px); padding: 0 clamp(20px, 2vw, 30px); border-radius: 999px; background: var(--soft); font-size: clamp(22px, 2.6vw, 38px); font-weight: 600; letter-spacing: -0.035em; white-space: nowrap; }
+.made .names, .lineup .names { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; max-width: 1100px; margin: 22px auto 0; }
+.made .names span, .lineup .names span { display: inline-flex; align-items: center; height: clamp(52px, 5vw, 76px); padding: 0 clamp(20px, 2vw, 30px); border-radius: 999px; background: var(--soft); font-size: clamp(22px, 2.6vw, 38px); font-weight: 600; letter-spacing: -0.035em; white-space: nowrap; }
 
 /* ── the phone ── */
 @media (max-width: 860px) {
@@ -281,9 +275,7 @@ em { font-style: italic; }
   .cf-hero .card { height: auto; padding: 28px 22px 26px; }
   .cf-hero .card .bottom { margin-top: 64px; }
   .lineup .when { flex-direction: column; gap: 4px; }
-  .lineup .dot { display: none; }
-  .lineup .nw { display: block; }
-  .made .names { gap: 8px; }
+  .made .names, .lineup .names { gap: 8px; }
   .split { grid-template-columns: minmax(0, 1fr); margin: 0 8px; }
   .split .ph { min-height: 0; aspect-ratio: 4 / 5; }
   .split .card { padding: 30px 22px; }
