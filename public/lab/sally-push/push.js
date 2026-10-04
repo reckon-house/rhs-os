@@ -52,6 +52,8 @@
   add(".ll-band > .ph > img", "img", 1);
   add(".st-kitb > .ph > img", "img", 0.9);
   add(".vs-open > img", "open", 0.2);
+  add(".st-lcod .ph > img, .offers > .ph > img", "img", 1);
+  add(".cf-hero > .ph > img", "open", 0.2);
   add(".vs-sw .vs-copy", "lift");
   add(".vs-open .vs-copy", "lift-open");
   if (!items.length) return;

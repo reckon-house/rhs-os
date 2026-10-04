@@ -239,13 +239,16 @@
   const plat = $("kit-plat");
   plat.addEventListener("click", () => { plat.classList.remove("pulse"); void plat.offsetWidth; plat.classList.add("pulse"); });
   draw();
+  /* it plays once the kit itself is in view (3 Oct 2026, so the laptop's
+     tour, which holds here, sees it from its first press) */
   Live.run({
+    el: document.querySelector(".st-kitb"), threshold: 0.6,
     reset: () => { on.fill(true); draw(); },
-    play: async () => {
-      await Live.tap(plat); await Live.wait(500);
-      await Live.tap(rows[2]); await Live.wait(1000);
-      await Live.tap(rows[2]); await Live.wait(700);
-      await Live.tap(add); await Live.wait(1600);
+    play: async (L) => {
+      await L.tap(plat); await L.wait(500);
+      await L.tap(rows[2]); await L.wait(1000);
+      await L.tap(rows[2]); await L.wait(700);
+      await L.tap(add); await L.wait(1600);
     },
   });
 })();

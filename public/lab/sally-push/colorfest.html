@@ -125,21 +125,34 @@
   </section>
 </div>
 
-<!-- a colorist, free -->
-<section class="story">
+<!-- free hair color advice, the Licensed Colorist OnDemand story (3 Oct
+     2026, his "on the colorfest homepage let's highlight the free hair
+     color advice LCOD story"): the service working on her photograph. She
+     sends a photo and asks, a licensed colorist answers and sends her
+     formula, and one tap puts it in the bag. The three facts light as
+     their beat plays. The headline is the service's own line, from his
+     sale email. It plays itself while on screen (live.js) and hands over
+     on a press -->
+<section class="story st-lcod lv" id="lcod">
   <div class="split">
-    <figure class="ph"><img src="../sally-system/assets/img/grey-coverage-land.jpg" alt="A woman with dark brown curls" loading="lazy" style="object-position:58% 40%"></figure>
+    <figure class="ph">
+      <img src="../sally-system/assets/img/grey-coverage-land.jpg" alt="A woman with dark brown curls" loading="lazy" style="object-position:30% 40%">
+      <div class="lc-chat">
+        <p class="lc-who"><i>M</i><span><b>Mia</b> · Licensed colorist</span><em>Online</em></p>
+        <div class="lc-thread" id="lc-thread" aria-live="polite"></div>
+      </div>
+    </figure>
     <div class="card">
       <div>
-        <p class="t-label live">Colorists online now</p>
-        <h2 class="t-d2" style="margin-top:20px">Stuck on a shade? Ask a pro, free.</h2>
-        <p class="t-body" style="margin-top:18px;max-width:42ch">Real licensed colorists, on demand. Send a photo, get a formula, leave with a plan. No appointment, no charge.</p>
+        <p class="t-label live">Licensed Colorist OnDemand</p>
+        <h2 class="t-d2" style="margin-top:20px">Free hair color advice.</h2>
+        <p class="t-body" style="margin-top:18px;max-width:42ch">Send a photo, get a formula, leave with a plan. No appointment, no charge.</p>
       </div>
       <div>
-        <div class="facts">
-          <div><span class="k">2 min</span><span class="v">Average wait is under two minutes</span></div>
-          <div><span class="k">Yours</span><span class="v">A personalized formula for your hair</span></div>
-          <div><span class="k">1 tap</span><span class="v">To shop your formula</span></div>
+        <div class="facts" id="lc-facts">
+          <div id="lc-f-wait"><span class="k">2 min</span><span class="v">Average wait is under two minutes</span></div>
+          <div id="lc-f-yours"><span class="k">Yours</span><span class="v">A personalized formula for your hair</span></div>
+          <div id="lc-f-tap"><span class="k">1 tap</span><span class="v">To shop your formula</span></div>
         </div>
         <div class="pills" style="margin-top:32px;align-items:center"><a class="pill" href="#">Chat with a colorist</a><span class="t-cap">Free · 7am–11pm CT</span></div>
       </div>
@@ -253,6 +266,48 @@
       await Live.tap(tnBtns[0]); await Live.wait(800);
       await Live.tap(tnBtns[3]); await Live.wait(900);
       await Live.tap(chat); await Live.wait(1800);
+    },
+  });
+})();
+</script>
+<script>
+(() => {
+  /* the free colorist: a short chat on her photograph, then the formula to the bag */
+  const $ = (id) => document.getElementById(id);
+  const sec = $("lcod"), thread = $("lc-thread"), factsEl = $("lc-facts");
+  const facts = { wait: $("lc-f-wait"), yours: $("lc-f-yours"), tap: $("lc-f-tap") };
+  const PHOTO = "../sally-system/assets/img/grey-coverage-land.jpg";
+  const say = (html, cls) => { const el = document.createElement("div"); el.className = cls; el.innerHTML = html; thread.appendChild(el); return el; };
+  const light = (k) => { Object.keys(facts).forEach((n) => facts[n].classList.toggle("on", n === k)); factsEl.classList.toggle("playing", !!k); };
+  const formula = () => {
+    const card = say('<p class="hd"><span>Your formula</span><span>2 products</span></p>' +
+      '<div class="lc-row"><i class="sw" style="background:#5B2C83"></i><span><b>HiColor · True Violet H19</b><small>L’Oréal</small></span></div>' +
+      '<div class="lc-row"><i class="sw" style="background:#E9E2DA"></i><span><b>20 Vol Creme Developer</b><small>ion</small></span></div>' +
+      '<button class="pill sm" type="button">Shop your formula</button>', "lc-card");
+    const btn = card.querySelector("button");
+    btn.addEventListener("click", () => {
+      if (btn.disabled) return;
+      Live.fly([...card.querySelectorAll(".lc-row")]); Live.bag(Live.count + 2);
+      Live.toast("Your formula is in your bag."); btn.textContent = "In your bag"; btn.disabled = true;
+    });
+    return btn;
+  };
+  const reset = () => { thread.innerHTML = ""; say("Hi, I’m Mia. What are we coloring today?", "lc-msg them"); light(null); };
+  Live.run({
+    el: sec.querySelector(".ph"), threshold: 0.75,
+    reset,
+    still: () => {
+      reset();
+      say('<img src="' + PHOTO + '" alt="">', "lc-msg me pic"); say("Dark brown now. Can I go violet?", "lc-msg me");
+      say("Yes, and no bleach. HiColor lifts and colors in one step. Here’s your formula.", "lc-msg them"); formula();
+    },
+    play: async (L) => {
+      say('<img src="' + PHOTO + '" alt="">', "lc-msg me pic"); await L.wait(700);
+      say("Dark brown now. Can I go violet?", "lc-msg me"); await L.wait(900);
+      light("wait"); const typing = say("<i></i><i></i><i></i>", "lc-typing"); await L.wait(1700); typing.remove();
+      say("Yes, and no bleach. HiColor lifts and colors in one step. Here’s your formula.", "lc-msg them"); await L.wait(900);
+      light("yours"); const btn = formula(); await L.wait(1200);
+      light("tap"); await L.tap(btn); await L.wait(1700);
     },
   });
 })();
