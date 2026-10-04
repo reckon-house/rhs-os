@@ -11,7 +11,7 @@
      of confetti in colours sampled from his photographs (confetti.js). -->
 <link rel="preload" href="/fonts/Satoshi-Variable.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="push.css">
-<script>(function () { var q = location.search, h = document.documentElement; if (/[?&]lineup=poster/.test(q)) h.dataset.lineup = "poster"; if (/[?&]pills=color/.test(q)) h.dataset.pills = "color"; })();</script>
+<script>(function () { var q = location.search, h = document.documentElement; if (/[?&]lineup=poster/.test(q)) h.dataset.lineup = "poster"; if (/[?&]pills=confetti/.test(q)) h.dataset.pills = "confetti"; })();</script>
 <style>
   .offers .t-big { font-size: clamp(84px, 11vw, 176px); }
   .cf-pick .head { align-items: flex-end; }
@@ -39,8 +39,9 @@
        foot, one field of confetti behind the copy and the lineup; by
        default (his "hmm, that's a lot. maybe we can back to white but the
        pills are colors or filled with confetti?") the lineup is back on
-       white under the hero, its pills filled with confetti (?pills=color
-       for solid colours) -->
+       white under the hero, close to it, its pills in solid colours from
+       the confetti (his "i kinda like solid color more!"; ?pills=confetti
+       fills each with its own confetti) -->
   <figure class="ph"><img src="../sally-system/assets/img/purple-nails-port.jpg" alt="A woman with violet curls and gold nails, laughing" width="1166" height="1500"></figure>
   <div class="card on-dark" data-confetti="11">
     <div class="top t-label"><span>Colorfest 2026</span><span>Through July 6</span></div>
@@ -76,8 +77,8 @@
     <p class="note t-deck grey">Brands you'll only find at Sally, headlined by ion's vivids.</p>
   </section>
   <script>
-    /* each pill gets its own confetti (a seed apiece), unless ?pills=color */
-    if (document.documentElement.dataset.pills !== "color") document.querySelectorAll(".lineup .names span").forEach(function (sp, i) { sp.setAttribute("data-confetti", String(21 + i)); });
+    /* under ?pills=confetti each pill gets its own confetti (a seed apiece) */
+    if (document.documentElement.dataset.pills === "confetti") document.querySelectorAll(".lineup .names span").forEach(function (sp, i) { sp.setAttribute("data-confetti", String(21 + i)); });
   </script>
 
   <!-- picked for you -->

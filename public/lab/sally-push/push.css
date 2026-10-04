@@ -632,18 +632,21 @@ html:not([data-copy="card"]) .ll-float.mid .pills { justify-content: center; }
 
 /* ── the lineup on white, the pills carrying the colour (his "hmm, that's
    a lot. maybe we can back to white but the pills are colors or filled
-   with confetti?"): each pill holds its own field of confetti, popping in
-   as it reaches the glass, the brand in white on it; ?pills=color gives
-   each a solid colour from the same palette instead ── */
+   with confetti?", then "i kinda like solid color more!"): each pill a
+   solid colour from the confetti's palette, the brand in white; under
+   ?pills=confetti each holds its own field of confetti instead. It sits
+   close under the hero (his "can we reduce the white space below the
+   hero?"), a third of the space between stories ── */
+.story.lineup { margin-top: clamp(40px, 4.2vw, 64px); }
+html:not([data-pills="confetti"]) .lineup .names span { color: #fff; }
+html:not([data-pills="confetti"]) .lineup .names span:nth-child(6n+1) { background: #9A0819; }
+html:not([data-pills="confetti"]) .lineup .names span:nth-child(6n+2) { background: #0E8A90; }
+html:not([data-pills="confetti"]) .lineup .names span:nth-child(6n+3) { background: #A93783; }
+html:not([data-pills="confetti"]) .lineup .names span:nth-child(6n+4) { background: #6F3B7C; }
+html:not([data-pills="confetti"]) .lineup .names span:nth-child(6n+5) { background: #DC1D33; }
+html:not([data-pills="confetti"]) .lineup .names span:nth-child(6n+6) { background: #E24C83; }
 .lineup .names span[data-confetti] { position: relative; overflow: hidden; isolation: isolate; background: #84A2CF; color: #fff; text-shadow: 0 1px 10px rgba(20, 10, 40, 0.6), 0 0 2px rgba(20, 10, 40, 0.45); }
 .lineup .names span > canvas.confetti { position: absolute; inset: 0; z-index: -1; display: block; pointer-events: none; }
-html[data-pills="color"] .lineup .names span { color: #fff; }
-html[data-pills="color"] .lineup .names span:nth-child(6n+1) { background: #9A0819; }
-html[data-pills="color"] .lineup .names span:nth-child(6n+2) { background: #0E8A90; }
-html[data-pills="color"] .lineup .names span:nth-child(6n+3) { background: #A93783; }
-html[data-pills="color"] .lineup .names span:nth-child(6n+4) { background: #6F3B7C; }
-html[data-pills="color"] .lineup .names span:nth-child(6n+5) { background: #DC1D33; }
-html[data-pills="color"] .lineup .names span:nth-child(6n+6) { background: #E24C83; }
 
 /* ── ?lineup=poster: the hero is a festival poster (his "how do we connect
    the brand to the big hero above since it's all together?"), one field
