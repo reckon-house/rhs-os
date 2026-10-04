@@ -1,0 +1,375 @@
+/* ============================================================
+   sally-brief.css: the brief builder, the Brief Output panel
+   and Jim's brief callouts, extracted VERBATIM from
+   sally-portal/index.html. Class names kept, declarations
+   untouched (only the <style> indent is removed), so a diff
+   against the product stays trivial.
+
+   ⚠️ TWO SOURCES, because the panel no longer exists.
+   A. The Brief Output panel was REMOVED from the portal on
+      13 Mar 2026 (3889b99, "Brief opens in standalone tab").
+      Its rules below come from index.html at aed1010 (5 Mar 2026):
+      the last commit where the live brief still drew its header,
+      the red campaign name over "Building brief..." and the 2px
+      red rule, which is what the case study's screenshot shows.
+      The very next commit (77a3fc4, the rich renderer) set
+      .brief-doc-header to display:none and repainted the panel.
+      Read old versions with `git show aed1010:index.html`.
+   B. The chat side (suggestion callouts, thinking status, brief
+      cards, message lists, campaign-panel collapse, rail separator)
+      is still live and comes from today's index.html (Oct 2026).
+
+   Everything after "DEMO GLUE" at the bottom is NOT portal CSS;
+   each of those rules says what it stands in for.
+   ============================================================ */
+
+/* ============================================================
+   A. Brief Output panel, index.html @ aed1010 (5 Mar 2026)
+   ============================================================ */
+/* + Output button (top-right, Briefing only) */
+.output-toggle-btn {
+    position: absolute;
+    top: 28px;
+    right: 30px;
+    background: #fffdfd;
+    border: none;
+    border-radius: 15px;
+    width: 65px;
+    height: 72px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    z-index: 5;
+    gap: 2px;
+}
+.output-toggle-btn:hover {
+    background: #f3f3f3;
+}
+.output-toggle-btn .output-plus {
+    font-family: 'Satoshi', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 24px;
+    color: #000000;
+    line-height: 1;
+}
+.output-toggle-btn .output-label {
+    font-family: 'Satoshi', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 10px;
+    color: #1a1a1a;
+}
+
+/* the preview header carries the same .panel-toggle the campaign
+   panel uses; it is display:none in this era (the Output button
+   above replaced it) but stays in the markup, so it stays here. */
+.panel-toggle {
+    width: auto;
+    height: auto;
+    border: none;
+    background: none;
+    border-radius: 0;
+    cursor: pointer;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Satoshi', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+    color: #000000;
+    transition: all 0.2s;
+    flex-shrink: 0;
+    padding: 0;
+}
+.panel-toggle:hover {
+    opacity: 0.6;
+}
+
+/* ========== RIGHT PANEL - Brief Output ========== */
+.preview-panel {
+    width: 510px;
+    background: #f3f3f3;
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    transition: width 0.3s ease, min-width 0.3s ease;
+    overflow: hidden;
+    border-radius: 20px;
+    margin: 14px 14px 14px 0;
+}
+.preview-panel.collapsed {
+    width: 0;
+    min-width: 0;
+    margin: 0;
+    opacity: 0;
+    overflow: hidden;
+}
+
+.preview-header {
+    padding: 24px 90px 0 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-shrink: 0;
+}
+.preview-title { font-family: 'Satoshi', -apple-system, BlinkMacSystemFont, sans-serif; font-size: 13px; font-weight: 700; color: #dc1e35; white-space: nowrap; line-height: 27px; }
+.preview-status { font-size: 11px; color: rgba(0,0,0,0.5); }
+
+.preview-content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 0 90px 24px 24px;
+}
+
+.preview-panel.collapsed .preview-header,
+.preview-panel.collapsed .preview-content,
+.preview-panel.collapsed .preview-actions {
+    display: none;
+}
+
+/* Collapsed state for brief panel - hidden since we use + Output button */
+.preview-collapsed-label {
+    display: none;
+}
+.preview-panel.collapsed .preview-collapsed-label {
+    display: none;
+}
+
+/* Generate brief prompt state */
+.generate-prompt {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    text-align: left;
+    padding: 0;
+}
+.generate-prompt-icon { display: none; }
+.generate-prompt-text { font-family: 'Satoshi', -apple-system, BlinkMacSystemFont, sans-serif; font-size: 13px; color: #595757; line-height: 27px; }
+
+/* Brief document styles */
+.brief-document {
+    background: #fff;
+    color: #1a1a1a;
+    border-radius: 8px;
+    padding: 24px;
+    font-size: 12px;
+    line-height: 1.6;
+    display: none;
+}
+.brief-doc-header { text-align: center; padding-bottom: 16px; margin-bottom: 16px; border-bottom: 2px solid #dc1e35; }
+.brief-doc-title { font-size: 18px; font-weight: 700; color: #dc1e35; margin-bottom: 4px; }
+.brief-doc-subtitle { font-size: 11px; color: #666; }
+
+/* Live brief skeleton */
+.live-brief-section { margin-bottom: 14px; }
+.live-brief-section-title {
+    font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;
+    margin-bottom: 4px; transition: color 0.3s ease;
+}
+.live-brief-section-title.filled { color: #dc1e35; }
+.live-brief-section-title.empty { color: #ccc; }
+.live-brief-section-content {
+    font-size: 12px; line-height: 1.6; transition: all 0.3s ease;
+}
+.live-brief-section-content.filled { color: #333; }
+.live-brief-section-content.empty { color: #ccc; font-style: italic; font-size: 11px; }
+.live-brief-progress {
+    display: flex; align-items: center; gap: 10px; margin-bottom: 16px; padding-bottom: 12px;
+    border-bottom: 1px solid rgba(0,0,0,0.06);
+}
+.live-brief-progress-bar {
+    flex: 1; height: 3px; background: rgba(0,0,0,0.06); border-radius: 2px; overflow: hidden;
+}
+.live-brief-progress-fill {
+    height: 100%; background: #dc1e35; border-radius: 2px; transition: width 0.4s ease;
+}
+.live-brief-progress-label { font-size: 10px; color: #999; white-space: nowrap; }
+
+.preview-actions {
+    padding: 16px 20px;
+    border-top: none;
+    display: flex;
+    gap: 10px;
+    flex-shrink: 0;
+    justify-content: flex-end;
+}
+.preview-btn {
+    padding: 10px 28px;
+    border-radius: 999px;
+    font-family: 'Satoshi', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+    flex: none;
+}
+.preview-btn.secondary { background: #ffffff; border: none; color: rgba(0,0,0,0.7); }
+.preview-btn.secondary:hover { background: #e8e8e8; }
+.preview-btn.primary { background: linear-gradient(159deg, #dc1e35 0%, #e8354d 100%); border: none; color: #fff; }
+.preview-btn.primary:hover { background: linear-gradient(159deg, #c4192f 0%, #d62e45 100%); }
+.preview-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.preview-btn.generating { background: rgba(220, 30, 53, 0.25); position: relative; overflow: hidden; }
+.preview-btn.generating::after { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent); animation: shimmer 1.5s infinite; }
+@keyframes shimmer { 100% { left: 100%; } }
+
+/* Slim, warm-toned scrollbars. Declarations verbatim from the same file;
+   the selector list is trimmed to the panel, because the original list
+   also names .conversation-messages, whose scrollbar the shared chrome
+   deliberately hides. */
+.preview-content {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(20, 0, 2, 0.12) transparent;
+}
+.preview-content::-webkit-scrollbar {
+    width: 6px;
+}
+.preview-content::-webkit-scrollbar-track {
+    background: transparent;
+}
+.preview-content::-webkit-scrollbar-thumb {
+    background: rgba(20, 0, 2, 0.12);
+    border-radius: 3px;
+}
+.preview-content::-webkit-scrollbar-thumb:hover {
+    background: rgba(20, 0, 2, 0.22);
+}
+
+
+/* ============================================================
+   B. Chat side, today's index.html (Oct 2026)
+   ============================================================ */
+
+/* Jim's flags on a loaded brief: generateSmartSuggestions() swaps the
+   "Analyzing brief…" line for these. They are clickable follow-ups in
+   the product (useSuggestion() sends the text as the user's message). */
+.suggestions-container { display: flex; flex-direction: column; gap: 8px; margin-top: 12px; }
+.suggestion-btn {
+    background: rgba(220, 30, 53, 0.06);
+    border: 1px solid rgba(220, 30, 53, 0.25);
+    color: #1a1a1a;
+    padding: 10px 14px;
+    border-radius: 8px;
+    text-align: left;
+    cursor: pointer;
+    font-size: 13px;
+    font-family: inherit;
+    line-height: 1.4;
+    transition: all 0.2s;
+}
+.suggestion-btn:hover { background: rgba(220, 30, 53, 0.12); border-color: rgba(220, 30, 53, 0.5); }
+
+/* the in-chat status line (loadBrief's "Loading and parsing…",
+   generateSmartSuggestions' "Analyzing brief…", a turn's
+   "Generating response...") */
+.thinking-status { color: rgba(0,0,0,0.5); font-style: italic; }
+
+/* Chat brief cards — AI-surfaced clickable brief loaders */
+.chat-brief-card {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    padding: 12px 16px;
+    margin: 6px 0;
+    background: rgba(255,255,255,0.92);
+    border: 1px solid rgba(220, 30, 53, 0.12);
+    border-radius: 10px;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 500;
+    color: #333;
+    text-align: left;
+    transition: all 0.2s ease;
+}
+.chat-brief-card:hover {
+    background: rgba(255, 224, 227, 0.4);
+    border-color: rgba(220, 30, 53, 0.25);
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(220, 30, 53, 0.08);
+}
+.chat-brief-card span { flex: 1; }
+
+/* bullets inside a message (the "Loaded:" parse is a <ul>). Declarations
+   verbatim; the selector lists are trimmed of their .jim-inline-messages
+   twins, which belong to the overlay Jim panel, not Briefing. */
+.message-content ul, .message-content ol { margin: 8px 0 12px 20px; padding: 0; }
+.message-content li { margin-bottom: 6px; }
+
+/* loadBrief() calls collapseCampaignPanel(): the secondary sidebar folds
+   away and updateSeparatorVisibility() retracts the rail rule. */
+/* ========== SECONDARY SIDEBAR - Campaign Selector ========== */
+.campaign-panel {
+    width: 190px;
+    background: #ffffff;
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    transition: width 0.3s ease, min-width 0.3s ease, opacity 0.25s ease;
+    overflow: hidden;
+    border-radius: 0;
+    height: 100%;
+    border-right: none;
+    opacity: 1;
+}
+.campaign-panel.collapsed {
+    width: 0;
+    min-width: 0;
+    overflow: hidden;
+    opacity: 0;
+}
+.campaign-panel.collapsed .campaign-panel-header,
+.campaign-panel.collapsed .campaign-panel-content {
+    opacity: 0;
+    visibility: hidden;
+}
+.campaign-panel-header,
+.campaign-panel-content {
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.15s ease, visibility 0.15s ease;
+}
+
+/* Vertical separator between rail and content — hidden by default, shown when secondary menu is open */
+.rail-separator {
+    width: 1px;
+    background: rgba(0,0,0,0.1);
+    align-self: stretch;
+    margin: 30px 0;
+    flex-shrink: 0;
+    transform: scaleY(0);
+    transform-origin: top center;
+    opacity: 0;
+    transition: transform 0.4s ease, opacity 0.2s ease;
+}
+.rail-separator.visible {
+    transform: scaleY(1);
+    opacity: 1;
+    transition: transform 0.4s ease 0.05s, opacity 0.15s ease 0.05s;
+}
+
+
+/* ============================================================
+   DEMO GLUE: not portal CSS
+   ============================================================ */
+
+/* The portal positions the Output toggle against .view-container
+   (position: relative). In the demo the stage is that container. */
+.sp-stage { position: relative; }
+
+/* A scripted cursor cannot trigger :hover, so these repeat the
+   product's own :hover declarations (above) under a class. */
+.chat-brief-card.sd-hot {
+    background: rgba(255, 224, 227, 0.4);
+    border-color: rgba(220, 30, 53, 0.25);
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(220, 30, 53, 0.08);
+}
+.output-toggle-btn.sd-hot { background: #f3f3f3; }
+
+/* press feedback for the engine's press(), same idea as .send-btn's */
+.chat-brief-card.sd-hot.sd-press { transform: scale(0.985); }
+.output-toggle-btn.sd-press { transform: scale(0.94); }
+

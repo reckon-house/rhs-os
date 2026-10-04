@@ -423,20 +423,21 @@ export const sallyCaseStudy: CaseStudy = {
       text: "Brand Brain works out the strategy\nand writes the brief,\nthen the team approves it",
       group: { name: "brand-brain" },
     },
+    /* the brief builder, live (3 Oct 2026, his "i would love to take the
+       screenshots and designs and bring them to live"): brief-builder.html
+       replays Jim reading a loaded brief, flagging its gaps, and the Brief
+       Output panel filling to eleven of eleven. The panel left the portal on
+       13 Mar 2026 (briefs open in their own tab now), so its markup is
+       taken from the portal's history at the version the screenshot shows.
+       It took the place of the brief-builder screenshot and its photo pair */
     {
-      id: "brain-brief-2up",
-      type: "dual-image",
-      native: true,
-      transparent: true,
-      left: {
-        src: "/case-studies/sally-os/sally-os-brief-builder-dual-view.png",
-        alt: "Brand Brain, AI-assisted campaign brief generation",
-      },
-      right: {
-        src: "/case-studies/sally-os/sally-os-model-chat-response.png",
-        alt: "Sally Beauty, purple curls, bold color expression",
-      },
-      group: { name: "brand-brain" },
+      id: "brain-brief-demo",
+      type: "product-demo",
+      demo: "brief-builder",
+      query: "laptop=1",
+      stageWidth: 1320,
+      title: "Brief builder",
+      note: "Jim flags three gaps in a loaded COLORfest brief, and one reply from the strategist closes them.",
     },
 
     // ── THE BRIEF BECOMES WORK, LIVE ──
@@ -613,20 +614,21 @@ export const sallyCaseStudy: CaseStudy = {
         },
       ],
     },
+    /* the Asset Hub, live, on his oak desk photograph (3 Oct 2026, his "here
+       are two mockups we can use...maybe on some of the sally os screen we
+       just made fake mockups?"): asset-hub.html replays the DAM app the
+       portal frames, a search, one asset with its AI tags, and an Email Hero
+       export made with the DAM's own attention crop. It took the place of
+       the two asset detail screenshots */
     {
-      id: "asset-detail-images",
-      type: "dual-image",
-      transparent: true,
-      aspect: "aspect-square",
-      left: {
-        src: "/case-studies/sally-os/sally-os-model-asset-library.png",
-        alt: "Asset Hub, AI tagging and metadata on model photography",
-      },
-      right: {
-        src: "/case-studies/sally-os/sally-os-product-asset-library.png",
-        alt: "Asset Hub, AI studio photography pipeline",
-      },
-      pressing: { choreo: { pin: true } },
+      id: "asset-hub-demo",
+      type: "product-demo",
+      demo: "m-photo",
+      query: "shot=oak&demo=asset-hub",
+      mode: "fit",
+      bleed: true,
+      title: "The Asset Hub",
+      note: "a search for curly hair, one asset opened with its AI tags, and an Email Hero crop made from it.",
     },
     {
       id: "asset-hero-image",
