@@ -49,20 +49,21 @@
     corners: [[312.5, 444.7], [1686.9, 443.1], [1691.4, 1328.5], [312.5, 1328.1]],
     marks: [{ el: document.getElementById("notch"), x: 924, y: 443, w: 151, h: 16, r: 6, round: "bottom" }],
   });
-  /* the scroll: stop by stop, the way a person reads a homepage */
+  /* the scroll: the whole page, top to foot, the way a person reads it
+     (his "can we scroll through the entire page for each?"), held on the
+     Platinum Kit while its story plays */
   Device.scroll({
     frame,
     plan: (w, d) => {
-      const nav = d.querySelector(".sk-nav"), kit = d.getElementById("kit");
+      const nav = d.querySelector(".sk-nav");
       /* start with the nav pill just under the glass's top edge, as his
          mockup does: the line over it scrolled away */
       const y0 = nav ? Math.max(0, nav.getBoundingClientRect().top + w.scrollY - 10) : 0;
-      const yk = kit ? Math.round(kit.getBoundingClientRect().top + w.scrollY - (nav ? nav.offsetHeight + 30 : 90)) : y0 + 2400;
-      const stops = [y0, y0 + 760, y0 + 1520, Math.max(y0 + 2100, yk)];
-      const steps = [{ y: stops[0], hold: 1800 }];
-      for (let i = 1; i < stops.length; i++) steps.push({ y: stops[i], move: 1500, hold: i === stops.length - 1 ? 8600 : 1300 });
-      steps.push({ y: stops[0], move: 2200, hold: 600 });
-      return steps;
+      return Device.tour(w, d, {
+        y0, under: nav ? nav.offsetHeight + 30 : 90,
+        marks: "body > section, .wrap > section, .ll-band, .sk-ft",
+        holds: [{ el: d.getElementById("kit"), ms: 8800 }],
+      });
     },
   });
 })();

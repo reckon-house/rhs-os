@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Sally Beauty · The Lookbook on a phone, scrolling</title>
+<title>Sally Beauty · Colorfest on a phone, scrolling</title>
 <meta name="robots" content="noindex">
 <!-- His phone mockup, with the site scrolling in it (3 Oct 2026, his "i'm
      also attaching a mobile image we can insert into the case study - i
@@ -17,8 +17,9 @@
      plane, a black ground just past the edge keeps his placeholder from
      showing at any seam, and the island is drawn back on top. The page
      runs at 390 by 852, the screen's own proportion, so it shows its
-     phone layout: down the wall of shades, then the Platinum Kit while
-     the kit story plays, and back up. -->
+     phone layout. It played the Lookbook first; his "let's try colorfest
+     and can we scroll through the entire page for each?" made it
+     Colorfest, top to foot, held on the free colorist's chat. -->
 <style>
   html, body { margin: 0; background: transparent; }
   .dev { position: relative; overflow: hidden; border-radius: 4px; background: #D8C2A3; }
@@ -37,10 +38,10 @@
 </head>
 <body>
 <div class="dev" id="dev">
-  <img src="/case-studies/sally-design-system/sally-design-system-mockup-lookbook-phone-wide.jpg" alt="The Lookbook homepage on a phone standing on a curved wooden shelf, scrolling down the wall of shades to the Platinum Kit" width="2000" height="1680">
+  <img src="/case-studies/sally-design-system/sally-design-system-mockup-lookbook-phone-wide.jpg" alt="The Colorfest homepage on a phone standing on a curved wooden shelf, scrolling top to bottom, pausing on free hair color advice from a licensed colorist" width="2000" height="1680">
   <div class="glass" id="glass">
     <i class="under" aria-hidden="true"></i>
-    <div class="screen"><iframe id="page" src="lookbook-images.html" title="The Lookbook" tabindex="-1" aria-hidden="true"></iframe></div>
+    <div class="screen"><iframe id="page" src="colorfest.html" title="Colorfest" tabindex="-1" aria-hidden="true"></iframe></div>
   </div>
   <i class="island" id="island" aria-hidden="true"></i>
 </div>
@@ -54,26 +55,22 @@
     corners: [[746.0, 266.7], [1274.5, 264.6], [1267.5, 1415.3], [743.5, 1413.5]],
     marks: [{ el: document.getElementById("island"), x: 926, y: 283, w: 166, h: 47, round: "pill" }],
   });
-  /* the scroll: a thumb's worth at a time down the wall, then the kit,
-     held while its story plays (the bag fills in the nav), then back up */
+  /* the scroll: the whole page, top to foot (his "can we scroll through
+     the entire page for each?"), held on the free colorist while the chat
+     plays (his "on the colorfest homepage let's highlight the free hair
+     color advice LCOD story") */
   Device.scroll({
     frame: document.getElementById("page"),
     plan: (w, d) => {
-      const nav = d.querySelector(".sk-nav"), story = d.querySelector(".vs"), side = d.querySelector(".st-kitb .st-side");
-      const top = (el) => el.getBoundingClientRect().top + w.scrollY;
-      const navH = nav ? nav.offsetHeight : 54, VH = w.innerHeight;
+      const nav = d.querySelector(".sk-nav");
       /* the nav pill just under the glass's top edge, as his placeholder has it */
-      const y0 = nav ? Math.max(0, Math.round(top(nav) - 10)) : 0;
-      const end = story ? Math.round(top(story) + story.offsetHeight - VH) : y0 + 1950;
-      const kit = side ? Math.round(top(side) - navH - 30) : end + 1600;
-      const stops = [y0];
-      for (let y = y0 + 640; y < end - 160; y += 640) stops.push(y);
-      stops.push(end);
-      const steps = [{ y: y0, hold: 1800 }];
-      for (let i = 1; i < stops.length; i++) steps.push({ y: stops[i], move: 1400, hold: 1300 });
-      steps.push({ y: kit, move: 1900, hold: 8600 });
-      steps.push({ y: y0, move: 2600, hold: 600 });
-      return steps;
+      const y0 = nav ? Math.max(0, Math.round(nav.getBoundingClientRect().top + w.scrollY - 10)) : 0;
+      return Device.tour(w, d, {
+        y0, under: nav ? nav.offsetHeight + 20 : 74,
+        marks: "body > section, .wrap > section, .offers, .sk-ft",
+        holds: [{ el: d.getElementById("lcod"), ms: 9400 }],
+        move: 1250, hold: 800,
+      });
     },
   });
 })();

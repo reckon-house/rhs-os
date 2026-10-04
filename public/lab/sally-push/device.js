@@ -104,5 +104,41 @@
     try { var d0 = frame.contentDocument; if (d0 && d0.readyState === "complete" && d0.body && frame.contentWindow.location.href !== "about:blank") start(); } catch (e) { /* another origin */ }
   };
 
-  window.Device = { place: place, scroll: scroll };
+  /* the whole page, the way a person reads it (3 Oct 2026, his "can we
+     scroll through the entire page for each?"): most of a screen at a
+     time from the top to the foot, landing on a section's top when one is
+     near, holding where a story plays (o.holds: [{ el, ms }]) and at the
+     foot, then gliding back to the top. o.y0 is where the tour starts;
+     o.under is how far below the glass's top edge a section lands, under
+     the nav; o.marks picks the sections */
+  var tour = function (w, d, o) {
+    var VH = w.innerHeight, max = Math.max(0, d.documentElement.scrollHeight - VH);
+    var abs = function (el) { return el.getBoundingClientRect().top + w.scrollY; };
+    var y0 = o.y0 || 0, under = o.under || 0, step = (o.step || 0.8) * VH;
+    var tops = [].slice.call(d.querySelectorAll(o.marks || "section"))
+      .map(function (el) { return Math.round(abs(el) - under); })
+      .filter(function (y) { return y > y0 + 40 && y < max; });
+    var holds = (o.holds || []).filter(function (h) { return h.el; })
+      .map(function (h) { return { y: Math.max(y0, Math.min(max, Math.round(abs(h.el) - under))), ms: h.ms }; })
+      .sort(function (a, b) { return a.y - b.y; });
+    var steps = [{ y: y0, hold: o.first || 1800 }], y = y0;
+    for (var guard = 0; y < max - 2 && guard < 200; guard++) {
+      var next = Math.min(max, y + step), hold = null;
+      for (var i = 0; i < holds.length; i++) if (holds[i].y > y + 40 && holds[i].y <= next + 0.3 * VH) { hold = holds[i]; break; }
+      if (hold) next = hold.y;
+      else {
+        var best = null;
+        tops.forEach(function (t) { if (t > y + 0.45 * VH && Math.abs(t - next) <= 0.25 * VH && (best === null || Math.abs(t - next) < Math.abs(best - next))) best = t; });
+        if (best !== null) next = best;
+        if (max - next < 0.35 * VH) next = max;
+      }
+      next = Math.round(next);
+      steps.push({ y: next, move: o.move || 1300, hold: hold ? hold.ms : next >= max ? (o.last || 2200) : (o.hold || 900) });
+      y = next;
+    }
+    steps.push({ y: y0, move: Math.round(Math.min(3600, 1600 + (y - y0) * 0.18)), hold: 700 });
+    return steps;
+  };
+
+  window.Device = { place: place, scroll: scroll, tour: tour };
 })();
