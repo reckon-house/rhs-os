@@ -128,6 +128,7 @@
   const layout = (S) => {
     const ctx = S.ctx;
     if (S.io) { S.io.disconnect(); S.io = null; }
+    if (S.far) { S.far.disconnect(); S.far = null; }
     Object.assign(S, { W: ctx.width, avail: ctx.height, ph: !!ctx.phone, items: [], units: [] });
     /* the size a line's run is set at, on the shelf itself, so the Next
        panel at the foot sets the next line's run at the same size and the
@@ -143,74 +144,138 @@
     const head = headEl(S);
     S.root.replaceChildren(head); S.units.push(head);
     fitName(S);
-    /* the rhythm: a tall one comes when its picture can stand tall and
-       one wide (then two, then one) has come since the last, the first
-       opener included (Apps has one picture that can stand, and it is
-       first), so no shelf runs tall, wide, tall, wide */
-    let since = 1, need = 1;
+    const rh = { since: 1, need: 1 };
     S.ks.forEach((k, i) => {
-      const f = openerOf(S, k); if (!f) return;
-      const s = S.D.study(k) || {};
-      const live = !!(window.XREF_LIVE && window.XREF_LIVE(f));
-      const judged = ON_LEAD.has(k) ? S.ctx.lead(k) : s.top;
-      const tb = !live && TALL[k] != null && f === judged && since >= need ? tallBox(S, f) : null;
-      /* Faux Reel runs, so it takes the stage like a picture that can fill
-         it, at the reel's own 16:9 */
-      const { w, h } = tb || (live ? { w: S.W, h: Math.round(Math.min(S.W * 9 / 16, S.avail * 0.9)) } : boxOf(S, f));
-      const fig = el("figure", "xk-it" + (tb ? " tall" : w < S.W - 2 ? " narrow" : "")); fig.dataset.k = k;
-      const box = el("div", "xk-pic" + (f.alpha ? " alpha" : "")); box.style.width = w + "px"; box.style.height = h + "px"; box._f = f;
-      if (tb) box._pos = posOf(f, w, h, TALL[k]);
-      fig.appendChild(box);
-      /* the study's own number, and the sections this entry sits in, each
-         a way straight to its place (27 Sept, the locators) */
-      const locs = ctx.locs ? ctx.locs(k) : [];
-      const no = '<span class="xk-no">' + (ctx.num ? ctx.num(k) : two(i + 1)) + "</span>";
-      const t = '<span class="xk-t">' + S.esc(S.D.title(k)) + "</span>";
-      const y = '<span class="xk-y">' + (s.y || "") + "</span>";
-      const lc = locs.length ? '<span class="xk-locs">' + locs.map((l) => '<a class="xk-l" href="#study/' + S.esc(k) + '" data-at="' + S.esc(l.at) + '" title="' + S.esc(S.D.title(k)) + ", section " + l.s + '">§' + l.s + "</a>").join("") + "</span>" : "";
-      const d = s.s ? '<span class="xk-d">' + S.esc(s.s) + "</span>" : "";
-      fig.appendChild(el("figcaption", "xk-cap", no + t + y + lc + d));
-      S.root.appendChild(fig);
-      S.items.push({ k, fig, box }); S.units.push(fig);
-      if (tb) { since = 0; need = need === 1 ? 2 : 1; } else since++;
+      const t = figureOf(S, k, i, rh); if (!t) return;
+      S.root.appendChild(t.fig);
+      S.items.push(t); S.units.push(t.fig);
     });
     S.io = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { S.io.unobserve(e.target); load(e.target, S); } }),
       /* above as well as below: a shelf can be arrived at from its end,
          scrolling back up (27 Sept) */
       { root: ctx.scroller || null, rootMargin: "60% 0px 60% 0px" });
     S.items.forEach((t) => S.io.observe(t.box));
+    /* and two glasses out, the small rung alone, so on a slow line a
+       picture is already there when the reader reaches it and only
+       sharpens (4 Oct). A hover's preview loads less, and has none */
+    if (!ctx.preview) {
+      S.far = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { S.far.unobserve(e.target); load(e.target, S, true); } }),
+        { root: ctx.scroller || null, rootMargin: "200% 0px 200% 0px" });
+      S.items.forEach((t) => S.far.observe(t.box));
+    }
+    /* the first glass's openers start now, not a frame later when the
+       observer first reports, so a shelf carried on from a foot that
+       showed them has them on its first frame (4 Oct) */
+    S.items.forEach((t) => { if (t.fig.offsetTop < S.avail) { S.io.unobserve(t.box); load(t.box, S); } });
+  };
+  /* one opener: its figure, the box the stage gives it, its credit. rh
+     carries the rhythm from one to the next: a tall one comes when its
+     picture can stand tall and one wide (then two, then one) has come
+     since the last, the first opener included (Apps has one picture that
+     can stand, and it is first), so no shelf runs tall, wide, tall, wide.
+     `words` sets the section links as plain words, for a foot's preview,
+     which sits inside a link of its own */
+  const figureOf = (S, k, i, rh, words) => {
+    const ctx = S.ctx;
+    const f = openerOf(S, k); if (!f) return null;
+    const s = S.D.study(k) || {};
+    const live = !!(window.XREF_LIVE && window.XREF_LIVE(f));
+    const judged = ON_LEAD.has(k) ? ctx.lead(k) : s.top;
+    const tb = !live && TALL[k] != null && f === judged && rh.since >= rh.need ? tallBox(S, f) : null;
+    /* Faux Reel runs, so it takes the stage like a picture that can fill
+       it, at the reel's own 16:9 */
+    const { w, h } = tb || (live ? { w: S.W, h: Math.round(Math.min(S.W * 9 / 16, S.avail * 0.9)) } : boxOf(S, f));
+    const fig = el("figure", "xk-it" + (tb ? " tall" : w < S.W - 2 ? " narrow" : "")); fig.dataset.k = k;
+    const box = el("div", "xk-pic" + (f.alpha ? " alpha" : "")); box.style.width = w + "px"; box.style.height = h + "px"; box._f = f;
+    if (tb) box._pos = posOf(f, w, h, TALL[k]);
+    fig.appendChild(box);
+    /* the study's own number, and the sections this entry sits in, each
+       a way straight to its place (27 Sept, the locators) */
+    const locs = ctx.locs ? ctx.locs(k) : [];
+    const no = '<span class="xk-no">' + (ctx.num ? ctx.num(k) : two(i + 1)) + "</span>";
+    const t = '<span class="xk-t">' + S.esc(S.D.title(k)) + "</span>";
+    const y = '<span class="xk-y">' + (s.y || "") + "</span>";
+    const lc = locs.length ? '<span class="xk-locs">' + locs.map((l) => words ? '<span class="xk-l">§' + l.s + "</span>"
+      : '<a class="xk-l" href="#study/' + S.esc(k) + '" data-at="' + S.esc(l.at) + '" title="' + S.esc(S.D.title(k)) + ", section " + l.s + '">§' + l.s + "</a>").join("") + "</span>" : "";
+    const d = s.s ? '<span class="xk-d">' + S.esc(s.s) + "</span>" : "";
+    fig.appendChild(el("figcaption", "xk-cap", no + t + y + lc + d));
+    if (tb) { rh.since = 0; rh.need = rh.need === 1 ? 2 : 1; } else rh.since++;
+    return { k, fig, box };
   };
   /* the honest rung for the width it is drawn at under its crop, after the
      rung below it. While the stack is only a hover's preview the honest
      file waits a beat, and does not come at all once the pointer has
      moved on and the preview is gone (27 Sept), so a sweep across the
      index does not fetch a dozen large files */
-  const load = (box, S) => {
-    const f = box._f; if (!f || box._loaded) return; box._loaded = true;
+  /* the files this page has already shown: one asked for again (a foot's
+     preview, then its shelf; a shelf opened before) goes straight in,
+     sharp, without the rung under it or the fade (4 Oct) */
+  const HELD = new Set();
+  /* honest files go two at a time, the one nearest the glass first, so on
+     a slow line the small rungs of the boxes being reached never wait
+     behind large files for boxes already passed (4 Oct). One whose box
+     has left the page is dropped */
+  const LANE = { n: 0, q: [] };
+  const pump = () => {
+    LANE.q = LANE.q.filter((j) => j.box.isConnected);
+    while (LANE.n < 2 && LANE.q.length) {
+      const vh = innerHeight;
+      const far = (b) => { const r = b.getBoundingClientRect(); return r.bottom < 0 ? -r.bottom : r.top > vh ? r.top - vh : 0; };
+      let bi = 0, bd = Infinity;
+      LANE.q.forEach((j, i) => { const d = far(j.box); if (d < bd) { bd = d; bi = i; } });
+      const j = LANE.q.splice(bi, 1)[0];
+      let fin = false; LANE.n++;
+      j.start(() => { if (fin) return; fin = true; LANE.n--; pump(); });
+    }
+  };
+  const lane = (box, start) => { LANE.q.push({ box, start }); pump(); };
+  /* `small` takes only the rung under the honest one, for a preview the
+     reader has not come near yet; a later load brings the honest one */
+  const load = (box, S, small) => {
+    const f = box._f; if (!f || box._loaded || (small && box._small)) return;
     /* a picture that is a running thing on this page runs (Faux Reel) */
-    if (window.XREF_LIVE && window.XREF_LIVE(f, box)) return;
+    if (window.XREF_LIVE && window.XREF_LIVE(f)) { if (!small) { box._loaded = true; window.XREF_LIVE(f, box); } return; }
     const w = box.offsetWidth || 400, h = box.offsetHeight || 300;
     const need = Math.max(w, h * ratio(f)) * Math.min(2, window.devicePixelRatio || 1);
     const want = f.t384 && need <= 384 ? f.t384 : f.t768 && need <= 768 ? f.t768 : f.src;
     const rungs = [f.t384, f.t768, f.src].filter(Boolean);
     const quick = rungs.indexOf(want) > 0 ? rungs[rungs.indexOf(want) - 1] : null;
-    const add = (src, then) => { const im = el("img"); im.alt = f.alt || ""; im.decoding = "async"; im.draggable = false; if (box._pos) im.style.objectPosition = box._pos; im.addEventListener("load", () => then(im), { once: true }); im.src = encodeURI(src); box.appendChild(im); return im; };
-    let pv = null;
-    if (quick) pv = add(quick, () => box.classList.add("in"));
-    const honest = () => add(want, (im) => { im.classList.add("hi"); box.classList.add("in"); if (pv) setTimeout(() => pv.remove(), 400); });
+    /* the small rung goes ahead of every honest file in flight, so a
+       box the reader has reached is never left waiting behind a large
+       one further on (4 Oct) */
+    const add = (src, then, pri) => { const im = el("img"); im.alt = f.alt || ""; im.decoding = "async"; im.draggable = false; if (pri) im.fetchPriority = pri; if (box._pos) im.style.objectPosition = box._pos; im.addEventListener("load", () => { HELD.add(src); then(im); }, { once: true }); im.src = encodeURI(src); box.appendChild(im); return im; };
+    let pv = box._pv || null;
+    if (HELD.has(want)) {
+      box._loaded = true;
+      add(want, () => {}).classList.add("hi"); box.classList.add("in");
+      if (pv) setTimeout(() => pv.remove(), 400);
+      return;
+    }
+    if (small && quick) { box._small = true; if (!pv) box._pv = add(quick, () => box.classList.add("in"), "high"); return; }
+    box._loaded = true;
+    if (quick && !pv) pv = add(quick, () => box.classList.add("in"), "high");
+    const show = (im) => { im.classList.add("hi"); box.classList.add("in"); if (pv) setTimeout(() => pv.remove(), 400); };
+    /* with a rung under it the honest file takes its turn in the lane;
+       a box whose honest file is the smallest rung takes it at once */
+    const honest = () => quick
+      ? lane(box, (done) => { const im = add(want, (x) => { show(x); done(); }, "low"); im.addEventListener("error", done, { once: true }); })
+      : add(want, show);
     if (quick && S && S.ctx && S.ctx.preview) setTimeout(() => { if (box.isConnected && !S.ctx.gone) honest(); }, 240);
     else honest();
   };
 
   /* in: each opener unveils from the top in reading order, the head's
-     words rise after */
+     words rise after. The first `shown` were already on the glass in the
+     foot the reader carried on from, so they stay still, as the kept
+     head does */
   const enter = (S, o) => {
     o = o || {};
     S.units.forEach((u) => { if (u._an) { u._an.cancel(); u._an = null; } u.style.visibility = ""; });
     S.items.forEach((t) => { if (t.box !== o.keep) t.box.style.visibility = ""; });
     if (still()) return;
     const box = S.ctx.scroller.getBoundingClientRect();
-    S.units.filter((u) => !(o.keep && u.contains(o.keep)) && rectIn(u.getBoundingClientRect(), box)).forEach((u, i) => {
+    const kept = new Set(S.items.slice(0, o.shown || 0).map((t) => t.fig));
+    S.units.filter((u) => !(o.keep && u.contains(o.keep)) && !kept.has(u) && rectIn(u.getBoundingClientRect(), box)).forEach((u, i) => {
       const words = u.classList.contains("xk-head");
       /* the page's motion family, when it has one for a shelf */
       const fx = window.XREF_IN && window.XREF_IN(words);
@@ -249,7 +314,7 @@
     });
     S.root.addEventListener("pointerleave", () => { if (S.hov) { S.hov = null; ctx.hover(null); } });
     return {
-      destroy() { if (S.io) S.io.disconnect(); S.units.forEach((u) => { if (u._an) u._an.cancel(); }); S.root.remove(); },
+      destroy() { if (S.io) S.io.disconnect(); if (S.far) S.far.disconnect(); S.units.forEach((u) => { if (u._an) u._an.cancel(); }); S.root.remove(); },
       tileFor(k) { const t = S.items.find((x) => x.k === k); return t ? t.box : null; },
       onResize() {
         if (Math.abs(ctx.width - S.W) <= 30 && Math.abs(ctx.height - S.avail) <= 80 && !!ctx.phone === S.ph) return;
@@ -264,5 +329,57 @@
     };
   };
 
-  REG.stack = { label: "Stack", render };
+  /* ── a foot's preview (4 Oct 2026, his "when a user scrolls the projects
+     images dont load/display until the it's fully loaded - makes it feel
+     like something wasnt loading correctly...is there another approach so
+     on the intitial scroll there are images/projects displayed?"). The
+     glass of paper a foot brings up under the next entry's name stood
+     empty, and that shelf's pictures were asked for only once it opened.
+     Now the foot sets the shelf's first openers under the name, as many as
+     its glass holds, at the sizes and in the places the shelf will give
+     them, by the same hand (figureOf). They hang from where the shelf will
+     set its head: the head is built unseen for its height, and the foot's
+     top lands that far above the running head's line when it carries on.
+     The page asks for their files while the reader is still above, so the
+     shelf opens on pictures already there, and keeps them still ── */
+  const peek = (foot, ctx) => {
+    const S = { ctx, D: ctx.D || window.D, esc: ctx.esc || (ctx.D || window.D).esc, lbl: ctx.label || ((t) => t), ks: (ctx.studies || []).slice(), items: [], lvl: 0, io: null };
+    const root = el("div", "xk xk-peek"); root.setAttribute("aria-hidden", "true");
+    foot.classList.add("peeks"); foot.appendChild(root);
+    const lay = () => {
+      Object.assign(S, { W: ctx.width, avail: ctx.height, ph: !!ctx.phone });
+      root.classList.toggle("ph", S.ph);
+      const hd = headEl(S); hd.style.visibility = "hidden"; root.replaceChildren(hd); fitName(S);
+      const glass = ctx.scroller ? ctx.scroller.clientHeight : innerHeight;
+      const top = (ctx.head || 0) - (glass - foot.offsetHeight) + hd.getBoundingClientRect().height;
+      hd.remove(); S.items = [];
+      root.style.top = top + "px";
+      const rh = { since: 1, need: 1 };
+      for (let i = 0, y = top; i < S.ks.length && y < foot.clientHeight; i++) {
+        const t = figureOf(S, S.ks[i], i, rh, true); if (!t) continue;
+        root.appendChild(t.fig); S.items.push(t); y += t.fig.offsetHeight;
+      }
+      const l = S.lvl; S.lvl = 0; if (l) api.load(l === 1);
+    };
+    const api = {
+      /* the small rungs only, or everything the shelf will ask for */
+      load(small) {
+        const l = small ? 1 : 2; if (l <= S.lvl) return; S.lvl = l;
+        S.items.forEach((t) => load(t.box, S, !!small));
+      },
+      /* everything, once the foot comes within m of the glass's foot */
+      near(m) {
+        if (S.io || !ctx.scroller) return;
+        S.io = new IntersectionObserver((es) => { if (es.some((e) => e.isIntersecting)) { S.io.disconnect(); api.load(false); } }, { root: ctx.scroller, rootMargin: "0px 0px " + m + " 0px" });
+        S.io.observe(foot);
+      },
+      relayout() { if (Math.abs(ctx.width - S.W) > 2 || Math.abs(ctx.height - S.avail) > 2 || !!ctx.phone !== S.ph) lay(); },
+      get n() { return S.items.length; },
+      destroy() { if (S.io) S.io.disconnect(); root.remove(); foot.classList.remove("peeks"); },
+    };
+    lay();
+    return api;
+  };
+
+  REG.stack = { label: "Stack", render, peek };
 })();

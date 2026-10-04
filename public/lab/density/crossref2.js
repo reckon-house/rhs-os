@@ -2507,6 +2507,44 @@
     esc, clean, D,
     label: LBL,
   });
+  /* the same for a foot's preview of the next shelf (4 Oct): that entry's
+     studies, measured on the glass the foot is on, which is as wide as
+     the shelf it will open */
+  const peekCtx = (o, layer) => ({
+    entry: entryInfo(o),
+    studies: shelfOrder(o).slice(),
+    pics: (k) => picsOf(k),
+    lead: (k) => leadOf(k),
+    get width() { return (layer.clientWidth || STAGE.clientWidth) - (phone() ? 0 : 20); },
+    get height() { return Math.max(0, (layer.clientHeight || innerHeight) - HEAD); },
+    scroller: layer,
+    head: HEAD,
+    get phone() { return phone(); },
+    preview: false,
+    gone: false,
+    num: (k) => D.num(k),
+    locs: (k) => locsOf(o, k),
+    esc, clean, D,
+    label: LBL,
+  });
+  /* a foot sets the next shelf's first openers under its name, where that
+     shelf will set them, when shelves open in the stack (shelf-stack.js,
+     peek). The foot keeps it as _peek, for the carry-on to read */
+  const peekFoot = (foot, o, layer) => {
+    if (!foot || !o || layoutId() !== "stack" || !SHELVES.stack || typeof SHELVES.stack.peek !== "function") return null;
+    try { return (foot._peek = SHELVES.stack.peek(foot, peekCtx(o, layer))); }
+    catch (e) { console.warn("crossref2: a foot's preview could not be set", e); return null; }
+  };
+  const unpeek = (foot) => { if (foot && foot._peek) { try { foot._peek.destroy(); } catch (e) { /* the layout's own */ } foot._peek = null; } };
+  /* a shelf's own foot: set once its layout is, so the head it measures
+     has the shelf's sizes; its files come as it nears, a glass and a half
+     ahead. A preview is looked at, not scrolled to its end, so it has none */
+  const peekShelf = (S) => {
+    unpeek(S.foot);
+    if (!S.foot || S.pv || !S.nx) return;
+    const pk = peekFoot(S.foot, S.nx, S.layer);
+    if (pk) pk.near("150%");
+  };
 
   /* a foot's words: the entry's name, count, column and sentence, set
      where its shelf will put them. A line comes as the one run its head
@@ -2558,6 +2596,15 @@
   /* a scroll set where Lenis owns the box goes through it, or it is undone */
   const setY = (box, y) => { if (box._lenis) box._lenis.scrollTo(y, { immediate: true, force: true }); else box.scrollTop = y; };
   let homeY = 0, homeAt = null;
+  /* the home's foot carries the first line's openers (4 Oct). Their small
+     files are asked for once the page has loaded and gone quiet, the rest
+     at the reader's first scroll down, so the pictures are on the paper
+     before the reader gets there. The home is built again on every hover
+     at rest; the files it has shown come straight back */
+  let homeFoot = null, homePrimed = false;
+  const primeHome = () => { homePrimed = true; if (homeFoot && homeFoot.isConnected && homeFoot._peek) homeFoot._peek.load(true); };
+  const whenQuiet = () => { if (window.requestIdleCallback) requestIdleCallback(primeHome, { timeout: 2500 }); else setTimeout(primeHome, 1200); };
+  if (document.readyState === "complete") whenQuiet(); else addEventListener("load", whenQuiet, { once: true });
   const homeBuild = (lay, main, wrap, folio) => {
     const first = G.lines && G.lines.items[0];
     lay.classList.add("home");
@@ -2569,11 +2616,15 @@
     if (!first) return;
     const foot = footEl(first, G.lines.name); foot.classList.add("hm-foot");
     main.appendChild(foot);
+    homeFoot = foot;
+    const pk = peekFoot(foot, first, lay);
+    if (pk && homePrimed) pk.load(true);
     let armed = true, t = 0;
     const check = () => {
       t = 0;
       if (!lay.isConnected || lay.classList.contains("out") || staged()) return;
       homeY = lay.scrollTop;
+      if (pk && homeY > 8) pk.load(false);
       const lb = lay.getBoundingClientRect(), fb = foot.getBoundingClientRect();
       foot.style.setProperty("--fp", Math.max(0, Math.min(1, (lb.bottom - fb.top) / Math.max(1, fb.height))).toFixed(3));
       /* back from below, it waits until the reader has scrolled up off the foot */
@@ -2610,8 +2661,8 @@
        sentence where the stack will put them; a rule beside Next fills as
        it comes up, and reaching its end carries on into that shelf */
     const items = o.g.items, nx = items[(items.indexOf(o) + 1) % items.length];
-    S.foot = null;
-    if (nx && nx !== o) { const a = footEl(nx); kids.push(a); S.foot = a; }
+    S.foot = null; S.nx = null;
+    if (nx && nx !== o) { const a = footEl(nx); kids.push(a); S.foot = a; S.nx = nx; }
     S.layer.replaceChildren(...kids);
     Object.assign(S, { bar, body, sw });
   };
@@ -2643,7 +2694,7 @@
     };
     /* a layout that throws gives way to the grid */
     if (S.lid && !put(S.lid) && S.lid !== "grid" && SHELVES.grid) { S.lid = "grid"; put("grid"); }
-    drawSwitch(S); fitFoot(S);
+    drawSwitch(S); fitFoot(S); peekShelf(S);
     S.headEl = S.body.querySelector("[data-head]");
     pastCheck(S);
   };
@@ -2749,7 +2800,7 @@
     }, { passive: true });
     return S;
   };
-  const destroyShelf = (S) => { if (!S) return; unmountLayout(S); S.layer.remove(); };
+  const destroyShelf = (S) => { if (!S) return; unpeek(S.foot); unmountLayout(S); S.layer.remove(); };
   const setShelfLayout = (id) => {
     if (!SHELVES[id] || typeof SHELVES[id].render !== "function") return;
     shelfPref = id;
@@ -2897,6 +2948,7 @@
     P.layer.classList.remove("pv");
     P.bar.querySelectorAll("[tabindex]").forEach((n) => n.removeAttribute("tabindex"));
     pastCheck(P);
+    peekShelf(P);
     return P;
   };
 
@@ -2921,10 +2973,12 @@
     }
     /* carried on from the foot of the shelf before: its name is already
        where that foot left it, so the shelf only has to appear, and only
-       its pictures arrive */
+       its pictures arrive. Those the foot already showed (4 Oct) are
+       where it showed them, and stay still */
     if (how && how.via === "scroll" && ((old && old.visible && !oldRoom) || how.home)) {
+      const from = how.home ? homeFoot : old && old.foot;
       if (!still()) S.layer.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 200, easing: "ease" });
-      shelfEnter(S, { delay: 0, keep: S.body.querySelector("header") });
+      shelfEnter(S, { delay: 0, keep: S.body.querySelector("header"), shown: from && from._peek ? from._peek.n : 0 });
       setTimeout(() => { if (old && old !== SH) destroyShelf(old); }, 240);
       return;
     }
@@ -3458,7 +3512,7 @@
       /* the shelf's layout hears of it; one that does not listen is set
          afresh when the stage's width or height moves much */
       if (SH && SH.visible && SH.view) {
-        if (SH.view.onResize) { try { SH.view.onResize(); } catch (e) { /* the layout's own */ } }
+        if (SH.view.onResize) { try { SH.view.onResize(); } catch (e) { /* the layout's own */ } if (SH.foot && SH.foot._peek) SH.foot._peek.relayout(); }
         else if (Math.abs(SH.layer.clientWidth - SH.W) > 30 || Math.abs(SH.layer.clientHeight - SH.V) > 80) {
           const f = SH.layer.scrollTop / Math.max(1, SH.layer.scrollHeight); mountLayout(SH); setY(SH.layer, f * SH.layer.scrollHeight);
         }

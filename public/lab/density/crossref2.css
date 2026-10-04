@@ -1023,6 +1023,11 @@ html.stack .sh-foot-t.stand { flex-basis: 100%; }
    its top edge, the statement a margin above its foot */
 .layer.home .folio { top: calc(var(--m) * 2); left: calc(var(--gut) / 2); right: calc(var(--m) * 2); }
 .hm-foot { min-height: calc(100vh - var(--peek)); min-height: calc(100dvh - var(--peek)); background: var(--paper); color: var(--ink); box-shadow: 0 calc(-1 * var(--peek)) 0 var(--paper); }
+/* its words land where the first shelf sets its head, under the running
+   head's 44px line (4 Oct 2026): since --peek became the 20px margin the
+   foot's top lands 24px higher than a shelf foot's, so its padding takes
+   the difference back. They had been landing 24px above the head */
+.hm-foot { padding-top: calc(30px + 44px - var(--peek)); }
 
 /* ── NUMBER LABELS (27 Sept, his "there are a lot of number labels on
    things - it's turning into an 'ai-tell' out in the design community

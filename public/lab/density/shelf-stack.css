@@ -85,3 +85,10 @@
 .xk-y, .xk-d { font-weight: 400; }
 .xk-l { font-size: 12px; font-weight: 400; letter-spacing: 0; }
 .xk-see, .xk.ph .xk-see { font-size: 13px; font-weight: 600; }
+
+/* ── a foot's preview (4 Oct 2026): the next shelf's first openers under
+   its name, hung where that shelf will set them (peek in shelf-stack.js),
+   so the glass a foot brings up is never empty paper; the foot clips the
+   last of them at its own height, which the carry-on is measured by ── */
+.sh-foot.peeks { overflow: hidden; }
+.xk-peek { position: absolute; left: 0; right: 0; }
