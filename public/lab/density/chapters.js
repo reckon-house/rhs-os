@@ -14,12 +14,19 @@
 window.DENSITY_CHAPTERS = {
   /* his figures (4 Oct, "yes, those numbers ARE real!"): 30 hours a week
      on watching competitors, and 40 a week across the teams that write,
-     design and code the campaigns */
+     design and code the campaigns. The lines after his "do these 'sell'
+     more? I also think it's a miss to NOT mention this was built with AI
+     more in these lists" ("love this!"): AI said where it is specific,
+     never at the head of two lines running, and a sixth line for how it
+     was built. The half day to three minutes is the deck builder's, in the
+     study's utilities section; four months and AI as the engineering
+     partner are its closing's */
   "sally-os": [
-    { head: "Three AI models watch", t: "Watches competitors,", g: "saving 30 hours a week", app: "Trends" },
-    { head: "Jim answers with the context", t: "Writes, designs and codes campaigns,", g: "saving 40 hours a week across teams", app: "Brand Brain" },
-    { head: "Jim now proposes campaigns", t: "Proposes campaigns", g: "from trends and what customers say", app: "Campaigns" },
-    { head: "Sally's old asset library", t: "Finds any asset", g: "by what's in it", app: "Asset Hub" },
-    { head: "Ten tools each handle a job", t: "Ten tools,", g: "from shelf talkers to exec decks", app: "Utilities" },
+    { head: "Three AI models watch", t: "Competitor intel from three AI models,", g: "saving 30 hours a week", app: "Trends" },
+    { head: "Jim answers with the context", t: "AI writes, designs and codes campaigns,", g: "saving 40 hours a week across teams", app: "Brand Brain" },
+    { head: "Jim now proposes campaigns", t: "Proposes campaigns on its own,", g: "from trends and what customers say", app: "Campaigns" },
+    { head: "Sally's old asset library", t: "AI finds any asset", g: "by what's in it", app: "Asset Hub" },
+    { head: "Ten tools each handle a job", t: "Custom apps built for individual teams,", g: "one turns half a day of deck work into three minutes", app: "Utilities" },
+    { head: "The team that needed the Marketing OS", t: "Built in about four months,", g: "with AI as the engineering partner", app: "" },
   ],
 };
