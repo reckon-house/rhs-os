@@ -667,7 +667,23 @@
   const FULL = new Set([
     "typography-patterns-the-fancy-poster-flat.png", "typography-patterns-stepper-poster-flat.png",
     "typography-patterns-white-poster-flat.png",
+    /* Ivy Park's transit poster (4 Oct 2026, his "these other two images
+       would be more impactful edge to edge"): 2300px, so the room's width
+       is honest; it had been held under the glass's height, small, beside
+       its caption */
+    "ivy-signage.jpg",
   ]);
+  /* a sharper file of a room's cover picture, where the board's is too
+     small to fill the room (4 Oct 2026, his "the hero for ivy park should
+     be full bleed"). Ivy Park's board picture is 1120px wide, so its cover
+     sat at 560 with a hole beside it; the study's folder held the same
+     photograph at 3120 (inset-hero.jpg), cut here to the board picture's
+     own frame (matched at x 120, y 15) so the flight from the index lands
+     on the same picture and only sharpens */
+  const COVER_HI = {
+    "ivy-park": { src: "/case-studies/ivy-park/ivy-park-roller-skate-cover.jpg", w: 2868, h: 1912,
+      t384: "/lab/density/thumbs/ivy-park/ivy-park-roller-skate-cover@384.webp", t768: "/lab/density/thumbs/ivy-park/ivy-park-roller-skate-cover@768.webp" },
+  };
   const fileOf = (f) => (f && f.src ? f.src.split("/").pop() : "");
   const full = (f) => FULL.has(fileOf(f));
   /* marks set small on a square of flat colour, edge to edge, with plenty
@@ -1233,7 +1249,8 @@
       }
       const cv = el("figure", "sp-cover" + (CH ? " sp-riser" : ""));
       if (M.lead) {
-        const lf = { src: M.lead.src, w: M.lead.w, h: M.lead.h, t384: M.lead.t384, t768: M.lead.t768, alt: s.t };
+        const hi = COVER_HI[k];
+        const lf = hi ? Object.assign({ alt: s.t }, hi) : { src: M.lead.src, w: M.lead.w, h: M.lead.h, t384: M.lead.t384, t768: M.lead.t768, alt: s.t };
         const box = el("div", "sp-pic sp-cpic"); box._f = lf;
         if (M.dup) tag(box, M.dup);
         const side = el("div", "sp-cside"); cv.appendChild(side); P.coverSide = side;
