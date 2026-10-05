@@ -976,6 +976,17 @@ html:not([data-type="bold"]) .sp .sp-chap-r { font-weight: 400; }
 .sp-chap-g { color: var(--grey); }
 .sp-chap-a { color: var(--grey); }
 .sp-chap-r:hover .sp-chap-n { color: var(--ink); }
+/* the index's swipe under the pointer (5 Oct 2026, his "can we add a
+   hover treatment on these? maybe the signature swipe?"): the grey fills
+   the row from the left and leaves to the right, its corners the
+   pictures', the values copied from the index's box (crossref2.css),
+   inset from the rules so they stay drawn */
+.sp-chap-r { z-index: 0; }
+.sp-chap-r::before { content: ""; position: absolute; z-index: -1; top: 3px; bottom: 3px; left: -10px; right: -10px; pointer-events: none;
+  background: var(--hl, #ECECEC); border-radius: var(--pr, 4px); transform: scaleX(0); transform-origin: 100% 50%;
+  transition: transform 0.36s cubic-bezier(0.45, 0, 0.2, 1); }
+.sp-chap-r:is(:hover, :focus-visible)::before { transform: scaleX(1); transform-origin: 0 50%; }
+@media (prefers-reduced-motion: reduce) { .sp-chap-r::before { transition: none; } }
 /* a narrow room: the part of the work goes under its line */
 @container sp (max-width: 559px) {
   .sp-chap-hd, .sp-chap-r { grid-template-columns: 2.6em minmax(0, 1fr); }
