@@ -953,29 +953,34 @@ html:is([data-labels="title"], [data-labels="sentence"]) .sp .szl-row { font-siz
    rows; and in the running head their numbers, the chapter the reader is
    in opened to its line ── */
 .sp-chap { position: relative; margin: clamp(30px, 5.4cqw, 52px) var(--m) 0; }
-.sp-chap-hd, .sp-chap-r { display: grid; grid-template-columns: 2.3em minmax(0, 1fr) minmax(7em, 19%); column-gap: clamp(12px, 2cqw, 24px);
-  font-size: clamp(19px, 3.2cqw, 26px); }
-/* the subtitle's own size and set, in whichever type set the room is in:
-   the bold set's above, the room's present one here */
-html:not([data-type="bold"]) .sp .sp-chap-hd, html:not([data-type="bold"]) .sp .sp-chap-r { font-size: clamp(14px, 2.62cqw, 18px); }
-html:not([data-type="bold"]) .sp .sp-chap-r { font-weight: 500; letter-spacing: -0.018em; line-height: 1.3; }
+.sp-chap-hd, .sp-chap-r { display: grid; grid-template-columns: 3em minmax(0, 1fr) minmax(7em, 19%); column-gap: clamp(12px, 2cqw, 24px); }
+/* small, at the kicker's size and set under the title (4 Oct, his "can
+   we try making the list text size small - maybe the size of the below
+   text?"; it was the subtitle's): .sp-meta in whichever type set the room
+   is in, the bold set's here and the room's present one after */
+.sp-chap-hd, .sp-chap-r { font-size: 12px; }
+.sp-chap-r { font-weight: 600; letter-spacing: -0.004em; line-height: 1.45; }
+html:not([data-type="bold"]) .sp .sp-chap-r { font-weight: 400; }
 .sp-chap-hd { align-items: end; padding: 0 0 10px; }
 .sp-chap-hd span { font-size: 11px; font-weight: 600; line-height: 1.3; color: var(--grey); }
-.sp-chap-r { position: relative; align-items: baseline; width: 100%; margin: 0; padding: clamp(11px, 1.6cqw, 16px) 0 clamp(12px, 1.8cqw, 17px);
-  border: 0; border-top: 1px solid var(--hair); border-radius: 0; background: none; font-family: inherit; font-weight: 600; letter-spacing: -0.03em;
-  line-height: 1.18; text-align: left; color: var(--ink); cursor: pointer; }
+/* each line just under its rule and the air below it (4 Oct, his "align
+   the text closer to the top of the thin rule leaving more empty space
+   below before the next one") */
+.sp-chap-r { position: relative; align-items: baseline; width: 100%; margin: 0; padding: 7px 0 clamp(24px, 4cqw, 34px);
+  border: 0; border-top: 1px solid var(--hair); border-radius: 0; background: none; font-family: inherit;
+  text-align: left; color: var(--ink); cursor: pointer; }
 .sp-chap-r:last-child { border-bottom: 1px solid var(--hair); }
 .sp-chap-r:focus-visible { outline: 1px solid var(--ink); outline-offset: -1px; }
 .sp-chap-n { color: var(--grey); font-variant-numeric: tabular-nums; transition: color 0.2s ease; }
 .sp-chap-t { text-wrap: pretty; }
 .sp-chap-g { color: var(--grey); }
-.sp-chap-a { font-size: 11px; font-weight: 600; letter-spacing: 0; line-height: 1.3; color: var(--grey); }
+.sp-chap-a { color: var(--grey); }
 .sp-chap-r:hover .sp-chap-n { color: var(--ink); }
 /* a narrow room: the part of the work goes under its line */
 @container sp (max-width: 559px) {
-  .sp-chap-hd, .sp-chap-r { grid-template-columns: 2.1em minmax(0, 1fr); }
+  .sp-chap-hd, .sp-chap-r { grid-template-columns: 2.6em minmax(0, 1fr); }
   .sp-chap-hd span:nth-child(3) { display: none; }
-  .sp-chap-a { grid-column: 2; margin-top: 8px; }
+  .sp-chap-a { grid-column: 2; margin-top: 3px; }
 }
 /* the hover picture lies under the words, and the words are set in white
    with difference: the same black and greys on the paper (the greys given
