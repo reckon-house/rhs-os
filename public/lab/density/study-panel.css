@@ -943,3 +943,45 @@ html:is([data-labels="title"], [data-labels="sentence"]) .sp .szl-row { font-siz
 .sp-live.on .sp-live-done { display: inline-flex; }
 .sp-live-ext { white-space: nowrap; color: var(--ink, #111); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 0.22em; }
 @media (prefers-reduced-motion: reduce) { .sp-live-hint { transition: none; } }
+
+/* ── a room's chapters (4 Oct 2026, chapters.js): a short contents under
+   the title, each line what one part of the work does and a way straight
+   to it, set as the index sets its rows (a number, the line, a hairline,
+   the index's grey under the pointer); and in the running head their
+   numbers, the chapter the reader is in opened to its line ── */
+.sp-chap { margin: clamp(30px, 5.4cqw, 52px) var(--m) 0; max-width: 34em; }
+.sp-chap-k { margin: 0 0 10px; font-size: 11px; font-weight: 600; color: var(--grey); }
+.sp-chap-r { display: grid; grid-template-columns: 2.6em minmax(0, 1fr); align-items: baseline; width: 100%; margin: 0; padding: 11px 6px 12px;
+  border: 0; border-top: 1px solid var(--hair); border-radius: 0; background: none; font: inherit; color: var(--ink); text-align: left; cursor: pointer;
+  transition: background-color 0.2s ease; }
+.sp-chap-r:last-child { border-bottom: 1px solid var(--hair); }
+.sp-chap-r:hover { background: var(--hl, #ECECEC); }
+.sp-chap-r:focus-visible { outline: 1px solid var(--ink); outline-offset: -1px; }
+.sp-chap-n { font-size: 11px; font-weight: 600; color: var(--grey); font-variant-numeric: tabular-nums; }
+.sp-chap-t { font-size: clamp(17px, 2.5cqw, 21px); font-weight: 600; letter-spacing: -0.02em; line-height: 1.22; text-wrap: pretty; }
+/* the running head: the numbers in place of the section's name */
+.sp-has-ch .sp-bar-s { display: none; }
+.sp-chs { display: inline-flex; align-items: baseline; gap: 1px; margin-left: 1.1em; }
+.sp-ch { display: inline-flex; align-items: baseline; min-width: 0; padding: 0 5px; border: 0; background: none; font: inherit; color: var(--grey);
+  cursor: pointer; pointer-events: none; transition: color 0.2s ease; }
+.sp.sp-past .sp-ch { pointer-events: auto; }
+.sp-ch b { font-size: 9.5px; font-weight: 700; letter-spacing: 0.04em; font-variant-numeric: tabular-nums; }
+.sp-ch i { font-style: normal; max-width: 0; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; opacity: 0;
+  transition: max-width 0.5s var(--ease, ease), opacity 0.3s ease, margin-left 0.5s var(--ease, ease); }
+.sp-ch:hover, .sp-ch.on { color: var(--ink); }
+.sp-ch.on i { max-width: calc(100cqw - 390px); margin-left: 0.55em; opacity: 1; }
+.sp-ch:focus-visible { outline: 1px solid currentColor; outline-offset: 2px; }
+/* a narrow room gives the numbers the study's name's room, and an open
+   line stops short of the last numbers, so all five stay in the head */
+@container sp (max-width: 559px) { .sp-has-ch .sp-bar-tt { display: none; } .sp-has-ch .sp-chs { margin-left: -5px; } .sp-ch.on i { max-width: calc(100cqw - 225px); } }
+@media (prefers-reduced-motion: reduce) { .sp-ch i { transition: none; } }
+/* the contents' hover picture (4 Oct 2026): one frame by the pointer, a
+   hairline and a soft drop so a white screen holds against the paper */
+.sp-chap { position: relative; }
+.sp-chap-fly { position: absolute; left: 0; top: 0; z-index: 6; width: 340px; height: 255px; overflow: hidden; pointer-events: none;
+  border-radius: var(--pr, 4px); background: var(--paper); box-shadow: 0 0 0 1px var(--hair), 0 14px 34px rgba(0, 0, 0, 0.12);
+  opacity: 0; scale: 0.94; transition: opacity 0.22s ease, scale 0.35s var(--ease, ease); }
+.sp-chap-fly.in { opacity: 1; scale: 1; }
+.sp-chap-fly img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 0; opacity: 0; transition: opacity 0.25s ease; }
+.sp-chap-fly img.on { opacity: 1; }
+@media (prefers-reduced-motion: reduce) { .sp-chap-fly { scale: 1; transition: opacity 0.1s linear; } .sp-chap-fly img { transition: none; } }

@@ -238,7 +238,7 @@
        block came off for every room (2 Oct 2026, his "this first one i
        think we can drop from the system") */
     ["rule", ".sp-kick, .sp-run.sp-hasc, .sp-foot, .sp-spec, .sp-card, .sp-tcol, .sp-tr, .sp-nr"],
-    ["fade", ".sp-cap, .sp-fs, .sp-nl, .sp-ns, .sp-meta, .sp-spec-h, .sp-tcol > .sp-caps, .sp-tcol ul, .sp-palw, .sp-bar2, .sp-stl li, .sp-full, .sp-next > .sp-caps, .sp-fcap, .sp-bcap, .sp-card p, .sp-tr dd, .sp-tr dt"],
+    ["fade", ".sp-cap, .sp-fs, .sp-nl, .sp-ns, .sp-meta, .sp-chap, .sp-spec-h, .sp-tcol > .sp-caps, .sp-tcol ul, .sp-palw, .sp-bar2, .sp-stl li, .sp-full, .sp-next > .sp-caps, .sp-fcap, .sp-bcap, .sp-card p, .sp-tr dd, .sp-tr dt"],
   ];
   /* words into masks: each word an inline-block clipped to its own line,
      its inside rising into it. Text nodes are split where they are, so a
@@ -735,6 +735,14 @@
     try { container.scrollTop = 0; } catch (e) { /* a container that cannot scroll */ }
     const room = { el: root, cover: null, scroller: container, ids: [], destroy, find, mark, scrollTo, play, shown, replay, lenis: null };
     if (!M) return room;
+    /* the room's chapters (chapters.js, 4 Oct 2026): each finds its section
+       by the first words of that section's head. ?chapters=off leaves them
+       out; ?chapters=top sets the contents over the title instead of
+       under it */
+    const CHM = (new URLSearchParams(location.search).get("chapters") || "").toLowerCase();
+    const CHAPS = CHM === "off" ? [] : ((window.DENSITY_CHAPTERS || {})[k] || [])
+      .map((c) => { const sec = M.secs.find((x) => x.head && String(x.head.text || "").startsWith(c.head)); return sec ? { t: c.t, pic: c.pic || null, at: sec.head.id, sec: null, btn: null } : null; })
+      .filter(Boolean).map((c, i) => Object.assign(c, { n: two(i + 1) }));
 
     let io = null, ro = null, headIO = null, fontsT = 0, dead = false;
     let parts = null; /* what layout() needs to reach: rows, asides, fitted type */
@@ -1092,6 +1100,12 @@
       curSec = now;
       const slot = root.querySelector(".sp-bar-s");
       if (slot) slot.innerHTML = now && now._lab ? (now._lab.n ? "<b>" + esc(now._lab.loc || now._lab.n) + "</b>" : "") + esc(now._lab.name) : "";
+      /* the chapter the reader is in opens in the running head; before the
+         first and after the last, none is open */
+      if (CHAPS.length) CHAPS.forEach((c) => {
+        if (!c.sec || !c.sec.isConnected) { const e = find(c.at); c.sec = e ? e.closest(".sp-sec") : null; }
+        if (c.btn) c.btn.classList.toggle("on", !!now && c.sec === now);
+      });
     };
     const onTrack = () => { if (!trT) trT = requestAnimationFrame(track); };
     container.addEventListener("scroll", onTrack, { passive: true });
@@ -1169,7 +1183,22 @@
          Close. Set in white with difference, so it reads on any picture */
       const bar = el("div", "sp-bar");
       const barIn = el("div", "sp-bar-in");
-      barIn.appendChild(el("span", "sp-bar-t", esc(D.title(k)) + '<span class="sp-bar-s"></span>'));
+      const barT = el("span", "sp-bar-t", '<span class="sp-bar-tt">' + esc(D.title(k)) + '</span><span class="sp-bar-s"></span>');
+      barIn.appendChild(barT);
+      /* with chapters, the running head carries their numbers in place of
+         the section's name, and the one the reader is in opens to its line
+         (his "could the tabs auto open as you scroll through?"); each
+         number opens its chapter */
+      if (CHAPS.length) {
+        root.classList.add("sp-has-ch");
+        const st = el("span", "sp-chs");
+        CHAPS.forEach((c) => {
+          const b = el("button", "sp-ch", "<b>" + c.n + "</b><i>" + esc(c.t) + "</i>"); b.type = "button"; b.title = c.t;
+          b.addEventListener("click", () => jumpCh(c));
+          st.appendChild(b); c.btn = b; c.sec = null;
+        });
+        barT.appendChild(st);
+      }
       if (o.onClose) { const x = el("button", "sp-x", "Close"); x.type = "button"; x.addEventListener("click", () => o.onClose()); barIn.appendChild(x); }
       bar.appendChild(barIn); frag.appendChild(bar);
 
@@ -1222,6 +1251,64 @@
 
       /* the title, the subtitle, and the quiet facts (held in the cover
          above when the room moves as the site does) */
+      /* the contents: what each part of the work does, each line opening
+         its part. Under the title and its line, so the reader knows what
+         the thing is first; ?chapters=top puts it over the title */
+      const chapEl = () => {
+        const nav = el("nav", "sp-chap"); nav.setAttribute("aria-label", "Chapters");
+        nav.appendChild(el("div", "sp-chap-k", esc(lbl("What it does"))));
+        CHAPS.forEach((c) => {
+          const b = el("button", "sp-chap-r", '<span class="sp-chap-n">' + c.n + '</span><span class="sp-chap-t">' + esc(c.t) + "</span>"); b.type = "button";
+          b.addEventListener("click", () => jumpCh(c));
+          nav.appendChild(b);
+        });
+        if (CHAPS.some((c) => c.pic) && matchMedia("(hover: hover) and (pointer: fine)").matches) chapFly(nav);
+        return nav;
+      };
+      /* a picture of each part comes up beside the pointer as it crosses
+         the contents, and follows it a little behind (4 Oct 2026, his "do
+         you know those lists that when you hover an image comes up too?
+         might be cool here!"). One frame, its pictures swapped in place;
+         all of them asked for the first time the pointer comes near; it
+         keeps to the room, crossing to the pointer's left near the edge,
+         and goes when the pointer leaves or the room scrolls */
+      const chapFly = (nav) => {
+        const fly = el("div", "sp-chap-fly"); fly.setAttribute("aria-hidden", "true");
+        const ims = CHAPS.map((c) => { const im = el("img"); im.alt = ""; im.decoding = "async"; im.dataset.src = c.pic || ""; fly.appendChild(im); return im; });
+        nav.appendChild(fly);
+        const calm = matchMedia("(prefers-reduced-motion: reduce)").matches;
+        const FW = 340, FH = 255;
+        let on = -1, tx = 0, ty = 0, x = 0, y = 0, raf = 0, armed = false;
+        const step = () => {
+          raf = 0; const k2 = calm ? 1 : 0.2; x += (tx - x) * k2; y += (ty - y) * k2;
+          fly.style.transform = "translate3d(" + x.toFixed(1) + "px," + y.toFixed(1) + "px,0)";
+          if (Math.abs(tx - x) > 0.3 || Math.abs(ty - y) > 0.3) raf = requestAnimationFrame(step);
+        };
+        const aim = (ev) => {
+          const r = nav.getBoundingClientRect(), edge = root.getBoundingClientRect().right - 12;
+          let px = ev.clientX - r.left + 28;
+          if (r.left + px + FW > edge) px = ev.clientX - r.left - 28 - FW;
+          tx = px; ty = ev.clientY - r.top - FH / 2;
+          if (!armed) { x = tx; y = ty; armed = true; }
+          if (!raf) raf = requestAnimationFrame(step);
+        };
+        const show = (i) => {
+          if (i === on) return; on = i;
+          ims.forEach((im, j) => im.classList.toggle("on", j === i));
+          fly.classList.toggle("in", i >= 0);
+          if (i < 0) armed = false;
+        };
+        nav.addEventListener("pointerenter", () => ims.forEach((im) => { if (!im.src && im.dataset.src) im.src = im.dataset.src; }), { once: true });
+        nav.querySelectorAll(".sp-chap-r").forEach((b, i) => {
+          b.addEventListener("pointerenter", (ev) => { if (ev.pointerType !== "mouse") return; if (!CHAPS[i].pic) { show(-1); return; } aim(ev); show(i); });
+          b.addEventListener("pointermove", (ev) => { if (ev.pointerType === "mouse" && on >= 0) aim(ev); });
+        });
+        nav.addEventListener("pointerleave", () => show(-1));
+        const gone = () => { if (on >= 0) show(-1); };
+        container.addEventListener("scroll", gone, { passive: true });
+        P.stops.push(() => container.removeEventListener("scroll", gone));
+      };
+      if (CHAPS.length && CHM === "top") frag.appendChild(chapEl());
       if (!CH) {
         const head = el("header", "sp-head");
         const h1 = el("h1", "sp-title", esc(D.title(k))); head.appendChild(h1); P.title = h1;
@@ -1229,6 +1316,7 @@
         else if (s.fact) head.appendChild(el("p", "sp-stand", esc(s.fact) + (s.rest ? ' <span class="sp-g">' + esc(s.rest) + "</span>" : "")));
         frag.appendChild(head);
       }
+      if (CHAPS.length && CHM !== "top") frag.appendChild(chapEl());
 
       /* the kicker: the discipline, its year lighter, then its lines */
       const meta = el("div", "sp-meta");
@@ -2195,6 +2283,18 @@
       room._markIds = (list || []).slice();
     }
     function markAgain() { if (room._markIds) mark(room._markIds); }
+    /* a chapter opens at its section's top, just under the running head,
+       so the head opens that chapter as the room lands there */
+    function jumpCh(c, again) {
+      const e = find(c.at), se = e && (e.closest(".sp-sec") || e); if (!se) return;
+      const off = () => se.getBoundingClientRect().top - container.getBoundingClientRect().top - 48;
+      const top = Math.max(0, container.scrollTop + off());
+      /* pictures above can settle while the room travels, so once it
+         lands it looks again and closes the gap */
+      const fix = () => { if (!again && !dead && Math.abs(off()) > 6) jumpCh(c, true); };
+      if (lenis) { lenis.resize(); lenis.scrollTo(top, { force: true, onComplete: fix }); }
+      else { container.scrollTo({ top, behavior: "smooth" }); setTimeout(fix, 900); }
+    }
     function scrollTo(id, o2) {
       const e = find(id); if (!e) return false;
       const top = e.getBoundingClientRect().top - container.getBoundingClientRect().top + container.scrollTop - Math.round(container.clientHeight * 0.18);
