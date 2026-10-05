@@ -741,7 +741,7 @@
        under it */
     const CHM = (new URLSearchParams(location.search).get("chapters") || "").toLowerCase();
     const CHAPS = CHM === "off" ? [] : ((window.DENSITY_CHAPTERS || {})[k] || [])
-      .map((c) => { const sec = M.secs.find((x) => x.head && String(x.head.text || "").startsWith(c.head)); return sec ? { t: c.t, pic: c.pic || null, at: sec.head.id, sec: null, btn: null } : null; })
+      .map((c) => { const sec = M.secs.find((x) => x.head && String(x.head.text || "").startsWith(c.head)); return sec ? { t: c.t, g: c.g || "", app: c.app || "", pic: c.pic || null, at: sec.head.id, sec: null, btn: null } : null; })
       .filter(Boolean).map((c, i) => Object.assign(c, { n: two(i + 1) }));
 
     let io = null, ro = null, headIO = null, fontsT = 0, dead = false;
@@ -1193,7 +1193,8 @@
         root.classList.add("sp-has-ch");
         const st = el("span", "sp-chs");
         CHAPS.forEach((c) => {
-          const b = el("button", "sp-ch", "<b>" + c.n + "</b><i>" + esc(c.t) + "</i>"); b.type = "button"; b.title = c.t;
+          const line = c.t + (c.g ? " " + c.g : "");
+          const b = el("button", "sp-ch", "<b>" + c.n + "</b><i>" + esc(line) + "</i>"); b.type = "button"; b.title = line;
           b.addEventListener("click", () => jumpCh(c));
           st.appendChild(b); c.btn = b; c.sec = null;
         });
@@ -1256,28 +1257,40 @@
          the thing is first; ?chapters=top puts it over the title */
       const chapEl = () => {
         const nav = el("nav", "sp-chap"); nav.setAttribute("aria-label", "Chapters");
-        nav.appendChild(el("div", "sp-chap-k", esc(lbl("What it does"))));
+        /* set as a table (4 Oct, his "make the list a little more designed"
+           with a studio's project tables beside it, and "make the type size
+           the same as the subhead so we arent adding another size"): the
+           number and the line at the subtitle's size, the line in its two
+           tones, and the part of the work it is in the labels' size, across
+           the whole measure */
+        const hasApp = CHAPS.some((c) => c.app);
+        nav.appendChild(el("div", "sp-chap-hd", "<span></span><span>" + esc(lbl("What it does")) + "</span>" + (hasApp ? "<span>" + esc(lbl("App")) + "</span>" : "")));
         CHAPS.forEach((c) => {
-          const b = el("button", "sp-chap-r", '<span class="sp-chap-n">' + c.n + '</span><span class="sp-chap-t">' + esc(c.t) + "</span>"); b.type = "button";
+          const b = el("button", "sp-chap-r", '<span class="sp-chap-n">' + c.n + '</span><span class="sp-chap-t">' + esc(c.t) + (c.g ? ' <span class="sp-chap-g">' + esc(c.g) + "</span>" : "") + "</span>" +
+            (hasApp ? '<span class="sp-chap-a">' + esc(c.app) + "</span>" : "")); b.type = "button";
           b.addEventListener("click", () => jumpCh(c));
           nav.appendChild(b);
         });
         if (CHAPS.some((c) => c.pic) && matchMedia("(hover: hover) and (pointer: fine)").matches) chapFly(nav);
         return nav;
       };
-      /* a picture of each part comes up beside the pointer as it crosses
-         the contents, and follows it a little behind (4 Oct 2026, his "do
-         you know those lists that when you hover an image comes up too?
-         might be cool here!"). One frame, its pictures swapped in place;
-         all of them asked for the first time the pointer comes near; it
-         keeps to the room, crossing to the pointer's left near the edge,
-         and goes when the pointer leaves or the room scrolls */
+      /* a picture of each part comes up at the pointer as it crosses the
+         contents, and follows it a little behind (4 Oct 2026, his "do you
+         know those lists that when you hover an image comes up too? might
+         be cool here!"). It lies under the words, which are set in white
+         with difference, so they print black on the paper and light over
+         a dark picture (his "maybe the images are under the list and the
+         words over the image contrast against it?": over the list it hid
+         the lines below the pointer). One frame, its pictures swapped in
+         place; all of them asked for the first time the pointer comes
+         near; the list clips it; it goes when the pointer leaves or the
+         room scrolls */
       const chapFly = (nav) => {
         const fly = el("div", "sp-chap-fly"); fly.setAttribute("aria-hidden", "true");
         const ims = CHAPS.map((c) => { const im = el("img"); im.alt = ""; im.decoding = "async"; im.dataset.src = c.pic || ""; fly.appendChild(im); return im; });
-        nav.appendChild(fly);
+        nav.insertBefore(fly, nav.firstChild); nav.classList.add("sp-chap-flies");
         const calm = matchMedia("(prefers-reduced-motion: reduce)").matches;
-        const FW = 340, FH = 255;
+        const FW = 420, FH = 300;
         let on = -1, tx = 0, ty = 0, x = 0, y = 0, raf = 0, armed = false;
         const step = () => {
           raf = 0; const k2 = calm ? 1 : 0.2; x += (tx - x) * k2; y += (ty - y) * k2;
@@ -1285,10 +1298,8 @@
           if (Math.abs(tx - x) > 0.3 || Math.abs(ty - y) > 0.3) raf = requestAnimationFrame(step);
         };
         const aim = (ev) => {
-          const r = nav.getBoundingClientRect(), edge = root.getBoundingClientRect().right - 12;
-          let px = ev.clientX - r.left + 28;
-          if (r.left + px + FW > edge) px = ev.clientX - r.left - 28 - FW;
-          tx = px; ty = ev.clientY - r.top - FH / 2;
+          const r = nav.getBoundingClientRect();
+          tx = Math.max(0, Math.min(r.width - FW, ev.clientX - r.left - FW / 2)); ty = ev.clientY - r.top - FH / 2;
           if (!armed) { x = tx; y = ty; armed = true; }
           if (!raf) raf = requestAnimationFrame(step);
         };

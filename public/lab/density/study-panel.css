@@ -944,21 +944,58 @@ html:is([data-labels="title"], [data-labels="sentence"]) .sp .szl-row { font-siz
 .sp-live-ext { white-space: nowrap; color: var(--ink, #111); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 0.22em; }
 @media (prefers-reduced-motion: reduce) { .sp-live-hint { transition: none; } }
 
-/* ── a room's chapters (4 Oct 2026, chapters.js): a short contents under
-   the title, each line what one part of the work does and a way straight
-   to it, set as the index sets its rows (a number, the line, a hairline,
-   the index's grey under the pointer); and in the running head their
-   numbers, the chapter the reader is in opened to its line ── */
-.sp-chap { margin: clamp(30px, 5.4cqw, 52px) var(--m) 0; max-width: 34em; }
-.sp-chap-k { margin: 0 0 10px; font-size: 11px; font-weight: 600; color: var(--grey); }
-.sp-chap-r { display: grid; grid-template-columns: 2.6em minmax(0, 1fr); align-items: baseline; width: 100%; margin: 0; padding: 11px 6px 12px;
-  border: 0; border-top: 1px solid var(--hair); border-radius: 0; background: none; font: inherit; color: var(--ink); text-align: left; cursor: pointer;
-  transition: background-color 0.2s ease; }
+/* ── a room's chapters (4 Oct 2026, chapters.js): a contents under the
+   title, set as a studio's project table (his "make the list a little
+   more designed"): across the whole measure, the number and the line at
+   the subtitle's size and in its two tones (his "make the type size the
+   same as the subhead so we arent adding another size"), the part of the
+   work at the labels' size, column labels over them, a hairline between
+   rows; and in the running head their numbers, the chapter the reader is
+   in opened to its line ── */
+.sp-chap { position: relative; margin: clamp(30px, 5.4cqw, 52px) var(--m) 0; }
+.sp-chap-hd, .sp-chap-r { display: grid; grid-template-columns: 2.3em minmax(0, 1fr) minmax(7em, 19%); column-gap: clamp(12px, 2cqw, 24px);
+  font-size: clamp(19px, 3.2cqw, 26px); }
+/* the subtitle's own size and set, in whichever type set the room is in:
+   the bold set's above, the room's present one here */
+html:not([data-type="bold"]) .sp .sp-chap-hd, html:not([data-type="bold"]) .sp .sp-chap-r { font-size: clamp(14px, 2.62cqw, 18px); }
+html:not([data-type="bold"]) .sp .sp-chap-r { font-weight: 500; letter-spacing: -0.018em; line-height: 1.3; }
+.sp-chap-hd { align-items: end; padding: 0 0 10px; }
+.sp-chap-hd span { font-size: 11px; font-weight: 600; line-height: 1.3; color: var(--grey); }
+.sp-chap-r { position: relative; align-items: baseline; width: 100%; margin: 0; padding: clamp(11px, 1.6cqw, 16px) 0 clamp(12px, 1.8cqw, 17px);
+  border: 0; border-top: 1px solid var(--hair); border-radius: 0; background: none; font-family: inherit; font-weight: 600; letter-spacing: -0.03em;
+  line-height: 1.18; text-align: left; color: var(--ink); cursor: pointer; }
 .sp-chap-r:last-child { border-bottom: 1px solid var(--hair); }
-.sp-chap-r:hover { background: var(--hl, #ECECEC); }
 .sp-chap-r:focus-visible { outline: 1px solid var(--ink); outline-offset: -1px; }
-.sp-chap-n { font-size: 11px; font-weight: 600; color: var(--grey); font-variant-numeric: tabular-nums; }
-.sp-chap-t { font-size: clamp(17px, 2.5cqw, 21px); font-weight: 600; letter-spacing: -0.02em; line-height: 1.22; text-wrap: pretty; }
+.sp-chap-n { color: var(--grey); font-variant-numeric: tabular-nums; transition: color 0.2s ease; }
+.sp-chap-t { text-wrap: pretty; }
+.sp-chap-g { color: var(--grey); }
+.sp-chap-a { font-size: 11px; font-weight: 600; letter-spacing: 0; line-height: 1.3; color: var(--grey); }
+.sp-chap-r:hover .sp-chap-n { color: var(--ink); }
+/* a narrow room: the part of the work goes under its line */
+@container sp (max-width: 559px) {
+  .sp-chap-hd, .sp-chap-r { grid-template-columns: 2.1em minmax(0, 1fr); }
+  .sp-chap-hd span:nth-child(3) { display: none; }
+  .sp-chap-a { grid-column: 2; margin-top: 8px; }
+}
+/* the hover picture lies under the words, and the words are set in white
+   with difference: the same black and greys on the paper (the greys given
+   as what prints #949494 against white), light over a dark picture. The
+   list holds it, so the picture never covers what comes after. The rows
+   must not make layers of their own (a z-index would), or the words blend
+   with nothing and print white; the picture sits under them at -1, above
+   the list's own paper */
+.sp-chap.sp-chap-flies { isolation: isolate; overflow: hidden; background: var(--paper); }
+.sp-chap-flies .sp-chap-r :is(.sp-chap-n, .sp-chap-t, .sp-chap-a) { mix-blend-mode: difference; }
+.sp-chap-flies .sp-chap-t { color: #fff; }
+.sp-chap-flies :is(.sp-chap-n, .sp-chap-g, .sp-chap-a) { color: #6b6b6b; }
+.sp-chap-flies .sp-chap-r:hover .sp-chap-n { color: #fff; }
+.sp-chap-fly { position: absolute; left: 0; top: 0; z-index: -1; width: 420px; height: 300px; overflow: hidden; pointer-events: none;
+  border-radius: var(--pr, 4px); opacity: 0; scale: 0.96; transition: opacity 0.25s ease, scale 0.4s var(--ease, ease); }
+.sp-chap-fly.in { opacity: 1; scale: 1; }
+.sp-chap-fly img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 0; opacity: 0; transition: opacity 0.25s ease; }
+.sp-chap-fly img.on { opacity: 1; }
+@media (prefers-reduced-motion: reduce) { .sp-chap-fly { scale: 1; transition: opacity 0.1s linear; } .sp-chap-fly img { transition: none; } }
+
 /* the running head: the numbers in place of the section's name */
 .sp-has-ch .sp-bar-s { display: none; }
 .sp-chs { display: inline-flex; align-items: baseline; gap: 1px; margin-left: 1.1em; }
@@ -975,13 +1012,3 @@ html:is([data-labels="title"], [data-labels="sentence"]) .sp .szl-row { font-siz
    line stops short of the last numbers, so all five stay in the head */
 @container sp (max-width: 559px) { .sp-has-ch .sp-bar-tt { display: none; } .sp-has-ch .sp-chs { margin-left: -5px; } .sp-ch.on i { max-width: calc(100cqw - 225px); } }
 @media (prefers-reduced-motion: reduce) { .sp-ch i { transition: none; } }
-/* the contents' hover picture (4 Oct 2026): one frame by the pointer, a
-   hairline and a soft drop so a white screen holds against the paper */
-.sp-chap { position: relative; }
-.sp-chap-fly { position: absolute; left: 0; top: 0; z-index: 6; width: 340px; height: 255px; overflow: hidden; pointer-events: none;
-  border-radius: var(--pr, 4px); background: var(--paper); box-shadow: 0 0 0 1px var(--hair), 0 14px 34px rgba(0, 0, 0, 0.12);
-  opacity: 0; scale: 0.94; transition: opacity 0.22s ease, scale 0.35s var(--ease, ease); }
-.sp-chap-fly.in { opacity: 1; scale: 1; }
-.sp-chap-fly img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 0; opacity: 0; transition: opacity 0.25s ease; }
-.sp-chap-fly img.on { opacity: 1; }
-@media (prefers-reduced-motion: reduce) { .sp-chap-fly { scale: 1; transition: opacity 0.1s linear; } .sp-chap-fly img { transition: none; } }
