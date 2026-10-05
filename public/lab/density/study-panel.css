@@ -998,3 +998,12 @@ html:not([data-type="bold"]) .sp .sp-chap-r { font-weight: 400; }
    line stops short of the last numbers, so all five stay in the head */
 @container sp (max-width: 559px) { .sp-has-ch .sp-bar-tt { display: none; } .sp-has-ch .sp-chs { margin-left: -5px; } .sp-ch.on i { max-width: calc(100cqw - 225px); } }
 @media (prefers-reduced-motion: reduce) { .sp-ch i { transition: none; } }
+
+/* ── the title block's rows as the chapters' (4 Oct 2026, his "in the
+   case study template at the bottom let's do the same with the font size
+   and extra space below each row like we just did with the chapters"):
+   the values and the lists at the kicker's small size, each row just
+   under its rule with the air below it, the labels as they were ── */
+.sp-tr { padding: 7px 0 clamp(24px, 4cqw, 34px); }
+.sp-tcol { padding-top: 7px; }
+html:not([data-type="bold"]) .sp .sp-tr dd, html:not([data-type="bold"]) .sp .sp-tcol li { font-size: 12px; line-height: 1.45; }
