@@ -193,6 +193,17 @@
   const inkGreyF = (f) => (f.held ? esc(f.ink) + ' <span class="sp-g">' + esc(f.held) + "</span>" : inkGrey(f.text));
   const ratio = (f) => (markOf(f) ? 1 : f.w / f.h);
   const two = (n) => String(n).padStart(2, "0");
+  /* a frame's page is changed without a step in the browser's history
+     (4 Oct 2026, his "close is having problems working now"). Setting src
+     on a frame that has already held a page adds an entry to the window's
+     joint history, so once a live frame had loaded and been let go (load
+     near, let go far), Close's history.back() stepped that frame back
+     instead of leaving the room. location.replace() swaps the page in
+     place; a frame not yet on the page, or of another origin, takes src */
+  const frameTo = (fr, url) => {
+    try { const w = fr.isConnected && fr.contentWindow; if (w) { w.location.replace(new URL(url, location.href).href); return; } } catch (e) { /* another origin */ }
+    fr.src = url;
+  };
 
   /* ── MOTION (27 Sept, his "polish design and animation pass - text and
      image animations similar to what the live site has. easing on things,
@@ -1598,7 +1609,7 @@
             fr.title = t.title || t.label;
             const cap = fig.querySelector(".sp-live-cap"); if (cap) cap.innerHTML = capHtml(t);
             cancelAnimationFrame(L.raf); L.raf = 0; L.y = 0; L.phase = 0; L.t = 0; L.last = 0; L.docH = 0;
-            if (L.loaded) fr.src = t.src;
+            if (L.loaded) frameTo(fr, t.src);
           };
           btns.forEach((b, i) => b.addEventListener("click", (e) => { e.preventDefault(); e.stopPropagation(); pick(i); }));
           tabRow.addEventListener("keydown", (e) => {
@@ -1619,12 +1630,12 @@
            all ten, two of them nested, until the browser gave up */
         const near = new IntersectionObserver(([e]) => {
           if (!e.isIntersecting || L.loaded) return;
-          L.loaded = true; fr.src = L.src;
+          L.loaded = true; frameTo(fr, L.src);
         }, { root: container, rootMargin: "700px 0px" });
         const far = new IntersectionObserver(([e]) => {
           if (e.isIntersecting || !L.loaded || fig.classList.contains("on")) return;
           L.loaded = false; cancelAnimationFrame(L.raf); L.raf = 0;
-          try { fr.src = "about:blank"; } catch (err) { /* gone */ }
+          try { frameTo(fr, "about:blank"); } catch (err) { /* gone */ }
         }, { root: container, rootMargin: "1500px 0px" });
         const seen = new IntersectionObserver(([e]) => { L.vis = e.isIntersecting; if (!L.vis) disengage(); liveRun(L); }, { root: container, threshold: 0 });
         near.observe(fig); far.observe(fig); seen.observe(fig);
@@ -1668,7 +1679,7 @@
             } catch (e) { /* another origin: its declared height holds */ }
           }
         });
-        P.stops.push(() => { near.disconnect(); far.disconnect(); seen.disconnect(); cancelAnimationFrame(L.raf); try { fr.src = "about:blank"; } catch (e) { /* gone */ } });
+        P.stops.push(() => { near.disconnect(); far.disconnect(); seen.disconnect(); cancelAnimationFrame(L.raf); try { frameTo(fr, "about:blank"); } catch (e) { /* gone */ } });
         return L;
       }
       /* the frame's size: the page's own width scaled to the stage, the
