@@ -982,25 +982,6 @@ html:not([data-type="bold"]) .sp .sp-chap-r { font-weight: 400; }
   .sp-chap-hd span:nth-child(3) { display: none; }
   .sp-chap-a { grid-column: 2; margin-top: 3px; }
 }
-/* the hover picture lies under the words, and the words are set in white
-   with difference: the same black and greys on the paper (the greys given
-   as what prints #949494 against white), light over a dark picture. The
-   list holds it, so the picture never covers what comes after. The rows
-   must not make layers of their own (a z-index would), or the words blend
-   with nothing and print white; the picture sits under them at -1, above
-   the list's own paper */
-.sp-chap.sp-chap-flies { isolation: isolate; overflow: hidden; background: var(--paper); }
-.sp-chap-flies .sp-chap-r :is(.sp-chap-n, .sp-chap-t, .sp-chap-a) { mix-blend-mode: difference; }
-.sp-chap-flies .sp-chap-t { color: #fff; }
-.sp-chap-flies :is(.sp-chap-n, .sp-chap-g, .sp-chap-a) { color: #6b6b6b; }
-.sp-chap-flies .sp-chap-r:hover .sp-chap-n { color: #fff; }
-.sp-chap-fly { position: absolute; left: 0; top: 0; z-index: -1; width: 420px; height: 300px; overflow: hidden; pointer-events: none;
-  border-radius: var(--pr, 4px); opacity: 0; scale: 0.96; transition: opacity 0.25s ease, scale 0.4s var(--ease, ease); }
-.sp-chap-fly.in { opacity: 1; scale: 1; }
-.sp-chap-fly img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 0; opacity: 0; transition: opacity 0.25s ease; }
-.sp-chap-fly img.on { opacity: 1; }
-@media (prefers-reduced-motion: reduce) { .sp-chap-fly { scale: 1; transition: opacity 0.1s linear; } .sp-chap-fly img { transition: none; } }
-
 /* the running head: the numbers in place of the section's name */
 .sp-has-ch .sp-bar-s { display: none; }
 .sp-chs { display: inline-flex; align-items: baseline; gap: 1px; margin-left: 1.1em; }
