@@ -570,7 +570,10 @@
        the first of them stood, the words around them left in place */
     M.secs.forEach((x) => {
       const first = x.items.findIndex((i) => i.t === "pic"); if (first < 0) return;
-      const lead = x.items.filter((i, j) => j > first && i.t === "pic" && full(i.f));
+      /* from the first picture on, so two FULL pictures keep their order
+         (4 Oct 2026: when the first was FULL itself the second jumped in
+         front of it, and Ivy Park's grid came bottom half first) */
+      const lead = x.items.filter((i, j) => j >= first && i.t === "pic" && full(i.f));
       if (!lead.length) return;
       x.items = x.items.filter((i) => !lead.includes(i));
       x.items.splice(first, 0, ...lead);
@@ -672,6 +675,9 @@
        is honest; it had been held under the glass's height, small, beside
        its caption */
     "ivy-signage.jpg",
+    /* and the debut collection grid, two halves cut at 1754px from the
+       experience comp, where the study had the 564px phone captures */
+    "ivy-park-debut-collection-shop-the-look.jpg", "ivy-park-debut-collection-beanie-portrait-dancer.jpg",
   ]);
   /* a sharper file of a room's cover picture, where the board's is too
      small to fill the room (4 Oct 2026, his "the hero for ivy park should

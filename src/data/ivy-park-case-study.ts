@@ -438,8 +438,12 @@ export const ivyParkCaseStudy: CaseStudy = {
       native: true,
       images: [
         { src: `${IMG}/ivy-park-product-detail-leggings-choice-system.jpg`, alt: "Ivy Park product detail, leggings specification, Choice is Everything, I/V/Y rise system" },
-        { src: `${IMG}/ivy-park-shop-the-look-editorial-grid.jpg`, alt: "Ivy Park Shop the Look section, editorial product grid, model portraits" },
-        { src: `${IMG}/ivy-park-editorial-beanie-portrait-dancer.jpg`, alt: "Ivy Park editorial, black and white beanie portrait and dancer movement" },
+        // the debut collection grid, cut from the full-size experience comp
+        // (Nordstrom/ivy park/experience, 1950px) in place of the 564px
+        // phone-width captures it shows the same pictures in (4 Oct 2026, his
+        // "these other two images would be more impactful edge to edge")
+        { src: `${IMG}/ivy-park-debut-collection-shop-the-look.jpg`, alt: "Ivy Park debut collection grid, Shop the Look and the collection's first portraits" },
+        { src: `${IMG}/ivy-park-debut-collection-beanie-portrait-dancer.jpg`, alt: "Ivy Park debut collection grid, black and white beanie portrait and dancer movement" },
       ],
     },
 
