@@ -658,16 +658,17 @@
   const TOCS = ["display", "flow", "field", "numerals", "spines", "marquee", "ramp", "cards", "leaders", "split", "home"];
   /* Flow's statements, told apart (6 Oct, his "maybe there's a way to
      separate the sections a tiny bit more so a user can tell from one
-     statement to the next?"): a small round dot between them (default);
-     ?flowsep=bar a thin bar; ?flowsep=lead each one's number before it,
-     with air */
-  /* and ?flowsep=pic (6 Oct, his "you know the treatment where there are
-     thumbnails worked into the paragraph? that could be a nice option
-     here!"): a small picture set in the line at the head of each statement,
-     its own part's picture where it has one, else the study's pictures in
-     their order */
-  const FLOWSEP = (() => { const q = (new URLSearchParams(location.search).get("flowsep") || "").toLowerCase(); return q === "bar" || q === "lead" || q === "pic" ? q : "dot"; })();
-  const TOC = (() => { const q = (new URLSearchParams(location.search).get("toc") || "").toLowerCase(); return TOCS.includes(q) ? q : ""; })();
+     statement to the next?"): ?flowsep=dot a small round dot between them,
+     ?flowsep=bar a thin bar, ?flowsep=lead each one's number before it */
+  /* and pictures (the default since 6 Oct, his "you know the treatment
+     where there are thumbnails worked into the paragraph?" and then "i think
+     i am loving this!"): a small picture set in the line at the head of
+     each statement, its own part's picture where it has one, else the
+     study's pictures in their order */
+  const FLOWSEP = (() => { const q = (new URLSearchParams(location.search).get("flowsep") || "").toLowerCase(); return q === "bar" || q === "lead" || q === "dot" ? q : "pic"; })();
+  /* the index edit opens on Flow with pictures in its lines (6 Oct, his "i
+     think i am loving this!"); ?toc=table shows the small table it began as */
+  const TOC = (() => { const q = (new URLSearchParams(location.search).get("toc") || "").toLowerCase(); if (q === "table") return ""; return TOCS.includes(q) ? q : EDIT === "index" ? "flow" : ""; })();
   const OPEN_MARK = (() => { const q = (new URLSearchParams(location.search).get("open") || "").toLowerCase(); return q === "arrow" || q === "word" ? q : "plus"; })();
   const openMark = () => OPEN_MARK === "word" ? '<span class="sp-chap-x sp-x-word" aria-hidden="true"><b>More</b><b>Less</b></span>'
     : OPEN_MARK === "arrow" ? '<span class="sp-chap-x sp-x-arrow" aria-hidden="true">↓</span>' : '<span class="sp-chap-x sp-x-plus" aria-hidden="true"><i></i></span>';
