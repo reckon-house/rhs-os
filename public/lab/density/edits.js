@@ -154,7 +154,8 @@ window.DENSITY_EDITS = {
      ]
     }
    ],
-   "facts": []
+   "facts": [],
+   "didTitle": "Role"
   }
  },
  "sally-os": {
@@ -303,256 +304,65 @@ window.DENSITY_EDITS = {
    }
   },
   "index": {
-   "note": "Studio.Build's shape: what I did and five closed drawers up top, one per part of the story, and the sections below kept to their heads, pictures and one line or none.",
-   "stand": "I design, build, and maintain the Sally Beauty Marketing OS from inside the team that uses it. | Every app shares data, context, and a design language.",
-   "did": [
-    "Product Management",
-    "Product Design",
-    "Full-stack engineering, brand to backend",
-    "AI Strategy",
-    "Design System"
-   ],
-   "drawers": [
-    {
-     "t": "What Sally's marketing ran on before",
-     "p": [
-      "Competitive intel sat in someone's browser tabs, brand guidelines in a PDF nobody opened, campaign briefs in email threads, and assets on shared drives with names that drifted every quarter."
-     ],
-     "cols": [
-      {
-       "t": "Competitive Intel",
-       "p": [
-        "Someone tracked Ulta's promotions in a spreadsheet, someone else watched Sephora's social on their phone, and Target Beauty's pricing changes came up in meetings as anecdotes.",
-        "So every planning cycle started from scratch. Competitors kept surprising the team, and by the time an opportunity was clear it was too late to act on it."
-       ]
-      },
-      {
-       "t": "Campaign Briefs",
-       "p": [
-        "Campaign briefs were Word files. They got edited in parallel, and within days nobody was sure which version was current. The brief that reached design rarely matched the one that left strategy.",
-        "Assets got made against out-of-date briefs and revisions piled up. Getting everyone back on the same page took a lot of the production timeline."
-       ]
-      },
-      {
-       "t": "The Shared Drive",
-       "p": [
-        "Finding the right file for a channel meant knowing where someone had put it, and that knowledge left when they did."
-       ]
-      }
-     ]
-    },
-    {
-     "t": "Trends, Brand Brain and Campaigns",
-     "p": [
-      "The Trends Feed uses Claude, Gemini and Perplexity to track competitor social channels, pricing shifts and category trends.",
-      "Every signal that comes in gets a \"Sally's Take\": an AI-written read that checks it against the brand positioning, the active briefs, and the internal knowledge base, and says whether it's worth acting on. Each Sally's Take is one click from a new brief."
-     ],
-     "cols": [
-      {
-       "t": "Claude Opus: The Strategist",
-       "p": [
-        "Claude runs the chat and gets the reasoning jobs: turning competitive signals into recommendations.",
-        "Prompt caching keeps Claude fast."
-       ]
-      },
-      {
-       "t": "Gemini 2.5 Pro: The Librarian",
-       "p": [
-        "Loading Sally's knowledge base takes a million-token context window, which Gemini has."
-       ]
-      },
-      {
-       "t": "Perplexity Sonar Pro: The Researcher",
-       "p": [
-        "Perplexity runs live web search. It triggers on its own when a competitor comes up, and it pulls current pricing, promotions, social activity, and press coverage into the conversation without a separate search."
-       ]
-      },
-      {
-       "t": "Brand Brain",
-       "p": [
-        "Jim is trained on Sally's complete brand architecture: voice guidelines, visual standards, competitive positioning, campaign history, performance data, and a rule set that shapes how he thinks before he responds."
-       ]
-      },
-      {
-       "t": "Claude: Long-Form Writing",
-       "p": [
-        "Claude writes the long documents: the strategy memos and competitive analyses. Claude's documents go to leadership, so they have to ship without heavy editing."
-       ]
-      },
-      {
-       "t": "Gemini: The Visual Layer",
-       "p": [
-        "Gemini handles the visual side: product imagery analysis, sorting social content into categories, clustering competitor trends. When a rival changes how it merchandises, Gemini picks up the pattern across store imagery."
-       ]
-      },
-      {
-       "t": "Perplexity: Live Data",
-       "p": [
-        "Inside Brand Brain, Perplexity pulls regulatory changes and shifts in social sentiment from the web as they happen."
-       ]
-      },
-      {
-       "t": "Campaigns",
-       "p": [
-        "The newest app in the portal is called Campaigns, and nobody types into it. On a schedule, Jim reads four live feeds at once: the market scan, the daily signals, what customers are saying, and what people are searching for. He grounds all of it against the product catalog and the asset library, then proposes three to five plays. Each one names the signal that triggered it, argues its case, and arrives with the campaign already drafted: billboard, email, and SMS, rendered with real photography and SKUs.",
-        "The Approve button writes production requests into the same queue the team uses, so a play they like becomes work in one click. The Pass button dismisses a proposal with a reason, and Jim learns from that too. A second model, given fresh context, critiques every play before anyone sees it, and its verdict rides along with the proposal so a person decides."
-       ]
-      }
-     ]
-    },
-    {
-     "t": "Inside the Asset Hub",
-     "cols": [
-      {
-       "t": "AI Auto-Tagging",
-       "p": [
-        "Claude looks at every uploaded image and returns a description, tags, product category, dominant colors, campaign suggestions, and a confidence score. It tells lifestyle shots from product shots, and any asset can be re-tagged with one click, one at a time or in a batch.",
-        "AI tags and manual tags are tracked separately, so there is a record of what Claude tagged and what a person corrected, and the corrections improve the next round of tagging."
-       ]
-      },
-      {
-       "t": "AI Studio Photography",
-       "p": [
-        "The studio photography tool makes two passes through OpenAI's GPT-Image-2. The first strips the background to pure white and leaves the product alone. The second lights it like a studio shot, working from a reference photograph: white cyclorama sweep with a warm-to-cool gradient, directional key light with specular highlights, fill, rim, contact shadow.",
-        "The team uses the results for product pages and social."
-       ]
-      },
-      {
-       "t": "Search Architecture",
-       "p": [
-        "The Asset Hub uses Postgres full-text search with tsvector and websearch_to_tsquery, and GIN indexes on the FTS column and the AI-tags JSONB. Relevance is weighted: full text at 2.0x, tag match at 1.5x, title at 1.0x, brand at 0.9x, AI description at 0.8x.",
-        "Search runs as you type with a 300ms debounce, infinite scroll at 24 per page, and an ILIKE fallback across every text field."
-       ]
-      },
-      {
-       "t": "Vendor Upload Portal",
-       "p": [
-        "Vendors get a public upload form with no login. The vendor enters name, email, company, product name, SKU, brand, asset type, and confirms usage rights. An admin review dashboard updates live over Supabase Realtime.",
-        "Approving an upload pushes the asset into the library and kicks off AI tagging, and rejecting one sends the vendor a reason."
-       ]
-      },
-      {
-       "t": "Workflow & Collections",
-       "p": [
-        "Campaign templates come with configurable stages, and every job has a destination, priority, due date, and assignee. Review is per asset, so you can approve some and reject others in the same job, each with its own note.",
-        "A collection gets a name, a description, and a cover image. You add assets from the library in batches, drag them to reorder, and toggle the collection public or private, with a shareable link that needs no login."
-       ]
-      },
-      {
-       "t": "Embedding & File Handling",
-       "p": [
-        "The Asset Hub runs inside the portal in an iframe with its own sidebar stripped, syncing routes over postMessage, with search and filters passed through as URL params.",
-        "On upload, the hub reads dimensions, DPI, and color space, writes a compressed JPEG for fast loading, and makes the ecommerce PNG at 1000x1500 or 1500x1000 on white. PDFs get a branded thumbnail."
-       ]
-      }
-     ]
-    },
-    {
-     "t": "The Utilities Marketplace and its tools",
-     "cols": [
-      {
-       "t": "The Utilities Marketplace",
-       "p": [
-        "Click a card and the tool loads inline, without onboarding, a separate login or an IT ticket. The marketplace grows every month as the team finds the next thing worth automating.",
-        "The tool list is a JavaScript array, so registering a new one takes minutes, and a Streamlit app, a Next.js dashboard, and a static PDF generator all register the same way. The marketplace is designed so anyone on the team can build a tool, deploy it, and share it without engineering support."
-       ]
-      },
-      {
-       "t": "Shelf Talker Generator",
-       "p": [
-        "Upload the creative brief spreadsheet and download print-ready 9-up PDFs. It handles every Sally promotion format, Spanish and bilingual included, sets Founders Grotesk at the right weights, wraps text on real font metrics, and is pixel-accurate to the 3.667\" card. That used to be hours of InDesign layout every promo cycle."
-       ]
-      },
-      {
-       "t": "Campaign Performance Analyzer",
-       "p": [
-        "Upload the campaign data export and get dashboards back: ROAS, conversion funnels, channel attribution. Strategists pull their own numbers mid-cycle instead of waiting on the analytics team for a deck."
-       ]
-      },
-      {
-       "t": "Exec Deck Builder",
-       "p": [
-        "The deck builder turns the campaign brief into the executive deck: it pulls the brand template, fills in the key metrics, and exports a PPTX."
-       ]
-      },
-      {
-       "t": "Image Compliance Scanner",
-       "p": [
-        "The scanner checks logo placement, color accuracy, fonts, and legal disclaimers against the brand guidelines before creative ships. The problems it catches used to turn up in legal review, weeks after production wrapped."
-       ]
-      },
-      {
-       "t": "Social Copy Generator",
-       "p": [
-        "The generator writes social copy from the campaign brief in the brand voice, character-counted and formatted for Instagram, TikTok, Facebook, and X, hashtags included. It takes about a minute to turn one brief into four channels."
-       ]
-      },
-      {
-       "t": "SKU Lookup & Enrichment",
-       "p": [
-        "Paste a list of SKUs and get the product data back: images, descriptions, pricing, brand, category, ready to drop into a brief, a deck, or an email template. It pulls from Sally's product database, so the numbers are current and nobody is working off an old spreadsheet."
-       ]
-      },
-      {
-       "t": "Email Template Previewer",
-       "p": [
-        "Upload HTML or pick from the template library and see how it renders in Gmail, Outlook, Apple Mail, and on mobile. It replaces the send-test-check-fix loop that used to add days to every email campaign."
-       ]
-      },
-      {
-       "t": "Promo Calendar Sync",
-       "p": [
-        "Import the promo calendars from Excel or Google Sheets and get one consolidated view back, with the conflicts flagged: overlapping promotions, channel collisions, regional scheduling gaps."
-       ]
-      },
-      {
-       "t": "Competitor Ad Tracker",
-       "p": [
-        "The tracker captures competitor advertising across digital channels (display ads, promoted social posts, email campaigns) and files it into a searchable library. The team can look up what ran last quarter without anyone taking screenshots."
-       ]
-      }
-     ]
-    },
-    {
-     "t": "How I built it",
-     "cols": [
-      {
-       "t": "No Requirements Document",
-       "p": [
-        "I use Sally's marketing workflows every day, so there was no requirements document to write and nobody to translate it.",
-        "When something was slow I could see it and change it, and the time between spotting a problem and shipping the fix went from months to days."
-       ]
-      },
-      {
-       "t": "Claude Code",
-       "p": [
-        "Claude Code was my development environment for all of it. I describe what a tool should do, read the code it writes, test it against the team's real workflows, talk through what's off, and deploy.",
-        "The judgment calls are still mine: the data model comes from knowing how a marketing team works, and the architecture from knowing the problem. The AI handles the part that used to be slow: turning a clear description into working code."
-       ]
-      },
-      {
-       "t": "The Stack",
-       "p": [
-        "The portal is a single-page app in plain HTML and JavaScript on a Python server, hosted on Railway. It has no framework and no build step on purpose, so it can change fast.",
-        "The asset hub, the associate site, and the scoreboard are Next.js on Vercel. Supabase holds all of it, with pgvector for a single embedding index that covers documents, product photography, and video scenes at once, so one search runs across text and pictures.",
-        "The Marketing OS uses five AI providers, each routed to what it is best at. Each part of the app names the model it calls, and strategy work and copywriting run on different Claude models."
-       ]
-      }
-     ]
-    }
-   ],
-   "rest": "drop",
+   "note": "The chapter table opens: What I did over the six chapters, each row explaining its part and linking down to it; the sections below keep their heads, demos, pictures and pull quotes.",
+   "rest": "more",
    "lines": {
     "Retail marketing runs on cycles": "drop",
-    "Four months in, the Marketing OS": "Sally carries thousands of SKUs across hair color, hair care, styling, and professional tools, has 2,000+ stores with regional variation, and runs dozens of campaigns at once.",
+    "Four months in, the Marketing OS": "keep",
     "It now reads the market and the customers": "drop",
-    "A question that used to mean": "keep",
+    "Competitive intel sat in someone's browser tabs": "Competitive intel sat in someone's browser tabs, brand guidelines in a PDF nobody opened, campaign briefs in email threads, and assets on shared drives with names that drifted every quarter.",
+    "Sally carries thousands of SKUs": "keep",
+    "It has 2,000+ stores": "keep",
+    "Tracking competitors was all manual": "drop",
+    "The information was all there": "drop",
+    "So every planning cycle started": "drop",
+    "Asset management meant thousands of images": "drop",
+    "The shared drives cost the team hours": "drop",
+    "The Trends Feed uses Claude": "more",
+    "Each Sally's Take is one click": {
+     "more": "Each Sally's Take is one click from a new brief."
+    },
+    "The brand guidelines, tone rules": "drop",
+    "Gemini loads Sally's internal knowledge base": "drop",
+    "The marketing team's whole institutional memory": "drop",
+    "A competitor launches something": "drop",
+    "Jim is trained on Sally's complete brand": "more",
+    "Brand Brain ingests and indexes": "drop",
+    "It takes in the brand guidelines, performance history": "drop",
     "Brand Brain works out the strategy": "keep",
-    "The first live scan proposed": "keep",
-    "The team needed two things from the old library": "keep",
-    "Six applications are in daily use": "Six applications are in daily use, and Sally's IT team is now moving them onto the company's own cloud. I designed, engineered, and deployed all six by myself.",
+    "The newest app in the portal": "more",
+    "The Approve button writes": {
+     "more": "The Approve button writes production requests into the same queue the team uses, so a play they like becomes work in one click."
+    },
+    "I built the whole Marketing OS": "drop",
+    "The team needed two things from the old library": "more",
+    "AI tags every image on upload": "drop",
+    "The right asset comes up in search": "drop",
+    "Every tool in the Utilities Marketplace": {
+     "more": "Click a card and the tool loads inline, without onboarding, a separate login or an IT ticket. The marketplace grows every month as the team finds the next thing worth automating."
+    },
+    "Each tool is hosted separately": "drop",
+    "Exec Deck Builder": "drop",
+    "The deck builder turns the campaign brief": {
+     "more": "The deck builder turns the campaign brief into the executive deck: it pulls the brand template, fills in the key metrics, and exports a PPTX."
+    },
+    "It's the one place to check": "drop",
+    "The team can look up what Ulta": "drop",
+    "Six applications are in daily use": "more",
+    "I designed, engineered, and deployed all six": "keep",
+    "The Marketing OS uses five AI providers": "drop",
+    "Nothing sits between the code": "drop",
     "Every app in the Marketing OS shares data": "A signal caught in the morning can be a proposed campaign by the afternoon and a production request by the end of the day.",
     "The people at Sally call": "keep"
+   },
+   "moreTitle": {
+    "Sally's marketing tools and files": "The intel, the briefs, the shared drive",
+    "Three AI models watch": "What Claude, Gemini and Perplexity each do in the feed",
+    "Jim answers with the context": "Long documents, the visual side, live data",
+    "Jim now proposes campaigns": "Pass, the second model, and the first live scan",
+    "Sally's old asset library": "Tagging, studio photography, search, vendors, workflow, files",
+    "Ten tools each handle a job": "How a tool gets added, and what the tools do",
+    "The team that needed the Marketing OS": "Inside the team, Claude Code, the stack"
    },
    "facts": [
     "Field",
@@ -561,7 +371,15 @@ window.DENSITY_EDITS = {
    ],
    "factSet": {
     "Field": "Marketing Technology, Enterprise Tools"
-   }
+   },
+   "moreTo": "chapters",
+   "did": [
+    "Product Management",
+    "Product Design",
+    "Full-stack engineering, brand to backend",
+    "AI Strategy",
+    "Design System"
+   ]
   }
  },
  "hill-country-kitchen": {

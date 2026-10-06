@@ -675,6 +675,16 @@
       out.push(sec);
     });
     M.secs = out;
+    /* moreTo "chapters": a chaptered section's folded words leave the
+       section and open from its row in the chapter table instead */
+    if (v.moreTo === "chapters") {
+      const heads = ((window.DENSITY_CHAPTERS || {})[M.k] || []).map((c) => nrm(c.head));
+      M.secs.forEach((sec) => {
+        if (!sec.head || !heads.some((h) => nrm(sec.head.text).startsWith(h))) return;
+        const j = sec.items.findIndex((i) => i.t === "more"); if (j < 0) return;
+        sec.more = sec.items[j].list; sec.items.splice(j, 1);
+      });
+    }
     if ((v.did && v.did.length) || (v.drawers && v.drawers.length)) M.top = { did: v.did || [], didTitle: v.didTitle || "What I did", drawers: v.drawers || [] };
     M.edit = v;
     return M;
@@ -840,7 +850,7 @@
        under it */
     const CHM = (new URLSearchParams(location.search).get("chapters") || "").toLowerCase();
     const CHAPS = CHM === "off" ? [] : ((window.DENSITY_CHAPTERS || {})[k] || [])
-      .map((c) => { const sec = M.secs.find((x) => x.head && String(x.head.text || "").startsWith(c.head)); return sec ? { t: c.t, g: c.g || "", app: c.app || "", at: sec.head.id, sec: null, btn: null } : null; })
+      .map((c) => { const sec = M.secs.find((x) => x.head && String(x.head.text || "").startsWith(c.head)); return sec ? { t: c.t, g: c.g || "", app: c.app || "", at: sec.head.id, sec: null, btn: null, more: sec.more || null } : null; })
       .filter(Boolean).map((c, i) => Object.assign(c, { n: two(i + 1) }));
 
     let io = null, ro = null, headIO = null, fontsT = 0, dead = false;
@@ -1363,15 +1373,70 @@
            small size (his "maybe the size of the below text?") and across
            the whole measure, under column labels */
         const hasApp = CHAPS.some((c) => c.app);
-        nav.appendChild(el("div", "sp-chap-hd", "<span></span><span>" + esc(lbl("What it does")) + "</span>" + (hasApp ? "<span>" + esc(lbl("App")) + "</span>" : "")));
+        /* with an index edit the rows open (5 Oct 2026, his "the chapter/
+           index opens, explains with copy then also links down to that
+           section"): What I did over them, each row's words under it, and a
+           link down to its section; the running head keeps its numbers */
+        const acc = !!M.top || CHAPS.some((c) => c.more);
+        if (acc) { nav.classList.add("sp-acc"); if (hasApp) nav.classList.add("sp-app"); if (M.top) didRows(nav, M.top, hasApp); }
+        nav.appendChild(el("div", "sp-chap-hd", "<span></span><span>" + esc(lbl("What it does")) + "</span>" + (hasApp ? "<span>" + esc(lbl("App")) + "</span>" : "") + (acc ? "<span></span>" : "")));
         CHAPS.forEach((c) => {
-          const b = el("button", "sp-chap-r", '<span class="sp-chap-n">' + c.n + '</span><span class="sp-chap-t">' + esc(c.t) + (c.g ? ' <span class="sp-chap-g">' + esc(c.g) + "</span>" : "") + "</span>" +
-            (hasApp ? '<span class="sp-chap-a">' + esc(c.app) + "</span>" : "")); b.type = "button";
-          b.addEventListener("click", () => jumpCh(c));
-          nav.appendChild(b);
+          const inner = '<span class="sp-chap-n">' + c.n + '</span><span class="sp-chap-t">' + esc(c.t) + (c.g ? ' <span class="sp-chap-g">' + esc(c.g) + "</span>" : "") + "</span>" +
+            (hasApp ? '<span class="sp-chap-a">' + esc(c.app) + "</span>" : "");
+          if (!acc) { const b = el("button", "sp-chap-r", inner); b.type = "button"; b.addEventListener("click", () => jumpCh(c)); nav.appendChild(b); return; }
+          nav.appendChild(accRow(nav, inner, (body) => { if (c.more) moreInto(body, c.more); }, () => jumpCh(c), hasApp));
         });
         return nav;
       };
+      /* the index edit's table, the chapters' own, where a study has none:
+         What I did, then the story's drawers as numbered rows that open */
+      const idxEl = (tp) => {
+        const nav = el("nav", "sp-chap sp-acc"); nav.setAttribute("aria-label", "Index");
+        didRows(nav, tp, false);
+        tp.drawers.forEach((dr, i) => {
+          nav.appendChild(accRow(nav, '<span class="sp-chap-n">' + two(i + 1) + '</span><span class="sp-chap-t">' + esc(dr.t) + "</span>", (body) => {
+            (dr.p || []).forEach((x) => body.appendChild(el("p", "sp-chap-pp", inkGrey(x))));
+            (dr.cols || []).forEach((c) => { body.appendChild(el("h3", "sp-chap-ph", esc(c.t))); (c.p || []).forEach((x) => body.appendChild(el("p", "sp-chap-pp", inkGrey(x)))); });
+          }, null, false));
+        });
+        return nav;
+      };
+      function didRows(nav, tp, hasApp) {
+        if (!tp.did.length) return;
+        nav.appendChild(el("div", "sp-chap-hd", "<span></span><span>" + esc(tp.didTitle) + "</span>" + (hasApp ? "<span></span>" : "") + "<span></span>"));
+        nav.appendChild(el("div", "sp-chap-did", "<span></span><span>" + tp.did.map(esc).join('<i aria-hidden="true"> · </i>') + "</span>"));
+      }
+      /* a row that opens in place; one open at a time in a table. Its words
+         are in the page closed or open */
+      function accRow(nav, inner, fill, jump, hasApp) {
+        const item = el("div", "sp-chap-i");
+        const b = el("button", "sp-chap-r", inner + '<span class="sp-chap-x" aria-hidden="true"><i></i></span>'); b.type = "button";
+        b.setAttribute("aria-expanded", "false");
+        const pnl = el("div", "sp-chap-p"), pi = el("div", "sp-chap-pi"), body = el("div", "sp-chap-pb");
+        fill(body);
+        if (jump) { const go = el("a", "sp-chap-go", esc("Go to the section") + ' <span aria-hidden="true">↓</span>'); go.href = "#"; go.addEventListener("click", (ev) => { ev.preventDefault(); jump(); }); body.appendChild(go); }
+        pi.appendChild(body); pnl.appendChild(pi); item.appendChild(b); item.appendChild(pnl);
+        b.addEventListener("click", () => {
+          const open = !item.classList.contains("on");
+          nav.querySelectorAll(".sp-chap-i.on").forEach((x) => { x.classList.remove("on"); x.firstChild.setAttribute("aria-expanded", "false"); });
+          if (open) { item.classList.add("on"); b.setAttribute("aria-expanded", "true"); }
+          setTimeout(() => { if (dead) return; layout(); try { if (room.lenis && room.lenis.resize) room.lenis.resize(); } catch (e) { /* no smooth scroll */ } }, 480);
+        });
+        return item;
+      }
+      /* a section's folded lines as a row's words: column titles small */
+      function moreInto(body, list) {
+        let para = null;
+        list.forEach((it) => {
+          const f = it.f;
+          if (it.t === "col" || it.t === "card") { body.appendChild(tag(el("h3", "sp-chap-ph", inkGrey(f.text)), f)); if (it.t === "card" && f.note) body.appendChild(el("p", "sp-chap-pp", esc(f.note))); para = null; return; }
+          if (it.t === "body") {
+            if (!para || para.pi !== f.pi) { para = { pi: f.pi, e: el("p", "sp-chap-pp") }; body.appendChild(para.e); } else para.e.appendChild(document.createTextNode(" "));
+            para.e.appendChild(tag(el("span", null, esc(f.text)), f)); return;
+          }
+          para = null; body.appendChild(tag(el("p", "sp-chap-pp", inkGrey(f.text)), f));
+        });
+      }
       if (CHAPS.length && CHM === "top") frag.appendChild(chapEl());
       if (!CH) {
         const head = el("header", "sp-head");
@@ -1381,6 +1446,7 @@
         frag.appendChild(head);
       }
       if (CHAPS.length && CHM !== "top") frag.appendChild(chapEl());
+      else if (!CHAPS.length && M.top) frag.appendChild(idxEl(M.top));
 
       /* the kicker: the discipline, its year lighter, then its lines */
       const meta = el("div", "sp-meta");
@@ -1419,7 +1485,6 @@
       P.meta = meta; P.rail = rail; P.open = open; P.openBare = !absLines.length;
       /* an edit's index: What I did, open, and the story in closed drawers,
          under the abstract and over the black field */
-      if (M.top) frag.appendChild(topEl(M.top));
       /* on the black field two long figures stack, each the full width,
          rather than halve each other */
       if (band.length) frag.appendChild(statsFirst || blackDone ? figBlock(band, "sp-band")

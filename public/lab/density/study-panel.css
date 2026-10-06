@@ -131,7 +131,7 @@
    that sat under the rule goes with it */
 .sp-open { margin: clamp(36px, 7cqw, 64px) var(--m) 0; padding: 0; }
 .sp-solo .sp-meta { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 22px; margin: 0; }
-.sp-solo .sp-lines { margin: 0; flex-direction: row; }
+.sp-solo .sp-lines { margin: 0; flex-direction: row; gap: 2px 14px; }
 .sp-meta { margin-bottom: 22px; font-size: 12px; font-weight: 600; line-height: 1.45; letter-spacing: -0.004em; }
 .sp-kk { color: var(--grey); }
 .sp-kk .y { color: var(--grey2); margin-left: 0.35em; font-variant-numeric: tabular-nums; }
@@ -1058,3 +1058,40 @@ html:not([data-type="bold"]) .sp .sp-tr dd, html:not([data-type="bold"]) .sp .sp
 .sp-edit { padding: 4px 9px 5px; border-radius: 999px; background: var(--hl, #ECECEC); color: var(--ink); font-size: 11px; font-weight: 600; letter-spacing: 0; line-height: 1; text-decoration: none; }
 .sp-edit:hover { background: #DCDCDC; }
 .sp-edit.on { background: var(--ink); color: var(--paper, #fff); }
+
+/* ── the chapters' rows that open (5 Oct 2026, his "i like the index ... i
+   think it can be designed like chapters", and for the longer studies "the
+   chapter/index opens, explains with copy then also links down to that
+   section"). The chapter table as it was, a round + at each row's end, the
+   row's words opening under its line at the table's size, What I did over
+   the rows. One row open at a time ── */
+.sp-acc .sp-chap-hd, .sp-acc .sp-chap-r, .sp-acc .sp-chap-did, .sp-acc .sp-chap-pi { display: grid; grid-template-columns: 3em minmax(0, 1fr) 13px; column-gap: clamp(12px, 2cqw, 24px); }
+.sp-acc.sp-app .sp-chap-hd, .sp-acc.sp-app .sp-chap-r, .sp-acc.sp-app .sp-chap-did, .sp-acc.sp-app .sp-chap-pi { grid-template-columns: 3em minmax(0, 1fr) minmax(7em, 19%) 13px; }
+.sp-acc .sp-chap-hd + .sp-chap-did { border-top: 1px solid var(--hair); }
+.sp-chap-did { padding: 7px 0 clamp(24px, 4cqw, 34px); font-size: 12px; line-height: 1.45; }
+.sp-chap-did > span:nth-child(2) { grid-column: 2 / -1; }
+.sp-chap-did i { font-style: normal; color: var(--grey); }
+.sp-acc .sp-chap-i:last-child { border-bottom: 1px solid var(--hair); }
+.sp-acc .sp-chap-r { transition: padding-bottom 0.45s cubic-bezier(0.45, 0, 0.2, 1); }
+.sp-acc .sp-chap-i.on .sp-chap-r { padding-bottom: 12px; }
+.sp-chap-x { position: relative; grid-row: 1; grid-column: -2 / -1; align-self: start; width: 13px; height: 13px; margin-top: 2px; border-radius: 50%; background: var(--ink); }
+.sp-chap-x i::before, .sp-chap-x i::after { content: ""; position: absolute; left: 3px; right: 3px; top: 50%; height: 1.4px; margin-top: -0.7px; background: var(--paper, #fff); transition: transform 0.3s cubic-bezier(0.45, 0, 0.2, 1); }
+.sp-chap-x i::after { transform: rotate(90deg); }
+.sp-chap-i.on .sp-chap-x i::after { transform: rotate(0deg); }
+.sp-chap-p { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 0.45s cubic-bezier(0.45, 0, 0.2, 1); }
+.sp-chap-i.on .sp-chap-p { grid-template-rows: 1fr; }
+.sp-chap-pi { min-height: 0; overflow: hidden; }
+.sp-chap-pb { grid-column: 2 / -2; padding: 0 0 clamp(24px, 4cqw, 34px); opacity: 0; transition: opacity 0.3s ease; }
+.sp-chap-i.on .sp-chap-pb { opacity: 1; transition: opacity 0.4s ease 0.12s; }
+.sp-chap-pp { max-width: 46em; margin: 0 0 0.85em; font-size: 12px; line-height: 1.7; color: var(--ink); text-wrap: pretty; }
+.sp-chap-ph { margin: 1.4em 0 0.25em; font-size: 12px; font-weight: 600; letter-spacing: -0.004em; line-height: 1.45; }
+.sp-chap-pb > .sp-chap-ph:first-child { margin-top: 0; }
+.sp-chap-go { display: inline-block; margin-top: 0.5em; font-size: 12px; font-weight: 600; color: var(--ink); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 0.3em; }
+.sp-chap-go:hover { color: var(--grey); }
+@media (prefers-reduced-motion: reduce) { .sp-chap-p, .sp-chap-pb, .sp-acc .sp-chap-r, .sp-chap-x i::after { transition: none; } }
+@container sp (max-width: 559px) {
+  .sp-acc .sp-chap-hd, .sp-acc .sp-chap-r, .sp-acc .sp-chap-did, .sp-acc .sp-chap-pi,
+  .sp-acc.sp-app .sp-chap-hd, .sp-acc.sp-app .sp-chap-r, .sp-acc.sp-app .sp-chap-did, .sp-acc.sp-app .sp-chap-pi { grid-template-columns: 2.6em minmax(0, 1fr) 13px; }
+  .sp-acc.sp-app .sp-chap-hd span:nth-child(3) { display: none; }
+}
+.sp-acc .sp-chap-pi { font-size: 12px; }
