@@ -1360,3 +1360,16 @@ html:not([data-type="bold"]) .sp .sp-tr dd, html:not([data-type="bold"]) .sp .sp
   border-radius: 0.14em; overflow: hidden; background: rgba(0, 0, 0, 0.06); transition: opacity 0.25s ease; }
 .sp .sp-chap.toc-flow .sp-flowp:has(.sp-chap-r.on) .sp-chap-r:not(.on) .fl-th { opacity: 0.4; }
 .sp .sp-chap.toc-flow .fl-glue { white-space: nowrap; }
+
+/* flow's open words across the whole width, in columns (6 Oct, his "i
+   wonder if the open text should span the entire width?"): one line of the
+   body's 13px across the room would run near 200 characters, so the width
+   is filled with columns of a readable measure, two or three as the room
+   allows; a titled part stays whole in its column, the link runs under
+   them all */
+.sp .sp-chap.toc-flow .sp-chap-pb { max-width: none; columns: 3 19em; column-gap: clamp(22px, 3.4cqw, 48px); }
+.sp .sp-chap.toc-flow .sp-chap-pb > :is(.sp-chap-pp, .sp-chap-grp) { break-inside: avoid; }
+.sp .sp-chap.toc-flow .sp-chap-grp { margin-bottom: 1.1em; }
+.sp .sp-chap.toc-flow .sp-chap-grp > .sp-chap-ph { margin-top: 0; }
+.sp .sp-chap.toc-flow .sp-chap-grp > .sp-chap-pp:last-child { margin-bottom: 0; }
+.sp .sp-chap.toc-flow .sp-chap-go { display: block; width: max-content; margin-top: 0.6em; column-span: all; }

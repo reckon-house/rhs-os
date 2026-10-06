@@ -1447,7 +1447,7 @@
         tp.drawers.forEach((dr, i) => {
           const it = accRow(nav, '<span class="sp-chap-n">' + two(i + 1) + '</span><span class="sp-chap-t">' + esc(dr.t) + "</span>", (body) => {
             (dr.p || []).forEach((x) => body.appendChild(el("p", "sp-chap-pp", inkGrey(x))));
-            (dr.cols || []).forEach((c) => { body.appendChild(el("h3", "sp-chap-ph", esc(c.t))); (c.p || []).forEach((x) => body.appendChild(el("p", "sp-chap-pp", inkGrey(x)))); });
+            (dr.cols || []).forEach((c) => { const grp = el("div", "sp-chap-grp"); body.appendChild(grp); grp.appendChild(el("h3", "sp-chap-ph", esc(c.t))); (c.p || []).forEach((x) => grp.appendChild(el("p", "sp-chap-pp", inkGrey(x)))); });
           }, null, false);
           it._d = { n: two(i + 1), num: i + 1, t: dr.t, g: "", app: "", pic: null, first: String((dr.p && dr.p[0]) || "").split(/(?<=[.!?])\s+/)[0] || "" }; nav.appendChild(it);
         });
@@ -1642,15 +1642,22 @@
       }
       /* a section's folded lines as a row's words: column titles small */
       function moreInto(body, list) {
-        let para = null;
+        /* a part with a title keeps its words with it (a group), so when the
+           words are set in columns a title never ends one column and its
+           words start the next */
+        let para = null, grp = null;
+        const into = () => grp || body;
         list.forEach((it) => {
           const f = it.f;
-          if (it.t === "col" || it.t === "card") { body.appendChild(tag(el("h3", "sp-chap-ph", inkGrey(f.text)), f)); if (it.t === "card" && f.note) body.appendChild(el("p", "sp-chap-pp", esc(f.note))); para = null; return; }
+          if (it.t === "col" || it.t === "card") {
+            grp = el("div", "sp-chap-grp"); body.appendChild(grp);
+            grp.appendChild(tag(el("h3", "sp-chap-ph", inkGrey(f.text)), f)); if (it.t === "card" && f.note) grp.appendChild(el("p", "sp-chap-pp", esc(f.note))); para = null; return;
+          }
           if (it.t === "body") {
-            if (!para || para.pi !== f.pi) { para = { pi: f.pi, e: el("p", "sp-chap-pp") }; body.appendChild(para.e); } else para.e.appendChild(document.createTextNode(" "));
+            if (!para || para.pi !== f.pi) { para = { pi: f.pi, e: el("p", "sp-chap-pp") }; into().appendChild(para.e); } else para.e.appendChild(document.createTextNode(" "));
             para.e.appendChild(tag(el("span", null, esc(f.text)), f)); return;
           }
-          para = null; body.appendChild(tag(el("p", "sp-chap-pp", inkGrey(f.text)), f));
+          para = null; into().appendChild(tag(el("p", "sp-chap-pp", inkGrey(f.text)), f));
         });
       }
       if (CHAPS.length && CHM === "top") frag.appendChild(chapEl());
