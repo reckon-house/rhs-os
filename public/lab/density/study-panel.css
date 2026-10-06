@@ -1373,3 +1373,23 @@ html:not([data-type="bold"]) .sp .sp-tr dd, html:not([data-type="bold"]) .sp .sp
 .sp .sp-chap.toc-flow .sp-chap-grp > .sp-chap-ph { margin-top: 0; }
 .sp .sp-chap.toc-flow .sp-chap-grp > .sp-chap-pp:last-child { margin-bottom: 0; }
 .sp .sp-chap.toc-flow .sp-chap-go { display: block; width: max-content; margin-top: 0.6em; column-span: all; }
+
+/* flow on the room's margins (6 Oct, his "should these align on the left
+   and right?"): a title's own spacing was repeated at the start of every
+   line it wrapped onto (the clone that rounds its highlight on each line
+   clones margins too), so wrapped lines stood 0.16em in from the column
+   below. The titles take no spacing of their own now: the highlight
+   reaches past the letters as a shadow, which moves nothing, and the gap
+   before a statement belongs to its picture, dot or number. The block is
+   pulled in by the 0.04em the room's title is, so the big letters' ink
+   meets the kicker's edge */
+.sp .sp-chap.toc-flow .sp-flowp { margin-left: -0.04em; }
+.sp .sp-chap.toc-flow .sp-flowp .sp-chap-r,
+.sp .sp-chap.toc-flow.fs-pic .sp-flowp .sp-chap-r,
+.sp .sp-chap.toc-flow.fs-lead .sp-flowp .sp-chap-r { margin: 0; padding: 0; }
+.sp .sp-chap.toc-flow .sp-flowp .sp-chap-r:is(:hover, :focus-visible) { box-shadow: 0 0 0 0.06em var(--hl, #ECECEC); }
+.sp .sp-chap.toc-flow.fs-lead .sp-flow-n { margin: 0 0.24em 0 0.3em; }
+/* the air before a statement's picture is kept at the end of the one before
+   it, where a line can only end, never begin */
+.sp .sp-chap.toc-flow .fl-glue > .fl-th { margin-left: 0; }
+.sp .sp-chap.toc-flow.fs-pic .sp-flow-n { margin-right: 0.16em; }
