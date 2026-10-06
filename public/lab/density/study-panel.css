@@ -1393,3 +1393,20 @@ html:not([data-type="bold"]) .sp .sp-tr dd, html:not([data-type="bold"]) .sp .sp
    it, where a line can only end, never begin */
 .sp .sp-chap.toc-flow .fl-glue > .fl-th { margin-left: 0; }
 .sp .sp-chap.toc-flow.fs-pic .sp-flow-n { margin-right: 0.16em; }
+
+/* flow swipes in as the room's big type does (6 Oct, his "can we make this
+   new section swipe/animate in like everything else?"): its lines under
+   the band one after another, a picture with the word it is held to. The
+   bands are laid by each word's offset from the paragraph, so nothing
+   between them may be positioned: the titles and the numbers sit static */
+.sp .sp-chap.toc-flow .sp-flowp .sp-chap-r { position: static; z-index: auto; }
+.sp .sp-chap.toc-flow .sp-flow-n { position: static; top: auto; }
+html[data-motion="wipe"] .sp.mo .sp-flowp.rv-split .fl-th { opacity: 0; transition: none; }
+html[data-motion="wipe"] .sp.mo .sp-flowp.rv-split.rv-go .fl-th { opacity: 1; transition: opacity 0s linear var(--d, 0ms); }
+/* and the opening block close under it (6 Oct, his "let's tighten the gap
+   here"): the paragraph keeps no air of its own below, and the kicker and
+   abstract come in at about one of its lines rather than a section's gap */
+.sp .sp-chap.toc-flow.toc-lead .sp-flowp { padding-bottom: 0; }
+.sp .sp-chap.toc-flow + .sp-open { margin-top: clamp(24px, 4cqw, 40px); }
+/* the opening pictures come straight after Flow, at the same close gap */
+.sp .sp-chap.toc-flow + .sp-plates { margin-top: clamp(24px, 4cqw, 40px); }

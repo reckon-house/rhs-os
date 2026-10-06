@@ -304,11 +304,11 @@ window.DENSITY_EDITS = {
    }
   },
   "index": {
-   "note": "The chapter table opens: What I did over the six chapters, each row explaining its part and linking down to it; the sections below keep their heads, demos, pictures and pull quotes.",
+   "note": "Flow opens the room: the subtitle runs into the six chapters, each opening in place; the pictures follow, then What I did and the abstract. No figure field, since Flow's sixth line already says four months.",
    "rest": "more",
    "lines": {
     "Retail marketing runs on cycles": "drop",
-    "Four months in, the Marketing OS": "keep",
+    "Four months in, the Marketing OS": "drop",
     "It now reads the market and the customers": "drop",
     "Competitive intel sat in someone's browser tabs": "Competitive intel sat in someone's browser tabs, brand guidelines in a PDF nobody opened, campaign briefs in email threads, and assets on shared drives with names that drifted every quarter.",
     "Sally carries thousands of SKUs": "keep",

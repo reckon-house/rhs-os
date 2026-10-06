@@ -241,15 +241,15 @@
      - scrub: no clock at all, everything as far along as the scroll is */
   const FAM = () => document.documentElement.dataset.motion || "rise";
   const RV_KINDS = [
-    ["mask", ".sp-title, .sp-stand:not(.sp-cst), .sp-h, .sp-deck, .sp-pq, .sp-closing p, .sp-fn, .sp-next-t, .sp-dur, .sp-col, .sp-card h3, .sp-pr-fn"],
+    ["mask", ".sp-title, .sp-stand:not(.sp-cst), .sp-h, .sp-deck, .sp-pq, .sp-closing p, .sp-fn, .sp-next-t, .sp-dur, .sp-col, .sp-card h3, .sp-pr-fn, .sp-flowp"],
     ["lines", ".sp-p"],
-    ["pic", ".sp-pic:not(.sp-cpic)"],
+    ["pic", ".sp-pic:not(.sp-cpic):not(.fl-th)"],
     ["field", ".sp-black, .sp-field, .sp-pc, .sp-pb, .sp-povb, .sp-pcy, .sp-pchg, .sp-press"],
     /* .sp-open is not here any more: the rule over a room's opening
        block came off for every room (2 Oct 2026, his "this first one i
        think we can drop from the system") */
     ["rule", ".sp-kick, .sp-run.sp-hasc, .sp-foot, .sp-spec, .sp-card, .sp-tcol, .sp-tr, .sp-nr"],
-    ["fade", ".sp-cap, .sp-fs, .sp-nl, .sp-ns, .sp-meta, .sp-chap, .sp-more, .sp-spec-h, .sp-tcol > .sp-caps, .sp-tcol ul, .sp-palw, .sp-bar2, .sp-stl li, .sp-full, .sp-next > .sp-caps, .sp-fcap, .sp-bcap, .sp-card p, .sp-tr dd, .sp-tr dt"],
+    ["fade", ".sp-cap, .sp-fs, .sp-nl, .sp-ns, .sp-meta, .sp-chap:not(.toc-flow), .sp-more, .sp-spec-h, .sp-tcol > .sp-caps, .sp-tcol ul, .sp-palw, .sp-bar2, .sp-stl li, .sp-full, .sp-next > .sp-caps, .sp-fcap, .sp-bcap, .sp-card p, .sp-tr dd, .sp-tr dt"],
   ];
   /* words into masks: each word an inline-block clipped to its own line,
      its inside rising into it. Text nodes are split where they are, so a
@@ -267,7 +267,7 @@
           w.appendChild(i); frag.appendChild(w); words.push(w);
         });
         c.replaceWith(frag);
-      } else if (c.nodeType === 1 && !c.classList.contains("rvw")) walk(c);
+      } else if (c.nodeType === 1 && !c.classList.contains("rvw") && !c.classList.contains("rv-skip")) walk(c);
     });
     walk(node);
     return words;
@@ -1047,6 +1047,8 @@
           end = Math.max(end, start + DUR);
         }
       });
+      /* a picture set in a line (Flow's) comes in with the word it is held to */
+      e.querySelectorAll(".fl-th").forEach((t) => { const w = t.parentElement && t.parentElement.querySelector(".rvw"); if (w) t.style.setProperty("--d", w.style.getPropertyValue("--d")); });
       requestAnimationFrame(() => requestAnimationFrame(() => e.classList.add("rv-go")));
       setTimeout(() => {
         if (dead || !e.isConnected) return;
@@ -1481,7 +1483,7 @@
            of the flow until opened */
         const inline = (cls, sep) => {
           const box = el("div", cls);
-          items.forEach((it, i) => { box.appendChild(it._b); if (sep && i < items.length - 1) box.appendChild(sep()); box.appendChild(it); box.appendChild(document.createTextNode(" ")); });
+          items.forEach((it, i) => { it.classList.add("rv-skip"); box.appendChild(it._b); if (sep && i < items.length - 1) box.appendChild(sep()); box.appendChild(it); box.appendChild(document.createTextNode(" ")); });
           nav.insertBefore(box, hd ? hd.nextSibling : nav.firstChild);
           return box;
         };
@@ -1712,17 +1714,22 @@
         paras(absLines).forEach((p, i) => txt.appendChild(paraEl(p, i === 0 ? "sp-p sp-lede" : "sp-p")));
         open.appendChild(txt);
       }
+      /* an index edit gets to its pictures sooner (6 Oct, his "i dont think
+         we need all the text at the top then a quote THEN we get into the
+         images...maybe we work on the order?"): the opening plates right
+         under the Flow paragraph, then What I did and the abstract, then the
+         field where it has one */
+      const platesFirst = !!M.top && M.openPics.length > 0;
+      if (platesFirst) frag.appendChild(picGroup(M.openPics, "sp-plates sp-first"));
       frag.appendChild(open);
       P.meta = meta; P.rail = rail; P.open = open; P.openBare = !absLines.length;
-      /* an edit's index: What I did, open, and the story in closed drawers,
-         under the abstract and over the black field */
       /* on the black field two long figures stack, each the full width,
          rather than halve each other */
       if (band.length) frag.appendChild(statsFirst || blackDone ? figBlock(band, "sp-band")
         : blackOr(figBlock(band, "sp-band" + (band.length === 2 && band.some((x) => x.fig.length > 5) ? " sp-stack" : ""))));
 
       /* the opening plates, then whatever the study put before its first head */
-      if (M.openPics.length) frag.appendChild(picGroup(M.openPics, "sp-plates sp-first"));
+      if (M.openPics.length && !platesFirst) frag.appendChild(picGroup(M.openPics, "sp-plates sp-first"));
       M.secs.forEach((sec) => {
         figs.n = 0; lede = !sec.open;
         /* with the site's scroll a section's text stays together, its
