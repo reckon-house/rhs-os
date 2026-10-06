@@ -632,6 +632,13 @@
   const EDIT_NAMES = [["today", "Today"], ["trim", "Trim"], ["fold", "Fold"], ["index", "Index"]];
   const editOf = (k) => (EDIT && EDIT !== "today" && window.DENSITY_EDITS && window.DENSITY_EDITS[k] && window.DENSITY_EDITS[k][EDIT]) || null;
   const hasEdits = (k) => !!(window.DENSITY_EDITS && window.DENSITY_EDITS[k]);
+  /* the mark at the end of a row that opens (5 Oct, his "the +...maybe it's
+     cleaner with no circle? maybe something other than a + even?"): a thin
+     plus that turns to a cross (default), ?open=arrow a thin arrow that
+     turns over, ?open=word "More" and "Less" */
+  const OPEN_MARK = (() => { const q = (new URLSearchParams(location.search).get("open") || "").toLowerCase(); return q === "arrow" || q === "word" ? q : "plus"; })();
+  const openMark = () => OPEN_MARK === "word" ? '<span class="sp-chap-x sp-x-word" aria-hidden="true"><b>More</b><b>Less</b></span>'
+    : OPEN_MARK === "arrow" ? '<span class="sp-chap-x sp-x-arrow" aria-hidden="true">↓</span>' : '<span class="sp-chap-x sp-x-plus" aria-hidden="true"><i></i></span>';
   const applyEdit = (M, v) => {
     const nrm = (s) => String(s || "").replace(/\s+/g, " ").trim();
     const keyed = (map) => Object.entries(map || {}).map(([key, a]) => ({ key: nrm(key), a }));
@@ -1410,7 +1417,7 @@
          are in the page closed or open */
       function accRow(nav, inner, fill, jump, hasApp) {
         const item = el("div", "sp-chap-i");
-        const b = el("button", "sp-chap-r", inner + '<span class="sp-chap-x" aria-hidden="true"><i></i></span>'); b.type = "button";
+        const b = el("button", "sp-chap-r", inner + openMark()); b.type = "button";
         b.setAttribute("aria-expanded", "false");
         const pnl = el("div", "sp-chap-p"), pi = el("div", "sp-chap-pi"), body = el("div", "sp-chap-pb");
         fill(body);
@@ -1418,6 +1425,17 @@
         pi.appendChild(body); pnl.appendChild(pi); item.appendChild(b); item.appendChild(pnl);
         b.addEventListener("click", () => {
           const open = !item.classList.contains("on");
+          /* the first time a row opens its words come in as the room's do:
+             each line under the wipe's band, the titles as heads, the link
+             faded; they stay put after that */
+          if (open && mo && !item._rvd) {
+            item._rvd = true;
+            body.querySelectorAll(".sp-chap-pp, .sp-chap-ph, .sp-chap-go").forEach((e) => {
+              const kd = e.classList.contains("sp-chap-ph") ? "mask" : e.classList.contains("sp-chap-go") ? "fade" : "lines";
+              e._rv = kd; e._rvd = false; e.classList.add("rv", "rv-" + kd);
+            });
+            qAt = performance.now() + 40; body.querySelectorAll(".rv").forEach((e) => go(e));
+          }
           nav.querySelectorAll(".sp-chap-i.on").forEach((x) => { x.classList.remove("on"); x.firstChild.setAttribute("aria-expanded", "false"); });
           if (open) { item.classList.add("on"); b.setAttribute("aria-expanded", "true"); }
           setTimeout(() => { if (dead) return; layout(); try { if (room.lenis && room.lenis.resize) room.lenis.resize(); } catch (e) { /* no smooth scroll */ } }, 480);
@@ -1452,8 +1470,10 @@
       const meta = el("div", "sp-meta");
       /* the study's number leads its kicker, as it leads its row in the index */
       meta.appendChild(el("div", "sp-kk", (D.num ? '<span class="sp-no">' + esc(D.num(k)) + "</span>" : "") + esc(s.s) + '<span class="y">' + esc(s.y) + "</span>"));
-      /* the edit's switch, while he compares them: ?edit=today shows it on the room as it was */
-      if (EDIT && hasEdits(k)) {
+      /* the edit's switch, while he compares them: only on ?edit=today, so an
+         edit itself reads clean (5 Oct, his "remove all the options so we get
+         a clean look at them") */
+      if (EDIT === "today" && hasEdits(k)) {
         const row = el("div", "sp-edits");
         EDIT_NAMES.forEach(([id, name]) => {
           const b = el("a", "sp-edit" + (id === EDIT ? " on" : ""), esc(name));
