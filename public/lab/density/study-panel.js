@@ -707,7 +707,12 @@
         /* { more: "<a trim of the line>" } folds the trim */
         if (a && typeof a === "object" && a.more) { it = Object.assign({}, it, { f: swap(f, a.more) }); a = "more"; }
         if (a === "more") { if (!more) { more = { t: "more", title: title || "More", list: [] }; items.push(more); } more.list.push(it); return; }
-        items.push(a !== "keep" ? Object.assign({}, it, { f: swap(f, a) }) : it);
+        let kept = a !== "keep" ? Object.assign({}, it, { f: swap(f, a) }) : it;
+        /* in an index edit a section is its head, one line and its pictures:
+           the line it keeps stands under the head as the deck (6 Oct, his
+           "is there a way we can clean up the other sections?") */
+        if (v.did && !sec.open && kept.t === "body") kept = Object.assign({}, kept, { t: "deck" });
+        items.push(kept);
       });
       sec.items = items;
       /* a dropped head's pictures join the section before it */
@@ -720,9 +725,11 @@
     if (v.moreTo === "chapters") {
       const heads = ((window.DENSITY_CHAPTERS || {})[M.k] || []).map((c) => nrm(c.head));
       M.secs.forEach((sec) => {
-        if (!sec.head || !heads.some((h) => nrm(sec.head.text).startsWith(h))) return;
         const j = sec.items.findIndex((i) => i.t === "more"); if (j < 0) return;
-        sec.more = sec.items[j].list; sec.items.splice(j, 1);
+        /* a section with no chapter has no row to open from: its folded words
+           stay in the study's other edits, not in this one */
+        if (sec.head && heads.some((h) => nrm(sec.head.text).startsWith(h))) sec.more = sec.items[j].list;
+        sec.items.splice(j, 1);
       });
     }
     if ((v.did && v.did.length) || (v.drawers && v.drawers.length)) M.top = { did: v.did || [], didTitle: v.didTitle || "What I did", drawers: v.drawers || [] };
@@ -1714,15 +1721,17 @@
         paras(absLines).forEach((p, i) => txt.appendChild(paraEl(p, i === 0 ? "sp-p sp-lede" : "sp-p")));
         open.appendChild(txt);
       }
-      /* an index edit gets to its pictures sooner (6 Oct, his "i dont think
-         we need all the text at the top then a quote THEN we get into the
-         images...maybe we work on the order?"): the opening plates right
-         under the Flow paragraph, then What I did and the abstract, then the
-         field where it has one */
+      /* an index edit's opening (6 Oct): the text together, then the
+         pictures, then the field. His "i dont think we need all the text at
+         the top then a quote THEN we get into the images", then "keep that
+         text locked up with the intro copy - it all works together. we can
+         flip the images below that text": What I did and the abstract stay
+         under Flow, the opening plates come next, the figure field after
+         them where it has one */
       const platesFirst = !!M.top && M.openPics.length > 0;
-      if (platesFirst) frag.appendChild(picGroup(M.openPics, "sp-plates sp-first"));
       frag.appendChild(open);
       P.meta = meta; P.rail = rail; P.open = open; P.openBare = !absLines.length;
+      if (platesFirst) frag.appendChild(picGroup(M.openPics, "sp-plates sp-first"));
       /* on the black field two long figures stack, each the full width,
          rather than halve each other */
       if (band.length) frag.appendChild(statsFirst || blackDone ? figBlock(band, "sp-band")
@@ -1983,7 +1992,9 @@
         let done = null;
         if (isScroll) { done = el("button", "sp-live-done", "Done"); done.type = "button"; stage.appendChild(done); }
         fig.appendChild(stage);
-        const capHtml = (t) => (t.title ? "<b>" + esc(t.title) + "</b>" : "") + (t.note ? " " + esc(t.note) : "") +
+        /* in an index edit a live page's caption is its title (6 Oct: its
+           notes ran to seventy words under the pictures he wanted cleaner) */
+        const capHtml = (t) => (t.title ? "<b>" + esc(t.title) + "</b>" : "") + (t.note && !(M.top && t.title) ? " " + esc(t.note) : "") +
           (isScroll ? ' <a class="sp-live-ext" href="' + esc(srcOf(t)) + '" target="_blank" rel="noopener">Open the page</a>' : "");
         if (T0.title || T0.note || f.title || f.note) fig.appendChild(el("figcaption", "sp-cap sp-live-cap", capHtml(T0.title || T0.note ? T0 : f)));
         /* at: an element id on the page; the frame opens scrolled to it and
@@ -2354,6 +2365,14 @@
             t.appendChild(det); g2.appendChild(t); return g2;
           }
           case "closing": {
+            /* an index edit set in Flow closes as it opens: its closing lines
+               run as one paragraph in Flow's type, the first in ink, the rest
+               in grey (6 Oct) */
+            if (M.top && TOC === "flow") {
+              const c = el("div", "sp-closing cl-flow");
+              b.list.forEach((f, i) => { if (i) c.appendChild(document.createTextNode(" ")); c.appendChild(tag(el("p", null, inkGrey(f.text)), f)); });
+              return c;
+            }
             const c = el("div", "sp-closing");
             b.list.forEach((f, i) => c.appendChild(tag(el("p", !i && f.text.length > 150 ? "sp-long" : null, inkGrey(f.text)), f)));
             return c;

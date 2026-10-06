@@ -1410,3 +1410,9 @@ html[data-motion="wipe"] .sp.mo .sp-flowp.rv-split.rv-go .fl-th { opacity: 1; tr
 .sp .sp-chap.toc-flow + .sp-open { margin-top: clamp(24px, 4cqw, 40px); }
 /* the opening pictures come straight after Flow, at the same close gap */
 .sp .sp-chap.toc-flow + .sp-plates { margin-top: clamp(24px, 4cqw, 40px); }
+
+/* an index edit closes in Flow's type: one paragraph, the first line in
+   ink and the rest in grey, the way the subtitle leads the opening */
+.sp .sp-closing.cl-flow { max-width: none; font-size: clamp(24px, 4.8cqw, 40px); font-weight: 500; letter-spacing: -0.045em; line-height: 1.14; text-wrap: pretty; }
+html .sp.sp .sp-closing.cl-flow p { display: inline; max-width: none; margin: 0; font: inherit; letter-spacing: inherit; line-height: inherit; color: var(--ink); }
+html .sp.sp .sp-closing.cl-flow p + p { color: var(--grey); }
