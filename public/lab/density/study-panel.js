@@ -1385,7 +1385,7 @@
            section"): What I did over them, each row's words under it, and a
            link down to its section; the running head keeps its numbers */
         const acc = !!M.top || CHAPS.some((c) => c.more);
-        if (acc) { nav.classList.add("sp-acc"); if (hasApp) nav.classList.add("sp-app"); if (M.top) didRows(nav, M.top, hasApp); }
+        if (acc) { nav.classList.add("sp-acc"); if (hasApp) nav.classList.add("sp-app"); }
         nav.appendChild(el("div", "sp-chap-hd", "<span></span><span>" + esc(lbl("What it does")) + "</span>" + (hasApp ? "<span>" + esc(lbl("App")) + "</span>" : "") + (acc ? "<span></span>" : "")));
         CHAPS.forEach((c) => {
           const inner = '<span class="sp-chap-n">' + c.n + '</span><span class="sp-chap-t">' + esc(c.t) + (c.g ? ' <span class="sp-chap-g">' + esc(c.g) + "</span>" : "") + "</span>" +
@@ -1399,7 +1399,6 @@
          What I did, then the story's drawers as numbered rows that open */
       const idxEl = (tp) => {
         const nav = el("nav", "sp-chap sp-acc"); nav.setAttribute("aria-label", "Index");
-        didRows(nav, tp, false);
         tp.drawers.forEach((dr, i) => {
           nav.appendChild(accRow(nav, '<span class="sp-chap-n">' + two(i + 1) + '</span><span class="sp-chap-t">' + esc(dr.t) + "</span>", (body) => {
             (dr.p || []).forEach((x) => body.appendChild(el("p", "sp-chap-pp", inkGrey(x))));
@@ -1469,7 +1468,13 @@
       /* the kicker: the discipline, its year lighter, then its lines */
       const meta = el("div", "sp-meta");
       /* the study's number leads its kicker, as it leads its row in the index */
-      meta.appendChild(el("div", "sp-kk", (D.num ? '<span class="sp-no">' + esc(D.num(k)) + "</span>" : "") + esc(s.s) + '<span class="y">' + esc(s.y) + "</span>"));
+      /* an index edit's What I did is the kicker (5 Oct, his "do we need both
+         of these? i think the 'what i did' could look a little differently
+         than the accordions since it's more of a list"): its label over the
+         roles, stacked as the kicker's lines are, the lines after in grey */
+      const did = M.top && M.top.did.length ? M.top : null;
+      meta.appendChild(el("div", "sp-kk", (D.num ? '<span class="sp-no">' + esc(D.num(k)) + "</span>" : "") + esc(did ? did.didTitle : s.s) + '<span class="y">' + esc(s.y) + "</span>"));
+      if (did) { meta.classList.add("sp-hasdid"); meta.appendChild(el("div", "sp-lines sp-kdid", did.did.map((x) => '<span class="sp-line">' + esc(x) + "</span>").join(""))); }
       /* the edit's switch, while he compares them: only on ?edit=today, so an
          edit itself reads clean (5 Oct, his "remove all the options so we get
          a clean look at them") */
@@ -1484,7 +1489,7 @@
         meta.appendChild(row);
       }
       const lines = (D.data.lines || []).filter((l) => (s.tags || []).includes(l.tag));
-      if (lines.length) meta.appendChild(el("div", "sp-lines", lines.map((l) => '<span class="sp-line"><i style="background:' + l.color + '"></i>' + esc(l.name) + "</span>").join("")));
+      if (lines.length) meta.appendChild(el("div", "sp-lines" + (did ? " sp-lgrey" : ""), lines.map((l) => '<span class="sp-line"><i style="background:' + l.color + '"></i>' + esc(l.name) + "</span>").join("")));
 
       /* the abstract, with its figures lifted into the band */
       const band = [], absLines = [];

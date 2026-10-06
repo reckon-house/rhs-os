@@ -1107,3 +1107,11 @@ html:not([data-type="bold"]) .sp .sp-tr dd, html:not([data-type="bold"]) .sp .sp
   .sp-acc.sp-app .sp-chap-hd, .sp-acc.sp-app .sp-chap-r, .sp-acc.sp-app .sp-chap-did, .sp-acc.sp-app .sp-chap-pi { grid-template-columns: 2.6em minmax(0, 1fr) var(--xw); }
   .sp-acc.sp-app .sp-chap-hd span:nth-child(3) { display: none; }
 }
+
+/* the kicker as What I did: the roles stacked in ink, the lines after them
+   in grey; with no abstract beside it the block still stacks */
+.sp-meta .sp-kdid { flex-direction: column; gap: 1px; margin-top: 10px; }
+.sp-meta .sp-lgrey { color: var(--grey); margin-top: 12px; }
+.sp-meta .sp-lgrey .sp-line i { display: none; }
+.sp-solo .sp-meta.sp-hasdid { display: block; }
+.sp-solo .sp-meta.sp-hasdid .sp-lgrey { flex-direction: row; gap: 2px 14px; }
