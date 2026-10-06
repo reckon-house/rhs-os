@@ -636,6 +636,13 @@
      cleaner with no circle? maybe something other than a + even?"): a thin
      plus that turns to a cross (default), ?open=arrow a thin arrow that
      turns over, ?open=word "More" and "Less" */
+  /* the contents' type (5 Oct, his "it's pretty scientific on the TOC side
+     already - maybe we push the big type more with this? other ideas to make
+     it feel more editorial and less clinical?"): ?toc=display sets each row
+     at the section heads' size; ?toc=flow runs the titles together as one
+     big paragraph, a small number after each as the index's counts sit, the
+     words opening under it; ?toc=field is display on the study's colour */
+  const TOC = (() => { const q = (new URLSearchParams(location.search).get("toc") || "").toLowerCase(); return ["display", "flow", "field"].includes(q) ? q : ""; })();
   const OPEN_MARK = (() => { const q = (new URLSearchParams(location.search).get("open") || "").toLowerCase(); return q === "arrow" || q === "word" ? q : "plus"; })();
   const openMark = () => OPEN_MARK === "word" ? '<span class="sp-chap-x sp-x-word" aria-hidden="true"><b>More</b><b>Less</b></span>'
     : OPEN_MARK === "arrow" ? '<span class="sp-chap-x sp-x-arrow" aria-hidden="true">↓</span>' : '<span class="sp-chap-x sp-x-plus" aria-hidden="true"><i></i></span>';
@@ -1393,7 +1400,7 @@
           if (!acc) { const b = el("button", "sp-chap-r", inner); b.type = "button"; b.addEventListener("click", () => jumpCh(c)); nav.appendChild(b); return; }
           nav.appendChild(accRow(nav, inner, (body) => { if (c.more) moreInto(body, c.more); }, () => jumpCh(c), hasApp));
         });
-        return nav;
+        return acc ? tocLook(nav) : nav;
       };
       /* the index edit's table, the chapters' own, where a study has none:
          What I did, then the story's drawers as numbered rows that open */
@@ -1405,8 +1412,28 @@
             (dr.cols || []).forEach((c) => { body.appendChild(el("h3", "sp-chap-ph", esc(c.t))); (c.p || []).forEach((x) => body.appendChild(el("p", "sp-chap-pp", inkGrey(x)))); });
           }, null, false));
         });
-        return nav;
+        return tocLook(nav);
       };
+      function tocLook(nav) {
+        if (!TOC) return nav;
+        nav.classList.add("toc-" + TOC, TOC === "flow" ? "toc-big" : "toc-big");
+        if (TOC === "field") {
+          const qf = quoteFill(k, s);
+          nav.style.setProperty("--fill", qf); nav.style.setProperty("--fink", QUOTE_FILL[k] ? D.ink(qf) : s.ink || D.ink(qf));
+        }
+        if (TOC === "flow") {
+          /* the titles into one paragraph, their words staying in order under it */
+          const p = el("div", "sp-flowp");
+          nav.querySelectorAll(".sp-chap-i").forEach((it) => {
+            const b = it._b, n = b.querySelector(".sp-chap-n");
+            if (n) { const sup = el("sup", "sp-flow-n", n.textContent); n.remove(); b.appendChild(sup); }
+            p.appendChild(b); p.appendChild(document.createTextNode(" "));
+          });
+          const hd = nav.querySelector(".sp-chap-hd");
+          nav.insertBefore(p, hd ? hd.nextSibling : nav.firstChild);
+        }
+        return nav;
+      }
       function didRows(nav, tp, hasApp) {
         if (!tp.did.length) return;
         nav.appendChild(el("div", "sp-chap-hd", "<span></span><span>" + esc(tp.didTitle) + "</span>" + (hasApp ? "<span></span>" : "") + "<span></span>"));
@@ -1421,7 +1448,7 @@
         const pnl = el("div", "sp-chap-p"), pi = el("div", "sp-chap-pi"), body = el("div", "sp-chap-pb");
         fill(body);
         if (jump) { const go = el("a", "sp-chap-go", esc("Go to the section") + ' <span aria-hidden="true">↓</span>'); go.href = "#"; go.addEventListener("click", (ev) => { ev.preventDefault(); jump(); }); body.appendChild(go); }
-        pi.appendChild(body); pnl.appendChild(pi); item.appendChild(b); item.appendChild(pnl);
+        pi.appendChild(body); pnl.appendChild(pi); item.appendChild(b); item.appendChild(pnl); item._b = b;
         b.addEventListener("click", () => {
           const open = !item.classList.contains("on");
           /* the first time a row opens its words come in as the room's do:
@@ -1435,8 +1462,8 @@
             });
             qAt = performance.now() + 40; body.querySelectorAll(".rv").forEach((e) => go(e));
           }
-          nav.querySelectorAll(".sp-chap-i.on").forEach((x) => { x.classList.remove("on"); x.firstChild.setAttribute("aria-expanded", "false"); });
-          if (open) { item.classList.add("on"); b.setAttribute("aria-expanded", "true"); }
+          nav.querySelectorAll(".sp-chap-i.on").forEach((x) => { x.classList.remove("on"); if (x._b) { x._b.classList.remove("on"); x._b.setAttribute("aria-expanded", "false"); } });
+          if (open) { item.classList.add("on"); b.classList.add("on"); b.setAttribute("aria-expanded", "true"); }
           setTimeout(() => { if (dead) return; layout(); try { if (room.lenis && room.lenis.resize) room.lenis.resize(); } catch (e) { /* no smooth scroll */ } }, 480);
         });
         return item;
