@@ -345,18 +345,29 @@ try { const q = location.search; if (/[?&]szdots=on/.test(q)) document.documentE
       c.T(720, () => b.remove());
     });
   };
-  /* two phones side by side, each going through its own sections */
+  /* two phones side by side, each going through its own sections.
+     The wide pair (phones past the frame's head and foot, names up its
+     margins) only where the frame is wide enough for its phones to stand
+     apart. Between that and a tall frame, which is a room's cover on most
+     laptops (1088 by 972 on a 1920 screen since covers that play fill the
+     column), the two overlapped: his note, 5 Oct 2026, "this overlap of
+     the screens in the ARC sizzle is difficult to tell what's happening".
+     There the pair is set as the tall frame sets it, names over the
+     phones, at the height the frame has: the right phone still a tenth of
+     the frame lower and no more than a tenth of it past the foot, the two
+     closed up in the middle with the tall frame's gap between them */
   const pairShot = (o) => ({ name: o.name, d: o.d, cut: o.cut, dir: o.dir, ground: o.ground || "paper dots", clips: [...o.left, ...o.right].map((x) => x.clip), build(c, s) {
     const d = this.d;
     let L, R, tl, tr;
     const names = (list) => list.map((x) => x.tag).filter(Boolean);
-    if (tall(c)) {
-      const w = c.W * 0.465, h = (w * DH) / DW, xl = c.W * 0.252, xr = c.W * 0.748, lh = c.H * 0.045;
-      const topL = c.top + lh, topR = Math.min(c.H - h * 0.9, topL + c.H * 0.1);
+    if (c.W * 0.43 - (DW * c.H * 1.2) / DH < c.W * 0.04) {
+      const lh = c.H * 0.045, topL = c.top + lh, drop = c.H * 0.1;
+      const w = Math.min(c.W * 0.465, (((c.H - topL - drop) / 0.9) * DW) / DH), h = (w * DH) / DW;
+      const xl = c.W / 2 - (w * 8) / 15, xr = c.W - xl, topR = Math.min(c.H - h * 0.9, topL + drop);
       L = vphone(c, s, xl, topL + h / 2, h, o.left);
       R = vphone(c, s, xr, topR + h / 2, h, o.right);
       tl = labels(c, s, names(o.left), { x: xl - w / 2 + w * 0.06, y: c.top });
-      tr = labels(c, s, names(o.right), { x: xr - w / 2 + w * 0.06, y: topR - lh + c.top * 0 });
+      tr = labels(c, s, names(o.right), { x: xr - w / 2 + w * 0.06, y: topR - lh });
     } else {
       const h = c.H * 1.2, w = (DW * h) / DH, edge = c.W * 0.285 - (w / 2) * 1.035;
       L = vphone(c, s, c.W * 0.285, c.H * 0.6, h, o.left);
