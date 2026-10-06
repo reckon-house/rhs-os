@@ -1152,20 +1152,162 @@ html:not([data-type="bold"]) .sp .sp-tr dd, html:not([data-type="bold"]) .sp .sp
 .sp .sp-chap.toc-field .sp-chap-r::before { background: color-mix(in srgb, currentColor 9%, transparent); }
 .sp .sp-chap.toc-field :is(.sp-chap-pp, .sp-chap-ph, .sp-chap-go) { color: inherit; }
 /* flow: the titles run as one paragraph, a small number after each, as
-   the index's counts sit; the open one stays in ink, the rest go grey */
+   the index's counts sit. A title's words open inside the paragraph, right
+   after it, the titles after it carrying on below (5 Oct, his "it could open
+   within the lines instead of below"); the open one stays in ink, the rest
+   go grey. The subtitle leads the paragraph in its own two tones, so the
+   title is followed by one block, not a subhead and then a list */
 .sp .sp-chap.toc-flow > .sp-chap-hd { display: none; }
 .sp .sp-chap.toc-flow .sp-flowp { padding: 14px 0 clamp(22px, 4cqw, 34px); border-top: 1px solid var(--hair);
   font-size: clamp(26px, 5.6cqw, 44px); font-weight: 500; letter-spacing: -0.045em; line-height: 1.12; text-wrap: pretty; }
+.sp .sp-chap.toc-flow.toc-lead { margin-top: clamp(18px, 3cqw, 28px); }
+.sp .sp-chap.toc-flow.toc-lead .sp-flowp { padding-top: 0; border-top: 0; font-size: clamp(24px, 4.8cqw, 40px); line-height: 1.14; }
+.sp .sp-chap.toc-flow .sp-flow-lead { color: var(--ink); }
+.sp .sp-chap.toc-flow .sp-flow-lead .sp-g { color: var(--grey); }
 .sp .sp-chap.toc-flow .sp-flowp .sp-chap-r { display: inline; width: auto; margin: 0; padding: 0 0.04em; border: 0; border-radius: 3px; background: none;
   font: inherit; letter-spacing: inherit; line-height: inherit; color: var(--ink); text-align: left; cursor: pointer;
   -webkit-box-decoration-break: clone; box-decoration-break: clone; transition: background-color 0.25s ease, color 0.25s ease; }
 .sp .sp-chap.toc-flow .sp-flowp .sp-chap-r::before { display: none; }
+.sp .sp-chap.toc-flow .sp-flowp .sp-chap-r:focus-visible { outline: none; }
 .sp .sp-chap.toc-flow .sp-flowp .sp-chap-r:is(:hover, :focus-visible) { background: var(--hl, #ECECEC); }
-.sp .sp-chap.toc-flow .sp-flowp:has(.on) .sp-chap-r:not(.on) { color: var(--grey); }
+.sp .sp-chap.toc-flow.toc-lead .sp-flowp .sp-chap-r:not(:has(.sp-chap-g)) { color: var(--grey); }
+.sp .sp-chap.toc-flow.toc-lead .sp-flowp .sp-chap-r:not(:has(.sp-chap-g)):is(:hover, :focus-visible, .on) { color: var(--ink); }
+.sp .sp-chap.toc-flow .sp-flowp:has(.sp-chap-r.on) .sp-chap-r:not(.on) { color: var(--grey); }
 .sp .sp-chap.toc-flow .sp-flowp :is(.sp-chap-t, .sp-chap-g) { display: inline; }
 .sp .sp-chap.toc-flow .sp-flowp :is(.sp-chap-a, .sp-chap-x) { display: none; }
 .sp .sp-chap.toc-flow .sp-flow-n { position: relative; top: -0.05em; margin-left: 0.12em; font-size: 0.3em; font-weight: 600; letter-spacing: 0; color: var(--grey); vertical-align: super; line-height: 0; }
-.sp .sp-chap.toc-flow .sp-chap-i { border: 0; }
-.sp .sp-chap.toc-flow .sp-chap-i:last-child { border-bottom: 1px solid var(--hair); }
+.sp .sp-chap.toc-flow .sp-flowp > .sp-chap-i, .sp .sp-chap.toc-flow .sp-flowp > .sp-chap-i:last-child { display: none; margin: 0.25em 0 0.6em; border: 0;
+  font-size: 13px; font-weight: 400; letter-spacing: -0.004em; line-height: 1.75; }
+.sp .sp-chap.toc-flow .sp-flowp > .sp-chap-i.on { display: block; }
+.sp .sp-chap.toc-flow .sp-flowp > .sp-chap-i.on > .sp-chap-p { animation: sp-flow-open 0.42s cubic-bezier(0.45, 0, 0.2, 1) both; }
+@keyframes sp-flow-open { from { grid-template-rows: 0fr; } to { grid-template-rows: 1fr; } }
 .sp .sp-chap.toc-flow .sp-chap-pi { grid-template-columns: minmax(0, 1fr); }
-.sp .sp-chap.toc-flow .sp-chap-pb { grid-column: 1 / -1; padding-top: 4px; }
+.sp .sp-chap.toc-flow .sp-chap-pb { grid-column: 1 / -1; max-width: 44em; padding: 0.3em 0 0.2em; }
+.sp .sp-chap.toc-flow :is(.sp-chap-pp, .sp-chap-ph, .sp-chap-go) { font-size: 13px; }
+@media (prefers-reduced-motion: reduce) { .sp .sp-chap.toc-flow .sp-flowp > .sp-chap-i.on > .sp-chap-p { animation: none; } }
+
+
+/* ── seven more ways in (5 Oct 2026), after his references. Each keeps the
+   rows' behaviour (one open at a time, the words in the page, the wipe on
+   the first open); only the setting changes. The column labels and the
+   marks give way to the type ── */
+.sp .sp-chap.toc-c > .sp-chap-hd { display: none; }
+.sp .sp-chap.toc-c .sp-chap-pi { grid-template-columns: minmax(0, 1fr); }
+.sp .sp-chap.toc-c .sp-chap-pb { grid-column: 1 / -1; max-width: 44em; }
+.sp .sp-chap.toc-c :is(.sp-chap-pp, .sp-chap-ph, .sp-chap-go) { font-size: 13px; }
+.sp .sp-chap.toc-c .sp-chap-pp { line-height: 1.75; }
+.sp .sp-chap.toc-c .sp-chap-r:focus-visible { outline: none; }
+.sp .sp-chap.toc-c .sp-chap-i.on .sp-chap-r { padding-bottom: inherit; }
+.sp-chap .serif, .sp-chap :is(.mq-m, .cd-t, .ld-t, .ld-n, .ld-g) { font-family: ui-serif, "New York", "Iowan Old Style", Georgia, serif; }
+
+/* numerals (Doubleday & Cartwright's list): the number as large as the row,
+   a rule of ink, the title small over its line, the section's own picture */
+.sp .sp-chap.toc-numerals .sp-chap-r { display: grid; grid-template-columns: minmax(70px, 13%) minmax(0, 1fr); column-gap: clamp(12px, 2cqw, 20px); align-items: stretch;
+  padding: clamp(14px, 2.4cqw, 22px) 0; border-top: 0; font-size: 13px; }
+.sp .sp-chap.toc-numerals .sp-chap-r.nm-has { grid-template-columns: minmax(70px, 13%) minmax(0, 0.8fr) minmax(0, 1.45fr); }
+.sp .sp-chap.toc-numerals .sp-chap-i, .sp .sp-chap.toc-numerals .sp-chap-i:last-child { border: 0; }
+.toc-numerals .nm-n { align-self: start; font-size: clamp(76px, 15cqw, 136px); font-weight: 600; letter-spacing: -0.07em; line-height: 0.74; text-align: right; font-variant-numeric: tabular-nums; }
+.toc-numerals .nm-b { display: flex; flex-direction: column; gap: 8px; padding-left: clamp(12px, 2cqw, 18px); border-left: 1.5px solid var(--ink); }
+.toc-numerals .nm-t { font-size: clamp(14px, 1.9cqw, 16px); font-weight: 600; letter-spacing: -0.015em; line-height: 1.14; text-wrap: balance; }
+.toc-numerals .nm-m { font-size: 12px; line-height: 1.4; color: var(--grey); }
+.toc-numerals .nm-m i { font-style: normal; }
+.toc-numerals .nm-p { position: relative; min-height: 100%; border-radius: var(--pr, 4px); overflow: hidden; }
+.toc-numerals .nm-pic { position: absolute; inset: 0; }
+.sp .sp-chap.toc-numerals .sp-chap-pi { grid-template-columns: minmax(70px, 13%) minmax(0, 1fr); column-gap: clamp(12px, 2cqw, 20px); }
+.sp .sp-chap.toc-numerals .sp-chap-pb { grid-column: 2; padding: 4px 0 clamp(20px, 3.4cqw, 30px) clamp(13px, 2.1cqw, 19px); }
+@container sp (max-width: 559px) {
+  .sp .sp-chap.toc-numerals .sp-chap-r, .sp .sp-chap.toc-numerals .sp-chap-r.nm-has { grid-template-columns: 58px minmax(0, 1fr); }
+  .toc-numerals .nm-n { font-size: 64px; }
+  .toc-numerals .nm-p { grid-column: 2; min-height: 0; aspect-ratio: 2.2 / 1; margin-top: 10px; }
+  .sp .sp-chap.toc-numerals .sp-chap-pi { grid-template-columns: 58px minmax(0, 1fr); }
+}
+
+/* spines (a magazine's contents): a column each, its number and line at the
+   head under a rule, its title turned to run up from the foot */
+.sp .sp-chap.toc-spines .sp-spines { display: flex; border-top: 1.5px solid var(--ink); border-bottom: 1px solid var(--hair); }
+.sp .sp-chap.toc-spines .sp-spines .sp-chap-r { display: flex; flex: 1 1 0; flex-direction: column; justify-content: space-between; gap: 12px; min-width: 0; width: auto;
+  height: clamp(300px, 60cqw, 480px); padding: 8px clamp(6px, 1.2cqw, 12px) 14px; border: 0; border-left: 1px solid var(--hair); font-size: 12px; }
+.sp .sp-chap.toc-spines .sp-spines .sp-chap-r:first-child { border-left: 0; padding-left: 0; }
+.sp .sp-chap.toc-spines .sp-spines .sp-chap-r::before { top: 0; bottom: 0; left: 0; right: 0; border-radius: 0; }
+.toc-spines .sn-top { display: flex; flex-direction: column; gap: 5px; padding-bottom: 8px; border-bottom: 1px solid var(--hair); font-size: 11px; line-height: 1.35; color: var(--grey); }
+.toc-spines .sn-top b { font-size: 12px; font-weight: 600; color: var(--ink); font-variant-numeric: tabular-nums; }
+.toc-spines .sn-top i { font-style: normal; }
+.toc-spines .sn-w { display: flex; flex: 1 1 auto; align-items: flex-end; min-height: 0; overflow: hidden; }
+.toc-spines .sn-t { max-height: 100%; writing-mode: vertical-rl; transform: rotate(180deg); font-size: clamp(16px, 4.4cqw, 40px); font-weight: 600; letter-spacing: -0.045em; line-height: 0.94; transition: color 0.25s ease; }
+.sp .sp-chap.toc-spines .sp-spines:has(.sp-chap-r.on) .sp-chap-r:not(.on) .sn-t { color: var(--grey); }
+.sp .sp-chap.toc-spines > .sp-chap-i, .sp .sp-chap.toc-spines > .sp-chap-i:last-child { border: 0; }
+.sp .sp-chap.toc-spines .sp-chap-pb { padding: 18px 0 clamp(20px, 3.4cqw, 30px); }
+
+/* marquee (Mirror Mirror's exhibitions): capitals at full measure, a small
+   serif line under each, a rule between */
+.sp .sp-chap.toc-marquee .sp-chap-r { display: block; padding: 10px 0 14px; border-top: 1px solid var(--hair); font-size: 13px; }
+.toc-marquee .mq-t { display: block; font-size: clamp(28px, 6.8cqw, 60px); font-weight: 400; letter-spacing: -0.045em; line-height: 0.9; text-transform: uppercase; text-wrap: balance; }
+.toc-marquee .mq-m { display: block; margin-top: 9px; font-size: 13px; letter-spacing: 0; line-height: 1.35; color: var(--grey); }
+.toc-marquee .mq-m i { font-style: normal; }
+.sp .sp-chap.toc-marquee .sp-chap-pb { padding: 0 0 clamp(20px, 3.4cqw, 30px); }
+
+/* ramp (a type foundry's transit poster): one block of titles between
+   bars, black going to grey down the block, the study's name turned up the
+   right edge. A title's words open inside the block, after its bar */
+.sp .sp-chap.toc-ramp { position: relative; padding-right: 26px; }
+.toc-ramp .sp-ramp { padding: 2px 0 clamp(20px, 3.6cqw, 30px); font-size: clamp(30px, 7cqw, 62px); font-weight: 600; letter-spacing: -0.055em; line-height: 0.98; }
+.sp .sp-chap.toc-ramp .sp-ramp .sp-chap-r { display: inline; width: auto; margin: 0; padding: 0; border: 0; background: none; font: inherit; letter-spacing: inherit; line-height: inherit;
+  color: color-mix(in srgb, var(--ink) var(--tone, 100%), #C8C8C8); text-align: left; cursor: pointer; transition: color 0.25s ease; }
+.sp .sp-chap.toc-ramp .sp-ramp .sp-chap-r::before { display: none; }
+.sp .sp-chap.toc-ramp .sp-ramp .sp-chap-r:is(:hover, :focus-visible, .on) { color: var(--ink); }
+.toc-ramp .rp-bar { font-weight: 300; color: #C8C8C8; }
+.toc-ramp .rp-meta { position: absolute; top: 4px; right: 0; writing-mode: vertical-rl; font-size: 10.5px; font-weight: 600; letter-spacing: 0.01em; line-height: 1.3; color: var(--grey); }
+.toc-ramp .rp-meta span { margin-top: 0.9em; color: var(--grey2, #9a9a9a); }
+.sp .sp-chap.toc-ramp .sp-ramp > .sp-chap-i, .sp .sp-chap.toc-ramp .sp-ramp > .sp-chap-i:last-child { display: none; margin: 0.3em 0 0.6em; border: 0;
+  font-size: 13px; font-weight: 400; letter-spacing: -0.004em; line-height: 1.75; }
+.sp .sp-chap.toc-ramp .sp-ramp > .sp-chap-i.on { display: block; }
+.sp .sp-chap.toc-ramp .sp-ramp > .sp-chap-i.on > .sp-chap-p { animation: sp-flow-open 0.42s cubic-bezier(0.45, 0, 0.2, 1) both; }
+
+/* cards (a serif specimen's dark cards): the first one wide, a title set in
+   serif on each, its number and app small over it; an open card takes the
+   whole width and its words are set in the serif too */
+.sp .sp-chap.toc-cards { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.sp .sp-chap.toc-cards > .sp-chap-i, .sp .sp-chap.toc-cards > .sp-chap-i:last-child { border: 0; border-radius: 18px; background: #262624; color: #F2EEE7; overflow: hidden; }
+.sp .sp-chap.toc-cards > .sp-chap-i.cd-wide, .sp .sp-chap.toc-cards > .sp-chap-i.on { grid-column: 1 / -1; }
+.sp .sp-chap.toc-cards .sp-chap-r { display: flex; flex-direction: column; justify-content: space-between; gap: clamp(26px, 6cqw, 56px); min-height: clamp(150px, 26cqw, 220px);
+  padding: clamp(18px, 3.2cqw, 26px) clamp(18px, 3.4cqw, 28px); border: 0; color: inherit; font-size: 12px; }
+.sp .sp-chap.toc-cards .cd-wide .sp-chap-r { min-height: clamp(190px, 34cqw, 300px); }
+.sp .sp-chap.toc-cards .sp-chap-r::before { top: 0; bottom: 0; left: 0; right: 0; border-radius: 0; background: rgba(255, 255, 255, 0.06); }
+.toc-cards .cd-l { font-size: 11.5px; letter-spacing: 0; color: rgba(242, 238, 231, 0.55); }
+.toc-cards .cd-l i { font-style: normal; }
+.toc-cards .cd-t { font-size: clamp(22px, 3.8cqw, 32px); font-weight: 400; letter-spacing: -0.025em; line-height: 1.04; text-wrap: balance; }
+.toc-cards .cd-wide .cd-t { font-size: clamp(30px, 6.6cqw, 58px); letter-spacing: -0.035em; }
+.toc-cards .cd-g { color: rgba(242, 238, 231, 0.5); }
+.sp .sp-chap.toc-cards .sp-chap-pb { max-width: none; padding: 0 clamp(18px, 3.4cqw, 28px) clamp(22px, 3.6cqw, 30px); }
+.sp .sp-chap.toc-cards :is(.sp-chap-pp, .sp-chap-ph, .sp-chap-go) { color: inherit; }
+.sp .sp-chap.toc-cards .sp-chap-pp { max-width: 34em; font-family: ui-serif, "New York", "Iowan Old Style", Georgia, serif; font-size: 16px; letter-spacing: -0.01em; line-height: 1.38; }
+@container sp (max-width: 559px) { .sp .sp-chap.toc-cards { grid-template-columns: minmax(0, 1fr); } }
+
+/* leaders (a book's contents): serif titles, a dotted leader to the number */
+.sp .sp-chap.toc-leaders .sp-chap-r { display: block; padding: 10px 0 12px; border-top: 0; font-size: 13px; }
+.sp .sp-chap.toc-leaders .sp-chap-i, .sp .sp-chap.toc-leaders .sp-chap-i:last-child { border: 0; }
+.toc-leaders .ld-r { display: flex; align-items: last baseline; gap: 12px; }
+.toc-leaders .ld-t { flex: 0 1 auto; min-width: 0; font-size: clamp(22px, 4.2cqw, 36px); font-weight: 400; letter-spacing: -0.02em; line-height: 1.08; }
+.toc-leaders .ld-l { flex: 1 1 24px; min-width: 24px; height: 4px; background: radial-gradient(circle, var(--grey) 0 1.1px, transparent 1.6px) left bottom / 9px 4px repeat-x; }
+.toc-leaders .ld-n { flex: none; font-size: clamp(22px, 4.2cqw, 36px); letter-spacing: -0.01em; color: var(--grey); font-variant-numeric: tabular-nums; }
+.toc-leaders .ld-g { display: block; margin-top: 5px; font-size: 15px; font-style: italic; letter-spacing: 0; color: var(--grey); }
+.sp .sp-chap.toc-leaders .sp-chap-pb { padding: 2px 0 clamp(18px, 3cqw, 26px); }
+
+/* split: the list in the right half; in the left, held as the list scrolls
+   by, a giant number for the row under the pointer, wiping in as it changes */
+.sp .sp-chap.toc-split .sl-wrap { display: grid; grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); column-gap: var(--gc, 24px); align-items: start; }
+.toc-split .sl-show { position: sticky; top: 60px; }
+.toc-split .sl-n { display: block; font-size: clamp(120px, 30cqw, 280px); font-weight: 600; letter-spacing: -0.075em; line-height: 0.76; font-variant-numeric: tabular-nums; }
+.toc-split .sl-show.flip .sl-n { animation: sl-in 0.5s cubic-bezier(0.45, 0, 0.2, 1) both; }
+@keyframes sl-in { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0 0 0 0); } }
+.toc-split .sl-m { display: block; margin-top: 16px; font-size: 12px; line-height: 1.45; color: var(--grey); }
+.toc-split .sl-m i { font-style: normal; }
+.sp .sp-chap.toc-split .sp-chap-r { display: block; padding: 9px 0 18px; border-top: 1px solid var(--hair); font-size: clamp(17px, 2.6cqw, 22px); font-weight: 500; letter-spacing: -0.025em; line-height: 1.15; }
+.sp .sp-chap.toc-split .sl-list > .sp-chap-i:last-child { border-bottom: 1px solid var(--hair); }
+.sp .sp-chap.toc-split .sp-chap-pb { padding: 0 0 clamp(18px, 3cqw, 26px); }
+@container sp (max-width: 559px) {
+  .sp .sp-chap.toc-split .sl-wrap { grid-template-columns: minmax(0, 1fr); }
+  .toc-split .sl-show { position: static; margin-bottom: 14px; }
+  .toc-split .sl-n { font-size: 96px; }
+}
+@media (prefers-reduced-motion: reduce) { .toc-split .sl-show.flip .sl-n, .sp .sp-chap.toc-ramp .sp-ramp > .sp-chap-i.on > .sp-chap-p { animation: none; } }

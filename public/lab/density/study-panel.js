@@ -642,7 +642,18 @@
      at the section heads' size; ?toc=flow runs the titles together as one
      big paragraph, a small number after each as the index's counts sit, the
      words opening under it; ?toc=field is display on the study's colour */
-  const TOC = (() => { const q = (new URLSearchParams(location.search).get("toc") || "").toLowerCase(); return ["display", "flow", "field"].includes(q) ? q : ""; })();
+  /* then seven more after his references (5 Oct: Doubleday & Cartwright's
+     work list, a magazine's contents spread, Mirror Mirror's exhibitions,
+     a type foundry's transit poster, a serif specimen in dark cards):
+     ?toc=numerals giant numbers, a rule, the title small and the section's
+     picture; spines, columns with their titles turned on their sides;
+     marquee, big capitals over a small serif line; ramp, one block of
+     titles between bars, black going to grey; cards, dark rounded cards
+     with serif titles; leaders, a book's contents with dotted leaders to
+     the numbers; split, a giant number for the row under the pointer
+     beside the list */
+  const TOCS = ["display", "flow", "field", "numerals", "spines", "marquee", "ramp", "cards", "leaders", "split"];
+  const TOC = (() => { const q = (new URLSearchParams(location.search).get("toc") || "").toLowerCase(); return TOCS.includes(q) ? q : ""; })();
   const OPEN_MARK = (() => { const q = (new URLSearchParams(location.search).get("open") || "").toLowerCase(); return q === "arrow" || q === "word" ? q : "plus"; })();
   const openMark = () => OPEN_MARK === "word" ? '<span class="sp-chap-x sp-x-word" aria-hidden="true"><b>More</b><b>Less</b></span>'
     : OPEN_MARK === "arrow" ? '<span class="sp-chap-x sp-x-arrow" aria-hidden="true">↓</span>' : '<span class="sp-chap-x sp-x-plus" aria-hidden="true"><i></i></span>';
@@ -862,9 +873,18 @@
        by the first words of that section's head. ?chapters=off leaves them
        out; ?chapters=top sets the contents over the title instead of
        under it */
+    /* a chapter's picture, for the contents that show one: its section's
+       first opaque picture, else its first, else the study's own picture
+       named for the chapter's app (Sally's Asset Hub and Utilities run as
+       live pages, their stills are in the study's set) */
+    const chapPic = (sec, app) => {
+      const ps = sec.items.filter((i) => i.t === "pic" && i.f).map((i) => i.f);
+      const slug = String(app || "").toLowerCase().trim().replace(/\s+/g, "-");
+      return ps.find((f) => !f.alpha) || ps[0] || (slug && (M.pool || []).find((f) => fileOf(f).includes(slug))) || null;
+    };
     const CHM = (new URLSearchParams(location.search).get("chapters") || "").toLowerCase();
     const CHAPS = CHM === "off" ? [] : ((window.DENSITY_CHAPTERS || {})[k] || [])
-      .map((c) => { const sec = M.secs.find((x) => x.head && String(x.head.text || "").startsWith(c.head)); return sec ? { t: c.t, g: c.g || "", app: c.app || "", at: sec.head.id, sec: null, btn: null, more: sec.more || null } : null; })
+      .map((c) => { const sec = M.secs.find((x) => x.head && String(x.head.text || "").startsWith(c.head)); return sec ? { t: c.t, g: c.g || "", app: c.app || "", at: sec.head.id, sec: null, btn: null, more: sec.more || null, pic: chapPic(sec, c.app) } : null; })
       .filter(Boolean).map((c, i) => Object.assign(c, { n: two(i + 1) }));
 
     let io = null, ro = null, headIO = null, fontsT = 0, dead = false;
@@ -1398,7 +1418,8 @@
           const inner = '<span class="sp-chap-n">' + c.n + '</span><span class="sp-chap-t">' + esc(c.t) + (c.g ? ' <span class="sp-chap-g">' + esc(c.g) + "</span>" : "") + "</span>" +
             (hasApp ? '<span class="sp-chap-a">' + esc(c.app) + "</span>" : "");
           if (!acc) { const b = el("button", "sp-chap-r", inner); b.type = "button"; b.addEventListener("click", () => jumpCh(c)); nav.appendChild(b); return; }
-          nav.appendChild(accRow(nav, inner, (body) => { if (c.more) moreInto(body, c.more); }, () => jumpCh(c), hasApp));
+          const it = accRow(nav, inner, (body) => { if (c.more) moreInto(body, c.more); }, () => jumpCh(c), hasApp);
+          it._d = { n: c.n, num: +c.n, t: c.t, g: c.g, app: c.app, pic: c.pic || null }; nav.appendChild(it);
         });
         return acc ? tocLook(nav) : nav;
       };
@@ -1407,30 +1428,118 @@
       const idxEl = (tp) => {
         const nav = el("nav", "sp-chap sp-acc"); nav.setAttribute("aria-label", "Index");
         tp.drawers.forEach((dr, i) => {
-          nav.appendChild(accRow(nav, '<span class="sp-chap-n">' + two(i + 1) + '</span><span class="sp-chap-t">' + esc(dr.t) + "</span>", (body) => {
+          const it = accRow(nav, '<span class="sp-chap-n">' + two(i + 1) + '</span><span class="sp-chap-t">' + esc(dr.t) + "</span>", (body) => {
             (dr.p || []).forEach((x) => body.appendChild(el("p", "sp-chap-pp", inkGrey(x))));
             (dr.cols || []).forEach((c) => { body.appendChild(el("h3", "sp-chap-ph", esc(c.t))); (c.p || []).forEach((x) => body.appendChild(el("p", "sp-chap-pp", inkGrey(x)))); });
-          }, null, false));
+          }, null, false);
+          it._d = { n: two(i + 1), num: i + 1, t: dr.t, g: "", app: "", pic: null }; nav.appendChild(it);
         });
         return tocLook(nav);
       };
       function tocLook(nav) {
         if (!TOC) return nav;
-        nav.classList.add("toc-" + TOC, TOC === "flow" ? "toc-big" : "toc-big");
+        nav.classList.add("toc-" + TOC);
+        if (TOC === "display" || TOC === "field") nav.classList.add("toc-big");
         if (TOC === "field") {
           const qf = quoteFill(k, s);
           nav.style.setProperty("--fill", qf); nav.style.setProperty("--fink", QUOTE_FILL[k] ? D.ink(qf) : s.ink || D.ink(qf));
         }
+        const items = [...nav.querySelectorAll(":scope > .sp-chap-i")];
+        const hd = nav.querySelector(":scope > .sp-chap-hd");
+        /* a line's own trailing comma goes where it stands alone */
+        const bare = (t) => esc(String(t || "").replace(/[\s,;:]+$/, ""));
+        const meta = (d, withN) => [d.g ? esc(d.g) : "", d.app ? esc(d.app) : "", withN ? d.n : ""].filter(Boolean).join('<i aria-hidden="true"> · </i>');
+        /* the titles out of their rows into one place, their words left in
+           order under it */
+        const stage = (cls, sep) => {
+          const box = el("div", cls);
+          items.forEach((it, i) => { if (i && sep) box.appendChild(sep()); box.appendChild(it._b); });
+          nav.insertBefore(box, hd ? hd.nextSibling : nav.firstChild);
+          return box;
+        };
+        if (["numerals", "spines", "marquee", "ramp", "cards", "leaders", "split"].includes(TOC)) nav.classList.add("toc-c");
+        /* a paragraph of titles whose words open inside it, right after the
+           title (5 Oct, his "i think it could open within the lines instead
+           of below on that one"): each row's words stand after its title, out
+           of the flow until opened */
+        const inline = (cls, sep) => {
+          const box = el("div", cls);
+          items.forEach((it, i) => { box.appendChild(it._b); if (sep && i < items.length - 1) box.appendChild(sep()); box.appendChild(it); box.appendChild(document.createTextNode(" ")); });
+          nav.insertBefore(box, hd ? hd.nextSibling : nav.firstChild);
+          return box;
+        };
         if (TOC === "flow") {
-          /* the titles into one paragraph, their words staying in order under it */
-          const p = el("div", "sp-flowp");
-          nav.querySelectorAll(".sp-chap-i").forEach((it) => {
-            const b = it._b, n = b.querySelector(".sp-chap-n");
-            if (n) { const sup = el("sup", "sp-flow-n", n.textContent); n.remove(); b.appendChild(sup); }
-            p.appendChild(b); p.appendChild(document.createTextNode(" "));
+          items.forEach((it) => { const b = it._b, n = b.querySelector(".sp-chap-n"); if (n) { const sup = el("sup", "sp-flow-n", n.textContent); n.remove(); b.appendChild(sup); } });
+          const box = inline("sp-flowp");
+          /* the subtitle runs on into the titles (5 Oct, his "maybe flow and
+             the subhead 'flow' together a little more too so it's not one big
+             headline, one smaller subhead, one medium long block of copy"):
+             its words lead the paragraph, in their own two tones */
+          const st = frag.querySelector(".sp-head > .sp-stand");
+          if (st) {
+            const lead = el("span", "sp-flow-lead"); while (st.firstChild) lead.appendChild(st.firstChild);
+            if (st.dataset.f) lead.dataset.f = st.dataset.f;
+            box.insertBefore(document.createTextNode(" "), box.firstChild); box.insertBefore(lead, box.firstChild);
+            st.remove(); nav.classList.add("toc-lead");
+          }
+        }
+        if (TOC === "numerals") items.forEach((it) => {
+          const d = it._d, b = it._b;
+          b.innerHTML = '<span class="nm-n">' + d.num + '</span><span class="nm-b"><span class="nm-t">' + bare(d.t) + "</span>" + (meta(d) ? '<span class="nm-m">' + meta(d) + "</span>" : "") + "</span>";
+          if (d.pic) { const w = el("span", "nm-p"), pb = picBox(d.pic, "nm-pic"); w.appendChild(pb); b.appendChild(w); watch(pb); b.classList.add("nm-has"); }
+        });
+        if (TOC === "spines") {
+          items.forEach((it) => {
+            const d = it._d;
+            it._b.innerHTML = '<span class="sn-top"><b>' + d.n + "</b>" + (meta(d) ? "<span>" + meta(d) + "</span>" : "") + '</span><span class="sn-w"><span class="sn-t">' + bare(d.t) + "</span></span>";
           });
-          const hd = nav.querySelector(".sp-chap-hd");
-          nav.insertBefore(p, hd ? hd.nextSibling : nav.firstChild);
+          stage("sp-spines");
+        }
+        if (TOC === "marquee") items.forEach((it) => {
+          const d = it._d;
+          it._b.innerHTML = '<span class="mq-t">' + bare(d.t) + '</span><span class="mq-m">' + meta(d, true) + "</span>";
+        });
+        if (TOC === "ramp") {
+          const n = items.length;
+          items.forEach((it, i) => { it._b.innerHTML = '<span class="rp-t">' + bare(it._d.t) + "</span>"; it._b.style.setProperty("--tone", Math.round(100 - (i / Math.max(1, n - 1)) * 62) + "%"); });
+          inline("sp-ramp", () => { const f = document.createDocumentFragment(); f.appendChild(document.createTextNode(" ")); f.appendChild(el("span", "rp-bar", "|")); return f; });
+          nav.appendChild(el("div", "rp-meta", esc(D.title(k)) + "<span>" + esc(s.y) + "</span>"));
+        }
+        if (TOC === "cards" && items[0]) items[0].classList.add("cd-wide");
+        if (TOC === "cards") items.forEach((it) => {
+          const d = it._d;
+          it._b.innerHTML = '<span class="cd-l">' + d.n + (d.app ? '<i aria-hidden="true"> · </i>' + esc(d.app) : "") + '</span><span class="cd-t">' + bare(d.t) + (d.g ? ' <span class="cd-g">' + esc(d.g) + "</span>" : "") + "</span>";
+        });
+        if (TOC === "leaders") items.forEach((it) => {
+          const d = it._d;
+          it._b.innerHTML = '<span class="ld-r"><span class="ld-t">' + bare(d.t) + '</span><span class="ld-l" aria-hidden="true"></span><span class="ld-n">' + d.n + "</span></span>" + (d.g ? '<span class="ld-g">' + esc(d.g) + "</span>" : "");
+        });
+        if (TOC === "split") {
+          /* the list in the right half, and in the left a giant number for
+             the row under the pointer, held while one is open */
+          const show = el("div", "sl-show", '<span class="sl-n"></span><span class="sl-m"></span>');
+          const list = el("div", "sl-list");
+          items.forEach((it) => {
+            const d = it._d;
+            it._b.innerHTML = '<span class="sl-t">' + bare(d.t) + (d.g ? ' <span class="sp-chap-g">' + esc(d.g) + "</span>" : "") + "</span>";
+            list.appendChild(it);
+          });
+          const put = (d) => {
+            const t = d ? String(d.num) : "";
+            if (show.firstChild.textContent === t) return;
+            show.firstChild.textContent = t; show.lastChild.innerHTML = d ? meta(d) : "";
+            show.classList.remove("flip"); void show.offsetWidth; show.classList.add("flip");
+          };
+          const held = () => { const o = items.find((x) => x.classList.contains("on")); return o ? o._d : items[0]._d; };
+          items.forEach((it) => {
+            it._b.addEventListener("pointerenter", () => put(it._d));
+            it._b.addEventListener("focus", () => put(it._d));
+            it._b.addEventListener("click", () => setTimeout(() => put(held()), 0));
+          });
+          list.addEventListener("pointerleave", () => put(held()));
+          put(items[0] && items[0]._d);
+          const wrap = el("div", "sl-wrap"); wrap.appendChild(show); wrap.appendChild(list);
+          nav.appendChild(wrap);
         }
         return nav;
       }
@@ -1443,7 +1552,13 @@
          are in the page closed or open */
       function accRow(nav, inner, fill, jump, hasApp) {
         const item = el("div", "sp-chap-i");
-        const b = el("button", "sp-chap-r", inner + openMark()); b.type = "button";
+        /* in a paragraph of titles a title is a span: a button is always one
+           box, so a long title would take whole lines of its own instead of
+           running on from the one before */
+        const inl = TOC === "flow" || TOC === "ramp";
+        const b = el(inl ? "span" : "button", "sp-chap-r", inner + openMark());
+        if (inl) { b.setAttribute("role", "button"); b.tabIndex = 0; b.addEventListener("keydown", (ev) => { if (ev.key === "Enter" || ev.key === " ") { ev.preventDefault(); b.click(); } }); }
+        else b.type = "button";
         b.setAttribute("aria-expanded", "false");
         const pnl = el("div", "sp-chap-p"), pi = el("div", "sp-chap-pi"), body = el("div", "sp-chap-pb");
         fill(body);
@@ -1454,6 +1569,8 @@
           /* the first time a row opens its words come in as the room's do:
              each line under the wipe's band, the titles as heads, the link
              faded; they stay put after that */
+          nav.querySelectorAll(".sp-chap-i.on").forEach((x) => { x.classList.remove("on"); if (x._b) { x._b.classList.remove("on"); x._b.setAttribute("aria-expanded", "false"); } });
+          if (open) { item.classList.add("on"); b.classList.add("on"); b.setAttribute("aria-expanded", "true"); }
           if (open && mo && !item._rvd) {
             item._rvd = true;
             body.querySelectorAll(".sp-chap-pp, .sp-chap-ph, .sp-chap-go").forEach((e) => {
@@ -1462,8 +1579,6 @@
             });
             qAt = performance.now() + 40; body.querySelectorAll(".rv").forEach((e) => go(e));
           }
-          nav.querySelectorAll(".sp-chap-i.on").forEach((x) => { x.classList.remove("on"); if (x._b) { x._b.classList.remove("on"); x._b.setAttribute("aria-expanded", "false"); } });
-          if (open) { item.classList.add("on"); b.classList.add("on"); b.setAttribute("aria-expanded", "true"); }
           setTimeout(() => { if (dead) return; layout(); try { if (room.lenis && room.lenis.resize) room.lenis.resize(); } catch (e) { /* no smooth scroll */ } }, 480);
         });
         return item;
