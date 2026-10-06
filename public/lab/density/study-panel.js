@@ -661,7 +661,12 @@
      statement to the next?"): a small round dot between them (default);
      ?flowsep=bar a thin bar; ?flowsep=lead each one's number before it,
      with air */
-  const FLOWSEP = (() => { const q = (new URLSearchParams(location.search).get("flowsep") || "").toLowerCase(); return q === "bar" || q === "lead" ? q : "dot"; })();
+  /* and ?flowsep=pic (6 Oct, his "you know the treatment where there are
+     thumbnails worked into the paragraph? that could be a nice option
+     here!"): a small picture set in the line at the head of each statement,
+     its own part's picture where it has one, else the study's pictures in
+     their order */
+  const FLOWSEP = (() => { const q = (new URLSearchParams(location.search).get("flowsep") || "").toLowerCase(); return q === "bar" || q === "lead" || q === "pic" ? q : "dot"; })();
   const TOC = (() => { const q = (new URLSearchParams(location.search).get("toc") || "").toLowerCase(); return TOCS.includes(q) ? q : ""; })();
   const OPEN_MARK = (() => { const q = (new URLSearchParams(location.search).get("open") || "").toLowerCase(); return q === "arrow" || q === "word" ? q : "plus"; })();
   const openMark = () => OPEN_MARK === "word" ? '<span class="sp-chap-x sp-x-word" aria-hidden="true"><b>More</b><b>Less</b></span>'
@@ -886,14 +891,16 @@
        first opaque picture, else its first, else the study's own picture
        named for the chapter's app (Sally's Asset Hub and Utilities run as
        live pages, their stills are in the study's set) */
-    const chapPic = (sec, app) => {
+    const chapPic = (sec, app, hint) => {
       const ps = sec.items.filter((i) => i.t === "pic" && i.f).map((i) => i.f);
+      const all = ps.concat(M.pool || []);
+      if (hint) { const h = all.find((f) => fileOf(f) === hint); if (h) return h; }
       const slug = String(app || "").toLowerCase().trim().replace(/\s+/g, "-");
-      return ps.find((f) => !f.alpha) || ps[0] || (slug && (M.pool || []).find((f) => fileOf(f).includes(slug))) || null;
+      return ps.find((f) => !f.alpha) || (slug && (M.pool || []).find((f) => fileOf(f).includes(slug))) || ps[0] || null;
     };
     const CHM = (new URLSearchParams(location.search).get("chapters") || "").toLowerCase();
     const CHAPS = CHM === "off" ? [] : ((window.DENSITY_CHAPTERS || {})[k] || [])
-      .map((c) => { const sec = M.secs.find((x) => x.head && String(x.head.text || "").startsWith(c.head)); return sec ? { t: c.t, g: c.g || "", app: c.app || "", at: sec.head.id, sec: null, btn: null, more: sec.more || null, pic: chapPic(sec, c.app) } : null; })
+      .map((c) => { const sec = M.secs.find((x) => x.head && String(x.head.text || "").startsWith(c.head)); return sec ? { t: c.t, g: c.g || "", app: c.app || "", at: sec.head.id, sec: null, btn: null, more: sec.more || null, pic: chapPic(sec, c.app, c.pic) } : null; })
       .filter(Boolean).map((c, i) => Object.assign(c, { n: two(i + 1) }));
 
     let io = null, ro = null, headIO = null, fontsT = 0, dead = false;
@@ -1484,7 +1491,24 @@
             const sup = el("sup", "sp-flow-n", n.textContent); n.remove();
             if (FLOWSEP === "lead") b.insertBefore(sup, b.firstChild); else b.appendChild(sup);
           });
-          const box = inline("sp-flowp", FLOWSEP === "lead" ? null : () => el("span", "fs-mark", FLOWSEP === "bar" ? "|" : "", ));
+          if (FLOWSEP === "pic") {
+            const seen = new Set(), pool = [];
+            const add = (f) => { if (f && !f.alpha && !seen.has(fileOf(f))) { seen.add(fileOf(f)); pool.push(f); } };
+            (M.openPics || []).forEach(add); M.secs.forEach((x) => x.items.forEach((i) => { if (i.t === "pic") add(i.f); }));
+            let next = 0;
+            items.forEach((it) => {
+              const f = it._d.pic || pool[next++ % Math.max(1, pool.length)]; if (!f) return;
+              /* the picture holds on to its statement's first word, so a line
+                 never ends on a picture whose words start the next */
+              const pb = picBox(f, "fl-th"), t = it._b.querySelector(".sp-chap-t") || it._b;
+              const tn = [...t.childNodes].find((n) => n.nodeType === 3 && n.nodeValue.trim());
+              const m = tn && tn.nodeValue.match(/^(\s*\S+)([\s\S]*)$/);
+              if (m) { const glue = el("span", "fl-glue"); glue.appendChild(pb); glue.appendChild(document.createTextNode(m[1].trim())); t.insertBefore(glue, tn); tn.nodeValue = m[2]; }
+              else it._b.insertBefore(pb, it._b.firstChild);
+              watch(pb);
+            });
+          }
+          const box = inline("sp-flowp", FLOWSEP === "lead" || FLOWSEP === "pic" ? null : () => el("span", "fs-mark", FLOWSEP === "bar" ? "|" : ""));
           /* the subtitle runs on into the titles (5 Oct, his "maybe flow and
              the subhead 'flow' together a little more too so it's not one big
              headline, one smaller subhead, one medium long block of copy"):

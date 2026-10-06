@@ -4,7 +4,9 @@
    then "go ahead and make them what you think best and we can go from
    there". A long room gets a short contents under its title, each line
    what one part of the work does, in his figures where he has them, and
-   each line opens that part. study-panel.js sets them, and keeps their
+   each line opens that part (pic, where named, is the part's picture for
+   the contents that show one, a file of the study's own; 6 Oct, the
+   thumbnails in Flow's lines). study-panel.js sets them, and keeps their
    numbers in the running head, the one the reader is in opened to its
    line. A chapter names its section by the first words of that section's
    head, which survive fragments.js being built again (its ids do not).
@@ -22,11 +24,11 @@ window.DENSITY_CHAPTERS = {
      study's utilities section; four months and AI as the engineering
      partner are its closing's */
   "sally-os": [
-    { head: "Three AI models watch", t: "Competitor intel from three AI models,", g: "saving 30 hours a week", app: "Trends" },
-    { head: "Jim answers with the context", t: "AI writes, designs and codes campaigns,", g: "saving 40 hours a week across teams", app: "Brand Brain" },
+    { head: "Three AI models watch", t: "Competitor intel from three AI models,", g: "saving 30 hours a week", app: "Trends", pic: "sally-os-model-selection-dual-view.png" },
+    { head: "Jim answers with the context", t: "AI writes, designs and codes campaigns,", g: "saving 40 hours a week across teams", app: "Brand Brain", pic: "sally-os-model-chat-interface.png" },
     { head: "Jim now proposes campaigns", t: "Proposes campaigns on its own,", g: "from trends and what customers say", app: "Campaigns" },
-    { head: "Sally's old asset library", t: "AI finds any asset", g: "by what's in it", app: "Asset Hub" },
-    { head: "Ten tools each handle a job", t: "Custom apps built for individual teams,", g: "one turns half a day of deck work into three minutes", app: "Utilities" },
+    { head: "Sally's old asset library", t: "AI finds any asset", g: "by what's in it", app: "Asset Hub", pic: "sally-os-asset-hub-hero.jpg" },
+    { head: "Ten tools each handle a job", t: "Custom apps built for individual teams,", g: "one turns half a day of deck work into three minutes", app: "Utilities", pic: "sally-os-utilities-marketplace-hero.jpg" },
     { head: "The team that needed the Marketing OS", t: "Built in about four months,", g: "with AI as the engineering partner", app: "" },
   ],
 };

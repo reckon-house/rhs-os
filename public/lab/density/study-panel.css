@@ -1351,3 +1351,12 @@ html:not([data-type="bold"]) .sp .sp-tr dd, html:not([data-type="bold"]) .sp .sp
   .toc-home .hm-grid.hc3 .sp-chap-r:nth-child(2n+1)::after { display: none; }
 }
 @media (prefers-reduced-motion: reduce) { .sp .sp-chap.toc-home .hm-grid .sp-chap-r::before { transition: none; } }
+
+/* flow with pictures in its lines (6 Oct): each statement opens with a
+   small picture the height of the capitals, its corners the pictures'
+   own; it fades with its statement when another one is open */
+.sp .sp-chap.toc-flow.fs-pic .sp-flowp .sp-chap-r { margin-left: 0.12em; }
+.sp .sp-chap.toc-flow .fl-th { position: relative; display: inline-block; width: 1.7em; height: 0.8em; margin: 0 0.22em 0 0.08em; vertical-align: -0.04em;
+  border-radius: 0.14em; overflow: hidden; background: rgba(0, 0, 0, 0.06); transition: opacity 0.25s ease; }
+.sp .sp-chap.toc-flow .sp-flowp:has(.sp-chap-r.on) .sp-chap-r:not(.on) .fl-th { opacity: 0.4; }
+.sp .sp-chap.toc-flow .fl-glue { white-space: nowrap; }
