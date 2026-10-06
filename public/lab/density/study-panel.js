@@ -652,7 +652,16 @@
      with serif titles; leaders, a book's contents with dotted leaders to
      the numbers; split, a giant number for the row under the pointer
      beside the list */
-  const TOCS = ["display", "flow", "field", "numerals", "spines", "marquee", "ramp", "cards", "leaders", "split"];
+  /* and "home" (6 Oct, his "should this section be designed like the TOC
+     side of the site? could be a nice consistency?"): the rows set as the
+     index's own feature entries, its values copied from crossref2.css */
+  const TOCS = ["display", "flow", "field", "numerals", "spines", "marquee", "ramp", "cards", "leaders", "split", "home"];
+  /* Flow's statements, told apart (6 Oct, his "maybe there's a way to
+     separate the sections a tiny bit more so a user can tell from one
+     statement to the next?"): a small round dot between them (default);
+     ?flowsep=bar a thin bar; ?flowsep=lead each one's number before it,
+     with air */
+  const FLOWSEP = (() => { const q = (new URLSearchParams(location.search).get("flowsep") || "").toLowerCase(); return q === "bar" || q === "lead" ? q : "dot"; })();
   const TOC = (() => { const q = (new URLSearchParams(location.search).get("toc") || "").toLowerCase(); return TOCS.includes(q) ? q : ""; })();
   const OPEN_MARK = (() => { const q = (new URLSearchParams(location.search).get("open") || "").toLowerCase(); return q === "arrow" || q === "word" ? q : "plus"; })();
   const openMark = () => OPEN_MARK === "word" ? '<span class="sp-chap-x sp-x-word" aria-hidden="true"><b>More</b><b>Less</b></span>'
@@ -1432,7 +1441,7 @@
             (dr.p || []).forEach((x) => body.appendChild(el("p", "sp-chap-pp", inkGrey(x))));
             (dr.cols || []).forEach((c) => { body.appendChild(el("h3", "sp-chap-ph", esc(c.t))); (c.p || []).forEach((x) => body.appendChild(el("p", "sp-chap-pp", inkGrey(x)))); });
           }, null, false);
-          it._d = { n: two(i + 1), num: i + 1, t: dr.t, g: "", app: "", pic: null }; nav.appendChild(it);
+          it._d = { n: two(i + 1), num: i + 1, t: dr.t, g: "", app: "", pic: null, first: String((dr.p && dr.p[0]) || "").split(/(?<=[.!?])\s+/)[0] || "" }; nav.appendChild(it);
         });
         return tocLook(nav);
       };
@@ -1457,7 +1466,7 @@
           nav.insertBefore(box, hd ? hd.nextSibling : nav.firstChild);
           return box;
         };
-        if (["numerals", "spines", "marquee", "ramp", "cards", "leaders", "split"].includes(TOC)) nav.classList.add("toc-c");
+        if (["numerals", "spines", "marquee", "ramp", "cards", "leaders", "split", "home"].includes(TOC)) nav.classList.add("toc-c");
         /* a paragraph of titles whose words open inside it, right after the
            title (5 Oct, his "i think it could open within the lines instead
            of below on that one"): each row's words stand after its title, out
@@ -1469,8 +1478,13 @@
           return box;
         };
         if (TOC === "flow") {
-          items.forEach((it) => { const b = it._b, n = b.querySelector(".sp-chap-n"); if (n) { const sup = el("sup", "sp-flow-n", n.textContent); n.remove(); b.appendChild(sup); } });
-          const box = inline("sp-flowp");
+          nav.classList.add("fs-" + FLOWSEP);
+          items.forEach((it) => {
+            const b = it._b, n = b.querySelector(".sp-chap-n"); if (!n) return;
+            const sup = el("sup", "sp-flow-n", n.textContent); n.remove();
+            if (FLOWSEP === "lead") b.insertBefore(sup, b.firstChild); else b.appendChild(sup);
+          });
+          const box = inline("sp-flowp", FLOWSEP === "lead" ? null : () => el("span", "fs-mark", FLOWSEP === "bar" ? "|" : "", ));
           /* the subtitle runs on into the titles (5 Oct, his "maybe flow and
              the subhead 'flow' together a little more too so it's not one big
              headline, one smaller subhead, one medium long block of copy"):
@@ -1514,6 +1528,24 @@
           const d = it._d;
           it._b.innerHTML = '<span class="ld-r"><span class="ld-t">' + bare(d.t) + '</span><span class="ld-l" aria-hidden="true"></span><span class="ld-n">' + d.n + "</span></span>" + (d.g ? '<span class="ld-g">' + esc(d.g) + "</span>" : "");
         });
+        if (TOC === "home") {
+          /* each row an index entry: its app over a hairline with its number
+             at the right, its picture, its title, its grey line; the grey box
+             sweeps in under the pointer and stays on the open one, as the
+             index's do. Its words open under the entries */
+          const grid = el("div", "hm-grid hc" + (items.length <= 4 ? 2 : 3));
+          items.forEach((it) => {
+            const d = it._d, b = it._b, line = d.g || d.first || "";
+            b.innerHTML = '<span class="hm-kk"><span>' + esc(d.app || "") + '</span><span class="hm-wn">' + d.n + "</span></span>" + (d.pic ? '<span class="hm-th"></span>' : "") +
+              '<span class="hm-t">' + bare(d.t) + "</span>" + (line ? '<span class="hm-dk">' + esc(line) + "</span>" : "");
+            if (d.pic) {
+              const th = b.querySelector(".hm-th"), r = Math.max(1.2, Math.min(1.8, (d.pic.w || 3) / (d.pic.h || 2)));
+              th.style.aspectRatio = r.toFixed(3); const pb = picBox(d.pic, "hm-pic"); th.appendChild(pb); watch(pb);
+            }
+            grid.appendChild(b);
+          });
+          nav.insertBefore(grid, hd ? hd.nextSibling : nav.firstChild);
+        }
         if (TOC === "split") {
           /* the list in the right half, and in the left a giant number for
              the row under the pointer, held while one is open */
