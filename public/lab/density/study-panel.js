@@ -249,7 +249,7 @@
        block came off for every room (2 Oct 2026, his "this first one i
        think we can drop from the system") */
     ["rule", ".sp-kick, .sp-run.sp-hasc, .sp-foot, .sp-spec, .sp-card, .sp-tcol, .sp-tr, .sp-nr"],
-    ["fade", ".sp-cap, .sp-fs, .sp-nl, .sp-ns, .sp-meta, .sp-chap, .sp-spec-h, .sp-tcol > .sp-caps, .sp-tcol ul, .sp-palw, .sp-bar2, .sp-stl li, .sp-full, .sp-next > .sp-caps, .sp-fcap, .sp-bcap, .sp-card p, .sp-tr dd, .sp-tr dt"],
+    ["fade", ".sp-cap, .sp-fs, .sp-nl, .sp-ns, .sp-meta, .sp-chap, .sp-more, .sp-spec-h, .sp-tcol > .sp-caps, .sp-tcol ul, .sp-palw, .sp-bar2, .sp-stl li, .sp-full, .sp-next > .sp-caps, .sp-fcap, .sp-bcap, .sp-card p, .sp-tr dd, .sp-tr dt"],
   ];
   /* words into masks: each word an inline-block clipped to its own line,
      its inside rising into it. Text nodes are split where they are, so a
@@ -616,12 +616,77 @@
     return M;
   };
 
+  /* ── an edit (5 Oct 2026). His "i have this feeling my case studies say
+     too much", then "i dont want to overcorrect again ... i'm looking for
+     that perfect middle ground where it sells but ... we dont repeat", and
+     Studio.Build's drawers, "where they CAN say a lot but it's tidy".
+     ?edit=trim|fold|index sets a study's words from edits.js: trim keeps
+     the room as it is with every fact told once; fold shows each section's
+     head and its strongest line and folds the rest into a drawer in place;
+     index puts the story in closed drawers under the title, with a What I
+     did list, and lets the pictures run. An edit only moves words: it
+     drops a line, swaps it for a trim of itself, or folds it. Pictures,
+     live pages and stats stay where they are. ?edit=today shows the room
+     as it was with the switch row; no ?edit, the room as it was ── */
+  const EDIT = (() => { const q = (new URLSearchParams(location.search).get("edit") || "").toLowerCase(); return /^(today|trim|fold|index)$/.test(q) ? q : ""; })();
+  const EDIT_NAMES = [["today", "Today"], ["trim", "Trim"], ["fold", "Fold"], ["index", "Index"]];
+  const editOf = (k) => (EDIT && EDIT !== "today" && window.DENSITY_EDITS && window.DENSITY_EDITS[k] && window.DENSITY_EDITS[k][EDIT]) || null;
+  const hasEdits = (k) => !!(window.DENSITY_EDITS && window.DENSITY_EDITS[k]);
+  const applyEdit = (M, v) => {
+    const nrm = (s) => String(s || "").replace(/\s+/g, " ").trim();
+    const keyed = (map) => Object.entries(map || {}).map(([key, a]) => ({ key: nrm(key), a }));
+    const L = keyed(v.lines), H = keyed(v.heads), T = keyed(v.moreTitle);
+    (v.keep || []).forEach((key) => { if (!L.some((x) => x.key === nrm(key))) L.push({ key: nrm(key), a: "keep" }); });
+    const find = (list, text) => { const t = nrm(text); const m = list.find((x) => x.key && t.startsWith(x.key)); return m ? m.a : undefined; };
+    const swap = (f, text) => Object.assign({}, f, { text, held: null, ink: null });
+    if (v.stand != null && M.stand) M.stand = swap(M.stand, v.stand);
+    /* a new abstract: each paragraph its sentences, one line each, so the
+       figures in it still lift into the band as they do today */
+    if (Array.isArray(v.abs)) M.abs = v.abs.flatMap((p, i) => String(p).split(/(?<=[.!?])\s+(?=[A-Z0-9"“])/).filter(Boolean)
+      .map((text, j) => ({ id: "xa" + i + "-" + j, k: M.k, kind: "line", text, pi: 900000 + i, weight: "body", where: "abstract" })));
+    else if (L.length) M.abs = M.abs.flatMap((f) => { const a = find(L, f.text); return a === "drop" || a === "more" || (a && typeof a === "object") ? [] : [a && a !== "keep" ? swap(f, a) : f]; });
+    if (Array.isArray(v.facts)) M.facts = v.facts.map((lab) => {
+      const f = M.facts.find((x) => x.label === lab), val = (v.factSet || {})[lab];
+      return f ? (val ? Object.assign({}, f, { value: val }) : f) : val ? { id: "xf-" + lab, kind: "fact", label: lab, value: val } : null;
+    }).filter(Boolean);
+    else if (v.factSet) M.facts = M.facts.map((f) => (v.factSet[f.label] ? Object.assign({}, f, { value: v.factSet[f.label] }) : f));
+    const rest = v.rest || "keep", out = [];
+    M.secs.forEach((sec) => {
+      let gone = false, title = null;
+      if (sec.head) {
+        title = find(T, sec.head.text) || null;
+        const a = find(H, sec.head.text);
+        if (a === "drop") gone = true; else if (a && a !== "keep") sec.head = swap(sec.head, a);
+      }
+      let more = null; const items = [];
+      sec.items.forEach((it0) => {
+        let it = it0; const f = it.f;
+        if (!f || f.kind !== "line") { items.push(it); return; }
+        let a = find(L, f.text); if (a === undefined) a = gone ? "drop" : rest;
+        if (a === "drop") return;
+        /* { more: "<a trim of the line>" } folds the trim */
+        if (a && typeof a === "object" && a.more) { it = Object.assign({}, it, { f: swap(f, a.more) }); a = "more"; }
+        if (a === "more") { if (!more) { more = { t: "more", title: title || "More", list: [] }; items.push(more); } more.list.push(it); return; }
+        items.push(a !== "keep" ? Object.assign({}, it, { f: swap(f, a) }) : it);
+      });
+      sec.items = items;
+      /* a dropped head's pictures join the section before it */
+      if (gone && out.length) { out[out.length - 1].items.push(...items); return; }
+      out.push(sec);
+    });
+    M.secs = out;
+    if ((v.did && v.did.length) || (v.drawers && v.drawers.length)) M.top = { did: v.did || [], didTitle: v.didTitle || "What I did", drawers: v.drawers || [] };
+    M.edit = v;
+    return M;
+  };
+
   /* ── shape a section's items into blocks: paragraphs joined by their
      paragraph index, a column's title with its text, consecutive pictures
      as one group, consecutive stats as one grid ── */
   const shape = (items, figs) => {
     const out = []; let run = null, para = null;
     for (const it of items) {
+      if (it.t === "more") { run = null; para = null; out.push(it); continue; }
       if (it.t === "body") {
         if (!run) { run = { t: "run", col: null, parts: [] }; out.push(run); para = null; }
         const fig = figs.take(it.f);
@@ -763,6 +828,7 @@
   function render(container, k, opts) {
     const o = opts || {};
     const M = compose(k);
+    { const ED = M && editOf(k); if (ED) applyEdit(M, ED); }
     const root = el("article", "sp sp-enter"); root.dataset.k = k;
     container.appendChild(root);
     try { container.scrollTop = 0; } catch (e) { /* a container that cannot scroll */ }
@@ -1320,6 +1386,17 @@
       const meta = el("div", "sp-meta");
       /* the study's number leads its kicker, as it leads its row in the index */
       meta.appendChild(el("div", "sp-kk", (D.num ? '<span class="sp-no">' + esc(D.num(k)) + "</span>" : "") + esc(s.s) + '<span class="y">' + esc(s.y) + "</span>"));
+      /* the edit's switch, while he compares them: ?edit=today shows it on the room as it was */
+      if (EDIT && hasEdits(k)) {
+        const row = el("div", "sp-edits");
+        EDIT_NAMES.forEach(([id, name]) => {
+          const b = el("a", "sp-edit" + (id === EDIT ? " on" : ""), esc(name));
+          const u = new URL(location.href); u.searchParams.set("edit", id); b.href = u.pathname + u.search + u.hash;
+          const v = id !== "today" && window.DENSITY_EDITS[k][id]; if (v && v.note) b.title = v.note;
+          row.appendChild(b);
+        });
+        meta.appendChild(row);
+      }
       const lines = (D.data.lines || []).filter((l) => (s.tags || []).includes(l.tag));
       if (lines.length) meta.appendChild(el("div", "sp-lines", lines.map((l) => '<span class="sp-line"><i style="background:' + l.color + '"></i>' + esc(l.name) + "</span>").join("")));
 
@@ -1340,6 +1417,9 @@
       }
       frag.appendChild(open);
       P.meta = meta; P.rail = rail; P.open = open; P.openBare = !absLines.length;
+      /* an edit's index: What I did, open, and the story in closed drawers,
+         under the abstract and over the black field */
+      if (M.top) frag.appendChild(topEl(M.top));
       /* on the black field two long figures stack, each the full width,
          rather than halve each other */
       if (band.length) frag.appendChild(statsFirst || blackDone ? figBlock(band, "sp-band")
@@ -1399,6 +1479,8 @@
         spec.appendChild(tb);
       }
       const byLabel = new Map(); M.tools.forEach((f) => { if (!byLabel.has(f.label)) byLabel.set(f.label, []); byLabel.get(f.label).push(f); });
+      /* an index's What I did is the study's services: the foot leaves them out */
+      if (M.top && M.top.did.length) { byLabel.delete("Service"); byLabel.delete("Services"); }
       if (byLabel.size) {
         const cols = el("div", "sp-tcols");
         byLabel.forEach((list, label) => {
@@ -1860,6 +1942,31 @@
         }
         return out;
       }
+      /* a drawer: a row with a round + that turns to a minus, its words
+         in the page either way (Studio.Build's, his "it's tidy and probably
+         gets picked up by SEO/AIO but doesnt clutter") */
+      function drawer(title, open) {
+        const det = el("details", "sp-more"); if (open) det.open = true;
+        det.appendChild(el("summary", "sp-more-s", '<i class="sp-more-i" aria-hidden="true"></i><span>' + esc(title) + "</span>"));
+        det.appendChild(el("div", "sp-more-b"));
+        return det;
+      }
+      function topEl(tp) {
+        const se = el("section", "sp-grid sp-idx"); se.appendChild(el("div", "sp-rail"));
+        const col = el("div", "sp-text");
+        if (tp.did.length) {
+          const d = drawer(tp.didTitle, true), ul = el("ul", "sp-did");
+          tp.did.forEach((x) => ul.appendChild(el("li", null, esc(x)))); d.lastChild.appendChild(ul); col.appendChild(d);
+        }
+        tp.drawers.forEach((dr) => {
+          const d = drawer(dr.t, false), body = d.lastChild;
+          (dr.p || []).forEach((x, i) => body.appendChild(el("p", "sp-p" + (i ? "" : " sp-mls"), inkGrey(x))));
+          (dr.cols || []).forEach((c) => { body.appendChild(el("h3", "sp-mc", esc(c.t))); (c.p || []).forEach((x) => body.appendChild(el("p", "sp-p", inkGrey(x)))); });
+          col.appendChild(d);
+        });
+        se.appendChild(col);
+        return se;
+      }
       function runEl(run) {
         const g2 = el("div", "sp-grid sp-run" + (run.col ? " sp-hasc" : ""));
         const rl = el("div", "sp-rail");
@@ -1925,6 +2032,23 @@
             if (first) q.appendChild(el("div", "sp-fcap", esc(D.title(k)) + '<span class="y">' + esc(s.y) + "</span>" + lookRow()));
             tag(q, b.f);
             return lk === "fill" ? knock(q, qf, QUOTE_FILL[k] ? D.ink(qf) : s.ink || D.ink(qf)) : q;
+          }
+          case "more": {
+            /* a section's folded words, in the text column where the first
+               of them stood: column titles small, paragraphs as the body */
+            const g2 = el("div", "sp-grid sp-run sp-morew"); g2.appendChild(el("div", "sp-rail"));
+            const t = el("div", "sp-text"), det = drawer(b.title, false), body = det.lastChild;
+            let para = null;
+            b.list.forEach((it) => {
+              const f = it.f;
+              if (it.t === "col" || it.t === "card") { body.appendChild(tag(el("h3", "sp-mc", inkGrey(f.text)), f)); if (it.t === "card" && f.note) body.appendChild(el("p", "sp-p", esc(f.note))); para = null; return; }
+              if (it.t === "body") {
+                if (!para || para.pi !== f.pi) { para = { pi: f.pi, e: el("p", "sp-p") }; body.appendChild(para.e); } else para.e.appendChild(document.createTextNode(" "));
+                para.e.appendChild(tag(el("span", null, esc(f.text)), f)); return;
+              }
+              para = null; body.appendChild(tag(el("p", "sp-p sp-mls", inkGrey(f.text)), f));
+            });
+            t.appendChild(det); g2.appendChild(t); return g2;
           }
           case "closing": {
             const c = el("div", "sp-closing");
@@ -2243,6 +2367,12 @@
       ev.preventDefault(); ev.stopPropagation();
       if (b.dataset.pal) setPal(b.dataset.pal); else setLook(b.dataset.look);
     });
+    /* a drawer opening or closing changes the room's height: the rows and
+       held heads are measured again, and the scroll learns its new length */
+    root.addEventListener("toggle", (ev) => {
+      if (!ev.target.classList || !ev.target.classList.contains("sp-more")) return;
+      requestAnimationFrame(() => { if (dead) return; layout(); try { if (room.lenis && room.lenis.resize) room.lenis.resize(); } catch (e) { /* no smooth scroll */ } });
+    }, true);
     /* a new width: small changes relayout; a real change rebuilds the rows
        and keeps the reader where they were */
     let rzT = 0;
