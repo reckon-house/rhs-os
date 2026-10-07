@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Curtain explorations</title>
+<!-- ── THE CURTAIN, SIX WAYS (6 Oct 2026) ────────────────────────────────
+     His ask: "it's hard for me to capture but the page transition that
+     repeats the title of the page that is being loaded - i like it but
+     wondering. if we do something more graphic to the font treatment? ...
+     maybe the lines repeat and fill the entire right column? maybe they
+     even bleed off the edges? i dont know - maybe we do some explorations?"
+     This page plays the site's own curtain (/lab/density/curtain.js and
+     curtain.css, not a copy) over the right half, as it plays over the
+     content column when a study opens from the index, in a loop, so it
+     can be watched rather than captured. Each treatment is also a switch
+     on the site: /?curtain=fill and so on. -->
+<link rel="stylesheet" href="/lab/density/density.css">
+<link rel="stylesheet" href="/lab/density/curtain.css">
+<style>
+  :root { --stl: 50%; }
+  html, body { height: 100%; }
+  body { margin: 0; overflow: hidden; background: #fff; color: #000; font-family: "Avenir Next", "Helvetica Neue", Helvetica, Arial, sans-serif; -webkit-font-smoothing: antialiased; }
+  .ctl { position: fixed; top: 0; bottom: 0; left: 0; width: 50%; box-sizing: border-box; padding: 22px 32px 28px 20px; overflow: auto; display: flex; flex-direction: column; gap: 34px; }
+  .mk { font-size: 17px; font-weight: 600; letter-spacing: -0.03em; }
+  h1 { margin: 0 0 10px; font-size: 40px; font-weight: 500; letter-spacing: -0.045em; line-height: 1.1; }
+  .lead { max-width: 30em; margin: 0; font-size: 15px; line-height: 1.5; color: #8a8a8a; }
+  .lbl { margin: 0 0 10px; font-size: 11px; font-weight: 600; }
+  .opts { display: flex; flex-direction: column; border-top: 1px solid #e6e6e6; }
+  .opts.row { flex-direction: row; gap: 8px; border: 0; }
+  .opt { all: unset; box-sizing: border-box; display: grid; grid-template-columns: 9em 1fr; gap: 16px; padding: 11px 10px; border-bottom: 1px solid #e6e6e6; border-radius: 4px; cursor: pointer; }
+  .opt b { font-size: 17px; font-weight: 600; letter-spacing: -0.02em; }
+  .opt span { font-size: 13px; line-height: 1.45; color: #8a8a8a; }
+  .opt:hover { background: #f4f4f4; }
+  .opt.on { background: #ececec; }
+  .opt.on span { color: #000; }
+  .sp { all: unset; padding: 7px 12px; border-radius: 4px; font-size: 13px; font-weight: 600; background: #f4f4f4; cursor: pointer; }
+  .sp.on { background: #000; color: #fff; }
+  .try { font-size: 13px; line-height: 1.6; color: #8a8a8a; }
+  .try a { color: #000; font-weight: 600; text-decoration: underline; text-underline-offset: 0.25em; text-decoration-thickness: 1px; }
+  .room { position: fixed; top: 0; right: 0; bottom: 0; left: 50%; background: #ececec; overflow: hidden; }
+  .room img { display: block; width: 100%; height: 100%; object-fit: cover; }
+  .now { position: fixed; left: calc(50% + 20px); bottom: 18px; z-index: 2; font-size: 12px; font-weight: 600; color: #fff; mix-blend-mode: difference; }
+  @media (max-width: 760px) {
+    .ctl { position: static; width: auto; height: auto; }
+    body { overflow: auto; }
+    .room, .now { display: none; }
+  }
+</style>
+</head>
+<body>
+<div class="ctl">
+  <div class="mk">Reckon*House</div>
+  <div>
+    <h1>The curtain</h1>
+    <p class="lead">The transition that plays when a study opens from the index, over the content column, in a loop. The swipe and the lines rising in and out stay the same; the type is set six ways. Slow it down to watch the lines.</p>
+  </div>
+  <div>
+    <div class="lbl">Treatment</div>
+    <div class="opts" id="modes"></div>
+  </div>
+  <div>
+    <div class="lbl">Speed</div>
+    <div class="opts row" id="speed"></div>
+  </div>
+  <div class="try">Try it on the site: <a id="try" href="/?curtain=fill">reckon.house/?curtain=fill</a>, then open any study from the index.</div>
+</div>
+<div class="room"><img id="pic" alt=""></div>
+<div class="now" id="now"></div>
+<script src="/lab/density/curtain.js"></script>
+<script>
+(() => {
+  const MODES = [
+    ["", "Stack", "Today's. The name and its category down the column at one size."],
+    ["fill", "Fill", "The name at display size, repeated along every line and staggered line to line, running off both edges."],
+    ["outline", "Outline", "Fill, with every other line drawn instead of filled."],
+    ["drift", "Drift", "Fill, with each line running sideways, every other one the other way."],
+    ["giant", "Giant", "A word a line, as large as five lines allow, hugging the left edge and the right in turn."],
+    ["ramp", "Ramp", "The name and its category growing down the column, from small to huge."],
+  ];
+  const STUDIES = [
+    { t: "Ivy Park by Beyoncé", s: "Ecommerce, brand launch", img: "/case-studies/ivy-park/inset-hero.jpg" },
+    { t: "A.R.C. - AI Home Inventory", s: "App & brand development", img: "/case-studies/arc/arc-app-tablet-kitchen-living-room-lifestyle.jpg" },
+    { t: "Robert Rodriguez x Neiman’s", s: "Creative direction, design", img: "/case-studies/robert-rodriguez/neiman-marcus-robert-rodriguez-woman-cream-polka-dot-dress-pink-blazer-orange-yellow-backdrop-storefront-window-display-campaign.jpg" },
+    { t: "Sally Marketing OS", s: "Product design, engineering", img: "/case-studies/sally-os/heroes/sally-os-asset-hub-platform-hero.jpg" },
+    { t: "Hill Country home, kitchen", s: "Interior design, kitchen", img: "/case-studies/hill-country-kitchen/hill-country-kitchen-wide-dining-island-windows.jpg" },
+  ];
+  STUDIES.forEach((s) => { const i = new Image(); i.src = s.img; });
+  const q = new URLSearchParams(location.search);
+  let mode = MODES.some((m) => m[0] === (q.get("m") || "")) ? q.get("m") || "" : "fill";
+  let x = 1, n = 0, run = 0;
+  const $ = (id) => document.getElementById(id);
+  const slow = document.createElement("style"); document.head.appendChild(slow);
+  const paint = () => {
+    [...$("modes").children].forEach((b) => b.classList.toggle("on", b.dataset.m === mode));
+    [...$("speed").children].forEach((b) => b.classList.toggle("on", +b.dataset.x === x));
+    const href = "/" + (mode ? "?curtain=" + mode : "");
+    $("try").href = href; $("try").textContent = "reckon.house" + href;
+    $("now").textContent = MODES.find((m) => m[0] === mode)[1] + (x > 1 ? ", " + (x === 2 ? "half" : "quarter") + " speed" : "");
+  };
+  MODES.forEach(([m, name, desc]) => {
+    const b = document.createElement("button"); b.className = "opt"; b.dataset.m = m;
+    b.innerHTML = "<b>" + name + "</b><span>" + desc + "</span>";
+    b.addEventListener("click", () => { mode = m; paint(); });
+    $("modes").appendChild(b);
+  });
+  [[1, "Full speed"], [2, "Half"], [4, "Quarter"]].forEach(([v, name]) => {
+    const b = document.createElement("button"); b.className = "sp"; b.dataset.x = v; b.textContent = name;
+    b.addEventListener("click", () => {
+      x = v; window.CURTAIN_X = v;
+      /* the stylesheet's own beats, stretched (curtain.css: 0.3s and 0.34s a
+         line, 0.52s a panel, 0.22s, 0.24s and 0.68s off) */
+      slow.textContent = v === 1 ? "" :
+        ".pt .ptl{transition-duration:" + 0.3 * v + "s," + 0.34 * v + "s!important}" +
+        ".pt.pt-run .ptw,.pt.pt-run .ptb{transition-duration:" + 0.52 * v + "s!important}" +
+        ".pt.pt-3 .ptl{transition-duration:" + 0.22 * v + "s," + 0.24 * v + "s!important}" +
+        ".pt.pt-3 .ptb{transition-duration:" + 0.68 * v + "s!important}";
+      paint();
+    });
+    $("speed").appendChild(b);
+  });
+  const wait = (ms) => new Promise((r) => setTimeout(r, ms));
+  const loop = async (id) => {
+    $("pic").src = STUDIES[STUDIES.length - 1].img;
+    await wait(700);
+    while (id === run) {
+      const s = STUDIES[n++ % STUDIES.length];
+      window.Curtain.setMode(mode);
+      await window.Curtain.cover(s.t, s.s);
+      $("pic").src = s.img;
+      await wait(420 * x);
+      await window.Curtain.lift();
+      await wait(1500 * x);
+    }
+  };
+  paint();
+  if (window.Curtain && window.Curtain.setMode) loop(++run);
+})();
+</script>
+</body>
+</html>

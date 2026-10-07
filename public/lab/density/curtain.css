@@ -48,3 +48,29 @@
 /* in the page, over one column (27 Sept): crossref2's content column,
    from the stage's left edge to the glass's right */
 .pt.ptc { left: var(--stl, 50%); }
+
+/* ── EXPLORATIONS (6 Oct 2026): ?curtain=fill | outline | drift | giant |
+   ramp (curtain.js). The same panels and beats; the lines run edge to
+   edge with no gutter, built to their sizes by script, and the frame
+   cuts whatever runs past it: left, right, top and bottom ── */
+.ptm .ptstack { inset: var(--top, 0px) 0 auto 0; padding: 0; justify-content: flex-start; }
+.ptm .ptl { display: flex; flex-wrap: nowrap; white-space: nowrap; transform: translate3d(0, 0.22em, 0); }
+.ptm.pt-1 .ptl { transform: translate3d(0, 0, 0); }
+.ptm.pt-3 .ptl { transform: translate3d(0, -0.14em, 0); }
+.ptm .ptl.r { justify-content: flex-end; }
+.ptr { display: flex; flex: none; transform: translate3d(var(--x, 0px), 0, 0); }
+.ptt { flex: none; }
+.ptt + .ptt { margin-left: var(--gap, 0.42em); }
+/* outline: every other line drawn rather than filled */
+.pt-m-outline .ptw { --sc: var(--ink, #000); }
+.pt-m-outline .ptb { --sc: var(--paper, #fff); }
+.pt-m-outline .ptl.o { color: transparent; -webkit-text-stroke: 1.3px var(--sc); }
+/* drift: each line runs sideways, alternate lines the other way, a whole
+   name a lap so the run never jumps */
+@keyframes ptdrift { from { transform: translate3d(var(--x, 0px), 0, 0); } to { transform: translate3d(calc(var(--x, 0px) - var(--P, 0px)), 0, 0); } }
+.pt-m-drift .ptr { animation: ptdrift var(--pd, 6s) linear infinite; will-change: transform; }
+.pt-m-drift .ptl:nth-child(even) .ptr { animation-direction: reverse; }
+/* giant: a word a line, tracked in as display type is */
+.pt-m-giant .ptl { letter-spacing: -0.055em; }
+/* ramp: the name and its category, growing down the column */
+.pt-m-ramp .ptl { display: block; }
