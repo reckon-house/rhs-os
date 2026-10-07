@@ -8,8 +8,17 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const OUT = path.resolve(HERE, "../../public/lab/density/edits.js");
-const files = fs.readdirSync(HERE).filter((f) => f.endsWith(".json") && !f.startsWith(".")).sort();
+/* with study keys (node build.mjs sally-os ...), only those are rebuilt and
+   every other study keeps what edits.js already holds, so a study someone
+   is still writing never ships half done */
+const only = process.argv.slice(2);
+const files = fs.readdirSync(HERE).filter((f) => f.endsWith(".json") && !f.startsWith(".") && (!only.length || only.includes(f.replace(/\.json$/, "")))).sort();
 const out = {};
+if (only.length && fs.existsSync(OUT)) {
+  const ctx = { window: {} };
+  new Function("window", fs.readFileSync(OUT, "utf8"))(ctx.window);
+  Object.assign(out, ctx.window.DENSITY_EDITS || {});
+}
 for (const f of files) {
   const E = JSON.parse(fs.readFileSync(path.join(HERE, f), "utf8"));
   const k = E.k || f.replace(/\.json$/, "");

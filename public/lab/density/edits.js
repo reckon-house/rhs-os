@@ -468,7 +468,7 @@ window.DENSITY_EDITS = {
    }
   },
   "index": {
-   "note": "Flow opens the room: what the Marketing OS is, then six chapters that are also the six section titles; each opens to what it does, three specifics and a proof.",
+   "note": "Flow opens the room: what the Marketing OS is, then six chapters that are also the six section titles; each opens to what it does, three specifics and a proof. The problem head is his (6 Oct): production was slow and could not scale to personalization goals; the study itself does not say it.",
    "rest": "more",
    "lines": {
     "Retail marketing runs on cycles": "drop",
@@ -545,7 +545,7 @@ window.DENSITY_EDITS = {
     "Design System"
    ],
    "heads": {
-    "Sally's marketing tools and files": "None of Sally's marketing tools talked to each other. | Every planning cycle started from scratch."
+    "Sally's marketing tools and files": "Asset production was too slow to scale to Sally's personalization goals. | None of the marketing tools talked to each other."
    },
    "labels": {
     "Sally's marketing tools and files": "The problem",
