@@ -1455,3 +1455,10 @@ html .sp .sp-chap.toc-flow .sp-flowp .sp-chap-r { background: linear-gradient(va
   transition: background-size 0.36s cubic-bezier(0.45, 0, 0.2, 1), color 0.25s ease; }
 html .sp .sp-chap.toc-flow .sp-flowp .sp-chap-r:is(:hover, :focus-visible) { background: linear-gradient(var(--hl, #ECECEC), var(--hl, #ECECEC)) no-repeat 0 47% / 100% 54%; box-shadow: none; }
 @media (prefers-reduced-motion: reduce) { html .sp .sp-chap.toc-flow .sp-flowp .sp-chap-r { transition: none; } }
+
+/* every room's subtitle in the statement style (6 Oct, his "we should
+   update the styling on the subheads for all case studies, right?"): the
+   line under the title takes the opening paragraph's size, weight and
+   leading at the full measure, its grey half as it was. The one set beside
+   a cover (.sp-cst) keeps its size. ?statement=demi shows the old */
+html:not([data-type="bold"]) .sp.sp-one .sp-head > .sp-stand { max-width: none; font-size: var(--st); font-weight: 500; letter-spacing: -0.045em; line-height: 1.1; text-wrap: pretty; }
