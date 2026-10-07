@@ -35,6 +35,9 @@ export interface SignalEntry {
   take: string | string[];
   /** Topics. Title case, reused across entries. */
   tags: string[];
+  /** The study the post touches, by its room key ("arc", "sally-os"):
+   *  the room shows "See it in" under the note. */
+  study?: string;
 }
 
 /* The room's own sentence, in three parts, the way the daybook's is:

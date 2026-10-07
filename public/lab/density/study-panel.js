@@ -2442,10 +2442,12 @@
           }
           case "src": {
             /* a link out, under the text it belongs to (Signal: the article
-               the note is about), in the text's column */
+               the note is about), in the text's column; a link to a room of
+               the site (#study/<key>, Signal's "See it in") stays in the page */
+            const inner = /^#/.test(b.f.url || "");
             const g2 = el("div", "sp-grid sp-run sp-srcw"); g2.appendChild(el("div", "sp-rail"));
-            const t = el("div", "sp-text"), a = tag(el("a", "sp-src", esc(b.f.text) + ' <span aria-hidden="true">↗</span>'), b.f);
-            a.href = b.f.url; a.target = "_blank"; a.rel = "noopener";
+            const t = el("div", "sp-text"), a = tag(el("a", "sp-src", esc(b.f.text) + ' <span aria-hidden="true">' + (inner ? "→" : "↗") + "</span>"), b.f);
+            a.href = b.f.url; if (!inner) { a.target = "_blank"; a.rel = "noopener"; }
             t.appendChild(a); g2.appendChild(t); return g2;
           }
           case "closing": {

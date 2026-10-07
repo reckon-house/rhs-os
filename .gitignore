@@ -67,3 +67,6 @@ bench/
 
 # Columns, packed from the live sources by npm run columns:pack
 columns/package/
+
+# Signal's drafts preview (scripts/build-signal.mjs): his read only, never shipped
+/public/lab/density/signal-drafts.js
