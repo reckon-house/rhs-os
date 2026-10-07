@@ -981,6 +981,16 @@
        the site, for comparing */
     const CH = mo && (new URLSearchParams(location.search).get("scroll") || "page") === "live";
     if (CH) root.classList.add("ch");
+    /* one statement style (6 Oct, his "should we make the fonts the same
+       size/weight from the intro to all the sections throughout the case
+       studies?"): in an index edit set in Flow, the opening paragraph, every
+       section title and the closing share one size and one weight, medium,
+       his 27 Sept "trends right now arent super bold/heavy". ?statement=big
+       sets them all at the section titles' old size */
+    if (M && M.top && TOC === "flow") {
+      root.classList.add("sp-one");
+      if ((new URLSearchParams(location.search).get("statement") || "") === "big") root.classList.add("st-big");
+    }
     let lenis = null, lraf = 0;
     if (mo && window.Lenis) {
       try {

@@ -1427,3 +1427,14 @@ html .sp.sp .sp-closing.cl-flow p + p { color: var(--grey); }
 .sp .sp-chap .sp-chap-li li { position: relative; padding-top: 9px; border-top: 1px solid var(--hair); font-size: 13px; font-weight: 400; letter-spacing: -0.004em; line-height: 1.6; color: var(--ink); text-wrap: pretty; }
 .sp .sp-chap .sp-chap-li li b { display: block; margin-bottom: 3px; font-weight: 600; letter-spacing: -0.01em; }
 .sp .sp-chap .sp-chap-proof { max-width: 46em; margin: 0 0 0.4em; }
+
+/* one statement style in an index edit (6 Oct): the Flow paragraph, the
+   section titles and the closing at one size, one weight (medium), one
+   leading and one measure; the titles lose their demi and their narrower
+   measure. ?statement=big sets all three at the titles' old size */
+.sp.sp-one { --st: clamp(24px, 4.8cqw, 40px); }
+.sp.sp-one.st-big { --st: clamp(26px, 6.3cqw, 44px); }
+html:not([data-type="bold"]) .sp.sp-one .sp-h,
+html:not([data-type="bold"]) .sp.sp-one .sp-chap.toc-flow .sp-flowp,
+html:not([data-type="bold"]) .sp.sp-one .sp-closing.cl-flow { font-size: var(--st); font-weight: 500; letter-spacing: -0.045em; line-height: 1.1; }
+html:not([data-type="bold"]) .sp.sp-one .sp-h { max-width: none; text-wrap: pretty; }
