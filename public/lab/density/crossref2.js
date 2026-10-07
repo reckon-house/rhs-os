@@ -371,8 +371,6 @@
        lede beside it: "I make things across brand, product, and place" */
     { id: "lines", name: "What I make", mode: "list", pre: "line" },
     { id: "about", name: "About", mode: "list", pre: "about" },
-    /* Signal (6 Oct 2026): the AI news he reads, each with his note */
-    { id: "signal", name: "Signal", mode: "list", pre: "signal" },
     { id: "years", name: "Years", mode: "run", pre: "year" },
     { id: "capabilities", name: "Capabilities", mode: "run", pre: "cap" },
     { id: "tools", name: "Tools", mode: "run", pre: "tool" },
@@ -394,16 +392,16 @@
   ABOUT.forEach(({ a, rel }) => add("about", { label: a.name, about: a, rel,
     make: () => [{ t: "about", a }].concat(clusters(facesOf(byRank([...rel])), true)) }, a.id));
   /* Signal (6 Oct 2026, his "i want it worked into this version of the
-     site" and "doesnt have to be styled like the daybook"): each entry a
-     line in the index, its headline with its day and source; hovered, the
-     open half sets the headline large and his note under it, as About's
-     entries do; clicked, Signal's room opens at that entry. Its words are
-     signal.js (scripts/build-signal.mjs from src/data/signal.ts), kept out
-     of the studies' data so it never counts as work, a year or a figure.
-     The index lists the newest six; the room holds every entry */
+     site"): the AI news he reads, a room of its own. On the index it is
+     one entry under About, its name and the room's first line (his "for
+     now let's just make it an entry point - name and little
+     description"); hovered, the open half sets that line large, as
+     About's entries do; clicked, the room opens. Its words are signal.js
+     (scripts/build-signal.mjs from src/data/signal.ts), kept out of the
+     studies' data so it never counts as work, a year or a figure */
   const SIGR = window.DENSITY_ROOMS && window.DENSITY_ROOMS.signal;
-  if (SIGR) SIGR.entries.slice(0, 6).forEach((e) => add("signal", { label: e.headline, sig: e, rel: new Set(),
-    make: () => [{ t: "about", a: { name: e.headline, lede: e.headline, body: [e.take, e.day + " · " + e.source] } }] }, e.id));
+  if (SIGR) { const a = { id: "signal", name: SIGR.study.t, lede: SIGR.study.fact, body: [SIGR.study.rest] };
+    add("about", { label: a.name, about: a, room: "signal", rel: new Set(), make: () => [{ t: "about", a }] }, "signal"); }
   [...new Set(ORDER.map((s) => s.y))].forEach((y) => {
     const rel = new Set(ORDER.filter((s) => s.y === y).map((s) => s.k));
     add("years", { label: String(y), y, rel, make: () => yearReel(y, rel) }, String(y));
@@ -875,11 +873,8 @@
       box.appendChild(r); a.appendChild(box); REELS.push({ a, r, o });
       a.appendChild(el("span", "nr", '<span class="t">' + esc(o.label) + "</span>"));
       if (LINES[o.key]) a.appendChild(el("span", "dk", twoTone(LINES[o.key])));
-    } else if (mode === "Esig") {
-      a.classList.add("ea", "esg"); a.href = "#study/signal";
-      a.innerHTML = '<span class="nr"><span class="t">' + esc(o.label) + '</span></span><span class="dk">' + esc(o.sig.day + " · " + o.sig.source) + "</span>";
     } else if (mode === "Eabout") {
-      a.classList.add("ea");
+      a.classList.add("ea"); if (o.room) a.href = "#study/" + o.room;
       a.innerHTML = '<span class="nr"><span class="t">' + esc(o.label) + '</span></span><span class="dk">' + esc(o.about.lede || "") + "</span>";
     } else if (mode === "Efig") {
       const m = /^([~$]?[\d][\d,.]*[%+MKx]*)(.*)$/.exec(clean(o.label)) || [0, clean(o.label), ""];
@@ -966,7 +961,6 @@
     put(cellE("years", 1, [headE("03", "years"), yl]));
     const al = el("div", "eabout"); G.about.items.forEach((o) => al.appendChild(entryEl(o, "Eabout")));
     put(cellE("about", 1, [headE("04", "about"), al]));
-    if (G.signal.items.length) { const sg = el("div", "eabout esig"); G.signal.items.forEach((o) => sg.appendChild(entryEl(o, "Esig"))); put(cellE("signal", 1, [headE("09", "signal"), sg])); }
     const big = G.figures.items.filter((o) => BIGFIG.includes(o.label)).sort((x, y) => BIGFIG.indexOf(x.label) - BIGFIG.indexOf(y.label));
     const bl = el("div", "ebig"); big.forEach((o, i) => { const a = entryEl(o, "Efig"); a.style.setProperty("--i", i); bl.appendChild(a); });
     put(cellE("figures", 1, [headE("05", "figures"), bl, runE(G.figures.items.filter((o) => !big.includes(o)))]));
@@ -2113,7 +2107,8 @@
      lines, figures and palette, which out of their room read as awkward
      crops and random statements. ?reel=all steps through them again */
   const REEL_ALL = ["all", "on"].includes((new URLSearchParams(location.search).get("reel") || "").toLowerCase());
-  const reelOf = (o) => (!phone() && PREVIEWED.has(o.g.id) && shelfIds().length ? o._sv || (o._sv = [{ t: "shelf", o }])
+  /* a room's entry (Signal) has no shelf to preview: it shows its own line */
+  const reelOf = (o) => (!phone() && !o.room && PREVIEWED.has(o.g.id) && shelfIds().length ? o._sv || (o._sv = [{ t: "shelf", o }])
     : !phone() && !REEL_ALL && o.g.id === "work" ? o.reel().slice(0, 1) : o.reel());
   const itemOf = () => {
     const reel = cur ? reelOf(cur.o) : [];
@@ -2289,7 +2284,7 @@
   const keyOf = (st) => (st.v === "shelf" ? st.key : st.v === "study" ? "study/" + st.k : "");
   const parentOf = (st) => (st.v === "study" && st.from && KEYMAP.has(st.from) ? { v: "shelf", key: st.from } : { v: "rest" });
   const rectIn = (r, box) => r.bottom > box.top + 8 && r.top < box.bottom - 8 && r.width > 0;
-  const nameOf = (o) => (o.g.id === "work" ? D.title(o.k) : o.g.id === "lines" ? o.line.name : o.g.id === "about" ? o.about.name : o.g.id === "signal" ? o.sig.headline
+  const nameOf = (o) => (o.g.id === "work" ? D.title(o.k) : o.g.id === "lines" ? o.line.name : o.g.id === "about" ? o.about.name
     : o.g.id === "years" ? String(o.y) : o.g.id === "figures" ? o.fig.s : o.v);
 
   /* ── the flight: a picture showing its whole frame at A becomes the same
@@ -2702,7 +2697,7 @@
        as that entry's own shelf opens, its name, count, column and
        sentence where the stack will put them; a rule beside Next fills as
        it comes up, and reaching its end carries on into that shelf */
-    const items = o.g.items, nx = items[(items.indexOf(o) + 1) % items.length];
+    const items = o.g.items.filter((x) => !x.room), nx = items[(items.indexOf(o) + 1) % items.length];
     S.foot = null; S.nx = null;
     if (nx && nx !== o) { const a = footEl(nx); kids.push(a); S.foot = a; S.nx = nx; }
     S.layer.replaceChildren(...kids);
@@ -3371,9 +3366,11 @@
     const s = decodeURIComponent(String(h || "").replace(/^#/, ""));
     if (!s) return { v: "rest" };
     if (s.startsWith("study/")) { const k = s.slice(6); return D.study(k) ? { v: "study", k, from: null } : { v: "rest" }; }
-    if (s.startsWith("signal/") && D.study("signal")) return { v: "study", k: "signal", from: null };
     /* an old address (a spelling since merged) opens the entry it joined */
-    return KEYMAP.has(s) ? { v: "shelf", key: KEYMAP.get(s).key } : { v: "rest" };
+    if (!KEYMAP.has(s)) return { v: "rest" };
+    /* a room's entry (Signal) has no shelf: its address opens the room */
+    const o = KEYMAP.get(s);
+    return o.room ? { v: "study", k: o.room, from: null } : { v: "shelf", key: o.key };
   };
   const apply = (st, how) => {
     how = how || {};
@@ -3418,9 +3415,9 @@
 
   /* what a click on an entry opens */
   const open = (o, how) => {
-    if (o.g.id === "signal") {
-      if (VIEW.v === "study" && RM && RM.k === "signal") { if (RM.room.find(o.sig.at)) { RM.room.scrollTo(o.sig.at, { smooth: true }); RM.room.mark([o.sig.at]); } return; }
-      go({ v: "study", k: "signal", from: null }, Object.assign({ push: true, curtain: true, at: o.sig.at }, how || {}));
+    if (o.room) {
+      if (VIEW.v === "study" && RM && RM.k === o.room) return;
+      go({ v: "study", k: o.room, from: null }, Object.assign({ push: true, curtain: true }, how || {}));
       return;
     }
     if (o.g.id === "work") {
