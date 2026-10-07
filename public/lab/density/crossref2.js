@@ -1674,15 +1674,16 @@
   /* ── type: Avenir Next, tracked in as it grows (his call, 27 Sept) ── */
   const track = (px) => (px >= 150 ? -0.06 : px >= 90 ? -0.055 : px >= 54 ? -0.05 : px >= 34 ? -0.042 : px >= 21 ? -0.03 : -0.012);
   const setSize = (node, px, tr) => { node.style.fontSize = px + "px"; node.style.letterSpacing = (tr != null ? tr : track(px)) + "em"; };
-  /* the largest size (up to max) at which a block fits a box */
-  const fitType = (node, W, H, max, min) => {
+  /* the largest size (up to max) at which a block fits a box; tr holds
+     its tracking, else it is tracked by size */
+  const fitType = (node, W, H, max, min, tr) => {
     let lo = min || 14, hi = max, best = lo;
     node.style.maxWidth = W + "px";
     for (let n = 0; n < 12; n++) {
-      const mid = (lo + hi) / 2; setSize(node, mid);
+      const mid = (lo + hi) / 2; setSize(node, mid, tr);
       if (node.scrollWidth <= W + 1 && node.offsetHeight <= H) { best = mid; lo = mid; } else hi = mid;
     }
-    setSize(node, Math.floor(best));
+    setSize(node, Math.floor(best), tr);
     return Math.floor(best);
   };
   /* one line, as large as the width and height allow */
@@ -1974,7 +1975,10 @@
       else if (DATA.practice && DATA.practice.length) wrap.appendChild(el("div", "caps prac", DATA.practice.map((p) => "<span>" + esc(LBL(p)) + "</span>").join("")));
       /* the board's two-tone lead: his first sentence in ink, the rest in
          grey, one size and one weight */
-      const say = el("div", "say", esc(st.ink) + (st.grey ? ' <span class="g">' + esc(st.grey) + "</span>" : "")); wrap.appendChild(say);
+      /* a compound keeps its halves on one line ("cross-referenced" had
+         broken at its hyphen) */
+      const whole = (t) => esc(t).replace(/(\w+-\w+)/g, '<span class="nw">$1</span>');
+      const say = el("div", "say", whole(st.ink) + (st.grey ? ' <span class="g">' + whole(st.grey) + "</span>" : "")); wrap.appendChild(say);
       /* the folio is the contact (1 Oct 2026). It carried the index's counts
          (Work 30, What I Make 6, Figures 58, the years) until his "let's
          remove these and put contact info in here - i think at some point
@@ -1990,7 +1994,19 @@
       /* on a desk, the home: the cover, then the work (homeBuild) */
       if (lay && !phone()) homeBuild(lay, main, wrap, f);
       else { main.appendChild(wrap); if (f) lay.appendChild(f); }
-      fitType(say, Math.min(W, phone() ? W : 600), Math.max(80, H - 150), phone() ? 28 : 36, 19);
+      /* in the rooms' one statement style (6 Oct 2026, his "oh good call -
+         yea lets take a look at it"): medium at 1.1, tracked as the rooms
+         track it, at the size a room sets its titles on this glass
+         (shelf-stack.js stand()) and over a room title's measure, 18em,
+         fitted down only where the cover is too short for it.
+         ?statement=demi keeps the demi, fitted to 36 and 28 over 600px */
+      const fh = Math.max(80, H - 150);
+      if (HTML.classList.contains("st-one") && HTML.dataset.type !== "bold") {
+        const gw = (lay && lay.clientWidth) || W, mx = Math.min(40, Math.max(24, gw * 0.048));
+        const fw = phone() ? W : Math.min(W, Math.round(mx * 18));
+        say.style.maxWidth = fw + "px"; setSize(say, mx, -0.045);
+        if (say.scrollWidth > fw + 1 || say.offsetHeight > fh) fitType(say, fw, fh, mx, 19, -0.045);
+      } else fitType(say, Math.min(W, phone() ? W : 600), fh, phone() ? 28 : 36, 19);
     },
     pic(main, W, H, it) { main.appendChild(picture(it.f, Math.min(W, H * ratio(it.f)))); main.firstChild.classList.add("rise"); },
     cluster(main, W, H, it) { main.appendChild(cluster(it.pics, W, H, { caps: it.multi, flip: !!cur && (cur.o.i + cur.n) % 2 === 1 })); },

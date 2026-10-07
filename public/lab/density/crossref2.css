@@ -362,6 +362,10 @@ body.staged #focus { opacity: 0; pointer-events: none; }
 /* the statement in demi, a step under the bold it was (27 Sept, his
    "let's try just this one demi-bold") */
 .rest .say { max-width: 17em; font-weight: 600; }
+/* in the rooms' one statement style (6 Oct 2026): medium at 1.1, its size
+   and tracking set by V.rest; ?statement=demi keeps the demi */
+html.st-one:not([data-type="bold"]) .rest .say { font-weight: 500; line-height: 1.1; }
+.say .nw { white-space: nowrap; }
 .rest .links { display: flex; flex-wrap: wrap; gap: 6px 22px; margin: 1.7em 0 0; font-size: 13px; font-weight: 600; }
 .rest .links a { border-bottom: 1px solid var(--hair); }
 .rest .links a:hover { border-bottom-color: var(--ink); }
