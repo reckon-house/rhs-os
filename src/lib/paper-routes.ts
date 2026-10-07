@@ -28,7 +28,7 @@
  */
 
 /** Ground is white paper. Exact match, or a path under the prefix. */
-export const PAPER_ROUTES = ["/", "/daybook", "/inspiration", "/thread", "/book"];
+export const PAPER_ROUTES = ["/", "/daybook", "/signal", "/inspiration", "/thread", "/book"];
 
 /** The page whose own cover holds the masthead's wordmark and address. */
 export const COVER_ROUTES = ["/"];

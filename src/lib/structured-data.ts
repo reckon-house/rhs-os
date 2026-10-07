@@ -1,6 +1,7 @@
 import { SITE_URL, plainStatement } from "@/lib/site";
 import type { CaseStudy } from "@/lib/types";
 import type { DaybookEntry } from "@/data/daybook";
+import type { SignalEntry } from "@/data/signal";
 
 /**
  * JSON-LD structured data. Stable @id values let nodes cross-reference each
@@ -176,6 +177,46 @@ export function daybookJsonLd(entries: DaybookEntry[]) {
     itemListElement: [
       { "@type": "ListItem", position: 1, name: "Home", item: SITE_URL },
       { "@type": "ListItem", position: 2, name: "Daybook", item: url },
+    ],
+  };
+  return { "@context": "https://schema.org", "@graph": [blog, breadcrumb] };
+}
+
+/** /signal: the AI news feed, as a Blog whose posts are his takes. Each
+ *  post cites the article it is about, so a crawler can tell the take
+ *  (his) from the headline (the source's). */
+export function signalJsonLd(entries: SignalEntry[]) {
+  const url = `${SITE_URL}/signal`;
+  const blog = {
+    "@type": "Blog",
+    "@id": `${url}#blog`,
+    name: "Signal",
+    url,
+    description:
+      "The AI news Jeremy Prasatik reads, each with his take from building real products with these tools.",
+    inLanguage: "en",
+    author: { "@id": PERSON_ID },
+    publisher: { "@id": ORG_ID },
+    isPartOf: { "@id": WEBSITE_ID },
+    blogPost: entries.map((e) => ({
+      "@type": "BlogPosting",
+      "@id": `${url}#${e.id}`,
+      url: `${url}#${e.id}`,
+      headline: e.headline,
+      datePublished: e.date,
+      keywords: e.tags.join(", "),
+      articleBody: (Array.isArray(e.take) ? e.take : [e.take]).join("\n\n"),
+      citation: { "@type": "CreativeWork", name: e.headline, url: e.sourceUrl, publisher: e.source },
+      inLanguage: "en",
+      author: { "@id": PERSON_ID },
+      isPartOf: { "@id": `${url}#blog` },
+    })),
+  };
+  const breadcrumb = {
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: SITE_URL },
+      { "@type": "ListItem", position: 2, name: "Signal", item: url },
     ],
   };
   return { "@context": "https://schema.org", "@graph": [blog, breadcrumb] };
