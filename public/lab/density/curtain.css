@@ -73,4 +73,11 @@
 /* giant: a word a line, tracked in as display type is */
 .pt-m-giant .ptl { letter-spacing: -0.055em; }
 /* ramp: the name and its category, growing down the column */
-.pt-m-ramp .ptl { display: block; }
+.pt-m-ramp .ptl, .pt-m-ramp-outline .ptl { display: block; }
+/* ramp with outline: in medium, the site's statement weight since 6 Oct,
+   tracked by size by script; every other line drawn, its category too */
+.pt-m-ramp-outline .ptl { font-weight: 500; }
+.pt-m-ramp-outline .ptw { --sc: var(--ink, #000); --scs: rgba(0, 0, 0, 0.42); }
+.pt-m-ramp-outline .ptb { --sc: var(--paper, #fff); --scs: rgba(255, 255, 255, 0.48); }
+.pt-m-ramp-outline .ptl.o { color: transparent; -webkit-text-stroke: 1.2px var(--sc); }
+.pt-m-ramp-outline .ptl.o .sub { color: transparent; -webkit-text-stroke: 1.2px var(--scs); }

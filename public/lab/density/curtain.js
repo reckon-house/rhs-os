@@ -41,13 +41,21 @@
        ?curtain=giant    a word a line, as large as five lines allow,
                          lines hugging the left edge and the right in turn
        ?curtain=ramp     the name growing down the column, small to huge
+       ?curtain=ramp-outline
+                         ramp with every other line drawn, in medium and
+                         tracked by size as the site's type is (his "i
+                         really like ramp! can we try mixing in outline
+                         with it and making sure the weight matches what
+                         we're doing on the rest of the site?")
 
    /lab/curtain/ plays each in a loop, slowed if asked (window.CURTAIN_X
    stretches every beat; 1 is the site's own). */
 (() => {
   const STEP = 0.03, STEP_OUT = 0.02, MIN = 14;
   const X = () => window.CURTAIN_X || 1;
-  const MODES = ["fill", "outline", "drift", "giant", "ramp"];
+  const MODES = ["fill", "outline", "drift", "giant", "ramp", "ramp-outline"];
+  /* tracked in as it grows, on the site's own ladder (crossref2.js track()) */
+  const track = (px) => (px >= 150 ? -0.06 : px >= 90 ? -0.055 : px >= 54 ? -0.05 : px >= 34 ? -0.042 : px >= 21 ? -0.03 : -0.012);
   const asked = (new URLSearchParams(location.search).get("curtain") || "").toLowerCase();
   let MODE = MODES.includes(asked) ? asked : "";
   let PT = null, busy = false;
@@ -121,9 +129,13 @@
         l.appendChild(run(words.length ? words[i % words.length] : name, 1)); out.push(l);
       }
       top = -lh / 2;
-    } else if (mode === "ramp") {
+    } else if (mode === "ramp" || mode === "ramp-outline") {
+      const ro = mode === "ramp-outline";
       for (let i = 0, fs = 13, y = 0; y < H && i < 40; i++, fs *= 1.28) {
-        const l = line("", i, step, fs, fs);
+        /* every other line drawn, once a line is large enough to draw:
+           the largest the column shows is one of them */
+        const l = line(ro && i % 2 && fs >= 28 ? "o" : "", i, step, fs, fs);
+        if (ro) l.style.letterSpacing = track(fs) + "em";
         l.textContent = name;
         if (sub) { const t = document.createElement("span"); t.className = "sub"; t.textContent = "  " + sub; l.appendChild(t); }
         out.push(l); y += fs;

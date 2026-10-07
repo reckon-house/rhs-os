@@ -54,7 +54,7 @@
   <div class="mk">Reckon*House</div>
   <div>
     <h1>The curtain</h1>
-    <p class="lead">The transition that plays when a study opens from the index, over the content column, in a loop. The swipe and the lines rising in and out stay the same; the type is set six ways. Slow it down to watch the lines.</p>
+    <p class="lead">The transition that plays when a study opens from the index, over the content column, in a loop. The swipe and the lines rising in and out stay the same; the type is set seven ways. Slow it down to watch the lines.</p>
   </div>
   <div>
     <div class="lbl">Treatment</div>
@@ -78,6 +78,7 @@
     ["drift", "Drift", "Fill, with each line running sideways, every other one the other way."],
     ["giant", "Giant", "A word a line, as large as five lines allow, hugging the left edge and the right in turn."],
     ["ramp", "Ramp", "The name and its category growing down the column, from small to huge."],
+    ["ramp-outline", "Ramp + outline", "Ramp in medium, the site's weight, tracked by size, with every other line drawn once the lines are large enough."],
   ];
   const STUDIES = [
     { t: "Ivy Park by Beyoncé", s: "Ecommerce, brand launch", img: "/case-studies/ivy-park/inset-hero.jpg" },
@@ -88,7 +89,8 @@
   ];
   STUDIES.forEach((s) => { const i = new Image(); i.src = s.img; });
   const q = new URLSearchParams(location.search);
-  let mode = MODES.some((m) => m[0] === (q.get("m") || "")) ? q.get("m") || "" : "fill";
+  const qm = q.get("m");
+  let mode = qm !== null && MODES.some((m) => m[0] === qm) ? qm : "ramp-outline";
   let x = 1, n = 0, run = 0;
   const $ = (id) => document.getElementById(id);
   const slow = document.createElement("style"); document.head.appendChild(slow);
