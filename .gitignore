@@ -70,3 +70,6 @@ columns/package/
 
 # Signal's drafts preview (scripts/build-signal.mjs): his read only, never shipped
 /public/lab/density/signal-drafts.js
+
+# Signal drafts: they quote the Sally portal internal notes and the repo is public
+/src/data/signal-drafts.ts
