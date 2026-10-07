@@ -547,7 +547,9 @@
     const dupSrc = s.lead ? LEAD_SAME[k] || null : null;
     const M = { k, s, lead: s.lead || null, dup: null, stand: null, abs: [], facts: [], tools: [], palette: null, secs: [], pool: [] };
     let sec = { open: true, head: null, items: [] }; M.secs.push(sec);
-    for (const f of D.byStudy(k)) {
+    for (const f of (D.roomFrags ? D.roomFrags(k) : D.byStudy(k))) {
+      /* a link out to a source (Signal's entries) */
+      if (f.kind === "src") { sec.items.push({ t: "src", f }); continue; }
       if (f.kind === "palette") { if (!M.palette) M.palette = Object.assign({}, f, { colors: (f.colors || []).map((c) => Object.assign({}, c, { name: c.name || palName(k, c.hex) })) }); continue; }
       if (f.kind === "fact") { if (f.label !== "Author") M.facts.push(f); continue; }
       if (f.kind === "tool") { M.tools.push(f); continue; }
@@ -1909,8 +1911,8 @@
         });
         foot.appendChild(a);
       }
-      const full = el("a", "sp-full", "Full study"); full.href = D.href(k);
-      foot.appendChild(full);
+      /* a room that is not a study (Signal) is the whole of itself */
+      if (!(D.isRoom && D.isRoom(k))) { const full = el("a", "sp-full", "Full study"); full.href = D.href(k); foot.appendChild(full); }
       frag.appendChild(foot);
 
       root.replaceChildren(frag);
@@ -2437,6 +2439,14 @@
               para = null; body.appendChild(tag(el("p", "sp-p sp-mls", inkGrey(f.text)), f));
             });
             t.appendChild(det); g2.appendChild(t); return g2;
+          }
+          case "src": {
+            /* a link out, under the text it belongs to (Signal: the article
+               the note is about), in the text's column */
+            const g2 = el("div", "sp-grid sp-run sp-srcw"); g2.appendChild(el("div", "sp-rail"));
+            const t = el("div", "sp-text"), a = tag(el("a", "sp-src", esc(b.f.text) + ' <span aria-hidden="true">↗</span>'), b.f);
+            a.href = b.f.url; a.target = "_blank"; a.rel = "noopener";
+            t.appendChild(a); g2.appendChild(t); return g2;
           }
           case "closing": {
             /* an index edit set in Flow closes as it opens: its closing lines

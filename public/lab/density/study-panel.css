@@ -1462,3 +1462,9 @@ html .sp .sp-chap.toc-flow .sp-flowp .sp-chap-r:is(:hover, :focus-visible) { bac
    leading at the full measure, its grey half as it was. The one set beside
    a cover (.sp-cst) keeps its size. ?statement=demi shows the old */
 html:not([data-type="bold"]) .sp.sp-one .sp-head > .sp-stand { max-width: none; font-size: var(--st); font-weight: 500; letter-spacing: -0.045em; line-height: 1.1; text-wrap: pretty; }
+
+/* a link out to a source (Signal's entries), at the text's size, under the
+   note it belongs to */
+.sp-srcw { margin-top: 2px; }
+.sp-src { font-size: 13px; font-weight: 600; color: var(--ink); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 0.3em; }
+.sp-src:hover { color: var(--grey); }

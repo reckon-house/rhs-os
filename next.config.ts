@@ -51,6 +51,10 @@ const nextConfig: NextConfig = {
       { source: "/case-studies/fairview-suite", destination: "/#study/fairview-bedroom", permanent: true },
       { source: "/case-studies/:slug([a-z0-9-]+)", destination: "/#study/:slug", permanent: true },
       { source: "/case-studies", destination: "/", permanent: true },
+      /* Signal is a room on the homepage since 6 Oct 2026 (his "i want it
+         worked into this version of the site"), so its address opens the
+         room. Not permanent: the address may get a page of its own again */
+      { source: "/signal", destination: "/#study/signal", permanent: false },
     ];
   },
   async headers() {

@@ -1,6 +1,5 @@
 import type { MetadataRoute } from "next";
 import { DAYBOOK } from "@/data/daybook";
-import { NEWEST as SIGNAL } from "@/data/signal";
 import { SITE_URL } from "@/lib/site";
 
 
@@ -23,17 +22,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "weekly",
       priority: 0.6,
     },
-    /* the AI news feed, dated the same way: by its newest entry */
-    {
-      url: `${SITE_URL}/signal`,
-      lastModified: new Date(`${SIGNAL[0].date}T12:00:00Z`),
-      changeFrequency: "daily",
-      priority: 0.6,
-    },
   ];
 
 
   /* the case studies are rooms on the homepage since 1 Oct 2026, and their
-     old pages redirect there, so the sitemap no longer lists them */
+     old pages redirect there, so the sitemap no longer lists them; nor
+     /signal, a room since 6 Oct 2026 */
   return staticRoutes;
 }

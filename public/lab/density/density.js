@@ -29,14 +29,19 @@
   /* ── names: two studies share a title (three Hill Country rooms, two
      Fairview rooms), and the room tells them apart ── */
   const TITLES = {}; DATA.studies.forEach((s) => { TITLES[s.t] = (TITLES[s.t] || 0) + 1; });
+  /* a room that is not a study (6 Oct 2026, Signal: scripts/build-signal.mjs
+     writes window.DENSITY_ROOMS): the rooms read it as a study, and the
+     index never counts it as one */
+  const ROOMX = (k) => (window.DENSITY_ROOMS && window.DENSITY_ROOMS[k]) || null;
   const title = (k) => {
     if (k === "about") return "About";
     if (k === "daybook") return "Daybook";
+    if (ROOMX(k)) return ROOMX(k).study.t;
     const s = STUDY[k]; if (!s) return k;
     if (TITLES[s.t] < 2) return s.t;
     return s.t + ", " + String(s.s || "").replace(/^interior design,\s*/i, "");
   };
-  const year = (k) => (STUDY[k] ? STUDY[k].y : "");
+  const year = (k) => (STUDY[k] ? STUDY[k].y : ROOMX(k) ? ROOMX(k).study.y : "");
   const href = (k) => (STUDY[k] ? "/case-studies/" + STUDY[k].h : k === "daybook" ? "/daybook" : "/");
   /* the board's six lines, by tag */
   const LINE = {}; (DATA.lines || []).forEach((l) => { LINE[l.tag] = l; });
@@ -151,7 +156,9 @@
   const loc = (f) => (f ? num(f.k) + "." + secOf(f) : "");
 
   window.D = {
-    data: DATA, frags: FR, studies: DATA.studies, study: (k) => STUDY[k], lines: LINE, num, secOf, loc,
+    data: DATA, frags: FR, studies: DATA.studies, study: (k) => STUDY[k] || (ROOMX(k) && ROOMX(k).study) || undefined, lines: LINE, num, secOf, loc,
+    /* a room's own words when it is not a study (Signal), else its fragments */
+    roomFrags: (k) => (ROOMX(k) ? ROOMX(k).frags : FR.filter((f) => f.k === k)), isRoom: (k) => !!ROOMX(k),
     byKind: (kind) => FR.filter((f) => f.kind === kind),
     byStudy: (k) => FR.filter((f) => f.k === k),
     title, year, href, words, search, tokens,

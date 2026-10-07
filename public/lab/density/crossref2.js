@@ -371,6 +371,8 @@
        lede beside it: "I make things across brand, product, and place" */
     { id: "lines", name: "What I make", mode: "list", pre: "line" },
     { id: "about", name: "About", mode: "list", pre: "about" },
+    /* Signal (6 Oct 2026): the AI news he reads, each with his note */
+    { id: "signal", name: "Signal", mode: "list", pre: "signal" },
     { id: "years", name: "Years", mode: "run", pre: "year" },
     { id: "capabilities", name: "Capabilities", mode: "run", pre: "cap" },
     { id: "tools", name: "Tools", mode: "run", pre: "tool" },
@@ -391,6 +393,17 @@
   (DATA.lines || []).forEach((l) => add("lines", { label: l.name, line: l, rel: new Set(l.studies), make: () => lineReel(l) }, l.tag));
   ABOUT.forEach(({ a, rel }) => add("about", { label: a.name, about: a, rel,
     make: () => [{ t: "about", a }].concat(clusters(facesOf(byRank([...rel])), true)) }, a.id));
+  /* Signal (6 Oct 2026, his "i want it worked into this version of the
+     site" and "doesnt have to be styled like the daybook"): each entry a
+     line in the index, its headline with its day and source; hovered, the
+     open half sets the headline large and his note under it, as About's
+     entries do; clicked, Signal's room opens at that entry. Its words are
+     signal.js (scripts/build-signal.mjs from src/data/signal.ts), kept out
+     of the studies' data so it never counts as work, a year or a figure.
+     The index lists the newest six; the room holds every entry */
+  const SIGR = window.DENSITY_ROOMS && window.DENSITY_ROOMS.signal;
+  if (SIGR) SIGR.entries.slice(0, 6).forEach((e) => add("signal", { label: e.headline, sig: e, rel: new Set(),
+    make: () => [{ t: "about", a: { name: e.headline, lede: e.headline, body: [e.take, e.day + " · " + e.source] } }] }, e.id));
   [...new Set(ORDER.map((s) => s.y))].forEach((y) => {
     const rel = new Set(ORDER.filter((s) => s.y === y).map((s) => s.k));
     add("years", { label: String(y), y, rel, make: () => yearReel(y, rel) }, String(y));
@@ -862,6 +875,9 @@
       box.appendChild(r); a.appendChild(box); REELS.push({ a, r, o });
       a.appendChild(el("span", "nr", '<span class="t">' + esc(o.label) + "</span>"));
       if (LINES[o.key]) a.appendChild(el("span", "dk", twoTone(LINES[o.key])));
+    } else if (mode === "Esig") {
+      a.classList.add("ea", "esg"); a.href = "#study/signal";
+      a.innerHTML = '<span class="nr"><span class="t">' + esc(o.label) + '</span></span><span class="dk">' + esc(o.sig.day + " · " + o.sig.source) + "</span>";
     } else if (mode === "Eabout") {
       a.classList.add("ea");
       a.innerHTML = '<span class="nr"><span class="t">' + esc(o.label) + '</span></span><span class="dk">' + esc(o.about.lede || "") + "</span>";
@@ -950,6 +966,7 @@
     put(cellE("years", 1, [headE("03", "years"), yl]));
     const al = el("div", "eabout"); G.about.items.forEach((o) => al.appendChild(entryEl(o, "Eabout")));
     put(cellE("about", 1, [headE("04", "about"), al]));
+    if (G.signal.items.length) { const sg = el("div", "eabout esig"); G.signal.items.forEach((o) => sg.appendChild(entryEl(o, "Esig"))); put(cellE("signal", 1, [headE("09", "signal"), sg])); }
     const big = G.figures.items.filter((o) => BIGFIG.includes(o.label)).sort((x, y) => BIGFIG.indexOf(x.label) - BIGFIG.indexOf(y.label));
     const bl = el("div", "ebig"); big.forEach((o, i) => { const a = entryEl(o, "Efig"); a.style.setProperty("--i", i); bl.appendChild(a); });
     put(cellE("figures", 1, [headE("05", "figures"), bl, runE(G.figures.items.filter((o) => !big.includes(o)))]));
@@ -2272,7 +2289,7 @@
   const keyOf = (st) => (st.v === "shelf" ? st.key : st.v === "study" ? "study/" + st.k : "");
   const parentOf = (st) => (st.v === "study" && st.from && KEYMAP.has(st.from) ? { v: "shelf", key: st.from } : { v: "rest" });
   const rectIn = (r, box) => r.bottom > box.top + 8 && r.top < box.bottom - 8 && r.width > 0;
-  const nameOf = (o) => (o.g.id === "work" ? D.title(o.k) : o.g.id === "lines" ? o.line.name : o.g.id === "about" ? o.about.name
+  const nameOf = (o) => (o.g.id === "work" ? D.title(o.k) : o.g.id === "lines" ? o.line.name : o.g.id === "about" ? o.about.name : o.g.id === "signal" ? o.sig.headline
     : o.g.id === "years" ? String(o.y) : o.g.id === "figures" ? o.fig.s : o.v);
 
   /* ── the flight: a picture showing its whole frame at A becomes the same
@@ -3059,7 +3076,7 @@
     if (prev) prev.c.style.pointerEvents = "none";
     const c = el("div", "roomc"); c.style.visibility = "hidden"; STAGE.appendChild(c);
     const order = orderFor(k, from), i = order.indexOf(k);
-    const nk = order.length > 1 ? order[(i + 1) % order.length] : null;
+    const nk = D.isRoom && D.isRoom(k) ? null : order.length > 1 ? order[(i + 1) % order.length] : null;
     const room = SP.render(c, k, {
       next: nk ? { k: nk, t: D.title(nk) } : null,
       onNext: (x) => go({ v: "study", k: x, from }, { push: true, via: "next", curtain: true }),
@@ -3354,6 +3371,7 @@
     const s = decodeURIComponent(String(h || "").replace(/^#/, ""));
     if (!s) return { v: "rest" };
     if (s.startsWith("study/")) { const k = s.slice(6); return D.study(k) ? { v: "study", k, from: null } : { v: "rest" }; }
+    if (s.startsWith("signal/") && D.study("signal")) return { v: "study", k: "signal", from: null };
     /* an old address (a spelling since merged) opens the entry it joined */
     return KEYMAP.has(s) ? { v: "shelf", key: KEYMAP.get(s).key } : { v: "rest" };
   };
@@ -3400,6 +3418,11 @@
 
   /* what a click on an entry opens */
   const open = (o, how) => {
+    if (o.g.id === "signal") {
+      if (VIEW.v === "study" && RM && RM.k === "signal") { if (RM.room.find(o.sig.at)) { RM.room.scrollTo(o.sig.at, { smooth: true }); RM.room.mark([o.sig.at]); } return; }
+      go({ v: "study", k: "signal", from: null }, Object.assign({ push: true, curtain: true, at: o.sig.at }, how || {}));
+      return;
+    }
     if (o.g.id === "work") {
       if (VIEW.v === "study" && RM && RM.k === o.k) return;
       const from = VIEW.v === "shelf" ? VIEW.key : VIEW.v === "study" ? VIEW.from : null;

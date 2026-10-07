@@ -40,7 +40,8 @@
     "edits:check": "node scripts/edits/check.mjs",
     "edits:build": "node scripts/edits/build.mjs",
     "edits:room": "node scripts/edits/room.mjs",
-    "edits:preview": "node scripts/edits/preview.mjs"
+    "edits:preview": "node scripts/edits/preview.mjs",
+    "signal": "node scripts/build-signal.mjs"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.95.0",
