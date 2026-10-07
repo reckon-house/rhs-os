@@ -564,6 +564,12 @@
      align the columns in the TOC section"); ?stagger=on drops the third
      and fourth columns' lead studies again, as they were */
   { const q = (new URLSearchParams(location.search).get("stagger") || "").toLowerCase(); HTML.dataset.stagger = ["on", "1"].includes(q) ? "on" : "off"; }
+  /* a line's head on its shelf, and its copy in the foot before it, in the
+     rooms' one statement style (6 Oct 2026, his "should we make these the
+     same size/weight as the style we're doing the case studies?"): medium,
+     at 1.1, sized as a room sizes it (shelf-stack.js); ?statement=demi
+     keeps the demi they had, as it does in the rooms */
+  if ((new URLSearchParams(location.search).get("statement") || "").toLowerCase() !== "demi") HTML.classList.add("st-one");
   /* the cover's small line over the statement is his name and the contact
      (4 Oct 2026, his "Work by Jeremy Prasatik hello@reckon.house LinkedIn
      in the small section above the main statement - nothing at the top?").

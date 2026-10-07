@@ -1076,6 +1076,9 @@ html[data-ix="e"] #idx :is(.e.el .t, .e.ef .t, .e.ey .t, .e.efig .fn) { font-wei
 .sh-bar-k { font-size: 8.5px; font-weight: 700; letter-spacing: 0.2em; }
 .sh-sw { font-weight: 400; }
 .sh-foot-t, .sh-foot-t.stand, html.stack .sh-foot-t.stand { font-weight: 600; }
+/* a line's run in a foot keeps to its shelf's head (shelf-stack.css), so
+   the carry-on still lands: the rooms' one statement style since 6 Oct */
+html.st-one:not([data-type="bold"]) .sh-foot-t.stand { font-weight: 500; line-height: 1.1; }
 .sh-foot-s { font-size: 15px; font-weight: 500; }
 html.stack .sh-foot-s { font-size: 14px; }
 .sh-foot-n, .sh-foot-k, .sh-foot-l { font-size: 8.5px; font-weight: 700; letter-spacing: 0.2em; }

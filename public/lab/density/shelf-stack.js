@@ -125,6 +125,21 @@
     for (let i = 0; i < 24 && fs > 22 && over(); i++) { fs -= 2; nm.style.fontSize = fs + "px"; }
   };
 
+  /* Since 6 Oct 2026 it is the rooms' one statement instead (html.st-one,
+     his "should we make these the same size/weight as the style we're
+     doing the case studies?"): clamp(24px, 4.8cqw, 40px) of the glass a
+     room fills, which is the shelf's, tracked as the rooms track it. A
+     foot's preview sets it on its own glass too, so the home's foot, on a
+     glass no shelf has laid out, sets the next head at the same size */
+  const stand = (ctx, ph) => {
+    if (!ctx.scroller) return;
+    const H = document.documentElement;
+    const gw = ctx.scroller.clientWidth || (ctx.width || 0) + (ph ? 0 : 20);
+    const one = H.classList.contains("st-one") && H.dataset.type !== "bold" && gw > 0;
+    ctx.scroller.style.setProperty("--stand", (one ? Math.min(40, Math.max(24, gw * 0.048)) : ph ? 27 : 35) + "px");
+    ctx.scroller.style.setProperty("--stand-tr", (one ? -0.045 : ph ? -0.03 : -0.042) + "em");
+  };
+
   const layout = (S) => {
     const ctx = S.ctx;
     if (S.io) { S.io.disconnect(); S.io = null; }
@@ -136,10 +151,7 @@
        "make the font larger - same size as the homepage intro copy"): the
        statement at rest fits to at most 36px on a desk and 28 on a phone,
        so it stands at 35 and 27, tracked by crossref2's track() */
-    if (ctx.scroller) {
-      ctx.scroller.style.setProperty("--stand", (S.ph ? 27 : 35) + "px");
-      ctx.scroller.style.setProperty("--stand-tr", (S.ph ? -0.03 : -0.042) + "em");
-    }
+    stand(ctx, S.ph);
     S.root.classList.toggle("ph", S.ph);
     const head = headEl(S);
     S.root.replaceChildren(head); S.units.push(head);
@@ -356,6 +368,7 @@
     const lay = () => {
       Object.assign(S, { W: ctx.width, avail: ctx.height, ph: !!ctx.phone });
       root.classList.toggle("ph", S.ph);
+      stand(ctx, S.ph);
       const hd = headEl(S); hd.style.visibility = "hidden"; root.replaceChildren(hd); fitName(S);
       const glass = ctx.scroller ? ctx.scroller.clientHeight : innerHeight;
       const top = (ctx.head || 0) - (glass - foot.offsetHeight) + hd.getBoundingClientRect().height;
