@@ -304,7 +304,7 @@ window.DENSITY_EDITS = {
    }
   },
   "index": {
-   "note": "Flow opens the room: the subtitle runs into the six chapters, each opening in place; the pictures follow, then What I did and the abstract. No figure field, since Flow's sixth line already says four months.",
+   "note": "Flow opens the room; each section below stands alone: a label naming the app, a head saying what the AI does and what it saves, one plain line, then its pictures.",
    "rest": "more",
    "lines": {
     "Retail marketing runs on cycles": "drop",
@@ -329,7 +329,7 @@ window.DENSITY_EDITS = {
     "Jim is trained on Sally's complete brand": "more",
     "Brand Brain ingests and indexes": "drop",
     "It takes in the brand guidelines, performance history": "drop",
-    "Brand Brain works out the strategy": "keep",
+    "Brand Brain works out the strategy": "The AI works out the strategy and writes the brief, then the team approves it",
     "The newest app in the portal": "more",
     "The Approve button writes": {
      "more": "The Approve button writes production requests into the same queue the team uses, so a play they like becomes work in one click."
@@ -349,10 +349,10 @@ window.DENSITY_EDITS = {
     "It's the one place to check": "drop",
     "The team can look up what Ulta": "drop",
     "Six applications are in daily use": "more",
-    "I designed, engineered, and deployed all six": "keep",
+    "I designed, engineered, and deployed all six": "I designed, engineered, and deployed all six apps by myself.",
     "The Marketing OS uses five AI providers": "drop",
     "Nothing sits between the code": "drop",
-    "Every app in the Marketing OS shares data": "A signal caught in the morning can be a proposed campaign by the afternoon and a production request by the end of the day.",
+    "Every app in the Marketing OS shares data": "A market signal caught in the morning can be a proposed campaign by the afternoon and a production request by the end of the day.",
     "The people at Sally call": "keep"
    },
    "moreTitle": {
@@ -379,7 +379,32 @@ window.DENSITY_EDITS = {
     "Full-stack engineering, brand to backend",
     "AI Strategy",
     "Design System"
-   ]
+   ],
+   "heads": {
+    "Sally's marketing tools and files": "None of Sally's marketing tools talked to each other. | Every planning cycle started from scratch.",
+    "Three AI models watch": "Three AI models watch competitors and 14 industry publications, | saving 30 hours a week.",
+    "Jim answers with the context": "An AI strategist trained on Sally's brand writes, designs and codes campaigns, | saving 40 hours a week.",
+    "Jim now proposes campaigns": "AI proposes campaigns on its own, | from trends and what customers say.",
+    "Sally's old asset library": "AI finds any asset by what's in it, | in seconds.",
+    "Ten tools each handle a job": "Ten tools built inside the marketing team each handle a job | that used to take hours.",
+    "The team that needed the Marketing OS": "I built it in about four months, | with AI as the engineering partner."
+   },
+   "labels": {
+    "Sally's marketing tools and files": "The problem",
+    "Three AI models watch": "Trends",
+    "Jim answers with the context": "Brand Brain",
+    "Jim now proposes campaigns": "Campaigns",
+    "Sally's old asset library": "Asset Hub",
+    "Ten tools each handle a job": "Utilities",
+    "The team that needed the Marketing OS": "How it was built"
+   },
+   "decks": {
+    "Three AI models watch": "Every signal gets an AI-written read that checks it against the brand and says whether it's worth acting on.",
+    "Jim answers with the context": "It answers with the context a new hire takes months to pick up.",
+    "Jim now proposes campaigns": "One click on Approve turns a proposal into production requests.",
+    "Sally's old asset library": "AI tags every image on upload, so nobody catalogs anything by hand.",
+    "Ten tools each handle a job": "With the deck builder, the job went from half a day of a designer's time to one click and three minutes."
+   }
   }
  },
  "hill-country-kitchen": {

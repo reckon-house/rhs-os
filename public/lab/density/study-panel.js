@@ -675,7 +675,7 @@
   const applyEdit = (M, v) => {
     const nrm = (s) => String(s || "").replace(/\s+/g, " ").trim();
     const keyed = (map) => Object.entries(map || {}).map(([key, a]) => ({ key: nrm(key), a }));
-    const L = keyed(v.lines), H = keyed(v.heads), T = keyed(v.moreTitle);
+    const L = keyed(v.lines), H = keyed(v.heads), T = keyed(v.moreTitle), LB = keyed(v.labels), DK = keyed(v.decks);
     (v.keep || []).forEach((key) => { if (!L.some((x) => x.key === nrm(key))) L.push({ key: nrm(key), a: "keep" }); });
     const find = (list, text) => { const t = nrm(text); const m = list.find((x) => x.key && t.startsWith(x.key)); return m ? m.a : undefined; };
     const swap = (f, text) => Object.assign({}, f, { text, held: null, ink: null });
@@ -694,14 +694,24 @@
     M.secs.forEach((sec) => {
       let gone = false, title = null;
       if (sec.head) {
-        title = find(T, sec.head.text) || null;
-        const a = find(H, sec.head.text);
-        if (a === "drop") gone = true; else if (a && a !== "keep") sec.head = swap(sec.head, a);
+        const orig = sec.head.text;
+        title = find(T, orig) || null;
+        const a = find(H, orig);
+        /* a new head keeps the words it replaced (orig): the chapters, and
+           anything else that finds a section by its head, still find it */
+        if (a === "drop") gone = true; else if (a && a !== "keep") sec.head = Object.assign(swap(sec.head, a), { orig });
+        /* the small label over the head, and one line under it, set by the
+           edit (6 Oct, his "each of these stand alone now ... would it easily
+           explain the stated purpose and goal?") */
+        const lb = find(LB, orig); if (lb) sec.head = Object.assign({}, sec.head, { label: lb });
+        const dk = find(DK, orig);
+        if (dk) sec.items.unshift({ t: "deck", f: { id: "xd-" + sec.head.id, k: M.k, kind: "line", text: dk, weight: "sub", where: "text", pi: 800000 } });
       }
       let more = null; const items = [];
       sec.items.forEach((it0) => {
         let it = it0; const f = it.f;
-        if (!f || f.kind !== "line") { items.push(it); return; }
+        /* a line the edit added (a deck) is not one of the study's: kept as set */
+        if (!f || f.kind !== "line" || String(f.id).startsWith("xd-")) { items.push(it); return; }
         let a = find(L, f.text); if (a === undefined) a = gone ? "drop" : rest;
         if (a === "drop") return;
         /* { more: "<a trim of the line>" } folds the trim */
@@ -728,7 +738,7 @@
         const j = sec.items.findIndex((i) => i.t === "more"); if (j < 0) return;
         /* a section with no chapter has no row to open from: its folded words
            stay in the study's other edits, not in this one */
-        if (sec.head && heads.some((h) => nrm(sec.head.text).startsWith(h))) sec.more = sec.items[j].list;
+        if (sec.head && heads.some((h) => nrm(sec.head.orig || sec.head.text).startsWith(h))) sec.more = sec.items[j].list;
         sec.items.splice(j, 1);
       });
     }
@@ -908,7 +918,7 @@
     };
     const CHM = (new URLSearchParams(location.search).get("chapters") || "").toLowerCase();
     const CHAPS = CHM === "off" ? [] : ((window.DENSITY_CHAPTERS || {})[k] || [])
-      .map((c) => { const sec = M.secs.find((x) => x.head && String(x.head.text || "").startsWith(c.head)); return sec ? { t: c.t, g: c.g || "", app: c.app || "", at: sec.head.id, sec: null, btn: null, more: sec.more || null, pic: chapPic(sec, c.app, c.pic) } : null; })
+      .map((c) => { const sec = M.secs.find((x) => x.head && String(x.head.orig || x.head.text || "").startsWith(c.head)); return sec ? { t: c.t, g: c.g || "", app: c.app || "", at: sec.head.id, sec: null, btn: null, more: sec.more || null, pic: chapPic(sec, c.app, c.pic) } : null; })
       .filter(Boolean).map((c, i) => Object.assign(c, { n: two(i + 1) }));
 
     let io = null, ro = null, headIO = null, fontsT = 0, dead = false;
