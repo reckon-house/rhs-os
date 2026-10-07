@@ -1437,4 +1437,7 @@ html .sp.sp .sp-closing.cl-flow p + p { color: var(--grey); }
 html:not([data-type="bold"]) .sp.sp-one .sp-h,
 html:not([data-type="bold"]) .sp.sp-one .sp-chap.toc-flow .sp-flowp,
 html:not([data-type="bold"]) .sp.sp-one .sp-closing.cl-flow { font-size: var(--st); font-weight: 500; letter-spacing: -0.045em; line-height: 1.1; }
-html:not([data-type="bold"]) .sp.sp-one .sp-h { max-width: none; text-wrap: pretty; }
+html:not([data-type="bold"]) .sp.sp-one .sp-h { max-width: 18em; text-wrap: pretty; }
+/* every room (6 Oct): a closing's first line takes the style too, unless
+   it is a long one, which reads at the deck's size */
+html:not([data-type="bold"]) .sp.sp-one .sp-closing:not(.cl-flow) p:first-child:not(.sp-long) { max-width: 18em; font-size: var(--st); font-weight: 500; letter-spacing: -0.045em; line-height: 1.1; }

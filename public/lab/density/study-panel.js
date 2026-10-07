@@ -983,14 +983,16 @@
     if (CH) root.classList.add("ch");
     /* one statement style (6 Oct, his "should we make the fonts the same
        size/weight from the intro to all the sections throughout the case
-       studies?"): in an index edit set in Flow, the opening paragraph, every
-       section title and the closing share one size and one weight, medium,
-       his 27 Sept "trends right now arent super bold/heavy". ?statement=big
-       sets them all at the section titles' old size */
-    if (M && M.top && TOC === "flow") {
-      root.classList.add("sp-one");
-      if ((new URLSearchParams(location.search).get("statement") || "") === "big") root.classList.add("st-big");
-    }
+       studies?"): the opening paragraph (Flow), every section title and the
+       closing share one size and one weight, medium, his 27 Sept "trends
+       right now arent super bold/heavy". ?statement=big sets them all at
+       the section titles' old size */
+    /* then every room (6 Oct, his "yes, switch them all now - they look
+       great"): section titles and a closing's first line in that style;
+       ?statement=demi shows the demi titles they had */
+    { const st = (new URLSearchParams(location.search).get("statement") || "").toLowerCase();
+      if (st !== "demi") root.classList.add("sp-one");
+      if (st === "big") root.classList.add("st-big"); }
     let lenis = null, lraf = 0;
     if (mo && window.Lenis) {
       try {

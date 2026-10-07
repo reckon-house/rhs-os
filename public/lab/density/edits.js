@@ -462,7 +462,7 @@ window.DENSITY_EDITS = {
      ]
     },
     "The team that needed the Marketing OS": {
-     "t": "I built all six apps by myself in about four months,",
+     "t": "I built the entire system on my own in about four months,",
      "g": "with AI as the engineering partner",
      "li": [
       "From inside the team | I use these workflows every day, so there was no requirements document, and fixes went from months to days.",
