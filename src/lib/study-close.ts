@@ -47,7 +47,6 @@ const isStudy = (path: string) => path.startsWith("/case-studies/");
 const NAMES: Record<string, string> = {
   "/": "Reckon*House",
   "/daybook": "Daybook",
-  "/signal": "Signal",
   "/inspiration": "Staples",
   "/book": "Book a call",
 };
