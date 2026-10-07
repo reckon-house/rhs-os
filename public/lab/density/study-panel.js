@@ -739,7 +739,7 @@
     /* moreTo "chapters": a chaptered section's folded words leave the
        section and open from its row in the chapter table instead */
     if (v.moreTo === "chapters") {
-      const heads = ((window.DENSITY_CHAPTERS || {})[M.k] || []).map((c) => nrm(c.head));
+      const heads = ((window.DENSITY_CHAPTERS || {})[M.k] || []).map((c) => nrm(c.head)).concat(Object.keys(v.chapters || {}).map(nrm));
       M.secs.forEach((sec) => {
         const j = sec.items.findIndex((i) => i.t === "more"); if (j < 0) return;
         /* a section with no chapter has no row to open from: its folded words
@@ -923,7 +923,16 @@
       return ps.find((f) => !f.alpha) || (slug && (M.pool || []).find((f) => fileOf(f).includes(slug))) || ps[0] || null;
     };
     const CHM = (new URLSearchParams(location.search).get("chapters") || "").toLowerCase();
-    const CHAPS = CHM === "off" ? [] : ((window.DENSITY_CHAPTERS || {})[k] || [])
+    /* a study with no chapters in chapters.js takes them from its edit
+       (6 Oct: the standard for every study), keyed by the first words of
+       their sections' heads and set in the sections' order */
+    const chSrc = (() => {
+      const own = (window.DENSITY_CHAPTERS || {})[k]; if (own && own.length) return own;
+      const ch = M && M.edit && M.edit.chapters; if (!ch) return [];
+      const at = (h) => M.secs.findIndex((x) => x.head && String(x.head.orig || x.head.text || "").startsWith(h));
+      return Object.keys(ch).filter((h) => at(h) >= 0).sort((a, b) => at(a) - at(b)).map((h) => ({ head: h, t: ch[h].t, g: ch[h].g || "", app: ch[h].app || "", pic: ch[h].pic || "" }));
+    })();
+    const CHAPS = CHM === "off" ? [] : chSrc
       .map((c) => {
         const sec = M.secs.find((x) => x.head && String(x.head.orig || x.head.text || "").startsWith(c.head)); if (!sec) return null;
         /* an edit may rewrite a chapter's line and write what its row opens to

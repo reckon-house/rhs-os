@@ -1,0 +1,148 @@
+{
+ "k": "ivy-park",
+ "variants": {
+  "trim": {
+   "note": "Today's layout with nothing hidden: each fact has one home, the exclusive US partnership leads the subtitle, the two years of reuse sit on the black field, and 95% closes the study under its own head.",
+   "stand": "Beyoncé's Ivy Park launched at Nordstrom, the line's exclusive US partner.",
+   "lines": {
+    "Ivy Park was Beyoncé's first": "drop",
+    "Nordstrom had the exclusive": "drop",
+    "Four weeks went": "drop",
+    "The brief came in under NDA": "keep",
+    "The photography was supplied": "keep",
+    "Typography, layout, copy": "drop",
+    "The polygon, a hexagon": "drop",
+    "Angled, rotated": "drop",
+    "The custom CMS components": "The custom CMS components built for the project went into Nordstrom's shared library and powered other launches for two years.",
+    "Ivy Park was staking": "keep",
+    "The supplied portraits": "The portraits were editorial in tone, with range across body types and ethnicities.",
+    "The brief also covered": "The brief also covered digital marketing across Nordstrom's owned channels.",
+    "Every photo came in": "The polygon ran from the hero banner through the product carousels into the email headers.",
+    "The polygon's angled": "Its angled edges against the straight photography gave the athlete portraits some tension.",
+    "The missing components": "drop",
+    "The launch page had to be": "keep",
+    "The emails, banners": "keep",
+    "After launch, Beyoncé": "Beyoncé sent the team a personal thank-you video."
+   },
+   "facts": []
+  },
+  "fold": {
+   "note": "Today's layout, but each section shows its head, its deck and its pictures; the columns and the supporting detail sit in one closed drawer per section.",
+   "stand": "Beyoncé's Ivy Park launched at Nordstrom, the line's exclusive US partner.",
+   "rest": "more",
+   "lines": {
+    "Ivy Park was Beyoncé's first": "drop",
+    "Nordstrom had the exclusive": "drop",
+    "Four weeks went": "drop",
+    "The brief came in under NDA": "keep",
+    "The photography was supplied": "keep",
+    "Typography, layout, copy": "drop",
+    "The polygon, a hexagon": "drop",
+    "Angled, rotated": "drop",
+    "The custom CMS components": "The custom CMS components built for the project went into Nordstrom's shared library and powered other launches for two years.",
+    "Ivy Park was staking": "keep",
+    "The brief also covered": "drop",
+    "Every photo came in": "The polygon ran from the hero banner through the product carousels into the email headers.",
+    "The missing components": "drop",
+    "The launch page had to be": "keep",
+    "The emails, banners": "keep",
+    "Everything from the creative direction": "keep",
+    "After launch, Beyoncé": "Beyoncé sent the team a personal thank-you video.",
+    "That part stays": "keep"
+   },
+   "moreTitle": {
+    "Nordstrom had six weeks": "The timeline, the freedom, the scope",
+    "The hexagon started": "Shape, type and the CMS components",
+    "The launch page came first": "At any size"
+   },
+   "facts": []
+  },
+  "index": {
+   "note": "Studio.Build's shape: What I did and the story in four closed drawers under the title, then each section's head, pictures and one line at most; the black field and the pull quote stay.",
+   "stand": "Beyoncé's Ivy Park launched at Nordstrom, the line's exclusive US partner.",
+   "rest": "drop",
+   "lines": {
+    "Ivy Park was Beyoncé's first": "drop",
+    "Nordstrom had the exclusive": "drop",
+    "Four weeks went": "drop",
+    "The brief came in under NDA": "drop",
+    "The photography was supplied": "drop",
+    "Typography, layout, copy": "drop",
+    "The polygon, a hexagon": "drop",
+    "Angled, rotated": "drop",
+    "The custom CMS components": "The custom CMS components built for the project went into Nordstrom's shared library and powered other launches for two years.",
+    "Every photo came in": "The polygon ran from the hero banner through the product carousels into the email headers.",
+    "The launch page had to be": "keep",
+    "The emails, banners": "keep",
+    "Everything from the creative direction": "keep",
+    "After launch, Beyoncé": "Beyoncé sent the team a personal thank-you video.",
+    "That part stays": "keep"
+   },
+   "did": [
+    "Creative direction",
+    "Campaign design",
+    "Experience design",
+    "Ecommerce design",
+    "Copywriting"
+   ],
+   "drawers": [
+    {
+     "t": "Where Ivy Park sat, and what the launch needed",
+     "p": [
+      "Ivy Park was staking out a spot between luxury fashion and athletic performance, one with no obvious reference, and the design had to sit in that gap.",
+      "The Ivy Park launch needed one scrolling brand experience and emails timed to the drop. The brief also covered digital marketing across Nordstrom's owned channels."
+     ]
+    },
+    {
+     "t": "The NDA and the timeline",
+     "p": [
+      "The brief came in under NDA before the team had cleared their schedules, and there were daily calls with Ivy Park while the creative direction got locked in.",
+      "Week one: references, moodboards, competitive audit. Weeks two through four: wireframes, design concepts, copywriting and motion studies, all presented to Beyoncé's creative team, with revisions turned around overnight. Weeks five and six: build and ship."
+     ]
+    },
+    {
+     "t": "What was supplied, and what was open",
+     "p": [
+      "The photography was supplied: black-and-white athlete portraits, editorial in tone, with range across body types and ethnicities, and color product shots on blue and gray.",
+      "Everything but the photography was open, so the type went larger than expected, motion ran the length of the scroll, and the portraits got space around them."
+     ]
+    },
+    {
+     "t": "The polygon, the type and the components, at any size",
+     "cols": [
+      {
+       "t": "The Polygon",
+       "p": [
+        "The portraits sat in a hexagonal frame, sometimes cropped tight to a jawline, sometimes open wide enough for a full figure.",
+        "The polygon's angled edges against the straight photography gave the athlete portraits some tension.",
+        "On scroll the hexagon turned slowly, and the flat photography picked up some depth. The rotation was one CSS transform."
+       ]
+      },
+      {
+       "t": "Typography at Volume",
+       "p": [
+        "Headlines like \"Confidence is Strength\" were set in mixed weights, with baselines knocked off the grid.",
+        "The copy got written line by line as the pages took shape, in short present-tense sentences that talked straight to the reader."
+       ]
+      },
+      {
+       "t": "Custom Components",
+       "p": [
+        "The Ivy Park page needed components Nordstrom's CMS didn't have: parallax modules, animated polygon masks, full-bleed video that played on scroll, type lockups that scaled with the screen."
+       ]
+      },
+      {
+       "t": "At Any Size",
+       "p": [
+        "The polygon crops the same at 300px and at 3000px, and bold type reads at any size. Black-and-white photography goes to any aspect ratio."
+       ]
+      }
+     ]
+    }
+   ],
+   "facts": [],
+   "didTitle": "Role"
+  }
+ },
+ "unlocked": "Needs check.mjs to read US as the country (its we/our/us test case-sensitive for us). Then copy this file over ivy-park.json."
+}

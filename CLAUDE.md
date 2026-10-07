@@ -136,6 +136,20 @@ is the reference for what it should sound like instead.
 
 These apply to every case study, every time. Non-negotiable.
 
+**Plain first (the standard since 6 Oct 2026).** His words: "this copy
+direction is SO much more straightforward, can we make this our standard
+going forward?" Write the way AI companies describe very complex tools:
+say what the thing is first; every big line is a sentence with a verb
+that says what it does (for AI work, what the AI does) and, in the grey
+half, what it saves or makes; the opening's chapter lines are also the
+section titles; every section explains itself to a reader who lands on
+it halfway down (label = the thing's name, title, one plain line,
+pictures); a chapter opens to three named specifics and a proof line;
+numbers keep the words that make them honest; nothing twice in what a
+reader sees; internal names (Jim) never carry a title. The full standard,
+the edit format and the tools are in `scripts/edits/BRIEF.md`; Sally OS
+(`scripts/edits/sally-os.json`) is the reference.
+
 **Voice:**
 1. No em dashes. The #1 rule. Use periods, commas, or restructure. Never `—`.
 2. Beer test. Read it out loud. If it sounds like a press release or an agency case study, rewrite. Match how you'd explain the project to someone smart who respects your time.
@@ -324,6 +338,7 @@ rather than stretching.
 3. Register in `src/app/case-studies/[slug]/page.tsx`
 4. Update homepage `src/app/page.tsx` to add thumbnail to the grid (the all-work footer index derives from `src/data/projects.ts` automatically)
 5. Write the study's index lines in `public/lab/density/entry-lines.js`, one for each figure, tool and capability it brings, following "Index lines" under Copy Rules: the problem first, then what was built.
+6. Write the study's room edit in `scripts/edits/<key>.json` to the standard in `scripts/edits/BRIEF.md` ("Plain first" under Copy Rules), then `npm run edits:check -- <key>`, `npm run edits:preview -- <key>` and `npm run edits:build`.
 
 ### Pressing (the redesign language)
 New studies ship in the Pressing C language (`style: "pressing"` on the study object); the classic renderer still serves un-migrated studies. **The full porting guide is `PRESSING.md`** — skin matrix, the pressing bag's field semantics, choreography rules, and the porting checklist. The lab prototype `public/lab/swiss-spread.html` is the design spec: tune there, port values back.

@@ -36,7 +36,11 @@
     "flow:sim": "node scripts/flow-sim.mjs",
     "board:roles": "node --no-warnings scripts/board-roles.mjs",
     "lines:sync": "node --no-warnings scripts/board-lines-sync.mjs",
-    "board:css": "node --no-warnings scripts/board-engine-css.mjs"
+    "board:css": "node --no-warnings scripts/board-engine-css.mjs",
+    "edits:check": "node scripts/edits/check.mjs",
+    "edits:build": "node scripts/edits/build.mjs",
+    "edits:room": "node scripts/edits/room.mjs",
+    "edits:preview": "node scripts/edits/preview.mjs"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.95.0",

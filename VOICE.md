@@ -127,6 +127,8 @@ Those are the writer performing; he wants the fact.
 
 - "I'm Jeremy Prasatik. I make things across brand, product, and place. Apps and ecommerce, campaigns and brand systems, photography and art direction, custom interiors, AI tools. Here are some of those things." (the homepage lede, his rewrite of three earlier versions; "make things" is his verb, and the last line points at the page instead of adding a claim)
 
+- "I built the entire system on my own in about four months, with AI as the engineering partner." (6 Oct 2026, his edit of "I built all six apps by myself": the whole of it over a count, and "on my own" over "by myself")
+
 - "Let's talk about what you have in mind and tailor a quote to your exact needs."
 - "I love the work." (his replacement for "Available for work.")
 - "Independent, Texas. Design and build." (approved as-is)
