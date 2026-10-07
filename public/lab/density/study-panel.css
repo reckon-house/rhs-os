@@ -1441,3 +1441,17 @@ html:not([data-type="bold"]) .sp.sp-one .sp-h { max-width: 18em; text-wrap: pret
 /* every room (6 Oct): a closing's first line takes the style too, unless
    it is a long one, which reads at the deck's size */
 html:not([data-type="bold"]) .sp.sp-one .sp-closing:not(.cl-flow) p:first-child:not(.sp-long) { max-width: 18em; font-size: var(--st); font-weight: 500; letter-spacing: -0.045em; line-height: 1.1; }
+
+/* a framed picture's place in its frame (FRAME in study-panel.js) */
+.sp-pic img { object-position: var(--opx, 50%) 50%; }
+
+/* Flow's statements light as the index's rows do (6 Oct, his "we should
+   adjust this like we did the section at the bottom", on a statement lit
+   as three grey blocks touching line to line): each line of the statement
+   gets its own band, swept in from the left under the pointer and let go
+   to the right, the index's curve, with paper between the lines */
+html .sp .sp-chap.toc-flow .sp-flowp .sp-chap-r { background: linear-gradient(var(--hl, #ECECEC), var(--hl, #ECECEC)) no-repeat 100% 47% / 0% 54%;
+  box-shadow: none; border-radius: 0; -webkit-box-decoration-break: clone; box-decoration-break: clone;
+  transition: background-size 0.36s cubic-bezier(0.45, 0, 0.2, 1), color 0.25s ease; }
+html .sp .sp-chap.toc-flow .sp-flowp .sp-chap-r:is(:hover, :focus-visible) { background: linear-gradient(var(--hl, #ECECEC), var(--hl, #ECECEC)) no-repeat 0 47% / 100% 54%; box-shadow: none; }
+@media (prefers-reduced-motion: reduce) { html .sp .sp-chap.toc-flow .sp-flowp .sp-chap-r { transition: none; } }

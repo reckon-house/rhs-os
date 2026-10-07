@@ -191,7 +191,9 @@
   /* a pressing headline carries its halves (ink, held); the room sets the
      held line grey, as the study page does */
   const inkGreyF = (f) => (f.held ? esc(f.ink) + ' <span class="sp-g">' + esc(f.held) + "</span>" : inkGrey(f.text));
-  const ratio = (f) => (markOf(f) ? 1 : f.w / f.h);
+  const ratio = (f) => (markOf(f) ? 1 : frameOf(f) ? frameOf(f).r : f.w / f.h);
+  /* the largest honest width: half the pixels the frame shows */
+  const honW = (f) => (frameOf(f) ? f.h * frameOf(f).r : f.w) / 2;
   const two = (n) => String(n).padStart(2, "0");
   /* a frame's page is changed without a step in the browser's history
      (4 Oct 2026, his "close is having problems working now"). Setting src
@@ -824,6 +826,17 @@
      photograph at 3120 (inset-hero.jpg), cut here to the board picture's
      own frame (matched at x 120, y 15) so the flight from the index lands
      on the same picture and only sharpens */
+  /* a picture shown in a frame of its own shape, cropped into its sides
+     (6 Oct 2026, his "is it possible to make this image taller?", then
+     "let's just crop into the sides some and make it taller", then "maybe
+     it's a 1x1?"): r is the frame's width over its height, x where the crop
+     sits across the picture, 0 its left edge and 1 its right. Sally's
+     platform photo is square, the whole screen kept and the laptop's left
+     corner let go; its twin under the Asset Hub keeps its own shape */
+  const FRAME = {
+    "sally-os-platform-hero.jpg": { r: 1, x: 0.7 },
+  };
+  const frameOf = (f) => FRAME[fileOf(f)] || null;
   const COVER_HI = {
     "ivy-park": { src: "/case-studies/ivy-park/ivy-park-roller-skate-cover.jpg", w: 2868, h: 1912,
       t384: "/lab/density/thumbs/ivy-park/ivy-park-roller-skate-cover@384.webp", t768: "/lab/density/thumbs/ivy-park/ivy-park-roller-skate-cover@768.webp" },
@@ -850,7 +863,7 @@
     const n = list.length, T = W * 0.45, Vc = V * 0.84;
     /* a hero: honest across the whole room and not so tall that the glass
        would crop most of it. It never shares a row; nor does a solo */
-    const hero = (f) => (f.w / 2 >= W - 0.5 && W / ratio(f) <= Vc * 1.15) || solo(f);
+    const hero = (f) => (honW(f) >= W - 0.5 && W / ratio(f) <= Vc * 1.15) || solo(f);
     const cost = (a, b) => {
       const ps = list.slice(a, b), m = ps.length;
       const R = ps.reduce((s, f) => s + ratio(f), 0);
@@ -953,7 +966,7 @@
     const pending = new Map();
     const loadPic = (box) => {
       const f = box._f; if (!f || box._loaded) return; box._loaded = true;
-      const w = Math.max(1, box.offsetWidth || box._w || 200);
+      const w = Math.max(1, box.offsetWidth || box._w || 200) * (box._zoom || 1);
       const want = D.rung(f, w);
       const quick = f.t384 && f.t384 !== want ? f.t384 : null;
       let pv = null;
@@ -1329,7 +1342,9 @@
     const picBox = (f, cls) => {
       const mk = markOf(f);
       const b = el("div", "sp-pic" + (f.alpha ? " alpha" : "") + (mk ? " mark" : "") + (cls ? " " + cls : ""));
-      b._f = f; b.style.setProperty("--ar", mk ? "1 / 1" : f.w + " / " + f.h); b.style.setProperty("--r", ratio(f).toFixed(4));
+      const fr = frameOf(f);
+      b._f = f; b.style.setProperty("--ar", mk ? "1 / 1" : fr ? fr.r + " / 1" : f.w + " / " + f.h); b.style.setProperty("--r", ratio(f).toFixed(4));
+      if (fr) { b.style.setProperty("--opx", (fr.x * 100).toFixed(1) + "%"); b._zoom = Math.max(1, (f.w / f.h) / fr.r); }
       if (mk) { b.style.background = mk.bg; b.style.setProperty("--mk", String(mk.k)); }
       return tag(b, f);
     };
@@ -2278,16 +2293,16 @@
       }
       function asideUp(blocks) {
         const out = [];
-        const small = (f) => f.w / 2 < 0.62 * C || ratio(f) < 0.85;
+        const small = (f) => honW(f) < 0.62 * C || ratio(f) < 0.85;
         blocks.forEach((b) => {
           const prev = out[out.length - 1];
-          if (b.t === "pics" && prev && prev.t === "run" && W >= 560 && small(b.list[0]) && (b.list.length === 1 || ratio(b.list[0]) < 0.85 || b.list[0].w / 2 < 0.46 * C)) {
+          if (b.t === "pics" && prev && prev.t === "run" && W >= 560 && small(b.list[0]) && (b.list.length === 1 || ratio(b.list[0]) < 0.85 || honW(b.list[0]) < 0.46 * C)) {
             const f = b.list[0];
             const runs = [prev];
             for (let j = out.length - 2; j >= 0 && runs.length < 3 && out[j].t === "run" && out[j].col && runs[0].col; j--) runs.unshift(out[j]);
             /* only beside text that stands about as tall as the picture:
                a tall screen next to one short line is mostly a hole */
-            const pw = Math.min(f.w / 2, half, V * 0.8 * ratio(f));
+            const pw = Math.min(honW(f), half, V * 0.8 * ratio(f));
             if (pw / ratio(f) > Math.max(textH(runs, half) * 1.9, V * 0.42)) { out.push(b); return; }
             out.splice(out.length - runs.length, runs.length);
             out.push({ t: "aside", runs, f });
@@ -2516,7 +2531,7 @@
          his "on a large screen those sizzle didnt fill the entire right
          column"; DSC's lead is 1536px, honest only to 768) */
       if (parts.coverBox) {
-        const f = parts.lead, r = ratio(f), hon = parts.coverLive ? Infinity : f.w / 2, capH = Math.max(260, Math.round(V * 0.9));
+        const f = parts.lead, r = ratio(f), hon = parts.coverLive ? Infinity : honW(f), capH = Math.max(260, Math.round(V * 0.9));
         const box = parts.coverBox, frame = parts.coverFrame;
         let side = false;
         if (hon >= Wf - 0.5) {
@@ -2565,7 +2580,7 @@
         /* a lone picture across the room drifts, when a tenth more of it
            is still honest */
         const pb = R.row.firstElementChild;
-        if (pb) pb.classList.toggle("par", mo && n === 1 && w >= Wf - 0.5 && R.ps[0].w / 2 >= 1.1 * w && !pb._still && !full(R.ps[0]));
+        if (pb) pb.classList.toggle("par", mo && n === 1 && w >= Wf - 0.5 && honW(R.ps[0]) >= 1.1 * w && !pb._still && !full(R.ps[0]));
         /* a pair or more, as the live site's plates pair: each a tenth
            taller and the neighbours drifting against each other, where a
            tenth more is still honest */
@@ -2601,7 +2616,7 @@
         });
       });
       parts.asides.forEach((A) => {
-        const f = A.f, pw = Math.floor(Math.min(f.w / 2, (C - gc) / 2, V * 0.8 * ratio(f)));
+        const f = A.f, pw = Math.floor(Math.min(honW(f), (C - gc) / 2, V * 0.8 * ratio(f)));
         A.a.style.setProperty("--pw", pw + "px");
       });
       /* keep what is already loaded asking for the right rung */
