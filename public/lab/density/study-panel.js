@@ -703,6 +703,12 @@
         /* the small label over the head, and one line under it, set by the
            edit (6 Oct, his "each of these stand alone now ... would it easily
            explain the stated purpose and goal?") */
+        /* a chapter the edit rewrites (chapters) titles its section in the
+           same words, as a contents line titles its page, unless the edit
+           sets that head itself (6 Oct: the contents and the sections had
+           said the same things in slightly different words) */
+        const chO = !a && v.chapters && Object.entries(v.chapters).find(([h]) => nrm(orig).startsWith(nrm(h)));
+        if (chO && chO[1].t) { const t = String(chO[1].t).replace(/[\s,;:]+$/, ""), g = String(chO[1].g || "").replace(/[\s,;:.]+$/, ""); sec.head = Object.assign(swap(sec.head, g ? t + ", | " + g + "." : t + "."), { orig }); }
         const lb = find(LB, orig); if (lb) sec.head = Object.assign({}, sec.head, { label: lb });
         const dk = find(DK, orig);
         if (dk) sec.items.unshift({ t: "deck", f: { id: "xd-" + sec.head.id, k: M.k, kind: "line", text: dk, weight: "sub", where: "text", pi: 800000 } });
@@ -918,7 +924,15 @@
     };
     const CHM = (new URLSearchParams(location.search).get("chapters") || "").toLowerCase();
     const CHAPS = CHM === "off" ? [] : ((window.DENSITY_CHAPTERS || {})[k] || [])
-      .map((c) => { const sec = M.secs.find((x) => x.head && String(x.head.orig || x.head.text || "").startsWith(c.head)); return sec ? { t: c.t, g: c.g || "", app: c.app || "", at: sec.head.id, sec: null, btn: null, more: sec.more || null, pic: chapPic(sec, c.app, c.pic) } : null; })
+      .map((c) => {
+        const sec = M.secs.find((x) => x.head && String(x.head.orig || x.head.text || "").startsWith(c.head)); if (!sec) return null;
+        /* an edit may rewrite a chapter's line and write what its row opens to
+           (6 Oct: a sentence, three specifics and a proof, in place of the
+           section's folded columns) */
+        const ov = (M.edit && M.edit.chapters && M.edit.chapters[c.head]) || {};
+        const open = ov.li || ov.p || ov.proof ? { p: ov.p || [], li: ov.li || [], proof: ov.proof || "" } : null;
+        return { t: ov.t || c.t, g: ov.t ? ov.g || "" : c.g || "", app: c.app || "", at: sec.head.id, sec: null, btn: null, more: sec.more || null, open, pic: chapPic(sec, c.app, c.pic) };
+      })
       .filter(Boolean).map((c, i) => Object.assign(c, { n: two(i + 1) }));
 
     let io = null, ro = null, headIO = null, fontsT = 0, dead = false;
@@ -1454,7 +1468,7 @@
           const inner = '<span class="sp-chap-n">' + c.n + '</span><span class="sp-chap-t">' + esc(c.t) + (c.g ? ' <span class="sp-chap-g">' + esc(c.g) + "</span>" : "") + "</span>" +
             (hasApp ? '<span class="sp-chap-a">' + esc(c.app) + "</span>" : "");
           if (!acc) { const b = el("button", "sp-chap-r", inner); b.type = "button"; b.addEventListener("click", () => jumpCh(c)); nav.appendChild(b); return; }
-          const it = accRow(nav, inner, (body) => { if (c.more) moreInto(body, c.more); }, () => jumpCh(c), hasApp);
+          const it = accRow(nav, inner, (body) => { if (c.open) openInto(body, c.open); else if (c.more) moreInto(body, c.more); }, () => jumpCh(c), hasApp);
           it._d = { n: c.n, num: +c.n, t: c.t, g: c.g, app: c.app, pic: c.pic || null }; nav.appendChild(it);
         });
         return acc ? tocLook(nav) : nav;
@@ -1649,7 +1663,7 @@
           if (open) { item.classList.add("on"); b.classList.add("on"); b.setAttribute("aria-expanded", "true"); }
           if (open && mo && !item._rvd) {
             item._rvd = true;
-            body.querySelectorAll(".sp-chap-pp, .sp-chap-ph, .sp-chap-go").forEach((e) => {
+            body.querySelectorAll(".sp-chap-pp, .sp-chap-ph, .sp-chap-go, .sp-chap-lead, .sp-chap-li li").forEach((e) => {
               const kd = e.classList.contains("sp-chap-ph") ? "mask" : e.classList.contains("sp-chap-go") ? "fade" : "lines";
               e._rv = kd; e._rvd = false; e.classList.add("rv", "rv-" + kd);
             });
@@ -1658,6 +1672,19 @@
           setTimeout(() => { if (dead) return; layout(); try { if (room.lenis && room.lenis.resize) room.lenis.resize(); } catch (e) { /* no smooth scroll */ } }, 480);
         });
         return item;
+      }
+      /* a row's own copy (6 Oct, after his AI-company references: what it
+         does, then three specifics side by side, then the proof): each
+         specific's title before " | " set a weight up */
+      function openInto(body, o) {
+        body.classList.add("au");
+        o.p.forEach((x) => body.appendChild(el("p", "sp-chap-lead", esc(x))));
+        if (o.li.length) {
+          const ul = el("ul", "sp-chap-li");
+          o.li.forEach((x) => { const [h, t] = String(x).split(/\s*\|\s*/); ul.appendChild(el("li", null, t ? "<b>" + esc(h) + "</b> " + esc(t) : esc(h))); });
+          body.appendChild(ul);
+        }
+        if (o.proof) body.appendChild(el("p", "sp-chap-pp sp-chap-proof", esc(o.proof)));
       }
       /* a section's folded lines as a row's words: column titles small */
       function moreInto(body, list) {
@@ -2004,7 +2031,8 @@
         fig.appendChild(stage);
         /* in an index edit a live page's caption is its title (6 Oct: its
            notes ran to seventy words under the pictures he wanted cleaner) */
-        const capHtml = (t) => (t.title ? "<b>" + esc(t.title) + "</b>" : "") + (t.note && !(M.top && t.title) ? " " + esc(t.note) : "") +
+        const capT = (t) => (M.edit && M.edit.captions && M.edit.captions[t.title]) || t.title;
+        const capHtml = (t) => (t.title ? "<b>" + esc(capT(t)) + "</b>" : "") + (t.note && !(M.top && t.title) ? " " + esc(t.note) : "") +
           (isScroll ? ' <a class="sp-live-ext" href="' + esc(srcOf(t)) + '" target="_blank" rel="noopener">Open the page</a>' : "");
         if (T0.title || T0.note || f.title || f.note) fig.appendChild(el("figcaption", "sp-cap sp-live-cap", capHtml(T0.title || T0.note ? T0 : f)));
         /* at: an element id on the page; the frame opens scrolled to it and
