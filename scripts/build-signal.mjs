@@ -51,9 +51,11 @@ const room = (key, { title, sub, lede, dim, tail, rule, entries, label, extra })
     const si = 2 + i;
     frags.push({ id: "sg-" + e.id, k: key, kind: "line", si, pi: pi++, text: clean(e.headline), label: label(e), weight: "head", where: "section-header" });
     lines(e.take).forEach((t) => frags.push({ id: nid(), k: key, kind: "line", si, pi: pi++, text: t, weight: "body", where: "text" }));
-    if (extra) extra(e).forEach((t) => frags.push({ id: nid(), k: key, kind: "line", si, pi: pi++, text: t, weight: "body", where: "text" }));
-    frags.push({ id: nid(), k: key, kind: "src", si, pi: pi++, url: e.sourceUrl, text: "Read it at " + clean(e.source) });
-    if (e.study && STUDY_NAME[e.study]) frags.push({ id: nid(), k: key, kind: "src", si, pi: pi++, url: "#study/" + e.study, text: "See it in " + STUDY_NAME[e.study] });
+    const note = extra ? extra(e) : [];
+    if (note.length) frags.push({ id: nid(), k: key, kind: "note", si, pi: pi++, title: "To check", items: note });
+    const links = [{ url: e.sourceUrl, text: "Read it at " + clean(e.source) }];
+    if (e.study && STUDY_NAME[e.study]) links.push({ url: "#study/" + e.study, text: "See it in " + STUDY_NAME[e.study] });
+    frags.push({ id: nid(), k: key, kind: "src", si, pi: pi++, url: links[0].url, text: links[0].text, links });
   });
   const y = entries.length && entries[0].date ? +String(entries[0].date).slice(0, 4) : 2026;
   const study = { k: key, h: key, t: title, s: sub, y, tags: [], fact: clean(lede), rest: clean(dim), palette: null, fill: "#ECECEC", ink: "#000000", lead: null, top: null };
@@ -86,10 +88,10 @@ if (fs.existsSync(path.join(ROOT, "src/data/signal-drafts.ts"))) {
   write("public/lab/density/signal-drafts.js", "signal-drafts", room("signal-drafts", {
     title: "Signal drafts", sub: "For Jeremy to read aloud",
     lede: "Drafts for Signal, written from your projects while you were away.",
-    dim: "Each stands on facts from the studies, the daybook and the profiles; the checks under a note are what only you can confirm.",
+    dim: "Each stands on facts from the studies, the daybook and the apps' own notes; what's under a note is what only you can confirm.",
     tail: "The order is the order I would post them in. SIGNAL.md has the strategy behind them.",
     entries: drafts,
     label: (e) => (KIND[e.kind] || "Draft") + " · " + clean(e.source),
-    extra: (e) => (e.ask || []).map((q) => "Check: " + clean(q)),
+    extra: (e) => (e.ask || []).map(clean),
   }), "src/data/signal-drafts.ts");
 }

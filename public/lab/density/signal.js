@@ -85,7 +85,13 @@ window.DENSITY_ROOMS["signal"] = {
    "si": 2,
    "pi": 6,
    "url": "https://claude.com/product/claude-code",
-   "text": "Read it at Anthropic"
+   "text": "Read it at Anthropic",
+   "links": [
+    {
+     "url": "https://claude.com/product/claude-code",
+     "text": "Read it at Anthropic"
+    }
+   ]
   },
   {
    "id": "sg-perceptron-mk1",
@@ -125,7 +131,13 @@ window.DENSITY_ROOMS["signal"] = {
    "si": 3,
    "pi": 10,
    "url": "https://www.perceptron.inc",
-   "text": "Read it at Perceptron"
+   "text": "Read it at Perceptron",
+   "links": [
+    {
+     "url": "https://www.perceptron.inc",
+     "text": "Read it at Perceptron"
+    }
+   ]
   },
   {
    "id": "sg-dia-browser",
@@ -155,7 +167,13 @@ window.DENSITY_ROOMS["signal"] = {
    "si": 4,
    "pi": 13,
    "url": "https://www.diabrowser.com",
-   "text": "Read it at The Browser Company"
+   "text": "Read it at The Browser Company",
+   "links": [
+    {
+     "url": "https://www.diabrowser.com",
+     "text": "Read it at The Browser Company"
+    }
+   ]
   },
   {
    "id": "sg-claude-sonnet-5",
@@ -195,7 +213,13 @@ window.DENSITY_ROOMS["signal"] = {
    "si": 5,
    "pi": 17,
    "url": "https://www.anthropic.com/claude/sonnet",
-   "text": "Read it at Anthropic"
+   "text": "Read it at Anthropic",
+   "links": [
+    {
+     "url": "https://www.anthropic.com/claude/sonnet",
+     "text": "Read it at Anthropic"
+    }
+   ]
   }
  ],
  "entries": [

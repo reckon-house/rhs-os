@@ -1466,5 +1466,10 @@ html:not([data-type="bold"]) .sp.sp-one .sp-head > .sp-stand { max-width: none; 
 /* a link out to a source (Signal's entries), at the text's size, under the
    note it belongs to */
 .sp-srcw { margin-top: 2px; }
+.sp-srcw .sp-text { display: flex; flex-direction: column; align-items: flex-start; gap: 12px; }
+/* a reviewer's note under the text (Signal's drafts) */
+.sp-note { font-size: 13px; line-height: 1.5; color: var(--grey); }
+.sp-note p { margin: 0 0 6px; }
+.sp-note .sp-note-h { margin-bottom: 4px; font-weight: 600; color: var(--ink); }
 .sp-src { font-size: 13px; font-weight: 600; color: var(--ink); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 0.3em; }
 .sp-src:hover { color: var(--grey); }

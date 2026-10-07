@@ -548,8 +548,10 @@
     const M = { k, s, lead: s.lead || null, dup: null, stand: null, abs: [], facts: [], tools: [], palette: null, secs: [], pool: [] };
     let sec = { open: true, head: null, items: [] }; M.secs.push(sec);
     for (const f of (D.roomFrags ? D.roomFrags(k) : D.byStudy(k))) {
-      /* a link out to a source (Signal's entries) */
+      /* a link out to a source (Signal's entries), and a reviewer's note
+         under the text (Signal's drafts: what only he can confirm) */
       if (f.kind === "src") { sec.items.push({ t: "src", f }); continue; }
+      if (f.kind === "note") { sec.items.push({ t: "note", f }); continue; }
       if (f.kind === "palette") { if (!M.palette) M.palette = Object.assign({}, f, { colors: (f.colors || []).map((c) => Object.assign({}, c, { name: c.name || palName(k, c.hex) })) }); continue; }
       if (f.kind === "fact") { if (f.label !== "Author") M.facts.push(f); continue; }
       if (f.kind === "tool") { M.tools.push(f); continue; }
@@ -2443,12 +2445,26 @@
           case "src": {
             /* a link out, under the text it belongs to (Signal: the article
                the note is about), in the text's column; a link to a room of
-               the site (#study/<key>, Signal's "See it in") stays in the page */
-            const inner = /^#/.test(b.f.url || "");
+               the site (#study/<key>, Signal's "See it in") stays in the
+               page. Several links stack in one block */
             const g2 = el("div", "sp-grid sp-run sp-srcw"); g2.appendChild(el("div", "sp-rail"));
-            const t = el("div", "sp-text"), a = tag(el("a", "sp-src", esc(b.f.text) + ' <span aria-hidden="true">' + (inner ? "→" : "↗") + "</span>"), b.f);
-            a.href = b.f.url; if (!inner) { a.target = "_blank"; a.rel = "noopener"; }
-            t.appendChild(a); g2.appendChild(t); return g2;
+            const t = tag(el("div", "sp-text"), b.f);
+            (b.f.links || [{ url: b.f.url, text: b.f.text }]).forEach((L) => {
+              const inner = /^#/.test(L.url || "");
+              const a = el("a", "sp-src", esc(L.text) + ' <span aria-hidden="true">' + (inner ? "→" : "↗") + "</span>");
+              a.href = L.url; if (!inner) { a.target = "_blank"; a.rel = "noopener"; }
+              t.appendChild(a);
+            });
+            g2.appendChild(t); return g2;
+          }
+          case "note": {
+            /* a reviewer's note under the text (Signal's drafts), smaller
+               and grey, its title in ink */
+            const g2 = el("div", "sp-grid sp-run sp-notew"); g2.appendChild(el("div", "sp-rail"));
+            const t = tag(el("div", "sp-text sp-note"), b.f);
+            t.appendChild(el("p", "sp-note-h", esc(b.f.title || "To check")));
+            (b.f.items || []).forEach((x) => t.appendChild(el("p", null, esc(x))));
+            g2.appendChild(t); return g2;
           }
           case "closing": {
             /* an index edit set in Flow closes as it opens: its closing lines
