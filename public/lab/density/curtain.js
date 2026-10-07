@@ -30,8 +30,7 @@
    the way the words/lines animate in and out is also cool but maybe the
    lines repeat and fill the entire right column? maybe they even bleed
    off the edges?". The same swipe and the same lines rising in and out,
-   the type set another way, in the column only (a page left by go()
-   keeps the stack, since the page arriving draws that one):
+   the type set another way:
 
        ?curtain=fill     the name at display size, repeated along every
                          line and staggered line to line, off both edges
@@ -48,16 +47,22 @@
                          with it and making sure the weight matches what
                          we're doing on the rest of the site?")
 
+   RAMP IS THE CURTAIN (6 Oct 2026, his "let's make ramp the default (no
+   ramp and outline)!"): in the column and leaving the page, in medium,
+   tracked by size, the weight he asked for with the outline. The others
+   stay switches; ?curtain=stack is the stack it replaced, and
+   ?curtain=ramp-demi the ramp in demi as he first saw it.
+
    /lab/curtain/ plays each in a loop, slowed if asked (window.CURTAIN_X
    stretches every beat; 1 is the site's own). */
 (() => {
   const STEP = 0.03, STEP_OUT = 0.02, MIN = 14;
   const X = () => window.CURTAIN_X || 1;
-  const MODES = ["fill", "outline", "drift", "giant", "ramp", "ramp-outline"];
+  const MODES = ["ramp", "ramp-demi", "ramp-outline", "fill", "outline", "drift", "giant"];
   /* tracked in as it grows, on the site's own ladder (crossref2.js track()) */
   const track = (px) => (px >= 150 ? -0.06 : px >= 90 ? -0.055 : px >= 54 ? -0.05 : px >= 34 ? -0.042 : px >= 21 ? -0.03 : -0.012);
   const asked = (new URLSearchParams(location.search).get("curtain") || "").toLowerCase();
-  let MODE = MODES.includes(asked) ? asked : "";
+  let MODE = asked === "stack" ? "" : MODES.includes(asked) ? asked : "ramp";
   let PT = null, busy = false;
   const make = (cls) => {
     const pt = document.createElement("div"); pt.className = "pt" + (cls ? " " + cls : ""); pt.setAttribute("aria-hidden", "true");
@@ -129,13 +134,13 @@
         l.appendChild(run(words.length ? words[i % words.length] : name, 1)); out.push(l);
       }
       top = -lh / 2;
-    } else if (mode === "ramp" || mode === "ramp-outline") {
-      const ro = mode === "ramp-outline";
+    } else if (mode.startsWith("ramp")) {
+      const ro = mode === "ramp-outline", demi = mode === "ramp-demi";
       for (let i = 0, fs = 13, y = 0; y < H && i < 40; i++, fs *= 1.28) {
         /* every other line drawn, once a line is large enough to draw:
            the largest the column shows is one of them */
         const l = line(ro && i % 2 && fs >= 28 ? "o" : "", i, step, fs, fs);
-        if (ro) l.style.letterSpacing = track(fs) + "em";
+        if (!demi) l.style.letterSpacing = track(fs) + "em";
         l.textContent = name;
         if (sub) { const t = document.createElement("span"); t.className = "sub"; t.textContent = "  " + sub; l.appendChild(t); }
         out.push(l); y += fs;
@@ -188,7 +193,7 @@
     if (!href || busy) return;
     if (matchMedia("(prefers-reduced-motion: reduce)").matches) { location.href = href; return; }
     busy = true; build();
-    lay(PT, "pt", title, sub);
+    lay(PT, "pt", title, sub, MODE);
     await beat(PT, "pt-1", PT.querySelector(".ptw")); /* white falls */
     await beat(PT, "pt-2", PT.querySelector(".ptb")); /* black rises over it */
     const s0 = PT.querySelector(".ptstack");
@@ -239,7 +244,8 @@
     COL.classList.add("pt-3");
     return new Promise((res) => setTimeout(() => { if (colAt === 3) { COL.className = "pt ptc"; colAt = 0; } res(); }, ((n - 1) * STEP_OUT + 0.72) * 1000 * x));
   };
-  /* the lab's switch (/lab/curtain/): which treatment the next cover takes */
+  /* the lab's switch (/lab/curtain/): which treatment the next cover takes,
+     "" the stack */
   const setMode = (m) => { MODE = MODES.includes(m) ? m : ""; };
   window.Curtain = { go, cover, lift, setMode, modes: MODES.slice() };
 })();
