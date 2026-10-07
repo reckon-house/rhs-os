@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 import { DAYBOOK } from "@/data/daybook";
+import { NEWEST as SIGNAL } from "@/data/signal";
 import { SITE_URL } from "@/lib/site";
 
 
@@ -20,6 +21,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
       url: `${SITE_URL}/daybook`,
       lastModified: new Date(`${DAYBOOK[0].date}T12:00:00Z`),
       changeFrequency: "weekly",
+      priority: 0.6,
+    },
+    /* the AI news feed, dated the same way: by its newest entry */
+    {
+      url: `${SITE_URL}/signal`,
+      lastModified: new Date(`${SIGNAL[0].date}T12:00:00Z`),
+      changeFrequency: "daily",
       priority: 0.6,
     },
   ];

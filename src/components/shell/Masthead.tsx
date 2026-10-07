@@ -224,12 +224,18 @@ export function Masthead() {
     : null;
   const next = nextOnLine?.href ? nextOnLine : null;
 
-  /* A PAGE OF COLUMNS DRAWS ITS OWN LINE. The daybook and /custom are
+  /* A PAGE OF COLUMNS DRAWS ITS OWN LINE. The daybook, /signal and /custom are
      laid out the way the board is, so they carry the board's cover
      line (the mark over the rail, the count over the last column), and
      a bar here would be a second masthead over the first. After every
      hook, so the order React counts never changes between routes. */
-  if (pathname === "/daybook" || pathname === "/custom" || pathname === "/book") return null;
+  if (
+    pathname === "/daybook" ||
+    pathname === "/signal" ||
+    pathname === "/custom" ||
+    pathname === "/book"
+  )
+    return null;
   return (
     <>
       {/* The melt: turbulence displacing whatever the burn pill has behind
