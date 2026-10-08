@@ -2,7 +2,7 @@
  "k": "nordstrom-beauty",
  "variants": {
   "index": {
-   "note": "Flow opens the room: what the hub is and why a static story falls behind, then three chapters that are also the section titles (templates, try-on with every color tied to a product, drawer), so buying in place is said once in the opening; the closing keeps the three seasonal rotations.",
+   "note": "Flow opens the room: what the hub is and why a static story falls behind, then three chapters that are also the section titles (templates, try-on with every color tied to a product, drawer), so buying in place is said once in the opening; the drawer's row ends on his result, adds to bag up 12% with more engagement and time on page (8 Oct 2026, no baseline or period given, so none is named); the closing keeps the three seasonal rotations.",
    "stand": "On Nordstrom's beauty editorial hub, every story was shoppable. | New products launch weekly and trends shift with the season, so a static story falls behind.",
    "abs": [],
    "did": [
@@ -38,9 +38,10 @@
      "g": "so a customer could add to bag with no detour to a product page",
      "li": [
       "The drawer | comes in from the side while the page behind it stays on screen.",
-      "Inside it | reviews, price, size options, and add to bag.",
+      "Inside it | reviews, price, and size options.",
       "Get That Glow and Top 5 Serums | told seasonal stories while the product grid under them stayed current."
-     ]
+     ],
+     "proof": "Adds to bag went up 12%, with more engagement and time on page."
     }
    },
    "heads": {

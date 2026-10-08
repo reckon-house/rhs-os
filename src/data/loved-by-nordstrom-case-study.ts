@@ -103,12 +103,15 @@ export const lovedByNordstromCaseStudy: CaseStudy = {
         "People already tapped the Instagram heart all day without thinking.",
     },
     {
+      // Feed posts, not stories (8 Oct 2026, his answer "posts"). The
+      // phone picture below keeps "stories" in its filename; renaming it
+      // touches the reel, the board and image-dimensions.ts.
       id: "idea-footnote",
       type: "text",
       size: "base",
       fullWidth: true,
       content:
-        "Loved by Nordstrom tiles ran in Instagram stories, the app the heart icon came from.",
+        "Loved by Nordstrom tiles ran as Instagram posts, in the app the heart icon came from.",
     },
 
     // ── IPHONE INSTAGRAM HERO ──
@@ -116,7 +119,7 @@ export const lovedByNordstromCaseStudy: CaseStudy = {
       id: "idea-hero",
       type: "hero",
       image: `${IMG}/loved-by-nordstrom-iphone-instagram-stories-tibi-trench.jpg`,
-      alt: "iPhone showing TIBI Loved by Nordstrom story on Instagram laid on a beige trench coat",
+      alt: "iPhone showing TIBI Loved by Nordstrom post on Instagram laid on a beige trench coat",
       inline: true,
       // The zoom, placed early because this study opens on a long run of
       // copy. A phone photographed on the coat it is selling only reads
@@ -124,7 +127,7 @@ export const lovedByNordstromCaseStudy: CaseStudy = {
       pressing: {
         plate: "02",
         captions: [
-          "TIBI story on Instagram",
+          "TIBI post on Instagram",
           "The tile in the wild",
           "Shot on the trench",
         ],
@@ -270,6 +273,11 @@ export const lovedByNordstromCaseStudy: CaseStudy = {
     },
 
     {
+      // To re-set: both of these files set NORDSTROM in the serif
+      // logotype, and so does the Instagram phone picture above, which
+      // shows the portrait tile. Every tile should be in the tracked-out
+      // sans (8 Oct 2026, his answer "it should all be tracked out sans"),
+      // as the Liked tiles and the gallery wall are.
       id: "loved-tiles",
       type: "dual-image",
       transparent: true,

@@ -66,7 +66,7 @@ export const blackWhiteTypeCaseStudy: CaseStudy = {
         { label: "Angle", value: "Six shapes and no color meant the only decisions left were placement and scale." },
       ],
       abstract:
-        "Typography & Patterns was personal work. The question was how much range a small set of patterns could produce once color, photography and gradients were off the table. What was left was black ink, white paper and six repeating shapes.\n\nThe six shapes are dots at two scales, lines in three directions, and a diamond grid. Each one is drawn as a positive and a negative, twelve tiles in all. The tiles fill the letterforms, spill outside them, and sit behind them as backgrounds. Three lithographs came out of that set.\n\nWith no color to lean on, tone comes from spacing. A packed fill looks dark and an open one looks light, and the biggest shape on the sheet is where the eye goes first. The amount of paper left around a letter sets the mood of the whole print.",
+        "Typography & Patterns was personal work. The question was how much range a small set of patterns could produce once color, photography and gradients were off the table. What was left was black ink, white paper and six repeating shapes.\n\nThe six shapes are dots at two scales, lines in three directions, and a diamond grid. The set is a pattern library of twelve tiles, made to mix and match. The tiles fill the letterforms, spill outside them, and sit behind them as backgrounds. Three lithographs came out of that set.\n\nWith no color to lean on, tone comes from spacing. A packed fill looks dark and an open one looks light, and the biggest shape on the sheet is where the eye goes first. The amount of paper left around a letter sets the mood of the whole print.",
     },
 
         // ── HERO ──
@@ -104,7 +104,7 @@ export const blackWhiteTypeCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "Every pattern is drawn twice, once black on white and once reversed. After that the only things that change are scale and spacing.",
+        "Some swatches are black on white and some are reversed. Beyond that, the only things that change are scale and spacing.",
       group: { name: "rules" },
     },
     {
@@ -143,7 +143,7 @@ export const blackWhiteTypeCaseStudy: CaseStudy = {
     {
       id: "fancy-header",
       type: "section-header",
-      label: "SECTION 03: LITHOGRAPH 01 / THE FANCY",
+      label: "SECTION 03: THE FANCY",
       title: "Every stroke in \"the fancy\"\ngets a different fill.",
       pressing: {
         mark: { n: "03", name: "The Fancy" },
@@ -267,7 +267,7 @@ export const blackWhiteTypeCaseStudy: CaseStudy = {
       pressing: {
         plate: "04",
         captions: [
-          "Highball stepper, lithograph 02",
+          "Highball stepper",
           "Slab capitals and script",
           "Photographed on a wooden bench",
         ],
@@ -288,7 +288,7 @@ export const blackWhiteTypeCaseStudy: CaseStudy = {
     {
       id: "stepper-header",
       type: "section-header",
-      label: "SECTION 04: LITHOGRAPH 02 / HIGHBALL STEPPER",
+      label: "SECTION 04: HIGHBALL STEPPER",
       title: "The second print, \"highball stepper,\"\nblows the same tiles up.",
       pressing: {
         mark: { n: "04", name: "Highball Stepper" },
@@ -300,7 +300,7 @@ export const blackWhiteTypeCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "Slab capitals stack edge to edge with script threaded between them, and at that size the tiles read a lot bolder.",
+        "This print is about Jack White's album Lazaretto. Slab capitals stack edge to edge with script threaded between them, and at that size the tiles read a lot bolder.",
     },
     {
       id: "stepper-footnote",
@@ -361,7 +361,7 @@ export const blackWhiteTypeCaseStudy: CaseStudy = {
     {
       id: "white-header",
       type: "section-header",
-      label: "SECTION 05: LITHOGRAPH 03 / JACK WHITE",
+      label: "SECTION 05: JACK WHITE",
       title: "Handmade strokes sit next to\nmachine-drawn ones in \"jack white.\"",
       pressing: {
         mark: { n: "05", name: "Jack White" },

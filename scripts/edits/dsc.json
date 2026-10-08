@@ -49,9 +49,12 @@
      ]
     },
     "The owner console is built for": {
-     "t": "The owner schedules a whole week out loud,",
+     "t": "The owner books a whole week by talking to an AI,",
      "g": "from a phone between sessions",
      "pic": "dsc-ai-scheduler-phone-hero.jpg",
+     "p": [
+      "The scheduler runs on Claude and takes voice input."
+     ],
      "li": [
       "The queue | every request lands in it.",
       "The week | a calendar shows the session count per day.",
@@ -80,7 +83,7 @@
     "None of the scheduling works": "It was the first part of the scheduling platform I built.",
     "Athletes can book a session": "An athlete never has to open the app.",
     "The athlete app opens on": "Each trainer's bio expands to specialties and certifications.",
-    "The owner console is built for": "It's built for one person on the gym floor.",
+    "The owner console is built for": "The console is built for one person on the gym floor.",
     "The schedule was the part": "It checks trainer availability, double-bookings, floor capacity, allowed durations and cancellation rules."
    },
    "lines": {

@@ -1,0 +1,234 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Faux Reel lab</title>
+<!-- ── THE FAUX REEL LAB, FOR THE ROOM (8 Oct 2026) ──────────────────────
+     His answer to "Should the room embed or link the lab?": "let's embed
+     it". The study's lab was a React section (SizzlePlayground, variant
+     "lab") on the old /case-studies page, which the rooms replaced, so the
+     room had nowhere to load your own photos. This is the same lab on the
+     site's own web component (/lab/sizzle-reel.js, the 4.8KB one the study
+     ships): up to eight of your photos, a five-colour palette pulled from
+     their pixels with the same quantizer (src/lib/sizzle-palette.ts, ported
+     as is), a headline and a speed. Everything stays in the tab on object
+     URLs; nothing uploads or saves, and a reload resets it. The Faux Reel
+     room frames it (fragments.js, mode "scroll": a click hands it over). -->
+<style>
+  @font-face { font-family: "Avenir Next"; src: url("/fonts/AvenirNext-Regular.woff2") format("woff2"), url("/fonts/AvenirNext-Regular.woff") format("woff"); font-weight: 400; font-display: swap; }
+  @font-face { font-family: "Avenir Next"; src: url("/fonts/AvenirNext-Medium.woff") format("woff"); font-weight: 500; font-display: swap; }
+  @font-face { font-family: "Avenir Next"; src: url("/fonts/AvenirNext-DemiBold.woff") format("woff"); font-weight: 600; font-display: swap; }
+  :root { --ink: #000; --grey: #8a8a8a; --rule: #e6e6e6; --tint: #f4f4f4; --sans: "Avenir Next", "Helvetica Neue", Helvetica, Arial, sans-serif; }
+  html, body { height: 100%; }
+  body { margin: 0; background: #fff; color: var(--ink); font-family: var(--sans); -webkit-font-smoothing: antialiased; }
+  .lab { box-sizing: border-box; min-height: 100%; display: grid; grid-template-columns: minmax(300px, 380px) 1fr; gap: 48px; padding: 40px 40px 40px 32px; align-items: center; }
+  .rail { display: flex; flex-direction: column; gap: 26px; }
+  .row { display: flex; flex-direction: column; gap: 12px; border-top: 1px solid var(--rule); padding-top: 18px; }
+  .hd { display: flex; align-items: baseline; gap: 10px; font-size: 15px; font-weight: 600; letter-spacing: -0.01em; }
+  .hd span { color: var(--grey); font-weight: 500; font-variant-numeric: tabular-nums; font-size: 12px; }
+  .note { margin: 0; font-size: 13px; line-height: 1.45; color: var(--grey); }
+  .btns { display: flex; flex-wrap: wrap; gap: 8px; }
+  .btn { all: unset; box-sizing: border-box; cursor: pointer; padding: 8px 14px; border-radius: 4px; background: var(--ink); color: #fff; font-size: 13px; font-weight: 600; }
+  .btn.quiet { background: var(--tint); color: var(--ink); }
+  .btn:focus-visible, input:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+  .btn[hidden] { display: none; }
+  #files { position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
+  .thumbs { display: grid; grid-template-columns: repeat(8, 1fr); gap: 4px; }
+  .thumbs img { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 3px; display: block; background: var(--tint); }
+  .sw { display: flex; gap: 6px; }
+  .sw i { flex: 1; height: 34px; border-radius: 3px; }
+  .sw-hex { display: flex; gap: 6px; font-size: 11px; color: var(--grey); font-variant-numeric: tabular-nums; }
+  .sw-hex b { flex: 1; font-weight: 500; }
+  input[type="text"] { box-sizing: border-box; width: 100%; font: inherit; font-size: 15px; padding: 9px 11px; border: 1px solid var(--rule); border-radius: 4px; color: var(--ink); background: #fff; }
+  input[type="text"]:focus { border-color: var(--ink); outline: none; }
+  .speed { display: flex; align-items: center; gap: 12px; font-size: 13px; font-variant-numeric: tabular-nums; }
+  input[type="range"] { flex: 1; accent-color: var(--ink); }
+  .stage { min-width: 0; }
+  sizzle-reel { width: 100%; }
+  .cap { margin-top: 12px; font-size: 13px; color: var(--grey); }
+  .beats { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 14px; }
+  .chip { all: unset; box-sizing: border-box; cursor: pointer; padding: 5px 10px; border-radius: 999px; background: var(--tint); font-size: 12px; font-weight: 500; font-variant-numeric: tabular-nums; }
+  .chip.now { background: var(--ink); color: #fff; }
+  .chip.held { background: var(--ink); color: #fff; box-shadow: 0 0 0 2px #fff, 0 0 0 3px var(--ink); }
+  .chip:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+  .beats-note { margin-top: 8px; font-size: 12px; color: var(--grey); }
+  .cap b { color: var(--ink); font-weight: 600; }
+  @media (max-width: 860px) {
+    .lab { grid-template-columns: 1fr; gap: 28px; padding: 20px; }
+    .stage { order: -1; }
+  }
+</style>
+</head>
+<body>
+<main class="lab">
+  <div class="rail">
+    <div class="row">
+      <div class="hd"><span>01</span>Your photos</div>
+      <p class="note">Add up to eight. They stay in this tab: nothing uploads or saves, and a reload resets it.</p>
+      <div class="btns">
+        <label class="btn" for="files" id="add" tabindex="0">Add photos</label>
+        <button class="btn quiet" type="button" id="reset" hidden>Use the site’s photos</button>
+      </div>
+      <input type="file" id="files" accept="image/*" multiple>
+      <div class="thumbs" id="thumbs"></div>
+    </div>
+    <div class="row">
+      <div class="hd"><span>02</span>Colors</div>
+      <p class="note" id="swnote">Pulled from the photos’ own pixels, loudest first. They fill the color wipes and the title cards.</p>
+      <div class="sw" id="sw"></div>
+      <div class="sw-hex" id="swhex"></div>
+    </div>
+    <div class="row">
+      <div class="hd"><span>03</span>Headline</div>
+      <input type="text" id="headline" maxlength="40" value="Reckon House Staples" aria-label="Headline">
+      <p class="note">One or two words close the loop on a title card. Three or more scatter through it, then build word by word.</p>
+    </div>
+    <div class="row">
+      <div class="hd"><span>04</span>Speed</div>
+      <div class="speed"><input type="range" id="speed" min="0.6" max="1.8" step="0.1" value="1" aria-label="Speed"><span id="speedv">1×</span></div>
+    </div>
+  </div>
+  <div class="stage">
+    <sizzle-reel id="reel" aspect="16 / 9" radius="12px" speed="1"></sizzle-reel>
+    <div class="cap" id="cap"><b>Faux Reel</b> playing seven frames from the projects on this site.</div>
+    <div class="beats" id="beats" role="group" aria-label="Beats"></div>
+    <div class="beats-note" id="beatsNote">Click a beat to hold the reel on it. Click it again to play.</div>
+  </div>
+</main>
+<script src="/lab/sizzle-reel.js"></script>
+<script>
+(() => {
+  const CS = "/case-studies";
+  /* the on-site reel's seven frames and their colours (SizzlePlayground's
+     RANGE_IMAGES and RANGE_COLORS), so the lab opens on what the study's
+     cover plays */
+  const SITE = [
+    `${CS}/nordstrom-personalization/nordstrom-personalization-system-design-woman-model-blue-floral-print-dress-black-white-geometric-strappy-heels-yellow-sofa-editorial.jpg`,
+    `${CS}/hill-country-bath/hill-country-bath-vanity-marble-globe-sconces-sage.jpg`,
+    `${CS}/nordstrom-framework/nordstrom-content-framework-lockup-whats-now.jpg`,
+    `${CS}/hill-country-kitchen/hill-country-kitchen-island-pendants-marble-wide.jpg`,
+    `${CS}/hill-country-oak/hill-country-oakworks-outdoor-banner-whiskey-barrels-colorful-background-tree-texas-born-oakcraft.jpg`,
+    `${CS}/j-christianson/j-christianson-storefront-tree-stripe-window-mockup.jpg`,
+    `${CS}/capitan-boot-co/capitan-boot-co-western-original-buffalo-silhouette-desert-landscape-mesa-mountains-sage-brush-terrain-branding-campaign.jpg`,
+  ];
+  const SITE_COLORS = ["#0AA7CA", "#181B17", "#776549", "#F5EAE7", "#8A8784"];
+  const MAX = 8;
+  const $ = (id) => document.getElementById(id);
+  const reel = $("reel");
+  let mine = [];
+
+  /* src/lib/sizzle-palette.ts, ported line for line: downsample to 64px,
+     quantize to 16 levels a channel, count buckets, keep the top picks that
+     stay distinct, loudest first; near-white and near-black only when they
+     truly dominate */
+  const palette = async (srcs, count = 5) => {
+    const buckets = new Map();
+    for (const src of srcs) {
+      await new Promise((resolve) => {
+        const im = new Image();
+        im.crossOrigin = "anonymous";
+        im.onload = () => {
+          const w = 64, h = Math.max(1, Math.round((im.naturalHeight / im.naturalWidth) * w));
+          const cv = document.createElement("canvas"); cv.width = w; cv.height = h;
+          const cx = cv.getContext("2d"); if (!cx) return resolve();
+          cx.drawImage(im, 0, 0, w, h);
+          let data; try { data = cx.getImageData(0, 0, w, h).data; } catch (e) { return resolve(); }
+          for (let p = 0; p < data.length; p += 4) {
+            const r = data[p], g = data[p + 1], b = data[p + 2], key = (r >> 4) + "," + (g >> 4) + "," + (b >> 4);
+            const cur = buckets.get(key) || { n: 0, r: 0, g: 0, b: 0 };
+            cur.n++; cur.r += r; cur.g += g; cur.b += b; buckets.set(key, cur);
+          }
+          resolve();
+        };
+        im.onerror = () => resolve();
+        im.src = src;
+      });
+    }
+    const total = [...buckets.values()].reduce((s, v) => s + v.n, 0) || 1;
+    const sat = (c) => { const max = Math.max(c.r, c.g, c.b); return max === 0 ? 0 : (max - Math.min(c.r, c.g, c.b)) / max; };
+    const ranked = [...buckets.values()]
+      .map((v) => ({ n: v.n, r: Math.round(v.r / v.n), g: Math.round(v.g / v.n), b: Math.round(v.b / v.n) }))
+      .map((c) => { const extreme = (c.r > 235 && c.g > 235 && c.b > 235) || (c.r < 20 && c.g < 20 && c.b < 20); return Object.assign(c, { w: extreme && c.n / total < 0.4 ? 0 : c.n * (1 + sat(c) * 2.2) }); })
+      .filter((c) => c.w > 0).sort((a, b) => b.w - a.w);
+    const picks = [];
+    for (const c of ranked) { if (picks.length >= count) break; if (picks.every((p) => Math.hypot(p.r - c.r, p.g - c.g, p.b - c.b) > 60)) picks.push(c); }
+    picks.sort((a, b) => sat(b) - sat(a));
+    const hex = (v) => v.toString(16).padStart(2, "0");
+    return picks.map((p) => ("#" + hex(p.r) + hex(p.g) + hex(p.b)).toUpperCase());
+  };
+
+  const showColors = (cols) => {
+    $("sw").innerHTML = ""; $("swhex").innerHTML = "";
+    cols.forEach((c) => { const i = document.createElement("i"); i.style.background = c; $("sw").appendChild(i); const b = document.createElement("b"); b.textContent = c; $("swhex").appendChild(b); });
+  };
+  const showThumbs = (srcs) => {
+    $("thumbs").innerHTML = "";
+    srcs.forEach((s) => { const im = document.createElement("img"); im.src = s; im.alt = ""; im.decoding = "async"; $("thumbs").appendChild(im); });
+  };
+  const play = (srcs, cols, custom) => {
+    reel.setAttribute("images", srcs.join(", "));
+    reel.setAttribute("colors", cols.join(", "));
+    showThumbs(srcs); showColors(cols);
+    $("reset").hidden = !custom;
+    $("cap").innerHTML = custom
+      ? "<b>Your reel</b>, " + srcs.length + (srcs.length === 1 ? " photo" : " photos") + " and the colors pulled from them."
+      : "<b>Faux Reel</b> playing seven frames from the projects on this site.";
+  };
+
+  $("files").addEventListener("change", async (e) => {
+    const files = [...(e.target.files || [])].filter((f) => /^image\//.test(f.type)).slice(0, MAX);
+    if (!files.length) return;
+    mine.forEach((u) => URL.revokeObjectURL(u));
+    mine = files.map((f) => URL.createObjectURL(f));
+    $("swnote").textContent = "Reading your photos…";
+    const cols = await palette(mine);
+    $("swnote").textContent = "Pulled from your photos’ own pixels, loudest first. They fill the color wipes and the title cards.";
+    play(mine, cols.length ? cols : SITE_COLORS, true);
+    e.target.value = "";
+  });
+  $("add").addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); $("files").click(); } });
+  $("reset").addEventListener("click", () => {
+    mine.forEach((u) => URL.revokeObjectURL(u)); mine = [];
+    $("swnote").textContent = "Pulled from the photos’ own pixels, loudest first. They fill the color wipes and the title cards.";
+    play(SITE, SITE_COLORS, false);
+  });
+  let t = 0;
+  $("headline").addEventListener("input", (e) => { clearTimeout(t); t = setTimeout(() => reel.setAttribute("headline", e.target.value.trim()), 300); });
+  $("speed").addEventListener("input", (e) => { reel.setAttribute("speed", e.target.value); $("speedv").textContent = (+e.target.value).toFixed(1).replace(/\.0$/, "") + "×"; });
+
+  /* the beat chips (the study's "Each beat gets a chip under the reel, and
+     clicking one freezes playback on that beat"): the component reads its
+     beats out, setting .index holds one and null lets it run (its own API,
+     sizzle-reel.js, "the standalone tool's timeline uses these") */
+  const NAMES = { ccurtain: "Color wipe", wordBuild: "Word build", wordOut: "Word out", wordSlide: "Word slide" };
+  const name = (fx) => NAMES[fx] || fx.charAt(0).toUpperCase() + fx.slice(1);
+  let held = null, sig = "";
+  const chips = (seq) => {
+    const s2 = seq.map((b) => b.fx).join(",");
+    if (s2 === sig) return; sig = s2; held = null;
+    $("beats").innerHTML = "";
+    seq.forEach((b, i) => {
+      const c = document.createElement("button"); c.type = "button"; c.className = "chip"; c.textContent = name(b.fx);
+      c.setAttribute("aria-pressed", "false");
+      c.addEventListener("click", () => {
+        if (held === i) { held = null; reel.index = null; }
+        else { held = i; reel.index = i; }
+        [...$("beats").children].forEach((x, j) => { x.classList.toggle("held", j === held); x.setAttribute("aria-pressed", j === held ? "true" : "false"); });
+      });
+      $("beats").appendChild(c);
+    });
+  };
+  reel.addEventListener("beat", (e) => {
+    const d = e.detail || {}; if (d.beats) chips(d.beats);
+    [...$("beats").children].forEach((x, j) => x.classList.toggle("now", j === d.index && held === null));
+  });
+
+  reel.setAttribute("headline", $("headline").value);
+  play(SITE, SITE_COLORS, false);
+  try { chips(reel.beats || []); } catch (e) { /* the element upgrades on its own */ }
+})();
+</script>
+</body>
+</html>

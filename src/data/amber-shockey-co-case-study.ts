@@ -25,7 +25,7 @@ export const amberShockeyCoCaseStudy: CaseStudy = {
       type: "meta",
       reel: {
         caption: "Preview · 9 frames",
-        colors: ["#1F4D78", "#D87A82", "#8E3F40", "#1F2434", "#ECE6D5"],
+        colors: ["#1F4D78", "#8E3F40", "#1F2434", "#ECE6D5"],
         images: [
           "/case-studies/amber-shockey-co/amber-shockey-co-blue-florals-plates-stacked-on-peony-pattern-collection-mockup.jpg",
           "/case-studies/amber-shockey-co/amber-shockey-co-blue-florals-plate-in-wire-rack-hero.jpg",
@@ -50,7 +50,7 @@ export const amberShockeyCoCaseStudy: CaseStudy = {
         { label: "Built", value: "Three tableware collections: blue florals, black linework, red dragons. Each comes in several colorways, with a hero, a secondary, and an accent pattern" },
         { label: "Scope", value: "Pattern design, product design, colorway development" },
         { label: "Tools", value: "Illustrator, Photoshop, InDesign" },
-        { label: "Angle", value: "Every collection shares cream as its ground, so a plate from one can sit on the table with a dish from another." },
+        { label: "Angle", value: "Every new collection has to sit next to the ones before it, so a plate from one can share the table with a dish from another." },
       ],
       abstract:
         "Amber Shockey & Co. is a tableware startup. Each of its collections has a hero pattern, a secondary, and an accent, made to layer from a single dish up to a full setting, and every new collection has to sit next to the ones before it.\n\nThree collections are here: blue florals, black linework, red dragons. Each one sets something structured against something organic, and each runs in several colorways, so the same set can go minimal or maximal depending on what it's paired with.\n\nPattern design, product design, and colorway development were done together.",
@@ -269,7 +269,7 @@ export const amberShockeyCoCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "Setting red dragons straight against blue florals is hard, because the cobalt and the burgundy fight. Put cream pieces from either collection between the two.",
+        "Setting red dragons straight against blue florals is hard, because the cobalt and the burgundy fight. Put cream pieces between the two.",
     },
 
     // Red dragons plates — the zoom. This study's most ornamental frame, and
@@ -328,34 +328,24 @@ export const amberShockeyCoCaseStudy: CaseStudy = {
       id: "marks-materials",
       type: "marks-materials",
       label: "SECTION 05: MARKS & MATERIALS",
-      title: "Four shapes and five colors go into the patterns,\nwith cream under every collection.",
+      title: "Three hero shapes and three colors\ngo into the patterns.",
       introText:
         "Each collection gets one hero shape and one color.",
       philosophyText:
         "Cobalt goes to blue florals, burgundy to red dragons, and charcoal to black linework.",
       colors: [
         { name: "Cobalt", hex: "#1F4D78", description: "Blue florals" },
-        { name: "Blush", hex: "#D87A82", description: "Pink geometry" },
         { name: "Burgundy", hex: "#8E3F40", description: "Red dragons" },
         { name: "Charcoal", hex: "#1F2434", description: "Black linework" },
-        { name: "Cream", hex: "#ECE6D5", description: "Shared ground" },
       ],
       fonts: [
         {
           name: "Peony",
           role: "Blue florals hero",
           description:
-            "Peony is the biggest of the four motifs. Its layered florals look like wallpaper when the pattern runs large, and like a single bloom on a plate.",
+            "Peony is the biggest of the three motifs. Its layered florals look like wallpaper when the pattern runs large, and like a single bloom on a plate.",
           family: "'Caslon', 'Adobe Caslon Pro', 'Garamond', serif",
           weight: 400,
-        },
-        {
-          name: "Circle",
-          role: "Pink geometry hero",
-          description:
-            "The Circle motif is made of linework circles drawn on a construction grid. It carries the color when a collection needs an accent and a full pattern would be too much.",
-          family: "'Avenir Next', system-ui, sans-serif",
-          weight: 600,
         },
         {
           name: "Chinese Dragon",
@@ -369,14 +359,14 @@ export const amberShockeyCoCaseStudy: CaseStudy = {
           name: "Halftone Dot",
           role: "Black linework hero",
           description:
-            "Halftone Dot is the plainest of the four motifs, just density made from dots.",
+            "Halftone Dot is the plainest of the three motifs, just density made from dots.",
           family: "'Avenir Next', system-ui, sans-serif",
           weight: 300,
         },
       ],
       markImage: `${IMG}/amber-shockey-co-geometric-diamond-blue-construction-grid-system-mark.jpg`,
       markAlt: "Geometric diamond accent mark with construction grid behind, showing the underlying geometry that holds the system together",
-      pressing: { mark: { n: "05", name: "Four Shapes" } },
+      pressing: { mark: { n: "05", name: "Three Shapes" } },
     },
 
     // ════════════════════════════════════════
@@ -403,7 +393,7 @@ export const amberShockeyCoCaseStudy: CaseStudy = {
       stack: ["Illustrator", "Photoshop", "InDesign"],
       links: [],
       content:
-        "A buyer can start with one accent dish in cobalt and add a full red-dragons setting two seasons later, and the two sit together because both run on cream.",
+        "A buyer can start with one accent dish in cobalt and add a full red-dragons setting two seasons later.",
     },
   ],
 };

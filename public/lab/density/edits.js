@@ -9,7 +9,7 @@
 window.DENSITY_EDITS = {
  "amber-shockey-co": {
   "index": {
-   "note": "Flow opens the room: what Amber Shockey & Co. makes and what these patterns are, then three chapters, one per collection, that are also the section titles; each opens to its motif and how it pairs, black linework carries a plain line, and the closing keeps its head so its marks don't land under red dragons.",
+   "note": "Flow opens the room: what Amber Shockey & Co. makes and what these patterns are, then three chapters, one per collection, that are also the section titles; each opens to its motif and how it pairs, black linework carries a plain line, and the closing keeps its head so its marks don't land under red dragons. 8 Oct: his answers, red dragons has no cream and the fourth direction never shipped.",
    "abs": [
     "Amber Shockey & Co. is a startup, and every new collection has to sit next to the ones before it.",
     "Each collection sets something structured against something organic, with a hero pattern, a secondary, and an accent. They run in several colorways, so the same set can go minimal or maximal depending on what it's paired with."
@@ -46,7 +46,7 @@ window.DENSITY_EDITS = {
      "g": "and the statement plate is for a buyer who only wants one piece",
      "li": [
       "The dragons | they sit in a round mandala borrowed from Eastern textile work, in the most ornamental of the three collections.",
-      "Next to blue florals | the cobalt and the burgundy fight, so cream pieces from either collection go between the two."
+      "Next to blue florals | the cobalt and the burgundy fight, so cream pieces go between the two."
      ],
      "pic": "amber-shockey-co-red-dragons-plates-stacked-on-dragon-pattern-collection-mockup.jpg"
     }
@@ -142,7 +142,7 @@ window.DENSITY_EDITS = {
      "t": "I made A.R.C. on my own in ten weeks,",
      "g": "with AI helping the whole way through",
      "li": [
-      "AI | I described what I wanted in plain language, read the code that came back, tested it and shipped.",
+      "Claude | wrote the code from the start. I described what I wanted in plain language, read what came back, tested it and shipped.",
       "No team | no engineering team, no PM handing out tickets, no design review and no QA, so every decision came down to priorities.",
       "Interface | I designed it and built it at the same time, with no handoff between what I meant and what showed up in code."
      ],
@@ -185,8 +185,8 @@ window.DENSITY_EDITS = {
  },
  "big-bend": {
   "index": {
-   "note": "Flow opens the room: family trip photographs, named by what they show, and the boot campaign that later used some, then one chapter, Prada Marfa, the study's only section; the pull quote goes because the subtitle says it, the park trivia goes, and the closing keeps only the folder.",
-   "stand": "Photographs from a family trip through Big Bend, the Chisos Mountains and Santa Elena Canyon, and the desert around Marfa. | The trip was personal, and Capitan Boot Co. later used a few of the photographs as backdrops in its campaign.",
+   "note": "Flow opens the room: family trip photographs and the boot campaign that later used some, then one chapter, the study's only section, whose line carries the landscapes and Prada Marfa together (his 8 Oct answer, \"they can be combined\"), so the subtitle names only the regions; the pull quote goes because the subtitle says it, the park trivia goes, and the closing keeps only the folder.",
+   "stand": "Photographs from a family trip through Big Bend and the desert around Marfa. | The trip was personal, and Capitan Boot Co. later used a few of the photographs as backdrops in its campaign.",
    "abs": [],
    "did": [
     "Landscape photography"
@@ -194,8 +194,8 @@ window.DENSITY_EDITS = {
    "didTitle": "Role",
    "chapters": {
     "Prada Marfa is a fake boutique": {
-     "t": "Prada Marfa is a fake boutique with real Prada shoes,",
-     "g": "sealed in 2005",
+     "t": "The pictures run from the Chisos Mountains and Santa Elena Canyon to Prada Marfa,",
+     "g": "a fake boutique with real Prada shoes, sealed in 2005",
      "p": [
       "It's on U.S. 90, northwest of Marfa, and the bags on display are from the 2005 season."
      ],
@@ -220,7 +220,7 @@ window.DENSITY_EDITS = {
  },
  "black-white-type": {
   "index": {
-   "note": "Flow opens the room: what the three lithographs are and the question behind them, then five chapters that are also the section titles (the rules, each print, what changes from print to print); every section carries one plain line, each print's row holds its own fills, and the closing ends on the type.",
+   "note": "Flow opens the room: what the three lithographs are and the question behind them, then five chapters that are also the section titles (the rules, each print, what changes from print to print); every section carries one plain line, each print's row holds its own fills, and the closing ends on the type. 8 Oct: his answers, the swatches are a pattern library to mix and match, only highball stepper is about Lazaretto, and the prints carry no numbers.",
    "stand": "Three lithographs in black ink on white paper, made from six repeating patterns. | It was personal work, and the question was how much range a small set of patterns could produce once color, photography and gradients were off the table.",
    "abs": [
     "The tiles fill the letterforms, spill outside them, and sit behind them as backgrounds."
@@ -237,7 +237,7 @@ window.DENSITY_EDITS = {
      "g": "and each swatch is a tile that repeats in any direction, at any size",
      "li": [
       "The shapes | dots at two scales, lines in three directions and a diamond grid.",
-      "Twelve tiles | each shape is drawn twice, once black on white and once reversed.",
+      "A pattern library | twelve tiles, made to mix and match.",
       "No color | I wanted the shapes and the letterforms to be the focus, so color was never in it."
      ]
     },
@@ -255,6 +255,7 @@ window.DENSITY_EDITS = {
      "t": "The second print, \"highball stepper,\" blows the same tiles up,",
      "g": "and at that size they read a lot bolder",
      "li": [
+      "Slab capitals | stack edge to edge with script threaded between them.",
       "Polka dots | large ones fill a whole capital, and each dot is a shape in its own right.",
       "Geometric serifs | sit in among the slabs."
      ],
@@ -286,7 +287,7 @@ window.DENSITY_EDITS = {
    "decks": {
     "The rules were set before the first print": "Most of the detail in the prints comes from layering them.",
     "Every stroke in \"the fancy\"": "The lettering sits low in the left corner, with swashes running off the edge of the sheet.",
-    "The second print, \"highball stepper,\"": "Slab capitals stack edge to edge with script threaded between them.",
+    "The second print, \"highball stepper,\"": "This print is about Jack White's album Lazaretto.",
     "Handmade strokes sit next to machine-drawn ones": "The geometric 'A' and the slab 'K' in the lower right are the heaviest shapes on the sheet.",
     "All three prints use every one": "The three prints still don't look like they came from one set of patterns."
    },
@@ -304,8 +305,8 @@ window.DENSITY_EDITS = {
  },
  "branding-graphics": {
   "index": {
-   "note": "Flow opens the room: what the collection is and who it was for, then four chapters that are also the four section titles (posters, covers, the storefront, the logos); each opens to its specifics, the covers and the storefront carry a plain line, and the closing keeps its head so its posters don't land under the logos.",
-   "stand": "Here are album covers, posters, art prints, logos, and one storefront window, made over about ten years for musicians, friends, and a handful of brands. | Each one has its own look, made to fit that client.",
+   "note": "Flow opens the room: what the collection is and who it was for, then four chapters that are also the four section titles (posters, covers, the storefront mockup, the logos, with the clients named); each opens to its specifics, the covers and the storefront carry a plain line, and the closing keeps its head so its posters don't land under the logos. 8 Oct: his answers, the sleeves were commissioned, the window is a mockup, the years are 2008 to now.",
+   "stand": "Here are album covers, posters, art prints, logos, and one storefront window mockup, made since 2008 for musicians, friends, and a handful of brands. | Each one has its own look, made to fit that client.",
    "abs": [
     "Most of the work was done in Photoshop, Illustrator, and InDesign, with a film camera for the photography, and hand-drawn type where a piece called for it."
    ],
@@ -339,7 +340,7 @@ window.DENSITY_EDITS = {
     },
     "The storefront photograph was shot on film": {
      "t": "Bokeh's Fall started as a 4x6 of defocused lights,",
-     "g": "and was blown up to fill a storefront window",
+     "g": "and was mocked up at the size of a storefront window",
      "li": [
       "The photograph | shot on film, orange and pink on black.",
       "The type | set over it for the window."
@@ -347,10 +348,10 @@ window.DENSITY_EDITS = {
     },
     "Each of the five logos": {
      "t": "Five logos went to five clients,",
-     "g": "a fashion collective, a DJ, a lifestyle brand, Okina and J. Christianson",
+     "g": "Spear Collective, Hey SD, Okina, DJ MIA and J. Christianson",
      "li": [
-      "Drawing | the fashion collective's logo is wrapped in flowing botanical illustration, and the lifestyle brand got a bird on a monogram.",
-      "Halftone | the DJ's logo uses halftone dots and a geometric sans.",
+      "Drawing | Spear Collective's logo is wrapped in flowing botanical illustration, and Hey SD, a lifestyle brand, got a bird on a monogram.",
+      "Halftone | DJ MIA's logo uses halftone dots and a geometric sans.",
       "Type | Okina's is a planet-and-orbit wordmark in heavy black sans, and J. Christianson's is a four-circle mark over an engraved serif."
      ]
     }
@@ -377,8 +378,8 @@ window.DENSITY_EDITS = {
  },
  "capitan-boot-co": {
   "index": {
-   "note": "Flow opens the room: what the identity is and why it had to be tough, then two chapters that are also the section titles, the campaign pictures from Big Bend and then the marks; the empty marks head is dropped and its chapter keys on the closing section, where the marks' pictures land, and the room ends on the scuffed boot.",
-   "stand": "Brand identity for Capitan Boot Co., a Western boot maker: logo, type, badges, apparel graphics, and campaign photography. | Capitan needed a brand that could take as much wear as its boots.",
+   "note": "Flow opens the room: what the identity is and why it had to be tough, then two chapters that are also the section titles, the campaign pictures from a family trip to Big Bend and then the marks; the empty marks head is dropped and its chapter keys on the closing section, where the marks' pictures land, and the room ends on the scuffed boot. 8 Oct: his answers, nothing was shot for the campaign (the trip photographs were reused) and there is no apparel to show. The campaign chapter keys on \"The campaign\" so it holds before and after the head is patched.",
+   "stand": "Brand identity for Capitan Boot Co., a Western boot maker: logo, type, badges, and campaign photography. | Capitan needed a brand that could take as much wear as its boots.",
    "abs": [],
    "did": [
     "Brand Identity",
@@ -388,13 +389,12 @@ window.DENSITY_EDITS = {
    ],
    "didTitle": "Role",
    "chapters": {
-    "The campaign was shot on location": {
-     "t": "The campaign pictures come from Big Bend,",
+    "The campaign": {
+     "t": "The campaign uses photographs from a family trip to Big Bend,",
      "g": "the landscape the boots are made for",
      "li": [
       "The places | mesa country, river bottom, and grassland at last light.",
-      "As found | no props or stand-ins, and no styling added to what was already there.",
-      "The lockups | they sit right on top of the photographs, so each frame had to leave room for them."
+      "The lockups | they sit right on top of the photographs."
      ]
     },
     "The same person drew the marks": {
@@ -416,7 +416,7 @@ window.DENSITY_EDITS = {
     "The same person drew the marks": "The marks"
    },
    "decks": {
-    "The campaign was shot on location": "The same person drew the marks and shot the photographs."
+    "The campaign": "The same person drew the marks and shot the photographs."
    },
    "lines": {
     "The marks were drawn so you can still tell": "keep"
@@ -460,7 +460,7 @@ window.DENSITY_EDITS = {
      "pic": "chalet-exterior-front-warm-gray-white-railings-pacific-northwest.jpg"
     },
     "Every seat faces the trees": {
-     "t": "The main wall got 16-foot sliding glass doors,",
+     "t": "The main wall got sliding glass doors 16 feet across,",
      "g": "so the tree canopy is what you look at from every seat in the room",
      "li": [
       "The A-frame | wood plank all the way up, with a triangular window under the peak and a skylight.",
@@ -478,7 +478,7 @@ window.DENSITY_EDITS = {
     "The rebuild added over 400": "The footprint"
    },
    "decks": {
-    "The chalet no longer disappears": "White went on the railings.",
+    "The chalet no longer disappears": "A gray-brown with a warm undertone went on the siding, and white on the railings.",
     "Every seat faces the trees": "The furniture is kept simple on purpose so it doesn't compete with what's outside the glass."
    },
    "lines": {
@@ -599,9 +599,12 @@ window.DENSITY_EDITS = {
      ]
     },
     "The owner console is built for": {
-     "t": "The owner schedules a whole week out loud,",
+     "t": "The owner books a whole week by talking to an AI,",
      "g": "from a phone between sessions",
      "pic": "dsc-ai-scheduler-phone-hero.jpg",
+     "p": [
+      "The scheduler runs on Claude and takes voice input."
+     ],
      "li": [
       "The queue | every request lands in it.",
       "The week | a calendar shows the session count per day.",
@@ -630,7 +633,7 @@ window.DENSITY_EDITS = {
     "None of the scheduling works": "It was the first part of the scheduling platform I built.",
     "Athletes can book a session": "An athlete never has to open the app.",
     "The athlete app opens on": "Each trainer's bio expands to specialties and certifications.",
-    "The owner console is built for": "It's built for one person on the gym floor.",
+    "The owner console is built for": "The console is built for one person on the gym floor.",
     "The schedule was the part": "It checks trainer availability, double-bookings, floor capacity, allowed durations and cancellation rules."
    },
    "lines": {
@@ -702,7 +705,7 @@ window.DENSITY_EDITS = {
     "A copper tub and a bouclé ottoman share": "drop"
    },
    "lines": {
-    "Both crystal chandeliers": "A copper tub and a bouclé ottoman share a floor plan, and neither looks out of place. | Both crystal chandeliers, in the bedroom and the bath, come from the same family."
+    "The palette is narrow enough": "A copper tub and a bouclé ottoman share a floor plan, and neither looks out of place."
    },
    "rest": "drop",
    "moreTo": "chapters",
@@ -714,8 +717,8 @@ window.DENSITY_EDITS = {
  },
  "fairview-entry": {
   "index": {
-   "note": "Flow opens the room: a two-story foyer designed around its French doors, the light first, then two chapters that are also the section titles (limestone-cream walls that take the light, with the doors, the rug and the chandelier; a bench for boots and bags), each opening to its specifics; the closing is the oak floor running on into the house.",
-   "stand": "The Fairview entry is a two-story foyer, designed around its French doors. | The light through them comes first.",
+   "note": "Flow opens the room: a two-story foyer sized around its French doors (his word, 8 Oct 2026: he sized the room, not only what is in it), the light first, then two chapters that are also the section titles (limestone-cream walls that take the light, with the doors, the rug and the chandelier; a bench for boots and bags), each opening to its specifics; the closing is the oak floor running on into the house.",
+   "stand": "The Fairview entry is a two-story foyer sized around its French doors. | The light through them comes first.",
    "abs": [],
    "did": [
     "Interior design",
@@ -821,8 +824,8 @@ window.DENSITY_EDITS = {
  },
  "floor-and-decor": {
   "index": {
-   "note": "Flow opens the room: the Designer of the Quarter award for three bathrooms and the four materials every project pulled from, then two chapters that are also the section titles (the three rooms, the one moodboard), each opening to its specifics; the hard-surfaces line is the first section's deck and the closing says where the feature ran.",
-   "stand": "Floor & Decor named the studio Designer of the Quarter for three bathrooms. | Marble, dolomite, white oak and classic tile were the four materials every project pulled from.",
+   "note": "Flow opens the room: the Designer of the Quarter award for three bathrooms and the materials every project shared (dolomite was used but is not featured, his word 8 Oct 2026, so it is named nowhere), then two chapters that are also the section titles (the three rooms, the one moodboard), each opening to its specifics; the hard-surfaces line is the first section's deck and the closing says where the feature ran.",
+   "stand": "Floor & Decor named the studio Designer of the Quarter for three bathrooms. | Every project pulled from the same marble, white oak and classic tile.",
    "abs": [],
    "did": [
     "Interior design",
@@ -891,7 +894,7 @@ window.DENSITY_EDITS = {
      "t": "Vessel sinks sit under wall-mounted bridge faucets with cross handles,",
      "g": "a vintage shape on modern plumbing",
      "li": [
-      "The cabinet color | the same paint family as the kitchen's sage, two steps toward gray.",
+      "The cabinet color | a lighter gray green, two steps from the kitchen's sage in the same paint family.",
       "Upper cabinets | glass fronts on one side for display and solid doors on the other for storage.",
       "The sconces | globe sconces at both vanities throw warm circles on the shiplap behind them."
      ],
@@ -1065,7 +1068,7 @@ window.DENSITY_EDITS = {
      ],
      "li": [
       "The finish | a penetrating oil, with no stain and no polyurethane; the grain stays open and the color goes from pale honey to a deeper amber over years of use.",
-      "The layout | eight feet of usable counter sits on the island, and the open shelving faces the dining side.",
+      "The marble top | one slab, on an island with eight feet of usable counter; the open shelving faces the dining side.",
       "Where it sits | it's the first thing you see from the entry, and every sight line in the kitchen crosses it."
      ],
      "pic": "hill-country-kitchen-wide-dining-island-windows.jpg"
@@ -1138,7 +1141,7 @@ window.DENSITY_EDITS = {
       "Family heirlooms sit next to new finds."
      ],
      "li": [
-      "The record-player shelf | it sits under the Eisenhower painting, and the vinyl stacked below it includes ZZ Top and Sturgill Simpson.",
+      "The record-player shelf | the vinyl stacked below it includes ZZ Top and Sturgill Simpson.",
       "The ladder shelf | a vintage globe and ceramic vessels.",
       "By the window | two tweed armchairs face each other with a leather stool between them and the Hill Country outside."
      ],
@@ -1279,8 +1282,8 @@ window.DENSITY_EDITS = {
    "facts": []
   },
   "index": {
-   "note": "Flow opens the room: Beyoncé's first activewear line launched by Nordstrom on one scrolling page and the 95% that sold out, then three chapters that are also the section titles (six weeks, the hexagon that broke the grid and the components reused for two years, the campaign built from the page), each opening to three specifics; the pull quote stays, and the closing says it all came out of a Nordstrom office.",
-   "stand": "Ivy Park was Beyoncé's first activewear line, and Nordstrom, its exclusive US partner, launched it on one scrolling page. | 95% of the product sold out within days.",
+   "note": "Flow opens the room: his role first (creative direction and design, from the study's own roles, his yes on 8 Oct 2026) with what the launch was, Beyoncé's first activewear line at Nordstrom, its exclusive US partner, and the 95% that sold out, then three chapters that are also the section titles (six weeks, the hexagon that broke the grid and the components reused for two years, the campaign built from the page), each opening to three specifics; the hexagon is an outline everywhere, never a crop (his answer, 8 Oct); the pull quote stays, and the closing says it all came out of a Nordstrom office.",
+   "stand": "Creative direction and design for Ivy Park's launch at Nordstrom, the exclusive US partner for Beyoncé's first activewear line. | 95% of the product sold out within days.",
    "abs": [
     "Ivy Park was staking out a spot between luxury fashion and athletic performance, one with no obvious reference, and the design had to sit in that gap.",
     "The photography was supplied: black-and-white athlete portraits, and color product shots on blue and gray. Typography, layout, copy, animation and interaction were all open."
@@ -1309,14 +1312,14 @@ window.DENSITY_EDITS = {
      "li": [
       "The hexagon | its angled edges against the straight photography gave the athlete portraits some tension.",
       "The copy | written line by line as the pages took shape, in short present-tense sentences that talked straight to the reader.",
-      "The components | Nordstrom's CMS didn't have parallax modules, animated polygon masks, full-bleed video that played on scroll or type lockups that scaled with the screen, so they got built for Ivy Park."
+      "The components | Nordstrom's CMS didn't have parallax modules, animated polygon outlines, full-bleed video that played on scroll or type lockups that scaled with the screen, so they got built for Ivy Park."
      ]
     },
     "The launch page came first": {
      "t": "The emails, banners, social posts and in-store signage were all adapted from the launch page,",
      "g": "built from a handful of simple elements",
      "li": [
-      "The hexagon | crops the same at 300px and at 3000px.",
+      "The hexagon outline | looks the same at 300px and at 3000px.",
       "Bold type | reads at any size.",
       "Black-and-white photography | goes to any aspect ratio."
      ]
@@ -1348,7 +1351,7 @@ window.DENSITY_EDITS = {
  },
  "j-christianson": {
   "index": {
-   "note": "Flow opens the room: what the identity is and the range it was drawn for, then two chapters that are also the section titles (the tree graphic and where it went, the mark), each with a plain line under its title; the closing says the name, mark and tree were decided once.",
+   "note": "Flow opens the room: what the identity is and the range it was drawn for, then two chapters that are also the section titles (the tree graphic and what it was designed for, the mark), each with a plain line under its title; the closing says the name, mark and tree were decided once. 8 Oct: his answers, apparel, candles and hangtags were considerations with nothing to show, and the four round pieces are not seasonal colorways of the tree.",
    "stand": "A brand identity for J. Christianson, a fashion and home goods label, built from the name outward. | The whole identity was drawn to fit a billboard and a candle label.",
    "abs": [
     "J. Christianson's colors are mid-century earth tones."
@@ -1364,7 +1367,7 @@ window.DENSITY_EDITS = {
    "chapters": {
     "The tree's branches run past the edge": {
      "t": "The tree graphic is a white silhouette over the brand's stripe pattern,",
-     "g": "and it went on apparel, hangtags and print",
+     "g": "designed with apparel, hangtags and print in mind",
      "p": [
       "The tree's branches run past the edge of the stripes."
      ]
@@ -1382,8 +1385,8 @@ window.DENSITY_EDITS = {
     "The whole identity was drawn to fit": "drop"
    },
    "decks": {
-    "The tree's branches run past the edge": "Each season gets its own colorway: teal and dark green, yellow and gold, orange and rust, and brown and earth tones.",
-    "The same four circles run on": "The same four circles run on a hangtag and a storefront sign."
+    "The tree's branches run past the edge": "Four round pieces show landscapes in teal and dark green, yellow and gold, orange and rust, and brown and earth tones.",
+    "The same four circles run on": "The same four circles run on a billboard and a storefront sign."
    },
    "lines": {
     "The name, the mark and the tree were decided once": "keep"
@@ -1399,8 +1402,8 @@ window.DENSITY_EDITS = {
  },
  "jeffrey-ecommerce": {
   "index": {
-   "note": "Flow opens on Jeffrey's first online store and why it led with stories, then two chapters that are also the section titles, the homepages and the templates; the brand system stands as its own section and the site's long life closes it (the sale of the business is cut: it has no source).",
-   "stand": "Jeffrey New York's first online store and the brand around it were built from zero. | The physical store was closer to a gallery than a shop, so the site put a story ahead of every sale.",
+   "note": "Flow opens on Jeffrey's first online store and why it led with stories, pitched to Jeffrey in person (his answer, 8 Oct), then two chapters that are also the section titles, the homepages and the templates; the brand system stands as its own section and the room ends on it. Nothing about the business after the site, at his word.",
+   "stand": "Jeffrey New York's first online store and the brand around it were built from zero. | The physical store was closer to a gallery than a shop, so the strategy, pitched to Jeffrey in person, put a story ahead of every sale.",
    "abs": [
     "Jeffrey's store was edited by people with a very specific eye, and the job was to get that feeling onto a screen. The work started with the buying team: how the floor was laid out, how pieces got grouped, what made an edit feel like Jeffrey."
    ],
@@ -1442,12 +1445,6 @@ window.DENSITY_EDITS = {
     "Product pages showed one large": "Product pages showed one large photograph and little else.",
     "Every page ran on the wordmark": "The type hierarchy stayed fixed while the content around it changed every week."
    },
-   "heads": {
-    "The site outlasted": "drop"
-   },
-   "lines": {
-    "The type hierarchy stayed fixed": "The site outlasted the team that built it."
-   },
    "rest": "drop",
    "moreTo": "chapters",
    "facts": [
@@ -1458,8 +1455,8 @@ window.DENSITY_EDITS = {
  },
  "jeffrey-spring": {
   "index": {
-   "note": "Flow opens on a studio-only spring campaign and why the foliage mattered, then one chapter, the three designers on one template; the weekly dress closes it as its own section, with the study's swap-the-dress line under it.",
-   "stand": "A spring campaign for Jeffrey was shot entirely in the studio. | The look was high fashion on a studio budget, with foliage doing the work of a location.",
+   "note": "Flow opens on a studio-only spring campaign and why the foliage mattered, with his own description of Jeffrey in it once (8 Oct), then one chapter, the three designers on one template; the weekly dress closes it as its own section, with the study's swap-the-dress line under it.",
+   "stand": "A spring campaign for Jeffrey, a high-end fashion boutique featuring the staples of the industry and newcomers, was shot entirely in the studio. | The look was high fashion on a studio budget, with foliage doing the work of a location.",
    "abs": [],
    "did": [
     "Art Direction",
@@ -1500,7 +1497,7 @@ window.DENSITY_EDITS = {
  },
  "loved-by-nordstrom": {
   "index": {
-   "note": "Flow opens the room: what the campaign was, the Instagram heart it was built on and its two tiers, then four chapters that are also the section titles (the heart, the tile, Liked and Loved as a priority lever, the channels); 'typography' is out of the tier line because the Loved tiles' wordmark differs in the pictures, and the closing says merchandisers swapped brands in weekly with no brief, then names the designers.",
+   "note": "Flow opens the room: what the campaign was, the Instagram heart it was built on and its two tiers, then four chapters that are also the section titles (the heart, the tile, Liked and Loved as a priority lever, the channels); 'typography' is back in the tier line and 'the type' in the channels row, since every tile was meant to be the tracked-out sans (his answer, 8 Oct 2026; the two serif Loved tiles are pictures to re-set), the tiles ran as Instagram posts (his answer), and the closing says merchandisers swapped brands in weekly with no brief, then names the designers.",
    "stand": "Loved by Nordstrom was a year-long campaign for smaller designer labels, in stores and online. | Every tile was built on the heart icon borrowed from Instagram, with Liked by or Loved by Nordstrom at the base.",
    "abs": [],
    "did": [
@@ -1528,7 +1525,7 @@ window.DENSITY_EDITS = {
      ]
     },
     "The Loved by Nordstrom hero slots": {
-     "t": "Liked and Loved used the same icon,",
+     "t": "Liked and Loved used the same icon and typography,",
      "g": "so the merchandising team could raise or lower a brand's priority without touching the design",
      "pic": "loved-by-nordstrom-large-tibi-fur-coat-campaign-tile.jpg",
      "li": [
@@ -1543,7 +1540,7 @@ window.DENSITY_EDITS = {
      "li": [
       "Twelve months of tiles | went out across social feeds, email sends, in-store signage, and web landing pages.",
       "The landing page | organized the stories by brand.",
-      "The grid and the icon | were fixed on every tile."
+      "The grid, the type and the icon | were fixed on every tile."
      ]
     }
    },
@@ -1557,7 +1554,7 @@ window.DENSITY_EDITS = {
     "The same tile ran in your feed": "Across channels"
    },
    "decks": {
-    "Nobody had to learn": "Loved by Nordstrom tiles ran in Instagram stories, the app the heart icon came from.",
+    "Nobody had to learn": "Loved by Nordstrom tiles ran as Instagram posts, in the app the heart icon came from.",
     "The middle of each tile held": "The tile template didn't change all year.",
     "The Loved by Nordstrom hero slots": "The Loved by Nordstrom hero slots went to one brand at a time.",
     "The same tile ran in your feed": "Photography from a 1080-square social post scaled up to a 1440-wide web hero with a crop spec and no new art direction."
@@ -1572,7 +1569,7 @@ window.DENSITY_EDITS = {
  },
  "neiman-marcus": {
   "index": {
-   "note": "Flow opens on what InSite was and how it told stories, then four chapters that are also the four section titles, one per kind of story; the closing keeps the call on the magazine side and the three templates.",
+   "note": "Flow opens on what InSite was and how it told stories, then four chapters that are also the four section titles, one per kind of story; the closing keeps the call on the magazine side and names all three templates (8 Oct: the type-led stories ran on one of the three, so the count holds; which one is not said).",
    "stand": "InSite was the editorial hub on the Neiman Marcus website, and it told fashion stories the way a magazine would. | It had to sell product like a store at the same time.",
    "abs": [
     "On every InSite piece, the concept came first, then the shoot, then the styling and the layout. All of the photography was shot in the studio."
@@ -1637,7 +1634,7 @@ window.DENSITY_EDITS = {
     "Every InSite layout was a call": "The store side still had to be findable."
    },
    "lines": {
-    "Three templates carried dozens of InSite stories": "Three templates carried dozens of InSite stories."
+    "Three templates carried dozens of InSite stories": "Three templates carried dozens of InSite stories: | open typography for the designer spotlights, color as the environment for the trend stories and a fixed grid for the ways-to-wear features."
    },
    "rest": "drop",
    "moreTo": "chapters",
@@ -1649,7 +1646,7 @@ window.DENSITY_EDITS = {
  },
  "nordstrom-beauty": {
   "index": {
-   "note": "Flow opens the room: what the hub is and why a static story falls behind, then three chapters that are also the section titles (templates, try-on with every color tied to a product, drawer), so buying in place is said once in the opening; the closing keeps the three seasonal rotations.",
+   "note": "Flow opens the room: what the hub is and why a static story falls behind, then three chapters that are also the section titles (templates, try-on with every color tied to a product, drawer), so buying in place is said once in the opening; the drawer's row ends on his result, adds to bag up 12% with more engagement and time on page (8 Oct 2026, no baseline or period given, so none is named); the closing keeps the three seasonal rotations.",
    "stand": "On Nordstrom's beauty editorial hub, every story was shoppable. | New products launch weekly and trends shift with the season, so a static story falls behind.",
    "abs": [],
    "did": [
@@ -1685,9 +1682,10 @@ window.DENSITY_EDITS = {
      "g": "so a customer could add to bag with no detour to a product page",
      "li": [
       "The drawer | comes in from the side while the page behind it stays on screen.",
-      "Inside it | reviews, price, size options, and add to bag.",
+      "Inside it | reviews, price, and size options.",
       "Get That Glow and Top 5 Serums | told seasonal stories while the product grid under them stayed current."
-     ]
+     ],
+     "proof": "Adds to bag went up 12%, with more engagement and time on page."
     }
    },
    "heads": {
@@ -1713,8 +1711,8 @@ window.DENSITY_EDITS = {
  },
  "nordstrom-framework": {
   "index": {
-   "note": "Flow opens the room: what the framework is with the 22% beside it, then two chapters that are also the section titles; the problem keeps its own statement, the bucket count stays out until Jeremy confirms it (every picture shows three marks in one serif), the first row describes two buckets in his own caption words, and the closing carries the names becoming the team's language.",
-   "stand": "Nordstrom.com's content framework was built from scratch, with its own names, icons, and typographic marks. | Engagement lifted 22% over two years.",
+   "note": "Flow opens the room: what the content framework is, with content engagement up 22% and demand with it (his answer, 8 Oct 2026), then two chapters that are also the section titles; the problem keeps its own statement; the four sections are back in chapter 1, its section line says three of the four are shown and its row names two of them in his caption words plus the one typeface every mark shared (his answers: four sections, three shown, one typeface, an icon each; On Our List stays out of the strings because check.mjs reads its Our as a we/our/us), and the closing carries the names becoming the team's language.",
+   "stand": "Nordstrom.com's content framework was built from scratch, with its own names, icons, and typographic marks. | Content engagement lifted 22% over two years, and demand went up with it.",
    "abs": [
     "Concepted the framework and pitched it to merchandising, marketing, and editorial."
    ],
@@ -1728,23 +1726,23 @@ window.DENSITY_EDITS = {
    "didTitle": "Role",
    "chapters": {
     "Every story had to land": {
-     "t": "Every story had to land in a named bucket,",
+     "t": "Every story had to land in one of four sections,",
      "g": "from new arrivals and trending brands to occasion dressing",
      "pic": "nordstrom-content-framework-lockup-whats-now.jpg",
      "li": [
       "What's Now | of the moment.",
       "Wear to Where | occasion-based items and looks.",
-      "Custom icons | one for every bucket."
+      "One typeface | every mark shared it, and each section got its own recognizable icon."
      ]
     },
     "Every homepage module and email section": {
-     "t": "Whole landing pages were built around a single bucket,",
+     "t": "Whole landing pages were built around a single section of the framework,",
      "g": "so a customer could tell what they were looking at",
      "pic": "nordstrom-framework-on-our-list-phone-turntable.jpg",
      "li": [
-      "Content calendars | mapped stories to buckets at the brief stage.",
+      "Content calendars | mapped stories to sections at the brief stage.",
       "Campaigns that used to be one-offs | got planned as part of a category.",
-      "Planning meetings | the bucket names showed up in them before the framework reached a customer."
+      "Planning meetings | the names showed up in them before the framework reached a customer."
      ]
     }
    },
@@ -1754,16 +1752,16 @@ window.DENSITY_EDITS = {
    },
    "labels": {
     "Nothing on Nordstrom's homepage": "The problem",
-    "Every story had to land": "The buckets",
+    "Every story had to land": "The framework",
     "Every homepage module and email section": "Homepage, email, landing pages"
    },
    "decks": {
     "Nothing on Nordstrom's homepage": "Email ran on its own cadence and landing pages on another, and the only thing tying any of it together was the date on the calendar.",
-    "Every story had to land": "The bucket names sound like a magazine's sections.",
-    "Every homepage module and email section": "Every homepage module and email section carried its bucket's lockup and icon."
+    "Every story had to land": "Three of the four are shown here.",
+    "Every homepage module and email section": "Every homepage module and email section carried a lockup and icon from the framework."
    },
    "lines": {
-    "The bucket names showed up": "The bucket names ended up being how everyone who touched digital content talked about the work. | The icons, the typography and the names all changed over time, but the bucket structure stayed the same."
+    "The bucket names showed up": "The section names ended up being how everyone who touched digital content talked about the work. | The icons, the typography and the names all changed over time, but the structure stayed the same."
    },
    "rest": "drop",
    "moreTo": "chapters",
@@ -1772,7 +1770,7 @@ window.DENSITY_EDITS = {
  },
  "nordstrom-personalization": {
   "index": {
-   "note": "Flow opens the room: what the system is and what it let merchandisers do, then three chapters that are also the section titles; the first section's line names each tile's job, the phone section keeps its own statement, the millions sit under the homepages, and the closing carries the reach.",
+   "note": "Flow opens the room: what the system is and what it let merchandisers do, then three chapters that are also the section titles; the first section's line names each tile's job, the phone section keeps its own statement, the line under the homepages says the strict tile rules are what made the pages different (his answer, 8 Oct 2026: the rules defined the page and the outcome), and the closing carries the reach.",
    "stand": "Nordstrom's personalized homepages were all built on three tile shapes. | Any merchandiser could lay out a page in an afternoon.",
    "abs": [],
    "did": [
@@ -1826,7 +1824,7 @@ window.DENSITY_EDITS = {
    },
    "decks": {
     "Each tile shape had its own job": "Square tiles carried product, hero tiles carried photography, and vertical tiles bridged the two.",
-    "Every shopper had a homepage": "The tile rules were strict enough to run for millions of customers, and the pages still came out different from each other.",
+    "Every shopper had a homepage": "The tile rules were strict enough to run for millions of customers, and they're what made the pages come out different from each other.",
     "The phone homepage used": "Only the arrangement changed: the hero photography and the product cards restacked to fit the smaller screen.",
     "Each shot had to work as a hero": "Every product sat on a white background, with no props and one shadow throughout."
    },
@@ -1840,8 +1838,8 @@ window.DENSITY_EDITS = {
  },
  "robert-rodriguez": {
   "index": {
-   "note": "Flow opens on what the campaign was and its one-day shoot, then three chapters that are also the section titles: the double exposure, the system it ran on, and the type; the Glamour Shots quote he kept on 1 Oct stays, and the gradients close it.",
-   "stand": "The Robert Rodriguez spring campaign for Neiman Marcus was shot in one day and ran across social, email, the stores and editorial. | It mixes ’80s mall glam with high fashion.",
+   "note": "Flow opens on what the campaign was and its one-day shoot, then three chapters that are also the section titles: the double exposure, the system it ran on, and the type; the Glamour Shots quote he kept on 1 Oct stays, and the gradients close it. 8 Oct, his answers: the subtitle says once that Robert Rodriguez is a label, and the storefront window line is out (the window picture is only a print example), so The Campaign runs without a deck.",
+   "stand": "The Robert Rodriguez label's spring campaign for Neiman Marcus was shot in one day and ran across social, email, the stores and editorial. | It mixes ’80s mall glam with high fashion.",
    "abs": [],
    "did": [
     "Art Direction",
@@ -1891,7 +1889,6 @@ window.DENSITY_EDITS = {
    },
    "decks": {
     "One model and four setups stretched into": "One model and four setups stretched into an entire campaign.",
-    "Every piece was layered from": "The storefront window ran the composites at large format.",
     "Archer Hairline is thin enough": "The palette is coral, orange and pink."
    },
    "heads": {
@@ -1972,7 +1969,7 @@ window.DENSITY_EDITS = {
     },
     "Each idea becomes a section": {
      "t": "Each idea becomes a section of a homepage,",
-     "g": "from a kit for going platinum to a color code you can crack",
+     "g": "from a $36.99 kit for going platinum to a color code you can crack",
      "pic": "sally-design-system-homepage-concept-10-the-edit-mobile.jpg",
      "li": [
       "The Platinum Kit | on the Lookbook, take a piece out and the price follows.",
@@ -2408,7 +2405,7 @@ window.DENSITY_EDITS = {
  },
  "you-by-sally": {
   "index": {
-   "note": "Flow opens on what the campaign was for Sally Beauty and what the brief asked, then two chapters that are also the section titles, the cast and the swatches; the brand kit closes it.",
+   "note": "Flow opens on what the campaign was for Sally Beauty and what the brief asked, then two chapters that are also the section titles, the cast (ten influencers, his answer 8 Oct) and the swatches; the brand kit closes it.",
    "stand": "You By Sally was a brand campaign for Sally Beauty. | Hair color usually sits on a drugstore shelf under fluorescent lights, and the brief was to make it something you'd choose on purpose.",
    "abs": [],
    "did": [
@@ -2420,7 +2417,7 @@ window.DENSITY_EDITS = {
    "didTitle": "Role",
    "chapters": {
     "Each person in the campaign is paired": {
-     "t": "The campaign started with the cast, real people instead of models,",
+     "t": "The campaign started with the cast, ten influencers,",
      "g": "and everything else came from their portraits",
      "li": [
       "The range | the cast runs across age, gender and style.",

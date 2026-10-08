@@ -2,8 +2,8 @@
  "k": "capitan-boot-co",
  "variants": {
   "index": {
-   "note": "Flow opens the room: what the identity is and why it had to be tough, then two chapters that are also the section titles, the campaign pictures from Big Bend and then the marks; the empty marks head is dropped and its chapter keys on the closing section, where the marks' pictures land, and the room ends on the scuffed boot.",
-   "stand": "Brand identity for Capitan Boot Co., a Western boot maker: logo, type, badges, apparel graphics, and campaign photography. | Capitan needed a brand that could take as much wear as its boots.",
+   "note": "Flow opens the room: what the identity is and why it had to be tough, then two chapters that are also the section titles, the campaign pictures from a family trip to Big Bend and then the marks; the empty marks head is dropped and its chapter keys on the closing section, where the marks' pictures land, and the room ends on the scuffed boot. 8 Oct: his answers, nothing was shot for the campaign (the trip photographs were reused) and there is no apparel to show. The campaign chapter keys on \"The campaign\" so it holds before and after the head is patched.",
+   "stand": "Brand identity for Capitan Boot Co., a Western boot maker: logo, type, badges, and campaign photography. | Capitan needed a brand that could take as much wear as its boots.",
    "abs": [],
    "did": [
     "Brand Identity",
@@ -13,13 +13,12 @@
    ],
    "didTitle": "Role",
    "chapters": {
-    "The campaign was shot on location": {
-     "t": "The campaign pictures come from Big Bend,",
+    "The campaign": {
+     "t": "The campaign uses photographs from a family trip to Big Bend,",
      "g": "the landscape the boots are made for",
      "li": [
       "The places | mesa country, river bottom, and grassland at last light.",
-      "As found | no props or stand-ins, and no styling added to what was already there.",
-      "The lockups | they sit right on top of the photographs, so each frame had to leave room for them."
+      "The lockups | they sit right on top of the photographs."
      ]
     },
     "The same person drew the marks": {
@@ -41,7 +40,7 @@
     "The same person drew the marks": "The marks"
    },
    "decks": {
-    "The campaign was shot on location": "The same person drew the marks and shot the photographs."
+    "The campaign": "The same person drew the marks and shot the photographs."
    },
    "lines": {
     "The marks were drawn so you can still tell": "keep"

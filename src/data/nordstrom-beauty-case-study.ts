@@ -301,8 +301,11 @@ export const nordstromBeautyCaseStudy: CaseStudy = {
       ],
       stack: ["Nordstrom CMS", "Custom Components", "HTML/CSS/JS"],
       links: [],
+      // The 12% is his figure (8 Oct 2026: "12 percent add to bag increase
+      // and more engagement and time on page"). No baseline or period was
+      // given, so the line names neither.
       content:
-        "Between rotations, merchandising swapped in new products and the catalog kept everything else current.",
+        "Between rotations, merchandising swapped in new products and the catalog kept everything else current.\n\nAdds to bag went up 12%, with more engagement and time on page.",
     },
   ],
 };

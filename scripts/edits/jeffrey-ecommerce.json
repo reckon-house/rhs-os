@@ -2,8 +2,8 @@
  "k": "jeffrey-ecommerce",
  "variants": {
   "index": {
-   "note": "Flow opens on Jeffrey's first online store and why it led with stories, then two chapters that are also the section titles, the homepages and the templates; the brand system stands as its own section and the site's long life closes it (the sale of the business is cut: it has no source).",
-   "stand": "Jeffrey New York's first online store and the brand around it were built from zero. | The physical store was closer to a gallery than a shop, so the site put a story ahead of every sale.",
+   "note": "Flow opens on Jeffrey's first online store and why it led with stories, pitched to Jeffrey in person (his answer, 8 Oct), then two chapters that are also the section titles, the homepages and the templates; the brand system stands as its own section and the room ends on it. Nothing about the business after the site, at his word.",
+   "stand": "Jeffrey New York's first online store and the brand around it were built from zero. | The physical store was closer to a gallery than a shop, so the strategy, pitched to Jeffrey in person, put a story ahead of every sale.",
    "abs": [
     "Jeffrey's store was edited by people with a very specific eye, and the job was to get that feeling onto a screen. The work started with the buying team: how the floor was laid out, how pieces got grouped, what made an edit feel like Jeffrey."
    ],
@@ -44,12 +44,6 @@
     "Each designer launch or story took over": "Six homepages led with Dries Van Noten, Valentino, Vetements, a Candy Crush shoe story, summer shoes and Loewe.",
     "Product pages showed one large": "Product pages showed one large photograph and little else.",
     "Every page ran on the wordmark": "The type hierarchy stayed fixed while the content around it changed every week."
-   },
-   "heads": {
-    "The site outlasted": "drop"
-   },
-   "lines": {
-    "The type hierarchy stayed fixed": "The site outlasted the team that built it."
    },
    "rest": "drop",
    "moreTo": "chapters",

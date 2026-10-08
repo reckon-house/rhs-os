@@ -499,7 +499,7 @@
     return QUOTE_FILL[k] || s.fill || "#000";
   };
   const PAL_OWN = {
-    "amber-shockey-co": { "#1F4D78": "Cobalt", "#D87A82": "Blush", "#8E3F40": "Burgundy", "#1F2434": "Charcoal", "#ECE6D5": "Cream" },
+    "amber-shockey-co": { "#1F4D78": "Cobalt", "#8E3F40": "Burgundy", "#1F2434": "Charcoal", "#ECE6D5": "Cream" },
     "arc": { "#B1BC94": "Primary", "#000000": "Ground", "#F1F0EE": "Cream", "#C4A265": "Warm Register", "#4A463A": "Olive", "#BAA383": "Oak Tan" },
     "capitan-boot-co": { "#EFEAD9": "Cream", "#C4B594": "Tan", "#5A5945": "Olive", "#2A2A1A": "Dark Olive" },
     "cosmo-prof": { "#F8F6F2": "Cream", "#F4D9DC": "Blush", "#DBC5C8": "Stone", "#E5D6C9": "Sand", "#000000": "Black" },
@@ -2062,8 +2062,10 @@
         const open = el(isScroll ? "button" : "a", "sp-live-open");
         if (isScroll) {
           open.type = "button";
-          open.setAttribute("aria-label", "Scroll " + (T0.title || f.title || "the page") + " inside the frame");
-          open.innerHTML = '<span class="sp-live-hint">' + (matchMedia("(hover: none)").matches ? "Tap to scroll" : "Click to scroll") + "</span>";
+          /* hint: what the click hands over, when it is more than a scroll
+             (8 Oct 2026, the Faux Reel lab: "Click to try it") */
+          open.setAttribute("aria-label", (f.hint ? "Use " : "Scroll ") + (T0.title || f.title || "the page") + " inside the frame");
+          open.innerHTML = '<span class="sp-live-hint">' + (matchMedia("(hover: none)").matches ? "Tap" : "Click") + " to " + esc(f.hint || "scroll") + "</span>";
         } else {
           open.href = srcOf(T0); open.target = "_blank"; open.rel = "noopener";
           open.setAttribute("aria-label", "Open " + (T0.title || f.title || "the page") + " in a new tab");

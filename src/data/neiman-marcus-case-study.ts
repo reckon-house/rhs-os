@@ -272,7 +272,7 @@ export const neimanMarcusCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "In the Minimalism and Structure stories, the letters were thin outline serifs that ghosted behind the garment and nearly dissolved. The Rocker, The Socialite and Classic Beauty stories went the other way, with oversized display serifs wrapped into the model's silhouette and the negative space shaping the layout.",
+        "In the Minimalism and Structure stories, the letters were thin and ghosted, and nearly dissolved. The Rocker, The Socialite and Classic Beauty stories went the other way, with oversized display serifs wrapped into the model's silhouette and the negative space shaping the layout.",
     },
     {
       id: "type-footnote",
@@ -280,7 +280,7 @@ export const neimanMarcusCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "The type's scale, weight and position went into the photographer's brief. A restrained story got a still pose on flat gray paper. A loud one got a saturated backdrop and a pose with room for a letter to sit across the shoulder.",
+        "The type's scale, weight and position went into the photographer's brief. A restrained story got a still pose on flat gray paper. A loud one got a pose with room for a letter to sit across the shoulder.",
     },
 
     // Minimalism pair

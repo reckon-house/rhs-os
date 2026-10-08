@@ -7,7 +7,7 @@ export const youBySallyCaseStudy: CaseStudy = {
   title: "You By Sally",
   category: { label: "Creative", href: "/category/creative" },
   subtitle:
-    "A brand campaign for You By Sally, Sally Beauty's hair color line. | The campaign cast real people instead of models and turned the swatches into oversized color blocks.",
+    "You By Sally was a brand campaign for Sally Beauty. | It cast ten influencers and turned the swatches into oversized color blocks.",
   field: "Campaign Direction\nBrand System\nDigital Design\nRetail Signage",
   author: "Jeremy Prasatik",
   published: "2021",
@@ -40,7 +40,7 @@ export const youBySallyCaseStudy: CaseStudy = {
       },
       title: "You By\nSally",
       subtitle:
-        "A brand campaign for You By Sally, Sally Beauty's hair color line. | The campaign cast real people instead of models and turned the swatches into oversized color blocks.",
+        "You By Sally was a brand campaign for Sally Beauty. | It cast ten influencers and turned the swatches into oversized color blocks.",
       field: "Campaign Direction  Brand System  Digital Design  Retail Signage",
       author: "Jeremy Prasatik",
       published: "2021",
@@ -53,7 +53,7 @@ export const youBySallyCaseStudy: CaseStudy = {
         { label: "Angle", value: "The cast came first, and their portraits set the direction for everything after. The swatches were made big enough to pick a shade from." },
       ],
       abstract:
-        "Hair color usually sits on a drugstore shelf under fluorescent lights, and the brief was to make it something you would choose on purpose.\n\nThe campaign started with the cast, real people instead of models, and everything else came from their portraits.\n\nAfter the casting, the tiny swatch chips became oversized color blocks on clean grids that ran on mobile, desktop and in-store signage. The type is Avenir Next in three weights, and the colors are pink and cyan.",
+        "Hair color usually sits on a drugstore shelf under fluorescent lights, and the brief was to make it something you would choose on purpose.\n\nThe campaign started with the cast, ten influencers, and everything else came from their portraits.\n\nAfter the casting, the tiny swatch chips became oversized color blocks on clean grids that ran on mobile, desktop and in-store signage. The type is Avenir Next in three weights, and the colors are pink and cyan.",
     },
 
         // ── HERO ──
@@ -104,7 +104,7 @@ export const youBySallyCaseStudy: CaseStudy = {
       id: "cast-hero",
       type: "image",
       src: `${IMG}/bios.jpg`,
-      alt: "You By Sally cast portraits, real people paired with signature hair color shades on saturated backgrounds",
+      alt: "You By Sally cast portraits, each paired with a signature hair color shade on a saturated background",
       aspect: "native",
       padded: true,
       // The zoom. A stack of cast portraits is 3010x4480 — the tallest
@@ -224,7 +224,7 @@ export const youBySallyCaseStudy: CaseStudy = {
       id: "campaign-wall",
       type: "hero",
       image: `${IMG}/hero.jpg`,
-      alt: "The You By Sally mosaic, hundreds of cast portraits behind the paint-swatch lockup",
+      alt: "The You By Sally mosaic, cast portraits tiled behind the paint-swatch lockup",
       inline: true,
       pressing: { choreo: { rise: true } },
     },

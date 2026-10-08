@@ -2,7 +2,7 @@
  "k": "nordstrom-personalization",
  "variants": {
   "index": {
-   "note": "Flow opens the room: what the system is and what it let merchandisers do, then three chapters that are also the section titles; the first section's line names each tile's job, the phone section keeps its own statement, the millions sit under the homepages, and the closing carries the reach.",
+   "note": "Flow opens the room: what the system is and what it let merchandisers do, then three chapters that are also the section titles; the first section's line names each tile's job, the phone section keeps its own statement, the line under the homepages says the strict tile rules are what made the pages different (his answer, 8 Oct 2026: the rules defined the page and the outcome), and the closing carries the reach.",
    "stand": "Nordstrom's personalized homepages were all built on three tile shapes. | Any merchandiser could lay out a page in an afternoon.",
    "abs": [],
    "did": [
@@ -56,7 +56,7 @@
    },
    "decks": {
     "Each tile shape had its own job": "Square tiles carried product, hero tiles carried photography, and vertical tiles bridged the two.",
-    "Every shopper had a homepage": "The tile rules were strict enough to run for millions of customers, and the pages still came out different from each other.",
+    "Every shopper had a homepage": "The tile rules were strict enough to run for millions of customers, and they're what made the pages come out different from each other.",
     "The phone homepage used": "Only the arrangement changed: the hero photography and the product cards restacked to fit the smaller screen.",
     "Each shot had to work as a hero": "Every product sat on a white background, with no props and one shadow throughout."
    },

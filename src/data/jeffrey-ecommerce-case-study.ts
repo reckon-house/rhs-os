@@ -11,7 +11,7 @@ export const jeffreyEcommerceCaseStudy: CaseStudy = {
   field: "Digital Strategy\nBrand System\nEcommerce Design\nUX Architecture",
   author: "Jeremy Prasatik",
   published: "2015",
-  status: "Live",
+  status: "Complete",
   classification: ["Digital Strategy", "Brand System", "Ecommerce Design", "UX Architecture"],
   services: ["Digital Strategy", "Brand System", "Ecommerce Design", "UX Architecture"],
   stack: ["Photoshop", "Illustrator", "Sketch", "InVision"],
@@ -41,7 +41,7 @@ export const jeffreyEcommerceCaseStudy: CaseStudy = {
       field: "Digital Strategy  Brand System  Ecommerce Design  UX Architecture",
       author: "Jeremy Prasatik",
       published: "2015",
-      status: "Live",
+      status: "Complete",
       classification: ["Digital Strategy", "Brand System", "Ecommerce Design", "UX Architecture"],
       summary: [
         { label: "Built", value: "The online store, the brand around it, and the templates for telling stories" },
@@ -50,7 +50,7 @@ export const jeffreyEcommerceCaseStudy: CaseStudy = {
         { label: "Angle", value: "The site had to work the way the store worked: an edit that changed with the season, and a story ahead of every sale." },
       ],
       abstract:
-        "Jeffrey had never sold online. The store itself was closer to a gallery than a shop, edited by people with a very specific eye, and the job was to get that feeling onto a screen.\n\nThe work started with the buying team: how the floor was laid out, how pieces got grouped, what made an edit feel like Jeffrey. The strategy that came out of it put the stories ahead of the selling: designer launches as the big moments, new content every week, and an editorial pace built into the structure of the site.\n\nModular grids let the layouts change with the season, and the type hierarchy stayed sharp everywhere it showed up. Product pages opened on the photography, and navigation was organized around the edit instead of by category. Integration ran with outside partners while the experience stayed in-house, and every interaction from wireframe to checkout was prototyped.",
+        "Jeffrey had never sold online. The store itself was closer to a gallery than a shop, edited by people with a very specific eye, and the job was to get that feeling onto a screen.\n\nThe work started with the buying team: how the floor was laid out, how pieces got grouped, what made an edit feel like Jeffrey. The strategy that came out of it, pitched to Jeffrey in person, put the stories ahead of the selling: designer launches as the big moments, new content every week, and an editorial pace built into the structure of the site.\n\nModular grids let the layouts change with the season, and the type hierarchy stayed sharp everywhere it showed up. Product pages opened on the photography, and navigation was organized around the edit instead of by category. Integration ran with outside partners while the experience stayed in-house, and every interaction from wireframe to checkout was prototyped.",
     },
 
         // ── HERO ──
@@ -344,25 +344,11 @@ export const jeffreyEcommerceCaseStudy: CaseStudy = {
     },
 
     // ════════════════════════════════════════
-    // CLOSING
+    // CLOSING, standalone: it ends on the brand system line. The old
+    // "outlasted the team" header and its line about the business came
+    // out on 8 Oct 2026, at his word: the study says nothing about the
+    // business after this site.
     // ════════════════════════════════════════
-    {
-      id: "closing-header",
-      type: "section-header",
-      label: "SECTION 06: CLOSING",
-      title: "The site outlasted",
-      pressing: {
-        mark: { n: "05", name: "Outlasted the Team" },
-        heldLine: "the team that built it.",
-      },
-    },
-    {
-      id: "closing-subhead",
-      type: "text",
-      size: "subhead",
-      content:
-        "Jeffrey eventually sold the business.",
-    },
     {
       id: "closing",
       type: "closing",

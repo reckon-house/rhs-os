@@ -21,7 +21,7 @@
     },
     {
      "term": "art direction",
-     "why": "Photography was supplied and \"everything else was open\": the visual language, polygon crops and grayscale-to-color scroll were directed onto it",
+     "why": "Photography was supplied and \"everything else was open\": the visual language, polygon outlines and grayscale-to-color scroll were directed onto it",
      "from": "both"
     },
     {
@@ -191,12 +191,12 @@
     },
     {
      "term": "photography",
-     "why": "\"The same person drew the marks and shot the pictures\" — campaign shot on location in Big Bend",
+     "why": "\"The same person drew the marks and shot the pictures\" — campaign made from Big Bend trip photographs",
      "from": "both"
     },
     {
      "term": "campaign",
-     "why": "\"a campaign shot in West Texas\" with lockups sitting on the landscape photographs",
+     "why": "\"a campaign made from Big Bend trip photographs\" with lockups sitting on the landscape photographs",
      "from": "both"
     }
    ]
@@ -256,7 +256,7 @@
    "terms": [
     {
      "term": "website",
-     "why": "\"design and build a marketing site: black and white, big condensed type\" — shown in dsc-marketing-site-laptop-hero and marketing-site-facilities-equipment frames.",
+     "why": "\"design and build a marketing site: black and white, heavy type\" — shown in dsc-marketing-site-laptop-hero and marketing-site-facilities-equipment frames.",
      "from": "both"
     },
     {
@@ -341,7 +341,7 @@
     },
     {
      "term": "sourcing",
-     "why": "'Hard surface selections' and material selection — marble, dolomite, white oak, tile all picked at once on one moodboard.",
+     "why": "'Hard surface selections' and material selection — marble, white oak, tile all picked at once on one moodboard.",
      "from": "prose"
     }
    ]
@@ -501,7 +501,7 @@
     },
     {
      "term": "art direction",
-     "why": "Declares art direction; studio set built from cropped monstera and palm fronds as architecture, color floods and extreme crops",
+     "why": "Declares art direction; studio set built from cropped monstera and palm fronds as architecture, with extreme crops",
      "from": "both"
     },
     {
@@ -511,7 +511,7 @@
     },
     {
      "term": "typography",
-     "why": "\"The type is one family, Avenir Next, italic Heavy for the wordmark and Medium, Demi Bold and Heavy\" — condensed, stretched, layered headline type like \"IN SEASON BOLD, READY & NOW.\"",
+     "why": "\"The type is one family, Avenir Next, italic Heavy for the wordmark and Medium, Demi Bold and Heavy\" — stretched, layered headline type like \"IN SEASON BOLD, READY & NOW.\"",
      "from": "both"
     },
     {
@@ -631,12 +631,12 @@
    "terms": [
     {
      "term": "design system",
-     "why": "\"A content framework from scratch: four named buckets, each with its own typographic mark and icon\" running homepage, email and landing pages",
+     "why": "\"A content framework from scratch: four named sections, each with its own icon and a typographic mark in one shared typeface\" running homepage, email and landing pages",
      "from": "both"
     },
     {
      "term": "naming",
-     "why": "Named the four buckets \"What's Now,\" \"On Our List,\" \"Where to Wear,\" \"Wear to Where\"",
+     "why": "Named the four sections \"What's Now,\" \"On Our List,\" \"Where to Wear,\" \"Wear to Where\"",
      "from": "both"
     },
     {
@@ -646,7 +646,7 @@
     },
     {
      "term": "typography",
-     "why": "\"Sourced a different typeface for every lockup, so no two of them share a face\"",
+     "why": "\"All the marks shared one typeface, and each section's icon was unique and recognizable\"",
      "from": "prose"
     },
     {
@@ -796,7 +796,7 @@
    "terms": [
     {
      "term": "campaign",
-     "why": "\"A brand campaign for You by Sally\" — cast portraits, swatches, email and signage rolled out together.",
+     "why": "\"You By Sally was a brand campaign for Sally Beauty\" — cast portraits, swatches, email and signage rolled out together.",
      "from": "both"
     },
     {

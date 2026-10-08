@@ -279,13 +279,6 @@ export const fairviewSuiteCaseStudy: CaseStudy = {
       pressing: { mark: { n: "05", name: "Two Rooms" } },
     },
     {
-      id: "closing-text",
-      type: "text",
-      size: "subhead",
-      content:
-        "The palette is narrow enough that neither the copper tub nor the bouclé ottoman looks out of place.",
-    },
-    {
       id: "closing",
       type: "closing",
       services: [
@@ -296,8 +289,11 @@ export const fairviewSuiteCaseStudy: CaseStudy = {
       ],
       stack: ["AutoCAD", "SketchUp", "Adobe Creative Suite"],
       links: [],
+      // The palette line is the closing's copy now. It followed a claim that
+      // the two crystal chandeliers came from the same family, which they
+      // don't (his answer, 8 Oct 2026), so the closing ends on this.
       content:
-        "Both crystal chandeliers, in the bedroom and the bath, come from the same family.",
+        "The palette is narrow enough that neither the copper tub nor the bouclé ottoman looks out of place.",
     },
   ],
 };

@@ -66,8 +66,11 @@ export const nordstromPersonalizationCaseStudy: CaseStudy = {
         { label: "Tools", value: "Nordstrom CMS, editorial templates, asset library." },
         { label: "Angle", value: "The three tile shapes had strict rules, so millions of pages came out different from each other." },
       ],
+      // 8 Oct 2026, his answer: "the rules defined the page and outcome
+      // which was the point". The pages came out different because of the
+      // strict tile rules, not in spite of them, as the Angle above says.
       abstract:
-        "Nordstrom needed personalized content for millions of customers, and it couldn't look like a machine had made it.\n\nBuilt the layouts on square, hero, and vertical tiles, three shapes that could each resize and restack across phone and desktop while the pages kept one look. The tile rules were strict enough to run for millions of customers, and the pages still came out different from each other.\n\nThe product photography followed the same rules: deliberate contrast, precise angles, and no styling props, so each image worked on its own as a story hero or stacked into a product grid.",
+        "Nordstrom needed personalized content for millions of customers, and it couldn't look like a machine had made it.\n\nBuilt the layouts on square, hero, and vertical tiles, three shapes that could each resize and restack across phone and desktop while the pages kept one look. The tile rules were strict enough to run for millions of customers, and they're what made the pages come out different from each other.\n\nThe product photography followed the same rules: deliberate contrast, precise angles, and no styling props, so each image worked on its own as a story hero or stacked into a product grid.",
     },
 
         // ── HERO ──

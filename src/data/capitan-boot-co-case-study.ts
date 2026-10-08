@@ -7,10 +7,10 @@ export const capitanBootCoCaseStudy: CaseStudy = {
   title: "Capitan Boot Co.",
   category: { label: "Creative", href: "/category/creative" },
   subtitle:
-    "Brand identity for Capitan Boot Co., a Western boot maker: logo, type, badges, apparel graphics, and campaign photography. | Every mark still reads when it's stamped into leather, stitched, or embossed.",
+    "Brand identity for Capitan Boot Co., a Western boot maker: logo, type, badges, and campaign photography. | Every mark still reads when it's stamped into leather, stitched, or embossed.",
   field: "Brand Identity\nLogo System\nApparel Graphics\nPhotography",
   author: "Jeremy Prasatik",
-  published: "2018",
+  published: "2020",
   status: "Live",
   classification: ["Brand Identity", "Logo System", "Apparel Graphics", "Photography"],
   services: ["Brand Identity", "Logo System", "Apparel Graphics", "Photography"],
@@ -37,20 +37,20 @@ export const capitanBootCoCaseStudy: CaseStudy = {
       },
       title: "Capitan\nBoot Co.",
       subtitle:
-        "Brand identity for Capitan Boot Co., a Western boot maker: logo, type, badges, apparel graphics, and campaign photography. | Every mark still reads when it's stamped into leather, stitched, or embossed.",
+        "Brand identity for Capitan Boot Co., a Western boot maker: logo, type, badges, and campaign photography. | Every mark still reads when it's stamped into leather, stitched, or embossed.",
       field: "Brand Identity  Logo System  Apparel Graphics  Photography",
       author: "Jeremy Prasatik",
-      published: "2018",
+      published: "2020",
       status: "Live",
       classification: ["Brand Identity", "Logo System", "Apparel Graphics", "Photography"],
       summary: [
-        { label: "Built", value: "Logo, badges, typographic lockups, apparel graphics, and a campaign shot in West Texas" },
+        { label: "Built", value: "Logo, badges, typographic lockups, and a campaign made from Big Bend trip photographs" },
         { label: "Scope", value: "Brand identity, logo and badges, apparel graphics, photography" },
         { label: "Tools", value: "Illustrator, Photoshop, InDesign, a camera. Northwest and Oldman for the type" },
         { label: "Angle", value: "Marks and photographs by the same person, shot in the landscape the boots are made for." },
       ],
       abstract:
-        "Capitan Boot Co. makes Western boots and needed a brand that could take as much wear as they do. Stamps blur and embossing flattens out, so every mark had to survive both and still read, on a hangtag or across a banner.\n\nCapitan's identity is a primary logo, secondary badges, typographic lockups, and a set of illustrations. Northwest Regular and Oldman Regular are the type pairing, and the bull skull lockup is drawn on a geometric grid. Every piece of the identity works stamped, stitched, embroidered, or printed.\n\nCapitan's campaign was shot in West Texas, in Big Bend, mesa country, and river bottom, with no props or stand-ins and no styling added to what was already there.",
+        "Capitan Boot Co. makes Western boots and needed a brand that could take as much wear as they do. Stamps blur and embossing flattens out, so every mark had to survive both and still read, on a hangtag or across a banner.\n\nCapitan's identity is a primary logo, secondary badges, typographic lockups, and a set of illustrations. Northwest Regular and Oldman Regular are the type pairing, and the bull skull lockup is drawn on a geometric grid. Every piece of the identity works stamped, stitched, embroidered, or printed.\n\nCapitan's campaign uses photographs from a family trip to Big Bend, and nothing was shot for it.",
     },
 
         // ── HERO ──
@@ -144,10 +144,11 @@ export const capitanBootCoCaseStudy: CaseStudy = {
       id: "westtexas-header",
       type: "section-header",
       label: "SECTION 03: WEST TEXAS",
-      title: "The campaign was shot on location",
+      title: "The campaign uses photographs",
       // The study's one crossing, on the beat where the photography
-      // arrives. The headline just says where it was shot; the cut is
-      // the gesture, so the words stay short and plain.
+      // arrives. The headline just says where the pictures came from (a
+      // family trip; nothing was shot for Capitan); the cut is the
+      // gesture, so the words stay short and plain.
       //
       // `pin` alongside `crossing`: the crossing already holds as part of
       // its own gesture, so the flag changes nothing on the page. It is
@@ -155,7 +156,7 @@ export const capitanBootCoCaseStudy: CaseStudy = {
       // the audit reads.
       pressing: {
         mark: { n: "03", name: "Big Bend" },
-        heldLine: "in Big Bend.",
+        heldLine: "from a family trip to Big Bend.",
         choreo: { pin: true, crossing: true },
       },
     },
@@ -164,7 +165,7 @@ export const capitanBootCoCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "The lockups sit right on top of the photographs, so each frame had to leave room for them.",
+        "The lockups sit right on top of the photographs.",
     },
     {
       id: "westtexas-footnote",
@@ -269,7 +270,7 @@ export const capitanBootCoCaseStudy: CaseStudy = {
           name: "Oldman Regular",
           role: "Wordmark & headlines",
           description:
-            "Hand-cut serif with rough edges. It's the primary wordmark, and it shows up on packaging and apparel.",
+            "Hand-cut serif with rough edges. It's the primary wordmark.",
           family: "'Oldman', 'Playfair Display', Georgia, serif",
           weight: 400,
         },

@@ -76,7 +76,7 @@
      "t": "I made A.R.C. on my own in ten weeks,",
      "g": "with AI helping the whole way through",
      "li": [
-      "AI | I described what I wanted in plain language, read the code that came back, tested it and shipped.",
+      "Claude | wrote the code from the start. I described what I wanted in plain language, read what came back, tested it and shipped.",
       "No team | no engineering team, no PM handing out tickets, no design review and no QA, so every decision came down to priorities.",
       "Interface | I designed it and built it at the same time, with no handoff between what I meant and what showed up in code."
      ],

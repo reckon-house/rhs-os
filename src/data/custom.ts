@@ -132,7 +132,7 @@ export const PIECES: Piece[] = [
     id: "capitan",
     run: "brand",
     project: "Capitan Boot Co.",
-    line: "Logo, type, badges and apparel graphics for a Western boot maker.",
+    line: "Logo, type, badges and campaign photography for a Western boot maker.",
     href: "/case-studies/capitan-boot-co",
     image: { src: `${T}/hp/rhs-capitan-boot-co-branding.webp`, alt: "Capitan Boot Co.", w: 1536, h: 1536 },
   },

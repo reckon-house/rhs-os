@@ -58,8 +58,8 @@
    "facts": []
   },
   "index": {
-   "note": "Flow opens the room: Beyoncé's first activewear line launched by Nordstrom on one scrolling page and the 95% that sold out, then three chapters that are also the section titles (six weeks, the hexagon that broke the grid and the components reused for two years, the campaign built from the page), each opening to three specifics; the pull quote stays, and the closing says it all came out of a Nordstrom office.",
-   "stand": "Ivy Park was Beyoncé's first activewear line, and Nordstrom, its exclusive US partner, launched it on one scrolling page. | 95% of the product sold out within days.",
+   "note": "Flow opens the room: his role first (creative direction and design, from the study's own roles, his yes on 8 Oct 2026) with what the launch was, Beyoncé's first activewear line at Nordstrom, its exclusive US partner, and the 95% that sold out, then three chapters that are also the section titles (six weeks, the hexagon that broke the grid and the components reused for two years, the campaign built from the page), each opening to three specifics; the hexagon is an outline everywhere, never a crop (his answer, 8 Oct); the pull quote stays, and the closing says it all came out of a Nordstrom office.",
+   "stand": "Creative direction and design for Ivy Park's launch at Nordstrom, the exclusive US partner for Beyoncé's first activewear line. | 95% of the product sold out within days.",
    "abs": [
     "Ivy Park was staking out a spot between luxury fashion and athletic performance, one with no obvious reference, and the design had to sit in that gap.",
     "The photography was supplied: black-and-white athlete portraits, and color product shots on blue and gray. Typography, layout, copy, animation and interaction were all open."
@@ -88,14 +88,14 @@
      "li": [
       "The hexagon | its angled edges against the straight photography gave the athlete portraits some tension.",
       "The copy | written line by line as the pages took shape, in short present-tense sentences that talked straight to the reader.",
-      "The components | Nordstrom's CMS didn't have parallax modules, animated polygon masks, full-bleed video that played on scroll or type lockups that scaled with the screen, so they got built for Ivy Park."
+      "The components | Nordstrom's CMS didn't have parallax modules, animated polygon outlines, full-bleed video that played on scroll or type lockups that scaled with the screen, so they got built for Ivy Park."
      ]
     },
     "The launch page came first": {
      "t": "The emails, banners, social posts and in-store signage were all adapted from the launch page,",
      "g": "built from a handful of simple elements",
      "li": [
-      "The hexagon | crops the same at 300px and at 3000px.",
+      "The hexagon outline | looks the same at 300px and at 3000px.",
       "Bold type | reads at any size.",
       "Black-and-white photography | goes to any aspect ratio."
      ]

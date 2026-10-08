@@ -120,7 +120,11 @@ export const hillCountryLivingCaseStudy: CaseStudy = {
       id: "material-fireplace",
       type: "hero",
       image: `${IMG}/hill-country-living-limestone-fireplace-eisenhower-painting-navajo-throw-cognac-sofa-symmetry.jpg`,
-      alt: "Symmetrical centered view of the limestone fireplace wall with the Eisenhower painting flanked by smaller landscape pieces in gilded frames, cedar mantel beam, brass pendant chandelier overhead, cognac leather sofa with Navajo-style throw in foreground",
+      // The big black-and-white frame at the centre is a Samsung Frame TV; the
+      // Eisenhower painting is the gilt-framed landscape to its right (his
+      // answer, 8 Oct 2026). The alts and captions here used to call the TV
+      // the painting.
+      alt: "Symmetrical centered view of the limestone fireplace wall with a Samsung Frame TV at the center and a smaller landscape in a gilded frame on each side, the Eisenhower painting on the right, cedar mantel beam, brass pendant chandelier overhead, cognac leather sofa with Navajo-style throw in foreground",
       // The zoom. A symmetrical elevation is the one composition that
       // rewards filling the mat: the symmetry only reads when the whole
       // wall is the same size as the screen.
@@ -128,8 +132,8 @@ export const hillCountryLivingCaseStudy: CaseStudy = {
         plate: "02",
         captions: [
           "Limestone fireplace wall",
-          "Eisenhower painting, cedar mantel",
-          "Brass pendant overhead",
+          "Eisenhower painting at right",
+          "Cedar mantel, brass pendant",
         ],
         instruction: "Scroll. It fills the mat, then travels the frame",
         choreo: { zoom: true },
@@ -148,7 +152,7 @@ export const hillCountryLivingCaseStudy: CaseStudy = {
       },
       right: {
         src: `${IMG}/hill-country-living-limestone-eisenhower-record-player-gray-sofa-pendant-chandelier-vertical.jpg`,
-        alt: "Vertical detail of the limestone wall, the Eisenhower painting and a smaller landscape framed in gilt, mid-century record-player shelf below, brass pendant chandelier overhead, edge of the gray sofa in the foreground",
+        alt: "Vertical detail of the limestone wall, the Samsung Frame TV with a smaller landscape framed in gilt to its left, mid-century record-player shelf below, brass pendant chandelier overhead, edge of the gray sofa in the foreground",
       },
       // Held so the open-plan view climbs across it: the wall in close-up,
       // then the room it opens out of.
@@ -198,7 +202,7 @@ export const hillCountryLivingCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "Under the Eisenhower painting is a mid-century record-player shelf, and the vinyl stacked below it includes ZZ Top and Sturgill Simpson. A ladder shelf holds a vintage globe and ceramic vessels, with brass fire tools underneath. Two tweed armchairs face each other at the tall window with a leather stool between them and the Hill Country outside.",
+        "A mid-century record-player shelf stands against the limestone wall, and the vinyl stacked below it includes ZZ Top and Sturgill Simpson. A ladder shelf holds a vintage globe and ceramic vessels, with brass fire tools underneath. Two tweed armchairs face each other at the tall window with a leather stool between them and the Hill Country outside.",
     },
 
     // 2-up: tweed armchairs in two settings (the 2x23 pair)
@@ -209,7 +213,7 @@ export const hillCountryLivingCaseStudy: CaseStudy = {
       native: true,
       left: {
         src: `${IMG}/hill-country-living-limestone-fireplace-eisenhower-tweed-armchair-ladder-shelf-vintage-rug-vertical.jpg`,
-        alt: "Vertical view of the limestone fireplace with the Eisenhower painting and a small landscape, tweed armchair beside it, ladder shelf with ceramic vessels, dark patterned vintage rug",
+        alt: "Vertical view of the limestone fireplace with the edge of the Samsung Frame TV and the Eisenhower painting to its right, tweed armchair beside it, ladder shelf with ceramic vessels, dark patterned vintage rug",
       },
       right: {
         src: `${IMG}/hill-country-living-tweed-armchairs-window-vintage-rug-leather-stool-conversation-area.jpg`,
@@ -237,12 +241,12 @@ export const hillCountryLivingCaseStudy: CaseStudy = {
       pressing: { choreo: { pin: true } },
     },
 
-    // Single: record-player + Eisenhower detail (personality closer for collected section)
+    // Single: record-player shelf detail (personality closer for collected section)
     {
       id: "collected-recordplayer",
       type: "image",
       src: `${IMG}/hill-country-living-vintage-record-player-vinyl-shelf-limestone-eisenhower-detail.jpg`,
-      alt: "Tight detail of the mid-century record-player shelf against the limestone wall, vinyl records below including Sturgill Simpson and ZZ Top, cactus and small framed landscape painting to the side, edge of the Eisenhower painting visible above",
+      alt: "Tight detail of the mid-century record-player shelf against the limestone wall, vinyl records below including Sturgill Simpson and ZZ Top, cactus and small framed landscape painting to the side, a gilt-framed landscape and the edge of the Samsung Frame TV above",
       aspect: "native",
       padded: true,
       // Climbs rather than zooms. The file is 2220px native, under the

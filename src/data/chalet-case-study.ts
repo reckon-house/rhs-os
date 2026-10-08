@@ -7,7 +7,7 @@ export const chaletCaseStudy: CaseStudy = {
   title: "Mountain View Chalet",
   category: { label: "Interiors", href: "/category/interiors" },
   subtitle:
-    "A 1968 Pacific Northwest chalet, taken down to the studs and rebuilt inside and out. | The house keeps its cabin bones, with mid-century furniture and 16-foot glass doors framing the tree line.",
+    "A 1968 Pacific Northwest chalet, taken down to the studs and rebuilt inside and out. | The house keeps its cabin bones, with mid-century furniture and glass doors 16 feet across framing the tree line.",
   field: "Interior Design\nExterior Direction\nFinish Selection\nFurniture Curation\nFixture Sourcing",
   author: "Jeremy Prasatik",
   published: "2023",
@@ -39,7 +39,7 @@ export const chaletCaseStudy: CaseStudy = {
       },
       title: "Mountain View\nChalet",
       subtitle:
-        "A 1968 Pacific Northwest chalet, taken down to the studs and rebuilt inside and out. | The house keeps its cabin bones, with mid-century furniture and 16-foot glass doors framing the tree line.",
+        "A 1968 Pacific Northwest chalet, taken down to the studs and rebuilt inside and out. | The house keeps its cabin bones, with mid-century furniture and glass doors 16 feet across framing the tree line.",
       field: "Interior Design  Exterior Direction  Finish Selection  Furniture Curation  Fixture Sourcing",
       author: "Jeremy Prasatik",
       published: "2023",
@@ -48,21 +48,21 @@ export const chaletCaseStudy: CaseStudy = {
       summary: [
         { label: "Built", value: "1968 PNW chalet rebuilt from the studs up: exterior, interior, and furnishings" },
         { label: "Scope", value: "Interior design, exterior direction, finish selection, furniture and fixture sourcing" },
-        { label: "Materials", value: "Reclaimed PNW pine, painted stone, warm gray siding, 16-foot glass doors, walnut, Malm fireplace, sputnik chandelier" },
-        { label: "Angle", value: "The chalet was rebuilt around the tree line, with 16-foot glass doors on the main wall and furniture kept plain so it doesn't compete with the view." },
+        { label: "Materials", value: "Reclaimed PNW pine, painted stone, gray-brown siding, glass doors 16 feet across, walnut, Malm fireplace, sputnik chandelier" },
+        { label: "Angle", value: "The chalet was rebuilt around the tree line, with glass doors 16 feet across on the main wall and furniture kept plain so it doesn't compete with the view." },
       ],
       abstract:
-        "The Mountain View chalet was built in 1968 in the Pacific Northwest and hadn't been rethought since the '90s. Before the rebuild, the house had blue carpet, dated railings, and an exterior that disappeared on cloudy days. The structure was sound, and everything else needed to go.\n\nThe house was taken down to the studs. The exterior was repainted warm gray with white railings, and new fixtures light the patio and stairs at night. Inside, the main level now has reclaimed PNW pine floors in mixed plank widths, a Malm fireplace, a sputnik chandelier overhead, and 16-foot sliding glass doors on the main wall, so the tree canopy is what you look at from every seat in the room.\n\nThe furniture is kept simple on purpose so it doesn't compete with what's outside the glass: a tufted gray sofa, a woven bench, a walnut dining set, and a leaning ladder shelf against painted stone. The chalet's original footprint gained over 400 square feet.",
+        "The Mountain View chalet was built in 1968 in the Pacific Northwest and hadn't been rethought since the '90s. Before the rebuild, the house had blue carpet, dated railings, and an exterior that disappeared on cloudy days. The structure was sound, and everything else needed to go.\n\nThe house was taken down to the studs. The siding was repainted a gray-brown with a warm undertone and the railings white, and new fixtures light the patio and stairs at night. Inside, the main level now has reclaimed PNW pine floors in mixed plank widths, a Malm fireplace, a sputnik chandelier overhead, and sliding glass doors 16 feet across on the main wall, so the tree canopy is what you look at from every seat in the room.\n\nThe furniture is kept simple on purpose so it doesn't compete with what's outside the glass: a tufted gray sofa, a woven bench, a walnut dining set, and a leaning ladder shelf against painted stone. The chalet's original footprint gained over 400 square feet.",
     },
 
         // ── HERO — the iconic interior shot: A-frame ceiling, sputnik chandelier,
-    // 16-foot glass doors framing the tree canopy, Malm fireplace, walnut
+    // glass doors 16 feet across framing the tree canopy, Malm fireplace, walnut
     // dining set. The whole project's argument in one frame.
     {
       id: "hero",
       type: "hero",
       image: `${IMG}/chalet-living-room-a-frame-glass-doors-malm-fireplace-sputnik-chandelier.jpg`,
-      alt: "Mountain View chalet living room with A-frame ceiling, sputnik chandelier, Malm fireplace, walnut dining set, and 16-foot glass doors framing the Pacific Northwest tree canopy",
+      alt: "Mountain View chalet living room with A-frame ceiling, sputnik chandelier, Malm fireplace, walnut dining set, and glass doors 16 feet across framing the Pacific Northwest tree canopy",
       pressing: { choreo: { rise: true } },
     },
 
@@ -76,7 +76,7 @@ export const chaletCaseStudy: CaseStudy = {
       label: "SECTION 02: DOWN TO THE STUDS",
       title: "The chalet no longer disappears",
       pressing: {
-        mark: { n: "02", name: "Warm Gray" },
+        mark: { n: "02", name: "Gray-Brown" },
         heldLine: "against the evergreens on cloudy days.",
         choreo: { pin: true },
       },
@@ -86,7 +86,7 @@ export const chaletCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "Warm gray went on the siding and white on the railings.",
+        "A gray-brown with a warm undertone went on the siding, and white on the railings.",
     },
     {
       id: "studs-footnote",
@@ -99,17 +99,17 @@ export const chaletCaseStudy: CaseStudy = {
 
     // ── Front exterior — the zoom. The section argues that the exterior
     // stopped disappearing against the PNW green, and filling the mat is
-    // what lets the warm gray read at the scale the argument claims.
+    // what lets the gray-brown read at the scale the argument claims.
     {
       id: "exterior-front-hero",
       type: "hero",
       image: `${IMG}/chalet-exterior-front-warm-gray-white-railings-pacific-northwest.jpg`,
-      alt: "Front of the chalet repainted in warm gray with white railings, surrounded by Pacific Northwest evergreens and rocky landscape",
+      alt: "Front of the chalet repainted gray-brown with white railings, surrounded by Pacific Northwest evergreens and rocky landscape",
       inline: true,
       pressing: {
         plate: "02",
         captions: [
-          "Warm gray, white railings",
+          "Gray-brown, white railings",
           "Repainted for contrast",
           "Pacific Northwest",
         ],
@@ -136,7 +136,7 @@ export const chaletCaseStudy: CaseStudy = {
       native: true,
       left: {
         src: `${IMG}/chalet-exterior-side-string-lights-stone-patio-white-stair-railings.jpg`,
-        alt: "Side of the chalet at dusk with string lights strung over a stone patio, white-railed stairs, and warm gray siding",
+        alt: "Side of the chalet at dusk with string lights strung over a stone patio, white-railed stairs, and gray-brown siding",
       },
       right: {
         src: `${IMG}/chalet-exterior-side-back-deck-white-stairs-stone-patio.jpg`,
@@ -206,7 +206,7 @@ export const chaletCaseStudy: CaseStudy = {
       },
       right: {
         src: `${IMG}/chalet-living-room-wide-walnut-dining-set-malm-fireplace-glass-doors-deck.jpg`,
-        alt: "Wide view of the chalet living room with a walnut dining set, the Malm fireplace, sputnik chandelier overhead, and 16-foot glass doors opening to the deck",
+        alt: "Wide view of the chalet living room with a walnut dining set, the Malm fireplace, sputnik chandelier overhead, and the glass doors opening to the deck",
       },
       pressing: {
         captions: ["Ladder shelf, painted stone", "Walnut dining set\nMalm fireplace"],
@@ -295,7 +295,7 @@ export const chaletCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "The 16-foot doors, the A-frame, and the warm gray exterior land in the middle of the chart: cabin form at mid-century proportions.",
+        "The 16-foot-wide doors, the A-frame, and the gray-brown exterior land in the middle of the chart: cabin form at mid-century proportions.",
     },
     {
       id: "blend-footnote",

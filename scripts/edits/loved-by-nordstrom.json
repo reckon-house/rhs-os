@@ -2,7 +2,7 @@
  "k": "loved-by-nordstrom",
  "variants": {
   "index": {
-   "note": "Flow opens the room: what the campaign was, the Instagram heart it was built on and its two tiers, then four chapters that are also the section titles (the heart, the tile, Liked and Loved as a priority lever, the channels); 'typography' is out of the tier line because the Loved tiles' wordmark differs in the pictures, and the closing says merchandisers swapped brands in weekly with no brief, then names the designers.",
+   "note": "Flow opens the room: what the campaign was, the Instagram heart it was built on and its two tiers, then four chapters that are also the section titles (the heart, the tile, Liked and Loved as a priority lever, the channels); 'typography' is back in the tier line and 'the type' in the channels row, since every tile was meant to be the tracked-out sans (his answer, 8 Oct 2026; the two serif Loved tiles are pictures to re-set), the tiles ran as Instagram posts (his answer), and the closing says merchandisers swapped brands in weekly with no brief, then names the designers.",
    "stand": "Loved by Nordstrom was a year-long campaign for smaller designer labels, in stores and online. | Every tile was built on the heart icon borrowed from Instagram, with Liked by or Loved by Nordstrom at the base.",
    "abs": [],
    "did": [
@@ -30,7 +30,7 @@
      ]
     },
     "The Loved by Nordstrom hero slots": {
-     "t": "Liked and Loved used the same icon,",
+     "t": "Liked and Loved used the same icon and typography,",
      "g": "so the merchandising team could raise or lower a brand's priority without touching the design",
      "pic": "loved-by-nordstrom-large-tibi-fur-coat-campaign-tile.jpg",
      "li": [
@@ -45,7 +45,7 @@
      "li": [
       "Twelve months of tiles | went out across social feeds, email sends, in-store signage, and web landing pages.",
       "The landing page | organized the stories by brand.",
-      "The grid and the icon | were fixed on every tile."
+      "The grid, the type and the icon | were fixed on every tile."
      ]
     }
    },
@@ -59,7 +59,7 @@
     "The same tile ran in your feed": "Across channels"
    },
    "decks": {
-    "Nobody had to learn": "Loved by Nordstrom tiles ran in Instagram stories, the app the heart icon came from.",
+    "Nobody had to learn": "Loved by Nordstrom tiles ran as Instagram posts, in the app the heart icon came from.",
     "The middle of each tile held": "The tile template didn't change all year.",
     "The Loved by Nordstrom hero slots": "The Loved by Nordstrom hero slots went to one brand at a time.",
     "The same tile ran in your feed": "Photography from a 1080-square social post scaled up to a 1440-wide web hero with a crop spec and no new art direction."

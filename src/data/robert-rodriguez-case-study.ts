@@ -24,7 +24,7 @@ export const robertRodriguezCaseStudy: CaseStudy = {
   slug: "robert-rodriguez",
   title: "Robert Rodriguez x Neiman’s",
   category: { label: "Creative", href: "/category/creative" },
-  subtitle: "A spring campaign for Neiman Marcus, shot in one day and run across social, email, the stores, and editorial. | The campaign mixes ’80s mall glam with high fashion.",
+  subtitle: "The Robert Rodriguez label's spring campaign for Neiman Marcus, shot in one day and run across social, email, the stores, and editorial. | The campaign mixes ’80s mall glam with high fashion.",
   field: "Campaign Design Art Direction Photo Compositing",
   author: "Jeremy Prasatik",
   published: "2024",
@@ -44,7 +44,7 @@ export const robertRodriguezCaseStudy: CaseStudy = {
       // the break must be explicit or × and Neiman's rise together.
       title: "Robert\nRodriguez\nx\nNeiman’s",
       subtitle:
-        "A spring campaign for Neiman Marcus, shot in one day and run across social, email, the stores, and editorial. | The campaign mixes ’80s mall glam with high fashion.",
+        "The Robert Rodriguez label's spring campaign for Neiman Marcus, shot in one day and run across social, email, the stores, and editorial. | The campaign mixes ’80s mall glam with high fashion.",
       field: "Campaign Design Art Direction Photo Compositing",
       author: "Jeremy Prasatik",
       published: "2024",
@@ -68,12 +68,14 @@ export const robertRodriguezCaseStudy: CaseStudy = {
       pressing: { mark: { n: "02", name: "Statement" } },
     },
 
-    // ── STOREFRONT PLATE — climbs across the pinned cover ──
+    // ── PRINT EXAMPLE PLATE, climbs across the pinned cover. The window is
+    // a mockup: no real storefront ran the composites, it is a print
+    // example (his answer, 8 Oct 2026). The filename predates that.
     {
       id: "hero",
       type: "hero",
       image: `${IMG}/neiman-marcus-robert-rodriguez-woman-cream-polka-dot-dress-pink-blazer-orange-yellow-backdrop-storefront-window-display-campaign.jpg`,
-      alt: "Robert Rodriguez Spring, storefront window campaign display",
+      alt: "Robert Rodriguez Spring, print example of a double-exposure composite in a shop window mockup",
       pressing: { choreo: { rise: true } },
     },
 
@@ -194,14 +196,6 @@ export const robertRodriguezCaseStudy: CaseStudy = {
       size: "subhead",
       content:
         "Social got tight crops, email got the header images, the stores got the color fields at full strength, and the editorial spreads gave the double exposures room to run wide.",
-    },
-    {
-      id: "deploy-footnote",
-      type: "text",
-      size: "base",
-      fullWidth: true,
-      content:
-        "The storefront window ran the composites at large format.",
     },
 
     // ── COMPOSITE PAIR — pinned so the gradient plate can climb it ──

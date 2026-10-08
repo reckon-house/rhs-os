@@ -64,7 +64,7 @@ export const bigBendCaseStudy: CaseStudy = {
         { label: "Later", value: "Used as backdrops in the Capitan Boot Co. campaign" },
       ],
       abstract:
-        "The photographs in this study come from a family trip through far West Texas: Big Bend National Park, the road north, and the desert around Marfa. Big Bend is the largest national park in Texas and one of the least visited in the country.\n\nThe trip was personal. A few of the photographs later became backdrops for the Capitan Boot Co. campaign, which was shot in the same part of West Texas.",
+        "The photographs in this study come from a family trip through far West Texas: Big Bend National Park, the road north, and the desert around Marfa. Big Bend is the largest national park in Texas and one of the least visited in the country.\n\nThe trip was personal. A few of the photographs later became backdrops for the Capitan Boot Co. campaign.",
     },
 
     // ── HERO — a Chisos peak, climbing the cover (non-inline) ──

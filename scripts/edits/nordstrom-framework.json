@@ -2,8 +2,8 @@
  "k": "nordstrom-framework",
  "variants": {
   "index": {
-   "note": "Flow opens the room: what the framework is with the 22% beside it, then two chapters that are also the section titles; the problem keeps its own statement, the bucket count stays out until Jeremy confirms it (every picture shows three marks in one serif), the first row describes two buckets in his own caption words, and the closing carries the names becoming the team's language.",
-   "stand": "Nordstrom.com's content framework was built from scratch, with its own names, icons, and typographic marks. | Engagement lifted 22% over two years.",
+   "note": "Flow opens the room: what the content framework is, with content engagement up 22% and demand with it (his answer, 8 Oct 2026), then two chapters that are also the section titles; the problem keeps its own statement; the four sections are back in chapter 1, its section line says three of the four are shown and its row names two of them in his caption words plus the one typeface every mark shared (his answers: four sections, three shown, one typeface, an icon each; On Our List stays out of the strings because check.mjs reads its Our as a we/our/us), and the closing carries the names becoming the team's language.",
+   "stand": "Nordstrom.com's content framework was built from scratch, with its own names, icons, and typographic marks. | Content engagement lifted 22% over two years, and demand went up with it.",
    "abs": [
     "Concepted the framework and pitched it to merchandising, marketing, and editorial."
    ],
@@ -17,23 +17,23 @@
    "didTitle": "Role",
    "chapters": {
     "Every story had to land": {
-     "t": "Every story had to land in a named bucket,",
+     "t": "Every story had to land in one of four sections,",
      "g": "from new arrivals and trending brands to occasion dressing",
      "pic": "nordstrom-content-framework-lockup-whats-now.jpg",
      "li": [
       "What's Now | of the moment.",
       "Wear to Where | occasion-based items and looks.",
-      "Custom icons | one for every bucket."
+      "One typeface | every mark shared it, and each section got its own recognizable icon."
      ]
     },
     "Every homepage module and email section": {
-     "t": "Whole landing pages were built around a single bucket,",
+     "t": "Whole landing pages were built around a single section of the framework,",
      "g": "so a customer could tell what they were looking at",
      "pic": "nordstrom-framework-on-our-list-phone-turntable.jpg",
      "li": [
-      "Content calendars | mapped stories to buckets at the brief stage.",
+      "Content calendars | mapped stories to sections at the brief stage.",
       "Campaigns that used to be one-offs | got planned as part of a category.",
-      "Planning meetings | the bucket names showed up in them before the framework reached a customer."
+      "Planning meetings | the names showed up in them before the framework reached a customer."
      ]
     }
    },
@@ -43,16 +43,16 @@
    },
    "labels": {
     "Nothing on Nordstrom's homepage": "The problem",
-    "Every story had to land": "The buckets",
+    "Every story had to land": "The framework",
     "Every homepage module and email section": "Homepage, email, landing pages"
    },
    "decks": {
     "Nothing on Nordstrom's homepage": "Email ran on its own cadence and landing pages on another, and the only thing tying any of it together was the date on the calendar.",
-    "Every story had to land": "The bucket names sound like a magazine's sections.",
-    "Every homepage module and email section": "Every homepage module and email section carried its bucket's lockup and icon."
+    "Every story had to land": "Three of the four are shown here.",
+    "Every homepage module and email section": "Every homepage module and email section carried a lockup and icon from the framework."
    },
    "lines": {
-    "The bucket names showed up": "The bucket names ended up being how everyone who touched digital content talked about the work. | The icons, the typography and the names all changed over time, but the bucket structure stayed the same."
+    "The bucket names showed up": "The section names ended up being how everyone who touched digital content talked about the work. | The icons, the typography and the names all changed over time, but the structure stayed the same."
    },
    "rest": "drop",
    "moreTo": "chapters",

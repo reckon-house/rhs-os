@@ -7,7 +7,7 @@ export const jChristiansonCaseStudy: CaseStudy = {
   title: "J. Christianson",
   category: { label: "Creative", href: "/category/creative" },
   subtitle:
-    "A brand identity for J. Christianson, a fashion and home goods label, built from the name outward. | The four-circle mark changes color from place to place, and one tree drawing in four colorways covers the whole line.",
+    "A brand identity for J. Christianson, a fashion and home goods label, built from the name outward. | The four-circle mark changes color from place to place, and the product graphics come from one tree drawing.",
   field: "Brand Development\nNaming\nLogo Design\nGraphic Design",
   author: "Jeremy Prasatik",
   published: "2019",
@@ -50,7 +50,7 @@ export const jChristiansonCaseStudy: CaseStudy = {
       },
       title: "J. Christianson",
       subtitle:
-        "A brand identity for J. Christianson, a fashion and home goods label, built from the name outward. | The four-circle mark changes color from place to place, and one tree drawing in four colorways covers the whole line.",
+        "A brand identity for J. Christianson, a fashion and home goods label, built from the name outward. | The four-circle mark changes color from place to place, and the product graphics come from one tree drawing.",
       field: "Brand Development  Naming  Logo Design  Graphic Design",
       author: "Jeremy Prasatik",
       published: "2019",
@@ -65,10 +65,10 @@ export const jChristiansonCaseStudy: CaseStudy = {
         { label: "Built", value: "Name, four-circle mark, palette, tree graphic, product applications" },
         { label: "Scope", value: "Brand development, naming, logo and graphic design" },
         { label: "Tools", value: "Adobe Illustrator, Adobe Photoshop" },
-        { label: "Angle", value: "The mark changes color depending on where it goes, and one tree drawing in four colorways covers the whole product line." },
+        { label: "Angle", value: "The mark changes color depending on where it goes, and one tree drawing carries the product graphics." },
       ],
       abstract:
-        "J. Christianson is a fashion and home goods label, and the brand started from nothing: the name first, then the mark, the palette, the type, and the product graphics.\n\nThe logo is four circles in a tight grid. Its shape stays the same and its colors change with the setting, so the one mark can still be recognized.\n\nThe product graphics come from a tree silhouette, drawn once and run in four seasonal colorways over a striped field in the brand colors. The tree graphic went on apparel, candles, hangtags, and print.",
+        "J. Christianson is a fashion and home goods label, and the brand started from nothing: the name first, then the mark, the palette, the type, and the product graphics.\n\nThe logo is four circles in a tight grid. Its shape stays the same and its colors change with the setting, so the one mark can still be recognized.\n\nThe product graphics come from a tree silhouette, drawn once and set over a striped field in the brand colors. The tree graphic was designed with apparel, candles, hangtags, and print in mind.",
     },
 
         // ── HERO ──
@@ -110,7 +110,7 @@ export const jChristiansonCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "Each season gets its own colorway of the tree graphic: teal and dark green, yellow and gold, orange and rust, and brown and earth tones. The tree and the stripes stay the same in all four.",
+        "Four round pieces show landscapes in teal and dark green, yellow and gold, orange and rust, and brown and earth tones.",
       group: { name: "tree" },
     },
     {
@@ -140,7 +140,7 @@ export const jChristiansonCaseStudy: CaseStudy = {
       id: "seasonal-flat",
       type: "image",
       src: `${IMG}/j-christianson-four-seasonal-tree-circles-flat.jpg`,
-      alt: "J. Christianson four seasonal tree circles, teal, yellow, orange, brown landscape silhouettes",
+      alt: "J. Christianson four tree circles, teal, yellow, orange, brown landscape silhouettes",
       aspect: "native",
       maxWidth: 400,
       blend: "multiply",
@@ -185,7 +185,7 @@ export const jChristiansonCaseStudy: CaseStudy = {
       // cluster reserves.
       pressing: {
         mark: { n: "03", name: "Four Circles" },
-        heldLine: "a hangtag and a storefront sign.",
+        heldLine: "a billboard and a storefront sign.",
         choreo: { pin: true, crossing: true },
       },
     },
@@ -194,7 +194,7 @@ export const jChristiansonCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "The mark is drawn with tight spacing and no outline, in a different color each season.",
+        "The mark is drawn with tight spacing and no outline.",
     },
     {
       id: "mark-footnote",
@@ -268,19 +268,20 @@ export const jChristiansonCaseStudy: CaseStudy = {
     // ── OUTDOOR SIGN HERO — the last picture, grown to full size ──
     // The study's second and final zoom. A quote poster holds nothing, so
     // this cannot climb, and it is the right frame to grow anyway: the
-    // seasonal circles from section 02 fabricated and lit. 3080px native.
+    // four round pieces from section 02, mocked up as a lit sign. 3080px
+    // native.
     {
       id: "outdoor-hero",
       type: "hero",
       image: `${IMG}/j-christianson-outdoor-sign-seasonal-tree-circles.jpg`,
-      alt: "J. Christianson outdoor sign mockup, four seasonal tree circles, evening lighting",
+      alt: "J. Christianson outdoor sign mockup, four tree circles, evening lighting",
       inline: true,
       pressing: {
         plate: "03",
         captions: [
-          "Four seasonal circles as signage",
+          "Four round pieces as signage",
           "Evening light on the facade",
-          "The tree graphic, fabricated",
+          "A sign mockup",
         ],
         choreo: { zoom: true },
       },

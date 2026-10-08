@@ -110,7 +110,7 @@ export const hillCountryBathCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "Vessel sinks sit on marble under wall-mounted bridge faucets with cross handles, a vintage shape on modern plumbing. The cabinet color comes from the same paint family as the kitchen's sage, two steps toward gray. Upper cabinets have glass fronts on one side for display and solid doors on the other for storage.",
+        "Vessel sinks sit on marble under wall-mounted bridge faucets with cross handles, a vintage shape on modern plumbing. The cabinet color is a lighter gray green, two steps from the kitchen's sage in the same paint family. Upper cabinets have glass fronts on one side for display and solid doors on the other for storage.",
       group: { name: "vanity" },
     },
 

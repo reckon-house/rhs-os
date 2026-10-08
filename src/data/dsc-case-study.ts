@@ -69,7 +69,7 @@ export const dscCaseStudy: CaseStudy = {
       subtitle:
         "A marketing site, booking platform, and MCP server for Dallas Sport Collective, a six-trainer gym in North Texas. | An athlete can book from whichever AI they already use, and the owner approves with a tap.",
       abstract:
-        "Dallas Sport Collective grew from a handful of athletes to more than a hundred, and the schedule underneath it all was a pile of texts, handwritten notes, emails, and a Google Sheet nobody fully trusted. The founder needed two things at once: a brand that matched where the gym was headed, and a back office that could keep up. Six trainers work at DSC, and the gym runs eleven programs, from NFL Combine prep to prenatal fitness. DSC is open seven days a week in Celina and McKinney, Texas, with a Frisco headquarters on the way.\n\nI worked with DSC to design and build a marketing site in black and white, with big condensed type and photography of actual members training. I also built a scheduling platform with two faces: an athlete app for booking sessions, and an owner console where the owner can schedule a whole week out loud and approve each request with one tap. The part I find the most fun is an MCP server with eleven tools, so athletes can paste one URL into the AI they already use, whether that's Claude, ChatGPT or Gemini, and ask it what's on their schedule, which trainer fits a goal, or to book Friday at 10am.\n\nEvery booking, whether spoken out loud, requested by an athlete's connected AI, or made with a tap on the calendar, flows through one deterministic engine that checks trainer availability, double-bookings, floor capacity, allowed durations, and cancellation rules. An athlete's AI can only ever request a booking. The platform is Next.js on Vercel, with OAuth 2.0 consent and short-lived tokens, and it is live at two locations.",
+        "Dallas Sport Collective grew from a handful of athletes to more than a hundred, and the schedule underneath it all was a pile of texts, handwritten notes, emails, and a Google Sheet nobody fully trusted. The founder needed two things at once: a brand that matched where the gym was headed, and a back office that could keep up. Six trainers work at DSC, and the gym runs eleven programs, from NFL Combine prep to prenatal fitness. DSC is open seven days a week in Celina and McKinney, Texas, with a Frisco headquarters on the way.\n\nI worked with DSC to design and build a marketing site in black and white, with heavy type and photography of actual members training. I also built a scheduling platform with two faces: an athlete app for booking sessions, and an owner console where the owner can schedule a whole week by talking to an AI and approve each request with one tap. The part I find the most fun is an MCP server with eleven tools, so athletes can paste one URL into the AI they already use, whether that's Claude or ChatGPT, and ask it what's on their schedule, which trainer fits a goal, or to book Friday at 10am.\n\nEvery booking, whether spoken out loud, requested by an athlete's connected AI, or made with a tap on the calendar, flows through one deterministic engine that checks trainer availability, double-bookings, floor capacity, allowed durations, and cancellation rules. An athlete's AI can only ever request a booking. The platform is Next.js on Vercel, with OAuth 2.0 consent and short-lived tokens, and it is live at two locations.",
     },
 
         // ── HERO ──
@@ -175,9 +175,12 @@ export const dscCaseStudy: CaseStudy = {
       // No zoom plate: every capture in this study is 2000px native or
       // less, well under the working floor for a plate that fills the mat.
       // The climbs below carry the choreography instead.
+      //
+      // Claude or ChatGPT only, his answer of 8 Oct 2026: the product names
+      // those two, and no other AI has been tried with the server.
       pressing: {
         mark: { n: "03", name: "From your AI" },
-        heldLine: "from Claude, ChatGPT or Gemini.",
+        heldLine: "from Claude or ChatGPT.",
         choreo: { crossing: true },
       },
     },
@@ -325,13 +328,15 @@ export const dscCaseStudy: CaseStudy = {
     // Moved up out of the image run so the whole owner argument arrives in
     // one column: the queue first, then the week said out loud. The chat
     // screen it describes is the last frame in the row below.
+    // The scheduler is an AI (his answer, 8 Oct 2026: "yes, AI is the
+    // focus!"). It runs on Claude (claude-sonnet-4-6) and takes voice input.
     {
       id: "owner-batch-text",
       type: "text",
       size: "base",
       fullWidth: true,
       content:
-        "The owner can say a whole week out loud: schedule Marcus with Scott every Monday, Wednesday, and Friday at 3pm for a month. The scheduler proposes the batch, accepts the ten clean slots, flags the three it skipped for conflicts, and waits for a \"commit\" before booking anything.",
+        "The console's scheduler is an AI that runs on Claude and takes voice input, so the owner can say a whole week out loud: schedule Marcus with Scott every Monday, Wednesday, and Friday at 3pm for a month. The scheduler proposes the batch, accepts the ten clean slots, flags the three it skipped for conflicts, and waits for a \"commit\" before booking anything.",
     },
     // ── THE TWO OWNER-SIDE REPLAYS ──
     // The paragraph above describes a real exchange; the first frame

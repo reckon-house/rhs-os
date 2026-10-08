@@ -256,9 +256,9 @@ export const hillCountryOakCaseStudy: CaseStudy = {
         {
           name: "Avenir Next Heavy",
           sampleText: "Oakworks",
-          role: "Wordmark & posters",
+          role: "Wordmark",
           description:
-            "Heavy geometric sans for the wordmark and the poster headlines.",
+            "Heavy geometric sans for the wordmark.",
           family: "'Avenir Next', 'Futura', 'Helvetica Neue', sans-serif",
           weight: 800,
         },

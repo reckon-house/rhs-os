@@ -7,7 +7,7 @@ export const jeffreySpringCaseStudy: CaseStudy = {
   title: "Jeffrey Spring Campaign.",
   category: { label: "Creative", href: "/category/creative" },
   subtitle:
-    "A spring campaign for Jeffrey, shot entirely in the studio. | The look was high fashion on a studio budget, with foliage doing the work of a location.",
+    "A spring campaign for Jeffrey, a high-end fashion boutique featuring the staples of the industry and newcomers, was shot entirely in the studio. | The look was high fashion on a studio budget, with foliage doing the work of a location.",
   field: "Art Direction\nCampaign Design\nEmail & Web Templates",
   author: "Jeremy Prasatik",
   published: "2017",
@@ -38,7 +38,7 @@ export const jeffreySpringCaseStudy: CaseStudy = {
       },
       title: "Jeffrey Spring\nCampaign.",
       subtitle:
-        "A spring campaign for Jeffrey, shot entirely in the studio. | The look was high fashion on a studio budget, with foliage doing the work of a location.",
+        "A spring campaign for Jeffrey, a high-end fashion boutique featuring the staples of the industry and newcomers, was shot entirely in the studio. | The look was high fashion on a studio budget, with foliage doing the work of a location.",
       field: "Art Direction  Campaign Design  Email & Web Templates",
       author: "Jeremy Prasatik",
       published: "2017",
@@ -47,11 +47,11 @@ export const jeffreySpringCaseStudy: CaseStudy = {
       summary: [
         { label: "Built", value: "Spring campaign for email, homepage and social. Three designer stories: JW Anderson, Valentino, Simone Rocha" },
         { label: "Scope", value: "Art direction, campaign design, email and web templates" },
-        { label: "Tools", value: "Photoshop, InDesign, studio photography. Color floods, extreme crops" },
+        { label: "Tools", value: "Photoshop, InDesign, studio photography. Extreme crops" },
         { label: "Angle", value: "Monstera and palm fronds were cropped big enough to look like architecture, so a white studio could pass for a location." },
       ],
       abstract:
-        "Jeffrey needed a spring campaign that looked like it had been shot on location, on a studio budget.\n\nEvery photograph was taken in the studio, start to finish. Monstera leaves and palm fronds were cropped big and used as graphic elements, more like architecture than greenery. Color floods and extreme crops made the compositions feel bigger than the room they were shot in.\n\nThe type got the same graphic treatment, condensed, stretched and layered for rhythm across three designer stories: JW Anderson, Valentino and Simone Rocha. One kit covered email, the homepage and social.",
+        "Jeffrey needed a spring campaign that looked like it had been shot on location, on a studio budget.\n\nEvery photograph was taken in the studio, start to finish. Monstera leaves and palm fronds were cropped big and used as graphic elements, more like architecture than greenery. Extreme crops made the compositions feel bigger than the room they were shot in.\n\nThe type got the same graphic treatment, stretched and layered for rhythm across three designer stories: JW Anderson, Valentino and Simone Rocha. One kit covered email, the homepage and social.",
     },
 
         // ── HERO ──

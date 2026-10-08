@@ -158,7 +158,7 @@ try { const q = location.search; if (/[?&]szdots=on/.test(q)) document.documentE
     site: "The site's photography is shot on the actual gym floor.",
     signup: "Athletes create their own accounts and sign the waiver on the way in.",
     app: "The athlete app opens on your next session.",
-    ai: "Athletes can book a session from Claude, ChatGPT or Gemini.",
+    ai: "Athletes can book a session from Claude or ChatGPT.",
     aiUse: "Athletes can book from the AI they already use.",
     checks: "Every booking goes through the same checks.",
     approve: "The owner approves each request with one tap.",
@@ -1036,7 +1036,7 @@ try { const q = location.search; if (/[?&]szdots=on/.test(q)) document.documentE
     ]);
     return (t0) => {
       N.head(t0);
-      N.add(t0 + 250, { lab: "The athlete's own AI", say: esc("Claude, ChatGPT or Gemini, connected with one URL.") });
+      N.add(t0 + 250, { lab: "The athlete's own AI", say: esc("Claude or ChatGPT, connected with one URL.") });
       script(c, P, t0, (doc, at) => {
         const sc = doc.getElementById("sc"), dock = doc.getElementById("dock");
         const scroll = () => { sc.scrollTop = sc.scrollHeight; };

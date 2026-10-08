@@ -2,7 +2,7 @@
  "k": "neiman-marcus",
  "variants": {
   "index": {
-   "note": "Flow opens on what InSite was and how it told stories, then four chapters that are also the four section titles, one per kind of story; the closing keeps the call on the magazine side and the three templates.",
+   "note": "Flow opens on what InSite was and how it told stories, then four chapters that are also the four section titles, one per kind of story; the closing keeps the call on the magazine side and names all three templates (8 Oct: the type-led stories ran on one of the three, so the count holds; which one is not said).",
    "stand": "InSite was the editorial hub on the Neiman Marcus website, and it told fashion stories the way a magazine would. | It had to sell product like a store at the same time.",
    "abs": [
     "On every InSite piece, the concept came first, then the shoot, then the styling and the layout. All of the photography was shot in the studio."
@@ -67,7 +67,7 @@
     "Every InSite layout was a call": "The store side still had to be findable."
    },
    "lines": {
-    "Three templates carried dozens of InSite stories": "Three templates carried dozens of InSite stories."
+    "Three templates carried dozens of InSite stories": "Three templates carried dozens of InSite stories: | open typography for the designer spotlights, color as the environment for the trend stories and a fixed grid for the ways-to-wear features."
    },
    "rest": "drop",
    "moreTo": "chapters",

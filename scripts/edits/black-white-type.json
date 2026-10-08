@@ -2,7 +2,7 @@
  "k": "black-white-type",
  "variants": {
   "index": {
-   "note": "Flow opens the room: what the three lithographs are and the question behind them, then five chapters that are also the section titles (the rules, each print, what changes from print to print); every section carries one plain line, each print's row holds its own fills, and the closing ends on the type.",
+   "note": "Flow opens the room: what the three lithographs are and the question behind them, then five chapters that are also the section titles (the rules, each print, what changes from print to print); every section carries one plain line, each print's row holds its own fills, and the closing ends on the type. 8 Oct: his answers, the swatches are a pattern library to mix and match, only highball stepper is about Lazaretto, and the prints carry no numbers.",
    "stand": "Three lithographs in black ink on white paper, made from six repeating patterns. | It was personal work, and the question was how much range a small set of patterns could produce once color, photography and gradients were off the table.",
    "abs": [
     "The tiles fill the letterforms, spill outside them, and sit behind them as backgrounds."
@@ -19,7 +19,7 @@
      "g": "and each swatch is a tile that repeats in any direction, at any size",
      "li": [
       "The shapes | dots at two scales, lines in three directions and a diamond grid.",
-      "Twelve tiles | each shape is drawn twice, once black on white and once reversed.",
+      "A pattern library | twelve tiles, made to mix and match.",
       "No color | I wanted the shapes and the letterforms to be the focus, so color was never in it."
      ]
     },
@@ -37,6 +37,7 @@
      "t": "The second print, \"highball stepper,\" blows the same tiles up,",
      "g": "and at that size they read a lot bolder",
      "li": [
+      "Slab capitals | stack edge to edge with script threaded between them.",
       "Polka dots | large ones fill a whole capital, and each dot is a shape in its own right.",
       "Geometric serifs | sit in among the slabs."
      ],
@@ -68,7 +69,7 @@
    "decks": {
     "The rules were set before the first print": "Most of the detail in the prints comes from layering them.",
     "Every stroke in \"the fancy\"": "The lettering sits low in the left corner, with swashes running off the edge of the sheet.",
-    "The second print, \"highball stepper,\"": "Slab capitals stack edge to edge with script threaded between them.",
+    "The second print, \"highball stepper,\"": "This print is about Jack White's album Lazaretto.",
     "Handmade strokes sit next to machine-drawn ones": "The geometric 'A' and the slab 'K' in the lower right are the heaviest shapes on the sheet.",
     "All three prints use every one": "The three prints still don't look like they came from one set of patterns."
    },

@@ -7,10 +7,10 @@ export const brandingGraphicsCaseStudy: CaseStudy = {
   title: "Branding, Print & Apparel",
   category: { label: "Creative", href: "/category/creative" },
   subtitle:
-    "Album covers, gig posters, prints, and logos, made over about ten years for a lot of different people. | Each one has its own look, made to fit that client.",
+    "Album covers, gig posters, prints, and logos, made since 2008 for a lot of different people. | Each one has its own look, made to fit that client.",
   field: "Graphic Design\nAlbum Art\nPoster Design\nLogo Design\nPhoto Compositing",
   author: "Jeremy Prasatik",
-  published: "2008 — 2018",
+  published: "2008 to now",
   status: "Ongoing",
   classification: [
     "Graphic Design",
@@ -51,10 +51,10 @@ export const brandingGraphicsCaseStudy: CaseStudy = {
       },
       title: "Branding,\nPrint &\nApparel",
       subtitle:
-        "Album covers, gig posters, prints, and logos, made over about ten years for a lot of different people. | Each one has its own look, made to fit that client.",
+        "Album covers, gig posters, prints, and logos, made since 2008 for a lot of different people. | Each one has its own look, made to fit that client.",
       field: "Graphic Design  Album Art  Poster Design  Logo Design  Photo Compositing",
       author: "Jeremy Prasatik",
-      published: "2008 — 2018",
+      published: "2008 to now",
       status: "Ongoing",
       classification: [
         "Graphic Design",
@@ -64,13 +64,13 @@ export const brandingGraphicsCaseStudy: CaseStudy = {
         "Photo Compositing",
       ],
       summary: [
-        { label: "Built", value: "Four album covers, posters, prints, logos, a storefront window" },
+        { label: "Built", value: "Four album covers, posters, prints, logos, a storefront window mockup" },
         { label: "Scope", value: "Graphic design, album art, poster and logo design, photo compositing" },
         { label: "Tools", value: "Photoshop, Illustrator, InDesign, film camera, hand-rendering" },
         { label: "Angle", value: "Each piece was made to fit its client, such as a fashion collective, a DJ or a lifestyle brand, so no two share a look." },
       ],
       abstract:
-        "Here are album covers, posters, art prints, logos, and one storefront window, made over about ten years for musicians, friends, and a handful of brands.\n\nThe four album covers are each for a different act. The posters and prints run from a typography exercise to double-exposed landscapes. Five logos went to five clients. One 4x6 film photograph was blown up to fill a storefront window.\n\nMost of the work was done in Photoshop, Illustrator, and InDesign, with a film camera for the photography, and hand-drawn type where a piece called for it.",
+        "Here are album covers, posters, art prints, logos, and one storefront window mockup, made since 2008 for musicians, friends, and a handful of brands.\n\nThe four album covers are each for a different act. The posters and prints run from a typography exercise to double-exposed landscapes. Five logos went to five clients. One 4x6 film photograph was mocked up at the size of a storefront window.\n\nMost of the work was done in Photoshop, Illustrator, and InDesign, with a film camera for the photography, and hand-drawn type where a piece called for it.",
     },
 
     // ── HERO CAROUSEL ──
@@ -136,7 +136,7 @@ export const brandingGraphicsCaseStudy: CaseStudy = {
     // at the top of the run.
     // Rise, not zoom — the file is 2520px, under the zoom floor, and the
     // study's single zoom is spent where the copy asks for it (the
-    // storefront, blown out to street size).
+    // storefront window, mocked up at street size).
     {
       id: "poster-abc",
       type: "image",
@@ -294,7 +294,7 @@ export const brandingGraphicsCaseStudy: CaseStudy = {
     {
       id: "headline-1",
       type: "editorial-headline",
-      text: "About ten years of album art,\nposters and logos, each made\nto fit who it was for",
+      text: "Album art, posters and logos\nsince 2008, each made to fit\nwho it was for",
     },
 
     // ════════════════════════════════════════
@@ -307,7 +307,7 @@ export const brandingGraphicsCaseStudy: CaseStudy = {
       title: "The storefront photograph was shot on film",
       pressing: {
         mark: { n: "04", name: "From a 4x6" },
-        heldLine: "and blown up to street size.",
+        heldLine: "and mocked up at street size.",
         // Held, so "to a Building." is still on screen when the window
         // below it starts filling the mat. The two halves of the same
         // sentence should not be a scroll apart.
@@ -323,19 +323,19 @@ export const brandingGraphicsCaseStudy: CaseStudy = {
     },
 
     // ── Bokeh's Fall storefront — the zoom. The section's copy is about a
-    // 4x6 film frame blown out to street size, and filling the mat then
+    // 4x6 film frame mocked up at street size, and filling the mat then
     // travelling the frame is that sentence as a gesture.
     {
       id: "storefront-hero",
       type: "hero",
       image: `${IMG}/branding-graphics-bokehs-fall-storefront-window-display.jpg`,
-      alt: "Bokeh's Fall storefront window display, large bokeh light photograph with overlay typography in modern building",
+      alt: "Bokeh's Fall storefront window mockup, large bokeh light photograph with overlay typography in modern building",
       inline: true,
       pressing: {
         plate: "04",
         captions: [
           "Bokeh's Fall",
-          "Storefront window",
+          "Storefront window mockup",
           "Photograph at street size",
         ],
         instruction: "Scroll. It fills the mat, then travels the frame",
@@ -374,7 +374,7 @@ export const brandingGraphicsCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "The logo for a fashion collective is wrapped in flowing botanical illustration, and the one for a DJ uses halftone dots and a geometric sans. A lifestyle brand got a bird on a monogram.",
+        "Spear Collective's logo is wrapped in flowing botanical illustration, and DJ MIA's uses halftone dots and a geometric sans. Hey SD, a lifestyle brand, got a bird on a monogram.",
     },
     {
       id: "marks-footnote",
@@ -466,7 +466,7 @@ export const brandingGraphicsCaseStudy: CaseStudy = {
       stack: ["Photoshop", "Illustrator", "InDesign", "Camera", "Hand-rendering"],
       links: [],
       content:
-        "The pieces here are a mix of personal and deadline projects, including album sleeves nobody asked for and logos for friends starting things.",
+        "The pieces here are a mix of personal and deadline projects, including logos for friends starting things.",
     },
   ],
 };

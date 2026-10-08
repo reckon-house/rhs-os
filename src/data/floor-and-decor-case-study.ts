@@ -7,7 +7,7 @@ export const floorAndDecorCaseStudy: CaseStudy = {
   title: "Floor & Decor Feature",
   category: { label: "Interiors", href: "/category/interiors" },
   subtitle:
-    "Floor & Decor named the studio Designer of the Quarter for three bathrooms. | All three rooms use the same marble, dolomite, white oak and classic tile.",
+    "Floor & Decor named the studio Designer of the Quarter for three bathrooms. | All three rooms use the same marble, white oak and classic tile.",
   field: "Interior Design\nMaterial Selection\nFinish Coordination",
   author: "Jeremy Prasatik",
   published: "2023",
@@ -43,7 +43,7 @@ export const floorAndDecorCaseStudy: CaseStudy = {
       },
       title: "Floor & Decor\nFeature",
       subtitle:
-        "Floor & Decor named the studio Designer of the Quarter for three bathrooms. | All three rooms use the same marble, dolomite, white oak and classic tile.",
+        "Floor & Decor named the studio Designer of the Quarter for three bathrooms. | All three rooms use the same marble, white oak and classic tile.",
       field: "Interior Design  Material Selection  Finish Coordination",
       author: "Jeremy Prasatik",
       published: "2023",
@@ -52,11 +52,11 @@ export const floorAndDecorCaseStudy: CaseStudy = {
       summary: [
         { label: "Built", value: "Hard surface selections for three residential bathrooms, which earned the studio Designer of the Quarter from Floor & Decor in Summer 2023." },
         { label: "Scope", value: "Interior design, material selection, finish coordination" },
-        { label: "Materials", value: "Marble, dolomite, white oak, classic tile" },
+        { label: "Materials", value: "Marble, white oak, classic tile" },
         { label: "Angle", value: "All the materials for the three bathrooms were picked at once on one moodboard, so the stone, wood and metal were already proven next to each other." },
       ],
       abstract:
-        "In Summer 2023 Floor & Decor named the studio Designer of the Quarter for choosing the hard surfaces in three residential bathrooms. Marble, dolomite, white oak and classic tile were the four materials every project pulled from, and each room used them differently.\n\nThe urban southwest bath has exposed brick and a matte black soaking tub. The modern farmhouse bath has shiplap, brass fixtures and patterned floor tile. In the quiet glam bath, veined marble runs floor to ceiling.\n\nThe focus was hard surfaces, the tile and stone the rest of each room was built around.",
+        "In Summer 2023 Floor & Decor named the studio Designer of the Quarter for choosing the hard surfaces in three residential bathrooms. Every project pulled from the same marble, white oak and classic tile, and each room used them differently.\n\nThe urban southwest bath has exposed brick and a matte black soaking tub. The modern farmhouse bath has shiplap, brass fixtures and patterned floor tile. In the quiet glam bath, veined marble runs floor to ceiling.\n\nThe focus was hard surfaces, the tile and stone the rest of each room was built around.",
     },
 
         // ── HERO ──

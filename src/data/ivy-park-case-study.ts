@@ -6,8 +6,11 @@ export const ivyParkCaseStudy: CaseStudy = {
   slug: "ivy-park",
   title: "Ivy Park by Beyoncé",
   category: { label: "Creative", href: "/category/creative" },
+  // The role leads the subtitle (8 Oct 2026, his yes to naming it). Built
+  // from the study's own roles (Creative Direction, Campaign, Experience
+  // and Ecommerce Design) with no "I", as client work keeps it.
   subtitle:
-    "Beyoncé's Ivy Park launched at Nordstrom, the line's exclusive US partner. | The website went from moodboard to live in six weeks, and most of the product sold out within days.",
+    "Creative direction and design for Ivy Park's launch at Nordstrom, the exclusive US partner for Beyoncé's first activewear line. | The website went from moodboard to live in six weeks, and most of the product sold out within days.",
   field: "Creative Direction\nCampaign Design\nExperience Design\nEcommerce Design",
   author: "Jeremy Prasatik",
   published: "2016",
@@ -51,7 +54,7 @@ export const ivyParkCaseStudy: CaseStudy = {
       },
       title: "Ivy Park\nby Beyoncé",
       subtitle:
-        "Beyoncé's Ivy Park launched at Nordstrom, the line's exclusive US partner. | The website went from moodboard to live in six weeks, and most of the product sold out within days.",
+        "Creative direction and design for Ivy Park's launch at Nordstrom, the exclusive US partner for Beyoncé's first activewear line. | The website went from moodboard to live in six weeks, and most of the product sold out within days.",
       field: "Creative Direction  Campaign Design  Experience Design",
       author: "Jeremy Prasatik",
       published: "2016",
@@ -160,8 +163,12 @@ export const ivyParkCaseStudy: CaseStudy = {
       type: "section-header",
       label: "SECTION 03: THE EXPERIENCE",
       // "Held the page together" overstated what the shape actually did:
-      // it was never structural. It started as a crop mask (an accent)
-      // and got reused until it read as the visual language.
+      // it was never structural. It started as an accent and got reused
+      // until it read as the visual language.
+      //
+      // It was never a crop mask either. 8 Oct 2026, his answer: the
+      // hexagon was only ever an outline behind rectangular photos, so the
+      // held line no longer says it cut portraits out of the grid.
       //
       // That first rewrite ("One Shape Became the Whole Language") was
       // still scoped to the shape alone, and this header now carries the
@@ -184,7 +191,7 @@ export const ivyParkCaseStudy: CaseStudy = {
       // supporting columns.
       pressing: {
         mark: { n: "03", name: "The Polygon" },
-        heldLine: "to cut portraits out of a grid.",
+        heldLine: "to break the photography's grid.",
         choreo: { pin: true, crossing: true },
       },
     },
@@ -215,7 +222,7 @@ export const ivyParkCaseStudy: CaseStudy = {
         {
           title: "The Polygon",
           content:
-            "The portraits sat in a hexagonal frame, sometimes cropped tight to a jawline, sometimes open wide enough for a full figure.\n\nOn scroll the hexagon turned slowly, and the flat photography picked up some depth. The rotation was one CSS transform.",
+            "The polygon sat behind the rectangular portraits as an outline.\n\nOn scroll the hexagon turned slowly, and the flat photography picked up some depth. The rotation was one CSS transform.",
         },
         {
           title: "Typography at Volume",
@@ -225,7 +232,7 @@ export const ivyParkCaseStudy: CaseStudy = {
         {
           title: "Custom Components",
           content:
-            "The Ivy Park page needed components Nordstrom's CMS didn't have: parallax modules, animated polygon masks, full-bleed video that played on scroll, type lockups that scaled with the screen.\n\nThe missing components got built for Ivy Park, and they stayed in Nordstrom's CMS after the launch.",
+            "The Ivy Park page needed components Nordstrom's CMS didn't have: parallax modules, animated polygon outlines, full-bleed video that played on scroll, type lockups that scaled with the screen.\n\nThe missing components got built for Ivy Park, and they stayed in Nordstrom's CMS after the launch.",
         },
       ],
     },
@@ -235,6 +242,11 @@ export const ivyParkCaseStudy: CaseStudy = {
     // directly after the brief cluster and ahead of the screenshot it
     // introduces.
     {
+      // Open question (8 Oct 2026): this device's picture,
+      // ivy-park-polygon-portrait-frame-logo.webp, shows a portrait cropped
+      // INTO the hexagon, and he said the hexagon was only ever an outline
+      // behind rectangular photos. Whether the picture is campaign work or
+      // a later portfolio graphic is his to answer.
       id: "experience-hex-frame",
       type: "hex-polygon",
     },
@@ -249,7 +261,7 @@ export const ivyParkCaseStudy: CaseStudy = {
       id: "experience-page-1",
       type: "image",
       src: `${IMG}/ivy-park-scrolling-experience-polygon-typography.jpg`,
-      alt: "Ivy Park scrolling experience detail, polygon portrait frames, Courage is Power typography",
+      alt: "Ivy Park scrolling experience detail, polygon outlines behind the portraits, Courage is Power typography",
       aspect: "native",
       pressing: { choreo: { rise: true } },
     },
@@ -270,7 +282,7 @@ export const ivyParkCaseStudy: CaseStudy = {
       images: [
         { src: `${IMG}/ivy-park-experience-page-hero-product-grid.jpg`, alt: "Ivy Park brand experience, full page hero section and product grid" },
         { src: `${IMG}/ivy-park-experience-confidence-strength-inclusivity.jpg`, alt: "Ivy Park experience, Confidence is Strength section, product specs, inclusivity messaging" },
-        { src: `${IMG}/ivy-park-experience-courage-power-polygon-frames.jpg`, alt: "Ivy Park experience, Courage is Power section with polygon portrait frames" },
+        { src: `${IMG}/ivy-park-experience-courage-power-polygon-frames.jpg`, alt: "Ivy Park experience, Courage is Power section with polygon outlines behind the portraits" },
       ],
       // Held so the phone climbs across the desktop pages. Same system,
       // smaller screen, and the climb is what puts them in that order.
@@ -413,7 +425,7 @@ export const ivyParkCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "The polygon crops the same at 300px and at 3000px, and bold type reads at any size. Black-and-white photography goes to any aspect ratio.",
+        "The polygon outline looks the same at 300px and at 3000px, and bold type reads at any size. Black-and-white photography goes to any aspect ratio.",
     },
 
     // ── SIGNAGE — the "Confidence is Strength" typography-at-volume

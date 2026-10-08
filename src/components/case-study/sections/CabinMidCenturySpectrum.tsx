@@ -89,8 +89,8 @@ const ELEMENTS: Element[] = [
 
   // ── Center / blend ──
   { name: "A-FRAME GEOMETRY", lean: 0.46, yOffset: -110, color: "#7A6850", particleCount: 70, clusterRadiusX: 60, clusterRadiusY: 50 },
-  { name: "16-FT GLASS DOORS", lean: 0.50, yOffset: 50, color: "#A8B0AC", particleCount: 70, clusterRadiusX: 60, clusterRadiusY: 50 },
-  { name: "WARM GRAY EXTERIOR", lean: 0.42, yOffset: 130, color: "#5B5A55", particleCount: 55, clusterRadiusX: 50, clusterRadiusY: 45 },
+  { name: "16-FT-WIDE GLASS DOORS", lean: 0.50, yOffset: 50, color: "#A8B0AC", particleCount: 70, clusterRadiusX: 60, clusterRadiusY: 50 },
+  { name: "GRAY-BROWN EXTERIOR", lean: 0.42, yOffset: 130, color: "#5B5A55", particleCount: 55, clusterRadiusX: 50, clusterRadiusY: 45 },
   { name: "PNW PINE FLOORS", lean: 0.55, yOffset: -10, color: "#8C7355", particleCount: 55, clusterRadiusX: 50, clusterRadiusY: 45 },
 
   // ── Mid-century lean ──

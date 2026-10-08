@@ -97,7 +97,8 @@ export const arcCaseStudy: CaseStudy = {
   // the query that most deserves it.
   field: "AI Home Inventory\nComputer Vision\nInsurance Technology",
   author: "Jeremy Prasatik",
-  published: "2024",
+  // 2025, his answer of 8 Oct 2026 ("2025 works"): the repo starts on 30 May 2025.
+  published: "2025",
   status: "V1 Live  In market",
   classification: [
     "Product Design",
@@ -129,7 +130,7 @@ export const arcCaseStudy: CaseStudy = {
         "A.R.C. is an iPhone app I designed and built for home inventory. | It uses AI to recognize what you own, catalogs it, makes PDF reports, then calculates whether your insurance policy actually covers it.",
       field: "AI Home Inventory Computer Vision Insurance Technology",
       author: "Jeremy Prasatik",
-      published: "2024",
+      published: "2025",
       status: "V1 Live  In market",
       classification: [
         "Product Design",
@@ -145,7 +146,7 @@ export const arcCaseStudy: CaseStudy = {
          on disk — a room, the scan that reads it, what the scan
          produced, the same thing on other surfaces, then the mark. */
       reel: {
-        caption: "Preview · 8 frames · 2024",
+        caption: "Preview · 8 frames · 2025",
         colors: REEL_COLORS,
         /* EVERY FRAME IS OPAQUE. Two of these were PNG screen renders
            with alpha — a phone with transparent corners, the mark on a
@@ -786,8 +787,12 @@ export const arcCaseStudy: CaseStudy = {
         },
         {
           title: "AI-Assisted Development",
+          // His answer, 8 Oct 2026: a Claude model wrote the code from the
+          // start, and A.R.C. launched once he moved everything into
+          // Claude Code. The tool he started in stays unnamed, at his word.
+          // So the bottleneck line says Claude, which is true of all ten weeks.
           content:
-            "Claude Code was my main environment from start to finish. I would describe what I wanted in plain language, read the code that came back, test it, talk through the changes, and ship. Then I did it again for the next feature.\n\nBuilding with Claude Code moves where the bottleneck sits: less on syntax or knowing a framework, more on being clear about what the product should do, which is the design part.\n\nPutting the bottleneck on design is a big part of why I could make all of A.R.C. in ten weeks.",
+            "Claude wrote the code from the start, and A.R.C. launched once I moved everything into Claude Code. I would describe what I wanted in plain language, read the code that came back, test it, talk through the changes, and ship. Then I did it again for the next feature.\n\nBuilding with Claude moves where the bottleneck sits: less on syntax or knowing a framework, more on being clear about what the product should do, which is the design part.\n\nPutting the bottleneck on design is a big part of why I could make all of A.R.C. in ten weeks.",
         },
         {
           title: "Development Timeline",

@@ -96,7 +96,7 @@ window.ENTRY_LINES = {
   "tool/camera": "The photography in Branding, Print & Apparel was shot on a film camera.",
   /* Robert Rodriguez: "Four photographs, one typeface family, and a color
      field make up the campaign." */
-  /* what it answered: Robert Rodriguez lists Capture One in its stack and names no job for it, so the line stays plain: "A spring campaign for Neiman Marcus, shot in one day" */
+  /* what it answered: Robert Rodriguez lists Capture One in its stack and names no job for it, so the line stays plain: "The Robert Rodriguez label's spring campaign for Neiman Marcus, shot in one day" */
   "tool/capture-one": "Capture One is software for shooting and editing photographs. It was used on Neiman Marcus's Robert Rodriguez campaign, a spring shoot done in one studio day.",
   /* Sally OS: "Claude runs the chat and gets the reasoning jobs: turning
      competitive signals into recommendations, drafting the campaign brief
@@ -104,29 +104,29 @@ window.ENTRY_LINES = {
   /* what it answered: Sally OS: "Tracking competitors was all manual"; "The information was all there, spread across people and formats, and nobody had pulled it together" */
   "tool/claude": "Sally Beauty used to track competitors by hand, and what it knew was spread across people and formats. In Sally Marketing OS, Claude gets the reasoning jobs: turning competitive signals into recommendations, drafting the campaign brief and writing copy in the brand voice.",
   /* DSC: "athletes can paste one URL into the AI they already use, whether
-     that's Claude, ChatGPT or Gemini, and ask it what's on their schedule,
+     that's Claude or ChatGPT, and ask it what's on their schedule,
      which trainer fits a goal, or to book Friday at 10am" */
   /* what it answered: DSC: "An athlete never has to open the app"; "paste one URL into the AI they already use" */
-  "tool/claude-chatgpt": "Dallas Sport Collective's athletes can book a session without opening the gym's app. They paste one URL into the AI they already use, whether that's Claude, ChatGPT or Gemini, and ask what's on their schedule, which trainer fits a goal, or to book Friday at 10am.",
-  /* A.R.C.: "Claude Code was my main environment from start to finish."
+  "tool/claude-chatgpt": "Dallas Sport Collective's athletes can book a session without opening the gym's app. They paste one URL into the AI they already use, whether that's Claude or ChatGPT, and ask what's on their schedule, which trainer fits a goal, or to book Friday at 10am.",
+  /* A.R.C.: "Claude wrote the code from the start, and A.R.C. launched once I moved everything into Claude Code."
      Sally OS: "Claude Code was my development environment for all of it."
      About: "Claude Code is this site's CMS, design tool and build
      environment at once."
      Dallas Sport Collective, in his words (2 Oct 2026): "DSC is also a
      claude code project." */
-  /* what it answered: A.R.C.: "Claude Code was my main environment from start to finish"; Faux Reel: "Faux Reel took a day to build with Claude Code"; About: "Claude Code is this site's CMS, design tool and build environment at once"; DSC, his word: "DSC is also a claude code project" */
-  "tool/claude-code": "Claude Code is Anthropic's coding agent, and it's where I build: A.R.C. end to end, Sally Marketing OS, Dallas Sport Collective and Faux Reel, which took a single day. It's also this site's CMS, design tool and build environment at once.",
+  /* what it answered: A.R.C.: "Claude wrote the code from the start, and A.R.C. launched once I moved everything into Claude Code"; Faux Reel: "Faux Reel took a day to build with Claude Code"; About: "Claude Code is this site's CMS, design tool and build environment at once"; DSC, his word: "DSC is also a claude code project" */
+  "tool/claude-code": "Claude Code is Anthropic's coding agent, and it's where I build: A.R.C., Sally Marketing OS, Dallas Sport Collective and Faux Reel, which took a single day. It's also this site's CMS, design tool and build environment at once.",
   /* Faux Reel: "The whole reel runs in one box on the page, with CSS
      animation and no video file anywhere"; "The finished web component
      weighs 4.8KB gzipped" */
   /* what it answered: Faux Reel: "Faux Reel skips the footage and runs a stack of still photographs through fourteen transition types: wipes, blinks, a burn"; "The whole reel runs in one box on the page, with CSS animation and no video file anywhere". The sizzle-reel problem and the 4.8KB are fig/4-8kb's */
   "tool/css": "Faux Reel takes a stack of still photographs through fourteen transition types, like wipes, blinks and a burn. The whole reel runs in one box on the page, with CSS animation and no video file anywhere.",
   /* Ivy Park: "The Ivy Park page needed components Nordstrom's CMS didn't
-     have: parallax modules, animated polygon masks, full-bleed video that
+     have: parallax modules, animated polygon outlines, full-bleed video that
      played on scroll"; "The custom CMS components built for the project
      went into Nordstrom's shared library and powered other launches for
      two years." */
-  "tool/custom-components": "Ivy Park's launch page needed components Nordstrom's CMS didn't have, like parallax modules, animated polygon masks and video that played on scroll. They got built for the launch, then went into Nordstrom's shared library.",
+  "tool/custom-components": "Ivy Park's launch page needed components Nordstrom's CMS didn't have, like parallax modules, animated polygon outlines and video that played on scroll. They got built for the launch, then went into Nordstrom's shared library.",
   /* Loved by Nordstrom's own lead */
   /* what it answered: Loved by Nordstrom: "a Nordstrom mandate to lift smaller designer labels on the department store floor and the digital storefront at the same time. The answer was to borrow the heart icon from Instagram"; "Liked and Loved used the same icon and typography, so the merchandising team could raise or lower a brand's priority without touching the design" */
   "tool/editorial-systems": "Nordstrom wanted its smaller designer labels lifted in stores and online at once, so Loved by Nordstrom borrowed Instagram's heart icon. The day-to-day tiles got \"Liked\" and the hero slots got \"Loved\", so merchandising could raise or lower a brand's priority without touching the design.",
@@ -140,7 +140,7 @@ window.ENTRY_LINES = {
   /* Various design (Branding, Print & Apparel): "hand-drawn type where a
      piece called for it"; "the pop artist's sleeve has grunge compositing
      and hand-drawn type" */
-  "tool/hand-rendering": "Branding, Print & Apparel spans about ten years of album covers, posters and logos, and type was drawn by hand wherever a piece called for it. The pop artist's album sleeve pairs it with grunge compositing.",
+  "tool/hand-rendering": "Branding, Print & Apparel spans album covers, posters and logos made since 2008, and type was drawn by hand wherever a piece called for it. The pop artist's album sleeve pairs it with grunge compositing.",
   /* Nordstrom beauty: "where every story is shoppable" */
   /* what it answered: Ivy Park: "its launch page had to be the store, the lookbook and the campaign at the same time" */
   "tool/html-css-js": "Ivy Park's launch page had to be the store, the lookbook and the campaign at the same time. That page and Nordstrom's beauty hub were both built in HTML, CSS and JavaScript.",
@@ -199,13 +199,13 @@ window.ENTRY_LINES = {
   "tool/react": "React is a library for building interfaces. It's part of Faux Reel, where still photographs are cut fast enough to look like motion.",
   "tool/sketch": "Sketch is a design app for screens. It was used on Jeffrey New York's first online store and on the Cosmo Prof refresh.",
   /* Floor & Decor: "three bathrooms"; "All three rooms use the same
-     marble, dolomite, white oak and classic tile." */
+     marble, white oak and classic tile." */
   "tool/sketchup": "SketchUp is a 3D modeling app for rooms. Every one of the eight interiors projects uses it, from the Fairview suite to Floor & Decor's three bathrooms.",
   /* A.R.C.: "A.R.C. runs on a Python backend and a Streamlit frontend,
      deployed on Vercel." */
   "tool/streamlit": "Streamlit turns Python into a web app. It's A.R.C.'s frontend, on a Python backend deployed on Vercel.",
   /* Jeffrey Spring: "shot entirely in the studio"; "foliage doing the work
-     of a location". You By Sally: "real people instead of models" */
+     of a location". You By Sally: "ten influencers" */
   /* what it answered: Jeffrey spring: "Jeffrey needed a spring campaign that looked like it had been shot on location, on a studio budget" */
   "tool/studio-photography": "Jeffrey needed a spring campaign that looked like location work on a studio budget. The whole thing was made indoors, with monstera leaves and palm fronds cropped big enough to stand in for a place.",
   /* Sally OS: "An admin review dashboard updates live over Supabase Realtime." */
@@ -238,11 +238,11 @@ window.ENTRY_LINES = {
   "fig/1-3m": "For a couple of years I was deep in custom homes, leading interior design and selections on $1-3M builds. In 2023 Floor & Decor named me Designer of the Quarter.",
   /* About: "At Nordstrom the new CMS saved $3M over four years. Redesigning the UI and templates cut concept-to-web time 35%". HEAD's wording, kept; "in all" only lets the page split ink from grey after "$3M" */
   "fig/four-years": "Over four years, the new CMS at Nordstrom saved $3M in all. The redesigned UI and templates also cut concept-to-web time 35%.",
-  /* Nordstrom framework: "Engagement lifted 22% over two years."; "Four
-     buckets sort the stories on the homepage, in email, and on landing
-     pages." */
-  /* what it answered: Framework: "Nordstrom was producing more digital content than the site had structure for ... Customers got the whole pile and no way through it"; "Engagement lifted 22% over two years" */
-  "fig/22": "Nordstrom was publishing more content than the site had structure for, and customers got the whole pile with no way through it. The framework I concepted sorted it into four named buckets, and engagement rose 22% over two years.",
+  /* Nordstrom framework: "Content engagement lifted 22% over two years,
+     and demand went up with it."; "Four sections sort the stories on the
+     homepage, in email, and on landing pages." */
+  /* what it answered: Framework: "Nordstrom was producing more digital content than the site had structure for ... Customers got the whole pile and no way through it"; "Content engagement lifted 22% over two years, and demand went up with it" */
+  "fig/22": "Nordstrom was publishing more content than the site had structure for, and customers got the whole pile with no way through it. The framework I concepted sorted it into four named sections. Content engagement rose 22% over two years, and demand went up with it.",
   "fig/35": "Redesigning Nordstrom's UI and templates cut concept-to-web time 35%. That's the time from an idea to a live page.",
   "fig/27": "At Sally Beauty and CosmoProf I built the in-house creative teams and a new operating model. Execution efficiency went up 27%.",
   "fig/30": "At PetSmart, new site patterns, email templates and AI-assisted product photography lifted creative output 30%.",
@@ -321,17 +321,17 @@ window.ENTRY_LINES = {
   /* what it answered: Bath: "The counters are a warm-veined Calacatta, the shower walls a cooler, grayer slab stacked vertically, and the floor a hex marble mosaic. The three marbles were picked to go together, which keeps 400 square feet of hard surface from looking like a showroom" */
   "fig/400-square-feet": "The Hill Country primary bath has 400 square feet of hard surface, which can look like a showroom. Three marbles picked to go together keep it from looking like one: warm-veined Calacatta on the counters, a cooler, grayer slab in the shower and a hex mosaic on the floor.",
   /* Black & white type (Typography & Patterns): "The six shapes are dots
-     at two scales, lines in three directions, and a diamond grid. Each one
-     is drawn as a positive and a negative, twelve tiles in all. The tiles
+     at two scales, lines in three directions, and a diamond grid. The set
+     is a pattern library of twelve tiles, made to mix and match. The tiles
      fill the letterforms, spill outside them, and sit behind them as
      backgrounds. Three lithographs came out of that set." */
   /* what it answered: Black & white type: "The question was how much range a small set of patterns could produce once color, photography and gradients were off the table" */
-  "fig/twelve-tiles": "Black & white type is three lithographs made without color, photography or gradients, to see how much range a few patterns could produce. Dots at two scales, lines in three directions and a diamond grid, each drawn as a positive and a negative, make its twelve tiles.",
+  "fig/twelve-tiles": "Black & white type is three lithographs made without color, photography or gradients, to see how much range a few patterns could produce. Its dots at two scales, lines in three directions and a diamond grid make up a pattern library of twelve tiles to mix and match.",
   /* what it answered: Black & white type: "The same 45-degree stripe, at the same line weight, runs through both"; "blown up like that the angle gives the whole stack some speed" */
   "fig/45-degree": "The same 45-degree stripe, at the same line weight, runs through two of the Black & white type prints. In one it covers a single crossbar of an 'F', and in \"highball stepper\" it fills a slab 'R' top to bottom, where the angle gives the lettering some speed.",
   /* Mountain View */
-  /* what it answered: Chalet: "The Mountain View chalet was built in 1968 in the Pacific Northwest and hadn't been rethought since the '90s"; "The house was taken down to the studs"; "16-foot sliding glass doors on the main wall, so the tree canopy is what you look at from every seat in the room". "Living room" is from the hero's alt: "Mountain View chalet living room with ... 16-foot glass doors framing the Pacific Northwest tree canopy" */
-  "fig/16-foot": "The Mountain View chalet hadn't been rethought since the '90s, so it was taken to the studs and given 16-foot sliding glass doors on the living room's main wall. Now the tree canopy is what you look at from every seat.",
+  /* what it answered: Chalet: "The Mountain View chalet was built in 1968 in the Pacific Northwest and hadn't been rethought since the '90s"; "The house was taken down to the studs"; "sliding glass doors 16 feet across on the main wall, so the tree canopy is what you look at from every seat in the room". "Living room" is from the hero's alt: "Mountain View chalet living room with ... glass doors 16 feet across framing the Pacific Northwest tree canopy" */
+  "fig/16-feet": "The Mountain View chalet hadn't been rethought since the '90s, so it was taken to the studs and given sliding glass doors 16 feet across on the living room's main wall. Now the tree canopy is what you look at from every seat.",
   /* Loved by Nordstrom */
   /* what it answered: Loved by Nordstrom: "a Nordstrom mandate to lift smaller designer labels on the department store floor and the digital storefront at the same time"; "Twelve months of tiles went out across social feeds, email sends, in-store signage, and web landing pages. The template used whatever photography a brand had already licensed" */
   "fig/twelve-months": "Nordstrom wanted its smaller designer labels seen on the store floor and online at the same time, so Loved by Nordstrom ran for twelve months across social, email, in-store signage and web. The template took whatever photography each brand had already licensed.",
@@ -344,15 +344,10 @@ window.ENTRY_LINES = {
      NDA before the team had cleared their schedules" */
   /* what it answered: Ivy Park: "The brief came in under NDA before the team had cleared their schedules, and there were daily calls with Ivy Park while the creative direction got locked in"; "Four weeks went to moodboards, wireframes and a concept pitch". The store/lookbook/campaign brief is tool/html-css-js's */
   "fig/four-weeks": "The Ivy Park brief came in under NDA before Nordstrom's team had cleared their schedules, and there were daily calls with Ivy Park while the creative direction got locked in. The first four weeks went to moodboards, wireframes and a concept pitch.",
-  /* what it answered: Ivy Park: "then two weeks to building and shipping"; "The Ivy Park page needed components Nordstrom's CMS didn't have: parallax modules, animated polygon masks" */
-  "fig/two-weeks": "After the concept pitch, the team had two weeks to build and ship Ivy Park's launch page. That included the components Nordstrom's CMS didn't have yet, like parallax modules and animated polygon masks.",
+  /* what it answered: Ivy Park: "then two weeks to building and shipping"; "The Ivy Park page needed components Nordstrom's CMS didn't have: parallax modules, animated polygon outlines" */
+  "fig/two-weeks": "After the concept pitch, the team had two weeks to build and ship Ivy Park's launch page. That included the components Nordstrom's CMS didn't have yet, like parallax modules and animated polygon outlines.",
   /* what it answered: Ivy Park: "The custom CMS components built for the project went into Nordstrom's shared library and powered other launches for two years" */
   "fig/two-years": "For two years after Ivy Park's launch, the components built for its page powered other launches from Nordstrom's shared library.",
-  /* Various design (Branding, Print & Apparel): "Here are album covers,
-     posters, art prints, logos, and one storefront window, made over about
-     ten years for musicians, friends, and a handful of brands." */
-  /* what it answered: Branding, Print & Apparel: "made over about ten years for musicians, friends, and a handful of brands"; the lead's grey half, his approved line: "Each one has its own look, made to fit that client." */
-  "fig/ten-years": "Over about ten years I made album covers, posters, art prints, logos and one storefront window for musicians, friends and a handful of brands. Each one has its own look, made to fit that client.",
   /* what it answered: Various design: "The four album covers are each for a different act"; "The four covers go from folk to pop to ambient to a DJ"; "Every sleeve had to read at vinyl size and survive as a thumbnail" */
   "fig/four-album-covers": "Every album sleeve in Branding, Print & Apparel had to read at vinyl size and still work as a thumbnail. The four covers go from folk to pop to ambient to a DJ.",
   /* Various design: "Five logos went to five clients."; "Okina's logo is a
@@ -361,12 +356,12 @@ window.ENTRY_LINES = {
      client" is fig/ten-years' (the study's lead); the collective and the DJ
      are fig/five-clients' */
   "fig/five-logos": "Branding, Print & Apparel has five logos for five clients. Okina's is a planet-and-orbit wordmark in heavy black sans, and J. Christianson's is a four-circle mark.",
-  /* what it answered: Branding, Print & Apparel: "Each of the five logos was drawn for a different kind of client"; "The logo for a fashion collective is wrapped in flowing botanical illustration, and the one for a DJ uses halftone dots"; "A lifestyle brand got a bird on a monogram"; "Okina's logo"; "J. Christianson's is a four-circle mark" */
-  "fig/five-clients": "Five logos in Branding, Print & Apparel went to a fashion collective, a DJ, a lifestyle brand, Okina and J. Christianson. The collective's is wrapped in botanical illustration, and the DJ's uses halftone dots.",
-  /* "The storefront photograph was shot on film and blown up to street
+  /* what it answered: Branding, Print & Apparel: "Each of the five logos was drawn for a different kind of client"; "Spear Collective's logo is wrapped in flowing botanical illustration, and DJ MIA's uses halftone dots and a geometric sans"; "Okina's logo"; "J. Christianson's is a four-circle mark" */
+  "fig/five-clients": "Five logos in Branding, Print & Apparel went to Spear Collective, Hey SD, Okina, DJ MIA and J. Christianson. Spear Collective's is wrapped in botanical illustration, and DJ MIA's uses halftone dots.",
+  /* "The storefront photograph was shot on film and mocked up at street
      size." */
-  /* what it answered: Branding, Print & Apparel: "Bokeh's Fall started as a 4x6 of defocused lights"; "One 4x6 film photograph was blown up to fill a storefront window" */
-  "fig/4x6": "In Branding, Print & Apparel, Bokeh's Fall started as a 4x6 film photograph of defocused lights and was blown up to fill a storefront window.",
+  /* what it answered: Branding, Print & Apparel: "Bokeh's Fall started as a 4x6 of defocused lights"; "One 4x6 film photograph was mocked up at the size of a storefront window" */
+  "fig/4x6": "In Branding, Print & Apparel, Bokeh's Fall started as a 4x6 film photograph of defocused lights and was mocked up at the size of a storefront window.",
 
   /* ── CAPABILITIES (drafted 27 Sept). What the capability looks like in
      this work, from the leads of the studies its shelf stacks. The counts
@@ -379,14 +374,14 @@ window.ENTRY_LINES = {
   "cap/ai-strategy": "Sally Marketing OS uses five AI providers, each routed to what it's best at. Claude handles the reasoning, with strategy and copywriting on separate Claude models, and Perplexity runs live web search.",
   /* what it answered: Branding, Print & Apparel: "The four album covers are each for a different act"; "nothing carries over from one sleeve to the next"; "The folk record's cover uses woodgrain collage and halftone geometry"; "the DJ's cover is a saturated portrait where the color carries the whole thing". The genre run is fig/four-album-covers' */
   "cap/album-art": "Each of the four album covers in Branding, Print & Apparel is for a different act, and nothing carries over from one sleeve to the next. The folk record's cover uses woodgrain collage, and the DJ's is a saturated portrait.",
-  /* what it answered: Capitan Boot Co.: "Stamps blur and embossing flattens out, so every mark had to survive both and still read"; "Each mark has to read whether it's pressed into leather or stitched into denim" */
-  "cap/apparel-graphics": "Capitan Boot Co.'s marks get pressed into leather and stitched into denim, where stamps blur and embossing flattens out, so each one had to survive both and still read. J. Christianson's tree drawing runs on its apparel in four seasonal colorways.",
+  /* what it answered: Capitan Boot Co.: "Stamps blur and embossing flattens out, so every mark had to survive both and still read"; "Each mark has to read whether it's pressed into leather or stitched into denim"; "The buffalo was drawn as a stamp first and an illustration second" */
+  "cap/apparel-graphics": "Capitan Boot Co.'s marks had to survive being pressed into leather and stitched into denim, where stamps blur and embossing flattens out. The buffalo was drawn as a stamp first and an illustration second.",
   /* what it answered: Neiman Marcus: "InSite was Neiman Marcus's digital editorial hub"; "There was no location budget, so graphic color blocks stood in for the places a bigger production would have flown to". Robert Rodriguez: "Glamour Shots and the other mall portrait studios were the campaign's starting point"; "Smooth mesh color fields replaced the mall studios' airbrushed backdrops and kept their warmth". The studio day is fig/four-setups'. "Twelve years" is the two studies' published dates, 2012 and 2024; the checker keeps the figure */
   "cap/art-direction": "Neiman Marcus's editorial hub, InSite, had no location budget, so graphic color blocks stood in for the places a bigger production would have flown to. Twelve years later, the Robert Rodriguez campaign started from mall portrait studios, and smooth color fields replaced their airbrushed backdrops.",
   /* what it answered: Hill Country living: "an original painting by Dwight D. Eisenhower hangs with landscape pieces in gilded frames" */
   "cap/art-selection": "The Hill Country living room's limestone wall carries an original painting by Dwight D. Eisenhower, hung with landscape pieces in gilded frames. In the Fairview entry, a slatted wood geometric and a dark abstract flank the bench.",
-  /* what it answered: Nordstrom framework: "four named buckets, each with its own typographic mark and icon"; "Sourced a different typeface for every bucket's typographic mark." The too-much-content problem is fig/22's */
-  "cap/brand-design": "Each of the four buckets in Nordstrom's content framework got its own icon and typographic mark, and every mark is set in a different typeface. Capitan Boot Co. and J. Christianson got whole brands, down to the logos.",
+  /* what it answered: Nordstrom framework: "four named sections, each with its own icon and a typographic mark in one shared typeface"; "All the marks shared one typeface, and each section's icon was unique and recognizable." The too-much-content problem is fig/22's */
+  "cap/brand-design": "Each of the four sections in Nordstrom's content framework got its own recognizable icon, and every typographic mark shared one typeface. Capitan Boot Co. and J. Christianson got whole brands, down to the logos.",
   /* what it answered: J. Christianson: "J. Christianson is a fashion and home goods label, and the brand started from nothing: the name first, then the mark, the palette, the type, and the product graphics"; "built from the name outward" */
   "cap/brand-development": "J. Christianson is a fashion and home goods label whose brand started from nothing, so it was built from the name outward: the mark, the palette, the type, then the product graphics.",
   /* what it answered: Capitan Boot Co.: "needed a brand that could take as much wear as they do"; "Every piece of the identity works stamped, stitched, embroidered, or printed" */
@@ -395,27 +390,27 @@ window.ENTRY_LINES = {
   "cap/brand-system": "Jeffrey New York's first site was built to change as often as its store did. Modular grids let the layouts turn over with the season, and the type hierarchy stayed sharp everywhere it showed up.",
   /* what it answered: Hill Country Oakworks: "look like a heritage brand at both sizes"; "The campaign pulls from mid-century poster design" */
   "cap/campaign-design": "Hill Country Oakworks' campaign had to look like a heritage brand on a roadside billboard and on a phone screen. It borrows from mid-century posters, with warm color blocking and an oak silhouette, and the same idea runs at every size.",
-  /* what it answered: You By Sally: "Hair color usually sits on a drugstore shelf under fluorescent lights, and the brief was to make it something you would choose on purpose"; "The campaign started with the cast, real people instead of models, and everything else came from their portraits" */
-  "cap/campaign-direction": "Hair color usually sits on a drugstore shelf, and You By Sally's brief was to make it something you'd choose on purpose. The campaign was cast with real people instead of models, and everything else came from their portraits.",
+  /* what it answered: You By Sally: "Hair color usually sits on a drugstore shelf under fluorescent lights, and the brief was to make it something you would choose on purpose"; "The campaign started with the cast, ten influencers, and everything else came from their portraits" */
+  "cap/campaign-direction": "Hair color usually sits on a drugstore shelf, and You By Sally's brief was to make it something you'd choose on purpose. The campaign was cast with ten influencers, and everything else came from their portraits.",
   /* Amber Shockey & Co.: "the patterns for its first three collections";
      "Each one is built to layer, from a single accent dish to the whole
      table." */
-  /* what it answered: Amber Shockey & Co.: "makes tableware"; "every new collection has to sit next to the ones before it"; Angle: "Every collection shares cream as its ground, so a plate from one can sit on the table with a dish from another"; "each runs in several colorways, so the same set can go minimal or maximal depending on what it's paired with" */
-  "cap/colorway-development": "Amber Shockey & Co. makes tableware, and every new collection has to sit next to the ones before it. All of them share cream as their ground, and each runs in several colorways, so the same set can go minimal or maximal.",
+  /* what it answered: Amber Shockey & Co.: "makes tableware"; "every new collection has to sit next to the ones before it"; "each runs in several colorways, so the same set can go minimal or maximal depending on what it's paired with" */
+  "cap/colorway-development": "Amber Shockey & Co. makes tableware, and every new collection has to sit next to the ones before it. Each one runs in several colorways, so the same set can go minimal or maximal.",
   /* Hill Country kitchen, the one study that lists construction
      documentation: "The Hill Country kitchen from the ground up: cabinetry,
      island, dining area and the full material spec." AutoCAD and SketchUp
      are in the stack of all eight interiors studies. */
   /* what it answered: Hill Country kitchen, Scope: "Interior design, space planning, fixture selection, construction documentation"; Built: "The Hill Country kitchen from the ground up: cabinetry, island, dining area and the full material spec." No problem is stated, so the line stays plain */
   "cap/construction-documentation": "Construction documentation was part of the Hill Country kitchen's scope, and the work went from the ground up: cabinetry, island, dining area and the full material spec. AutoCAD and SketchUp are in all eight interiors projects.",
-  /* what it answered: Nordstrom framework: "all hit email and the site at the same time, with nothing sorting them"; "Four buckets sort the stories on the homepage, in email, and on landing pages"; "The bucket names showed up in Nordstrom's planning meetings before the framework reached a customer" */
-  "cap/content-strategy": "Nordstrom's brand launches, seasonal pushes, occasion guides and new arrivals were all landing at once, with nothing sorting them. The strategy came down to four named buckets for the homepage, email and landing pages, and the names were in Nordstrom's planning meetings before the framework reached a customer.",
+  /* what it answered: Nordstrom framework: "all hit email and the site at the same time, with nothing sorting them"; "Four sections sort the stories on the homepage, in email, and on landing pages"; "The section names showed up in Nordstrom's planning meetings before the framework reached a customer" */
+  "cap/content-strategy": "Nordstrom's brand launches, seasonal pushes, occasion guides and new arrivals were all landing at once, with nothing sorting them. The strategy came down to four named sections for the homepage, email and landing pages, and the names were in Nordstrom's planning meetings before the framework reached a customer.",
   /* what it answered: Ivy Park: "The photography was supplied"; "Typography, layout, copy, animation and interaction were all open"; "The copy got written line by line as the pages took shape, in short present-tense sentences that talked straight to the reader" */
   "cap/copywriting": "The photography for Ivy Park's launch page was supplied, and the copy, type, layout and animation were all still open. The copy got written line by line as the pages took shape, in short present-tense sentences that talked straight to the reader.",
   /* what it answered: Robert Rodriguez: "Neiman Marcus wanted the Robert Rodriguez campaign to feel current and still keep the brand's romantic side"; "The campaign's budget covered one day in the studio"; "The campaign mixes '80s mall glam with high fashion" */
   "cap/creative-direction": "Neiman Marcus wanted the Robert Rodriguez campaign to feel current and still keep the brand's romantic side, with one day in the studio to do it. The campaign mixes '80s mall glam with high fashion, and it ran across social, email, the stores and editorial.",
-  /* what it answered: Nordstrom personalization: "Nordstrom needed personalized content for millions of customers, and it couldn't look like a machine had made it"; "square, hero, and vertical tiles, three shapes that could each resize and restack across phone and desktop"; "The tile rules were strict enough to run for millions of customers, and the pages still came out different from each other" */
-  "cap/design-systems": "Nordstrom needed personalized content for millions of customers, and it couldn't look machine-made. The pages were built on square, hero and vertical tiles that resize and restack across phone and desktop, with rules strict enough to run at that scale while every page still came out different.",
+  /* what it answered: Nordstrom personalization: "Nordstrom needed personalized content for millions of customers, and it couldn't look like a machine had made it"; "square, hero, and vertical tiles, three shapes that could each resize and restack across phone and desktop"; "The tile rules were strict enough to run for millions of customers, and they're what made the pages come out different from each other" */
+  "cap/design-systems": "Nordstrom needed personalized content for millions of customers, and it couldn't look machine-made. The pages were built on square, hero and vertical tiles that resize and restack across phone and desktop, with strict rules that made every page come out different.",
   /* what it answered: Cosmo Prof: "Cosmo Prof sells salon supplies to working stylists. The site was functional but dated"; "The job was to set a new visual direction and make products easier to find" */
   "cap/digital-design": "Cosmo Prof sells salon supplies to working stylists, and its dated site needed to make products easier to find. The new homepage has tabbed recommendations personalized to each stylist, shoppable video you can buy from while it plays, and a header cut back so the content gets the screen.",
   /* what it answered: Jeffrey New York: "The store itself was closer to a gallery than a shop"; "put the stories ahead of the selling: designer launches as the big moments, new content every week" */
@@ -434,14 +429,14 @@ window.ENTRY_LINES = {
   "cap/email-web-templates": "Jeffrey's spring campaign was shot entirely in the studio, and one kit covered email, the homepage and social. At PetSmart, new email templates and site patterns helped lift creative output 30%.",
   /* what it answered: DSC: "Every booking, whether spoken out loud, requested by an athlete's connected AI, or made with a tap on the calendar, flows through one deterministic engine that checks trainer availability, double-bookings, floor capacity, allowed durations, and cancellation rules"; "The owner can say a whole week out loud". The request-only AI is tool/model-context-protocol's */
   "cap/engineering": "Dallas Sport Collective's bookings come in three ways: the owner says them out loud, an athlete's connected AI requests them, or someone taps the calendar. One deterministic engine checks every one for trainer availability, double-bookings, floor capacity and cancellation rules.",
-  /* what it answered: A.R.C.: "I built A.R.C. end to end"; "Claude Code was my main environment from start to finish"; "A.R.C. went from concept to live product in ten weeks"; Faux Reel: "Faux Reel took a day to build with Claude Code, most of it spent finessing the timing" */
-  "cap/engineering-ai-assisted": "I built A.R.C. end to end in Claude Code, from concept to live product in ten weeks. Faux Reel took a day to build with it, most of that spent finessing the timing.",
+  /* what it answered: A.R.C.: "I built A.R.C. end to end"; "Claude wrote the code from the start"; "A.R.C. went from concept to live product in ten weeks"; Faux Reel: "Faux Reel took a day to build with Claude Code, most of it spent finessing the timing" */
+  "cap/engineering-ai-assisted": "I built A.R.C. end to end with Claude writing the code, from concept to live product in ten weeks. Faux Reel took a day to build with Claude Code, most of that spent finessing the timing.",
   /* what it answered: Ivy Park: "The polygon, a hexagon, showed up during concepting as a way to break the rectangular grid the photography came in" */
   "cap/experience-design": "Ivy Park's supplied photography all came on a rectangular grid, and a hexagon showed up during the concept work as a way to break it. Angled, rotated and animated on scroll, the hexagon ran from the hero banner through the product carousels into the email headers.",
-  /* what it answered: Mountain View: "an exterior that disappeared on cloudy days"; "The exterior was repainted warm gray with white railings, and new fixtures light the patio and stairs at night" */
-  "cap/exterior-direction": "The Mountain View chalet's exterior disappeared on cloudy days. It was repainted warm gray with white railings, and new fixtures light the patio and stairs at night.",
-  /* what it answered: Floor & Decor: "named the studio Designer of the Quarter for choosing the hard surfaces in three residential bathrooms. Marble, dolomite, white oak and classic tile were the four materials every project pulled from, and each room used them differently" */
-  "cap/finish-coordination": "Floor & Decor named the studio Designer of the Quarter for choosing the hard surfaces in three residential bathrooms. Marble, dolomite, white oak and classic tile were the four materials all three pulled from, and each room used them differently.",
+  /* what it answered: Mountain View: "an exterior that disappeared on cloudy days"; "The siding was repainted a gray-brown with a warm undertone and the railings white, and new fixtures light the patio and stairs at night" */
+  "cap/exterior-direction": "The Mountain View chalet's exterior disappeared on cloudy days. Its siding was repainted a gray-brown with a warm undertone and the railings white, and new fixtures light the patio and stairs at night.",
+  /* what it answered: Floor & Decor: "named the studio Designer of the Quarter for choosing the hard surfaces in three residential bathrooms. Every project pulled from the same marble, white oak and classic tile, and each room used them differently" */
+  "cap/finish-coordination": "Floor & Decor named the studio Designer of the Quarter for choosing the hard surfaces in three residential bathrooms. All three pulled from the same marble, white oak and classic tile, and each room used them differently.",
   /* what it answered: Fairview suite: "The layers work together because the tonal range stays narrow: blues, grays, warm metals" */
   "cap/finish-selection": "The Fairview suite piles on velvet, linen, bouclé and faux fur, and the layers work together because the tonal range stays narrow: blues, grays and warm metals. Brass sits at every furniture base and fixture.",
   /* what it answered: Hill Country bath: "The bath is softer than the Hill Country kitchen, two rooms away"; "swaps the brass for polished nickel fixtures" */
@@ -455,8 +450,8 @@ window.ENTRY_LINES = {
   "cap/furniture-curation": "The Mountain View chalet looks out through its glass onto the tree canopy, so the furniture was kept simple enough not to compete. There's a tufted gray sofa, a woven bench, a walnut dining set and a ladder shelf against painted stone.",
   /* what it answered: A.R.C.: "Weeks 9-10 were the brand identity and visual system, the marketing site and the go-to-market work, and then launch" */
   "cap/go-to-market-strategy": "The last two weeks of A.R.C.'s ten-week build were the brand, the marketing site and the go-to-market. Ivy Park's launch at Nordstrom went from concept to live in six weeks.",
-  /* what it answered: J. Christianson: "The product graphics come from a tree silhouette, drawn once and run in four seasonal colorways over a striped field in the brand colors"; "one tree drawing in four colorways covers the whole line" */
-  "cap/graphic-design": "J. Christianson needed product graphics for a whole line, and one tree drawing covers it. It runs in four seasonal colorways over a striped field in the brand colors, on apparel, candles, hangtags and print.",
+  /* what it answered: J. Christianson: "The product graphics come from a tree silhouette, drawn once and set over a striped field in the brand colors"; "The tree graphic was designed with apparel, candles, hangtags, and print in mind". The study no longer names a problem, so the line stays plain */
+  "cap/graphic-design": "J. Christianson's product graphics come from one tree silhouette, drawn once and set over a striped field in the brand colors. It was designed with apparel, candles, hangtags and print in mind.",
   /* what it answered: Sally design system: "An email or a homepage at Sally Beauty used to take weeks to make"; "The homepage has its own kit of twenty-one modules"; "every module has a desktop and a phone pair"; "Eleven homepage concepts came out of one kit" */
   "cap/homepage-design": "A homepage at Sally Beauty used to take weeks to make. Its kit has twenty-one modules, each drawn at desktop and phone sizes, and eleven concepts came out of it.",
   /* About and Floor & Decor: Designer of the Quarter, 2023 */
@@ -470,8 +465,8 @@ window.ENTRY_LINES = {
   "cap/material-selection": "The Fairview sitting room is formal, a little glam and comfortable to sit in, and it keeps to four materials: stone, velvet, brass and warm oak. There are no accent colors and no television, and the chairs face the fire and each other.",
   /* what it answered: Hill Country living: "The living room's materials were chosen for how they age"; "Every piece was chosen for how it will age, and none of it came as a set" */
   "cap/material-specification": "The Hill Country living room's materials were chosen for how they age: a floor-to-ceiling limestone fireplace wall, reclaimed 1950s pine underfoot, exposed beams overhead and brass fixtures. The furniture was picked the same way, and none of it came as a set.",
-  /* what it answered: Nordstrom framework: "Customers got the whole pile and no way through it"; "The bucket names sound like a magazine's sections" */
-  "cap/naming": "Nordstrom's content needed sorting into sections a customer could follow. The framework's four buckets got names that sound like a magazine's: What's Now, On Our List, Where to Wear and Wear to Where.",
+  /* what it answered: Nordstrom framework: "Customers got the whole pile and no way through it"; "The four names sound like a magazine's sections" */
+  "cap/naming": "Nordstrom's content needed sorting into sections a customer could follow. The framework had four, with names that sound like a magazine's: What's Now, On Our List, Where to Wear and Wear to Where.",
   /* what it answered: Amber Shockey & Co.: "a hero pattern, a secondary, and an accent, made to layer from a single dish up to a full setting"; "Three collections are here: blue florals, black linework, red dragons. Each one sets something structured against something organic" */
   "cap/pattern-design": "Every Amber Shockey & Co. collection has to layer from one accent dish to a full table, so each has a hero pattern, a secondary and an accent. The first three are blue florals, black linework and red dragons, and each sets something structured against something organic.",
   /* Various design: "the pop artist's sleeve has grunge compositing and
@@ -479,8 +474,6 @@ window.ENTRY_LINES = {
      one tight and one wide, were layered as a double exposure" */
   /* what it answered: Robert Rodriguez: "The photographs were layered over each other so the same few pictures could carry a whole look"; "Two frames from the same shoot, one tight and one wide, were layered as a double exposure, so the overlap made a third picture that neither frame had on its own". The studio day is fig/four-setups' */
   "cap/photo-compositing": "The Robert Rodriguez campaign for Neiman Marcus layered its photographs over each other so a few pictures could carry the whole look. Two frames, one tight and one wide, became a double exposure, and the overlap made a third picture neither frame had on its own.",
-  /* what it answered: Capitan Boot Co.: "with no props or stand-ins and no styling added to what was already there"; "The campaign pictures come from the landscape the boots are made for" */
-  "cap/photo-direction": "Capitan Boot Co.'s campaign was shot in West Texas with no props, no stand-ins and no styling beyond what was already there. The pictures come from the landscape the boots are made for.",
   /* Big Bend: "Photographs from a family trip through Big Bend and the desert
      around Marfa. | The trip was personal, and Capitan Boot Co. later used a
      few of the photographs as backdrops in its campaign." */
@@ -490,8 +483,8 @@ window.ENTRY_LINES = {
   "cap/photography-direction": "Cosmo Prof's site was functional but dated, and the refresh started with the photography: high-contrast lighting, defined shadows and cleaner compositions. One set of templates now carries promotions, brand campaigns and education modules.",
   /* what it answered: Black & white type: "With no color to lean on, tone comes from spacing" */
   "cap/poster-design": "Black & white type took color, photography and gradients off the table to see how far six patterns could go in print. Three lithographs came out of it, with tone set by spacing: a packed fill looks dark and an open one looks light.",
-  /* what it answered: Amber Shockey & Co.: "made to layer from a single dish up to a full setting" */
-  "cap/product-applications": "Amber Shockey & Co.'s patterns have to work on a single accent dish and across a whole table. J. Christianson's tree drawing went onto apparel, candles, hangtags and print.",
+  /* what it answered: Amber Shockey & Co.: "made to layer from a single dish up to a full setting"; J. Christianson: "The tree graphic was designed with apparel, candles, hangtags, and print in mind" */
+  "cap/product-applications": "Amber Shockey & Co.'s patterns have to work on a single accent dish and across a whole table. J. Christianson's tree drawing was designed with apparel, candles, hangtags and print in mind.",
   /* what it answered: A.R.C.: "People skip home inventory because every app makes them type each item in by hand. A.R.C. works from the camera instead."; "Point it at a room, take a photo or a video, and the app identifies what is there, estimates replacement value, and categorizes everything in the same pass" */
   "cap/product-design": "People skip home inventory because every app makes them type each item in by hand. With A.R.C. you point the camera at a room, and the app identifies what's there, estimates replacement value and categorizes everything in the same pass.",
   /* what it answered: A.R.C., Development Timeline: "Weeks 1-2 went to checking the idea. Could computer vision reliably pick out household items from ordinary phone photos? ... It could, with a few caveats that ended up shaping the UX." The five steps are fig/10-weeks' */
@@ -504,8 +497,8 @@ window.ENTRY_LINES = {
   "cap/space-planning": "The Fairview entry is two stories tall, and the light through its floor-to-ceiling French doors comes first. Everything else in the room is sized and placed to let it through.",
   /* what it answered: Neiman Marcus: "On every InSite piece, the concept came first, then the shoot, then the styling and the layout. Designer spotlights featured names like Derek Lam and Helmut Lang"; "Ways-to-wear features styled one garment a few different directions." The magazine-and-store mandate is cap/editorial-design's */
   "cap/story-development": "On every piece for InSite, Neiman Marcus's editorial hub, the concept came first, then the shoot, then the styling and the layout. Designer spotlights featured names like Derek Lam and Helmut Lang, and ways-to-wear features styled one garment a few different directions.",
-  /* what it answered: Jeffrey spring: "Monstera leaves and palm fronds were cropped big and used as graphic elements"; "The type got the same graphic treatment, condensed, stretched and layered for rhythm across three designer stories: JW Anderson, Valentino and Simone Rocha" */
-  "cap/typography": "Jeffrey's spring campaign ran three designer stories: JW Anderson, Valentino and Simone Rocha. The type was condensed, stretched and layered for rhythm across all three, the same graphic treatment the cropped monstera leaves and palm fronds got.",
+  /* what it answered: Jeffrey spring: "Monstera leaves and palm fronds were cropped big and used as graphic elements"; "The type got the same graphic treatment, stretched and layered for rhythm across three designer stories: JW Anderson, Valentino and Simone Rocha" */
+  "cap/typography": "Jeffrey's spring campaign ran three designer stories: JW Anderson, Valentino and Simone Rocha. The type was stretched and layered for rhythm across all three, the same graphic treatment the cropped monstera leaves and palm fronds got.",
   /* what it answered: Black & white type: "The amount of paper left around a letter sets the mood of the whole print" */
   "cap/typography-design": "Black & white type asked how much range a few patterns could get out of letterforms once color was off the table. The shapes fill the letters, spill outside them and sit behind them, and the paper left around each letter sets the mood of the print.",
   /* what it answered: Jeffrey New York: "The work started with the buying team: how the floor was laid out, how pieces got grouped" */
@@ -516,8 +509,8 @@ window.ENTRY_LINES = {
   "cap/ux-design": "Nordstrom's beauty hub let a customer try a shade before buying: upload a photo or pull their Style Profile selfie, then drag across a color gradient to see it on their own face. They could buy the shade they chose without leaving the try-on.",
   /* what it answered: Cosmo Prof: "Cosmo Prof sells salon supplies to working stylists"; "it needed to match the professionals using it"; "Typography moved to Jost, and the palette put soft neutrals against sharp black" */
   "cap/visual-design": "Cosmo Prof's dated site needed to match the working stylists who shop it. The type moved to Jost, and the palette set soft neutrals against sharp black.",
-  /* what it answered: DSC: "a brand that matched where the gym was headed"; "a marketing site in black and white, with big condensed type and photography of actual members training" */
-  "cap/web-design": "Dallas Sport Collective's founder needed a brand that matched where the gym was headed. The marketing site carries it in black and white, with big condensed type and photography of actual members training.",
+  /* what it answered: DSC: "a brand that matched where the gym was headed"; "a marketing site in black and white, with heavy type and photography of actual members training" */
+  "cap/web-design": "Dallas Sport Collective's founder needed a brand that matched where the gym was headed. The marketing site carries it in black and white, with heavy type and photography of actual members training.",
 };
 
 /* ── THE PAGE'S OWN LONGER LINE (2 Oct 2026) ──────────────────────────
@@ -543,5 +536,5 @@ window.ENTRY_LINES = {
    research and coding tools" so the word does not stand three times in
    one list. */
 window.ENTRY_LONG = {
-  "tool/claude-code": "Claude Code is Anthropic's coding agent, and it's where I build: A.R.C. end to end, Sally Marketing OS, Dallas Sport Collective and Faux Reel, which took a single day. It's also my design tool, my thinking partner, this site's CMS and its build environment. It has taken what might have been five to seven other applications and put them in one tool: Figma, animation, research and coding tools, Webflow or Framer, even Jira and project management. It builds and keeps track of all of it.",
+  "tool/claude-code": "Claude Code is Anthropic's coding agent, and it's where I build: A.R.C., Sally Marketing OS, Dallas Sport Collective and Faux Reel, which took a single day. It's also my design tool, my thinking partner, this site's CMS and its build environment. It has taken what might have been five to seven other applications and put them in one tool: Figma, animation, research and coding tools, Webflow or Framer, even Jira and project management. It builds and keeps track of all of it.",
 };

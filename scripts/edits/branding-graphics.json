@@ -2,8 +2,8 @@
  "k": "branding-graphics",
  "variants": {
   "index": {
-   "note": "Flow opens the room: what the collection is and who it was for, then four chapters that are also the four section titles (posters, covers, the storefront, the logos); each opens to its specifics, the covers and the storefront carry a plain line, and the closing keeps its head so its posters don't land under the logos.",
-   "stand": "Here are album covers, posters, art prints, logos, and one storefront window, made over about ten years for musicians, friends, and a handful of brands. | Each one has its own look, made to fit that client.",
+   "note": "Flow opens the room: what the collection is and who it was for, then four chapters that are also the four section titles (posters, covers, the storefront mockup, the logos, with the clients named); each opens to its specifics, the covers and the storefront carry a plain line, and the closing keeps its head so its posters don't land under the logos. 8 Oct: his answers, the sleeves were commissioned, the window is a mockup, the years are 2008 to now.",
+   "stand": "Here are album covers, posters, art prints, logos, and one storefront window mockup, made since 2008 for musicians, friends, and a handful of brands. | Each one has its own look, made to fit that client.",
    "abs": [
     "Most of the work was done in Photoshop, Illustrator, and InDesign, with a film camera for the photography, and hand-drawn type where a piece called for it."
    ],
@@ -37,7 +37,7 @@
     },
     "The storefront photograph was shot on film": {
      "t": "Bokeh's Fall started as a 4x6 of defocused lights,",
-     "g": "and was blown up to fill a storefront window",
+     "g": "and was mocked up at the size of a storefront window",
      "li": [
       "The photograph | shot on film, orange and pink on black.",
       "The type | set over it for the window."
@@ -45,10 +45,10 @@
     },
     "Each of the five logos": {
      "t": "Five logos went to five clients,",
-     "g": "a fashion collective, a DJ, a lifestyle brand, Okina and J. Christianson",
+     "g": "Spear Collective, Hey SD, Okina, DJ MIA and J. Christianson",
      "li": [
-      "Drawing | the fashion collective's logo is wrapped in flowing botanical illustration, and the lifestyle brand got a bird on a monogram.",
-      "Halftone | the DJ's logo uses halftone dots and a geometric sans.",
+      "Drawing | Spear Collective's logo is wrapped in flowing botanical illustration, and Hey SD, a lifestyle brand, got a bird on a monogram.",
+      "Halftone | DJ MIA's logo uses halftone dots and a geometric sans.",
       "Type | Okina's is a planet-and-orbit wordmark in heavy black sans, and J. Christianson's is a four-circle mark over an engraved serif."
      ]
     }

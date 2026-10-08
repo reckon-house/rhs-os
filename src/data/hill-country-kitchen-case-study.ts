@@ -289,7 +289,9 @@ export const hillCountryKitchenCaseStudy: CaseStudy = {
       title: "The island's marble top",
       pressing: {
         mark: { n: "04", name: "Raw Oak Island" },
-        heldLine: "runs end to end without a break.",
+        // "One slab" is his word (8 Oct 2026). It said "runs end to end
+        // without a break", but the shelving end has an oak top of its own.
+        heldLine: "is one slab.",
         choreo: { pin: true },
       },
     },
