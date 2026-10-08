@@ -7,6 +7,947 @@
    them; ?edit=today is the room as it was, with the switch). Every string
    is the study's own: a line of it, a trim of one, or two joined. */
 window.DENSITY_EDITS = {
+ "amber-shockey-co": {
+  "index": {
+   "note": "Flow opens the room: what Amber Shockey & Co. makes and what these patterns are, then three chapters, one per collection, that are also the section titles; each opens to its motif and how it pairs, and the closing says how any two share a table.",
+   "abs": [
+    "Amber Shockey & Co. is a startup, and every new collection has to sit next to the ones before it.",
+    "Each collection sets something structured against something organic, with a hero pattern, a secondary, and an accent. They run in several colorways, so the same set can go minimal or maximal depending on what it's paired with."
+   ],
+   "did": [
+    "Pattern Design",
+    "Product Design",
+    "Colorway Development"
+   ],
+   "didTitle": "Role",
+   "chapters": {
+    "The blue florals collection": {
+     "t": "The blue florals collection layers pattern on pattern,",
+     "g": "and a single plate still works on its own",
+     "li": [
+      "The peony | the biggest of the four motifs, set over a geometric grid.",
+      "Two sizes | it looks like wallpaper when the pattern runs large, and like a single bloom on a plate.",
+      "With black linework | blue florals go with it when the table needs some structure."
+     ],
+     "pic": "amber-shockey-co-blue-florals-peony-wallpaper-pattern-field.jpg"
+    },
+    "Black linework is the simplest": {
+     "t": "Black linework is the simplest of the three,",
+     "g": "and it can be the setting under blue florals or red dragons",
+     "li": [
+      "No florals | the only collection without them: geometric grids and halftone dots on charcoal.",
+      "The halftone dot | the plainest of the four motifs, density made from dots.",
+      "The ground | flat and graphic, so either one keeps its color on top of it."
+     ],
+     "pic": "amber-shockey-co-black-linework-geometric-plates-marble-surface-collection-mockup.jpg"
+    },
+    "The red dragons statement plate": {
+     "t": "Burgundy dragons curl through floral filigree,",
+     "g": "and the statement plate is for a buyer who only wants one piece",
+     "li": [
+      "The dragons | they sit in a round mandala borrowed from Eastern textile work, in the most ornamental of the three collections.",
+      "Next to blue florals | the cobalt and the burgundy fight, so cream pieces from either collection go between the two."
+     ],
+     "pic": "amber-shockey-co-red-dragons-plates-stacked-on-dragon-pattern-collection-mockup.jpg"
+    }
+   },
+   "heads": {
+    "Any two collections can go on the same table.": "drop"
+   },
+   "lines": {
+    "A buyer can start with one accent dish": "Any two collections can go on the same table. | A buyer can start with one accent dish in cobalt and add a full red-dragons setting two seasons later, and the two sit together because both run on cream."
+   },
+   "rest": "drop",
+   "moreTo": "chapters",
+   "facts": [
+    "Published",
+    "Status",
+    "Tools"
+   ]
+  }
+ },
+ "arc": {
+  "index": {
+   "note": "Flow opens the room: what A.R.C. is and why it matters, then six chapters that are also the section titles, each opening to three specifics; the vision model goes unnamed.",
+   "stand": "A.R.C. is an iPhone app I designed and built for home inventory. | About 60% of American homeowners end up underinsured.",
+   "abs": [],
+   "did": [
+    "Product Design",
+    "Brand Identity",
+    "Full-Stack Engineering",
+    "Go-to-Market Strategy"
+   ],
+   "didTitle": "What I did",
+   "rest": "drop",
+   "moreTo": "chapters",
+   "heads": {
+    "Most homeowners have never": "I downloaded every home inventory app I could find, | and all of them left you to identify each item and put a value on it, one at a time."
+   },
+   "labels": {
+    "Most homeowners have never": "The problem",
+    "One photo of a room": "The scan",
+    "Thirteen item categories": "Categories",
+    "A.R.C. compares what you own": "Coverage",
+    "Ten weeks after the first idea": "How it was built",
+    "Every screen here is from": "The app",
+    "Documenting a 1,168-item home": "Speed",
+    "I built A.R.C. because": "Where it started"
+   },
+   "decks": {
+    "Most homeowners have never": "Some were a spreadsheet in app form, and the rest were insurance carrier tools built to make claims easier for adjusters.",
+    "One photo of a room": "It works from the phone camera, with no special hardware and no calibration.",
+    "Thirteen item categories": "Sub-categories give each valuation enough detail to be accurate.",
+    "A.R.C. compares what you own": "You set the coverage when you buy the policy and it tends to sit there, while the stuff inside the house keeps changing.",
+    "Ten weeks after the first idea": "When I noticed a problem, a fix could be live within hours.",
+    "Every screen here is from": "The home screen is the overview: total items, total estimated value, the category breakdown, coverage status and recent activity.",
+    "Documenting a 1,168-item home": "The home is sixteen rooms: five bedrooms, three bathrooms, four closets, a living room, kitchen, game room and garage.",
+    "I built A.R.C. because": "I had a renovated house and years of collected objects, and nothing documented anywhere that would survive an insurance claim."
+   },
+   "chapters": {
+    "One photo of a room": {
+     "t": "AI recognizes what's in a photo or a video of a room,",
+     "g": "so your job turns into reviewing what it found",
+     "li": [
+      "Video | sweep a room with your phone and the AI reasons across frames, tracking objects through space and picking up what a single photo misses.",
+      "What it reads | what each object is, what it's made of, its style, its condition and a rough era.",
+      "Confidence | every decision point is checked against a threshold."
+     ],
+     "proof": "I first tested whether computer vision could pick out household items from ordinary phone photos, and it could, with a few caveats that ended up shaping the UX.",
+     "pic": "arc-room-scanning-interface.jpg"
+    },
+    "Thirteen item categories": {
+     "t": "A.R.C. sorts every item into thirteen categories that match the ones insurance claims use,",
+     "g": "without asking you to know any of the terms",
+     "li": [
+      "The categories | furniture, electronics, artwork, appliances, fixtures, textiles, collectibles, vehicles, tools, sporting goods, musical instruments, jewelry and documents.",
+      "Value | what each item would cost to replace today, matched against market data, which is the number insurance runs on.",
+      "Archive entry | puts each item into your inventory, linked to a room, tagged, tied to the photograph it came from and counted in the totals right away."
+     ],
+     "pic": "arc-app-living-room-furniture-selection.jpg"
+    },
+    "A.R.C. compares what you own": {
+     "t": "A.R.C. compares what you own against your policy limit,",
+     "g": "and shows any gap as a dollar amount",
+     "p": [
+      "A home that was covered five years ago might be $50,000 short today, and there is no way of knowing until something goes wrong."
+     ],
+     "li": [
+      "Your limit | the personal property limit on your policy, which you enter yourself.",
+      "As you go | the documented total updates with each item.",
+      "Room by room | A.R.C. ties the gap to specific items."
+     ],
+     "pic": "arc-app-vinyl-turntable-shelves-lifestyle.jpg"
+    },
+    "Ten weeks after the first idea": {
+     "t": "I made A.R.C. on my own in ten weeks,",
+     "g": "with AI helping the whole way through",
+     "li": [
+      "Claude Code | my main environment from start to finish: I described what I wanted in plain language, read the code that came back, tested it and shipped.",
+      "No team | no engineering team, no PM handing out tickets, no design review and no QA, so every decision came down to priorities.",
+      "Interface | I designed it and built it at the same time, with no handoff between what I meant and what showed up in code."
+     ],
+     "proof": "The bottleneck sits less on syntax and more on being clear about what the product should do, which is the design part.",
+     "pic": "arc-multi-device-lifestyle-hero.jpg"
+    },
+    "Every screen here is from": {
+     "t": "Every screen puts the value first,",
+     "g": "what you own, what it is worth and whether it is covered",
+     "li": [
+      "Rooms | each room is its own archive, its items shown as cards you can sort by value, category or the date they were added.",
+      "Document AI | upload a receipt, an appraisal, a warranty or an insurance document, and the AI pulls out the purchase date, amount, vendor and coverage terms, then attaches them to the matching item.",
+      "Reports | PDF summaries by room, by category or for the whole home, with photographs, descriptions, values and totals, laid out to hand to an agent or advisor."
+     ],
+     "pic": "arc-app-tablet-kitchen-living-room-lifestyle.jpg"
+    },
+    "Documenting a 1,168-item home": {
+     "t": "Documenting a 1,168-item home in A.R.C. takes under eight hours,",
+     "g": "against an estimated 128 to 192 hours by hand",
+     "li": [
+      "In the app | 73 items, about one room, in under 30 minutes.",
+      "By hand | you open a spreadsheet, walk room to room, describe each item, price it, photograph it and attach the receipt.",
+      "The difference | the app is 16 to 24 times faster."
+     ],
+     "pic": "arc-app-kitchen-project-selection-lifestyle.jpg"
+    }
+   },
+   "lines": {
+    "A.R.C. has real users": "A.R.C. is live on the App Store and has real users.",
+    "I made the whole product alone": "V2 is underway, with better scanning and deeper financial analysis."
+   },
+   "facts": [
+    "Field",
+    "Published"
+   ],
+   "factSet": {
+    "Field": "AI Home Inventory, Computer Vision, Insurance Technology"
+   }
+  }
+ },
+ "big-bend": {
+  "index": {
+   "note": "Flow opens the room: family trip photographs and the boot campaign that later used some, then one chapter, Prada Marfa, the study's only section; the pull quote goes because the subtitle says it, and the closing keeps only the folder.",
+   "stand": "Photographs from a family trip through Big Bend and the desert around Marfa. | The trip was personal, and Capitan Boot Co. later used a few of the photographs as backdrops in its campaign.",
+   "abs": [
+    "Big Bend is the largest national park in Texas and one of the least visited in the country."
+   ],
+   "did": [
+    "Landscape photography"
+   ],
+   "didTitle": "Role",
+   "chapters": {
+    "Prada Marfa is a fake boutique": {
+     "t": "Prada Marfa is a fake boutique with real Prada shoes,",
+     "g": "sealed in 2005",
+     "p": [
+      "It's on U.S. 90, northwest of Marfa, and the bags on display are from the 2005 season."
+     ],
+     "pic": "prada_crop.jpg"
+    }
+   },
+   "labels": {
+    "Prada Marfa is a fake boutique": "Prada Marfa"
+   },
+   "decks": {
+    "Prada Marfa is a fake boutique": "The artists Elmgreen and Dragset built it as a permanent sculpture."
+   },
+   "lines": {
+    "The photographs came home": "The photographs came home and sat in a folder."
+   },
+   "rest": "drop",
+   "moreTo": "chapters",
+   "facts": [
+    "Published",
+    "Subject"
+   ]
+  }
+ },
+ "black-white-type": {
+  "index": {
+   "note": "Flow opens the room: what the three lithographs are and the question behind them, then five chapters that are also the section titles (the rules, each print, how the system works); each print's row holds its own fills, the system's row the principles, and the closing ends on the type.",
+   "stand": "Three lithographs made from six repeating patterns, a personal project in black ink on white paper. | The question was how much range a small set of patterns could produce once color, photography and gradients were off the table.",
+   "abs": [
+    "The tiles fill the letterforms, spill outside them, and sit behind them as backgrounds."
+   ],
+   "did": [
+    "Typography Design",
+    "Pattern Design",
+    "Art Direction"
+   ],
+   "didTitle": "Role",
+   "chapters": {
+    "The rules were set before the first print": {
+     "t": "The rules were set before the first print,",
+     "g": "and after that only scale and spacing change",
+     "li": [
+      "The shapes | dots at two scales, lines in three directions and a diamond grid.",
+      "Twelve tiles | each shape is drawn twice, once black on white and once reversed.",
+      "No color | I wanted the shapes and the letterforms to be the focus, so color was never in it."
+     ]
+    },
+    "Every stroke in \"the fancy\"": {
+     "t": "Every stroke in \"the fancy\" gets a different fill,",
+     "g": "and most of the sheet is paper",
+     "p": [
+      "The lettering sits low in the left corner over a fine dot grid, with swashes running off the edge of the sheet."
+     ],
+     "li": [
+      "The 'a' | polka dots fill the bowl.",
+      "The 'F' | the crossbar takes diagonal stripes, and they are easy to miss.",
+      "The 'y' | the descender gets vertical hairlines."
+     ],
+     "pic": "typography-patterns-the-fancy-poster-flat.png"
+    },
+    "The second print, \"highball stepper,\"": {
+     "t": "The second print, \"highball stepper,\" blows the same tiles up,",
+     "g": "and at that size they read a lot bolder",
+     "p": [
+      "Slab capitals stack edge to edge with script threaded between them."
+     ],
+     "li": [
+      "The 'E' | large polka dots fill the capital.",
+      "The 'R' | diagonal stripes run through the slab serif from top to bottom, and the angle gives the whole stack some speed.",
+      "Geometric serifs | sit in among the slabs."
+     ],
+     "pic": "typography-patterns-stepper-poster-bench-lifestyle.jpg"
+    },
+    "Handmade strokes sit next to machine-drawn ones": {
+     "t": "In \"jack white,\" handmade strokes sit next to machine-drawn ones,",
+     "g": "and not all of them get a fill, so the filled ones stand out",
+     "li": [
+      "The calligraphy | runs across the top, thin enough to pass for drawing.",
+      "The 'A' and the 'K' | sit in the lower right, the heaviest shapes on the sheet.",
+      "The dot grid | the most open of the three prints, pinpoints on a wide field."
+     ],
+     "pic": "typography-patterns-white-poster-gate-lifestyle.jpg"
+    },
+    "All three prints use every one": {
+     "t": "All three prints use every one of the six patterns,",
+     "g": "and what changes is how big each one runs and how much of the sheet it covers",
+     "li": [
+      "Ink and paper | each print has its own ratio, and that is most of what separates the sparse print from the packed one.",
+      "Tone | a packed fill looks dark and an open one looks light, and the biggest shape on the sheet is where the eye goes first.",
+      "Weight | in black and white, thick stripes come forward and thin hairlines drop back."
+     ],
+     "proof": "The three prints still don't look like they came from one set of patterns.",
+     "pic": "pattern-swatch-large-dots-grid-black-on-white.jpg"
+    }
+   },
+   "heads": {
+    "The patterns stayed simple so the type": "drop"
+   },
+   "decks": {
+    "The rules were set before the first print": "Each swatch is a tile that repeats in any direction, at any size, and most of the detail in the prints comes from layering them."
+   },
+   "lines": {
+    "The patterns are close to childlike": "The patterns stayed simple so the type could get complicated: Didone serifs, calligraphic swashes, slab capitals with real weight. | Setting one against the other is most of what makes the prints work at wall size.",
+    "There was no client and no deadline": "Once the rules were set, the rest of it was a lot of fun to make."
+   },
+   "rest": "drop",
+   "moreTo": "chapters",
+   "facts": [
+    "Published",
+    "Tools"
+   ]
+  }
+ },
+ "branding-graphics": {
+  "index": {
+   "note": "Flow opens the room: what the collection is and who it was for, then four chapters that are also the four section titles (posters, covers, the storefront, the logos); each opens to its specifics, and the sections are label, title and pictures.",
+   "stand": "Here are album covers, posters, art prints, logos, and one storefront window, made over about ten years for musicians, friends, and a handful of brands. | Each one has its own look, made to fit that client.",
+   "abs": [
+    "Most of the work was done in Photoshop, Illustrator, and InDesign, with a film camera for the photography, and hand-drawn type where a piece called for it."
+   ],
+   "did": [
+    "Graphic Design",
+    "Album Art",
+    "Poster Design",
+    "Logo Design",
+    "Photo Compositing"
+   ],
+   "didTitle": "Role",
+   "chapters": {
+    "Double-exposed landscapes": {
+     "t": "The posters and prints run from a typography exercise to double-exposed landscapes,",
+     "g": "and none of them came with a brief",
+     "li": [
+      "Double exposure | lets texture stand in for detail in the landscapes.",
+      "Dot-matrix grids | sit under some of the photographs.",
+      "Radial color studies | are built from pattern."
+     ],
+     "pic": "branding-graphics-up-up-and-away-balloon-poster-lifestyle.jpg"
+    },
+    "Every sleeve had to read": {
+     "t": "Four album covers go from folk to pop to ambient to a DJ,",
+     "g": "and every sleeve had to read at vinyl size and survive as a thumbnail",
+     "li": [
+      "Folk | woodgrain collage and halftone geometry.",
+      "Pop | grunge compositing and hand-drawn type.",
+      "Ambient and DJ | linework landscapes stack into depth on the ambient release, and the DJ's cover is a saturated portrait where the color carries the whole thing."
+     ]
+    },
+    "The storefront photograph was shot on film": {
+     "t": "A 4x6 film photograph fills a storefront window,",
+     "g": "blown up to street size",
+     "li": [
+      "The photograph | Bokeh's Fall, defocused lights, orange and pink on black.",
+      "The type | set over it for the window."
+     ],
+     "proof": "The original print of Bokeh's Fall is below the window."
+    },
+    "Each of the five logos": {
+     "t": "Five logos went to five clients,",
+     "g": "a fashion collective, a DJ, a lifestyle brand, Okina and J. Christianson",
+     "li": [
+      "Drawing | the fashion collective's logo is wrapped in flowing botanical illustration, and the lifestyle brand got a bird on a monogram.",
+      "Halftone | the DJ's logo uses halftone dots and a geometric sans.",
+      "Type | Okina's is a planet-and-orbit wordmark in heavy black sans, and J. Christianson's is a four-circle mark over an engraved serif."
+     ]
+    }
+   },
+   "heads": {
+    "This collection is still growing.": "drop"
+   },
+   "labels": {
+    "Double-exposed landscapes": "Posters and prints",
+    "Every sleeve had to read": "Album covers",
+    "The storefront photograph was shot on film": "Storefront",
+    "Each of the five logos": "Logos"
+   },
+   "lines": {
+    "The pieces here are a mix of personal": "The pieces here are a mix of personal and deadline projects, including album sleeves nobody asked for and logos for friends starting things. | This collection is still growing."
+   },
+   "rest": "drop",
+   "moreTo": "chapters",
+   "facts": [
+    "Published"
+   ]
+  }
+ },
+ "capitan-boot-co": {
+  "index": {
+   "note": "Flow opens the room: what the identity is and why it had to be tough, then two chapters that are also the section titles (the marks, West Texas); the closing keeps its head, the same person drew the marks and shot the photographs, and ends on the scuffed boot.",
+   "stand": "Brand identity for Capitan Boot Co., a Western boot maker: logo, type, badges, apparel graphics, and campaign photography. | Capitan needed a brand that could take as much wear as its boots.",
+   "abs": [],
+   "did": [
+    "Brand Identity",
+    "Logo System",
+    "Apparel Graphics",
+    "Photography"
+   ],
+   "didTitle": "Role",
+   "chapters": {
+    "The buffalo was drawn as a stamp": {
+     "t": "The buffalo was drawn as a stamp first and an illustration second,",
+     "g": "since stamps blur and embossing flattens out",
+     "li": [
+      "The bull skull | the lockup is drawn on a geometric grid, so the proportions stay put from a thumbnail stamp up to a banner.",
+      "The type | Northwest Regular and Oldman Regular, where Northwest carries the size and Oldman carries the character.",
+      "Hangtag size | the buffalo logo and the vintage badge, shown small, closer to the size they'd be on a hangtag."
+     ],
+     "proof": "Every color, typeface, and lockup was tested the way it would be produced before it went into the brand.",
+     "pic": "capitan-boot-co-western-original-logo-design-buffalo-bison-diamond-badge-mountain-desert-landscape-branding.jpg"
+    },
+    "The campaign was shot on location": {
+     "t": "The campaign was shot on location in Big Bend,",
+     "g": "the landscape the boots are made for",
+     "li": [
+      "The places | mesa country, river bottom, and grassland at last light.",
+      "As found | no props or stand-ins, and no styling added to what was already there.",
+      "The lockups | they sit right on top of the photographs, so each frame had to leave room for them."
+     ]
+    }
+   },
+   "lines": {
+    "The marks were drawn so you can still tell": "keep"
+   },
+   "rest": "drop",
+   "moreTo": "chapters",
+   "facts": [
+    "Published",
+    "Status",
+    "Tools"
+   ],
+   "factSet": {
+    "Tools": "Illustrator, Photoshop, InDesign, a camera"
+   },
+   "labels": {
+    "The same person drew the marks": "Drawn and shot"
+   }
+  }
+ },
+ "chalet": {
+  "index": {
+   "note": "Flow opens the room: a 1968 chalet taken down to the studs, the cabin and mid-century idea in grey, then two chapters (the exterior, the main level) that are also their sections' titles; the blend's words move into the main level's row, and the closing keeps the 400 square feet.",
+   "stand": "A 1968 Pacific Northwest chalet, taken down to the studs and rebuilt inside and out. | Mixing cabin and mid-century was the whole idea.",
+   "abs": [
+    "The Mountain View chalet hadn't been rethought since the '90s."
+   ],
+   "did": [
+    "Interior design",
+    "Exterior direction",
+    "Finish selection",
+    "Furniture curation",
+    "Fixture sourcing"
+   ],
+   "didTitle": "Scope",
+   "chapters": {
+    "The chalet no longer disappears": {
+     "t": "The exterior was repainted,",
+     "g": "and the chalet no longer disappears against the evergreens on cloudy days",
+     "li": [
+      "The stairs | they run down from the deck to a stone patio off the side of the house.",
+      "At night | new fixtures light the patio and the stairs, with string lights over the patio.",
+      "The front | the way up to the door climbs a rocky slope."
+     ],
+     "pic": "chalet-exterior-front-warm-gray-white-railings-pacific-northwest.jpg"
+    },
+    "Every seat faces the trees": {
+     "t": "The main wall got 16-foot sliding glass doors,",
+     "g": "so the tree canopy is what you look at from every seat in the room",
+     "li": [
+      "The A-frame | wood plank all the way up, with a triangular window under the peak and a skylight.",
+      "Cabin | reclaimed pine floors in mixed plank widths, exposed beams, painted stone and the antlers.",
+      "Mid-century | the sputnik chandelier, the Malm fireplace, the walnut dining set and the leather sling chair."
+     ]
+    }
+   },
+   "heads": {
+    "Mixing cabin and mid-century": "drop"
+   },
+   "labels": {
+    "The chalet no longer disappears": "The exterior",
+    "Every seat faces the trees": "The main level",
+    "The rebuild added over 400": "The footprint"
+   },
+   "decks": {
+    "The chalet no longer disappears": "Warm gray went on the siding and white on the railings.",
+    "Every seat faces the trees": "The furniture is kept simple on purpose so it doesn't compete with what's outside the glass."
+   },
+   "lines": {
+    "Most of the chalet's new space": "keep",
+    "The 1968 structure was sound": "The structure was sound, so the rebuild kept it. | The blue carpet and the dated railings went, along with everything else."
+   },
+   "rest": "drop",
+   "moreTo": "chapters",
+   "facts": [
+    "Published",
+    "Status"
+   ]
+  }
+ },
+ "cosmo-prof": {
+  "index": {
+   "note": "Flow opens on the refresh and its two constraints, then two chapters that are also the section titles, the photography and the homepage (the phone folds into its row); the templates close it.",
+   "stand": "A digital refresh set a new visual direction for Cosmo Prof, the salon supply retailer. | The site had to match the professionals using it, and the new look couldn't slow the store down.",
+   "abs": [
+    "Typography moved to Jost, and the palette put soft neutrals against sharp black."
+   ],
+   "did": [
+    "Creative Direction",
+    "Digital Design",
+    "Photography Direction"
+   ],
+   "didTitle": "Role",
+   "chapters": {
+    "Each frame defined what a good": {
+     "t": "Work started with photography,",
+     "g": "because the old pictures dated the site and no layout was going to fix that",
+     "li": [
+      "Lighting | high contrast, with defined shadows.",
+      "The frame | cleaner compositions, each one defining what a good Cosmo Prof picture looks like.",
+      "One source | every template pulls its pictures from the photo library."
+     ]
+    },
+    "The homepage sorts its recommendations": {
+     "t": "The homepage sorts its recommendations for whoever is logged in,",
+     "g": "so a stylist finds what they buy first",
+     "li": [
+      "Above the fold | the top of the page goes to the seasonal launch.",
+      "The header | cut back so the content gets the screen.",
+      "On the phone | the tabs become swipes, the launch image crops to a vertical frame that keeps the product, and the catalog drops to one column."
+     ]
+    }
+   },
+   "labels": {
+    "Each frame defined what a good": "Photography",
+    "The homepage sorts its recommendations": "Homepage",
+    "The templates set photography": "Templates"
+   },
+   "decks": {
+    "Each frame defined what a good": "Every photo is composed to read at thumbnail size and still hold up edge to edge.",
+    "The homepage sorts its recommendations": "The shoppable video has the products from each look a tab away, and you can buy from it while it plays."
+   },
+   "heads": {
+    "On the phone,": "drop"
+   },
+   "lines": {
+    "A promotion, a brand campaign": "keep"
+   },
+   "rest": "drop",
+   "moreTo": "chapters",
+   "facts": [
+    "Published",
+    "Tools"
+   ]
+  }
+ },
+ "dsc": {
+  "index": {
+   "note": "Flow opens the room: what was built for the gym and that athletes book from their own AI, then five chapters that are also the five section titles, ending on the one engine that makes every booking.",
+   "stand": "I designed and built a marketing site, a booking platform and an MCP server for Dallas Sport Collective, a gym in North Texas. | Athletes can book from the AI they already use, whether that's Claude, ChatGPT or Gemini.",
+   "abs": [
+    "The gym runs eleven programs, from NFL Combine prep to prenatal fitness. The founder needed two things at once: a brand that matched where the gym was headed, and a back office that could keep up.",
+    "The marketing site is black and white, with big condensed type and photography of actual members training."
+   ],
+   "did": [
+    "Web Design",
+    "Product Design",
+    "AI Integration",
+    "Full-stack engineering, brand to backend"
+   ],
+   "didTitle": "What I did",
+   "rest": "drop",
+   "moreTo": "chapters",
+   "chapters": {
+    "None of the scheduling works": {
+     "t": "Sign-up moves every athlete off text threads and a spreadsheet,",
+     "g": "onto one roster the software can work with",
+     "pic": "dsc-marketing-site-laptop-hero.jpg",
+     "li": [
+      "Accounts | athletes create their own in the app.",
+      "The waiver | every athlete signs it on the way in.",
+      "A trainer | the owner assigns each new member to one before anyone books a session."
+     ]
+    },
+    "Athletes can book a session": {
+     "t": "An athlete's own AI reads their real schedule and puts in a request,",
+     "g": "and the owner approves it with one tap",
+     "pic": "dsc-ai-scheduler-phone-hero.jpg",
+     "li": [
+      "One URL | athletes paste it into their AI to connect, and can revoke access from the dashboard.",
+      "What to ask | what's on their schedule, which trainer fits a goal, or to book Friday at 10am.",
+      "Eleven tools | from the gym overview and trainer availability to slot suggestions, booking requests and cancellations."
+     ],
+     "proof": "The demo replays a real exchange, from an athlete asking their AI for openings with a trainer to the request showing up on the owner's console."
+    },
+    "The athlete app opens on": {
+     "t": "The athlete app opens on your next session,",
+     "g": "and a connected AI describes each coach from the same profiles you see",
+     "li": [
+      "The dashboard | lists recent activity.",
+      "Trainers | the full roster gets a screen of its own.",
+      "Programs | the menu runs from strength and speed work to onsite physical therapy."
+     ]
+    },
+    "The owner console is built for": {
+     "t": "The owner schedules a whole week out loud,",
+     "g": "from a phone between sessions",
+     "li": [
+      "The queue | every request lands in it.",
+      "The week | a calendar shows the session count per day.",
+      "Members | a list flags each athlete's waiver and trainer-assignment status."
+     ],
+     "proof": "The owner's real batch booking, replayed on the console's own chat, shows the scheduler looking the athlete up before it proposes anything."
+    },
+    "The schedule was the part": {
+     "t": "One deterministic engine makes every booking,",
+     "g": "whether it's spoken, requested by an AI or tapped on the calendar",
+     "li": [
+      "Standing slots | the owner sets one recurring slot, and the engine fills in the next eight weeks.",
+      "Requests only | an athlete's AI can only ever request a booking.",
+      "The stack | Next.js on Vercel, with OAuth 2.0 consent and short-lived, rotating tokens."
+     ],
+     "proof": "Asked for every Monday, Wednesday and Friday at 3pm for a month, the scheduler accepted ten clean slots, flagged three conflicts and waited for a \"commit\" before booking anything."
+    }
+   },
+   "labels": {
+    "None of the scheduling works": "Sign-up",
+    "Athletes can book a session": "The MCP server",
+    "The athlete app opens on": "The athlete app",
+    "The owner console is built for": "The owner console",
+    "The schedule was the part": "The engine"
+   },
+   "decks": {
+    "None of the scheduling works": "It was the first part of the scheduling platform I built.",
+    "Athletes can book a session": "An athlete never has to open the app.",
+    "The athlete app opens on": "Each trainer's bio expands to specialties and certifications.",
+    "The owner console is built for": "It's built for one person on the gym floor.",
+    "The schedule was the part": "It checks trainer availability, double-bookings, floor capacity, allowed durations and cancellation rules."
+   },
+   "lines": {
+    "A hundred-plus athletes were booked": "drop",
+    "An athlete's AI can read the schedule": "drop",
+    "However a booking comes in": "drop",
+    "The platform is live in Celina": "keep"
+   },
+   "facts": [
+    "Published"
+   ]
+  }
+ },
+ "fairview-bedroom": {
+  "index": {
+   "note": "Flow opens the room: a bedroom and a bath in 600 square feet, glamorous and still livable, then three chapters that are also the section titles (one wall color, texture first, the bath in hex tile), each opening to three specifics; the closing is the copper tub and the bouclé ottoman.",
+   "stand": "The Fairview's primary suite fits a bedroom and a bath into 600 square feet. | The bedroom is glamorous, and it's still a room you can live in.",
+   "abs": [],
+   "did": [
+    "Interior design",
+    "Finish selection",
+    "Fixture sourcing",
+    "Furniture curation"
+   ],
+   "didTitle": "Scope",
+   "chapters": {
+    "The charcoal violet walls shift": {
+     "t": "Every wall is painted charcoal violet,",
+     "g": "and everything else was chosen to go with it",
+     "li": [
+      "The ceiling | it's vaulted and peaks at fourteen feet, with exposed wood beams along the ridge.",
+      "The chandelier | brass and crystal, scaled big enough that it doesn't get lost up there.",
+      "The windows | floor to ceiling and steel-framed, and they look out onto the property's tree canopy."
+     ],
+     "pic": "fairview-suite-bedroom-chandelier-fireplace-slippers.jpg"
+    },
+    "Texture came first and shape second": {
+     "t": "Texture came first and shape second for every piece of furniture,",
+     "g": "and the layers work together because the tonal range stays narrow",
+     "li": [
+      "The swivel chair | channel tufting on a brass base.",
+      "The side table | a solid marble pedestal.",
+      "On the floor | hammered brass vessels."
+     ],
+     "pic": "fairview-suite-reading-nook-chair-ottoman-marble-table.jpg"
+    },
+    "The bath swaps the violet paint": {
+     "t": "The bath swaps the violet paint for charcoal hex tile,",
+     "g": "carrying the bedroom's dark, warm palette through the double doors",
+     "li": [
+      "The shower | glass, facing the tub across a half-wall of hex tile.",
+      "The wet area | the tile runs floor to ceiling on every wall.",
+      "The chandelier | crystal, and smaller than the bedroom's."
+     ],
+     "pic": "fairview-suite-ensuite-doorway-copper-tub-chandelier.jpg"
+    }
+   },
+   "labels": {
+    "The charcoal violet walls shift": "The bedroom",
+    "Texture came first and shape second": "The furniture",
+    "The bath swaps the violet paint": "The ensuite"
+   },
+   "decks": {
+    "The charcoal violet walls shift": "The color shifts from cool to warm in the window light.",
+    "Texture came first and shape second": "The bed has a velvet headboard and faux fur throws, and the bouclé ottoman stands on turned legs.",
+    "The bath swaps the violet paint": "The tub is hammered copper inside and matte black outside, and it stands on cast iron claw feet."
+   },
+   "heads": {
+    "A copper tub and a bouclé ottoman share": "drop"
+   },
+   "lines": {
+    "Both crystal chandeliers": "A copper tub and a bouclé ottoman share a floor plan. | Both crystal chandeliers, in the bedroom and the bath, come from the same family."
+   },
+   "rest": "drop",
+   "moreTo": "chapters",
+   "facts": [
+    "Published",
+    "Status"
+   ]
+  }
+ },
+ "fairview-entry": {
+  "index": {
+   "note": "Flow opens the room: a two-story foyer designed around its French doors, the light first, then two chapters that are also the section titles (limestone-cream walls that take the light, a bench for boots and bags), each opening to three specifics; the closing is the oak floor running on into the house.",
+   "stand": "The Fairview entry is a two-story foyer, designed around its French doors. | The light through them comes first.",
+   "abs": [],
+   "did": [
+    "Interior design",
+    "Furniture curation",
+    "Finish selection"
+   ],
+   "didTitle": "Scope",
+   "chapters": {
+    "The French doors run floor to ceiling": {
+     "t": "The walls are limestone-cream,",
+     "g": "so they take the light and don't throw it back",
+     "li": [
+      "The doors | French ironwork, running floor to ceiling at the center.",
+      "The rug | dark enough to ground the floor and woven loose enough to still show on a cloudy afternoon.",
+      "The palm and coat tree | they share the corner that gets the morning sun."
+     ],
+     "pic": "2.avif"
+    },
+    "The rug, the bench and the art": {
+     "t": "A leather bench sits under the slatted wood art,",
+     "g": "for the boots that come off and the bag set down on the way in",
+     "li": [
+      "The second piece | a dark abstract in a thick frame.",
+      "The chandelier | one alabaster pendant set in brass, oversized on purpose, hanging by itself overhead.",
+      "The bench | a sheepskin throw over it and a basket underneath."
+     ],
+     "pic": "6.webp"
+    }
+   },
+   "labels": {
+    "The French doors run floor to ceiling": "The light",
+    "The rug, the bench and the art": "The pieces"
+   },
+   "decks": {
+    "The French doors run floor to ceiling": "Nothing on the floor gets between the doors and the sun.",
+    "The rug, the bench and the art": "The rug, the bench and the art had all been somewhere else first."
+   },
+   "heads": {
+    "The leather bench is where boots come off": "drop"
+   },
+   "lines": {
+    "The white oak floor runs from the front door": "keep"
+   },
+   "rest": "drop",
+   "moreTo": "chapters",
+   "facts": [
+    "Published"
+   ]
+  }
+ },
+ "fairview-sitting": {
+  "index": {
+   "note": "Flow opens the room: a sitting room designed around its stone fireplace wall, for the hour after dinner, then two chapters that are also the section titles (four materials and no accent colors, chairs that swivel to each other or the fire), each opening to three specifics; the closing says what the room is like.",
+   "stand": "The Fairview sitting room, designed around a stacked stone fireplace wall. | It's for the hour after dinner.",
+   "abs": [],
+   "did": [
+    "Interior design",
+    "Furniture curation",
+    "Finish selection"
+   ],
+   "didTitle": "Scope",
+   "chapters": {
+    "The stone is the only material": {
+     "t": "The palette is four materials: stone, velvet, brass and warm oak,",
+     "g": "with no accent colors",
+     "li": [
+      "The stone | ledgestone, and the only material that goes floor to ceiling.",
+      "The oak | underfoot and across the mantel.",
+      "The beams | black box beams overhead."
+     ],
+     "pic": "fairview-sitting-stone-wall-wood-mantel-mirror-brass-candlesticks-leather-tumbler-detail.jpg"
+    },
+    "The chairs swivel, so they can face": {
+     "t": "The four charcoal velvet chairs swivel,",
+     "g": "so they can face each other or the fire",
+     "li": [
+      "Every seat | close enough to feel the fire, whichever way it's turned.",
+      "The coffee table | brass, in the middle of the chairs, where everyone can reach it.",
+      "The bar cabinet | round and black, in the corner behind the chairs."
+     ],
+     "pic": "fairview-sitting-velvet-swivels-rear-view-bar-cabinet-art-conversation-grouping.jpg"
+    }
+   },
+   "labels": {
+    "The stone is the only material": "The materials",
+    "The chairs swivel, so they can face": "The chairs"
+   },
+   "decks": {
+    "The stone is the only material": "The velvet on the chairs has enough sheen to catch the firelight, and the brass is antiqued so it doesn't shine back.",
+    "The chairs swivel, so they can face": "The fire takes the spot where a TV would usually go."
+   },
+   "heads": {
+    "The sitting room is for the hour": "drop"
+   },
+   "lines": {
+    "The stone wall and the sheen on the velvet": "The room is formal, a little glam, and comfortable to sit in."
+   },
+   "rest": "drop",
+   "moreTo": "chapters",
+   "facts": [
+    "Published"
+   ]
+  }
+ },
+ "floor-and-decor": {
+  "index": {
+   "note": "Flow opens the room: the Designer of the Quarter award for three bathrooms and their shared materials, then two chapters that are also the section titles (the three rooms, the one moodboard), each opening to three specifics; the hard-surfaces line is the first section's deck and the closing says where the feature ran.",
+   "stand": "Floor & Decor named the studio Designer of the Quarter for three bathrooms. | All three rooms use the same marble, dolomite, white oak and classic tile.",
+   "abs": [],
+   "did": [
+    "Interior design",
+    "Material selection",
+    "Finish coordination"
+   ],
+   "didTitle": "Scope",
+   "chapters": {
+    "The three rooms are urban southwest": {
+     "t": "The three rooms are urban southwest, modern farmhouse and quiet glam,",
+     "g": "and the proportions, fixtures and finishes change from room to room",
+     "p": [
+      "Some of the material combinations looked risky on paper."
+     ],
+     "li": [
+      "Urban southwest | between brick and warm oak, a matte black tub looks softer in person than in a render.",
+      "Modern farmhouse | patterned floor tile under shiplap and a vaulted ceiling feels calmer than it would under flat drywall.",
+      "Quiet glam | large-format veined marble runs the full height of the walls, a brass urchin pendant breaks up all that height, and a star tile grounds the floor."
+     ],
+     "pic": "quiet-glam-primary-bath-veined-marble-brass-urchin-chandelier.jpg"
+    },
+    "Every material in the three bathrooms": {
+     "t": "Every material in the three bathrooms was picked together, on one moodboard,",
+     "g": "so the stone, wood and metal were already proven next to each other",
+     "li": [
+      "Shared | polished nickel and the hex mosaic each turn up in two of the three bathrooms.",
+      "Brass | it ties the two warmer rooms, modern farmhouse and quiet glam, together, and it's the only metal in quiet glam.",
+      "Just one | exposed brick, shiplap and the urchin pendant each appear in one bathroom, and those are what make each room its own."
+     ],
+     "pic": "modern-farmhouse-powder-room-circular-brass-mirror-patterned-hex-floor.jpg"
+    }
+   },
+   "labels": {
+    "The three rooms are urban southwest": "The projects",
+    "Every material in the three bathrooms": "The materials",
+    "Floor & Decor featured the studio": "The feature"
+   },
+   "decks": {
+    "The three rooms are urban southwest": "The focus was hard surfaces, the tile and stone the rest of each room was built around.",
+    "Every material in the three bathrooms": "The moodboard came first, before any room was drawn."
+   },
+   "lines": {
+    "The Designer of the Quarter feature": "The feature came with a video interview."
+   },
+   "rest": "drop",
+   "moreTo": "chapters",
+   "facts": [
+    "Published",
+    "Status"
+   ]
+  }
+ },
+ "hill-country-bath": {
+  "index": {
+   "note": "Flow opens the room: a primary bath designed softer than the kitchen, then three chapters that are also the section titles (the vanities, the three marbles, the found pieces), each opening to three specifics; the closing is the morning and the kitchen two rooms away.",
+   "stand": "A primary bath in the Hill Country house, designed softer than the kitchen. | It has two vanities, a freestanding tub under the window and a marble shower with a bench.",
+   "abs": [],
+   "did": [
+    "Interior design",
+    "Fixture sourcing",
+    "Art selection",
+    "Furniture curation"
+   ],
+   "didTitle": "Scope",
+   "chapters": {
+    "Her vanity faces the east windows": {
+     "t": "Vessel sinks sit under wall-mounted bridge faucets with cross handles,",
+     "g": "a vintage shape on modern plumbing",
+     "li": [
+      "The cabinet color | the same paint family as the kitchen's sage, two steps toward gray.",
+      "Upper cabinets | glass fronts on one side for display and solid doors on the other for storage.",
+      "The sconces | globe sconces at both vanities throw warm circles on the shiplap behind them."
+     ],
+     "pic": "hill-country-bath-her-vanity-wall-glass-cabinet-sconces.jpg"
+    },
+    "Picking the marble took the longest": {
+     "t": "Three marbles were picked to go together,",
+     "g": "which keeps 400 square feet of hard surface from looking like a showroom",
+     "p": [
+      "Picking the marble took the longest."
+     ],
+     "li": [
+      "The counters | Calacatta that runs warm with gold and brown veining.",
+      "The shower walls | a cooler, grayer slab, with the bench cut from the same slab and bookmatched at the corner.",
+      "The shower floor | a hex mosaic for grip that splits the difference, and the same hex tile lines the recessed niche."
+     ],
+     "pic": "hill-country-bath-shower-niche-hex-tile-bench.jpg"
+    },
+    "None of the bath's pieces came from one vendor": {
+     "t": "None of the bath's pieces came from one vendor or was ordered to spec,",
+     "g": "so the room looked lived in the day it was finished",
+     "li": [
+      "His vanity | an antique mirror and a brass valet stand from an antique shop.",
+      "The painting | older than the house.",
+      "The rugs | vintage and layered, with one fraying at an edge."
+     ],
+     "pic": "hill-country-bath-his-vanity-valet-stand-antique-mirror.jpg"
+    }
+   },
+   "labels": {
+    "Her vanity faces the east windows": "The vanities",
+    "Picking the marble took the longest": "The marble",
+    "None of the bath's pieces came from one vendor": "The objects"
+   },
+   "decks": {
+    "Her vanity faces the east windows": "Her vanity faces the east windows and catches the morning sun.",
+    "Picking the marble took the longest": "The stones had to be close without matching: enough distance that the room didn't go flat, and not so much that the changes jarred.",
+    "None of the bath's pieces came from one vendor": "They're the owners' own, and nobody straightened up for the pictures."
+   },
+   "heads": {
+    "This is the room you are in before the day starts": "drop"
+   },
+   "lines": {
+    "The shiplap walls and the wood ceiling": "This is the room you are in before the day starts. | Two rooms from this bath, the kitchen is set up for a crowd."
+   },
+   "rest": "drop",
+   "moreTo": "chapters",
+   "facts": [
+    "Published",
+    "Status"
+   ]
+  }
+ },
  "hill-country-kitchen": {
   "trim": {
    "note": "Today's layout with nothing hidden: every fact keeps one home, the abstract keeps what no section tells, and the details that sell all stay.",
@@ -82,9 +1023,10 @@ window.DENSITY_EDITS = {
    }
   },
   "index": {
-   "note": "After Studio.Build: a short role list and four closed drawers grouped by question hold the story, and the sections below are heads and pictures with a line at most.",
+   "note": "Flow opens the room: a kitchen designed around four materials and why new and vintage pieces share it, then four chapters that are also the section titles (where each material goes, the unlacquered brass, the island on legs, the dining table), each opening to three specifics; the riskiest call is the island's line, the faucet is never called brass, and the closing is the hub.",
+   "stand": "A kitchen in the Texas Hill Country, designed around four materials. | It works as one room because the new and vintage pieces are in the same four finishes.",
    "abs": [
-    "Four materials cover every cabinet face, countertop, and piece of hardware. The kitchen gets used for cooking, gathering, and working in about equal measure, and it's the hub of the house."
+    "Shaker cabinet doors come out of traditional American kitchens, the steel-frame windows and open shelving are contemporary, and the cremone bolts and schoolhouse pendants are European antique."
    ],
    "did": [
     "Interior and kitchen design",
@@ -94,88 +1036,185 @@ window.DENSITY_EDITS = {
     "Construction documentation"
    ],
    "didTitle": "Scope",
-   "drawers": [
-    {
-     "t": "Where each material goes",
-     "cols": [
-      {
-       "t": "Sage Green",
-       "p": [
-        "The sage is a muted green with enough gray in it to stay calm, and it goes on everything around the perimeter: base cabinets, uppers, the glass-front display, the range hood surround, the refrigerator panel, the pantry wall. The color sits back a little so the marble and the brass get noticed first."
-       ]
-      },
-      {
-       "t": "White Oak + Marble",
-       "p": [
-        "The island is white oak and the warmest material in the room. The growth rings show on the end grain of the open shelves.",
-        "Calacatta marble runs the perimeter counters and the full backsplash behind the range, gray and gold veining on a warm white ground. The marble separates the green cabinets from the white walls."
-       ]
-      },
-      {
-       "t": "Unlacquered Brass",
-       "p": [
-        "The brass goes on the cremone bolts, the pendants, the sconce arms, and the range trim."
-       ]
-      }
-     ]
-    },
-    {
-     "t": "How the sage and the oak are finished",
+   "chapters": {
+    "The kitchen's four materials were chosen": {
+     "t": "Sage green takes the vertical planes and marble the horizontal ones,",
+     "g": "with oak in the middle and brass on the hardware",
      "p": [
-      "The sage has a matte finish. Satin would have pushed the cabinets contemporary and gloss would have fought the raw oak. Matte lets the Shaker profiles throw soft shadows.",
-      "The white oak has a penetrating oil finish, with no stain and no polyurethane. The grain stays open and the color goes from pale honey to a deeper amber over years of use. The island is meant to look used, with water rings, knife marks and flour in the grain."
-     ]
-    },
-    {
-     "t": "Old and new pieces",
-     "p": [
-      "Shaker cabinet doors come out of traditional American kitchens, the steel-frame windows and open shelving are contemporary, and the cremone bolts and schoolhouse pendants are European antique.",
-      "The pantry doors close with cremone bolts, a French mechanism where one lever locks the door top and bottom at once. The bolts put a long vertical line on the tallest cabinet faces and give the pantry wall a presence a standard pull wouldn't."
-     ]
-    },
-    {
-     "t": "The island and the dining end",
-     "p": [
-      "The island has a prep counter at one end and a bar at the other, where four stools with brass-tone frames tuck under the overhang. Open shelves on the working end keep plates and bowls within reach of the dishwasher. The base has a firewood cubby too."
+      "The sage sits back a little so the marble and the brass get noticed first."
      ],
-     "cols": [
-      {
-       "t": "Where It Sits",
-       "p": [
-        "From the entry, the island is the first thing you see, centered with space to walk on all four sides. Eight feet of usable counter sits on the island.",
-        "Every sight line in the kitchen crosses the island: from the range you look over it to the windows, and from the dining table you look through it to the backsplash. The oak breaks up the green and marble."
-       ]
-      },
-      {
-       "t": "On Legs",
-       "p": [
-        "The cabinets around the walls are built in, but the island stands on visible legs with open shelving between them, so it looks like furniture.",
-        "Guests treat the island like a table: they lean on it, sit around it and set things down on it without asking."
-       ]
-      },
-      {
-       "t": "Dining",
-       "p": [
-        "The dining end shares the open room but goes deeper: a dark-stained table against the light oak and green of the kitchen.",
-        "The safari chairs are leather on oak frames. The leather picks up the warmth of the brass and the oak goes with the island. A dark patterned rug lies under the table and chairs and marks the dining area off from the kitchen floor."
-       ]
-      }
+     "li": [
+      "Sage green | a muted green with enough gray in it to stay calm, on everything around the perimeter, from the base cabinets to the pantry wall.",
+      "Matte | satin would have pushed the cabinets contemporary and gloss would have fought the raw oak, and matte lets the Shaker profiles throw soft shadows.",
+      "Calacatta marble | gray and gold veining on a warm white ground, on the counters and the full backsplash behind the range."
      ]
+    },
+    "Every pull and knob": {
+     "t": "The brass is unlacquered,",
+     "g": "so it darkens where hands go and stays bright where they don't",
+     "li": [
+      "Where it goes | the cabinet pulls, the pendants, the sconce arms, and the range knobs and trim.",
+      "Cremone bolts | the pantry doors close with a French mechanism where one lever locks the door top and bottom at once.",
+      "The pantry wall | the bolts put a long vertical line on the tallest cabinet faces, which gives the wall a presence a standard pull wouldn't."
+     ],
+     "pic": "hill-country-kitchen-brass-cremone-bolt-closeup.jpg"
+    },
+    "The island's marble top": {
+     "t": "The island stands on visible legs so it looks like furniture,",
+     "g": "and guests treat it like a table",
+     "p": [
+      "The island is meant to look used, with water rings, knife marks and flour in the grain."
+     ],
+     "li": [
+      "The finish | a penetrating oil, with no stain and no polyurethane; the grain stays open and the color goes from pale honey to a deeper amber over years of use.",
+      "The marble top | it runs end to end without a break, with eight feet of usable counter.",
+      "Where it sits | it's the first thing you see from the entry, and every sight line in the kitchen crosses it."
+     ],
+     "pic": "hill-country-kitchen-wide-dining-island-windows.jpg"
+    },
+    "The switch from light to dark": {
+     "t": "The dining table sits close enough to stay in the conversation,",
+     "g": "and far enough off to be its own place",
+     "li": [
+      "The table | dark-stained, on turned legs, against the light oak and green of the kitchen.",
+      "Safari chairs | leather on oak frames: the leather picks up the warmth of the brass, and the oak goes with the island.",
+      "The rug | dark and patterned, it marks the dining area off from the kitchen floor."
+     ],
+     "pic": "hill-country-kitchen-dining-table-chairs-full.jpg"
     }
-   ],
-   "rest": "drop",
+   },
+   "labels": {
+    "The kitchen's four materials were chosen": "The materials",
+    "Every pull and knob": "Cabinetry and hardware",
+    "The island's marble top": "The island",
+    "The switch from light to dark": "The dining end",
+    "Nothing in the room is": "The hub"
+   },
+   "decks": {
+    "The kitchen's four materials were chosen": "All four were chosen before a single cabinet was drawn.",
+    "Every pull and knob": "The cabinetry goes floor to ceiling on three walls: base cabinets, glass-front uppers, a built-in hutch on either side of the range, and full-height pantry doors.",
+    "The island's marble top": "Its raw white oak was the riskiest call of the whole spec.",
+    "The switch from light to dark": "The switch from light to dark at the dining end is abrupt on purpose."
+   },
    "keep": [
-    "Every decision came back",
-    "Raw wood in a kitchen",
-    "The brass darkens where hands go"
+    "Every decision came back"
    ],
    "lines": {
-    "The cabinetry goes floor to ceiling": "The cabinetry goes floor to ceiling on three walls: a built-in hutch on either side of the range and full-height pantry doors."
+    "Sage green takes the vertical planes": "The island handles prep, serving, and seating at the same time. | The kitchen gets used for cooking, gathering, and working in about equal measure."
    },
+   "rest": "drop",
+   "moreTo": "chapters",
    "facts": [
     "Published",
     "Status"
    ]
+  }
+ },
+ "hill-country-living": {
+  "index": {
+   "note": "Flow opens the room: a living room open to the kitchen and designed around its limestone wall, then two chapters that are also the section titles (plain walls and four materials, pieces chosen for how they age), each opening to three specifics; the closing walks into the entry.",
+   "stand": "A living room at the center of the Hill Country house, open to the kitchen and designed around a floor-to-ceiling limestone fireplace wall. | The furniture is mid-century in shape, with textiles that lean Western.",
+   "abs": [],
+   "did": [
+    "Interior design",
+    "Furniture curation",
+    "Art selection",
+    "Fixture sourcing"
+   ],
+   "didTitle": "Scope",
+   "chapters": {
+    "Stone, pine, brass and leather run through": {
+     "t": "The walls and ceiling are kept plain,",
+     "g": "so the room gets its texture from four materials",
+     "li": [
+      "Reclaimed 1950s pine | the floor, and the exposed beams overhead.",
+      "Cognac leather | the sofa, on a wood frame.",
+      "Brass | the fixtures and the fire tools."
+     ],
+     "pic": "hill-country-living-limestone-fireplace-eisenhower-painting-navajo-throw-cognac-sofa-symmetry.jpg"
+    },
+    "There is a painting by Eisenhower": {
+     "t": "Every piece was chosen for how it will age,",
+     "g": "and none of it came as a set",
+     "p": [
+      "Family heirlooms sit next to new finds."
+     ],
+     "li": [
+      "The record-player shelf | it sits under the Eisenhower painting, and the vinyl stacked below it includes ZZ Top and Sturgill Simpson.",
+      "The ladder shelf | a vintage globe and ceramic vessels.",
+      "By the window | two tweed armchairs face each other with a leather stool between them and the Hill Country outside."
+     ],
+     "pic": "hill-country-living-vintage-record-player-vinyl-shelf-limestone-eisenhower-detail.jpg"
+    }
+   },
+   "labels": {
+    "Stone, pine, brass and leather run through": "The materials",
+    "There is a painting by Eisenhower": "Heirlooms and finds"
+   },
+   "decks": {
+    "Stone, pine, brass and leather run through": "Stone, pine, brass and leather run through the whole house.",
+    "There is a painting by Eisenhower": "An original painting by Dwight D. Eisenhower hangs on the stone wall with landscape pieces in gilded frames."
+   },
+   "heads": {
+    "Just past the living room is the entry": "drop"
+   },
+   "lines": {
+    "The entry gets the same treatment": "Just past the living room is the entry. | It gets the same treatment, with a leather-strapped oval mirror on the wall and a wood console with a crystal lamp on it."
+   },
+   "rest": "drop",
+   "moreTo": "chapters",
+   "facts": [
+    "Published"
+   ]
+  }
+ },
+ "hill-country-oak": {
+  "index": {
+   "note": "Flow opens the room: what the campaign is and what it shows, then two chapters that are also the section titles (where the look came from and why, then the same three parts from a billboard to a lock screen); the closing ends on the texture and the barrel.",
+   "stand": "A campaign for Hill Country Oakworks, a Texas whiskey barrel maker. | Sun-washed color and the silhouette of an oak show the land the barrels come from.",
+   "abs": [],
+   "did": [
+    "Art Direction",
+    "Campaign Design"
+   ],
+   "didTitle": "Role",
+   "chapters": {
+    "Every piece of the campaign": {
+     "t": "The campaign pulls from travel posters and old highway signs,",
+     "g": "for a heritage look that stays clear of the Western cliché",
+     "li": [
+      "Red, white, and blue | the palette had to say Texas without them.",
+      "The colors | orange and mustard do the color blocks and the wordmark, brick is the foreground hills, and teal is the sky.",
+      "The type | plain and utilitarian, with Greatdome for the display type and Avenir Next for everything else."
+     ],
+     "pic": "hill-country-oakworks-mid-century-tree-silhouette-poster-teal-orange-red-circles.jpg"
+    },
+    "The same three parts hold": {
+     "t": "The same three parts hold from a billboard to a lock screen,",
+     "g": "with each piece laying out the color blocks, silhouette, and type for its own size",
+     "p": [
+      "The campaign had to look like a heritage brand at both sizes."
+     ],
+     "pic": "hill-country-oakworks-iphone-mockup-poster-tree-color-blocks-held-against-sky.jpg"
+    }
+   },
+   "heads": {
+    "A distressed texture goes over": "drop"
+   },
+   "lines": {
+    "The geometric shapes in the artwork": "A distressed texture goes over the whole campaign. | The geometric shapes in the artwork echo a whiskey barrel."
+   },
+   "rest": "drop",
+   "moreTo": "chapters",
+   "facts": [
+    "Published",
+    "Built",
+    "Tools"
+   ],
+   "factSet": {
+    "Built": "An outdoor banner, posters, a phone wallpaper, a shirt",
+    "Tools": "Illustrator, Photoshop, InDesign"
+   }
   }
  },
  "ivy-park": {
@@ -236,26 +1275,12 @@ window.DENSITY_EDITS = {
    "facts": []
   },
   "index": {
-   "note": "Studio.Build's shape: What I did and the story in four closed drawers under the title, then each section's head, pictures and one line at most; the black field and the pull quote stay.",
-   "stand": "Beyoncé's Ivy Park launched at Nordstrom, the line's exclusive US partner.",
-   "rest": "drop",
-   "lines": {
-    "Ivy Park was Beyoncé's first": "drop",
-    "Nordstrom had the exclusive": "drop",
-    "Four weeks went": "drop",
-    "The brief came in under NDA": "drop",
-    "The photography was supplied": "drop",
-    "Typography, layout, copy": "drop",
-    "The polygon, a hexagon": "drop",
-    "Angled, rotated": "drop",
-    "The custom CMS components": "The custom CMS components built for the project went into Nordstrom's shared library and powered other launches for two years.",
-    "Every photo came in": "The polygon ran from the hero banner through the product carousels into the email headers.",
-    "The launch page had to be": "keep",
-    "The emails, banners": "keep",
-    "Everything from the creative direction": "keep",
-    "After launch, Beyoncé": "Beyoncé sent the team a personal thank-you video.",
-    "That part stays": "keep"
-   },
+   "note": "Flow opens the room: Beyoncé's first activewear line launched by Nordstrom on one scrolling page and the 95% that sold out, then three chapters that are also the section titles (six weeks, the hexagon and the components reused for two years, the campaign built from the page), each opening to three specifics; the pull quote stays, and the closing says it all came out of a Nordstrom office.",
+   "stand": "Ivy Park was Beyoncé's first activewear line, and Nordstrom, its exclusive US partner, launched it on one scrolling page. | 95% of the product sold out within days.",
+   "abs": [
+    "Ivy Park was staking out a spot between luxury fashion and athletic performance, one with no obvious reference, and the design had to sit in that gap.",
+    "The photography was supplied: black-and-white athlete portraits, and color product shots on blue and gray. Typography, layout, copy, animation and interaction were all open."
+   ],
    "did": [
     "Creative direction",
     "Campaign design",
@@ -263,63 +1288,732 @@ window.DENSITY_EDITS = {
     "Ecommerce design",
     "Copywriting"
    ],
-   "drawers": [
-    {
-     "t": "Where Ivy Park sat, and what the launch needed",
-     "p": [
-      "Ivy Park was staking out a spot between luxury fashion and athletic performance, one with no obvious reference, and the design had to sit in that gap.",
-      "The Ivy Park launch needed one scrolling brand experience and emails timed to the drop. The brief also covered digital marketing across Nordstrom's owned channels."
+   "didTitle": "Role",
+   "chapters": {
+    "Nordstrom had six weeks": {
+     "t": "The website went from moodboard to live in six weeks,",
+     "g": "with every concept presented to Beyoncé's creative team",
+     "li": [
+      "Week one | references, moodboards and a competitive audit.",
+      "Weeks two through four | wireframes, design concepts, copywriting and motion studies, with revisions turned around overnight.",
+      "Weeks five and six | build and ship."
      ]
     },
-    {
-     "t": "The NDA and the timeline",
-     "p": [
-      "The brief came in under NDA before the team had cleared their schedules, and there were daily calls with Ivy Park while the creative direction got locked in.",
-      "Week one: references, moodboards, competitive audit. Weeks two through four: wireframes, design concepts, copywriting and motion studies, all presented to Beyoncé's creative team, with revisions turned around overnight. Weeks five and six: build and ship."
+    "The hexagon started as a way": {
+     "t": "The page framed every portrait in a hexagon that turned on scroll,",
+     "g": "and its custom components powered other Nordstrom launches for two years",
+     "li": [
+      "The hexagon | it started as a way to break the rectangular grid the photography came in, and its angled edges gave the portraits some tension.",
+      "The copy | written line by line as the pages took shape, in short present-tense sentences that talked straight to the reader.",
+      "The components | Nordstrom's CMS didn't have parallax modules, animated polygon masks, full-bleed video that played on scroll or type lockups that scaled with the screen, so they got built for Ivy Park."
      ]
     },
-    {
-     "t": "What was supplied, and what was open",
-     "p": [
-      "The photography was supplied: black-and-white athlete portraits, editorial in tone, with range across body types and ethnicities, and color product shots on blue and gray.",
-      "Everything but the photography was open, so the type went larger than expected, motion ran the length of the scroll, and the portraits got space around them."
-     ]
-    },
-    {
-     "t": "The polygon, the type and the components, at any size",
-     "cols": [
-      {
-       "t": "The Polygon",
-       "p": [
-        "The portraits sat in a hexagonal frame, sometimes cropped tight to a jawline, sometimes open wide enough for a full figure.",
-        "The polygon's angled edges against the straight photography gave the athlete portraits some tension.",
-        "On scroll the hexagon turned slowly, and the flat photography picked up some depth. The rotation was one CSS transform."
-       ]
-      },
-      {
-       "t": "Typography at Volume",
-       "p": [
-        "Headlines like \"Confidence is Strength\" were set in mixed weights, with baselines knocked off the grid.",
-        "The copy got written line by line as the pages took shape, in short present-tense sentences that talked straight to the reader."
-       ]
-      },
-      {
-       "t": "Custom Components",
-       "p": [
-        "The Ivy Park page needed components Nordstrom's CMS didn't have: parallax modules, animated polygon masks, full-bleed video that played on scroll, type lockups that scaled with the screen."
-       ]
-      },
-      {
-       "t": "At Any Size",
-       "p": [
-        "The polygon crops the same at 300px and at 3000px, and bold type reads at any size. Black-and-white photography goes to any aspect ratio."
-       ]
-      }
+    "The launch page came first": {
+     "t": "The emails, banners, social posts and in-store signage were all adapted from the launch page,",
+     "g": "built from a handful of simple elements",
+     "li": [
+      "The polygon | crops the same at 300px and at 3000px.",
+      "Bold type | reads at any size.",
+      "Black-and-white photography | goes to any aspect ratio."
      ]
     }
+   },
+   "heads": {
+    "95% of the product": "Everything from the creative direction to the rollout came out of a Nordstrom office."
+   },
+   "labels": {
+    "Nordstrom had six weeks": "The brief",
+    "The hexagon started as a way": "The launch page",
+    "The launch page came first": "The campaign",
+    "95% of the product": "In house"
+   },
+   "decks": {
+    "Nordstrom had six weeks": "The brief came in under NDA, and there were daily calls with Ivy Park.",
+    "The hexagon started as a way": "Headlines like \"Confidence is Strength\" were set in mixed weights, with baselines knocked off the grid.",
+    "The launch page came first": "The polygon ran from the hero banner through the product carousels into the email headers."
+   },
+   "lines": {
+    "The launch page had to be": "keep",
+    "After launch, Beyoncé": "keep",
+    "That part stays": "keep"
+   },
+   "rest": "drop",
+   "moreTo": "chapters",
+   "facts": []
+  }
+ },
+ "j-christianson": {
+  "index": {
+   "note": "Flow opens the room: what the identity is and the range it was drawn for, then two chapters that are also the section titles (the tree, the mark), each opening to its specifics; the closing says the name, mark and tree were decided once.",
+   "stand": "A brand identity for J. Christianson, a fashion and home goods label, built from the name outward. | The whole identity was drawn to fit a billboard and a candle label.",
+   "abs": [
+    "The brand started from nothing: the name first, then the mark, the palette, the type, and the product graphics. Its colors are mid-century earth tones."
    ],
-   "facts": [],
-   "didTitle": "Role"
+   "did": [
+    "Brand Development",
+    "Naming",
+    "Logo Design",
+    "Graphic Design",
+    "Product Applications"
+   ],
+   "didTitle": "Role",
+   "chapters": {
+    "The tree's branches run past the edge": {
+     "t": "One tree drawing, run in four seasonal colorways, covers the whole line,",
+     "g": "from apparel and candles to hangtags and print",
+     "li": [
+      "The silhouette | white, with the branches running past the edge of the stripes.",
+      "Four seasons | teal and dark green, yellow and gold, orange and rust, and brown and earth tones.",
+      "Unchanged | the tree and the stripes stay the same in all four."
+     ]
+    },
+    "The same four circles run on": {
+     "t": "The four-circle mark keeps its shape and changes color with the setting,",
+     "g": "so it can go more places without being redrawn",
+     "li": [
+      "The drawing | four circles in a tight grid, with no outline.",
+      "Each season | a different color, and the mark can still be recognized.",
+      "The dot grid | the pattern keeps the yellow, orange, red, and teal circles in the bottom-right cluster, and the rest are brown in one version and olive in the other."
+     ]
+    }
+   },
+   "heads": {
+    "The whole identity was drawn to fit": "drop"
+   },
+   "lines": {
+    "The name, the mark and the tree were decided once": "keep"
+   },
+   "rest": "drop",
+   "moreTo": "chapters",
+   "facts": [
+    "Published",
+    "Status",
+    "Tools"
+   ]
+  }
+ },
+ "jeffrey-ecommerce": {
+  "index": {
+   "note": "Flow opens on Jeffrey's first online store and why it led with stories, then two chapters that are also the section titles, the homepages and the product pages; the brand system stands as its own section and the site's long life closes it.",
+   "stand": "Jeffrey New York's first online store and the brand around it were built from zero. | The physical store was closer to a gallery than a shop, so the site put a story ahead of every sale.",
+   "abs": [
+    "Jeffrey's store was edited by people with a very specific eye, and the job was to get that feeling onto a screen. The work started with the buying team: how the floor was laid out, how pieces got grouped, what made an edit feel like Jeffrey."
+   ],
+   "did": [
+    "Digital Strategy",
+    "Brand System",
+    "Ecommerce Design",
+    "UX Architecture"
+   ],
+   "didTitle": "Role",
+   "chapters": {
+    "Each designer launch or story took over": {
+     "t": "Each designer launch or story took over the homepage while it ran,",
+     "g": "since the site was built to change as often as the store did",
+     "li": [
+      "Launches first | the store floor got regrouped every time the season shifted, so the homepage templates came first and the product pages after.",
+      "One frame | every homepage sat inside the same masthead and footer.",
+      "An editorial pace | built into the structure of the site, with designer launches as the big moments."
+     ]
+    },
+    "Product pages showed one large": {
+     "t": "Merchandising could lay out a new season by swapping the photography and the copy,",
+     "g": "without touching the templates underneath",
+     "li": [
+      "Navigation | followed the way pieces were grouped on the store floor, instead of a list of categories.",
+      "The build | integration ran with outside partners while the experience stayed in-house.",
+      "Wireframe to checkout | every interaction was prototyped."
+     ],
+     "pic": "jeffrey-new-york-product-detail-page-sacai-luck-dress.jpg"
+    }
+   },
+   "labels": {
+    "Each designer launch or story took over": "Homepages",
+    "Product pages showed one large": "Product pages",
+    "Every page ran on the wordmark": "Brand system"
+   },
+   "decks": {
+    "Each designer launch or story took over": "Six homepages led with Dries Van Noten, Valentino, Vetements, a Candy Crush shoe story, summer shoes and Loewe.",
+    "Product pages showed one large": "Product pages showed one large photograph and little else, with a short row of curated cross-sells under it.",
+    "Every page ran on the wordmark": "The type hierarchy stayed fixed while the content around it changed every week."
+   },
+   "heads": {
+    "The site outlasted": "drop"
+   },
+   "lines": {
+    "The type hierarchy stayed fixed": "The site outlasted the team that built it. | Jeffrey eventually sold the business."
+   },
+   "rest": "drop",
+   "moreTo": "chapters",
+   "facts": [
+    "Published",
+    "Stack"
+   ]
+  }
+ },
+ "jeffrey-spring": {
+  "index": {
+   "note": "Flow opens on a studio-only spring campaign and why the foliage mattered, then one chapter, the three designers on one template; the weekly dress closes it as its own section.",
+   "stand": "A spring campaign for Jeffrey was shot entirely in the studio. | The look was high fashion on a studio budget, with foliage doing the work of a location.",
+   "abs": [],
+   "did": [
+    "Art Direction",
+    "Campaign Design",
+    "Email & Web Templates"
+   ],
+   "didTitle": "Role",
+   "chapters": {
+    "Swap the dress, set the leaves": {
+     "t": "JW Anderson, Valentino and Simone Rocha all ran on one template,",
+     "g": "across email, the homepage and social",
+     "li": [
+      "The foliage | monstera leaves and palm fronds were cropped big and used as graphic elements, more like architecture than greenery.",
+      "Scale | color floods and extreme crops made the compositions feel bigger than the room they were shot in.",
+      "The type | it got the same graphic treatment, condensed, stretched and layered for rhythm."
+     ],
+     "pic": "jeffrey-spring-campaign-hero-grid-jw-anderson-valentino-simone-rocha-monstera-collage.jpg"
+    }
+   },
+   "labels": {
+    "Swap the dress, set the leaves": "Three designers",
+    "A new dress came in every week": "The dresses"
+   },
+   "decks": {
+    "Swap the dress, set the leaves": "The type reads at phone size, the leaves still frame the dress, and the desktop homepage is the same layout with more room."
+   },
+   "rest": "drop",
+   "moreTo": "chapters",
+   "facts": [
+    "Published",
+    "Tools"
+   ],
+   "factSet": {
+    "Tools": "Photoshop, InDesign, studio photography"
+   }
+  }
+ },
+ "loved-by-nordstrom": {
+  "index": {
+   "note": "Flow opens the room: what the campaign was and the Instagram heart it was built on, then four chapters that are also the section titles (the heart, the tile, Liked and Loved as a priority lever, the channels); the closing says merchandisers swapped brands in weekly with no brief.",
+   "stand": "Loved by Nordstrom was a year-long campaign for smaller designer labels, in stores and online. | Every tile in it was built on the heart icon borrowed from Instagram.",
+   "abs": [],
+   "did": [
+    "Creative direction",
+    "Campaign design",
+    "Design systems"
+   ],
+   "didTitle": "Role",
+   "chapters": {
+    "Nobody had to learn": {
+     "t": "Nobody had to learn what Liked by Nordstrom meant,",
+     "g": "because people already tapped the Instagram heart all day without thinking",
+     "li": [
+      "Instagram stories | Loved by Nordstrom tiles ran there, in the app the heart icon came from.",
+      "On the landing page | the heart worked as a bookmark through the grid.",
+      "For a year | the same heart carried Helmut Lang, The Great, See by Chloé and TIBI, in the stores, on the site and on Instagram."
+     ],
+     "pic": "loved-by-nordstrom-iphone-instagram-stories-tibi-trench.jpg"
+    },
+    "The middle of each tile held": {
+     "t": "The middle of each tile held whatever photography the brand had already licensed,",
+     "g": "with the brand name on top and the heart at the base",
+     "li": [
+      "Helmut Lang | cold, minimal shoots.",
+      "The Great | warm, narrative shoots.",
+      "See by Chloé | product-first photography."
+     ]
+    },
+    "The Loved by Nordstrom hero slots": {
+     "t": "Liked and Loved used the same icon and typography,",
+     "g": "so the merchandising team could raise or lower a brand's priority without touching the design",
+     "pic": "loved-by-nordstrom-large-tibi-fur-coat-campaign-tile.jpg",
+     "li": [
+      "Liked | sat on the smaller tiles, for day-to-day merchandising.",
+      "Loved | larger crops and tighter compositions than the Liked tiles.",
+      "TIBI | when it got the Loved treatment, the fur coat photo and the profile portrait ran at full-page scale."
+     ]
+    },
+    "The same tile ran in your feed": {
+     "t": "The same tile ran in your feed and in the store window,",
+     "g": "and only its size changed from one channel to the next",
+     "li": [
+      "Twelve months of tiles | went out across social feeds, email sends, in-store signage, and web landing pages.",
+      "The landing page | organized the stories by brand.",
+      "The grid, the type and the icon | were fixed on every tile."
+     ]
+    }
+   },
+   "heads": {
+    "Nordstrom's merchandisers swapped": "drop"
+   },
+   "labels": {
+    "Nobody had to learn": "The heart",
+    "The middle of each tile held": "The tile",
+    "The Loved by Nordstrom hero slots": "Liked and Loved",
+    "The same tile ran in your feed": "Across channels"
+   },
+   "decks": {
+    "Nobody had to learn": "The brief was emerging brand awareness.",
+    "The middle of each tile held": "The tile template didn't change all year.",
+    "The Loved by Nordstrom hero slots": "The Loved by Nordstrom hero slots went to one brand at a time.",
+    "The same tile ran in your feed": "Photography from a 1080-square social post scaled up to a 1440-wide web hero with a crop spec and no new art direction."
+   },
+   "lines": {
+    "For a year the same heart": "Nordstrom's merchandisers swapped brands in weekly, with no creative brief."
+   },
+   "rest": "drop",
+   "moreTo": "chapters",
+   "facts": []
+  }
+ },
+ "neiman-marcus": {
+  "index": {
+   "note": "Flow opens on what InSite was, then four chapters that are also the four section titles, one per kind of story; the closing keeps the call on the magazine side and the three templates.",
+   "stand": "InSite was the editorial hub on the Neiman Marcus website. | It had to feel like a magazine and sell product like a store, at the same time.",
+   "abs": [
+    "On every InSite piece, the concept came first, then the shoot, then the styling and the layout. All of the photography was shot in the studio."
+   ],
+   "did": [
+    "Story Development",
+    "Editorial Design",
+    "Photo Direction",
+    "Art Direction",
+    "Typography"
+   ],
+   "didTitle": "Role",
+   "chapters": {
+    "InSite's spotlights introduced emerging designers": {
+     "t": "Designer spotlights introduced emerging designers to a broader luxury shopper,",
+     "g": "who reached the product page having read something first",
+     "li": [
+      "The name | set as big as the photographs, with every spread built around it.",
+      "The frame | torn-edge framing, with letters locked into the model's figure.",
+      "No profile | in print, a feature profile would have introduced the designer, and on InSite the type did that job."
+     ]
+    },
+    "Every InSite shoot was on seamless paper": {
+     "t": "InSite's trend stories used graphic color blocks as the setting,",
+     "g": "because there was no location budget",
+     "li": [
+      "The stories | included Hot Pink, Yellow, Rainbow, Orange and Coral.",
+      "Chip grids | stepped through each story's tones.",
+      "Pixelated | on purpose, because InSite lived on a screen."
+     ]
+    },
+    "Each story's concept set its type": {
+     "t": "Each story's type was set before the shoot,",
+     "g": "so the photographer's brief carried its scale, weight and position",
+     "li": [
+      "Restrained stories | Minimalism and Structure set thin outline serifs that ghosted behind the garment and nearly dissolved.",
+      "Loud stories | The Rocker, The Socialite and Classic Beauty wrapped oversized display serifs into the model's silhouette.",
+      "The shoot | a restrained story got a still pose on flat gray paper, and a loud one got a saturated backdrop with room for a letter across the shoulder."
+     ]
+    },
+    "Each ways-to-wear spread wrote the outfit": {
+     "t": "Ways-to-wear spreads wrote each outfit as an equation on one grid,",
+     "g": "so merchandising could ship new photography without a custom layout",
+     "li": [
+      "Plus signs | set oversized between the pieces.",
+      "Speed lines | drawn behind the models gave a flat studio shot some motion.",
+      "The layout | figure on one side, type on the other and the equation stacked vertically, and it never moved."
+     ]
+    }
+   },
+   "labels": {
+    "InSite's spotlights introduced emerging designers": "Designer spotlights",
+    "Every InSite shoot was on seamless paper": "Color stories",
+    "Each story's concept set its type": "Typography",
+    "Each ways-to-wear spread wrote the outfit": "Ways to wear",
+    "Every InSite layout was a call": "The templates"
+   },
+   "decks": {
+    "InSite's spotlights introduced emerging designers": "Each designer's name ran in oversized serifs: Theyskens' Theory, Rag & Bone, 10 Crosby Derek Lam, Helmut Lang and Kelly Wearstler.",
+    "Every InSite shoot was on seamless paper": "Fields of pixelated color set the mood when a sunset wasn't an option.",
+    "Each story's concept set its type": "Sometimes the type broke the grid, and the shopper was trusted to find the price anyway.",
+    "Each ways-to-wear spread wrote the outfit": "A black dress was paired with a denim jacket, then with an ikat sweater, and a silk blouse was styled the same two ways."
+   },
+   "lines": {
+    "Three templates carried dozens of InSite stories": "Three templates carried dozens of InSite stories."
+   },
+   "rest": "drop",
+   "moreTo": "chapters",
+   "facts": [
+    "Published",
+    "Tools"
+   ]
+  }
+ },
+ "nordstrom-beauty": {
+  "index": {
+   "note": "Flow opens the room: what the hub is and why a static story falls behind, then three chapters that are also the section titles (templates, try-on, drawer); the closing keeps the three seasonal rotations.",
+   "stand": "On Nordstrom's beauty editorial hub, every story was shoppable. | New products launch weekly and trends shift with the season, so a static story falls behind.",
+   "abs": [],
+   "did": [
+    "Product design",
+    "UX design",
+    "Visual design",
+    "Editorial templates"
+   ],
+   "didTitle": "Role",
+   "chapters": {
+    "Each card on the hub opens into": {
+     "t": "The hub ran on three modular story templates,",
+     "g": "built so merchandising could swap products without touching the layout",
+     "li": [
+      "Every story | got its own headlines, photography, and copy.",
+      "Catalog data | swapping a product updated its price, description, and picture with no designer opening the page.",
+      "Three cards | gave merchandising room for the seasonal pushes and kept the page from getting crowded."
+     ]
+    },
+    "Upload a selfie": {
+     "t": "A virtual try-on tool let customers preview shades on their own face,",
+     "g": "and buy the one they chose without leaving it",
+     "li": [
+      "Your photo | a new one, or the one already on your Style Profile.",
+      "The gradient | drag across it and watch the shade change on your face as you go.",
+      "The product card | tap the right red and it comes up underneath with reviews, price, and add to bag."
+     ],
+     "pic": "nordstrom-beauty-tryon-iphone-color-selector-mockup.jpg"
+    },
+    "Buying never interrupts": {
+     "t": "Stories opened their products in a drawer on the same page,",
+     "g": "so a customer could add to bag with no detour to a product page",
+     "li": [
+      "The drawer | comes in from the side while the page behind it stays on screen.",
+      "Inside it | reviews, price, size options, and add to bag.",
+      "Get That Glow and Top 5 Serums | told seasonal stories while the product grid under them stayed current."
+     ]
+    }
+   },
+   "heads": {
+    "The templates ran through": "drop"
+   },
+   "labels": {
+    "Each card on the hub opens into": "The hub",
+    "Upload a selfie": "Virtual try-on",
+    "Buying never interrupts": "The product drawer"
+   },
+   "decks": {
+    "Each card on the hub opens into": "Each card opens into a full editorial story.",
+    "Upload a selfie": "It shipped inside the Lips That Pop story, built as its own component so it could be reused for eye, cheek, or nail products.",
+    "Buying never interrupts": "Time on page, scroll depth, and conversion were all measured inside the story, so merchandising could see which editorial angle drove the most adds to bag."
+   },
+   "lines": {
+    "Between rotations": "The templates ran through three seasonal rotations before anyone asked for a layout change."
+   },
+   "rest": "drop",
+   "moreTo": "chapters",
+   "facts": []
+  }
+ },
+ "nordstrom-framework": {
+  "index": {
+   "note": "Flow opens the room: what the framework is with the 22% beside it, then two chapters that are also the section titles; the problem keeps its own statement, the bucket names reach the reader through the lockups' captions, and the closing carries the names becoming the team's language.",
+   "stand": "Nordstrom.com's content framework was built from scratch, with its own names, icons, and typographic marks. | Engagement lifted 22% over two years.",
+   "abs": [
+    "Concepted the framework and pitched it to merchandising, marketing, and editorial."
+   ],
+   "did": [
+    "Content strategy",
+    "Brand design",
+    "Naming",
+    "Design systems"
+   ],
+   "didTitle": "Role",
+   "chapters": {
+    "Every story had to land": {
+     "t": "Every story had to land in one of four buckets,",
+     "g": "from new arrivals and trending brands to occasion dressing",
+     "pic": "nordstrom-content-framework-lockup-whats-now.jpg",
+     "li": [
+      "Two for occasion dressing | one starting from the event and the other from the outfit.",
+      "Custom icons | one for every bucket.",
+      "Typefaces | a different one, sourced for every bucket's typographic mark."
+     ]
+    },
+    "Every homepage module and email section": {
+     "t": "Whole landing pages were built around a single bucket,",
+     "g": "so a customer could tell what they were looking at",
+     "pic": "nordstrom-framework-on-our-list-phone-turntable.jpg",
+     "li": [
+      "Content calendars | mapped stories to buckets at the brief stage.",
+      "One-off campaigns | got planned as part of a category.",
+      "Planning meetings | the bucket names showed up in them before the framework reached a customer."
+     ]
+    }
+   },
+   "heads": {
+    "Nothing on Nordstrom's homepage": "Nothing on Nordstrom's homepage said which story was which. | Customers got the whole pile and no way through it.",
+    "Engagement lifted 22%": "drop"
+   },
+   "labels": {
+    "Nothing on Nordstrom's homepage": "The problem",
+    "Every story had to land": "Four buckets",
+    "Every homepage module and email section": "Homepage, email, landing pages"
+   },
+   "decks": {
+    "Nothing on Nordstrom's homepage": "Email ran on its own cadence and landing pages on another, and the only thing tying any of it together was the date on the calendar.",
+    "Every story had to land": "The bucket names sound like a magazine's sections.",
+    "Every homepage module and email section": "Every homepage module and email section carried its bucket's lockup and icon."
+   },
+   "lines": {
+    "The bucket names showed up": "The bucket names ended up being how everyone who touched digital content talked about the work. | The icons, the typography and the names all changed over time, but the four-bucket structure stayed the same."
+   },
+   "rest": "drop",
+   "moreTo": "chapters",
+   "facts": []
+  }
+ },
+ "nordstrom-personalization": {
+  "index": {
+   "note": "Flow opens the room: what the system is and what it let merchandisers do, then three chapters that are also the section titles; the phone section keeps its own statement, the millions sit under the homepages, and the closing carries the reach.",
+   "stand": "Nordstrom's personalized homepages were all built on three tile shapes. | Any merchandiser could lay out a page in an afternoon.",
+   "abs": [],
+   "did": [
+    "Design systems",
+    "Art direction",
+    "Product photography direction"
+   ],
+   "didTitle": "Role",
+   "chapters": {
+    "Each tile shape had its own job": {
+     "t": "Each tile shape had its own job,",
+     "g": "and editorial stories, brand modules and merchandised picks all came through them",
+     "pic": "nordstrom-personalization-system-design-beauty-queen-woman-floral-dress-autumn-leaves-boots-watches-bowling-balls-90s-revibe-editorial-lifestyle.jpg",
+     "li": [
+      "Square tiles | carried product.",
+      "Hero tiles | carried photography.",
+      "Vertical tiles | bridged the two."
+     ]
+    },
+    "Every shopper had a homepage": {
+     "t": "Every shopper had a homepage of their own,",
+     "g": "and it couldn't look like a machine had made it",
+     "li": [
+      "The young customer | landed on the Savvy Mag editorial.",
+      "The designer-brand shopper | got Summer to Fall Style.",
+      "The men's shopper | opened on High City Essentials."
+     ]
+    },
+    "Each shot had to work as a hero": {
+     "t": "The same shoe could run in a Saturday editorial story and a Sunday inventory clear-out,",
+     "g": "and look planned in both places",
+     "pic": "nordstrom-personalization-product-pink-chevron-block-heels.jpg",
+     "p": [
+      "Each shot had to work as a hero and as a plain product listing."
+     ],
+     "li": [
+      "Eye level | it stayed consistent from photo to photo.",
+      "Contrast | deliberate, with precise angles.",
+      "The merchandise | came first, with no styling to look at."
+     ]
+    }
+   },
+   "heads": {
+    "The phone homepage used": "The phone homepage used the same pictures as the desktop. | The tiles resized for every screen, so one picture could be used many ways.",
+    "Any merchandiser could": "drop"
+   },
+   "labels": {
+    "Each tile shape had its own job": "Three tile shapes",
+    "Every shopper had a homepage": "Personalized homepages",
+    "The phone homepage used": "On the phone",
+    "Each shot had to work as a hero": "Product photography"
+   },
+   "decks": {
+    "Each tile shape had its own job": "The tiles all drew their pictures from one library.",
+    "Every shopper had a homepage": "The tile rules were strict enough to run for millions of customers, and the pages still came out different from each other.",
+    "The phone homepage used": "Only the arrangement changed: the hero photography and the product cards restacked to fit the smaller screen.",
+    "Each shot had to work as a hero": "Every product sat on white paper, with no props and one shadow throughout."
+   },
+   "lines": {
+    "Nordstrom's campaign sends": "Nordstrom's campaign sends and the long tail of category pages ran on the same tiles as the homepage."
+   },
+   "rest": "drop",
+   "moreTo": "chapters",
+   "facts": []
+  }
+ },
+ "robert-rodriguez": {
+  "index": {
+   "note": "Flow opens on what the campaign was and its one-day shoot, then three chapters that are also the section titles: the double exposure, the system it ran on, and the type; the gradients close it.",
+   "stand": "The Robert Rodriguez spring campaign for Neiman Marcus was shot in one day and ran across social, email, the stores and editorial. | It mixes ’80s mall glam with high fashion.",
+   "abs": [],
+   "did": [
+    "Art Direction",
+    "Photo Compositing",
+    "Typography Design",
+    "Campaign Design"
+   ],
+   "didTitle": "Role",
+   "chapters": {
+    "One model and four setups stretched into": {
+     "t": "Two frames from the same shoot were layered as a double exposure,",
+     "g": "making a third picture neither frame had on its own",
+     "p": [
+      "Neiman Marcus wanted the campaign to feel current and still keep the brand's romantic side."
+     ],
+     "li": [
+      "The reference | Glamour Shots and the other mall portrait studios, with their oversaturated close-ups, soft-focus backgrounds and a fan going somewhere off camera.",
+      "The brief | take mall glam seriously, without irony, and rebuild its confidence and color with contemporary craft.",
+      "The backdrops | smooth mesh color fields replaced the airbrushed ones and kept their warmth."
+     ],
+     "pic": "neiman-marcus-robert-rodriguez-woman-model-pink-blazer-cream-polka-dot-dress-orange-red-backdrop-editorial-campaign.jpg"
+    },
+    "Every piece was layered from": {
+     "t": "Four photographs, one typeface family and a color field make up the campaign,",
+     "g": "and each combination looks a little different from the last",
+     "li": [
+      "Social and email | tight crops for social, and the header images for email.",
+      "The stores | the color fields ran at full strength.",
+      "Editorial | the spreads gave the double exposures room to run wide."
+     ]
+    },
+    "Archer Hairline is thin enough": {
+     "t": "The typeface, Archer, was chosen just for the campaign,",
+     "g": "and its thin Hairline sits over the pictures without fighting them",
+     "li": [
+      "Archer Book | sets the body copy in warm, rounded serifs that match the softness of the photography.",
+      "Flat blocks | the three colors clash.",
+      "Gradients | they hold together when each one fades into the next."
+     ],
+     "pic": "robert-rodriguez-logo-typography-gradient-orange-pink-coral-color-palette-branding-design.jpg"
+    }
+   },
+   "labels": {
+    "One model and four setups stretched into": "The technique",
+    "Every piece was layered from": "The campaign",
+    "Archer Hairline is thin enough": "Type and color"
+   },
+   "decks": {
+    "One model and four setups stretched into": "One model and four setups stretched into an entire campaign.",
+    "Every piece was layered from": "The storefront window ran the composites at large format.",
+    "Archer Hairline is thin enough": "The palette is coral, orange and pink."
+   },
+   "heads": {
+    "Every color field was drawn": "drop"
+   },
+   "lines": {
+    "The gradients scale to any size": "Every color field was drawn as a gradient, | so a three-foot print is as smooth as a phone screen."
+   },
+   "rest": "drop",
+   "moreTo": "chapters",
+   "facts": [
+    "Published"
+   ]
+  }
+ },
+ "sally-design-system": {
+  "index": {
+   "note": "Flow opens the room: the design system and the strategy behind it, built for the Marketing OS's AI to fill, then six chapters that are also the six section titles; the closing hands off to Sally's voice.",
+   "stand": "I designed a digital design system for Sally Beauty's emails and homepage, and the creative strategy behind it. | Every template is built for the AI in the Sally Marketing OS to fill, so work that took weeks now takes minutes.",
+   "abs": [
+    "The system covers type, color, scale, when to use photography and when to use graphics, and the templates. So far it holds 11 homepage concepts at desktop and phone sizes and 15 example emails.",
+    "I built the Marketing OS too."
+   ],
+   "did": [
+    "Creative strategy",
+    "Design system",
+    "Art direction",
+    "Email and homepage design"
+   ],
+   "didTitle": "What I did",
+   "rest": "drop",
+   "moreTo": "chapters",
+   "chapters": {
+    "Three ideas Ulta and Sephora": {
+     "t": "The strategy is three ideas Ulta and Sephora can't easily copy,",
+     "g": "the doer's store, color expertise and education",
+     "pic": "sally-design-system-email-punch-volume.jpg",
+     "li": [
+      "The doer's store | going platinum takes six steps and about two hours.",
+      "Color expertise | a level and a tone name each shade, and the level runs from one, black, to ten, the lightest blonde.",
+      "Education | a licensed colorist checks the plan before anyone mixes."
+     ]
+    },
+    "One homepage, three kinds": {
+     "t": "The homepage keeps one nav, one footer and one grid,",
+     "g": "so a new week changes the content and leaves the frame alone",
+     "pic": "sally-design-system-homepage-concept-6-pride-takeover-mobile.jpg",
+     "li": [
+      "The Lookbook | a takeover story, then the shop.",
+      "Colorfest | two weeks of vivids, and on a phone it stops for free hair color advice.",
+      "The Sale | forty-eight hours, thirty percent off sitewide."
+     ]
+    },
+    "Three emails share one chassis": {
+     "t": "The Gloss treats Sally as a publication in the inbox,",
+     "g": "and shares one chassis with two more emails",
+     "pic": "sally-design-system-email-editorial-the-gloss.jpg",
+     "p": [
+      "The punch set dials the chassis up three ways, type, color and charm, and every email ends on the same footer."
+     ],
+     "li": [
+      "The Gloss | a full issue: masthead, pull quotes, and prose around the products.",
+      "Summer vivids | one giant line, and two looks on their own colors.",
+      "The Sale | forty-eight hours, one code, the whole store."
+     ]
+    },
+    "Everything above comes out": {
+     "t": "Everything above comes out of one set of templates,",
+     "g": "and they take seven kinds of brief, from a campaign to a new drop",
+     "pic": "sally-design-system-email-punch-candy.jpg",
+     "li": [
+      "Tokens | every type role and color is a token, so the move to Satoshi changed the tokens and left the layouts alone.",
+      "The ADA review | a teammate's review of the homepage darkened the muted text and set every eyebrow in solid ink or white.",
+      "Split banners | built to stamp a hundred at a time."
+     ],
+     "proof": "The seven briefs run in square, 4:5, 9:16, 16:9 and the 3:1 split banner."
+    },
+    "Each idea becomes a section": {
+     "t": "Each idea becomes a section of a homepage,",
+     "g": "from a $36.99 kit for going platinum to a color code you can crack",
+     "pic": "sally-design-system-homepage-concept-10-the-edit-mobile.jpg",
+     "li": [
+      "The Platinum Kit | on the Lookbook, take a piece out and the price follows.",
+      "The color code | on Colorfest, pick a level, then a tone, and the code builds itself.",
+      "The colorist | answers a photo with a formula, and one tap shops it."
+     ]
+    },
+    "One request fills every channel": {
+     "t": "From one request, the AI brings in the photography, writes the copy and pulls in the products,",
+     "g": "in every shape a channel needs",
+     "pic": "sally-design-system-email-color-blocked-sale.jpg",
+     "li": [
+      "The request form | connects the Marketing OS to the Asset Hub, the product tool and the brand guidelines.",
+      "Create Email | a CRM request on the campaign board becomes an email with one press.",
+      "The Figma plugin | builds the requested emails, the images first and then the copy."
+     ]
+    }
+   },
+   "heads": {
+    "The homepage kit grew out": "The homepage kit grew out of the email system. | Both share the same tokens, the same fonts and the same voice."
+   },
+   "labels": {
+    "Three ideas Ulta and Sephora": "The idea",
+    "One homepage, three kinds": "The homepage",
+    "Three emails share one chassis": "The emails",
+    "Everything above comes out": "The kit",
+    "Each idea becomes a section": "The stories",
+    "One request fills every channel": "The Marketing OS",
+    "The homepage kit grew out": "One stylesheet"
+   },
+   "decks": {
+    "Three ideas Ulta and Sephora": "Nobody knows color like Sally: 8,000+ shades and real chemistry.",
+    "One homepage, three kinds": "The Lookbook opens on a wall of the six shades, Colorfest bills the only-at-Sally brands like a festival lineup, and the sale turns the top of the page red.",
+    "Three emails share one chassis": "Summer vivids sells the drop in big type, and the sale leads with its number.",
+    "Everything above comes out": "The kit is one type family, white paper with scarlet and ink, round corners, five shapes, fourteen email blocks and twenty-one homepage modules.",
+    "Each idea becomes a section": "Every page links to a free licensed colorist, and on Colorfest the chat plays itself.",
+    "One request fills every channel": "Each new email fills a template from a brief, and the templates stay locked, so the kit holds its shape at the volume Sally sends every month."
+   },
+   "lines": {
+    "What took weeks now takes minutes": "drop",
+    "The voice is Sally as the beauty-obsessed": "keep"
+   },
+   "facts": [
+    "Published",
+    "Status",
+    "Tools"
+   ]
   }
  },
  "sally-os": {
@@ -640,6 +2334,126 @@ window.DENSITY_EDITS = {
     "Brand Brain · Jim": "Brand Brain · the AI strategy partner",
     "Utilities · PDP Copy Studio": "Utilities · Product page copy",
     "The full arc · Feed to channel requests": "The full arc · from a competitor's move to production requests"
+   }
+  }
+ },
+ "sizzle": {
+  "index": {
+   "note": "Flow opens the room: what Faux Reel is, then three chapters that are also the section titles, each opening to three specifics; the closing points at the reel playing on the room's cover.",
+   "stand": "Faux Reel is a tool I made that turns still photographs into a sizzle reel. | It has no video in it, just stills cut fast enough to look like motion.",
+   "abs": [
+    "A sizzle reel is usually video that gets shot, edited, rendered and hosted. It dawned on me one night that I could make one in code instead of opening an editor, so I figured I would give it a try, and it turned out pretty well."
+   ],
+   "did": [
+    "Product Design",
+    "Engineering"
+   ],
+   "didTitle": "What I did",
+   "rest": "drop",
+   "moreTo": "chapters",
+   "labels": {
+    "Drop in your own photos": "Your photos",
+    "The reel swaps photos": "Under the cut",
+    "Faux Reel's code is": "How it was built"
+   },
+   "decks": {
+    "Drop in your own photos": "Nothing is uploaded or saved.",
+    "The reel swaps photos": "Each frame sits for a beat before the next one."
+   },
+   "chapters": {
+    "Drop in your own photos": {
+     "t": "Faux Reel takes your own photos,",
+     "g": "and the reel rebuilds around them",
+     "li": [
+      "Up to eight | it plays seven frames by default and takes up to eight of yours.",
+      "Your colors | it pulls a five-color palette out of your photos and matches the reel to it.",
+      "Each beat | gets a chip under the reel, and clicking one freezes playback on that beat."
+     ]
+    },
+    "The reel swaps photos": {
+     "t": "The reel swaps photos behind a color blink or a lens pinch,",
+     "g": "timed so it doesn't feel like a slideshow",
+     "li": [
+      "Every cut | has to land on a new image, or the color blink looks like a glitch.",
+      "Titles | they come in hard, with no fade.",
+      "On the page | the whole reel runs in one box."
+     ]
+    },
+    "Faux Reel's code is": {
+     "t": "I built Faux Reel in a day with Claude Code,",
+     "g": "and it's MIT-licensed and on GitHub",
+     "li": [
+      "What ships | a React component, a web component and a GIF or MP4 exporter.",
+      "Size | the web component is smaller than any one of the photographs it plays.",
+      "Working in code | once I got the hang of it, it actually felt faster, and it left me with a reel I can edit and keep fresh."
+     ]
+    }
+   },
+   "lines": {
+    "The reel at the top of this page": "The reel at the top of this page is Faux Reel itself, cut from seven of the projects here and running on the site where I made it. | If you need a deck or a portfolio that moves, grab the code."
+   },
+   "facts": [
+    "Field",
+    "Published"
+   ],
+   "factSet": {
+    "Field": "Product, Motion"
+   }
+  }
+ },
+ "you-by-sally": {
+  "index": {
+   "note": "Flow opens on what the campaign had to do for Sally Beauty's hair color line, then two chapters that are also the section titles, the cast and the swatches; where it ran closes it.",
+   "stand": "A brand campaign for You By Sally, Sally Beauty's hair color line, had to make it something you'd choose on purpose. | Hair color usually sits on a drugstore shelf under fluorescent lights.",
+   "abs": [],
+   "did": [
+    "Campaign Direction",
+    "Brand System",
+    "Digital Design",
+    "Retail Signage"
+   ],
+   "didTitle": "Role",
+   "chapters": {
+    "Each person in the campaign is paired": {
+     "t": "The campaign started with the cast, real people instead of models,",
+     "g": "and everything else came from their portraits",
+     "li": [
+      "The range | the cast runs across age, gender and style.",
+      "The portraits | each one has a saturated background and confident styling.",
+      "The product | comes second to the person in the frame."
+     ],
+     "pic": "bios.jpg"
+    },
+    "The chips on the back of a hair color box": {
+     "t": "Oversized swatches let you pick a shade by eye,",
+     "g": "because the chips on the back of the box are too small",
+     "li": [
+      "Every size | the blocks keep their order.",
+      "The channels | influencer bio pages, email and the store signs, all on the same grid.",
+      "Type and color | Avenir Next in three weights, with pink and cyan."
+     ]
+    }
+   },
+   "labels": {
+    "Each person in the campaign is paired": "The cast",
+    "The chips on the back of a hair color box": "The swatches",
+    "If you picked a shade at Sally Beauty": "Where it ran"
+   },
+   "decks": {
+    "Each person in the campaign is paired": "Each person is paired with the shade that suits them.",
+    "The chips on the back of a hair color box": "The grid of color blocks runs from a 320px influencer bio page up to a 6-foot retail sign."
+   },
+   "lines": {
+    "The cast portraits, the swatch grid": "keep"
+   },
+   "rest": "drop",
+   "moreTo": "chapters",
+   "facts": [
+    "Published",
+    "Tools"
+   ],
+   "factSet": {
+    "Tools": "Photoshop, Illustrator, InDesign, studio photography"
    }
   }
  }

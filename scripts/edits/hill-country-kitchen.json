@@ -65,9 +65,10 @@
     },
 
     "index": {
-      "note": "After Studio.Build: a short role list and four closed drawers grouped by question hold the story, and the sections below are heads and pictures with a line at most.",
+      "note": "Flow opens the room: a kitchen designed around four materials and why new and vintage pieces share it, then four chapters that are also the section titles (where each material goes, the unlacquered brass, the island on legs, the dining table), each opening to three specifics; the riskiest call is the island's line, the faucet is never called brass, and the closing is the hub.",
+      "stand": "A kitchen in the Texas Hill Country, designed around four materials. | It works as one room because the new and vintage pieces are in the same four finishes.",
       "abs": [
-        "Four materials cover every cabinet face, countertop, and piece of hardware. The kitchen gets used for cooking, gathering, and working in about equal measure, and it's the hub of the house."
+        "Shaker cabinet doors come out of traditional American kitchens, the steel-frame windows and open shelving are contemporary, and the cremone bolts and schoolhouse pendants are European antique."
       ],
       "did": [
         "Interior and kitchen design",
@@ -77,85 +78,78 @@
         "Construction documentation"
       ],
       "didTitle": "Scope",
-      "drawers": [
-        {
-          "t": "Where each material goes",
-          "cols": [
-            {
-              "t": "Sage Green",
-              "p": [
-                "The sage is a muted green with enough gray in it to stay calm, and it goes on everything around the perimeter: base cabinets, uppers, the glass-front display, the range hood surround, the refrigerator panel, the pantry wall. The color sits back a little so the marble and the brass get noticed first."
-              ]
-            },
-            {
-              "t": "White Oak + Marble",
-              "p": [
-                "The island is white oak and the warmest material in the room. The growth rings show on the end grain of the open shelves.",
-                "Calacatta marble runs the perimeter counters and the full backsplash behind the range, gray and gold veining on a warm white ground. The marble separates the green cabinets from the white walls."
-              ]
-            },
-            {
-              "t": "Unlacquered Brass",
-              "p": [
-                "The brass goes on the cremone bolts, the pendants, the sconce arms, and the range trim."
-              ]
-            }
-          ]
-        },
-        {
-          "t": "How the sage and the oak are finished",
+      "chapters": {
+        "The kitchen's four materials were chosen": {
+          "t": "Sage green takes the vertical planes and marble the horizontal ones,",
+          "g": "with oak in the middle and brass on the hardware",
           "p": [
-            "The sage has a matte finish. Satin would have pushed the cabinets contemporary and gloss would have fought the raw oak. Matte lets the Shaker profiles throw soft shadows.",
-            "The white oak has a penetrating oil finish, with no stain and no polyurethane. The grain stays open and the color goes from pale honey to a deeper amber over years of use. The island is meant to look used, with water rings, knife marks and flour in the grain."
-          ]
-        },
-        {
-          "t": "Old and new pieces",
-          "p": [
-            "Shaker cabinet doors come out of traditional American kitchens, the steel-frame windows and open shelving are contemporary, and the cremone bolts and schoolhouse pendants are European antique.",
-            "The pantry doors close with cremone bolts, a French mechanism where one lever locks the door top and bottom at once. The bolts put a long vertical line on the tallest cabinet faces and give the pantry wall a presence a standard pull wouldn't."
-          ]
-        },
-        {
-          "t": "The island and the dining end",
-          "p": [
-            "The island has a prep counter at one end and a bar at the other, where four stools with brass-tone frames tuck under the overhang. Open shelves on the working end keep plates and bowls within reach of the dishwasher. The base has a firewood cubby too."
+            "The sage sits back a little so the marble and the brass get noticed first."
           ],
-          "cols": [
-            {
-              "t": "Where It Sits",
-              "p": [
-                "From the entry, the island is the first thing you see, centered with space to walk on all four sides. Eight feet of usable counter sits on the island.",
-                "Every sight line in the kitchen crosses the island: from the range you look over it to the windows, and from the dining table you look through it to the backsplash. The oak breaks up the green and marble."
-              ]
-            },
-            {
-              "t": "On Legs",
-              "p": [
-                "The cabinets around the walls are built in, but the island stands on visible legs with open shelving between them, so it looks like furniture.",
-                "Guests treat the island like a table: they lean on it, sit around it and set things down on it without asking."
-              ]
-            },
-            {
-              "t": "Dining",
-              "p": [
-                "The dining end shares the open room but goes deeper: a dark-stained table against the light oak and green of the kitchen.",
-                "The safari chairs are leather on oak frames. The leather picks up the warmth of the brass and the oak goes with the island. A dark patterned rug lies under the table and chairs and marks the dining area off from the kitchen floor."
-              ]
-            }
+          "li": [
+            "Sage green | a muted green with enough gray in it to stay calm, on everything around the perimeter, from the base cabinets to the pantry wall.",
+            "Matte | satin would have pushed the cabinets contemporary and gloss would have fought the raw oak, and matte lets the Shaker profiles throw soft shadows.",
+            "Calacatta marble | gray and gold veining on a warm white ground, on the counters and the full backsplash behind the range."
           ]
+        },
+        "Every pull and knob": {
+          "t": "The brass is unlacquered,",
+          "g": "so it darkens where hands go and stays bright where they don't",
+          "li": [
+            "Where it goes | the cabinet pulls, the pendants, the sconce arms, and the range knobs and trim.",
+            "Cremone bolts | the pantry doors close with a French mechanism where one lever locks the door top and bottom at once.",
+            "The pantry wall | the bolts put a long vertical line on the tallest cabinet faces, which gives the wall a presence a standard pull wouldn't."
+          ],
+          "pic": "hill-country-kitchen-brass-cremone-bolt-closeup.jpg"
+        },
+        "The island's marble top": {
+          "t": "The island stands on visible legs so it looks like furniture,",
+          "g": "and guests treat it like a table",
+          "p": [
+            "The island is meant to look used, with water rings, knife marks and flour in the grain."
+          ],
+          "li": [
+            "The finish | a penetrating oil, with no stain and no polyurethane; the grain stays open and the color goes from pale honey to a deeper amber over years of use.",
+            "The marble top | it runs end to end without a break, with eight feet of usable counter.",
+            "Where it sits | it's the first thing you see from the entry, and every sight line in the kitchen crosses it."
+          ],
+          "pic": "hill-country-kitchen-wide-dining-island-windows.jpg"
+        },
+        "The switch from light to dark": {
+          "t": "The dining table sits close enough to stay in the conversation,",
+          "g": "and far enough off to be its own place",
+          "li": [
+            "The table | dark-stained, on turned legs, against the light oak and green of the kitchen.",
+            "Safari chairs | leather on oak frames: the leather picks up the warmth of the brass, and the oak goes with the island.",
+            "The rug | dark and patterned, it marks the dining area off from the kitchen floor."
+          ],
+          "pic": "hill-country-kitchen-dining-table-chairs-full.jpg"
         }
-      ],
-      "rest": "drop",
+      },
+      "labels": {
+        "The kitchen's four materials were chosen": "The materials",
+        "Every pull and knob": "Cabinetry and hardware",
+        "The island's marble top": "The island",
+        "The switch from light to dark": "The dining end",
+        "Nothing in the room is": "The hub"
+      },
+      "decks": {
+        "The kitchen's four materials were chosen": "All four were chosen before a single cabinet was drawn.",
+        "Every pull and knob": "The cabinetry goes floor to ceiling on three walls: base cabinets, glass-front uppers, a built-in hutch on either side of the range, and full-height pantry doors.",
+        "The island's marble top": "Its raw white oak was the riskiest call of the whole spec.",
+        "The switch from light to dark": "The switch from light to dark at the dining end is abrupt on purpose."
+      },
       "keep": [
-        "Every decision came back",
-        "Raw wood in a kitchen",
-        "The brass darkens where hands go"
+        "Every decision came back"
       ],
       "lines": {
-        "The cabinetry goes floor to ceiling": "The cabinetry goes floor to ceiling on three walls: a built-in hutch on either side of the range and full-height pantry doors."
+        "Sage green takes the vertical planes": "The island handles prep, serving, and seating at the same time. | The kitchen gets used for cooking, gathering, and working in about equal measure."
       },
-      "facts": ["Published", "Status"]
+      "rest": "drop",
+      "moreTo": "chapters",
+      "facts": [
+        "Published",
+        "Status"
+      ]
     }
   }
 }

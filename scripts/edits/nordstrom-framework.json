@@ -1,0 +1,61 @@
+{
+ "k": "nordstrom-framework",
+ "variants": {
+  "index": {
+   "note": "Flow opens the room: what the framework is with the 22% beside it, then two chapters that are also the section titles; the problem keeps its own statement, the bucket names reach the reader through the lockups' captions, and the closing carries the names becoming the team's language.",
+   "stand": "Nordstrom.com's content framework was built from scratch, with its own names, icons, and typographic marks. | Engagement lifted 22% over two years.",
+   "abs": [
+    "Concepted the framework and pitched it to merchandising, marketing, and editorial."
+   ],
+   "did": [
+    "Content strategy",
+    "Brand design",
+    "Naming",
+    "Design systems"
+   ],
+   "didTitle": "Role",
+   "chapters": {
+    "Every story had to land": {
+     "t": "Every story had to land in one of four buckets,",
+     "g": "from new arrivals and trending brands to occasion dressing",
+     "pic": "nordstrom-content-framework-lockup-whats-now.jpg",
+     "li": [
+      "Two for occasion dressing | one starting from the event and the other from the outfit.",
+      "Custom icons | one for every bucket.",
+      "Typefaces | a different one, sourced for every bucket's typographic mark."
+     ]
+    },
+    "Every homepage module and email section": {
+     "t": "Whole landing pages were built around a single bucket,",
+     "g": "so a customer could tell what they were looking at",
+     "pic": "nordstrom-framework-on-our-list-phone-turntable.jpg",
+     "li": [
+      "Content calendars | mapped stories to buckets at the brief stage.",
+      "One-off campaigns | got planned as part of a category.",
+      "Planning meetings | the bucket names showed up in them before the framework reached a customer."
+     ]
+    }
+   },
+   "heads": {
+    "Nothing on Nordstrom's homepage": "Nothing on Nordstrom's homepage said which story was which. | Customers got the whole pile and no way through it.",
+    "Engagement lifted 22%": "drop"
+   },
+   "labels": {
+    "Nothing on Nordstrom's homepage": "The problem",
+    "Every story had to land": "Four buckets",
+    "Every homepage module and email section": "Homepage, email, landing pages"
+   },
+   "decks": {
+    "Nothing on Nordstrom's homepage": "Email ran on its own cadence and landing pages on another, and the only thing tying any of it together was the date on the calendar.",
+    "Every story had to land": "The bucket names sound like a magazine's sections.",
+    "Every homepage module and email section": "Every homepage module and email section carried its bucket's lockup and icon."
+   },
+   "lines": {
+    "The bucket names showed up": "The bucket names ended up being how everyone who touched digital content talked about the work. | The icons, the typography and the names all changed over time, but the four-bucket structure stayed the same."
+   },
+   "rest": "drop",
+   "moreTo": "chapters",
+   "facts": []
+  }
+ }
+}

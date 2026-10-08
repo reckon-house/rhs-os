@@ -1,0 +1,61 @@
+{
+ "k": "hill-country-living",
+ "variants": {
+  "index": {
+   "note": "Flow opens the room: a living room open to the kitchen and designed around its limestone wall, then two chapters that are also the section titles (plain walls and four materials, pieces chosen for how they age), each opening to three specifics; the closing walks into the entry.",
+   "stand": "A living room at the center of the Hill Country house, open to the kitchen and designed around a floor-to-ceiling limestone fireplace wall. | The furniture is mid-century in shape, with textiles that lean Western.",
+   "abs": [],
+   "did": [
+    "Interior design",
+    "Furniture curation",
+    "Art selection",
+    "Fixture sourcing"
+   ],
+   "didTitle": "Scope",
+   "chapters": {
+    "Stone, pine, brass and leather run through": {
+     "t": "The walls and ceiling are kept plain,",
+     "g": "so the room gets its texture from four materials",
+     "li": [
+      "Reclaimed 1950s pine | the floor, and the exposed beams overhead.",
+      "Cognac leather | the sofa, on a wood frame.",
+      "Brass | the fixtures and the fire tools."
+     ],
+     "pic": "hill-country-living-limestone-fireplace-eisenhower-painting-navajo-throw-cognac-sofa-symmetry.jpg"
+    },
+    "There is a painting by Eisenhower": {
+     "t": "Every piece was chosen for how it will age,",
+     "g": "and none of it came as a set",
+     "p": [
+      "Family heirlooms sit next to new finds."
+     ],
+     "li": [
+      "The record-player shelf | it sits under the Eisenhower painting, and the vinyl stacked below it includes ZZ Top and Sturgill Simpson.",
+      "The ladder shelf | a vintage globe and ceramic vessels.",
+      "By the window | two tweed armchairs face each other with a leather stool between them and the Hill Country outside."
+     ],
+     "pic": "hill-country-living-vintage-record-player-vinyl-shelf-limestone-eisenhower-detail.jpg"
+    }
+   },
+   "labels": {
+    "Stone, pine, brass and leather run through": "The materials",
+    "There is a painting by Eisenhower": "Heirlooms and finds"
+   },
+   "decks": {
+    "Stone, pine, brass and leather run through": "Stone, pine, brass and leather run through the whole house.",
+    "There is a painting by Eisenhower": "An original painting by Dwight D. Eisenhower hangs on the stone wall with landscape pieces in gilded frames."
+   },
+   "heads": {
+    "Just past the living room is the entry": "drop"
+   },
+   "lines": {
+    "The entry gets the same treatment": "Just past the living room is the entry. | It gets the same treatment, with a leather-strapped oval mirror on the wall and a wood console with a crystal lamp on it."
+   },
+   "rest": "drop",
+   "moreTo": "chapters",
+   "facts": [
+    "Published"
+   ]
+  }
+ }
+}

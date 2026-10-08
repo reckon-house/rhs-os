@@ -1,0 +1,66 @@
+{
+ "k": "nordstrom-beauty",
+ "variants": {
+  "index": {
+   "note": "Flow opens the room: what the hub is and why a static story falls behind, then three chapters that are also the section titles (templates, try-on, drawer); the closing keeps the three seasonal rotations.",
+   "stand": "On Nordstrom's beauty editorial hub, every story was shoppable. | New products launch weekly and trends shift with the season, so a static story falls behind.",
+   "abs": [],
+   "did": [
+    "Product design",
+    "UX design",
+    "Visual design",
+    "Editorial templates"
+   ],
+   "didTitle": "Role",
+   "chapters": {
+    "Each card on the hub opens into": {
+     "t": "The hub ran on three modular story templates,",
+     "g": "built so merchandising could swap products without touching the layout",
+     "li": [
+      "Every story | got its own headlines, photography, and copy.",
+      "Catalog data | swapping a product updated its price, description, and picture with no designer opening the page.",
+      "Three cards | gave merchandising room for the seasonal pushes and kept the page from getting crowded."
+     ]
+    },
+    "Upload a selfie": {
+     "t": "A virtual try-on tool let customers preview shades on their own face,",
+     "g": "and buy the one they chose without leaving it",
+     "li": [
+      "Your photo | a new one, or the one already on your Style Profile.",
+      "The gradient | drag across it and watch the shade change on your face as you go.",
+      "The product card | tap the right red and it comes up underneath with reviews, price, and add to bag."
+     ],
+     "pic": "nordstrom-beauty-tryon-iphone-color-selector-mockup.jpg"
+    },
+    "Buying never interrupts": {
+     "t": "Stories opened their products in a drawer on the same page,",
+     "g": "so a customer could add to bag with no detour to a product page",
+     "li": [
+      "The drawer | comes in from the side while the page behind it stays on screen.",
+      "Inside it | reviews, price, size options, and add to bag.",
+      "Get That Glow and Top 5 Serums | told seasonal stories while the product grid under them stayed current."
+     ]
+    }
+   },
+   "heads": {
+    "The templates ran through": "drop"
+   },
+   "labels": {
+    "Each card on the hub opens into": "The hub",
+    "Upload a selfie": "Virtual try-on",
+    "Buying never interrupts": "The product drawer"
+   },
+   "decks": {
+    "Each card on the hub opens into": "Each card opens into a full editorial story.",
+    "Upload a selfie": "It shipped inside the Lips That Pop story, built as its own component so it could be reused for eye, cheek, or nail products.",
+    "Buying never interrupts": "Time on page, scroll depth, and conversion were all measured inside the story, so merchandising could see which editorial angle drove the most adds to bag."
+   },
+   "lines": {
+    "Between rotations": "The templates ran through three seasonal rotations before anyone asked for a layout change."
+   },
+   "rest": "drop",
+   "moreTo": "chapters",
+   "facts": []
+  }
+ }
+}

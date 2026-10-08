@@ -1,0 +1,63 @@
+{
+ "k": "chalet",
+ "variants": {
+  "index": {
+   "note": "Flow opens the room: a 1968 chalet taken down to the studs, the cabin and mid-century idea in grey, then two chapters (the exterior, the main level) that are also their sections' titles; the blend's words move into the main level's row, and the closing keeps the 400 square feet.",
+   "stand": "A 1968 Pacific Northwest chalet, taken down to the studs and rebuilt inside and out. | Mixing cabin and mid-century was the whole idea.",
+   "abs": [
+    "The Mountain View chalet hadn't been rethought since the '90s."
+   ],
+   "did": [
+    "Interior design",
+    "Exterior direction",
+    "Finish selection",
+    "Furniture curation",
+    "Fixture sourcing"
+   ],
+   "didTitle": "Scope",
+   "chapters": {
+    "The chalet no longer disappears": {
+     "t": "The exterior was repainted,",
+     "g": "and the chalet no longer disappears against the evergreens on cloudy days",
+     "li": [
+      "The stairs | they run down from the deck to a stone patio off the side of the house.",
+      "At night | new fixtures light the patio and the stairs, with string lights over the patio.",
+      "The front | the way up to the door climbs a rocky slope."
+     ],
+     "pic": "chalet-exterior-front-warm-gray-white-railings-pacific-northwest.jpg"
+    },
+    "Every seat faces the trees": {
+     "t": "The main wall got 16-foot sliding glass doors,",
+     "g": "so the tree canopy is what you look at from every seat in the room",
+     "li": [
+      "The A-frame | wood plank all the way up, with a triangular window under the peak and a skylight.",
+      "Cabin | reclaimed pine floors in mixed plank widths, exposed beams, painted stone and the antlers.",
+      "Mid-century | the sputnik chandelier, the Malm fireplace, the walnut dining set and the leather sling chair."
+     ]
+    }
+   },
+   "heads": {
+    "Mixing cabin and mid-century": "drop"
+   },
+   "labels": {
+    "The chalet no longer disappears": "The exterior",
+    "Every seat faces the trees": "The main level",
+    "The rebuild added over 400": "The footprint"
+   },
+   "decks": {
+    "The chalet no longer disappears": "Warm gray went on the siding and white on the railings.",
+    "Every seat faces the trees": "The furniture is kept simple on purpose so it doesn't compete with what's outside the glass."
+   },
+   "lines": {
+    "Most of the chalet's new space": "keep",
+    "The 1968 structure was sound": "The structure was sound, so the rebuild kept it. | The blue carpet and the dated railings went, along with everything else."
+   },
+   "rest": "drop",
+   "moreTo": "chapters",
+   "facts": [
+    "Published",
+    "Status"
+   ]
+  }
+ }
+}

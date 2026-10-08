@@ -1,0 +1,57 @@
+{
+ "k": "fairview-entry",
+ "variants": {
+  "index": {
+   "note": "Flow opens the room: a two-story foyer designed around its French doors, the light first, then two chapters that are also the section titles (limestone-cream walls that take the light, a bench for boots and bags), each opening to three specifics; the closing is the oak floor running on into the house.",
+   "stand": "The Fairview entry is a two-story foyer, designed around its French doors. | The light through them comes first.",
+   "abs": [],
+   "did": [
+    "Interior design",
+    "Furniture curation",
+    "Finish selection"
+   ],
+   "didTitle": "Scope",
+   "chapters": {
+    "The French doors run floor to ceiling": {
+     "t": "The walls are limestone-cream,",
+     "g": "so they take the light and don't throw it back",
+     "li": [
+      "The doors | French ironwork, running floor to ceiling at the center.",
+      "The rug | dark enough to ground the floor and woven loose enough to still show on a cloudy afternoon.",
+      "The palm and coat tree | they share the corner that gets the morning sun."
+     ],
+     "pic": "2.avif"
+    },
+    "The rug, the bench and the art": {
+     "t": "A leather bench sits under the slatted wood art,",
+     "g": "for the boots that come off and the bag set down on the way in",
+     "li": [
+      "The second piece | a dark abstract in a thick frame.",
+      "The chandelier | one alabaster pendant set in brass, oversized on purpose, hanging by itself overhead.",
+      "The bench | a sheepskin throw over it and a basket underneath."
+     ],
+     "pic": "6.webp"
+    }
+   },
+   "labels": {
+    "The French doors run floor to ceiling": "The light",
+    "The rug, the bench and the art": "The pieces"
+   },
+   "decks": {
+    "The French doors run floor to ceiling": "Nothing on the floor gets between the doors and the sun.",
+    "The rug, the bench and the art": "The rug, the bench and the art had all been somewhere else first."
+   },
+   "heads": {
+    "The leather bench is where boots come off": "drop"
+   },
+   "lines": {
+    "The white oak floor runs from the front door": "keep"
+   },
+   "rest": "drop",
+   "moreTo": "chapters",
+   "facts": [
+    "Published"
+   ]
+  }
+ }
+}

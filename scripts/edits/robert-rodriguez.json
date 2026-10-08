@@ -1,0 +1,72 @@
+{
+ "k": "robert-rodriguez",
+ "variants": {
+  "index": {
+   "note": "Flow opens on what the campaign was and its one-day shoot, then three chapters that are also the section titles: the double exposure, the system it ran on, and the type; the gradients close it.",
+   "stand": "The Robert Rodriguez spring campaign for Neiman Marcus was shot in one day and ran across social, email, the stores and editorial. | It mixes ’80s mall glam with high fashion.",
+   "abs": [],
+   "did": [
+    "Art Direction",
+    "Photo Compositing",
+    "Typography Design",
+    "Campaign Design"
+   ],
+   "didTitle": "Role",
+   "chapters": {
+    "One model and four setups stretched into": {
+     "t": "Two frames from the same shoot were layered as a double exposure,",
+     "g": "making a third picture neither frame had on its own",
+     "p": [
+      "Neiman Marcus wanted the campaign to feel current and still keep the brand's romantic side."
+     ],
+     "li": [
+      "The reference | Glamour Shots and the other mall portrait studios, with their oversaturated close-ups, soft-focus backgrounds and a fan going somewhere off camera.",
+      "The brief | take mall glam seriously, without irony, and rebuild its confidence and color with contemporary craft.",
+      "The backdrops | smooth mesh color fields replaced the airbrushed ones and kept their warmth."
+     ],
+     "pic": "neiman-marcus-robert-rodriguez-woman-model-pink-blazer-cream-polka-dot-dress-orange-red-backdrop-editorial-campaign.jpg"
+    },
+    "Every piece was layered from": {
+     "t": "Four photographs, one typeface family and a color field make up the campaign,",
+     "g": "and each combination looks a little different from the last",
+     "li": [
+      "Social and email | tight crops for social, and the header images for email.",
+      "The stores | the color fields ran at full strength.",
+      "Editorial | the spreads gave the double exposures room to run wide."
+     ]
+    },
+    "Archer Hairline is thin enough": {
+     "t": "The typeface, Archer, was chosen just for the campaign,",
+     "g": "and its thin Hairline sits over the pictures without fighting them",
+     "li": [
+      "Archer Book | sets the body copy in warm, rounded serifs that match the softness of the photography.",
+      "Flat blocks | the three colors clash.",
+      "Gradients | they hold together when each one fades into the next."
+     ],
+     "pic": "robert-rodriguez-logo-typography-gradient-orange-pink-coral-color-palette-branding-design.jpg"
+    }
+   },
+   "labels": {
+    "One model and four setups stretched into": "The technique",
+    "Every piece was layered from": "The campaign",
+    "Archer Hairline is thin enough": "Type and color"
+   },
+   "decks": {
+    "One model and four setups stretched into": "One model and four setups stretched into an entire campaign.",
+    "Every piece was layered from": "The storefront window ran the composites at large format.",
+    "Archer Hairline is thin enough": "The palette is coral, orange and pink."
+   },
+   "heads": {
+    "Every color field was drawn": "drop"
+   },
+   "lines": {
+    "The gradients scale to any size": "Every color field was drawn as a gradient, | so a three-foot print is as smooth as a phone screen."
+   },
+   "rest": "drop",
+   "moreTo": "chapters",
+   "facts": [
+    "Published"
+   ]
+  }
+ }
+}

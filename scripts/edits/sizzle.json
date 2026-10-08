@@ -1,0 +1,67 @@
+{
+ "k": "sizzle",
+ "variants": {
+  "index": {
+   "note": "Flow opens the room: what Faux Reel is, then three chapters that are also the section titles, each opening to three specifics; the closing points at the reel playing on the room's cover.",
+   "stand": "Faux Reel is a tool I made that turns still photographs into a sizzle reel. | It has no video in it, just stills cut fast enough to look like motion.",
+   "abs": [
+    "A sizzle reel is usually video that gets shot, edited, rendered and hosted. It dawned on me one night that I could make one in code instead of opening an editor, so I figured I would give it a try, and it turned out pretty well."
+   ],
+   "did": [
+    "Product Design",
+    "Engineering"
+   ],
+   "didTitle": "What I did",
+   "rest": "drop",
+   "moreTo": "chapters",
+   "labels": {
+    "Drop in your own photos": "Your photos",
+    "The reel swaps photos": "Under the cut",
+    "Faux Reel's code is": "How it was built"
+   },
+   "decks": {
+    "Drop in your own photos": "Nothing is uploaded or saved.",
+    "The reel swaps photos": "Each frame sits for a beat before the next one."
+   },
+   "chapters": {
+    "Drop in your own photos": {
+     "t": "Faux Reel takes your own photos,",
+     "g": "and the reel rebuilds around them",
+     "li": [
+      "Up to eight | it plays seven frames by default and takes up to eight of yours.",
+      "Your colors | it pulls a five-color palette out of your photos and matches the reel to it.",
+      "Each beat | gets a chip under the reel, and clicking one freezes playback on that beat."
+     ]
+    },
+    "The reel swaps photos": {
+     "t": "The reel swaps photos behind a color blink or a lens pinch,",
+     "g": "timed so it doesn't feel like a slideshow",
+     "li": [
+      "Every cut | has to land on a new image, or the color blink looks like a glitch.",
+      "Titles | they come in hard, with no fade.",
+      "On the page | the whole reel runs in one box."
+     ]
+    },
+    "Faux Reel's code is": {
+     "t": "I built Faux Reel in a day with Claude Code,",
+     "g": "and it's MIT-licensed and on GitHub",
+     "li": [
+      "What ships | a React component, a web component and a GIF or MP4 exporter.",
+      "Size | the web component is smaller than any one of the photographs it plays.",
+      "Working in code | once I got the hang of it, it actually felt faster, and it left me with a reel I can edit and keep fresh."
+     ]
+    }
+   },
+   "lines": {
+    "The reel at the top of this page": "The reel at the top of this page is Faux Reel itself, cut from seven of the projects here and running on the site where I made it. | If you need a deck or a portfolio that moves, grab the code."
+   },
+   "facts": [
+    "Field",
+    "Published"
+   ],
+   "factSet": {
+    "Field": "Product, Motion"
+   }
+  }
+ }
+}

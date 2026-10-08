@@ -58,26 +58,12 @@
    "facts": []
   },
   "index": {
-   "note": "Studio.Build's shape: What I did and the story in four closed drawers under the title, then each section's head, pictures and one line at most; the black field and the pull quote stay.",
-   "stand": "Beyoncé's Ivy Park launched at Nordstrom, the line's exclusive US partner.",
-   "rest": "drop",
-   "lines": {
-    "Ivy Park was Beyoncé's first": "drop",
-    "Nordstrom had the exclusive": "drop",
-    "Four weeks went": "drop",
-    "The brief came in under NDA": "drop",
-    "The photography was supplied": "drop",
-    "Typography, layout, copy": "drop",
-    "The polygon, a hexagon": "drop",
-    "Angled, rotated": "drop",
-    "The custom CMS components": "The custom CMS components built for the project went into Nordstrom's shared library and powered other launches for two years.",
-    "Every photo came in": "The polygon ran from the hero banner through the product carousels into the email headers.",
-    "The launch page had to be": "keep",
-    "The emails, banners": "keep",
-    "Everything from the creative direction": "keep",
-    "After launch, Beyoncé": "Beyoncé sent the team a personal thank-you video.",
-    "That part stays": "keep"
-   },
+   "note": "Flow opens the room: Beyoncé's first activewear line launched by Nordstrom on one scrolling page and the 95% that sold out, then three chapters that are also the section titles (six weeks, the hexagon and the components reused for two years, the campaign built from the page), each opening to three specifics; the pull quote stays, and the closing says it all came out of a Nordstrom office.",
+   "stand": "Ivy Park was Beyoncé's first activewear line, and Nordstrom, its exclusive US partner, launched it on one scrolling page. | 95% of the product sold out within days.",
+   "abs": [
+    "Ivy Park was staking out a spot between luxury fashion and athletic performance, one with no obvious reference, and the design had to sit in that gap.",
+    "The photography was supplied: black-and-white athlete portraits, and color product shots on blue and gray. Typography, layout, copy, animation and interaction were all open."
+   ],
    "did": [
     "Creative direction",
     "Campaign design",
@@ -85,63 +71,58 @@
     "Ecommerce design",
     "Copywriting"
    ],
-   "drawers": [
-    {
-     "t": "Where Ivy Park sat, and what the launch needed",
-     "p": [
-      "Ivy Park was staking out a spot between luxury fashion and athletic performance, one with no obvious reference, and the design had to sit in that gap.",
-      "The Ivy Park launch needed one scrolling brand experience and emails timed to the drop. The brief also covered digital marketing across Nordstrom's owned channels."
+   "didTitle": "Role",
+   "chapters": {
+    "Nordstrom had six weeks": {
+     "t": "The website went from moodboard to live in six weeks,",
+     "g": "with every concept presented to Beyoncé's creative team",
+     "li": [
+      "Week one | references, moodboards and a competitive audit.",
+      "Weeks two through four | wireframes, design concepts, copywriting and motion studies, with revisions turned around overnight.",
+      "Weeks five and six | build and ship."
      ]
     },
-    {
-     "t": "The NDA and the timeline",
-     "p": [
-      "The brief came in under NDA before the team had cleared their schedules, and there were daily calls with Ivy Park while the creative direction got locked in.",
-      "Week one: references, moodboards, competitive audit. Weeks two through four: wireframes, design concepts, copywriting and motion studies, all presented to Beyoncé's creative team, with revisions turned around overnight. Weeks five and six: build and ship."
+    "The hexagon started as a way": {
+     "t": "The page framed every portrait in a hexagon that turned on scroll,",
+     "g": "and its custom components powered other Nordstrom launches for two years",
+     "li": [
+      "The hexagon | it started as a way to break the rectangular grid the photography came in, and its angled edges gave the portraits some tension.",
+      "The copy | written line by line as the pages took shape, in short present-tense sentences that talked straight to the reader.",
+      "The components | Nordstrom's CMS didn't have parallax modules, animated polygon masks, full-bleed video that played on scroll or type lockups that scaled with the screen, so they got built for Ivy Park."
      ]
     },
-    {
-     "t": "What was supplied, and what was open",
-     "p": [
-      "The photography was supplied: black-and-white athlete portraits, editorial in tone, with range across body types and ethnicities, and color product shots on blue and gray.",
-      "Everything but the photography was open, so the type went larger than expected, motion ran the length of the scroll, and the portraits got space around them."
-     ]
-    },
-    {
-     "t": "The polygon, the type and the components, at any size",
-     "cols": [
-      {
-       "t": "The Polygon",
-       "p": [
-        "The portraits sat in a hexagonal frame, sometimes cropped tight to a jawline, sometimes open wide enough for a full figure.",
-        "The polygon's angled edges against the straight photography gave the athlete portraits some tension.",
-        "On scroll the hexagon turned slowly, and the flat photography picked up some depth. The rotation was one CSS transform."
-       ]
-      },
-      {
-       "t": "Typography at Volume",
-       "p": [
-        "Headlines like \"Confidence is Strength\" were set in mixed weights, with baselines knocked off the grid.",
-        "The copy got written line by line as the pages took shape, in short present-tense sentences that talked straight to the reader."
-       ]
-      },
-      {
-       "t": "Custom Components",
-       "p": [
-        "The Ivy Park page needed components Nordstrom's CMS didn't have: parallax modules, animated polygon masks, full-bleed video that played on scroll, type lockups that scaled with the screen."
-       ]
-      },
-      {
-       "t": "At Any Size",
-       "p": [
-        "The polygon crops the same at 300px and at 3000px, and bold type reads at any size. Black-and-white photography goes to any aspect ratio."
-       ]
-      }
+    "The launch page came first": {
+     "t": "The emails, banners, social posts and in-store signage were all adapted from the launch page,",
+     "g": "built from a handful of simple elements",
+     "li": [
+      "The polygon | crops the same at 300px and at 3000px.",
+      "Bold type | reads at any size.",
+      "Black-and-white photography | goes to any aspect ratio."
      ]
     }
-   ],
-   "facts": [],
-   "didTitle": "Role"
+   },
+   "heads": {
+    "95% of the product": "Everything from the creative direction to the rollout came out of a Nordstrom office."
+   },
+   "labels": {
+    "Nordstrom had six weeks": "The brief",
+    "The hexagon started as a way": "The launch page",
+    "The launch page came first": "The campaign",
+    "95% of the product": "In house"
+   },
+   "decks": {
+    "Nordstrom had six weeks": "The brief came in under NDA, and there were daily calls with Ivy Park.",
+    "The hexagon started as a way": "Headlines like \"Confidence is Strength\" were set in mixed weights, with baselines knocked off the grid.",
+    "The launch page came first": "The polygon ran from the hero banner through the product carousels into the email headers."
+   },
+   "lines": {
+    "The launch page had to be": "keep",
+    "After launch, Beyoncé": "keep",
+    "That part stays": "keep"
+   },
+   "rest": "drop",
+   "moreTo": "chapters",
+   "facts": []
   }
  },
  "unlocked": "Needs check.mjs to read US as the country (its we/our/us test case-sensitive for us). Then copy this file over ivy-park.json."

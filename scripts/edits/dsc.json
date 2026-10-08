@@ -1,0 +1,97 @@
+{
+ "k": "dsc",
+ "variants": {
+  "index": {
+   "note": "Flow opens the room: what was built for the gym and that athletes book from their own AI, then five chapters that are also the five section titles, ending on the one engine that makes every booking.",
+   "stand": "I designed and built a marketing site, a booking platform and an MCP server for Dallas Sport Collective, a gym in North Texas. | Athletes can book from the AI they already use, whether that's Claude, ChatGPT or Gemini.",
+   "abs": [
+    "The gym runs eleven programs, from NFL Combine prep to prenatal fitness. The founder needed two things at once: a brand that matched where the gym was headed, and a back office that could keep up.",
+    "The marketing site is black and white, with big condensed type and photography of actual members training."
+   ],
+   "did": [
+    "Web Design",
+    "Product Design",
+    "AI Integration",
+    "Full-stack engineering, brand to backend"
+   ],
+   "didTitle": "What I did",
+   "rest": "drop",
+   "moreTo": "chapters",
+   "chapters": {
+    "None of the scheduling works": {
+     "t": "Sign-up moves every athlete off text threads and a spreadsheet,",
+     "g": "onto one roster the software can work with",
+     "pic": "dsc-marketing-site-laptop-hero.jpg",
+     "li": [
+      "Accounts | athletes create their own in the app.",
+      "The waiver | every athlete signs it on the way in.",
+      "A trainer | the owner assigns each new member to one before anyone books a session."
+     ]
+    },
+    "Athletes can book a session": {
+     "t": "An athlete's own AI reads their real schedule and puts in a request,",
+     "g": "and the owner approves it with one tap",
+     "pic": "dsc-ai-scheduler-phone-hero.jpg",
+     "li": [
+      "One URL | athletes paste it into their AI to connect, and can revoke access from the dashboard.",
+      "What to ask | what's on their schedule, which trainer fits a goal, or to book Friday at 10am.",
+      "Eleven tools | from the gym overview and trainer availability to slot suggestions, booking requests and cancellations."
+     ],
+     "proof": "The demo replays a real exchange, from an athlete asking their AI for openings with a trainer to the request showing up on the owner's console."
+    },
+    "The athlete app opens on": {
+     "t": "The athlete app opens on your next session,",
+     "g": "and a connected AI describes each coach from the same profiles you see",
+     "li": [
+      "The dashboard | lists recent activity.",
+      "Trainers | the full roster gets a screen of its own.",
+      "Programs | the menu runs from strength and speed work to onsite physical therapy."
+     ]
+    },
+    "The owner console is built for": {
+     "t": "The owner schedules a whole week out loud,",
+     "g": "from a phone between sessions",
+     "li": [
+      "The queue | every request lands in it.",
+      "The week | a calendar shows the session count per day.",
+      "Members | a list flags each athlete's waiver and trainer-assignment status."
+     ],
+     "proof": "The owner's real batch booking, replayed on the console's own chat, shows the scheduler looking the athlete up before it proposes anything."
+    },
+    "The schedule was the part": {
+     "t": "One deterministic engine makes every booking,",
+     "g": "whether it's spoken, requested by an AI or tapped on the calendar",
+     "li": [
+      "Standing slots | the owner sets one recurring slot, and the engine fills in the next eight weeks.",
+      "Requests only | an athlete's AI can only ever request a booking.",
+      "The stack | Next.js on Vercel, with OAuth 2.0 consent and short-lived, rotating tokens."
+     ],
+     "proof": "Asked for every Monday, Wednesday and Friday at 3pm for a month, the scheduler accepted ten clean slots, flagged three conflicts and waited for a \"commit\" before booking anything."
+    }
+   },
+   "labels": {
+    "None of the scheduling works": "Sign-up",
+    "Athletes can book a session": "The MCP server",
+    "The athlete app opens on": "The athlete app",
+    "The owner console is built for": "The owner console",
+    "The schedule was the part": "The engine"
+   },
+   "decks": {
+    "None of the scheduling works": "It was the first part of the scheduling platform I built.",
+    "Athletes can book a session": "An athlete never has to open the app.",
+    "The athlete app opens on": "Each trainer's bio expands to specialties and certifications.",
+    "The owner console is built for": "It's built for one person on the gym floor.",
+    "The schedule was the part": "It checks trainer availability, double-bookings, floor capacity, allowed durations and cancellation rules."
+   },
+   "lines": {
+    "A hundred-plus athletes were booked": "drop",
+    "An athlete's AI can read the schedule": "drop",
+    "However a booking comes in": "drop",
+    "The platform is live in Celina": "keep"
+   },
+   "facts": [
+    "Published"
+   ]
+  }
+ }
+}

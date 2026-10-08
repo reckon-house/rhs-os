@@ -1,0 +1,77 @@
+{
+ "k": "loved-by-nordstrom",
+ "variants": {
+  "index": {
+   "note": "Flow opens the room: what the campaign was and the Instagram heart it was built on, then four chapters that are also the section titles (the heart, the tile, Liked and Loved as a priority lever, the channels); the closing says merchandisers swapped brands in weekly with no brief.",
+   "stand": "Loved by Nordstrom was a year-long campaign for smaller designer labels, in stores and online. | Every tile in it was built on the heart icon borrowed from Instagram.",
+   "abs": [],
+   "did": [
+    "Creative direction",
+    "Campaign design",
+    "Design systems"
+   ],
+   "didTitle": "Role",
+   "chapters": {
+    "Nobody had to learn": {
+     "t": "Nobody had to learn what Liked by Nordstrom meant,",
+     "g": "because people already tapped the Instagram heart all day without thinking",
+     "li": [
+      "Instagram stories | Loved by Nordstrom tiles ran there, in the app the heart icon came from.",
+      "On the landing page | the heart worked as a bookmark through the grid.",
+      "For a year | the same heart carried Helmut Lang, The Great, See by Chloé and TIBI, in the stores, on the site and on Instagram."
+     ],
+     "pic": "loved-by-nordstrom-iphone-instagram-stories-tibi-trench.jpg"
+    },
+    "The middle of each tile held": {
+     "t": "The middle of each tile held whatever photography the brand had already licensed,",
+     "g": "with the brand name on top and the heart at the base",
+     "li": [
+      "Helmut Lang | cold, minimal shoots.",
+      "The Great | warm, narrative shoots.",
+      "See by Chloé | product-first photography."
+     ]
+    },
+    "The Loved by Nordstrom hero slots": {
+     "t": "Liked and Loved used the same icon and typography,",
+     "g": "so the merchandising team could raise or lower a brand's priority without touching the design",
+     "pic": "loved-by-nordstrom-large-tibi-fur-coat-campaign-tile.jpg",
+     "li": [
+      "Liked | sat on the smaller tiles, for day-to-day merchandising.",
+      "Loved | larger crops and tighter compositions than the Liked tiles.",
+      "TIBI | when it got the Loved treatment, the fur coat photo and the profile portrait ran at full-page scale."
+     ]
+    },
+    "The same tile ran in your feed": {
+     "t": "The same tile ran in your feed and in the store window,",
+     "g": "and only its size changed from one channel to the next",
+     "li": [
+      "Twelve months of tiles | went out across social feeds, email sends, in-store signage, and web landing pages.",
+      "The landing page | organized the stories by brand.",
+      "The grid, the type and the icon | were fixed on every tile."
+     ]
+    }
+   },
+   "heads": {
+    "Nordstrom's merchandisers swapped": "drop"
+   },
+   "labels": {
+    "Nobody had to learn": "The heart",
+    "The middle of each tile held": "The tile",
+    "The Loved by Nordstrom hero slots": "Liked and Loved",
+    "The same tile ran in your feed": "Across channels"
+   },
+   "decks": {
+    "Nobody had to learn": "The brief was emerging brand awareness.",
+    "The middle of each tile held": "The tile template didn't change all year.",
+    "The Loved by Nordstrom hero slots": "The Loved by Nordstrom hero slots went to one brand at a time.",
+    "The same tile ran in your feed": "Photography from a 1080-square social post scaled up to a 1440-wide web hero with a crop spec and no new art direction."
+   },
+   "lines": {
+    "For a year the same heart": "Nordstrom's merchandisers swapped brands in weekly, with no creative brief."
+   },
+   "rest": "drop",
+   "moreTo": "chapters",
+   "facts": []
+  }
+ }
+}

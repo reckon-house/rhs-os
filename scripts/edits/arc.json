@@ -1,0 +1,120 @@
+{
+ "k": "arc",
+ "variants": {
+  "index": {
+   "note": "Flow opens the room: what A.R.C. is and why it matters, then six chapters that are also the section titles, each opening to three specifics; the vision model goes unnamed.",
+   "stand": "A.R.C. is an iPhone app I designed and built for home inventory. | About 60% of American homeowners end up underinsured.",
+   "abs": [],
+   "did": [
+    "Product Design",
+    "Brand Identity",
+    "Full-Stack Engineering",
+    "Go-to-Market Strategy"
+   ],
+   "didTitle": "What I did",
+   "rest": "drop",
+   "moreTo": "chapters",
+   "heads": {
+    "Most homeowners have never": "I downloaded every home inventory app I could find, | and all of them left you to identify each item and put a value on it, one at a time."
+   },
+   "labels": {
+    "Most homeowners have never": "The problem",
+    "One photo of a room": "The scan",
+    "Thirteen item categories": "Categories",
+    "A.R.C. compares what you own": "Coverage",
+    "Ten weeks after the first idea": "How it was built",
+    "Every screen here is from": "The app",
+    "Documenting a 1,168-item home": "Speed",
+    "I built A.R.C. because": "Where it started"
+   },
+   "decks": {
+    "Most homeowners have never": "Some were a spreadsheet in app form, and the rest were insurance carrier tools built to make claims easier for adjusters.",
+    "One photo of a room": "It works from the phone camera, with no special hardware and no calibration.",
+    "Thirteen item categories": "Sub-categories give each valuation enough detail to be accurate.",
+    "A.R.C. compares what you own": "You set the coverage when you buy the policy and it tends to sit there, while the stuff inside the house keeps changing.",
+    "Ten weeks after the first idea": "When I noticed a problem, a fix could be live within hours.",
+    "Every screen here is from": "The home screen is the overview: total items, total estimated value, the category breakdown, coverage status and recent activity.",
+    "Documenting a 1,168-item home": "The home is sixteen rooms: five bedrooms, three bathrooms, four closets, a living room, kitchen, game room and garage.",
+    "I built A.R.C. because": "I had a renovated house and years of collected objects, and nothing documented anywhere that would survive an insurance claim."
+   },
+   "chapters": {
+    "One photo of a room": {
+     "t": "AI recognizes what's in a photo or a video of a room,",
+     "g": "so your job turns into reviewing what it found",
+     "li": [
+      "Video | sweep a room with your phone and the AI reasons across frames, tracking objects through space and picking up what a single photo misses.",
+      "What it reads | what each object is, what it's made of, its style, its condition and a rough era.",
+      "Confidence | every decision point is checked against a threshold."
+     ],
+     "proof": "I first tested whether computer vision could pick out household items from ordinary phone photos, and it could, with a few caveats that ended up shaping the UX.",
+     "pic": "arc-room-scanning-interface.jpg"
+    },
+    "Thirteen item categories": {
+     "t": "A.R.C. sorts every item into thirteen categories that match the ones insurance claims use,",
+     "g": "without asking you to know any of the terms",
+     "li": [
+      "The categories | furniture, electronics, artwork, appliances, fixtures, textiles, collectibles, vehicles, tools, sporting goods, musical instruments, jewelry and documents.",
+      "Value | what each item would cost to replace today, matched against market data, which is the number insurance runs on.",
+      "Archive entry | puts each item into your inventory, linked to a room, tagged, tied to the photograph it came from and counted in the totals right away."
+     ],
+     "pic": "arc-app-living-room-furniture-selection.jpg"
+    },
+    "A.R.C. compares what you own": {
+     "t": "A.R.C. compares what you own against your policy limit,",
+     "g": "and shows any gap as a dollar amount",
+     "p": [
+      "A home that was covered five years ago might be $50,000 short today, and there is no way of knowing until something goes wrong."
+     ],
+     "li": [
+      "Your limit | the personal property limit on your policy, which you enter yourself.",
+      "As you go | the documented total updates with each item.",
+      "Room by room | A.R.C. ties the gap to specific items."
+     ],
+     "pic": "arc-app-vinyl-turntable-shelves-lifestyle.jpg"
+    },
+    "Ten weeks after the first idea": {
+     "t": "I made A.R.C. on my own in ten weeks,",
+     "g": "with AI helping the whole way through",
+     "li": [
+      "Claude Code | my main environment from start to finish: I described what I wanted in plain language, read the code that came back, tested it and shipped.",
+      "No team | no engineering team, no PM handing out tickets, no design review and no QA, so every decision came down to priorities.",
+      "Interface | I designed it and built it at the same time, with no handoff between what I meant and what showed up in code."
+     ],
+     "proof": "The bottleneck sits less on syntax and more on being clear about what the product should do, which is the design part.",
+     "pic": "arc-multi-device-lifestyle-hero.jpg"
+    },
+    "Every screen here is from": {
+     "t": "Every screen puts the value first,",
+     "g": "what you own, what it is worth and whether it is covered",
+     "li": [
+      "Rooms | each room is its own archive, its items shown as cards you can sort by value, category or the date they were added.",
+      "Document AI | upload a receipt, an appraisal, a warranty or an insurance document, and the AI pulls out the purchase date, amount, vendor and coverage terms, then attaches them to the matching item.",
+      "Reports | PDF summaries by room, by category or for the whole home, with photographs, descriptions, values and totals, laid out to hand to an agent or advisor."
+     ],
+     "pic": "arc-app-tablet-kitchen-living-room-lifestyle.jpg"
+    },
+    "Documenting a 1,168-item home": {
+     "t": "Documenting a 1,168-item home in A.R.C. takes under eight hours,",
+     "g": "against an estimated 128 to 192 hours by hand",
+     "li": [
+      "In the app | 73 items, about one room, in under 30 minutes.",
+      "By hand | you open a spreadsheet, walk room to room, describe each item, price it, photograph it and attach the receipt.",
+      "The difference | the app is 16 to 24 times faster."
+     ],
+     "pic": "arc-app-kitchen-project-selection-lifestyle.jpg"
+    }
+   },
+   "lines": {
+    "A.R.C. has real users": "A.R.C. is live on the App Store and has real users.",
+    "I made the whole product alone": "V2 is underway, with better scanning and deeper financial analysis."
+   },
+   "facts": [
+    "Field",
+    "Published"
+   ],
+   "factSet": {
+    "Field": "AI Home Inventory, Computer Vision, Insurance Technology"
+   }
+  }
+ }
+}

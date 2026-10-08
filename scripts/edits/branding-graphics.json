@@ -1,0 +1,76 @@
+{
+ "k": "branding-graphics",
+ "variants": {
+  "index": {
+   "note": "Flow opens the room: what the collection is and who it was for, then four chapters that are also the four section titles (posters, covers, the storefront, the logos); each opens to its specifics, and the sections are label, title and pictures.",
+   "stand": "Here are album covers, posters, art prints, logos, and one storefront window, made over about ten years for musicians, friends, and a handful of brands. | Each one has its own look, made to fit that client.",
+   "abs": [
+    "Most of the work was done in Photoshop, Illustrator, and InDesign, with a film camera for the photography, and hand-drawn type where a piece called for it."
+   ],
+   "did": [
+    "Graphic Design",
+    "Album Art",
+    "Poster Design",
+    "Logo Design",
+    "Photo Compositing"
+   ],
+   "didTitle": "Role",
+   "chapters": {
+    "Double-exposed landscapes": {
+     "t": "The posters and prints run from a typography exercise to double-exposed landscapes,",
+     "g": "and none of them came with a brief",
+     "li": [
+      "Double exposure | lets texture stand in for detail in the landscapes.",
+      "Dot-matrix grids | sit under some of the photographs.",
+      "Radial color studies | are built from pattern."
+     ],
+     "pic": "branding-graphics-up-up-and-away-balloon-poster-lifestyle.jpg"
+    },
+    "Every sleeve had to read": {
+     "t": "Four album covers go from folk to pop to ambient to a DJ,",
+     "g": "and every sleeve had to read at vinyl size and survive as a thumbnail",
+     "li": [
+      "Folk | woodgrain collage and halftone geometry.",
+      "Pop | grunge compositing and hand-drawn type.",
+      "Ambient and DJ | linework landscapes stack into depth on the ambient release, and the DJ's cover is a saturated portrait where the color carries the whole thing."
+     ]
+    },
+    "The storefront photograph was shot on film": {
+     "t": "A 4x6 film photograph fills a storefront window,",
+     "g": "blown up to street size",
+     "li": [
+      "The photograph | Bokeh's Fall, defocused lights, orange and pink on black.",
+      "The type | set over it for the window."
+     ],
+     "proof": "The original print of Bokeh's Fall is below the window."
+    },
+    "Each of the five logos": {
+     "t": "Five logos went to five clients,",
+     "g": "a fashion collective, a DJ, a lifestyle brand, Okina and J. Christianson",
+     "li": [
+      "Drawing | the fashion collective's logo is wrapped in flowing botanical illustration, and the lifestyle brand got a bird on a monogram.",
+      "Halftone | the DJ's logo uses halftone dots and a geometric sans.",
+      "Type | Okina's is a planet-and-orbit wordmark in heavy black sans, and J. Christianson's is a four-circle mark over an engraved serif."
+     ]
+    }
+   },
+   "heads": {
+    "This collection is still growing.": "drop"
+   },
+   "labels": {
+    "Double-exposed landscapes": "Posters and prints",
+    "Every sleeve had to read": "Album covers",
+    "The storefront photograph was shot on film": "Storefront",
+    "Each of the five logos": "Logos"
+   },
+   "lines": {
+    "The pieces here are a mix of personal": "The pieces here are a mix of personal and deadline projects, including album sleeves nobody asked for and logos for friends starting things. | This collection is still growing."
+   },
+   "rest": "drop",
+   "moreTo": "chapters",
+   "facts": [
+    "Published"
+   ]
+  }
+ }
+}

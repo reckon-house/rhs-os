@@ -1,0 +1,71 @@
+{
+ "k": "fairview-bedroom",
+ "variants": {
+  "index": {
+   "note": "Flow opens the room: a bedroom and a bath in 600 square feet, glamorous and still livable, then three chapters that are also the section titles (one wall color, texture first, the bath in hex tile), each opening to three specifics; the closing is the copper tub and the bouclé ottoman.",
+   "stand": "The Fairview's primary suite fits a bedroom and a bath into 600 square feet. | The bedroom is glamorous, and it's still a room you can live in.",
+   "abs": [],
+   "did": [
+    "Interior design",
+    "Finish selection",
+    "Fixture sourcing",
+    "Furniture curation"
+   ],
+   "didTitle": "Scope",
+   "chapters": {
+    "The charcoal violet walls shift": {
+     "t": "Every wall is painted charcoal violet,",
+     "g": "and everything else was chosen to go with it",
+     "li": [
+      "The ceiling | it's vaulted and peaks at fourteen feet, with exposed wood beams along the ridge.",
+      "The chandelier | brass and crystal, scaled big enough that it doesn't get lost up there.",
+      "The windows | floor to ceiling and steel-framed, and they look out onto the property's tree canopy."
+     ],
+     "pic": "fairview-suite-bedroom-chandelier-fireplace-slippers.jpg"
+    },
+    "Texture came first and shape second": {
+     "t": "Texture came first and shape second for every piece of furniture,",
+     "g": "and the layers work together because the tonal range stays narrow",
+     "li": [
+      "The swivel chair | channel tufting on a brass base.",
+      "The side table | a solid marble pedestal.",
+      "On the floor | hammered brass vessels."
+     ],
+     "pic": "fairview-suite-reading-nook-chair-ottoman-marble-table.jpg"
+    },
+    "The bath swaps the violet paint": {
+     "t": "The bath swaps the violet paint for charcoal hex tile,",
+     "g": "carrying the bedroom's dark, warm palette through the double doors",
+     "li": [
+      "The shower | glass, facing the tub across a half-wall of hex tile.",
+      "The wet area | the tile runs floor to ceiling on every wall.",
+      "The chandelier | crystal, and smaller than the bedroom's."
+     ],
+     "pic": "fairview-suite-ensuite-doorway-copper-tub-chandelier.jpg"
+    }
+   },
+   "labels": {
+    "The charcoal violet walls shift": "The bedroom",
+    "Texture came first and shape second": "The furniture",
+    "The bath swaps the violet paint": "The ensuite"
+   },
+   "decks": {
+    "The charcoal violet walls shift": "The color shifts from cool to warm in the window light.",
+    "Texture came first and shape second": "The bed has a velvet headboard and faux fur throws, and the bouclé ottoman stands on turned legs.",
+    "The bath swaps the violet paint": "The tub is hammered copper inside and matte black outside, and it stands on cast iron claw feet."
+   },
+   "heads": {
+    "A copper tub and a bouclé ottoman share": "drop"
+   },
+   "lines": {
+    "Both crystal chandeliers": "A copper tub and a bouclé ottoman share a floor plan. | Both crystal chandeliers, in the bedroom and the bath, come from the same family."
+   },
+   "rest": "drop",
+   "moreTo": "chapters",
+   "facts": [
+    "Published",
+    "Status"
+   ]
+  }
+ }
+}

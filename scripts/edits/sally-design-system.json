@@ -1,0 +1,117 @@
+{
+ "k": "sally-design-system",
+ "variants": {
+  "index": {
+   "note": "Flow opens the room: the design system and the strategy behind it, built for the Marketing OS's AI to fill, then six chapters that are also the six section titles; the closing hands off to Sally's voice.",
+   "stand": "I designed a digital design system for Sally Beauty's emails and homepage, and the creative strategy behind it. | Every template is built for the AI in the Sally Marketing OS to fill, so work that took weeks now takes minutes.",
+   "abs": [
+    "The system covers type, color, scale, when to use photography and when to use graphics, and the templates. So far it holds 11 homepage concepts at desktop and phone sizes and 15 example emails.",
+    "I built the Marketing OS too."
+   ],
+   "did": [
+    "Creative strategy",
+    "Design system",
+    "Art direction",
+    "Email and homepage design"
+   ],
+   "didTitle": "What I did",
+   "rest": "drop",
+   "moreTo": "chapters",
+   "chapters": {
+    "Three ideas Ulta and Sephora": {
+     "t": "The strategy is three ideas Ulta and Sephora can't easily copy,",
+     "g": "the doer's store, color expertise and education",
+     "pic": "sally-design-system-email-punch-volume.jpg",
+     "li": [
+      "The doer's store | going platinum takes six steps and about two hours.",
+      "Color expertise | a level and a tone name each shade, and the level runs from one, black, to ten, the lightest blonde.",
+      "Education | a licensed colorist checks the plan before anyone mixes."
+     ]
+    },
+    "One homepage, three kinds": {
+     "t": "The homepage keeps one nav, one footer and one grid,",
+     "g": "so a new week changes the content and leaves the frame alone",
+     "pic": "sally-design-system-homepage-concept-6-pride-takeover-mobile.jpg",
+     "li": [
+      "The Lookbook | a takeover story, then the shop.",
+      "Colorfest | two weeks of vivids, and on a phone it stops for free hair color advice.",
+      "The Sale | forty-eight hours, thirty percent off sitewide."
+     ]
+    },
+    "Three emails share one chassis": {
+     "t": "The Gloss treats Sally as a publication in the inbox,",
+     "g": "and shares one chassis with two more emails",
+     "pic": "sally-design-system-email-editorial-the-gloss.jpg",
+     "p": [
+      "The punch set dials the chassis up three ways, type, color and charm, and every email ends on the same footer."
+     ],
+     "li": [
+      "The Gloss | a full issue: masthead, pull quotes, and prose around the products.",
+      "Summer vivids | one giant line, and two looks on their own colors.",
+      "The Sale | forty-eight hours, one code, the whole store."
+     ]
+    },
+    "Everything above comes out": {
+     "t": "Everything above comes out of one set of templates,",
+     "g": "and they take seven kinds of brief, from a campaign to a new drop",
+     "pic": "sally-design-system-email-punch-candy.jpg",
+     "li": [
+      "Tokens | every type role and color is a token, so the move to Satoshi changed the tokens and left the layouts alone.",
+      "The ADA review | a teammate's review of the homepage darkened the muted text and set every eyebrow in solid ink or white.",
+      "Split banners | built to stamp a hundred at a time."
+     ],
+     "proof": "The seven briefs run in square, 4:5, 9:16, 16:9 and the 3:1 split banner."
+    },
+    "Each idea becomes a section": {
+     "t": "Each idea becomes a section of a homepage,",
+     "g": "from a $36.99 kit for going platinum to a color code you can crack",
+     "pic": "sally-design-system-homepage-concept-10-the-edit-mobile.jpg",
+     "li": [
+      "The Platinum Kit | on the Lookbook, take a piece out and the price follows.",
+      "The color code | on Colorfest, pick a level, then a tone, and the code builds itself.",
+      "The colorist | answers a photo with a formula, and one tap shops it."
+     ]
+    },
+    "One request fills every channel": {
+     "t": "From one request, the AI brings in the photography, writes the copy and pulls in the products,",
+     "g": "in every shape a channel needs",
+     "pic": "sally-design-system-email-color-blocked-sale.jpg",
+     "li": [
+      "The request form | connects the Marketing OS to the Asset Hub, the product tool and the brand guidelines.",
+      "Create Email | a CRM request on the campaign board becomes an email with one press.",
+      "The Figma plugin | builds the requested emails, the images first and then the copy."
+     ]
+    }
+   },
+   "heads": {
+    "The homepage kit grew out": "The homepage kit grew out of the email system. | Both share the same tokens, the same fonts and the same voice."
+   },
+   "labels": {
+    "Three ideas Ulta and Sephora": "The idea",
+    "One homepage, three kinds": "The homepage",
+    "Three emails share one chassis": "The emails",
+    "Everything above comes out": "The kit",
+    "Each idea becomes a section": "The stories",
+    "One request fills every channel": "The Marketing OS",
+    "The homepage kit grew out": "One stylesheet"
+   },
+   "decks": {
+    "Three ideas Ulta and Sephora": "Nobody knows color like Sally: 8,000+ shades and real chemistry.",
+    "One homepage, three kinds": "The Lookbook opens on a wall of the six shades, Colorfest bills the only-at-Sally brands like a festival lineup, and the sale turns the top of the page red.",
+    "Three emails share one chassis": "Summer vivids sells the drop in big type, and the sale leads with its number.",
+    "Everything above comes out": "The kit is one type family, white paper with scarlet and ink, round corners, five shapes, fourteen email blocks and twenty-one homepage modules.",
+    "Each idea becomes a section": "Every page links to a free licensed colorist, and on Colorfest the chat plays itself.",
+    "One request fills every channel": "Each new email fills a template from a brief, and the templates stay locked, so the kit holds its shape at the volume Sally sends every month."
+   },
+   "lines": {
+    "What took weeks now takes minutes": "drop",
+    "The voice is Sally as the beauty-obsessed": "keep"
+   },
+   "facts": [
+    "Published",
+    "Status",
+    "Tools"
+   ]
+  }
+ }
+}

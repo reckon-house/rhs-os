@@ -1,0 +1,72 @@
+{
+ "k": "nordstrom-personalization",
+ "variants": {
+  "index": {
+   "note": "Flow opens the room: what the system is and what it let merchandisers do, then three chapters that are also the section titles; the phone section keeps its own statement, the millions sit under the homepages, and the closing carries the reach.",
+   "stand": "Nordstrom's personalized homepages were all built on three tile shapes. | Any merchandiser could lay out a page in an afternoon.",
+   "abs": [],
+   "did": [
+    "Design systems",
+    "Art direction",
+    "Product photography direction"
+   ],
+   "didTitle": "Role",
+   "chapters": {
+    "Each tile shape had its own job": {
+     "t": "Each tile shape had its own job,",
+     "g": "and editorial stories, brand modules and merchandised picks all came through them",
+     "pic": "nordstrom-personalization-system-design-beauty-queen-woman-floral-dress-autumn-leaves-boots-watches-bowling-balls-90s-revibe-editorial-lifestyle.jpg",
+     "li": [
+      "Square tiles | carried product.",
+      "Hero tiles | carried photography.",
+      "Vertical tiles | bridged the two."
+     ]
+    },
+    "Every shopper had a homepage": {
+     "t": "Every shopper had a homepage of their own,",
+     "g": "and it couldn't look like a machine had made it",
+     "li": [
+      "The young customer | landed on the Savvy Mag editorial.",
+      "The designer-brand shopper | got Summer to Fall Style.",
+      "The men's shopper | opened on High City Essentials."
+     ]
+    },
+    "Each shot had to work as a hero": {
+     "t": "The same shoe could run in a Saturday editorial story and a Sunday inventory clear-out,",
+     "g": "and look planned in both places",
+     "pic": "nordstrom-personalization-product-pink-chevron-block-heels.jpg",
+     "p": [
+      "Each shot had to work as a hero and as a plain product listing."
+     ],
+     "li": [
+      "Eye level | it stayed consistent from photo to photo.",
+      "Contrast | deliberate, with precise angles.",
+      "The merchandise | came first, with no styling to look at."
+     ]
+    }
+   },
+   "heads": {
+    "The phone homepage used": "The phone homepage used the same pictures as the desktop. | The tiles resized for every screen, so one picture could be used many ways.",
+    "Any merchandiser could": "drop"
+   },
+   "labels": {
+    "Each tile shape had its own job": "Three tile shapes",
+    "Every shopper had a homepage": "Personalized homepages",
+    "The phone homepage used": "On the phone",
+    "Each shot had to work as a hero": "Product photography"
+   },
+   "decks": {
+    "Each tile shape had its own job": "The tiles all drew their pictures from one library.",
+    "Every shopper had a homepage": "The tile rules were strict enough to run for millions of customers, and the pages still came out different from each other.",
+    "The phone homepage used": "Only the arrangement changed: the hero photography and the product cards restacked to fit the smaller screen.",
+    "Each shot had to work as a hero": "Every product sat on white paper, with no props and one shadow throughout."
+   },
+   "lines": {
+    "Nordstrom's campaign sends": "Nordstrom's campaign sends and the long tail of category pages ran on the same tiles as the homepage."
+   },
+   "rest": "drop",
+   "moreTo": "chapters",
+   "facts": []
+  }
+ }
+}

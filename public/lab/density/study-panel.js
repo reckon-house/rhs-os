@@ -633,8 +633,11 @@
      did list, and lets the pictures run. An edit only moves words: it
      drops a line, swaps it for a trim of itself, or folds it. Pictures,
      live pages and stats stay where they are. ?edit=today shows the room
-     as it was with the switch row; no ?edit, the room as it was ── */
-  const EDIT = (() => { const q = (new URLSearchParams(location.search).get("edit") || "").toLowerCase(); return /^(today|trim|fold|index)$/.test(q) ? q : ""; })();
+     as it was with the switch row; ?edit=off, the room as it was. No ?edit
+     is the index edit since 8 Oct 2026 (his "can we push the update that
+     has the intro copy to each case study restyled?"); a study with no
+     edit in edits.js keeps its room as it was ── */
+  const EDIT = (() => { const q = (new URLSearchParams(location.search).get("edit") || "").toLowerCase(); return /^(today|trim|fold|index)$/.test(q) ? q : q === "off" ? "" : "index"; })();
   const EDIT_NAMES = [["today", "Today"], ["trim", "Trim"], ["fold", "Fold"], ["index", "Index"]];
   const editOf = (k) => (EDIT && EDIT !== "today" && window.DENSITY_EDITS && window.DENSITY_EDITS[k] && window.DENSITY_EDITS[k][EDIT]) || null;
   const hasEdits = (k) => !!(window.DENSITY_EDITS && window.DENSITY_EDITS[k]);

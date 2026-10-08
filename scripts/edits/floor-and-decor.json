@@ -1,0 +1,59 @@
+{
+ "k": "floor-and-decor",
+ "variants": {
+  "index": {
+   "note": "Flow opens the room: the Designer of the Quarter award for three bathrooms and their shared materials, then two chapters that are also the section titles (the three rooms, the one moodboard), each opening to three specifics; the hard-surfaces line is the first section's deck and the closing says where the feature ran.",
+   "stand": "Floor & Decor named the studio Designer of the Quarter for three bathrooms. | All three rooms use the same marble, dolomite, white oak and classic tile.",
+   "abs": [],
+   "did": [
+    "Interior design",
+    "Material selection",
+    "Finish coordination"
+   ],
+   "didTitle": "Scope",
+   "chapters": {
+    "The three rooms are urban southwest": {
+     "t": "The three rooms are urban southwest, modern farmhouse and quiet glam,",
+     "g": "and the proportions, fixtures and finishes change from room to room",
+     "p": [
+      "Some of the material combinations looked risky on paper."
+     ],
+     "li": [
+      "Urban southwest | between brick and warm oak, a matte black tub looks softer in person than in a render.",
+      "Modern farmhouse | patterned floor tile under shiplap and a vaulted ceiling feels calmer than it would under flat drywall.",
+      "Quiet glam | large-format veined marble runs the full height of the walls, a brass urchin pendant breaks up all that height, and a star tile grounds the floor."
+     ],
+     "pic": "quiet-glam-primary-bath-veined-marble-brass-urchin-chandelier.jpg"
+    },
+    "Every material in the three bathrooms": {
+     "t": "Every material in the three bathrooms was picked together, on one moodboard,",
+     "g": "so the stone, wood and metal were already proven next to each other",
+     "li": [
+      "Shared | polished nickel and the hex mosaic each turn up in two of the three bathrooms.",
+      "Brass | it ties the two warmer rooms, modern farmhouse and quiet glam, together, and it's the only metal in quiet glam.",
+      "Just one | exposed brick, shiplap and the urchin pendant each appear in one bathroom, and those are what make each room its own."
+     ],
+     "pic": "modern-farmhouse-powder-room-circular-brass-mirror-patterned-hex-floor.jpg"
+    }
+   },
+   "labels": {
+    "The three rooms are urban southwest": "The projects",
+    "Every material in the three bathrooms": "The materials",
+    "Floor & Decor featured the studio": "The feature"
+   },
+   "decks": {
+    "The three rooms are urban southwest": "The focus was hard surfaces, the tile and stone the rest of each room was built around.",
+    "Every material in the three bathrooms": "The moodboard came first, before any room was drawn."
+   },
+   "lines": {
+    "The Designer of the Quarter feature": "The feature came with a video interview."
+   },
+   "rest": "drop",
+   "moreTo": "chapters",
+   "facts": [
+    "Published",
+    "Status"
+   ]
+  }
+ }
+}

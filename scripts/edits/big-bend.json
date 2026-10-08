@@ -1,0 +1,41 @@
+{
+ "k": "big-bend",
+ "variants": {
+  "index": {
+   "note": "Flow opens the room: family trip photographs and the boot campaign that later used some, then one chapter, Prada Marfa, the study's only section; the pull quote goes because the subtitle says it, and the closing keeps only the folder.",
+   "stand": "Photographs from a family trip through Big Bend and the desert around Marfa. | The trip was personal, and Capitan Boot Co. later used a few of the photographs as backdrops in its campaign.",
+   "abs": [
+    "Big Bend is the largest national park in Texas and one of the least visited in the country."
+   ],
+   "did": [
+    "Landscape photography"
+   ],
+   "didTitle": "Role",
+   "chapters": {
+    "Prada Marfa is a fake boutique": {
+     "t": "Prada Marfa is a fake boutique with real Prada shoes,",
+     "g": "sealed in 2005",
+     "p": [
+      "It's on U.S. 90, northwest of Marfa, and the bags on display are from the 2005 season."
+     ],
+     "pic": "prada_crop.jpg"
+    }
+   },
+   "labels": {
+    "Prada Marfa is a fake boutique": "Prada Marfa"
+   },
+   "decks": {
+    "Prada Marfa is a fake boutique": "The artists Elmgreen and Dragset built it as a permanent sculpture."
+   },
+   "lines": {
+    "The photographs came home": "The photographs came home and sat in a folder."
+   },
+   "rest": "drop",
+   "moreTo": "chapters",
+   "facts": [
+    "Published",
+    "Subject"
+   ]
+  }
+ }
+}

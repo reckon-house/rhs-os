@@ -1,0 +1,57 @@
+{
+ "k": "fairview-sitting",
+ "variants": {
+  "index": {
+   "note": "Flow opens the room: a sitting room designed around its stone fireplace wall, for the hour after dinner, then two chapters that are also the section titles (four materials and no accent colors, chairs that swivel to each other or the fire), each opening to three specifics; the closing says what the room is like.",
+   "stand": "The Fairview sitting room, designed around a stacked stone fireplace wall. | It's for the hour after dinner.",
+   "abs": [],
+   "did": [
+    "Interior design",
+    "Furniture curation",
+    "Finish selection"
+   ],
+   "didTitle": "Scope",
+   "chapters": {
+    "The stone is the only material": {
+     "t": "The palette is four materials: stone, velvet, brass and warm oak,",
+     "g": "with no accent colors",
+     "li": [
+      "The stone | ledgestone, and the only material that goes floor to ceiling.",
+      "The oak | underfoot and across the mantel.",
+      "The beams | black box beams overhead."
+     ],
+     "pic": "fairview-sitting-stone-wall-wood-mantel-mirror-brass-candlesticks-leather-tumbler-detail.jpg"
+    },
+    "The chairs swivel, so they can face": {
+     "t": "The four charcoal velvet chairs swivel,",
+     "g": "so they can face each other or the fire",
+     "li": [
+      "Every seat | close enough to feel the fire, whichever way it's turned.",
+      "The coffee table | brass, in the middle of the chairs, where everyone can reach it.",
+      "The bar cabinet | round and black, in the corner behind the chairs."
+     ],
+     "pic": "fairview-sitting-velvet-swivels-rear-view-bar-cabinet-art-conversation-grouping.jpg"
+    }
+   },
+   "labels": {
+    "The stone is the only material": "The materials",
+    "The chairs swivel, so they can face": "The chairs"
+   },
+   "decks": {
+    "The stone is the only material": "The velvet on the chairs has enough sheen to catch the firelight, and the brass is antiqued so it doesn't shine back.",
+    "The chairs swivel, so they can face": "The fire takes the spot where a TV would usually go."
+   },
+   "heads": {
+    "The sitting room is for the hour": "drop"
+   },
+   "lines": {
+    "The stone wall and the sheen on the velvet": "The room is formal, a little glam, and comfortable to sit in."
+   },
+   "rest": "drop",
+   "moreTo": "chapters",
+   "facts": [
+    "Published"
+   ]
+  }
+ }
+}

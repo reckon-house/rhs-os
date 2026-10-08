@@ -1,0 +1,92 @@
+{
+ "k": "black-white-type",
+ "variants": {
+  "index": {
+   "note": "Flow opens the room: what the three lithographs are and the question behind them, then five chapters that are also the section titles (the rules, each print, how the system works); each print's row holds its own fills, the system's row the principles, and the closing ends on the type.",
+   "stand": "Three lithographs made from six repeating patterns, a personal project in black ink on white paper. | The question was how much range a small set of patterns could produce once color, photography and gradients were off the table.",
+   "abs": [
+    "The tiles fill the letterforms, spill outside them, and sit behind them as backgrounds."
+   ],
+   "did": [
+    "Typography Design",
+    "Pattern Design",
+    "Art Direction"
+   ],
+   "didTitle": "Role",
+   "chapters": {
+    "The rules were set before the first print": {
+     "t": "The rules were set before the first print,",
+     "g": "and after that only scale and spacing change",
+     "li": [
+      "The shapes | dots at two scales, lines in three directions and a diamond grid.",
+      "Twelve tiles | each shape is drawn twice, once black on white and once reversed.",
+      "No color | I wanted the shapes and the letterforms to be the focus, so color was never in it."
+     ]
+    },
+    "Every stroke in \"the fancy\"": {
+     "t": "Every stroke in \"the fancy\" gets a different fill,",
+     "g": "and most of the sheet is paper",
+     "p": [
+      "The lettering sits low in the left corner over a fine dot grid, with swashes running off the edge of the sheet."
+     ],
+     "li": [
+      "The 'a' | polka dots fill the bowl.",
+      "The 'F' | the crossbar takes diagonal stripes, and they are easy to miss.",
+      "The 'y' | the descender gets vertical hairlines."
+     ],
+     "pic": "typography-patterns-the-fancy-poster-flat.png"
+    },
+    "The second print, \"highball stepper,\"": {
+     "t": "The second print, \"highball stepper,\" blows the same tiles up,",
+     "g": "and at that size they read a lot bolder",
+     "p": [
+      "Slab capitals stack edge to edge with script threaded between them."
+     ],
+     "li": [
+      "The 'E' | large polka dots fill the capital.",
+      "The 'R' | diagonal stripes run through the slab serif from top to bottom, and the angle gives the whole stack some speed.",
+      "Geometric serifs | sit in among the slabs."
+     ],
+     "pic": "typography-patterns-stepper-poster-bench-lifestyle.jpg"
+    },
+    "Handmade strokes sit next to machine-drawn ones": {
+     "t": "In \"jack white,\" handmade strokes sit next to machine-drawn ones,",
+     "g": "and not all of them get a fill, so the filled ones stand out",
+     "li": [
+      "The calligraphy | runs across the top, thin enough to pass for drawing.",
+      "The 'A' and the 'K' | sit in the lower right, the heaviest shapes on the sheet.",
+      "The dot grid | the most open of the three prints, pinpoints on a wide field."
+     ],
+     "pic": "typography-patterns-white-poster-gate-lifestyle.jpg"
+    },
+    "All three prints use every one": {
+     "t": "All three prints use every one of the six patterns,",
+     "g": "and what changes is how big each one runs and how much of the sheet it covers",
+     "li": [
+      "Ink and paper | each print has its own ratio, and that is most of what separates the sparse print from the packed one.",
+      "Tone | a packed fill looks dark and an open one looks light, and the biggest shape on the sheet is where the eye goes first.",
+      "Weight | in black and white, thick stripes come forward and thin hairlines drop back."
+     ],
+     "proof": "The three prints still don't look like they came from one set of patterns.",
+     "pic": "pattern-swatch-large-dots-grid-black-on-white.jpg"
+    }
+   },
+   "heads": {
+    "The patterns stayed simple so the type": "drop"
+   },
+   "decks": {
+    "The rules were set before the first print": "Each swatch is a tile that repeats in any direction, at any size, and most of the detail in the prints comes from layering them."
+   },
+   "lines": {
+    "The patterns are close to childlike": "The patterns stayed simple so the type could get complicated: Didone serifs, calligraphic swashes, slab capitals with real weight. | Setting one against the other is most of what makes the prints work at wall size.",
+    "There was no client and no deadline": "Once the rules were set, the rest of it was a lot of fun to make."
+   },
+   "rest": "drop",
+   "moreTo": "chapters",
+   "facts": [
+    "Published",
+    "Tools"
+   ]
+  }
+ }
+}

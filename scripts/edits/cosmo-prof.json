@@ -1,0 +1,59 @@
+{
+ "k": "cosmo-prof",
+ "variants": {
+  "index": {
+   "note": "Flow opens on the refresh and its two constraints, then two chapters that are also the section titles, the photography and the homepage (the phone folds into its row); the templates close it.",
+   "stand": "A digital refresh set a new visual direction for Cosmo Prof, the salon supply retailer. | The site had to match the professionals using it, and the new look couldn't slow the store down.",
+   "abs": [
+    "Typography moved to Jost, and the palette put soft neutrals against sharp black."
+   ],
+   "did": [
+    "Creative Direction",
+    "Digital Design",
+    "Photography Direction"
+   ],
+   "didTitle": "Role",
+   "chapters": {
+    "Each frame defined what a good": {
+     "t": "Work started with photography,",
+     "g": "because the old pictures dated the site and no layout was going to fix that",
+     "li": [
+      "Lighting | high contrast, with defined shadows.",
+      "The frame | cleaner compositions, each one defining what a good Cosmo Prof picture looks like.",
+      "One source | every template pulls its pictures from the photo library."
+     ]
+    },
+    "The homepage sorts its recommendations": {
+     "t": "The homepage sorts its recommendations for whoever is logged in,",
+     "g": "so a stylist finds what they buy first",
+     "li": [
+      "Above the fold | the top of the page goes to the seasonal launch.",
+      "The header | cut back so the content gets the screen.",
+      "On the phone | the tabs become swipes, the launch image crops to a vertical frame that keeps the product, and the catalog drops to one column."
+     ]
+    }
+   },
+   "labels": {
+    "Each frame defined what a good": "Photography",
+    "The homepage sorts its recommendations": "Homepage",
+    "The templates set photography": "Templates"
+   },
+   "decks": {
+    "Each frame defined what a good": "Every photo is composed to read at thumbnail size and still hold up edge to edge.",
+    "The homepage sorts its recommendations": "The shoppable video has the products from each look a tab away, and you can buy from it while it plays."
+   },
+   "heads": {
+    "On the phone,": "drop"
+   },
+   "lines": {
+    "A promotion, a brand campaign": "keep"
+   },
+   "rest": "drop",
+   "moreTo": "chapters",
+   "facts": [
+    "Published",
+    "Tools"
+   ]
+  }
+ }
+}
