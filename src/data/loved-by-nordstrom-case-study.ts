@@ -283,11 +283,11 @@ export const lovedByNordstromCaseStudy: CaseStudy = {
       transparent: true,
       aspect: "aspect-[3/4]",
       left: {
-        src: `${IMG}/loved-by-nordstrom-large-tibi-portrait-campaign-tile.jpg`,
+        src: `${IMG}/loved-by-nordstrom-large-tibi-portrait-campaign-tile-sans.jpg`,
         alt: "Loved by Nordstrom large format tile featuring TIBI, profile portrait with feathered detail",
       },
       right: {
-        src: `${IMG}/loved-by-nordstrom-large-tibi-fur-coat-campaign-tile.jpg`,
+        src: `${IMG}/loved-by-nordstrom-large-tibi-fur-coat-campaign-tile-sans.jpg`,
         alt: "Loved by Nordstrom large format tile featuring TIBI faux fur coat on white door",
       },
     },

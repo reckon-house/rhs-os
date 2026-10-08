@@ -255,6 +255,21 @@ export const cosmoProfCaseStudy: CaseStudy = {
       },
     },
 
+    // A stand-in phone screen (8 Oct 2026, his "let's do it!" to "Want a
+    // stand-in phone screen for Cosmo Prof's homepage, with the vertical crop
+    // and the one-column catalog? It would be my mockup of your design,
+    // labeled as one."). Built from the homepage comps and the study's own
+    // product photography; the alt says it is a stand-in.
+    {
+      id: "mobile-stand-in",
+      type: "image",
+      aspect: "native",
+      maxWidth: 558,
+      noRadius: true,
+      src: `${IMG}/cosmo-prof-ui-website-homepage-mobile-stand-in.png`,
+      alt: "A stand-in made from the homepage comps: the launch image cropped to a vertical frame that keeps the product, the tabs as a swipe row, and the catalog in one column",
+    },
+
     // ════════════════════════════════════════
     // SECTION 05 — MARKS & MATERIALS
     // ════════════════════════════════════════

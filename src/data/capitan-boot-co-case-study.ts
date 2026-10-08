@@ -50,7 +50,7 @@ export const capitanBootCoCaseStudy: CaseStudy = {
         { label: "Angle", value: "Marks and photographs by the same person, shot in the landscape the boots are made for." },
       ],
       abstract:
-        "Capitan Boot Co. makes Western boots and needed a brand that could take as much wear as they do. Stamps blur and embossing flattens out, so every mark had to survive both and still read, on a hangtag or across a banner.\n\nCapitan's identity is a primary logo, secondary badges, typographic lockups, and a set of illustrations. Northwest Regular and Oldman Regular are the type pairing, and the bull skull lockup is drawn on a geometric grid. Every piece of the identity works stamped, stitched, embroidered, or printed.\n\nCapitan's campaign uses photographs from a family trip to Big Bend, and nothing was shot for it.",
+        "Capitan Boot Co. makes Western boots and needed a brand that could take as much wear as they do. Stamps blur and embossing flattens out, so every mark had to survive both and still read, on a hangtag or across a banner.\n\nCapitan's identity is a primary logo, secondary badges, typographic lockups, and a set of illustrations. Northwest Regular and Oldman Regular are the type pairing, and the bull skull lockup is drawn on a geometric grid. Every piece of the identity works stamped, stitched, embroidered, or printed.\n\nCapitan's campaign came after the marks, using photographs from a family trip to Big Bend, and nothing was shot for it.",
     },
 
         // ── HERO ──

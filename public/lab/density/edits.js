@@ -394,7 +394,8 @@ window.DENSITY_EDITS = {
      "g": "the landscape the boots are made for",
      "li": [
       "The places | mesa country, river bottom, and grassland at last light.",
-      "The lockups | they sit right on top of the photographs."
+      "The lockups | they sit right on top of the photographs.",
+      "When | the campaign came after the marks."
      ]
     },
     "The same person drew the marks": {
@@ -523,7 +524,7 @@ window.DENSITY_EDITS = {
      "li": [
       "Above the fold | the top of the page goes to the seasonal launch.",
       "The header | cut back so the content gets the screen.",
-      "On the phone | the recommendation tabs become swipes."
+      "On the phone | the tabs become swipes, the launch image crops to a vertical frame that keeps the product, and the catalog drops to one column."
      ]
     }
    },
@@ -1527,7 +1528,7 @@ window.DENSITY_EDITS = {
     "The Loved by Nordstrom hero slots": {
      "t": "Liked and Loved used the same icon and typography,",
      "g": "so the merchandising team could raise or lower a brand's priority without touching the design",
-     "pic": "loved-by-nordstrom-large-tibi-fur-coat-campaign-tile.jpg",
+     "pic": "loved-by-nordstrom-large-tibi-fur-coat-campaign-tile-sans.jpg",
      "li": [
       "Liked | sat on the smaller tiles, for day-to-day merchandising.",
       "Loved | larger crops and tighter compositions than the Liked tiles.",

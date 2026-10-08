@@ -2275,11 +2275,15 @@
              them up stacked vs alternating"); it takes no turn from the rest */
           const air = ps.length === 1 && solo(ps[0]) ? "l" : AIR[airSide++ % AIR.length];
           /* a single picture keeps its own words as a caption, under it,
-             or beside it when the picture leaves room on one side */
+             or beside it when the picture leaves room on one side. A
+             picture can also carry a `cap` of its own, which captions its
+             row even when it shares it (8 Oct 2026: Cosmo Prof's stand-in
+             phone says it is a stand-in) */
           let one = null, cap = null;
-          if (ps.length === 1 && ps[0].alt) {
+          const words = ps.length === 1 ? ps[0].cap || ps[0].alt : ps.filter((f) => f.cap).map((f) => f.cap).join(" ");
+          if (words) {
             one = el("div", "sp-one"); one.appendChild(row);
-            cap = el("p", "sp-cap", '<span class="sp-fno">' + two(++figNo) + "</span>" + esc(ps[0].alt)); one.appendChild(cap);
+            cap = el("p", "sp-cap", '<span class="sp-fno">' + two(++figNo) + "</span>" + esc(words)); one.appendChild(cap);
             wrap.appendChild(one);
           } else wrap.appendChild(row);
           P.rows.push({ row, ps, air, one, cap });

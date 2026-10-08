@@ -167,19 +167,21 @@ export const floorAndDecorCaseStudy: CaseStudy = {
         "Some of the material combinations looked risky on paper. In the urban southwest bath, a matte black tub between brick and warm oak looks softer in person than in a render. The modern farmhouse bath's patterned floor tile, under shiplap and a vaulted ceiling, feels calmer than it would under flat drywall.",
     },
 
-    // ── Urban Southwest shower details — first 2-up. Holds, so the quiet
-    // glam room has a still screen to climb.
+    // ── Shower details — first 2-up. The files say urban southwest, but
+    // they are the Hill Country primary bath's shower, one of the baths the
+    // feature showed (his answers, 8 Oct 2026). Holds, so the quiet glam
+    // room has a still screen to climb.
     {
       id: "urban-southwest-shower",
       type: "dual-image",
       native: true,
       left: {
         src: `${IMG}/urban-southwest-marble-shower-vertical-stacked-tile-niche-bench.jpg`,
-        alt: "Urban southwest marble shower with vertical stacked tile, recessed niche with hexagon detail, marble bench, and clerestory window",
+        alt: "Hill Country primary bath marble shower with vertical stacked tile, recessed niche with hexagon detail, marble bench, and clerestory window",
       },
       right: {
         src: `${IMG}/urban-southwest-marble-shower-running-bond-handheld-nickel-fixture.jpg`,
-        alt: "Urban southwest marble shower with horizontal running bond tile, handheld polished nickel fixture, and marble bench",
+        alt: "Hill Country primary bath marble shower with horizontal running bond tile, handheld polished nickel fixture, and marble bench",
       },
       pressing: { choreo: { pin: true } },
     },
