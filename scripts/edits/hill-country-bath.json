@@ -2,8 +2,8 @@
  "k": "hill-country-bath",
  "variants": {
   "index": {
-   "note": "Flow opens the room: a primary bath designed softer than the kitchen, then three chapters that are also the section titles (the vanities, the three marbles, the found pieces), each opening to three specifics; the closing is the morning and the kitchen two rooms away.",
-   "stand": "A primary bath in the Hill Country house, designed softer than the kitchen. | It has two vanities, a freestanding tub under the window and a marble shower with a bench.",
+   "note": "Flow opens the room: a 400-square-foot primary bath in the same house as the kitchen, then three chapters that are also the section titles (the vanities, the three marbles, the antique valet stand and the old painting), each opening to three specifics; the closing is the morning.",
+   "stand": "The primary bath is 400 square feet, in the same Hill Country house as the kitchen. | It has two vanities, a freestanding tub under the window and a marble shower with a bench.",
    "abs": [],
    "did": [
     "Interior design",
@@ -25,25 +25,26 @@
     },
     "Picking the marble took the longest": {
      "t": "Three marbles were picked to go together,",
-     "g": "which keeps 400 square feet of hard surface from looking like a showroom",
+     "g": "which keeps the hard surface from looking like a showroom",
      "p": [
       "Picking the marble took the longest."
      ],
      "li": [
       "The counters | Calacatta that runs warm with gold and brown veining.",
-      "The shower walls | a cooler, grayer slab, with the bench cut from the same slab and bookmatched at the corner.",
+      "The shower walls | cooler, with gray movement.",
       "The shower floor | a hex mosaic for grip that splits the difference, and the same hex tile lines the recessed niche."
      ],
      "pic": "hill-country-bath-shower-niche-hex-tile-bench.jpg"
     },
     "None of the bath's pieces came from one vendor": {
-     "t": "None of the bath's pieces came from one vendor or was ordered to spec,",
+     "t": "The valet stand came from an antique shop and the painting is older than the house,",
      "g": "so the room looked lived in the day it was finished",
      "li": [
-      "His vanity | an antique mirror and a brass valet stand from an antique shop.",
-      "The painting | older than the house.",
-      "The rugs | vintage and layered, with one fraying at an edge."
+      "His vanity | an antique mirror.",
+      "The rugs | vintage and layered, with one fraying at an edge.",
+      "The owners' own | the denim jacket on the valet stand and the olive tree leaning toward the window."
      ],
+     "proof": "Nobody straightened the bath up for the pictures.",
      "pic": "hill-country-bath-his-vanity-valet-stand-antique-mirror.jpg"
     }
    },
@@ -55,13 +56,13 @@
    "decks": {
     "Her vanity faces the east windows": "Her vanity faces the east windows and catches the morning sun.",
     "Picking the marble took the longest": "The stones had to be close without matching: enough distance that the room didn't go flat, and not so much that the changes jarred.",
-    "None of the bath's pieces came from one vendor": "They're the owners' own, and nobody straightened up for the pictures."
+    "None of the bath's pieces came from one vendor": "None of the bath's pieces came from one vendor or was ordered to spec."
    },
    "heads": {
     "This is the room you are in before the day starts": "drop"
    },
    "lines": {
-    "The shiplap walls and the wood ceiling": "This is the room you are in before the day starts. | Two rooms from this bath, the kitchen is set up for a crowd."
+    "The shiplap walls and the wood ceiling": "This is the room you are in before the day starts."
    },
    "rest": "drop",
    "moreTo": "chapters",

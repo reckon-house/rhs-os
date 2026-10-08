@@ -10,7 +10,8 @@
    "did": [
     "Creative Direction",
     "Digital Design",
-    "Photography Direction"
+    "Photography Direction",
+    "Ecommerce Design"
    ],
    "didTitle": "Role",
    "chapters": {
@@ -29,7 +30,7 @@
      "li": [
       "Above the fold | the top of the page goes to the seasonal launch.",
       "The header | cut back so the content gets the screen.",
-      "On the phone | the tabs become swipes, the launch image crops to a vertical frame that keeps the product, and the catalog drops to one column."
+      "On the phone | the recommendation tabs become swipes."
      ]
     }
    },
@@ -40,7 +41,7 @@
    },
    "decks": {
     "Each frame defined what a good": "Every photo is composed to read at thumbnail size and still hold up edge to edge.",
-    "The homepage sorts its recommendations": "The shoppable video has the products from each look a tab away, and you can buy from it while it plays."
+    "The homepage sorts its recommendations": "The shoppable video has the products from each look a tab away, and the catalog is still right there under it."
    },
    "heads": {
     "On the phone,": "drop"

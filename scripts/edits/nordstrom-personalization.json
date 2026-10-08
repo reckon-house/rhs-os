@@ -2,13 +2,14 @@
  "k": "nordstrom-personalization",
  "variants": {
   "index": {
-   "note": "Flow opens the room: what the system is and what it let merchandisers do, then three chapters that are also the section titles; the phone section keeps its own statement, the millions sit under the homepages, and the closing carries the reach.",
+   "note": "Flow opens the room: what the system is and what it let merchandisers do, then three chapters that are also the section titles; the first section's line names each tile's job, the phone section keeps its own statement, the millions sit under the homepages, and the closing carries the reach.",
    "stand": "Nordstrom's personalized homepages were all built on three tile shapes. | Any merchandiser could lay out a page in an afternoon.",
    "abs": [],
    "did": [
     "Design systems",
     "Art direction",
-    "Product photography direction"
+    "Product photography direction",
+    "Ecommerce design"
    ],
    "didTitle": "Role",
    "chapters": {
@@ -16,10 +17,8 @@
      "t": "Each tile shape had its own job,",
      "g": "and editorial stories, brand modules and merchandised picks all came through them",
      "pic": "nordstrom-personalization-system-design-beauty-queen-woman-floral-dress-autumn-leaves-boots-watches-bowling-balls-90s-revibe-editorial-lifestyle.jpg",
-     "li": [
-      "Square tiles | carried product.",
-      "Hero tiles | carried photography.",
-      "Vertical tiles | bridged the two."
+     "p": [
+      "The tiles all drew their pictures from one library."
      ]
     },
     "Every shopper had a homepage": {
@@ -46,7 +45,7 @@
     }
    },
    "heads": {
-    "The phone homepage used": "The phone homepage used the same pictures as the desktop. | The tiles resized for every screen, so one picture could be used many ways.",
+    "The phone homepage used": "The tiles resized for every screen, | so the phone homepage used the same pictures as the desktop.",
     "Any merchandiser could": "drop"
    },
    "labels": {
@@ -56,10 +55,10 @@
     "Each shot had to work as a hero": "Product photography"
    },
    "decks": {
-    "Each tile shape had its own job": "The tiles all drew their pictures from one library.",
+    "Each tile shape had its own job": "Square tiles carried product, hero tiles carried photography, and vertical tiles bridged the two.",
     "Every shopper had a homepage": "The tile rules were strict enough to run for millions of customers, and the pages still came out different from each other.",
     "The phone homepage used": "Only the arrangement changed: the hero photography and the product cards restacked to fit the smaller screen.",
-    "Each shot had to work as a hero": "Every product sat on white paper, with no props and one shadow throughout."
+    "Each shot had to work as a hero": "Every product sat on a white background, with no props and one shadow throughout."
    },
    "lines": {
     "Nordstrom's campaign sends": "Nordstrom's campaign sends and the long tail of category pages ran on the same tiles as the homepage."

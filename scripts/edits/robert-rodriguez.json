@@ -2,7 +2,7 @@
  "k": "robert-rodriguez",
  "variants": {
   "index": {
-   "note": "Flow opens on what the campaign was and its one-day shoot, then three chapters that are also the section titles: the double exposure, the system it ran on, and the type; the gradients close it.",
+   "note": "Flow opens on what the campaign was and its one-day shoot, then three chapters that are also the section titles: the double exposure, the system it ran on, and the type; the Glamour Shots quote he kept on 1 Oct stays, and the gradients close it.",
    "stand": "The Robert Rodriguez spring campaign for Neiman Marcus was shot in one day and ran across social, email, the stores and editorial. | It mixes ’80s mall glam with high fashion.",
    "abs": [],
    "did": [
@@ -14,10 +14,10 @@
    "didTitle": "Role",
    "chapters": {
     "One model and four setups stretched into": {
-     "t": "Two frames from the same shoot were layered as a double exposure,",
-     "g": "making a third picture neither frame had on its own",
+     "t": "Two frames from the same shoot, one tight and one wide, were layered as a double exposure,",
+     "g": "so the overlap made a third picture neither frame had on its own",
      "p": [
-      "Neiman Marcus wanted the campaign to feel current and still keep the brand's romantic side."
+      "Neiman Marcus wanted the Robert Rodriguez campaign to feel current and still keep the brand's romantic side."
      ],
      "li": [
       "The reference | Glamour Shots and the other mall portrait studios, with their oversaturated close-ups, soft-focus backgrounds and a fan going somewhere off camera.",
@@ -60,7 +60,8 @@
     "Every color field was drawn": "drop"
    },
    "lines": {
-    "The gradients scale to any size": "Every color field was drawn as a gradient, | so a three-foot print is as smooth as a phone screen."
+    "Glamour Shots, rebuilt for Neiman Marcus": "keep",
+    "The gradients scale to any size": "Every color field was drawn as a gradient that scales to any size, | so a three-foot print is as smooth as a phone screen."
    },
    "rest": "drop",
    "moreTo": "chapters",

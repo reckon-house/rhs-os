@@ -2,8 +2,8 @@
  "k": "floor-and-decor",
  "variants": {
   "index": {
-   "note": "Flow opens the room: the Designer of the Quarter award for three bathrooms and their shared materials, then two chapters that are also the section titles (the three rooms, the one moodboard), each opening to three specifics; the hard-surfaces line is the first section's deck and the closing says where the feature ran.",
-   "stand": "Floor & Decor named the studio Designer of the Quarter for three bathrooms. | All three rooms use the same marble, dolomite, white oak and classic tile.",
+   "note": "Flow opens the room: the Designer of the Quarter award for three bathrooms and the four materials every project pulled from, then two chapters that are also the section titles (the three rooms, the one moodboard), each opening to its specifics; the hard-surfaces line is the first section's deck and the closing says where the feature ran.",
+   "stand": "Floor & Decor named the studio Designer of the Quarter for three bathrooms. | Marble, dolomite, white oak and classic tile were the four materials every project pulled from.",
    "abs": [],
    "did": [
     "Interior design",
@@ -26,12 +26,11 @@
      "pic": "quiet-glam-primary-bath-veined-marble-brass-urchin-chandelier.jpg"
     },
     "Every material in the three bathrooms": {
-     "t": "Every material in the three bathrooms was picked together, on one moodboard,",
+     "t": "Every material was picked together, on one moodboard,",
      "g": "so the stone, wood and metal were already proven next to each other",
      "li": [
-      "Shared | polished nickel and the hex mosaic each turn up in two of the three bathrooms.",
       "Brass | it ties the two warmer rooms, modern farmhouse and quiet glam, together, and it's the only metal in quiet glam.",
-      "Just one | exposed brick, shiplap and the urchin pendant each appear in one bathroom, and those are what make each room its own."
+      "Just one | exposed brick and the urchin pendant each appear in one bathroom."
      ],
      "pic": "modern-farmhouse-powder-room-circular-brass-mirror-patterned-hex-floor.jpg"
     }

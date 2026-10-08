@@ -2,8 +2,8 @@
  "k": "you-by-sally",
  "variants": {
   "index": {
-   "note": "Flow opens on what the campaign had to do for Sally Beauty's hair color line, then two chapters that are also the section titles, the cast and the swatches; where it ran closes it.",
-   "stand": "A brand campaign for You By Sally, Sally Beauty's hair color line, had to make it something you'd choose on purpose. | Hair color usually sits on a drugstore shelf under fluorescent lights.",
+   "note": "Flow opens on what the campaign was for Sally Beauty and what the brief asked, then two chapters that are also the section titles, the cast and the swatches; the brand kit closes it.",
+   "stand": "You By Sally was a brand campaign for Sally Beauty. | Hair color usually sits on a drugstore shelf under fluorescent lights, and the brief was to make it something you'd choose on purpose.",
    "abs": [],
    "did": [
     "Campaign Direction",
@@ -18,14 +18,14 @@
      "g": "and everything else came from their portraits",
      "li": [
       "The range | the cast runs across age, gender and style.",
-      "The portraits | each one has a saturated background and confident styling.",
+      "The portraits | each one has confident styling.",
       "The product | comes second to the person in the frame."
      ],
      "pic": "bios.jpg"
     },
     "The chips on the back of a hair color box": {
      "t": "Oversized swatches let you pick a shade by eye,",
-     "g": "because the chips on the back of the box are too small",
+     "g": "because the chips on the back of a hair color box are too small",
      "li": [
       "Every size | the blocks keep their order.",
       "The channels | influencer bio pages, email and the store signs, all on the same grid.",
@@ -36,7 +36,7 @@
    "labels": {
     "Each person in the campaign is paired": "The cast",
     "The chips on the back of a hair color box": "The swatches",
-    "If you picked a shade at Sally Beauty": "Where it ran"
+    "If you picked a shade at Sally Beauty": "The brand kit"
    },
    "decks": {
     "Each person in the campaign is paired": "Each person is paired with the shade that suits them.",

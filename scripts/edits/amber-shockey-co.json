@@ -2,7 +2,7 @@
  "k": "amber-shockey-co",
  "variants": {
   "index": {
-   "note": "Flow opens the room: what Amber Shockey & Co. makes and what these patterns are, then three chapters, one per collection, that are also the section titles; each opens to its motif and how it pairs, and the closing says how any two share a table.",
+   "note": "Flow opens the room: what Amber Shockey & Co. makes and what these patterns are, then three chapters, one per collection, that are also the section titles; each opens to its motif and how it pairs, black linework carries a plain line, and the closing keeps its head so its marks don't land under red dragons.",
    "abs": [
     "Amber Shockey & Co. is a startup, and every new collection has to sit next to the ones before it.",
     "Each collection sets something structured against something organic, with a hero pattern, a secondary, and an accent. They run in several colorways, so the same set can go minimal or maximal depending on what it's paired with."
@@ -16,10 +16,10 @@
    "chapters": {
     "The blue florals collection": {
      "t": "The blue florals collection layers pattern on pattern,",
-     "g": "and a single plate still works on its own",
+     "g": "more than the other two",
      "li": [
-      "The peony | the biggest of the four motifs, set over a geometric grid.",
-      "Two sizes | it looks like wallpaper when the pattern runs large, and like a single bloom on a plate.",
+      "The peony | the biggest motif, and it looks like wallpaper when the pattern runs large.",
+      "On the plate | a peony border around a geometric center.",
       "With black linework | blue florals go with it when the table needs some structure."
      ],
      "pic": "amber-shockey-co-blue-florals-peony-wallpaper-pattern-field.jpg"
@@ -28,8 +28,8 @@
      "t": "Black linework is the simplest of the three,",
      "g": "and it can be the setting under blue florals or red dragons",
      "li": [
-      "No florals | the only collection without them: geometric grids and halftone dots on charcoal.",
-      "The halftone dot | the plainest of the four motifs, density made from dots.",
+      "No florals | the only collection without them.",
+      "The halftone dot | the plainest motif, density made from dots.",
       "The ground | flat and graphic, so either one keeps its color on top of it."
      ],
      "pic": "amber-shockey-co-black-linework-geometric-plates-marble-surface-collection-mockup.jpg"
@@ -44,11 +44,11 @@
      "pic": "amber-shockey-co-red-dragons-plates-stacked-on-dragon-pattern-collection-mockup.jpg"
     }
    },
-   "heads": {
-    "Any two collections can go on the same table.": "drop"
+   "decks": {
+    "Black linework is the simplest": "The black linework patterns are geometric grids and halftone dots on charcoal."
    },
    "lines": {
-    "A buyer can start with one accent dish": "Any two collections can go on the same table. | A buyer can start with one accent dish in cobalt and add a full red-dragons setting two seasons later, and the two sit together because both run on cream."
+    "A buyer can start with one accent dish": "keep"
    },
    "rest": "drop",
    "moreTo": "chapters",

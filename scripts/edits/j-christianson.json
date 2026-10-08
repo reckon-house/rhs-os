@@ -2,10 +2,10 @@
  "k": "j-christianson",
  "variants": {
   "index": {
-   "note": "Flow opens the room: what the identity is and the range it was drawn for, then two chapters that are also the section titles (the tree, the mark), each opening to its specifics; the closing says the name, mark and tree were decided once.",
+   "note": "Flow opens the room: what the identity is and the range it was drawn for, then two chapters that are also the section titles (the tree graphic and where it went, the mark), each with a plain line under its title; the closing says the name, mark and tree were decided once.",
    "stand": "A brand identity for J. Christianson, a fashion and home goods label, built from the name outward. | The whole identity was drawn to fit a billboard and a candle label.",
    "abs": [
-    "The brand started from nothing: the name first, then the mark, the palette, the type, and the product graphics. Its colors are mid-century earth tones."
+    "J. Christianson's colors are mid-century earth tones."
    ],
    "did": [
     "Brand Development",
@@ -17,12 +17,10 @@
    "didTitle": "Role",
    "chapters": {
     "The tree's branches run past the edge": {
-     "t": "One tree drawing, run in four seasonal colorways, covers the whole line,",
-     "g": "from apparel and candles to hangtags and print",
-     "li": [
-      "The silhouette | white, with the branches running past the edge of the stripes.",
-      "Four seasons | teal and dark green, yellow and gold, orange and rust, and brown and earth tones.",
-      "Unchanged | the tree and the stripes stay the same in all four."
+     "t": "The tree graphic is a white silhouette over the brand's stripe pattern,",
+     "g": "and it went on apparel, hangtags and print",
+     "p": [
+      "The tree's branches run past the edge of the stripes."
      ]
     },
     "The same four circles run on": {
@@ -30,13 +28,16 @@
      "g": "so it can go more places without being redrawn",
      "li": [
       "The drawing | four circles in a tight grid, with no outline.",
-      "Each season | a different color, and the mark can still be recognized.",
-      "The dot grid | the pattern keeps the yellow, orange, red, and teal circles in the bottom-right cluster, and the rest are brown in one version and olive in the other."
+      "The dot grid | the pattern keeps the yellow, orange, red, and teal circles in one cluster, and the rest are brown in one version and olive in the other."
      ]
     }
    },
    "heads": {
     "The whole identity was drawn to fit": "drop"
+   },
+   "decks": {
+    "The tree's branches run past the edge": "Each season gets its own colorway: teal and dark green, yellow and gold, orange and rust, and brown and earth tones.",
+    "The same four circles run on": "The same four circles run on a hangtag and a storefront sign."
    },
    "lines": {
     "The name, the mark and the tree were decided once": "keep"

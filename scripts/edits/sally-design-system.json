@@ -34,7 +34,7 @@
      "pic": "sally-design-system-homepage-concept-6-pride-takeover-mobile.jpg",
      "li": [
       "The Lookbook | a takeover story, then the shop.",
-      "Colorfest | two weeks of vivids, and on a phone it stops for free hair color advice.",
+      "Colorfest | two weeks of vivids.",
       "The Sale | forty-eight hours, thirty percent off sitewide."
      ]
     },
@@ -43,7 +43,7 @@
      "g": "and shares one chassis with two more emails",
      "pic": "sally-design-system-email-editorial-the-gloss.jpg",
      "p": [
-      "The punch set dials the chassis up three ways, type, color and charm, and every email ends on the same footer."
+      "Every email ends on the same footer."
      ],
      "li": [
       "The Gloss | a full issue: masthead, pull quotes, and prose around the products.",
@@ -52,8 +52,8 @@
      ]
     },
     "Everything above comes out": {
-     "t": "Everything above comes out of one set of templates,",
-     "g": "and they take seven kinds of brief, from a campaign to a new drop",
+     "t": "The homepages and emails come out of one kit,",
+     "g": "and its templates take seven kinds of brief, from a campaign to a new drop",
      "pic": "sally-design-system-email-punch-candy.jpg",
      "li": [
       "Tokens | every type role and color is a token, so the move to Satoshi changed the tokens and left the layouts alone.",
@@ -64,7 +64,7 @@
     },
     "Each idea becomes a section": {
      "t": "Each idea becomes a section of a homepage,",
-     "g": "from a $36.99 kit for going platinum to a color code you can crack",
+     "g": "from a kit for going platinum to a color code you can crack",
      "pic": "sally-design-system-homepage-concept-10-the-edit-mobile.jpg",
      "li": [
       "The Platinum Kit | on the Lookbook, take a piece out and the price follows.",
@@ -99,7 +99,7 @@
     "Three ideas Ulta and Sephora": "Nobody knows color like Sally: 8,000+ shades and real chemistry.",
     "One homepage, three kinds": "The Lookbook opens on a wall of the six shades, Colorfest bills the only-at-Sally brands like a festival lineup, and the sale turns the top of the page red.",
     "Three emails share one chassis": "Summer vivids sells the drop in big type, and the sale leads with its number.",
-    "Everything above comes out": "The kit is one type family, white paper with scarlet and ink, round corners, five shapes, fourteen email blocks and twenty-one homepage modules.",
+    "Everything above comes out": "One type family, white paper with scarlet and ink, round corners, five shapes, fourteen email blocks and twenty-one homepage modules.",
     "Each idea becomes a section": "Every page links to a free licensed colorist, and on Colorfest the chat plays itself.",
     "One request fills every channel": "Each new email fills a template from a brief, and the templates stay locked, so the kit holds its shape at the volume Sally sends every month."
    },
@@ -109,8 +109,7 @@
    },
    "facts": [
     "Published",
-    "Status",
-    "Tools"
+    "Status"
    ]
   }
  }

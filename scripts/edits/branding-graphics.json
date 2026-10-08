@@ -2,7 +2,7 @@
  "k": "branding-graphics",
  "variants": {
   "index": {
-   "note": "Flow opens the room: what the collection is and who it was for, then four chapters that are also the four section titles (posters, covers, the storefront, the logos); each opens to its specifics, and the sections are label, title and pictures.",
+   "note": "Flow opens the room: what the collection is and who it was for, then four chapters that are also the four section titles (posters, covers, the storefront, the logos); each opens to its specifics, the covers and the storefront carry a plain line, and the closing keeps its head so its posters don't land under the logos.",
    "stand": "Here are album covers, posters, art prints, logos, and one storefront window, made over about ten years for musicians, friends, and a handful of brands. | Each one has its own look, made to fit that client.",
    "abs": [
     "Most of the work was done in Photoshop, Illustrator, and InDesign, with a film camera for the photography, and hand-drawn type where a piece called for it."
@@ -36,13 +36,12 @@
      ]
     },
     "The storefront photograph was shot on film": {
-     "t": "A 4x6 film photograph fills a storefront window,",
-     "g": "blown up to street size",
+     "t": "Bokeh's Fall started as a 4x6 of defocused lights,",
+     "g": "and was blown up to fill a storefront window",
      "li": [
-      "The photograph | Bokeh's Fall, defocused lights, orange and pink on black.",
+      "The photograph | shot on film, orange and pink on black.",
       "The type | set over it for the window."
-     ],
-     "proof": "The original print of Bokeh's Fall is below the window."
+     ]
     },
     "Each of the five logos": {
      "t": "Five logos went to five clients,",
@@ -54,17 +53,18 @@
      ]
     }
    },
-   "heads": {
-    "This collection is still growing.": "drop"
-   },
    "labels": {
     "Double-exposed landscapes": "Posters and prints",
     "Every sleeve had to read": "Album covers",
     "The storefront photograph was shot on film": "Storefront",
     "Each of the five logos": "Logos"
    },
+   "decks": {
+    "Every sleeve had to read": "Nothing carries over from one sleeve to the next.",
+    "The storefront photograph was shot on film": "The original print is below."
+   },
    "lines": {
-    "The pieces here are a mix of personal": "The pieces here are a mix of personal and deadline projects, including album sleeves nobody asked for and logos for friends starting things. | This collection is still growing."
+    "The pieces here are a mix of personal": "keep"
    },
    "rest": "drop",
    "moreTo": "chapters",

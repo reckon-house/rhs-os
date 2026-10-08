@@ -2,7 +2,7 @@
  "k": "capitan-boot-co",
  "variants": {
   "index": {
-   "note": "Flow opens the room: what the identity is and why it had to be tough, then two chapters that are also the section titles (the marks, West Texas); the closing keeps its head, the same person drew the marks and shot the photographs, and ends on the scuffed boot.",
+   "note": "Flow opens the room: what the identity is and why it had to be tough, then two chapters that are also the section titles, the campaign pictures from Big Bend and then the marks; the empty marks head is dropped and its chapter keys on the closing section, where the marks' pictures land, and the room ends on the scuffed boot.",
    "stand": "Brand identity for Capitan Boot Co., a Western boot maker: logo, type, badges, apparel graphics, and campaign photography. | Capitan needed a brand that could take as much wear as its boots.",
    "abs": [],
    "did": [
@@ -13,26 +13,35 @@
    ],
    "didTitle": "Role",
    "chapters": {
-    "The buffalo was drawn as a stamp": {
-     "t": "The buffalo was drawn as a stamp first and an illustration second,",
-     "g": "since stamps blur and embossing flattens out",
-     "li": [
-      "The bull skull | the lockup is drawn on a geometric grid, so the proportions stay put from a thumbnail stamp up to a banner.",
-      "The type | Northwest Regular and Oldman Regular, where Northwest carries the size and Oldman carries the character.",
-      "Hangtag size | the buffalo logo and the vintage badge, shown small, closer to the size they'd be on a hangtag."
-     ],
-     "proof": "Every color, typeface, and lockup was tested the way it would be produced before it went into the brand.",
-     "pic": "capitan-boot-co-western-original-logo-design-buffalo-bison-diamond-badge-mountain-desert-landscape-branding.jpg"
-    },
     "The campaign was shot on location": {
-     "t": "The campaign was shot on location in Big Bend,",
+     "t": "The campaign pictures come from Big Bend,",
      "g": "the landscape the boots are made for",
      "li": [
       "The places | mesa country, river bottom, and grassland at last light.",
       "As found | no props or stand-ins, and no styling added to what was already there.",
       "The lockups | they sit right on top of the photographs, so each frame had to leave room for them."
      ]
+    },
+    "The same person drew the marks": {
+     "t": "The buffalo was drawn as a stamp first and an illustration second,",
+     "g": "since stamps blur and embossing flattens out",
+     "li": [
+      "The bull skull | the lockup is drawn on a geometric grid, so the proportions stay put from a thumbnail stamp up to a banner.",
+      "The type | Northwest Regular and Oldman Regular, where Northwest carries the size and Oldman carries the character.",
+      "Small | the buffalo logo and the vintage badge, closer to the size they'd be on a hangtag."
+     ],
+     "proof": "Every color, typeface, and lockup was tested the way it would be produced before it went into the brand.",
+     "pic": "capitan-boot-co-western-original-logo-design-buffalo-bison-diamond-badge-mountain-desert-landscape-branding.jpg"
     }
+   },
+   "heads": {
+    "The buffalo was drawn as a stamp": "drop"
+   },
+   "labels": {
+    "The same person drew the marks": "The marks"
+   },
+   "decks": {
+    "The campaign was shot on location": "The same person drew the marks and shot the photographs."
    },
    "lines": {
     "The marks were drawn so you can still tell": "keep"
@@ -46,9 +55,6 @@
    ],
    "factSet": {
     "Tools": "Illustrator, Photoshop, InDesign, a camera"
-   },
-   "labels": {
-    "The same person drew the marks": "Drawn and shot"
    }
   }
  }

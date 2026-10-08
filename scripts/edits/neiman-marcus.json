@@ -2,8 +2,8 @@
  "k": "neiman-marcus",
  "variants": {
   "index": {
-   "note": "Flow opens on what InSite was, then four chapters that are also the four section titles, one per kind of story; the closing keeps the call on the magazine side and the three templates.",
-   "stand": "InSite was the editorial hub on the Neiman Marcus website. | It had to feel like a magazine and sell product like a store, at the same time.",
+   "note": "Flow opens on what InSite was and how it told stories, then four chapters that are also the four section titles, one per kind of story; the closing keeps the call on the magazine side and the three templates.",
+   "stand": "InSite was the editorial hub on the Neiman Marcus website, and it told fashion stories the way a magazine would. | It had to sell product like a store at the same time.",
    "abs": [
     "On every InSite piece, the concept came first, then the shoot, then the styling and the layout. All of the photography was shot in the studio."
    ],
@@ -17,16 +17,16 @@
    "didTitle": "Role",
    "chapters": {
     "InSite's spotlights introduced emerging designers": {
-     "t": "Designer spotlights introduced emerging designers to a broader luxury shopper,",
-     "g": "who reached the product page having read something first",
+     "t": "InSite's spotlights introduced emerging designers to a broader luxury shopper,",
+     "g": "and the type did the job a feature profile would have done in print",
      "li": [
       "The name | set as big as the photographs, with every spread built around it.",
-      "The frame | torn-edge framing, with letters locked into the model's figure.",
-      "No profile | in print, a feature profile would have introduced the designer, and on InSite the type did that job."
+      "The frame | torn edges, with letters locked into the model's figure.",
+      "Shoppers | reached the product page having read something first."
      ]
     },
     "Every InSite shoot was on seamless paper": {
-     "t": "InSite's trend stories used graphic color blocks as the setting,",
+     "t": "Graphic color blocks stood in for the places a bigger production would have flown to,",
      "g": "because there was no location budget",
      "li": [
       "The stories | included Hot Pink, Yellow, Rainbow, Orange and Coral.",
@@ -35,12 +35,11 @@
      ]
     },
     "Each story's concept set its type": {
-     "t": "Each story's type was set before the shoot,",
+     "t": "Each story's concept set its type,",
      "g": "so the photographer's brief carried its scale, weight and position",
      "li": [
-      "Restrained stories | Minimalism and Structure set thin outline serifs that ghosted behind the garment and nearly dissolved.",
-      "Loud stories | The Rocker, The Socialite and Classic Beauty wrapped oversized display serifs into the model's silhouette.",
-      "The shoot | a restrained story got a still pose on flat gray paper, and a loud one got a saturated backdrop with room for a letter across the shoulder."
+      "Restrained stories | Minimalism and Structure set thin, ghosted letters that nearly dissolved.",
+      "Loud stories | The Rocker, The Socialite and Classic Beauty wrapped oversized display serifs into the model's silhouette."
      ]
     },
     "Each ways-to-wear spread wrote the outfit": {
@@ -63,8 +62,9 @@
    "decks": {
     "InSite's spotlights introduced emerging designers": "Each designer's name ran in oversized serifs: Theyskens' Theory, Rag & Bone, 10 Crosby Derek Lam, Helmut Lang and Kelly Wearstler.",
     "Every InSite shoot was on seamless paper": "Fields of pixelated color set the mood when a sunset wasn't an option.",
-    "Each story's concept set its type": "Sometimes the type broke the grid, and the shopper was trusted to find the price anyway.",
-    "Each ways-to-wear spread wrote the outfit": "A black dress was paired with a denim jacket, then with an ikat sweater, and a silk blouse was styled the same two ways."
+    "Each story's concept set its type": "A restrained story got a still pose on flat gray paper, and a loud one got a pose with room for a letter to sit across the shoulder.",
+    "Each ways-to-wear spread wrote the outfit": "A black dress was paired with a denim jacket, then with an ikat sweater, and a silk blouse was styled the same two ways.",
+    "Every InSite layout was a call": "The store side still had to be findable."
    },
    "lines": {
     "Three templates carried dozens of InSite stories": "Three templates carried dozens of InSite stories."

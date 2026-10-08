@@ -2,7 +2,7 @@
  "k": "jeffrey-spring",
  "variants": {
   "index": {
-   "note": "Flow opens on a studio-only spring campaign and why the foliage mattered, then one chapter, the three designers on one template; the weekly dress closes it as its own section.",
+   "note": "Flow opens on a studio-only spring campaign and why the foliage mattered, then one chapter, the three designers on one template; the weekly dress closes it as its own section, with the study's swap-the-dress line under it.",
    "stand": "A spring campaign for Jeffrey was shot entirely in the studio. | The look was high fashion on a studio budget, with foliage doing the work of a location.",
    "abs": [],
    "did": [
@@ -14,11 +14,11 @@
    "chapters": {
     "Swap the dress, set the leaves": {
      "t": "JW Anderson, Valentino and Simone Rocha all ran on one template,",
-     "g": "across email, the homepage and social",
+     "g": "each in three formats: email, the homepage and social",
      "li": [
       "The foliage | monstera leaves and palm fronds were cropped big and used as graphic elements, more like architecture than greenery.",
-      "Scale | color floods and extreme crops made the compositions feel bigger than the room they were shot in.",
-      "The type | it got the same graphic treatment, condensed, stretched and layered for rhythm."
+      "Scale | extreme crops made the compositions feel bigger than the room they were shot in.",
+      "The type | it got the same graphic treatment, stretched and layered for rhythm."
      ],
      "pic": "jeffrey-spring-campaign-hero-grid-jw-anderson-valentino-simone-rocha-monstera-collage.jpg"
     }
@@ -28,7 +28,8 @@
     "A new dress came in every week": "The dresses"
    },
    "decks": {
-    "Swap the dress, set the leaves": "The type reads at phone size, the leaves still frame the dress, and the desktop homepage is the same layout with more room."
+    "Swap the dress, set the leaves": "The type reads at phone size, the leaves still frame the dress, and the desktop homepage is the same layout with more room.",
+    "A new dress came in every week": "Swap the dress, set the leaves, and the page is done."
    },
    "rest": "drop",
    "moreTo": "chapters",

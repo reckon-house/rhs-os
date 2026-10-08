@@ -58,7 +58,7 @@
    "facts": []
   },
   "index": {
-   "note": "Flow opens the room: Beyoncé's first activewear line launched by Nordstrom on one scrolling page and the 95% that sold out, then three chapters that are also the section titles (six weeks, the hexagon and the components reused for two years, the campaign built from the page), each opening to three specifics; the pull quote stays, and the closing says it all came out of a Nordstrom office.",
+   "note": "Flow opens the room: Beyoncé's first activewear line launched by Nordstrom on one scrolling page and the 95% that sold out, then three chapters that are also the section titles (six weeks, the hexagon that broke the grid and the components reused for two years, the campaign built from the page), each opening to three specifics; the pull quote stays, and the closing says it all came out of a Nordstrom office.",
    "stand": "Ivy Park was Beyoncé's first activewear line, and Nordstrom, its exclusive US partner, launched it on one scrolling page. | 95% of the product sold out within days.",
    "abs": [
     "Ivy Park was staking out a spot between luxury fashion and athletic performance, one with no obvious reference, and the design had to sit in that gap.",
@@ -83,10 +83,10 @@
      ]
     },
     "The hexagon started as a way": {
-     "t": "The page framed every portrait in a hexagon that turned on scroll,",
+     "t": "The page broke the photography's rectangular grid with a hexagon that turned on scroll,",
      "g": "and its custom components powered other Nordstrom launches for two years",
      "li": [
-      "The hexagon | it started as a way to break the rectangular grid the photography came in, and its angled edges gave the portraits some tension.",
+      "The hexagon | its angled edges against the straight photography gave the athlete portraits some tension.",
       "The copy | written line by line as the pages took shape, in short present-tense sentences that talked straight to the reader.",
       "The components | Nordstrom's CMS didn't have parallax modules, animated polygon masks, full-bleed video that played on scroll or type lockups that scaled with the screen, so they got built for Ivy Park."
      ]
@@ -95,7 +95,7 @@
      "t": "The emails, banners, social posts and in-store signage were all adapted from the launch page,",
      "g": "built from a handful of simple elements",
      "li": [
-      "The polygon | crops the same at 300px and at 3000px.",
+      "The hexagon | crops the same at 300px and at 3000px.",
       "Bold type | reads at any size.",
       "Black-and-white photography | goes to any aspect ratio."
      ]
@@ -111,9 +111,9 @@
     "95% of the product": "In house"
    },
    "decks": {
-    "Nordstrom had six weeks": "The brief came in under NDA, and there were daily calls with Ivy Park.",
+    "Nordstrom had six weeks": "The brief came in under NDA, and there were daily calls with Ivy Park while the creative direction got locked in.",
     "The hexagon started as a way": "Headlines like \"Confidence is Strength\" were set in mixed weights, with baselines knocked off the grid.",
-    "The launch page came first": "The polygon ran from the hero banner through the product carousels into the email headers."
+    "The launch page came first": "The hexagon ran from the hero banner through the product carousels into the email headers."
    },
    "lines": {
     "The launch page had to be": "keep",
@@ -124,6 +124,5 @@
    "moreTo": "chapters",
    "facts": []
   }
- },
- "unlocked": "Needs check.mjs to read US as the country (its we/our/us test case-sensitive for us). Then copy this file over ivy-park.json."
+ }
 }

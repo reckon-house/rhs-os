@@ -3,7 +3,7 @@
  "variants": {
   "index": {
    "note": "Flow opens the room: what A.R.C. is and why it matters, then six chapters that are also the section titles, each opening to three specifics; the vision model goes unnamed.",
-   "stand": "A.R.C. is an iPhone app I designed and built for home inventory. | About 60% of American homeowners end up underinsured.",
+   "stand": "A.R.C. is an iPhone app I designed and built for home inventory. | About 60% of American homeowners are underinsured because they have never cataloged what they own.",
    "abs": [],
    "did": [
     "Product Design",
@@ -34,7 +34,7 @@
     "A.R.C. compares what you own": "You set the coverage when you buy the policy and it tends to sit there, while the stuff inside the house keeps changing.",
     "Ten weeks after the first idea": "When I noticed a problem, a fix could be live within hours.",
     "Every screen here is from": "The home screen is the overview: total items, total estimated value, the category breakdown, coverage status and recent activity.",
-    "Documenting a 1,168-item home": "The home is sixteen rooms: five bedrooms, three bathrooms, four closets, a living room, kitchen, game room and garage.",
+    "Documenting a 1,168-item home": "The home is sixteen rooms of 73 items: five bedrooms, three bathrooms, four closets, a living room, kitchen, game room and garage.",
     "I built A.R.C. because": "I had a renovated house and years of collected objects, and nothing documented anywhere that would survive an insurance claim."
    },
    "chapters": {
@@ -76,7 +76,7 @@
      "t": "I made A.R.C. on my own in ten weeks,",
      "g": "with AI helping the whole way through",
      "li": [
-      "Claude Code | my main environment from start to finish: I described what I wanted in plain language, read the code that came back, tested it and shipped.",
+      "AI | I described what I wanted in plain language, read the code that came back, tested it and shipped.",
       "No team | no engineering team, no PM handing out tickets, no design review and no QA, so every decision came down to priorities.",
       "Interface | I designed it and built it at the same time, with no handoff between what I meant and what showed up in code."
      ],
@@ -88,7 +88,7 @@
      "g": "what you own, what it is worth and whether it is covered",
      "li": [
       "Rooms | each room is its own archive, its items shown as cards you can sort by value, category or the date they were added.",
-      "Document AI | upload a receipt, an appraisal, a warranty or an insurance document, and the AI pulls out the purchase date, amount, vendor and coverage terms, then attaches them to the matching item.",
+      "Document AI | upload a receipt, an appraisal, a warranty or an insurance document, and the AI pulls out the purchase date, amount, vendor and coverage terms.",
       "Reports | PDF summaries by room, by category or for the whole home, with photographs, descriptions, values and totals, laid out to hand to an agent or advisor."
      ],
      "pic": "arc-app-tablet-kitchen-living-room-lifestyle.jpg"
@@ -97,8 +97,8 @@
      "t": "Documenting a 1,168-item home in A.R.C. takes under eight hours,",
      "g": "against an estimated 128 to 192 hours by hand",
      "li": [
-      "In the app | 73 items, about one room, in under 30 minutes.",
-      "By hand | you open a spreadsheet, walk room to room, describe each item, price it, photograph it and attach the receipt.",
+      "In the app | 73 items in under 30 minutes.",
+      "By hand | you open a spreadsheet, walk room to room, describe each item, price it, photograph it and attach the receipt, and hardly anyone finishes.",
       "The difference | the app is 16 to 24 times faster."
      ],
      "pic": "arc-app-kitchen-project-selection-lifestyle.jpg"

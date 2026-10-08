@@ -80,15 +80,15 @@
       "didTitle": "Scope",
       "chapters": {
         "The kitchen's four materials were chosen": {
-          "t": "Sage green takes the vertical planes and marble the horizontal ones,",
-          "g": "with oak in the middle and brass on the hardware",
+          "t": "Sage green is on most of what you see,",
+          "g": "with marble on the counters and the backsplash, oak in the middle and brass on the hardware",
           "p": [
             "The sage sits back a little so the marble and the brass get noticed first."
           ],
           "li": [
             "Sage green | a muted green with enough gray in it to stay calm, on everything around the perimeter, from the base cabinets to the pantry wall.",
             "Matte | satin would have pushed the cabinets contemporary and gloss would have fought the raw oak, and matte lets the Shaker profiles throw soft shadows.",
-            "Calacatta marble | gray and gold veining on a warm white ground, on the counters and the full backsplash behind the range."
+            "Calacatta marble | gray and gold veining on a warm white ground."
           ]
         },
         "Every pull and knob": {
@@ -102,14 +102,14 @@
           "pic": "hill-country-kitchen-brass-cremone-bolt-closeup.jpg"
         },
         "The island's marble top": {
-          "t": "The island stands on visible legs so it looks like furniture,",
-          "g": "and guests treat it like a table",
+          "t": "The island stands on visible legs with open shelving between them,",
+          "g": "so it looks like furniture and guests treat it like a table",
           "p": [
             "The island is meant to look used, with water rings, knife marks and flour in the grain."
           ],
           "li": [
             "The finish | a penetrating oil, with no stain and no polyurethane; the grain stays open and the color goes from pale honey to a deeper amber over years of use.",
-            "The marble top | it runs end to end without a break, with eight feet of usable counter.",
+            "The layout | eight feet of usable counter sits on the island, and the open shelving faces the dining side.",
             "Where it sits | it's the first thing you see from the entry, and every sight line in the kitchen crosses it."
           ],
           "pic": "hill-country-kitchen-wide-dining-island-windows.jpg"
@@ -142,7 +142,7 @@
         "Every decision came back"
       ],
       "lines": {
-        "Sage green takes the vertical planes": "The island handles prep, serving, and seating at the same time. | The kitchen gets used for cooking, gathering, and working in about equal measure."
+        "Sage green takes the vertical planes": "The kitchen gets used for cooking, gathering, and working in about equal measure, and it's the hub of the house."
       },
       "rest": "drop",
       "moreTo": "chapters",

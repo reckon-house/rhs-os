@@ -2,14 +2,15 @@
  "k": "nordstrom-beauty",
  "variants": {
   "index": {
-   "note": "Flow opens the room: what the hub is and why a static story falls behind, then three chapters that are also the section titles (templates, try-on, drawer); the closing keeps the three seasonal rotations.",
+   "note": "Flow opens the room: what the hub is and why a static story falls behind, then three chapters that are also the section titles (templates, try-on with every color tied to a product, drawer), so buying in place is said once in the opening; the closing keeps the three seasonal rotations.",
    "stand": "On Nordstrom's beauty editorial hub, every story was shoppable. | New products launch weekly and trends shift with the season, so a static story falls behind.",
    "abs": [],
    "did": [
     "Product design",
     "UX design",
     "Visual design",
-    "Editorial templates"
+    "Editorial templates",
+    "Ecommerce design"
    ],
    "didTitle": "Role",
    "chapters": {
@@ -24,7 +25,7 @@
     },
     "Upload a selfie": {
      "t": "A virtual try-on tool let customers preview shades on their own face,",
-     "g": "and buy the one they chose without leaving it",
+     "g": "and every color on the gradient was one they could buy",
      "li": [
       "Your photo | a new one, or the one already on your Style Profile.",
       "The gradient | drag across it and watch the shade change on your face as you go.",

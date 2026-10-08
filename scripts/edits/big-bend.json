@@ -2,11 +2,9 @@
  "k": "big-bend",
  "variants": {
   "index": {
-   "note": "Flow opens the room: family trip photographs and the boot campaign that later used some, then one chapter, Prada Marfa, the study's only section; the pull quote goes because the subtitle says it, and the closing keeps only the folder.",
-   "stand": "Photographs from a family trip through Big Bend and the desert around Marfa. | The trip was personal, and Capitan Boot Co. later used a few of the photographs as backdrops in its campaign.",
-   "abs": [
-    "Big Bend is the largest national park in Texas and one of the least visited in the country."
-   ],
+   "note": "Flow opens the room: family trip photographs, named by what they show, and the boot campaign that later used some, then one chapter, Prada Marfa, the study's only section; the pull quote goes because the subtitle says it, the park trivia goes, and the closing keeps only the folder.",
+   "stand": "Photographs from a family trip through Big Bend, the Chisos Mountains and Santa Elena Canyon, and the desert around Marfa. | The trip was personal, and Capitan Boot Co. later used a few of the photographs as backdrops in its campaign.",
+   "abs": [],
    "did": [
     "Landscape photography"
    ],
@@ -33,8 +31,7 @@
    "rest": "drop",
    "moreTo": "chapters",
    "facts": [
-    "Published",
-    "Subject"
+    "Published"
    ]
   }
  }

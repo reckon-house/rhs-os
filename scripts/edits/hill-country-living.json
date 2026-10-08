@@ -2,8 +2,8 @@
  "k": "hill-country-living",
  "variants": {
   "index": {
-   "note": "Flow opens the room: a living room open to the kitchen and designed around its limestone wall, then two chapters that are also the section titles (plain walls and four materials, pieces chosen for how they age), each opening to three specifics; the closing walks into the entry.",
-   "stand": "A living room at the center of the Hill Country house, open to the kitchen and designed around a floor-to-ceiling limestone fireplace wall. | The furniture is mid-century in shape, with textiles that lean Western.",
+   "note": "Flow opens the room: a living room open to the kitchen and designed around its limestone wall, with the original Eisenhower painting on it, then two chapters that are also the section titles (plain walls and four materials, pieces chosen for how they age), each opening to three specifics; the closing walks into the entry.",
+   "stand": "A living room at the center of the Hill Country house, open to the kitchen and designed around a floor-to-ceiling limestone fireplace wall. | An original painting by Dwight D. Eisenhower hangs there with landscape pieces in gilded frames.",
    "abs": [],
    "did": [
     "Interior design",
@@ -43,7 +43,7 @@
    },
    "decks": {
     "Stone, pine, brass and leather run through": "Stone, pine, brass and leather run through the whole house.",
-    "There is a painting by Eisenhower": "An original painting by Dwight D. Eisenhower hangs on the stone wall with landscape pieces in gilded frames."
+    "There is a painting by Eisenhower": "The furniture is mid-century in shape, with textiles that lean Western."
    },
    "heads": {
     "Just past the living room is the entry": "drop"

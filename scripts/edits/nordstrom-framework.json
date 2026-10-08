@@ -2,7 +2,7 @@
  "k": "nordstrom-framework",
  "variants": {
   "index": {
-   "note": "Flow opens the room: what the framework is with the 22% beside it, then two chapters that are also the section titles; the problem keeps its own statement, the bucket names reach the reader through the lockups' captions, and the closing carries the names becoming the team's language.",
+   "note": "Flow opens the room: what the framework is with the 22% beside it, then two chapters that are also the section titles; the problem keeps its own statement, the bucket count stays out until Jeremy confirms it (every picture shows three marks in one serif), the first row describes two buckets in his own caption words, and the closing carries the names becoming the team's language.",
    "stand": "Nordstrom.com's content framework was built from scratch, with its own names, icons, and typographic marks. | Engagement lifted 22% over two years.",
    "abs": [
     "Concepted the framework and pitched it to merchandising, marketing, and editorial."
@@ -11,18 +11,19 @@
     "Content strategy",
     "Brand design",
     "Naming",
-    "Design systems"
+    "Design systems",
+    "Ecommerce design"
    ],
    "didTitle": "Role",
    "chapters": {
     "Every story had to land": {
-     "t": "Every story had to land in one of four buckets,",
+     "t": "Every story had to land in a named bucket,",
      "g": "from new arrivals and trending brands to occasion dressing",
      "pic": "nordstrom-content-framework-lockup-whats-now.jpg",
      "li": [
-      "Two for occasion dressing | one starting from the event and the other from the outfit.",
-      "Custom icons | one for every bucket.",
-      "Typefaces | a different one, sourced for every bucket's typographic mark."
+      "What's Now | of the moment.",
+      "Wear to Where | occasion-based items and looks.",
+      "Custom icons | one for every bucket."
      ]
     },
     "Every homepage module and email section": {
@@ -31,7 +32,7 @@
      "pic": "nordstrom-framework-on-our-list-phone-turntable.jpg",
      "li": [
       "Content calendars | mapped stories to buckets at the brief stage.",
-      "One-off campaigns | got planned as part of a category.",
+      "Campaigns that used to be one-offs | got planned as part of a category.",
       "Planning meetings | the bucket names showed up in them before the framework reached a customer."
      ]
     }
@@ -42,7 +43,7 @@
    },
    "labels": {
     "Nothing on Nordstrom's homepage": "The problem",
-    "Every story had to land": "Four buckets",
+    "Every story had to land": "The buckets",
     "Every homepage module and email section": "Homepage, email, landing pages"
    },
    "decks": {
@@ -51,7 +52,7 @@
     "Every homepage module and email section": "Every homepage module and email section carried its bucket's lockup and icon."
    },
    "lines": {
-    "The bucket names showed up": "The bucket names ended up being how everyone who touched digital content talked about the work. | The icons, the typography and the names all changed over time, but the four-bucket structure stayed the same."
+    "The bucket names showed up": "The bucket names ended up being how everyone who touched digital content talked about the work. | The icons, the typography and the names all changed over time, but the bucket structure stayed the same."
    },
    "rest": "drop",
    "moreTo": "chapters",

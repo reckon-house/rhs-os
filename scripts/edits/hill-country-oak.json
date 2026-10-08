@@ -2,7 +2,7 @@
  "k": "hill-country-oak",
  "variants": {
   "index": {
-   "note": "Flow opens the room: what the campaign is and what it shows, then two chapters that are also the section titles (where the look came from and why, then the same three parts from a billboard to a lock screen); the closing ends on the texture and the barrel.",
+   "note": "Flow opens the room: what the campaign is and what it shows, then two chapters that are also the section titles (the brief and the reference pile, then the same three parts from a billboard to a lock screen), labelled with the study's own names; the closing ends on the texture and the barrel.",
    "stand": "A campaign for Hill Country Oakworks, a Texas whiskey barrel maker. | Sun-washed color and the silhouette of an oak show the land the barrels come from.",
    "abs": [],
    "did": [
@@ -12,10 +12,9 @@
    "didTitle": "Role",
    "chapters": {
     "Every piece of the campaign": {
-     "t": "The campaign pulls from travel posters and old highway signs,",
-     "g": "for a heritage look that stays clear of the Western cliché",
+     "t": "The brief asked for a heritage look that stayed clear of the Western cliché,",
+     "g": "so the reference pile was travel posters and old highway signs",
      "li": [
-      "Red, white, and blue | the palette had to say Texas without them.",
       "The colors | orange and mustard do the color blocks and the wordmark, brick is the foreground hills, and teal is the sky.",
       "The type | plain and utilitarian, with Greatdome for the display type and Avenir Next for everything else."
      ],
@@ -33,6 +32,13 @@
    "heads": {
     "A distressed texture goes over": "drop"
    },
+   "labels": {
+    "Every piece of the campaign": "Travel posters",
+    "The same three parts hold": "Billboard to phone"
+   },
+   "decks": {
+    "Every piece of the campaign": "The palette had to say Texas without red, white, and blue."
+   },
    "lines": {
     "The geometric shapes in the artwork": "A distressed texture goes over the whole campaign. | The geometric shapes in the artwork echo a whiskey barrel."
    },
@@ -44,7 +50,7 @@
     "Tools"
    ],
    "factSet": {
-    "Built": "An outdoor banner, posters, a phone wallpaper, a shirt",
+    "Built": "A billboard, posters, a phone wallpaper, a shirt",
     "Tools": "Illustrator, Photoshop, InDesign"
    }
   }

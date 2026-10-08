@@ -2,7 +2,7 @@
  "k": "jeffrey-ecommerce",
  "variants": {
   "index": {
-   "note": "Flow opens on Jeffrey's first online store and why it led with stories, then two chapters that are also the section titles, the homepages and the product pages; the brand system stands as its own section and the site's long life closes it.",
+   "note": "Flow opens on Jeffrey's first online store and why it led with stories, then two chapters that are also the section titles, the homepages and the templates; the brand system stands as its own section and the site's long life closes it (the sale of the business is cut: it has no source).",
    "stand": "Jeffrey New York's first online store and the brand around it were built from zero. | The physical store was closer to a gallery than a shop, so the site put a story ahead of every sale.",
    "abs": [
     "Jeffrey's store was edited by people with a very specific eye, and the job was to get that feeling onto a screen. The work started with the buying team: how the floor was laid out, how pieces got grouped, what made an edit feel like Jeffrey."
@@ -17,7 +17,7 @@
    "chapters": {
     "Each designer launch or story took over": {
      "t": "Each designer launch or story took over the homepage while it ran,",
-     "g": "since the site was built to change as often as the store did",
+     "g": "and the site was built to change as often as the store did",
      "li": [
       "Launches first | the store floor got regrouped every time the season shifted, so the homepage templates came first and the product pages after.",
       "One frame | every homepage sat inside the same masthead and footer.",
@@ -28,7 +28,7 @@
      "t": "Merchandising could lay out a new season by swapping the photography and the copy,",
      "g": "without touching the templates underneath",
      "li": [
-      "Navigation | followed the way pieces were grouped on the store floor, instead of a list of categories.",
+      "Navigation | followed the way pieces were grouped on the store floor.",
       "The build | integration ran with outside partners while the experience stayed in-house.",
       "Wireframe to checkout | every interaction was prototyped."
      ],
@@ -37,19 +37,19 @@
    },
    "labels": {
     "Each designer launch or story took over": "Homepages",
-    "Product pages showed one large": "Product pages",
+    "Product pages showed one large": "Templates",
     "Every page ran on the wordmark": "Brand system"
    },
    "decks": {
     "Each designer launch or story took over": "Six homepages led with Dries Van Noten, Valentino, Vetements, a Candy Crush shoe story, summer shoes and Loewe.",
-    "Product pages showed one large": "Product pages showed one large photograph and little else, with a short row of curated cross-sells under it.",
+    "Product pages showed one large": "Product pages showed one large photograph and little else.",
     "Every page ran on the wordmark": "The type hierarchy stayed fixed while the content around it changed every week."
    },
    "heads": {
     "The site outlasted": "drop"
    },
    "lines": {
-    "The type hierarchy stayed fixed": "The site outlasted the team that built it. | Jeffrey eventually sold the business."
+    "The type hierarchy stayed fixed": "The site outlasted the team that built it."
    },
    "rest": "drop",
    "moreTo": "chapters",
