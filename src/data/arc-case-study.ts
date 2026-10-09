@@ -112,7 +112,7 @@ export const arcCaseStudy: CaseStudy = {
     "Full-Stack Engineering",
     "Go-to-Market Strategy",
   ],
-  stack: ["Python", "Streamlit", "OpenAI Vision API", "Supabase", "Vercel", "Claude Code"],
+  stack: ["Python", "Streamlit", "Gemini 2.5 Flash", "Supabase", "Vercel", "Claude Code"],
   links: [
     { label: "arcready.app", url: "https://arcready.app" },
     { label: "heythere@arcready.app", url: "mailto:heythere@arcready.app" },
@@ -169,11 +169,11 @@ export const arcCaseStudy: CaseStudy = {
       summary: [
         { label: "Built", value: "Camera-scan home inventory app. Vision recognition, value estimation, insurance gap analysis." },
         { label: "Scope", value: "Solo, end to end. Concept, code, brand, go-to-market." },
-        { label: "Stack", value: "Python, Streamlit, OpenAI Vision, Perceptron Mk1, Supabase, Vercel, Claude Code." },
+        { label: "Stack", value: "Python, Streamlit, Gemini 2.5 Flash, Perceptron Mk1, Supabase, Vercel, Claude Code." },
         { label: "Angle", value: "People skip home inventory because every app makes them type each item in by hand. A.R.C. works from the camera instead." },
       ],
       abstract:
-        "Home inventory is an old problem. The average American household holds around 300,000 items, with a combined insurable value most homeowners have never added up. Home inventory apps ask you to type every item in by hand, and about 60% of homeowners are still underinsured because they have never cataloged what they own.\n\nA.R.C. works from the camera. Point it at a room, take a photo or a video, and the app identifies what is there, estimates replacement value, and categorizes everything in the same pass. Video scanning runs on Perceptron's Mk1 model: sweep a room and Mk1 reasons across the footage in real time. Then A.R.C. compares what you have documented against your policy limit and shows the gap as a dollar amount.\n\nI built A.R.C. end to end: concept, code, brand, go-to-market. The backend is Python and the frontend Streamlit, with the OpenAI Vision API and Perceptron Mk1 for recognition, Supabase for the data, and Vercel for deployment. A.R.C. went from concept to live product in ten weeks.",
+        "Home inventory is an old problem. The average American household holds around 300,000 items, with a combined insurable value most homeowners have never added up. Home inventory apps ask you to type every item in by hand, and about 60% of homeowners are still underinsured because they have never cataloged what they own.\n\nA.R.C. works from the camera. Point it at a room, take a photo or a video, and the app identifies what is there, estimates replacement value, and categorizes everything in the same pass. Video scanning runs on Perceptron's Mk1 model: sweep a room and Mk1 reasons across the footage in real time. Then A.R.C. compares what you have documented against your policy limit and shows the gap as a dollar amount.\n\nI built A.R.C. end to end: concept, code, brand, go-to-market. The backend is Python and the frontend Streamlit, with Gemini 2.5 Flash and Perceptron Mk1 for recognition, Supabase for the data, and Vercel for deployment. A.R.C. went from concept to live product in ten weeks.",
       pressing: { mark: { n: "02", name: "Statement" } },
     },
 
@@ -393,7 +393,7 @@ export const arcCaseStudy: CaseStudy = {
             height: 388,
           },
           content:
-            "The OpenAI Vision API takes the image and returns a structured read: what the object is, what it is made of, its style, its condition, and a rough era or manufacture period.\n\nFinancial Analysis updates the documented total as you go and compares it against your policy limit.",
+            "Gemini 2.5 Flash takes the image and returns a structured read: what the object is, what it is made of, its style, its condition, and a rough era or manufacture period.\n\nFinancial Analysis updates the documented total as you go and compares it against your policy limit.",
         },
         {
           title: "Value Estimation",
@@ -1030,7 +1030,7 @@ export const arcCaseStudy: CaseStudy = {
         "Full-Stack Engineering",
         "Go-to-Market Strategy",
       ],
-      stack: ["Python", "Streamlit", "OpenAI Vision API", "Perceptron Mk1", "Supabase", "Vercel", "Claude Code"],
+      stack: ["Python", "Streamlit", "Gemini 2.5 Flash", "Perceptron Mk1", "Supabase", "Vercel", "Claude Code"],
       /* Country-neutral App Store form. The link as handed over was
          .../pl/app/..., which pins every reader to the Polish
          storefront; /app/id<ID> lets Apple route to the reader's own. */

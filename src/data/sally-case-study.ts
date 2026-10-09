@@ -605,7 +605,7 @@ export const sallyCaseStudy: CaseStudy = {
         {
           title: "AI Studio Photography",
           content:
-            "The studio photography tool makes two passes through OpenAI's GPT-Image-2. The first strips the background to pure white and leaves the product alone. The second lights it like a studio shot, working from a reference photograph: white cyclorama sweep with a warm-to-cool gradient, directional key light with specular highlights, fill, rim, contact shadow.\n\nThe team uses the results for product pages and social.",
+            "The studio photography tool makes two passes through OpenAI's GPT-Image-2.5. The first strips the background to pure white and leaves the product alone. The second lights it like a studio shot, working from a reference photograph: white cyclorama sweep with a warm-to-cool gradient, directional key light with specular highlights, fill, rim, contact shadow.\n\nThe team uses the results for product pages and social.",
         },
         {
           title: "Search Architecture",
@@ -848,7 +848,7 @@ export const sallyCaseStudy: CaseStudy = {
         {
           title: "The Stack",
           content:
-            "The portal is a single-page app in plain HTML and JavaScript on a Python server, hosted on Railway. It has no framework and no build step on purpose, so it can change fast.\n\nThe asset hub, the associate site, and the scoreboard are Next.js on Vercel. Supabase holds all of it, with pgvector for a single embedding index that covers documents, product photography, and video scenes at once, so one search runs across text and pictures.\n\nThe Marketing OS uses five AI providers, each routed to what it is best at: Claude for reasoning, strategy, and copy; Gemini for embeddings and grounded research; Perplexity for live web search; OpenAI's GPT-Image-2 for studio photography; a vision model for video. Nothing sits between the code and the providers. Each part of the app names the model it calls, and strategy work and copywriting run on different Claude models on purpose.",
+            "The portal is a single-page app in plain HTML and JavaScript on a Python server, hosted on Railway. It has no framework and no build step on purpose, so it can change fast.\n\nThe asset hub, the associate site, and the scoreboard are Next.js on Vercel. Supabase holds all of it, with pgvector for a single embedding index that covers documents, product photography, and video scenes at once, so one search runs across text and pictures.\n\nThe Marketing OS uses five AI providers, each routed to what it is best at: Claude for reasoning, strategy, and copy; Gemini for embeddings and grounded research; Perplexity for live web search; OpenAI's GPT-Image-2.5 for studio photography; a vision model for video. Nothing sits between the code and the providers. Each part of the app names the model it calls, and strategy work and copywriting run on different Claude models on purpose.",
         },
       ],
     },

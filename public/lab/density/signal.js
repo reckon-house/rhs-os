@@ -156,16 +156,26 @@ window.DENSITY_ROOMS["signal"] = {
    "kind": "line",
    "si": 4,
    "pi": 12,
-   "text": "I've tested more than 20 AI browsers at this point, and Dia is the one I kept. It's my default now.",
+   "text": "You name a browser and I've used it, and really given it a week or so of daily use. I kept coming back to Dia, and not really because of the AI.",
    "weight": "body",
    "where": "text"
   },
   {
    "id": "sga",
    "k": "signal",
-   "kind": "src",
+   "kind": "line",
    "si": 4,
    "pi": 13,
+   "text": "As a creative person, it just looks and works so damn good: every pixel, every micro animation, smooth in all the right places.",
+   "weight": "body",
+   "where": "text"
+  },
+  {
+   "id": "sgb",
+   "k": "signal",
+   "kind": "src",
+   "si": 4,
+   "pi": 14,
    "url": "https://www.diabrowser.com",
    "text": "Read it at The Browser Company",
    "links": [
@@ -180,21 +190,11 @@ window.DENSITY_ROOMS["signal"] = {
    "k": "signal",
    "kind": "line",
    "si": 5,
-   "pi": 14,
+   "pi": 15,
    "text": "Claude Sonnet 5",
    "label": "September 6 · Anthropic",
    "weight": "head",
    "where": "section-header"
-  },
-  {
-   "id": "sgb",
-   "k": "signal",
-   "kind": "line",
-   "si": 5,
-   "pi": 15,
-   "text": "The Ask on this site answers from Sonnet 5 now. Before switching, I ran twelve why questions past it and Haiku 4.5.",
-   "weight": "body",
-   "where": "text"
   },
   {
    "id": "sgc",
@@ -202,16 +202,26 @@ window.DENSITY_ROOMS["signal"] = {
    "kind": "line",
    "si": 5,
    "pi": 16,
-   "text": "Haiku made up a reason for A.R.C. Sonnet answered from the study's own sentence. Sonnet takes about six tenths of a second longer each time. I switched anyway.",
+   "text": "The Ask on this site answers from Sonnet 5 now. Before switching, I ran twelve why questions past it and Haiku 4.5.",
    "weight": "body",
    "where": "text"
   },
   {
    "id": "sgd",
    "k": "signal",
-   "kind": "src",
+   "kind": "line",
    "si": 5,
    "pi": 17,
+   "text": "Haiku made up a reason for A.R.C. Sonnet answered from the study's own sentence. Sonnet takes about six tenths of a second longer each time. I switched anyway.",
+   "weight": "body",
+   "where": "text"
+  },
+  {
+   "id": "sge",
+   "k": "signal",
+   "kind": "src",
+   "si": 5,
+   "pi": 18,
    "url": "https://www.anthropic.com/claude/sonnet",
    "text": "Read it at Anthropic",
    "links": [
@@ -263,7 +273,7 @@ window.DENSITY_ROOMS["signal"] = {
    "headline": "Dia, the AI browser from The Browser Company",
    "source": "The Browser Company",
    "url": "https://www.diabrowser.com",
-   "take": "I've tested more than 20 AI browsers at this point, and Dia is the one I kept. It's my default now.",
+   "take": "You name a browser and I've used it, and really given it a week or so of daily use. I kept coming back to Dia, and not really because of the AI. As a creative person, it just looks and works so damn good: every pixel, every micro animation, smooth in all the right places.",
    "tags": [
     "Browsers",
     "Tools"

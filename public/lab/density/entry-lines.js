@@ -167,15 +167,15 @@ window.ENTRY_LINES = {
   /* DSC: "OAuth 2.0 consent and short-lived tokens" */
   /* what it answered: DSC: "Connecting an AI runs through an OAuth consent screen with short-lived, rotating tokens, and access can be revoked from the dashboard in one tap" */
   "tool/oauth-2-0": "Athletes connect their own AI to Dallas Sport Collective's schedule through an OAuth 2.0 consent screen. The tokens are short-lived and rotating, and access can be revoked from the dashboard in one tap.",
-  /* Sally OS: "OpenAI's GPT-Image-2 for studio photography"; "two passes
-     through OpenAI's GPT-Image-2" */
+  /* Sally OS: "OpenAI's GPT-Image-2.5 for studio photography"; "two passes
+     through OpenAI's GPT-Image-2.5" (8 Oct 2026: A.R.C. reads its photos
+     with Gemini 2.5 Flash, so it left this line for tool/gemini's) */
   /* what it answered: A.R.C.: "Home inventory apps ask you to type every item in by hand" */
-  "tool/openai": "Home inventory apps make you type every item in, so A.R.C. uses OpenAI's Vision API to read the photographs instead. Sally Marketing OS gets its studio photography from GPT-Image-2.",
+  "tool/openai": "Sally Marketing OS gets its studio photography from OpenAI's GPT-Image-2.5, in two passes: the first strips the background to white, the second lights the product like a studio shot.",
   /* A.R.C.: "returns a structured read: what the object is, what it is
      made of, its style, its condition, and a rough era or manufacture
      period"; "Each identified object is matched against market replacement
      data." No problem is stated for this step, so the line stays plain. */
-  "tool/openai-vision-api": "A.R.C. sends each photograph to the OpenAI Vision API, which reads what the object is, what it's made of, its style, its condition and roughly how old it is. Then each item is matched against market replacement data.",
   /* Sally OS: "Perplexity runs live web search"; "mention Ulta, Sephora,
      or Target Beauty and it pulls current pricing, promotions, social
      activity, and press coverage into the conversation" */
@@ -222,7 +222,7 @@ window.ENTRY_LINES = {
      every conversation: the brand guidelines, campaign history, product
      catalogs, regional variations, and performance data." */
   /* what it answered: Sally OS: "Loading Sally's knowledge base takes a million-token context window, which Gemini has"; "Gemini loads Sally's internal knowledge base at the start of every conversation" */
-  "tool/gemini": "Sally's whole knowledge base needs a million-token context window, which Gemini has. In Sally Marketing OS, Gemini loads it at the start of every conversation, so the brand guidelines, campaign history, product catalogs and performance data are already there.",
+  "tool/gemini": "Sally's whole knowledge base needs a million-token context window, which Gemini has. In Sally Marketing OS, Gemini loads it at the start of every conversation, so the brand guidelines, campaign history, product catalogs and performance data are already there. A.R.C. reads every photograph with Gemini 2.5 Flash.",
 
   /* ── FIGURES (drafted 27 Sept). What the number is, where it comes from,
      and a way into the study. Figures that share one sentence in a study

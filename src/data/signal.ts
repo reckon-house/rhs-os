@@ -78,7 +78,17 @@ export const SIGNAL: SignalEntry[] = [
     headline: "Dia, the AI browser from The Browser Company",
     source: "The Browser Company",
     sourceUrl: "https://www.diabrowser.com",
-    take: "I've tested more than 20 AI browsers at this point, and Dia is the one I kept. It's my default now.",
+    /* his words on the review page, 8 Oct 2026, in place of "more than 20
+       AI browsers", which only the brief that seeded the post said: "you
+       name a browser and i've used it - like REALLY given them a week or
+       so of real daily use. i kept finding myself coming back to Dia - not
+       really because of the AI but as a true creative person...it just
+       looks and works so damn good. every pixel, every micro
+       animation...loads smooth in all the right places and ways." */
+    take: [
+      "You name a browser and I've used it, and really given it a week or so of daily use. I kept coming back to Dia, and not really because of the AI.",
+      "As a creative person, it just looks and works so damn good: every pixel, every micro animation, smooth in all the right places.",
+    ],
     tags: ["Browsers", "Tools"],
   },
   {
