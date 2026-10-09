@@ -53,6 +53,10 @@
    stay switches; ?curtain=stack is the stack it replaced, and
    ?curtain=ramp-demi the ramp in demi as he first saw it.
 
+   BANDS IS THE CURTAIN since 8 Oct 2026, after his Swiss poster (see THE
+   POSTER below): the name in bands of weight and fill, the grey the site's
+   own. ?curtain=ramp brings back Ramp.
+
    /lab/curtain/ plays each in a loop, slowed if asked (window.CURTAIN_X
    stretches every beat; 1 is the site's own). */
 (() => {
@@ -65,7 +69,9 @@
   /* tracked in as it grows, on the site's own ladder (crossref2.js track()) */
   const track = (px) => (px >= 150 ? -0.06 : px >= 90 ? -0.055 : px >= 54 ? -0.05 : px >= 34 ? -0.042 : px >= 21 ? -0.03 : -0.012);
   const asked = (new URLSearchParams(location.search).get("curtain") || "").toLowerCase();
-  let MODE = asked === "stack" ? "" : MODES.includes(asked) ? asked : "ramp";
+  /* BANDS IS THE CURTAIN since 8 Oct 2026 (his "make bands the default and
+     push it all!"); ?curtain=ramp is the curtain it replaced */
+  let MODE = asked === "stack" ? "" : MODES.includes(asked) ? asked : "bands";
   let PT = null, busy = false;
   const make = (cls) => {
     const pt = document.createElement("div"); pt.className = "pt" + (cls ? " " + cls : ""); pt.setAttribute("aria-hidden", "true");

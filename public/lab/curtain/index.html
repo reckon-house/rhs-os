@@ -54,7 +54,7 @@
   <div class="mk">Reckon*House</div>
   <div>
     <h1>The curtain</h1>
-    <p class="lead">The transition that plays when a study opens from the index, over the content column, in a loop. The swipe and the lines rising in and out stay the same; the type is set eleven ways, Ramp first, since it is the site's, and the last three after your Swiss poster. Slow it down to watch the lines.</p>
+    <p class="lead">The transition that plays when a study opens from the index, over the content column, in a loop. The swipe and the lines rising in and out stay the same; the type is set eleven ways, Bands first, since it is the site's. Slow it down to watch the lines.</p>
   </div>
   <div>
     <div class="lbl">Treatment</div>
@@ -73,7 +73,8 @@
 (() => {
   /* [the treatment, its name, what it does, its switch on the site] */
   const MODES = [
-    ["ramp", "Ramp", "The site's curtain since 6 Oct. The name and its category growing down the column, from small to huge, in medium, tracked by size.", ""],
+    ["bands", "Bands", "The site's curtain since 8 Oct, after your Swiss poster: the name in bands of weight and fill, each band cutting it off, in the site's own grey.", ""],
+    ["ramp", "Ramp", "The curtain from 6 to 8 Oct. The name and its category growing down the column, from small to huge, in medium, tracked by size.", "ramp"],
     ["", "Stack", "The one it replaced. The name and its category down the column at one size.", "stack"],
     ["ramp-demi", "Ramp, demi", "Ramp in demi, as it was first shown.", "ramp-demi"],
     ["ramp-outline", "Ramp + outline", "Ramp with every other line drawn once the lines are large enough.", "ramp-outline"],
@@ -82,7 +83,6 @@
     ["drift", "Drift", "Fill, with each line running sideways, every other one the other way.", "drift"],
     ["giant", "Giant", "A word a line, as large as five lines allow, hugging the left edge and the right in turn.", "giant"],
     ["poster", "Poster", "From your Swiss poster: the name repeated in a grid of black, white and grey cells, cropped at every edge, empty cells crossed out, the year set twice. The falling panel is its negative.", "poster"],
-    ["bands", "Bands", "The poster's left column across the width: the name in bands of weight and fill, each band cutting it off.", "bands"],
     ["wire", "Wireframe", "A layout's wireframe falls, every box crossed out, and the rising panel prints the filled layout over it.", "wire"],
   ];
   const STUDIES = [
@@ -95,7 +95,7 @@
   STUDIES.forEach((s) => { const i = new Image(); i.src = s.img; });
   const q = new URLSearchParams(location.search);
   const qm = q.get("m");
-  let mode = qm !== null && MODES.some((m) => m[0] === qm) ? qm : "ramp";
+  let mode = qm !== null && MODES.some((m) => m[0] === qm) ? qm : "bands";
   let x = 1, n = 0, run = 0;
   const $ = (id) => document.getElementById(id);
   const slow = document.createElement("style"); document.head.appendChild(slow);
