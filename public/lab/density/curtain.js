@@ -173,7 +173,10 @@
      Each cell wipes open in reading order and its word rises inside it;
      the crosses draw. Words are drawn on canvases (the crop and the
      baseline have to be exact), notes are text ── */
-  const PAL = { w: "#ffffff", g: "#a9a9ab", k: "#0b0b0b" };
+  /* the grey is the site's own, the index's highlight (--hl, #ECECEC; 8 Oct
+     2026, his "bands is cool! can we make the grey lighter like the grey we
+     use?"), read off the page at each cover so ?hl= moves it too */
+  const PAL = { w: "#ffffff", g: "#ECECEC", k: "#0b0b0b" };
   const NEG = { w: "k", k: "w", g: "g" };
   const FONT = (wt, px) => wt + " " + px.toFixed(2) + 'px "Avenir Next", "Helvetica Neue", Helvetica, Arial, sans-serif';
   const MC = document.createElement("canvas").getContext("2d");
@@ -290,6 +293,7 @@
   };
   const gridMode = (pt, stacks, title, sub, mode) => {
     const W = stacks[0].clientWidth || pt.clientWidth || innerWidth, H = pt.clientHeight || innerHeight;
+    PAL.g = (getComputedStyle(document.documentElement).getPropertyValue("--hl") || "").trim() || "#ECECEC";
     const m = mainOf(title), words = { m, w: wordOf(m) }, year = META.y || "";
     const cells = LAYOUTS[mode], x = X();
     stacks.forEach((s, k) => {
