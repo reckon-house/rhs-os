@@ -105,3 +105,22 @@
 /* the lift: each cell closes upward, the last first */
 .pt-3 .ptg { clip-path: inset(0 0 100% 0); transition: clip-path 0.38s cubic-bezier(0.5, 0, 0.75, 0) var(--d, 0s); }
 @media (prefers-reduced-motion: reduce) { .ptg, .ptg .ptwd, .ptx line { transition: none !important; } }
+
+/* ── FIVE MORE (9 Oct 2026): ?curtain=specimen | spine | numeral | grid |
+   frames (curtain.js) ── */
+.pt-m-specimen .ptl { display: block; }
+/* spine: columns of vertical type, read bottom to top, cut by the frame */
+.pt-m-spine .ptstack { inset: 0; display: block; }
+.pt-m-spine .ptl { position: absolute; display: block; writing-mode: vertical-rl; font-weight: 500; transform: rotate(180deg) translate3d(0, -0.22em, 0); }
+.pt-m-spine.pt-1 .ptl { transform: rotate(180deg) translate3d(0, 0, 0); }
+.pt-m-spine.pt-3 .ptl { transform: rotate(180deg) translate3d(0, 0.14em, 0); }
+/* grid: the index's hairlines, faint, and a cell with no fill of its own */
+.pt-m-grid .ptg { box-shadow: inset 0 0 0 0.5px rgba(0, 0, 0, 0.13); }
+.pt-m-grid .ptb .ptg { box-shadow: inset 0 0 0 0.5px rgba(255, 255, 255, 0.22); }
+.ptg.ptg-over { box-shadow: none; pointer-events: none; }
+/* frames: the pictures fill their cells, grey on the panel that falls and
+   in colour on the one that rises, and settle with a shorter rise */
+.ptg .ptpic { width: 100%; height: 100%; object-fit: cover; transform: translate3d(0, 16%, 0) scale(1.06); }
+.pt-1 .ptg .ptpic { transform: translate3d(0, 0, 0) scale(1); }
+.pt-m-frames .ptw .ptpic { filter: grayscale(1); }
+.pt-m-frames .ptg { box-shadow: none; }

@@ -57,13 +57,27 @@
    POSTER below): the name in bands of weight and fill, the grey the site's
    own. ?curtain=ramp brings back Ramp.
 
+   FIVE MORE (9 Oct 2026, his "what are a handful of other graphic/design
+   treatments we could do with the transitions?"), switches too:
+
+       ?curtain=specimen  the name on every line at one size, the weight
+                          climbing regular to heavy and back
+       ?curtain=spine     the name set vertically, column after column,
+                          bottom to top like a book's spine
+       ?curtain=numeral   the poster's number: the study's year twice, cut
+                          off and then whole, the name small below
+       ?curtain=grid      the index's own faint cell grid, cells lighting
+                          in a cascade, the name across it
+       ?curtain=frames    a contact sheet of the study's own pictures, grey
+                          as it falls and in colour as the black rises
+
    /lab/curtain/ plays each in a loop, slowed if asked (window.CURTAIN_X
    stretches every beat; 1 is the site's own). */
 (() => {
   const STEP = 0.03, STEP_OUT = 0.02, MIN = 14;
   const X = () => window.CURTAIN_X || 1;
-  const MODES = ["ramp", "ramp-demi", "ramp-outline", "fill", "outline", "drift", "giant", "poster", "bands", "wire"];
-  const GRID = ["poster", "bands", "wire"];
+  const MODES = ["ramp", "ramp-demi", "ramp-outline", "fill", "outline", "drift", "giant", "poster", "bands", "wire", "specimen", "spine", "numeral", "grid", "frames"];
+  const GRID = ["poster", "bands", "wire", "numeral", "grid", "frames"];
   /* what a grid treatment knows besides the name: the study's year */
   let META = {};
   /* tracked in as it grows, on the site's own ladder (crossref2.js track()) */
@@ -144,6 +158,33 @@
         l.appendChild(run(words.length ? words[i % words.length] : name, 1)); out.push(l);
       }
       top = -lh / 2;
+    } else if (mode === "specimen") {
+      /* the name fits the column at its heaviest, inside the site's 20px
+         margin, and every line sets it in the next weight up, then down */
+      const WTS = [400, 500, 600, 700, 800, 700, 600, 500];
+      const fs = Math.max(14, ((W - 40) / Math.max(1, measure(name, 100, 800))) * 100), lh = fs * 1.02;
+      const N = Math.ceil(H / lh) + 1;
+      for (let i = 0; i <= N; i++) {
+        const l = line("", i, step, fs, lh);
+        l.style.fontWeight = WTS[i % WTS.length]; l.style.letterSpacing = track(fs) + "em"; l.style.paddingLeft = "20px";
+        l.textContent = name; out.push(l);
+      }
+      top = -lh / 2;
+    } else if (mode === "spine") {
+      /* columns of the name set vertically, each as long as the column and
+         a fifth more, so the frame cuts it top and bottom; staggered column
+         to column as fill staggers its lines */
+      const fs = Math.max(14, ((H * 1.15) / Math.max(1, measure(name, 100, 500))) * 100), colW = fs * 1.1;
+      const len = measure(name, fs, 500) + fs * 1.2, cols = Math.ceil(W / colW) + 1;
+      for (let i = 0; i < cols; i++) {
+        const l = line("", i, step * 1.5, fs, colW);
+        l.style.letterSpacing = track(fs) + "em";
+        l.style.left = (i * colW - colW * 0.3).toFixed(1) + "px";
+        l.style.top = (-((i * 0.382) % 1) * len).toFixed(1) + "px";
+        l.style.width = colW.toFixed(1) + "px"; l.style.height = (len * 3).toFixed(1) + "px";
+        l.textContent = [name, name, name].join("\u2003\u2003");
+        out.push(l);
+      }
     } else if (mode.startsWith("ramp")) {
       const ro = mode === "ramp-outline", demi = mode === "ramp-demi";
       for (let i = 0, fs = 13, y = 0; y < H && i < 40; i++, fs *= 1.28) {
@@ -239,6 +280,31 @@
       C(0, 0.75, 1 / 3, 0.25, "g", "x"), C(1 / 3, 0.75, 2 / 3, 0.25, "g", "huge", { t: "m", wt: 800, off: 0.04 }),
     ],
   };
+  /* the poster's number, on its own: the study's year cut off, then whole
+     across the width, the name and its category below */
+  LAYOUTS.numeral = [
+    C(0, 0, 1, 0.26, "g", "num", { cut: 0.5 }),
+    C(0, 0.26, 1, 0.5, "w", "num"),
+    C(0, 0.76, 0.62, 0.24, "k", "notes"), C(0.62, 0.76, 0.38, 0.24, "g", "x"),
+  ];
+  /* the index's faint cell grid: paper as it falls, black as it rises, two
+     cells lit in the site's grey, the name across it in the statement
+     style (`o`: a cell with no fill of its own, over the others) */
+  LAYOUTS.grid = (W, H) => {
+    const cols = W < 700 ? 4 : 6, rows = Math.max(6, Math.round(H / (W / cols))), out = [];
+    for (let r = 0; r < rows; r++) for (let c = 0; c < cols; c++) out.push(C(c / cols, r / rows, 1 / cols, 1 / rows, (r === 2 && c === 1) || (r === rows - 3 && c === cols - 2) ? "g" : "k"));
+    out.push(C(0, 0.36, 1, 0.28, "k", "word", { o: true, t: "m", wt: 500 }));
+    return out;
+  };
+  /* a contact sheet of the study's pictures, the name on a band across it;
+     with no pictures (leaving the page) the cells are the poster's fills */
+  LAYOUTS.frames = (W, H, M) => {
+    const pics = (M && M.pics) || [], cols = W < 700 ? 3 : 4, rows = Math.max(4, Math.round(H / (W / cols) * 1.1)), out = [];
+    let i = 0;
+    for (let r = 0; r < rows; r++) for (let c = 0; c < cols; c++, i++) out.push(pics.length ? C(c / cols, r / rows, 1 / cols, 1 / rows, "k", "pic", { src: pics[i % pics.length] }) : C(c / cols, r / rows, 1 / cols, 1 / rows, ["w", "g", "k"][(r + c) % 3]));
+    out.push(C(0, 0.4, 1, 0.2, "w", "word", { t: "m", wt: 500 }));
+    return out;
+  };
   const svgNS = "http://www.w3.org/2000/svg";
   const cross = (w, h, color) => {
     const sv = document.createElementNS(svgNS, "svg"); sv.setAttribute("class", "ptx"); sv.setAttribute("width", w); sv.setAttribute("height", h); sv.setAttribute("viewBox", "0 0 " + w + " " + h);
@@ -256,9 +322,10 @@
     /* the wireframe: every cell an empty box, crossed */
     if (wire) { e.classList.add("ptg-wire"); e.style.background = PAL.w; e.appendChild(cross(w, h, PAL.k)); return e; }
     const fk = neg ? NEG[c.f] : c.f, ink = fk === "k" ? PAL.w : PAL.k;
-    e.style.background = PAL[fk];
+    if (c.o) e.classList.add("ptg-over"); else e.style.background = PAL[fk];
     e.style.setProperty("--ink", ink);
     let k = c.k;
+    if (k === "pic") { const im = document.createElement("img"); im.className = "ptwd ptpic"; im.alt = ""; im.decoding = "async"; im.src = c.src; e.appendChild(im); return e; }
     if ((k === "num") && !year) k = "x";
     if (k === "x") { e.appendChild(cross(w, h, ink)); return e; }
     if (k === "notes") {
@@ -301,7 +368,7 @@
     const W = stacks[0].clientWidth || pt.clientWidth || innerWidth, H = pt.clientHeight || innerHeight;
     PAL.g = (getComputedStyle(document.documentElement).getPropertyValue("--hl") || "").trim() || "#ECECEC";
     const m = mainOf(title), words = { m, w: wordOf(m) }, year = META.y || "";
-    const cells = LAYOUTS[mode], x = X();
+    const L = LAYOUTS[mode], cells = typeof L === "function" ? L(W, H, META) : L, x = X();
     stacks.forEach((s, k) => {
       /* the falling panel (k 0): the poster in negative, the bands in
          negative, the wireframe; the rising one (k 1) the thing itself */
