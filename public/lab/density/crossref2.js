@@ -3137,7 +3137,7 @@
       RM.curtain = true;
       lockEntry(WORK[k]);
       const s = D.study(k) || {};
-      window.Curtain.cover(D.title(k), s.s || "").then(() => {
+      window.Curtain.cover(D.title(k), s.s || "", { y: s.y }).then(() => {
         /* a later click took the curtain over; it lifts it. A close, or a
            step elsewhere, lifts it here */
         if (!RM || RM.c !== c) { if (!RM || !RM.curtain) window.Curtain.lift(); return; }

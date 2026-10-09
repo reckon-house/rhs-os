@@ -54,7 +54,7 @@
   <div class="mk">Reckon*House</div>
   <div>
     <h1>The curtain</h1>
-    <p class="lead">The transition that plays when a study opens from the index, over the content column, in a loop. The swipe and the lines rising in and out stay the same; the type is set eight ways, Ramp first, since it is the site's. Slow it down to watch the lines.</p>
+    <p class="lead">The transition that plays when a study opens from the index, over the content column, in a loop. The swipe and the lines rising in and out stay the same; the type is set eleven ways, Ramp first, since it is the site's, and the last three after your Swiss poster. Slow it down to watch the lines.</p>
   </div>
   <div>
     <div class="lbl">Treatment</div>
@@ -81,13 +81,16 @@
     ["outline", "Outline", "Fill, with every other line drawn instead of filled.", "outline"],
     ["drift", "Drift", "Fill, with each line running sideways, every other one the other way.", "drift"],
     ["giant", "Giant", "A word a line, as large as five lines allow, hugging the left edge and the right in turn.", "giant"],
+    ["poster", "Poster", "From your Swiss poster: the name repeated in a grid of black, white and grey cells, cropped at every edge, empty cells crossed out, the year set twice. The falling panel is its negative.", "poster"],
+    ["bands", "Bands", "The poster's left column across the width: the name in bands of weight and fill, each band cutting it off.", "bands"],
+    ["wire", "Wireframe", "A layout's wireframe falls, every box crossed out, and the rising panel prints the filled layout over it.", "wire"],
   ];
   const STUDIES = [
-    { t: "Ivy Park by Beyoncé", s: "Ecommerce, brand launch", img: "/case-studies/ivy-park/inset-hero.jpg" },
-    { t: "A.R.C. - AI Home Inventory", s: "App & brand development", img: "/case-studies/arc/arc-app-tablet-kitchen-living-room-lifestyle.jpg" },
-    { t: "Robert Rodriguez x Neiman’s", s: "Creative direction, design", img: "/case-studies/robert-rodriguez/neiman-marcus-robert-rodriguez-woman-cream-polka-dot-dress-pink-blazer-orange-yellow-backdrop-storefront-window-display-campaign.jpg" },
-    { t: "Sally Marketing OS", s: "Product design, engineering", img: "/case-studies/sally-os/heroes/sally-os-asset-hub-platform-hero.jpg" },
-    { t: "Hill Country home, kitchen", s: "Interior design, kitchen", img: "/case-studies/hill-country-kitchen/hill-country-kitchen-wide-dining-island-windows.jpg" },
+    { t: "Ivy Park by Beyoncé", s: "Ecommerce, brand launch", y: 2016, img: "/case-studies/ivy-park/inset-hero.jpg" },
+    { t: "A.R.C. - AI Home Inventory", s: "App & brand development", y: 2025, img: "/case-studies/arc/arc-app-tablet-kitchen-living-room-lifestyle.jpg" },
+    { t: "Robert Rodriguez x Neiman’s", s: "Creative direction, design", y: 2024, img: "/case-studies/robert-rodriguez/neiman-marcus-robert-rodriguez-woman-cream-polka-dot-dress-pink-blazer-orange-yellow-backdrop-storefront-window-display-campaign.jpg" },
+    { t: "Sally Marketing OS", s: "Product design, engineering", y: 2025, img: "/case-studies/sally-os/heroes/sally-os-asset-hub-platform-hero.jpg" },
+    { t: "Hill Country home, kitchen", s: "Interior design, kitchen", y: 2023, img: "/case-studies/hill-country-kitchen/hill-country-kitchen-wide-dining-island-windows.jpg" },
   ];
   STUDIES.forEach((s) => { const i = new Image(); i.src = s.img; });
   const q = new URLSearchParams(location.search);
@@ -131,7 +134,7 @@
     while (id === run) {
       const s = STUDIES[n++ % STUDIES.length];
       window.Curtain.setMode(mode);
-      await window.Curtain.cover(s.t, s.s);
+      await window.Curtain.cover(s.t, s.s, { y: s.y });
       $("pic").src = s.img;
       await wait(420 * x);
       await window.Curtain.lift();

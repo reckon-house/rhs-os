@@ -58,7 +58,10 @@
 (() => {
   const STEP = 0.03, STEP_OUT = 0.02, MIN = 14;
   const X = () => window.CURTAIN_X || 1;
-  const MODES = ["ramp", "ramp-demi", "ramp-outline", "fill", "outline", "drift", "giant"];
+  const MODES = ["ramp", "ramp-demi", "ramp-outline", "fill", "outline", "drift", "giant", "poster", "bands", "wire"];
+  const GRID = ["poster", "bands", "wire"];
+  /* what a grid treatment knows besides the name: the study's year */
+  let META = {};
   /* tracked in as it grows, on the site's own ladder (crossref2.js track()) */
   const track = (px) => (px >= 150 ? -0.06 : px >= 90 ? -0.055 : px >= 54 ? -0.05 : px >= 34 ? -0.042 : px >= 21 ? -0.03 : -0.012);
   const asked = (new URLSearchParams(location.search).get("curtain") || "").toLowerCase();
@@ -91,6 +94,7 @@
      panels at the same coordinates, so the type still inverts along the
      moving edge */
   const fillMode = (pt, stacks, title, sub, mode) => {
+    if (GRID.includes(mode)) { gridMode(pt, stacks, title, sub, mode); return; }
     const W = stacks[0].clientWidth || pt.clientWidth || innerWidth, H = pt.clientHeight || innerHeight;
     const name = String(title || "").trim(), step = STEP * X(), out = [];
     const widthOf = (txt, px) => {
@@ -149,6 +153,153 @@
     stacks.forEach((s, k) => { s.style.setProperty("--top", top.toFixed(1) + "px"); out.forEach((l) => s.appendChild(k ? l.cloneNode(true) : l)); });
   };
 
+  /* ── THE POSTER (8 Oct 2026). His reference, a Swiss type poster: one
+     word repeated in a grid of cells at every size and weight, each cell
+     black, white or grey and cropping the word at its edges, empty cells
+     crossed out like a layout's placeholders, a number set twice, the
+     first cut off. "could be cool as part of the page transition ... a
+     few concepts on how we could do a version of this". Three, on the
+     same two panels and the same beats:
+
+       ?curtain=poster  the poster's own grid, the study's name in it, its
+                        year twice; the falling panel is the poster in
+                        negative, the rising one the poster
+       ?curtain=bands   the poster's left column across the whole width:
+                        the name in bands of weight and fill, each band
+                        cutting it at its edge
+       ?curtain=wire    a layout's wireframe falls, boxes crossed out, and
+                        the rising panel prints the filled layout over it
+
+     Each cell wipes open in reading order and its word rises inside it;
+     the crosses draw. Words are drawn on canvases (the crop and the
+     baseline have to be exact), notes are text ── */
+  const PAL = { w: "#ffffff", g: "#a9a9ab", k: "#0b0b0b" };
+  const NEG = { w: "k", k: "w", g: "g" };
+  const FONT = (wt, px) => wt + " " + px.toFixed(2) + 'px "Avenir Next", "Helvetica Neue", Helvetica, Arial, sans-serif';
+  const MC = document.createElement("canvas").getContext("2d");
+  const capOf = (wt) => { MC.font = FONT(wt, 100); return (MC.measureText("H").actualBoundingBoxAscent || 70) / 100; };
+  const spaced = "letterSpacing" in MC;
+  /* the weights a canvas draws in, asked for now so the first cover has them */
+  try { [400, 500, 800].forEach((w) => document.fonts.load(w + ' 40px "Avenir Next"')); } catch (e) { /* no font loading API */ }
+  const measure = (txt, px, wt) => {
+    const tr = track(px) * px; MC.font = FONT(wt, px);
+    if (spaced) { MC.letterSpacing = tr.toFixed(2) + "px"; const w = MC.measureText(txt).width - tr; MC.letterSpacing = "0px"; return w; }
+    let w = 0; for (const ch of txt) w += MC.measureText(ch).width + tr; return w - tr;
+  };
+  const draw = (cx, txt, x, base, px, wt, color) => {
+    const tr = track(px) * px; cx.font = FONT(wt, px); cx.fillStyle = color; cx.textBaseline = "alphabetic";
+    if (spaced) { cx.letterSpacing = tr.toFixed(2) + "px"; cx.fillText(txt, x, base); cx.letterSpacing = "0px"; return; }
+    let xx = x; for (const ch of txt) { cx.fillText(ch, xx, base); xx += cx.measureText(ch).width + tr; }
+  };
+  /* a size at which txt runs `avail` wide, tracked as the site tracks it */
+  const fitPx = (txt, avail, wt) => { let px = 100; for (let i = 0; i < 3; i++) px *= avail / Math.max(1, measure(txt, px, wt)); return px; };
+  /* the name the poster repeats: the study's name before its subtitle
+     ("Ivy Park" of "Ivy Park by Beyoncé"), and a single word of it when
+     a cell sets it huge */
+  const mainOf = (t) => (String(t || "").split(/\s+[-–]\s+|,\s+|\s+x\s+|\s+by\s+/i)[0] || "").trim() || String(t || "");
+  const wordOf = (m) => (m.length <= 9 ? m : m.split(/\s+/)[0]);
+  /* cells as fractions of the panel: x, y, w, h, fill, kind */
+  const C = (x, y, w, h, f, k, o) => Object.assign({ x, y, w, h, f, k }, o || {});
+  /* a "giant" cell draws its share of one heavy line laid across the
+     panel (the poster's "Publ" running on into the next cells as "ic"),
+     each cell in its own ink: base and cap as fractions of the height */
+  const GIANT = { poster: { base: 0.6, cap: 0.22 } };
+  const LAYOUTS = {
+    poster: [
+      C(0, 0, 0.64, 0.07, "w"), C(0.64, 0, 0.36, 0.07, "k"),
+      C(0, 0.07, 0.64, 0.11, "g", "word", { t: "m", wt: 500, cut: 0.45, like: 4 }), C(0.64, 0.07, 0.36, 0.11, "g", "x"),
+      C(0, 0.18, 0.64, 0.16, "w", "word", { t: "m", wt: 500 }), C(0.64, 0.18, 0.36, 0.16, "k"),
+      C(0, 0.34, 0.64, 0.21, "k", "giant", { note: "sub" }), C(0.64, 0.34, 0.36, 0.21, "g", "giant"),
+      C(0, 0.55, 0.38, 0.28, "w", "huge", { t: "m", wt: 800 }), C(0.38, 0.55, 0.26, 0.28, "g", "x"),
+      C(0.64, 0.55, 0.36, 0.1, "g", "num", { cut: 0.45 }), C(0.64, 0.65, 0.36, 0.18, "w", "num"),
+      C(0, 0.83, 0.38, 0.17, "g", "huge", { t: "m", wt: 800, off: -0.12 }), C(0.38, 0.83, 0.62, 0.17, "k", "notes"),
+    ],
+    bands: [
+      C(0, 0, 1, 0.12, "g", "word", { t: "m", wt: 400, cut: 0.5, like: 1 }),
+      C(0, 0.12, 1, 0.18, "w", "word", { t: "m", wt: 400 }),
+      C(0, 0.3, 1, 0.22, "k", "huge", { t: "m", wt: 800, note: "sub", low: 0.16 }),
+      C(0, 0.52, 1, 0.26, "w", "huge", { t: "m", wt: 800, off: -0.03 }),
+      C(0, 0.78, 1, 0.12, "g", "word", { t: "m", wt: 500, cut: 0.55, like: 1 }),
+      C(0, 0.9, 0.62, 0.1, "k", "notes"), C(0.62, 0.9, 0.38, 0.1, "w", "num"),
+    ],
+    wire: [
+      C(0, 0, 2 / 3, 0.2, "w", "word", { t: "m", wt: 500 }), C(2 / 3, 0, 1 / 3, 0.2, "g", "x"),
+      C(0, 0.2, 1 / 3, 0.25, "g", "x"), C(1 / 3, 0.2, 2 / 3, 0.25, "k", "huge", { t: "m", wt: 800 }),
+      C(0, 0.45, 2 / 3, 0.15, "w", "word", { t: "m", wt: 400, cut: 0.4 }), C(2 / 3, 0.45, 1 / 3, 0.3, "w", "num"),
+      C(0, 0.6, 1 / 3, 0.15, "k", "notes"), C(1 / 3, 0.6, 1 / 3, 0.15, "g", "x"),
+      C(0, 0.75, 1 / 3, 0.25, "g", "x"), C(1 / 3, 0.75, 2 / 3, 0.25, "g", "huge", { t: "m", wt: 800, off: 0.04 }),
+    ],
+  };
+  const svgNS = "http://www.w3.org/2000/svg";
+  const cross = (w, h, color) => {
+    const sv = document.createElementNS(svgNS, "svg"); sv.setAttribute("class", "ptx"); sv.setAttribute("width", w); sv.setAttribute("height", h); sv.setAttribute("viewBox", "0 0 " + w + " " + h);
+    [[0, 0, w, h], [w, 0, 0, h]].forEach(([a, b, c, d]) => {
+      const l = document.createElementNS(svgNS, "line"); l.setAttribute("x1", a); l.setAttribute("y1", b); l.setAttribute("x2", c); l.setAttribute("y2", d);
+      l.setAttribute("stroke", color); l.setAttribute("stroke-width", "1"); l.setAttribute("pathLength", "1"); sv.appendChild(l);
+    });
+    return sv;
+  };
+  const cellOf = (c, W, H, neg, wire, words, sub, year, title, d, cells, mode) => {
+    const x = Math.round(c.x * W), y = Math.round(c.y * H), w = Math.round((c.x + c.w) * W) - x, h = Math.round((c.y + c.h) * H) - y;
+    const e = document.createElement("div"); e.className = "ptg";
+    e.style.cssText = "left:" + x + "px;top:" + y + "px;width:" + w + "px;height:" + h + "px";
+    e.style.setProperty("--d", d.toFixed(3) + "s");
+    /* the wireframe: every cell an empty box, crossed */
+    if (wire) { e.classList.add("ptg-wire"); e.style.background = PAL.w; e.appendChild(cross(w, h, PAL.k)); return e; }
+    const fk = neg ? NEG[c.f] : c.f, ink = fk === "k" ? PAL.w : PAL.k;
+    e.style.background = PAL[fk];
+    e.style.setProperty("--ink", ink);
+    let k = c.k;
+    if ((k === "num") && !year) k = "x";
+    if (k === "x") { e.appendChild(cross(w, h, ink)); return e; }
+    if (k === "notes") {
+      const n = document.createElement("div"); n.className = "ptn";
+      [title, sub, "", "Work by Jeremy Prasatik"].forEach((t) => { const p = document.createElement("p"); p.textContent = t || " "; n.appendChild(p); });
+      e.appendChild(n); return e;
+    }
+    if (!k) return e;
+    const txt = k === "num" ? String(year) : k === "giant" ? words.m : c.t === "m" ? words.m : words.w;
+    const r = Math.min(2, window.devicePixelRatio || 1);
+    const cv = document.createElement("canvas"); cv.className = "ptwd";
+    cv.width = Math.ceil(w * r); cv.height = Math.ceil(h * r); cv.style.width = w + "px"; cv.style.height = h + "px";
+    const cx = cv.getContext("2d"); cx.scale(r, r);
+    const wt = k === "giant" ? 800 : c.wt || 400, pad = Math.max(10, Math.round(Math.min(W, 900) * 0.022));
+    /* a word fits its cell's width, but never taller than the cell (a
+       short name would blow up); a cut word takes the size of the cell it
+       is `like` and drops below its own bottom edge */
+    const sizeFor = (cc, t2) => {
+      const cw = Math.round((cc.x + cc.w) * W) - Math.round(cc.x * W), ch = Math.round((cc.y + cc.h) * H) - Math.round(cc.y * H);
+      return Math.min(fitPx(t2, cw - pad * 2, wt), (ch * 0.7) / capOf(wt));
+    };
+    if (k === "word" || k === "num") {
+      const px = c.like != null && cells[c.like] ? sizeFor(cells[c.like], txt) : sizeFor(c, txt), cap = capOf(wt) * px;
+      const base = c.cut ? h + cap * c.cut : (h + cap) / 2;
+      draw(cx, txt, pad, base, px, wt, ink);
+    } else if (k === "huge") {
+      /* as tall as the cell allows, running off its right edge */
+      const px = (h * (c.low ? 0.92 : 0.8)) / capOf(wt);
+      draw(cx, txt, c.off != null ? w * c.off : pad, h * (c.low ? 1 + c.low : 0.9), px, wt, ink);
+    } else if (k === "giant") {
+      const G = GIANT[mode] || { base: 0.5, cap: 0.25 }, gwt = 800;
+      const px = (G.cap * H) / capOf(gwt);
+      draw(cx, words.m, pad - x, G.base * H - y, px, gwt, ink);
+    }
+    e.appendChild(cv);
+    if (c.note === "sub" && sub) { const n = document.createElement("div"); n.className = "ptn ptn-top"; n.textContent = sub; e.appendChild(n); }
+    return e;
+  };
+  const gridMode = (pt, stacks, title, sub, mode) => {
+    const W = stacks[0].clientWidth || pt.clientWidth || innerWidth, H = pt.clientHeight || innerHeight;
+    const m = mainOf(title), words = { m, w: wordOf(m) }, year = META.y || "";
+    const cells = LAYOUTS[mode], x = X();
+    stacks.forEach((s, k) => {
+      /* the falling panel (k 0): the poster in negative, the bands in
+         negative, the wireframe; the rising one (k 1) the thing itself */
+      const neg = k === 0 && mode !== "wire", wire = k === 0 && mode === "wire";
+      cells.forEach((c) => s.appendChild(cellOf(c, W, H, neg, wire, words, sub, year, title, (c.y + c.x * 0.35) * 0.42 * x, cells, mode)));
+    });
+  };
+
   /* the name down both panels, sized so the whole line fits the panel's
      measure and counted so a whole number of lines fills its height */
   const lay = (pt, base, title, sub, mode) => {
@@ -189,8 +340,9 @@
     pt.classList.add("pt-run");
     void pt.offsetHeight; /* the lines' start state, committed before they move */
   };
-  async function go(href, title, sub) {
+  async function go(href, title, sub, meta) {
     if (!href || busy) return;
+    META = meta || {};
     if (matchMedia("(prefers-reduced-motion: reduce)").matches) { location.href = href; return; }
     busy = true; build();
     lay(PT, "pt", title, sub, MODE);
@@ -221,7 +373,8 @@
     l.firstChild.nodeValue = title || "";
     const t = l.querySelector(".sub"); if (t) t.textContent = "  " + (sub || "");
   });
-  const cover = (title, sub) => {
+  const cover = (title, sub, meta) => {
+    META = meta || {};
     if (!COL) COL = make("ptc");
     if (colAt === 1 || colAt === 2) {
       if (COL.classList.contains("ptm")) { const st = [...COL.querySelectorAll(".ptstack")]; st.forEach((s) => s.replaceChildren()); fillMode(COL, st, title, sub, MODE || "fill"); }

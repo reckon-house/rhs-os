@@ -82,3 +82,26 @@
 .pt-m-ramp-outline .ptb { --sc: var(--paper, #fff); --scs: rgba(255, 255, 255, 0.48); }
 .pt-m-ramp-outline .ptl.o { color: transparent; -webkit-text-stroke: 1.2px var(--sc); }
 .pt-m-ramp-outline .ptl.o .sub { color: transparent; -webkit-text-stroke: 1.2px var(--scs); }
+
+/* ── THE POSTER (8 Oct 2026): ?curtain=poster | bands | wire (curtain.js).
+   The stack is a grid of cells at the panel's full size; each cell wipes
+   open in reading order (--d), its word rises inside it, its crosses
+   draw. On the lift the cells close upward as the black does ── */
+.pt-m-poster .ptstack, .pt-m-bands .ptstack, .pt-m-wire .ptstack { inset: 0; display: block; padding: 0; }
+.ptg { position: absolute; overflow: hidden; box-shadow: inset 0 0 0 0.5px rgba(0, 0, 0, 0.85);
+  clip-path: inset(0 0 100% 0); transition: clip-path 0.46s cubic-bezier(0.2, 0.7, 0.2, 1) var(--d, 0s); }
+.pt-1 .ptg { clip-path: inset(0 0 0 0); }
+.ptg .ptwd { position: absolute; left: 0; top: 0; transform: translate3d(0, 42%, 0);
+  transition: transform 0.62s cubic-bezier(0.16, 1, 0.3, 1) calc(var(--d, 0s) + 0.06s); }
+.pt-1 .ptg .ptwd { transform: translate3d(0, 0, 0); }
+.ptx { position: absolute; inset: 0; }
+.ptx line { stroke-dasharray: 1; stroke-dashoffset: 1; transition: stroke-dashoffset 0.5s cubic-bezier(0.33, 0.28, 0.12, 1) calc(var(--d, 0s) + 0.08s); }
+.pt-1 .ptx line { stroke-dashoffset: 0; }
+.ptn { position: absolute; left: 12px; top: 12px; right: 12px; color: var(--ink, #000); font-size: 12px; line-height: 1.32; font-weight: 500; letter-spacing: -0.01em; }
+.ptn p { margin: 0; }
+.ptn-top { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+/* the wireframe's boxes: white, a black rule, crossed */
+.ptg-wire { box-shadow: inset 0 0 0 0.75px #0b0b0b; }
+/* the lift: each cell closes upward, the last first */
+.pt-3 .ptg { clip-path: inset(0 0 100% 0); transition: clip-path 0.38s cubic-bezier(0.5, 0, 0.75, 0) var(--d, 0s); }
+@media (prefers-reduced-motion: reduce) { .ptg, .ptg .ptwd, .ptx line { transition: none !important; } }
