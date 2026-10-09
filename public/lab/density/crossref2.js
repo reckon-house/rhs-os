@@ -2345,7 +2345,12 @@
     /* a picture landing on a box that shows another picture covers only
        the part of the box on screen, then gives way to it: covering the
        whole of a hero wider than the stage would blow it up */
-    const FA = full(A0), FB = full(opt.fitB ? B : B0), s = FA.w / FB.w;
+    /* a picture drifting in its box (.par, .par2: drawn a tenth taller and
+       moved) flies from, or lands on, where it is drawn, not the box's
+       middle, so the flight does not start or end with a jump (8 Oct 2026,
+       the drift on the shelves) */
+    const drawn = (bx, R) => { const im2 = bx.classList && (bx.classList.contains("par") || bx.classList.contains("par2")) ? bx.querySelector("img") : null; return im2 ? im2.getBoundingClientRect() : R; };
+    const FA = full(drawn(fromBox, A0)), FB = full(opt.fitB ? B : drawn(toBox, B0)), s = FA.w / FB.w;
     const im = document.createElement("img"); im.className = "flyer"; im.alt = ""; im.decoding = "sync";
     im.src = shownSrc(fromBox, f);
     Object.assign(im.style, { left: FB.x + "px", top: FB.y + "px", width: FB.w + "px", height: FB.h + "px" });

@@ -179,6 +179,30 @@
        observer first reports, so a shelf carried on from a foot that
        showed them has them on its first frame (4 Oct) */
     S.items.forEach((t) => { if (t.fig.offsetTop < S.avail) { S.io.unobserve(t.box); load(t.box, S); } });
+    /* the drift (8 Oct 2026, his "can we make the right column images in
+       the category sections have the subtle up/down movment within the mask
+       like the case studies?"): the rooms' own, a picture drawn a tenth
+       taller than its box and moving up through that tenth as it crosses
+       the glass (study-panel.js, .sp-pic.par). Only where the taller
+       drawing still keeps to half the file's pixels, never on a
+       transparent picture or a running reel, never in a hover's preview */
+    const mo = !still() && !ctx.preview;
+    S.items.forEach((t) => {
+      const f = t.box._f, w = t.box.offsetWidth, h = t.box.offsetHeight;
+      const ok = mo && f && !f.alpha && !(window.XREF_LIVE && window.XREF_LIVE(f)) && w && h && Math.max(w / f.w, (h * 1.1) / f.h) <= 0.5;
+      t.box.classList.toggle("par", !!ok);
+    });
+    drift(S);
+  };
+  const drift = (S) => {
+    const sc = S.ctx.scroller; if (!sc) return;
+    const cr = sc.getBoundingClientRect();
+    S.items.forEach((t) => {
+      if (!t.box.classList.contains("par")) return;
+      const r = t.box.getBoundingClientRect(); if (r.bottom < cr.top || r.top > cr.bottom) return;
+      const k = Math.max(0, Math.min(1, (cr.bottom - r.top) / (cr.height + r.height)));
+      t.box.style.setProperty("--py", (-0.1 * r.height * k).toFixed(1) + "px");
+    });
   };
   /* one opener: its figure, the box the stage gives it, its credit. rh
      carries the rhythm from one to the next: a tall one comes when its
@@ -315,6 +339,9 @@
     const S = { ctx, D: ctx.D || window.D, esc: ctx.esc || (ctx.D || window.D).esc, lbl: ctx.label || ((t) => t), ks: (ctx.studies || []).slice(), root: el("div", "xk"), io: null };
     container.appendChild(S.root);
     layout(S);
+    let dT = 0;
+    const onScroll = () => { if (!dT) dT = requestAnimationFrame(() => { dT = 0; drift(S); }); };
+    if (ctx.scroller && !ctx.preview) ctx.scroller.addEventListener("scroll", onScroll, { passive: true });
     S.root.addEventListener("click", (ev) => {
       if (ev.defaultPrevented || ev.metaKey || ev.ctrlKey || ev.shiftKey || ev.button) return;
       const fig = ev.target.closest(".xk-it"); if (!fig || !S.root.contains(fig)) return;
@@ -333,7 +360,7 @@
     });
     S.root.addEventListener("pointerleave", () => { if (S.hov) { S.hov = null; ctx.hover(null); } });
     return {
-      destroy() { if (S.io) S.io.disconnect(); if (S.far) S.far.disconnect(); S.units.forEach((u) => { if (u._an) u._an.cancel(); }); S.root.remove(); },
+      destroy() { if (ctx.scroller) ctx.scroller.removeEventListener("scroll", onScroll); cancelAnimationFrame(dT); if (S.io) S.io.disconnect(); if (S.far) S.far.disconnect(); S.units.forEach((u) => { if (u._an) u._an.cancel(); }); S.root.remove(); },
       tileFor(k) { const t = S.items.find((x) => x.k === k); return t ? t.box : null; },
       onResize() {
         if (Math.abs(ctx.width - S.W) <= 30 && Math.abs(ctx.height - S.avail) <= 80 && !!ctx.phone === S.ph) return;
