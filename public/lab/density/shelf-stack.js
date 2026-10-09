@@ -58,9 +58,12 @@
      with the project text below": a tall one takes the stage's whole width
      like any opener, as tall as 4:5 or the glass allows, its credit under
      it ── */
+  /* Capitan sits on its lockup's middle, measured at 0.502 across the
+     file (8 Oct 2026, his "can we make sure the skull logo in the middle
+     is centered?"); 0.56 had set the skull left of the box's middle */
   const TALL = {
     "branding-graphics": 0.59, "neiman-marcus": 0.57, "nordstrom-framework": 0.48, "amber-shockey-co": 0.39,
-    "loved-by-nordstrom": 0.76, "capitan-boot-co": 0.56, "j-christianson": 0.52, "you-by-sally": 0.52,
+    "loved-by-nordstrom": 0.76, "capitan-boot-co": 0.502, "j-christianson": 0.52, "you-by-sally": 0.52,
     "fairview-bedroom": 0.28, "big-bend": 0.47, "hill-country-kitchen": 0.47, "hill-country-bath": 0.52,
     "black-white-type": 0.34, "hill-country-living": 0.64, "floor-and-decor": 0.33, "fairview-sitting": 0.52,
     "fairview-entry": 0.28, "chalet": 0.38, "arc": 0.5, "robert-rodriguez": 0.515,
@@ -191,6 +194,13 @@
       const f = t.box._f, w = t.box.offsetWidth, h = t.box.offsetHeight;
       const ok = mo && f && !f.alpha && !(window.XREF_LIVE && window.XREF_LIVE(f)) && w && h && Math.max(w / f.w, (h * 1.1) / f.h) <= 0.5;
       t.box.classList.toggle("par", !!ok);
+      /* a tall crop drawn a tenth taller is a tenth wider too, so its
+         object-position is worked out again for the drawn size, or the
+         crop's middle would slide off fx (Capitan's skull did) */
+      if (t.box._fx != null) {
+        t.box._pos = posOf(f, w, ok ? h * 1.1 : h, t.box._fx);
+        t.box.querySelectorAll("img").forEach((im) => { im.style.objectPosition = t.box._pos; });
+      }
     });
     drift(S);
   };
@@ -223,7 +233,7 @@
     const { w, h } = tb || (live ? { w: S.W, h: Math.round(Math.min(S.W * 9 / 16, S.avail * 0.9)) } : boxOf(S, f));
     const fig = el("figure", "xk-it" + (tb ? " tall" : w < S.W - 2 ? " narrow" : "")); fig.dataset.k = k;
     const box = el("div", "xk-pic" + (f.alpha ? " alpha" : "")); box.style.width = w + "px"; box.style.height = h + "px"; box._f = f;
-    if (tb) box._pos = posOf(f, w, h, TALL[k]);
+    if (tb) { box._fx = TALL[k]; box._pos = posOf(f, w, h, TALL[k]); }
     fig.appendChild(box);
     /* the study's own number, and the sections this entry sits in, each
        a way straight to its place (27 Sept, the locators) */
