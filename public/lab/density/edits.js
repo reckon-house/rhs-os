@@ -1926,10 +1926,10 @@ window.DENSITY_EDITS = {
    "chapters": {
     "Three ideas Ulta and Sephora": {
      "t": "The strategy is three ideas Ulta and Sephora can't easily copy,",
-     "g": "the doer's store, color expertise and education",
+     "g": "a store for people who do it themselves, color expertise and education",
      "pic": "sally-design-system-email-punch-volume.jpg",
      "li": [
-      "The doer's store | going platinum takes six steps and about two hours.",
+      "Projects | going platinum takes six steps and about two hours.",
       "Color expertise | a level and a tone name each shade, and the level runs from one, black, to ten, the lightest blonde.",
       "Education | a licensed colorist checks the plan before anyone mixes."
      ]

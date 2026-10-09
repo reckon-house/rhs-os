@@ -124,7 +124,7 @@ export const sallyDesignSystemCaseStudy: CaseStudy = {
         { label: "Angle", value: "The creative and the engine are one system: every template is a set of slots the Marketing OS fills from a request." },
       ],
       abstract:
-        "An email or a homepage at Sally Beauty used to take weeks to make.\n\nI designed a digital design system for both, starting from a strategy: three ideas Ulta and Sephora can't easily copy, the doer's store, color expertise and education. It covers type, color, scale, when to use photography and when to use graphics, and the templates. So far it holds 11 homepage concepts at desktop and phone sizes, 21 homepage modules, 14 email building blocks and 15 example emails.\n\nEvery template is built for the Sally Marketing OS, which I also built. A request draws photography from the Asset Hub, products from the product tool and rules from the brand guidelines, and the AI fills the template in every shape a channel needs. Work that took weeks now takes minutes.",
+        "An email or a homepage at Sally Beauty used to take weeks to make.\n\nI designed a digital design system for both, starting from a strategy: three ideas Ulta and Sephora can't easily copy, a store for people who do it themselves, color expertise and education. It covers type, color, scale, when to use photography and when to use graphics, and the templates. So far it holds 11 homepage concepts at desktop and phone sizes, 21 homepage modules, 14 email building blocks and 15 example emails.\n\nEvery template is built for the Sally Marketing OS, which I also built. A request draws photography from the Asset Hub, products from the product tool and rules from the brand guidelines, and the AI fills the template in every shape a channel needs. Work that took weeks now takes minutes.",
     },
 
     // ── HERO ──
@@ -150,7 +150,7 @@ export const sallyDesignSystemCaseStudy: CaseStudy = {
       id: "idea-text",
       type: "text",
       size: "subhead",
-      content: "The doer's store, color expertise and education, each one a story the templates can tell.",
+      content: "A store for people who do it themselves, color expertise and education, each one a story the templates can tell.",
     },
     {
       id: "idea-footnote",
@@ -371,7 +371,7 @@ export const sallyDesignSystemCaseStudy: CaseStudy = {
     /* the stories, as sections of the homepages (3 Oct 2026, his "we have
        these stories but they're not in context and not exactly 'real' so i
        feel like it would be hard for a user to understand what exactly they
-       are", then "yea let's give it a try!"): the doer's store is the
+       are", then "yea let's give it a try!"): doing it yourself is the
        Platinum Kit on the Lookbook, color expertise the color code on
        Colorfest, education the colorist band on The Sale. One frame, each
        tab opening its homepage at its story, working. The Idea's animation
@@ -409,7 +409,7 @@ export const sallyDesignSystemCaseStudy: CaseStudy = {
       viewHeight: 900,
       mode: "scroll",
       tabs: [
-        { label: "The doer's store", demo: "lookbook-images", at: "kit", title: "The doer's store", note: "On the Lookbook, under the looks: the Platinum Kit. Take a piece out and the price follows." },
+        { label: "Do it yourself", demo: "lookbook-images", at: "kit", title: "Do it yourself", note: "On the Lookbook, under the looks: the Platinum Kit. Take a piece out and the price follows." },
         { label: "Color expertise", demo: "colorfest", at: "code", title: "Color expertise", note: "On Colorfest, after the lineup: pick a level, then a tone, and the code builds itself." },
         { label: "Education", demo: "colorfest", at: "lcod", title: "Education", note: "On Colorfest, under the picks: a licensed colorist answers a photo with a formula, and one tap shops it." },
       ],
