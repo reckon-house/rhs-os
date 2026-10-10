@@ -148,4 +148,13 @@
 /* every other line drawn, in its band's ink, the stroke a touch heavier
    as the line grows (--sw, 1.2px to 2px) */
 .pt.pt-mb .ptl.o { color: transparent; -webkit-text-stroke: var(--sw, 1.3px) var(--sc); }
+/* the plain ones (rampfill, rampsolid) have no band to crop against, so a
+   cut tail or accent reads as a fault, not a crop. A line box of 0.86em
+   cuts Avenir Next's descenders by 0.12em and its ascenders by 0.02em
+   (measured), so the crop opens 0.06em above and 0.16em below without
+   moving the line, and the name starts and leaves past it */
+.pt.pt-mbp .ptl { padding: 0.06em 0 0.16em; margin: -0.06em 0 -0.16em; }
+.pt-mbp .ptr { translate: 0 calc(100% + 0.4em); }
+.pt-mbp.pt-1 .ptr { translate: 0 0; }
+.pt-mbp.pt-3 .ptr { translate: 0 calc(-100% - 0.3em); }
 @media (prefers-reduced-motion: reduce) { .pt-mb .ptr { transition: none !important; } }

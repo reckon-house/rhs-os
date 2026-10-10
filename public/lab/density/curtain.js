@@ -70,6 +70,9 @@
        ?curtain=rhythm    the same, the sizes in an uneven beat, like the
                           poster's
        ?curtain=rampfill  Ramp's sizes edge to edge, no fills
+       ?curtain=rampsolid Ramp fill with every line solid, none drawn (his
+                          "can we try ramp fill but without the outlines
+                          text version?")
 
    FIVE MORE (9 Oct 2026, his "what are a handful of other graphic/design
    treatments we could do with the transitions?"), switches too:
@@ -90,7 +93,7 @@
 (() => {
   const STEP = 0.03, STEP_OUT = 0.02, MIN = 14;
   const X = () => window.CURTAIN_X || 1;
-  const MODES = ["ramp", "ramp-demi", "ramp-outline", "fill", "outline", "drift", "giant", "poster", "bands", "wire", "specimen", "spine", "numeral", "grid", "frames", "merge", "swell", "rhythm", "rampfill"];
+  const MODES = ["ramp", "ramp-demi", "ramp-outline", "fill", "outline", "drift", "giant", "poster", "bands", "wire", "specimen", "spine", "numeral", "grid", "frames", "merge", "swell", "rhythm", "rampfill", "rampsolid"];
   const GRID = ["poster", "bands", "wire", "numeral", "grid", "frames"];
   /* what a grid treatment knows besides the name: the study's year */
   let META = {};
@@ -172,7 +175,7 @@
         l.appendChild(run(words.length ? words[i % words.length] : name, 1)); out.push(l);
       }
       top = -lh / 2;
-    } else if (mode === "merge" || mode === "swell" || mode === "rhythm" || mode === "rampfill") {
+    } else if (mode === "merge" || mode === "swell" || mode === "rhythm" || mode === "rampfill" || mode === "rampsolid") {
       /* the heights first, as shares of the column, then scaled so they add
          up to it exactly, on whole pixels so no seam shows between bands */
       let parts, fills;
@@ -182,12 +185,13 @@
         parts = []; for (let f = 13, sum = 0; sum < H * 0.9 && parts.length < 16; f *= 1.28) { parts.push(f); sum += f; }
         fills = ["g", "w", "k", "w", "g", "k", "w", "k"];
       }
-      const tot = parts.reduce((a, b) => a + b, 0), big = Math.max(...parts), banded = mode !== "rampfill";
+      const plain = mode === "rampfill" || mode === "rampsolid", solid = mode === "rampsolid";
+      const tot = parts.reduce((a, b) => a + b, 0), big = Math.max(...parts), banded = !plain;
       /* the banded ones repeat the name Bands repeats, the study's main name
          ("Ivy Park" of "Ivy Park by Beyoncé"); the plain one the whole title,
          as Outline does */
       const nm = banded ? mainOf(name) : name;
-      pt.classList.add("pt-mb");
+      pt.classList.add("pt-mb"); if (plain) pt.classList.add("pt-mbp");
       let acc = 0, at = 0;
       parts.forEach((part, i) => {
         acc += part;
@@ -195,7 +199,7 @@
         /* Bands' weights on the banded ones, heavier as a line grows;
            Ramp's medium on the plain one */
         const fs = lh / 0.86, r = part / big, wt = banded ? (r >= 0.62 ? 800 : r >= 0.32 ? 600 : 500) : 500;
-        const l = line(fs >= 28 && i % 2 ? "o" : "", i, step, fs, lh);
+        const l = line(!solid && fs >= 28 && i % 2 ? "o" : "", i, step, fs, lh);
         /* the site's ladder is set for medium; a heavier weight tracks in
            less, or its round letters run together ("pit" in Capitan did) */
         l.style.letterSpacing = (track(fs) * (wt >= 800 ? 0.4 : wt >= 600 ? 0.7 : 1)).toFixed(4) + "em"; l.style.fontWeight = wt;
