@@ -54,7 +54,7 @@
   <div class="mk">Reckon*House</div>
   <div>
     <h1>The curtain</h1>
-    <p class="lead">The transition that plays when a study opens from the index, over the content column, in a loop. The swipe and the lines rising in and out stay the same; the type is set twenty-one ways, Bands first, since it is the site's. Slow it down to watch the lines.</p>
+    <p class="lead">The transition that plays when a study opens from the index, over the content column, in a loop. The swipe and the lines rising in and out stay the same; the type is set thirty-one ways, Bands first, since it is the site's. Slow it down to watch the lines.</p>
   </div>
   <div>
     <div class="lbl">Treatment</div>
@@ -74,6 +74,16 @@
   /* [the treatment, its name, what it does, its switch on the site] */
   const MODES = [
     ["bands", "Bands", "The site's curtain since 8 Oct, after your Swiss poster: the name in bands of weight and fill, each band cutting it off, in the site's own grey.", ""],
+    ["headline", "Headline", "After the black post you sent: the column floods black and the study's name sits level in the middle in capitals, its own name bold and the rest light, each letter rising through its word in turn. Its line and year sit small in the top corners.", "headline"],
+    ["sequence", "Sequence", "Headline, with the room's own sections flipping through the same place first, a count in the corner, landing on the name.", "sequence"],
+    ["list", "List", "After Rams' ten principles: the room's own sections numbered down a grey sheet at the statement's size, the name, line and year turned up its foot.", "list"],
+    ["listmono", "List, mono", "List in a mono with the numbers in ink, as the poster sets it.", "listmono"],
+    ["card", "Card", "The homepage's black card, the study's name where the statement sits, its line and year as the small line over it.", "card"],
+    ["caption", "Caption", "The black card with only a caption at its foot, at the picture captions' size, under a hairline drawn across it.", "caption"],
+    ["year", "Year", "The black card, the year counted back from this one through a mask, large, the name and line small over it.", "year"],
+    ["paper", "Paper", "Card in white, the name in ink.", "paper"],
+    ["scale", "Scale", "A Braun radio's tuning scale of the index's years on the site's grey; an orange needle glides back from now to the study's year.", "scale"],
+    ["grille", "Grille", "A Braun speaker grille's dots fill the grey card from the top, and a small orange lamp by the name comes on when they are done.", "grille"],
     ["merge", "Merge", "Bands, Outline and Ramp as one: the name runs edge to edge on every line, the lines grow from small to huge, the fills are Bands', and every other line is drawn.", "merge"],
     ["swell", "Swell", "Merge, with the lines growing to the middle of the column and back down, so the biggest line sits in the center.", "swell"],
     ["rhythm", "Rhythm", "Merge, with the sizes in an uneven beat, small and huge next to each other, the way your poster mixes them.", "rhythm"],
@@ -96,11 +106,11 @@
     ["frames", "Frames", "A contact sheet of the study's own pictures, grey as it falls and in colour as the black rises, with the name on a band across it.", "frames"],
   ];
   const STUDIES = [
-    { t: "Ivy Park by Beyoncé", s: "Ecommerce, brand launch", y: 2016, img: "/case-studies/ivy-park/inset-hero.jpg", pics: ["ivy-park-debut-collection-beanie-portrait-dancer", "ivy-park-debut-collection-shop-the-look", "ivy-park-editorial-beanie-portrait-dancer", "ivy-park-experience-confidence-strength-inclusivity", "ivy-park-experience-courage-power-polygon-frames", "ivy-park-experience-page-hero-product-grid"].map((f) => "/lab/density/thumbs/ivy-park/" + f + "@384.webp") },
-    { t: "A.R.C. - AI Home Inventory", s: "App & brand development", y: 2025, img: "/case-studies/arc/arc-app-tablet-kitchen-living-room-lifestyle.jpg", pics: ["arc-app-dashboard-categories-configuration", "arc-app-living-room-furniture-selection", "arc-app-smartphone-wooden-table-mockup", "arc-dashboard-800", "arc-room-scanning-interface", "arc-ui-backup-status-account-info"].map((f) => "/lab/density/thumbs/arc/" + f + "@384.webp") },
-    { t: "Robert Rodriguez x Neiman’s", s: "Creative direction, design", y: 2024, img: "/case-studies/robert-rodriguez/neiman-marcus-robert-rodriguez-woman-cream-polka-dot-dress-pink-blazer-orange-yellow-backdrop-storefront-window-display-campaign.jpg", pics: ["neiman-marcus-robert-rodriguez-woman-curly-blonde-hair-yellow-blazer-coral-pink-top-red-lipstick-studio-portrait", "neiman-marcus-robert-rodriguez-woman-pink-blazer-beige-polka-dot-dress-orange-background-editorial-portrait", "neiman-marcus-robert-rodriguez-woman-pink-blazer-cream-polka-dot-ruffle-dress-orange-background-editorial-portrait", "neiman-marcus-robert-rodriguez-woman-yellow-lime-blazer-white-cropped-pants-nude-heels-studio-lookbook-portrait"].map((f) => "/lab/density/thumbs/robert-rodriguez/" + f + "@384.webp") },
-    { t: "Sally Marketing OS", s: "Product design, engineering", y: 2025, img: "/case-studies/sally-os/heroes/sally-os-asset-hub-platform-hero.jpg", pics: ["/case-studies/sally-os/heroes/sally-os-asset-hub-platform-hero.jpg", "/case-studies/sally-os/heroes/sally-os-platform-hero.jpg"] },
-    { t: "Hill Country home, kitchen", s: "Interior design, kitchen", y: 2023, img: "/case-studies/hill-country-kitchen/hill-country-kitchen-wide-dining-island-windows.jpg", pics: ["hill-country-kitchen-dining-chair-leather-detail", "hill-country-kitchen-dining-table-leg-rug-detail", "hill-country-kitchen-faucet-range-marble-island-detail", "hill-country-kitchen-full-view-beams-runner-island", "hill-country-kitchen-glass-cabinet-clock-marble", "hill-country-kitchen-marble-vase-cabinet-vignette"].map((f) => "/lab/density/thumbs/hill-country-kitchen/" + f + "@384.webp") },
+    { t: "Ivy Park by Beyoncé", list: ["The Brief", "The Launch Page", "The Campaign", "In House"], s: "Ecommerce, brand launch", y: 2016, img: "/case-studies/ivy-park/inset-hero.jpg", pics: ["ivy-park-debut-collection-beanie-portrait-dancer", "ivy-park-debut-collection-shop-the-look", "ivy-park-editorial-beanie-portrait-dancer", "ivy-park-experience-confidence-strength-inclusivity", "ivy-park-experience-courage-power-polygon-frames", "ivy-park-experience-page-hero-product-grid"].map((f) => "/lab/density/thumbs/ivy-park/" + f + "@384.webp") },
+    { t: "A.R.C. - AI Home Inventory", list: ["The Problem", "The Scan", "Categories", "Coverage", "How It Was Built", "The App", "Speed", "Where It Started"], s: "App & brand development", y: 2025, img: "/case-studies/arc/arc-app-tablet-kitchen-living-room-lifestyle.jpg", pics: ["arc-app-dashboard-categories-configuration", "arc-app-living-room-furniture-selection", "arc-app-smartphone-wooden-table-mockup", "arc-dashboard-800", "arc-room-scanning-interface", "arc-ui-backup-status-account-info"].map((f) => "/lab/density/thumbs/arc/" + f + "@384.webp") },
+    { t: "Robert Rodriguez x Neiman’s", list: ["The Technique", "The Campaign", "Type and Color"], s: "Creative direction, design", y: 2024, img: "/case-studies/robert-rodriguez/neiman-marcus-robert-rodriguez-woman-cream-polka-dot-dress-pink-blazer-orange-yellow-backdrop-storefront-window-display-campaign.jpg", pics: ["neiman-marcus-robert-rodriguez-woman-curly-blonde-hair-yellow-blazer-coral-pink-top-red-lipstick-studio-portrait", "neiman-marcus-robert-rodriguez-woman-pink-blazer-beige-polka-dot-dress-orange-background-editorial-portrait", "neiman-marcus-robert-rodriguez-woman-pink-blazer-cream-polka-dot-ruffle-dress-orange-background-editorial-portrait", "neiman-marcus-robert-rodriguez-woman-yellow-lime-blazer-white-cropped-pants-nude-heels-studio-lookbook-portrait"].map((f) => "/lab/density/thumbs/robert-rodriguez/" + f + "@384.webp") },
+    { t: "Sally Marketing OS", list: ["The Problem", "Trends", "Brand Brain", "Campaigns", "Asset Hub", "Utilities", "How It Was Built"], s: "Product design, engineering", y: 2025, img: "/case-studies/sally-os/heroes/sally-os-asset-hub-platform-hero.jpg", pics: ["/case-studies/sally-os/heroes/sally-os-asset-hub-platform-hero.jpg", "/case-studies/sally-os/heroes/sally-os-platform-hero.jpg"] },
+    { t: "Hill Country home, kitchen", list: ["The Materials", "Cabinetry and Hardware", "The Island", "The Dining End", "The Hub"], s: "Interior design, kitchen", y: 2023, img: "/case-studies/hill-country-kitchen/hill-country-kitchen-wide-dining-island-windows.jpg", pics: ["hill-country-kitchen-dining-chair-leather-detail", "hill-country-kitchen-dining-table-leg-rug-detail", "hill-country-kitchen-faucet-range-marble-island-detail", "hill-country-kitchen-full-view-beams-runner-island", "hill-country-kitchen-glass-cabinet-clock-marble", "hill-country-kitchen-marble-vase-cabinet-vignette"].map((f) => "/lab/density/thumbs/hill-country-kitchen/" + f + "@384.webp") },
   ];
   STUDIES.forEach((s) => { const i = new Image(); i.src = s.img; });
   const q = new URLSearchParams(location.search);
@@ -152,7 +162,7 @@
     while (id === run) {
       const s = STUDIES[n++ % STUDIES.length];
       window.Curtain.setMode(mode);
-      await window.Curtain.cover(s.t, s.s, { y: s.y, pics: s.pics });
+      await window.Curtain.cover(s.t, s.s, { y: s.y, pics: s.pics, list: s.list });
       $("pic").src = s.img;
       await wait(420 * x);
       await window.Curtain.lift();

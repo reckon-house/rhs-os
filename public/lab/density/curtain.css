@@ -158,3 +158,141 @@
 .pt-mbp.pt-1 .ptr { translate: 0 0; }
 .pt-mbp.pt-3 .ptr { translate: 0 calc(-100% - 0.3em); }
 @media (prefers-reduced-motion: reduce) { .pt-mb .ptr { transition: none !important; } }
+
+/* ── QUIET (10 Oct 2026): ?curtain=card | caption | year | paper
+   (curtain.js). One panel, the open half's own card (#field in
+   crossref2.css: 20px in, a 4px corner, its rise and its ease); the
+   falling white is not used. Its words rise as the statement's do
+   (crossref2.css @keyframes lift: 10px, 0.5s) ── */
+.ptq .ptw { display: none; }
+.ptq .ptb { inset: var(--m, 20px) var(--m, 20px) var(--m, 20px) 0; background: #000;
+  clip-path: inset(100% 0 0 0 round var(--pr, 4px)); }
+.pt.ptq:not(.ptc) .ptb { left: var(--m, 20px); }
+.ptq.pt-run .ptb { transition: clip-path calc(0.55s * var(--x, 1)) var(--ease, cubic-bezier(0.2, 0.7, 0.2, 1)); }
+.ptq.pt-1 .ptb { clip-path: inset(0 0 0 0 round var(--pr, 4px)); }
+.ptq.pt-3 .ptb { clip-path: inset(0 0 100% 0 round var(--pr, 4px)); transition: clip-path calc(0.5s * var(--x, 1)) var(--ease, cubic-bezier(0.2, 0.7, 0.2, 1)) calc(0.1s * var(--x, 1)); }
+.pt-q-paper .ptb { background: #fff; }
+.ptq .ptstack { inset: 0; padding: 0; display: block; }
+.pq { position: absolute; left: 32px; right: 32px; bottom: 20px; color: #fff; font-weight: 500; }
+.pt-q-paper .pq { color: #000; }
+.pq > :is(.pq-by, .pq-say, .pq-cap, .pq-yr, .pq-corner) { opacity: 0; transform: translate3d(0, 10px, 0);
+  transition: opacity calc(0.5s * var(--x, 1)) var(--ease, cubic-bezier(0.2, 0.7, 0.2, 1)), transform calc(0.5s * var(--x, 1)) var(--ease, cubic-bezier(0.2, 0.7, 0.2, 1)); transition-delay: calc(0.1s * var(--x, 1)); }
+.pq > :is(.pq-by, .pq-say, .pq-cap, .pq-yr, .pq-corner) + :is(.pq-by, .pq-say, .pq-cap, .pq-yr, .pq-corner) { transition-delay: calc(0.16s * var(--x, 1)); }
+.ptq.pt-1 .pq > :is(.pq-by, .pq-say, .pq-cap, .pq-yr, .pq-corner) { opacity: 1; transform: none; }
+.ptq.pt-3 .pq > :not(.pq-hl) { opacity: 0; transform: translate3d(0, -6px, 0); transition: opacity calc(0.2s * var(--x, 1)) ease, transform calc(0.2s * var(--x, 1)) ease; transition-delay: calc(0s * var(--x, 1)); }
+/* the small line, as the statement's (.rest .prac.by) */
+.pq-by { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 26px; margin: 0 0 1.4em; font-size: 11px; font-weight: 600; line-height: 1.3; color: rgba(255, 255, 255, 0.46); }
+.pq-by .pq-t { color: #fff; }
+.pt-q-paper .pq-by { color: rgba(0, 0, 0, 0.46); }
+/* the statement's type (.rest .say in st-one) */
+.pq-say { max-width: 18em; font-size: var(--mx, 34px); line-height: 1.1; letter-spacing: -0.045em; text-wrap: pretty; }
+/* the hover caption's type (.cap), and a hairline drawn over it */
+.pq-cap { font-size: 13px; font-weight: 600; letter-spacing: -0.004em; line-height: 1.45; }
+.pq-cap .pq-g { margin-left: 0.4em; font-weight: 500; color: rgba(255, 255, 255, 0.46); }
+.pq-rule { height: 1px; margin: 0 0 14px; background: rgba(255, 255, 255, 0.3); transform: scaleX(0); transform-origin: 0 50%;
+  transition: transform calc(1.1s * var(--x, 1)) var(--ease, cubic-bezier(0.2, 0.7, 0.2, 1)) calc(0.12s * var(--x, 1)); }
+.ptq.pt-1 .pq-rule { transform: scaleX(1); }
+/* the year: a mask one year tall, the strip climbing through it from this
+   year to the study's, settling slowly as the index's own masks do */
+.pq-yr { height: 1em; margin: 0 0 -0.13em; overflow: hidden; line-height: 1; font-weight: 500; font-variant-numeric: tabular-nums; }
+.pq-strip { transform: translate3d(0, 0, 0); transition: transform calc(1.05s * var(--x, 1)) cubic-bezier(0.16, 1, 0.3, 1) calc(0.18s * var(--x, 1)); }
+.ptq.pt-1 .pq-strip { transform: translate3d(0, var(--roll, 0%), 0); }
+
+/* ── RAMS (10 Oct 2026): ?curtain=scale | grille. The face in the index's
+   grey (--hl), ink type, one signal colour (--sig) ── */
+.pt-q-scale .ptb, .pt-q-grille .ptb { background: var(--hl, #ECECEC); }
+.pt-q-scale .pq, .pt-q-grille .pq { color: #000; --sig: #EC5A24; }
+.pt-q-scale .pq-by, .pt-q-grille .pq-by { color: rgba(0, 0, 0, 0.46); }
+/* the tuning scale: a base drawn left to right, the ticks rising off it
+   in the same sweep, the years under it, the needle gliding back from now */
+.pq-tuner { position: relative; height: 84px; margin: 0 0 58px; }
+.pq-base { position: absolute; left: 0; right: 0; top: 56px; height: 1px; background: #000; transform: scaleX(0); transform-origin: 0 50%;
+  transition: transform calc(0.7s * var(--x, 1)) var(--ease, cubic-bezier(0.2, 0.7, 0.2, 1)) calc(0.1s * var(--x, 1)); }
+.ptq.pt-1 .pq-base { transform: scaleX(1); }
+.pq-ticks { position: absolute; inset: 0; }
+.pq-tk { position: absolute; top: 49px; width: 1px; height: 7px; margin-left: -0.5px; background: rgba(0, 0, 0, 0.36);
+  transform: scaleY(0); transform-origin: 50% 100%; transition: transform calc(0.35s * var(--x, 1)) var(--ease, cubic-bezier(0.2, 0.7, 0.2, 1)) var(--d, 0s); }
+.pq-tk.pq-tk-y { top: 40px; height: 16px; background: #000; }
+.ptq.pt-1 .pq-tk { transform: scaleY(1); }
+.pq-yl { position: absolute; top: 65px; transform: translateX(-50%); font-size: 11px; font-weight: 500; line-height: 1.3; color: rgba(0, 0, 0, 0.46);
+  font-variant-numeric: tabular-nums; opacity: 0; transition: opacity calc(0.4s * var(--x, 1)) ease calc(0.38s * var(--x, 1)); }
+.ptq.pt-1 .pq-yl { opacity: 1; }
+.pq-needle { position: absolute; top: 20px; width: 2px; height: 48px; margin-left: -1px; background: var(--sig); opacity: 0;
+  transform: translate3d(var(--from, 0px), 0, 0); transition: opacity calc(0.25s * var(--x, 1)) ease calc(0.24s * var(--x, 1)), transform calc(0.95s * var(--x, 1)) cubic-bezier(0.3, 0, 0.15, 1) calc(0.3s * var(--x, 1)); }
+.ptq.pt-1 .pq-needle { opacity: 1; transform: translate3d(0, 0, 0); }
+.pq-needle span { position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%); padding-bottom: 5px; font-size: 11px; font-weight: 600;
+  line-height: 1.3; color: #000; font-variant-numeric: tabular-nums; }
+.ptq.pt-3 :is(.pq-tuner, .pq-holes, .pq-led) { opacity: 0; transition: opacity calc(0.2s * var(--x, 1)) ease; }
+/* the grille: a field of holes, 8px apart, filling the face from the top
+   down; the lamp by the name comes on as it finishes */
+.pq-holes { position: absolute; left: 32px; right: 32px; top: 32px; border-radius: 6px;
+  background-image: radial-gradient(circle at center, rgba(0, 0, 0, 0.8) 0 1.2px, transparent 1.7px); background-size: 8px 8px; background-position: 0 0;
+  -webkit-mask-image: linear-gradient(180deg, #000 40%, transparent 60%); mask-image: linear-gradient(180deg, #000 40%, transparent 60%);
+  -webkit-mask-size: 100% 300%; mask-size: 100% 300%; -webkit-mask-position: 0 100%; mask-position: 0 100%;
+  transition: -webkit-mask-position calc(1.05s * var(--x, 1)) var(--ease, cubic-bezier(0.2, 0.7, 0.2, 1)) calc(0.15s * var(--x, 1)), mask-position calc(1.05s * var(--x, 1)) var(--ease, cubic-bezier(0.2, 0.7, 0.2, 1)) calc(0.15s * var(--x, 1)); }
+.ptq.pt-1 .pq-holes { -webkit-mask-position: 0 0; mask-position: 0 0; }
+.pq-led { position: absolute; right: 0; bottom: 0.9em; width: 7px; height: 7px; border-radius: 50%; background: rgba(0, 0, 0, 0.14);
+  transition: background-color calc(0.18s * var(--x, 1)) ease calc(0.95s * var(--x, 1)); }
+.ptq.pt-1 .pq-led { background: var(--sig); }
+
+/* ── THE LIST (10 Oct 2026): ?curtain=list | listmono. After Rams' "10
+   Principles" poster: the room's sections numbered at the head of a
+   sheet in the index's grey, wrapped lines hung from the text, the
+   study's name, line and year turned up the foot as the poster's
+   colophon is; each line rises in turn as the statement's words do ── */
+.pt-q-list .ptb, .pt-q-listmono .ptb { background: var(--hl, #ECECEC); }
+.pq.pq-list, .pq.pq-listmono { top: 32px; color: #000; }
+.pq-ol { margin: 0; padding: 0; list-style: none; font-size: var(--mx, 34px); line-height: 1.16; letter-spacing: -0.035em; }
+.pq-ol li { display: grid; grid-template-columns: 1.3em 1fr; column-gap: 0.4em; opacity: 0; transform: translate3d(0, 10px, 0);
+  transition: opacity calc(0.45s * var(--x, 1)) var(--ease, cubic-bezier(0.2, 0.7, 0.2, 1)) var(--d, 0s), transform calc(0.45s * var(--x, 1)) var(--ease, cubic-bezier(0.2, 0.7, 0.2, 1)) var(--d, 0s); }
+.ptq.pt-1 .pq-ol li { opacity: 1; transform: none; }
+.pq-ol .pq-n { text-align: right; color: rgba(0, 0, 0, 0.42); font-variant-numeric: tabular-nums; letter-spacing: 0; }
+.pq-colo { position: absolute; left: 0; bottom: 0; display: flex; flex-direction: column; writing-mode: vertical-rl; transform: rotate(180deg);
+  font-size: 13px; font-weight: 500; line-height: 1.32; letter-spacing: -0.004em; color: rgba(0, 0, 0, 0.46);
+  opacity: 0; transition: opacity calc(0.5s * var(--x, 1)) ease var(--d, 0.4s); }
+.pq-colo span:first-child { color: #000; font-weight: 600; }
+.ptq.pt-1 .pq-colo { opacity: 1; }
+/* the poster's own setting: a mono, numbers in ink, a touch smaller since
+   a mono runs wide (Menlo on a Mac; the poster's face is not on the site) */
+.pq-listmono .pq-ol { font-family: "SF Mono", ui-monospace, Menlo, Consolas, monospace; font-size: calc(var(--mx, 34px) * 0.92); font-weight: 400; line-height: 1.22; letter-spacing: 0; }
+.pq-listmono .pq-ol .pq-n { color: #000; }
+.pq-listmono .pq-colo { font-family: "SF Mono", ui-monospace, Menlo, Consolas, monospace; font-size: 12px; font-weight: 400; letter-spacing: 0; }
+.pq-listmono .pq-colo span:first-child { font-weight: 400; }
+
+/* ── THE HEADLINE (10 Oct 2026): ?curtain=headline | sequence. His black
+   post: a flood of black, one line of capitals level in the middle at
+   the statement's size, light with the name bold, small grey labels in
+   the corners. Each letter rises through its own word's mask in turn on
+   the index's long settling curve, and leaves upward the same way, the
+   card lifting a beat behind ── */
+.pq.pq-headline, .pq.pq-sequence { top: 0; bottom: 0; }
+.pq-corner { position: absolute; font-size: 11px; font-weight: 600; line-height: 1.3; color: rgba(255, 255, 255, 0.46); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.pq-tl { top: 26px; left: 0; }
+.pq-tr { top: 26px; right: 0; }
+.pq-bl { bottom: 24px; left: 0; }
+.ptq .pq-corner.pq-off { opacity: 0 !important; transition: opacity calc(0.25s * var(--x, 1)) ease !important; }
+.pq-hl, .pq-seq { position: absolute; left: 0; right: 0; top: 50%; transform: translateY(-50%); font-size: var(--mx, 34px); line-height: 1.12;
+  letter-spacing: 0.02em; text-transform: uppercase; font-weight: 400; color: #fff; }
+.pq-w { display: inline-block; overflow: hidden; vertical-align: top; padding: 0.16em 0.05em 0.12em; margin: -0.16em -0.05em -0.12em; }
+.pq-w.pq-b { font-weight: 700; }
+.pq-ch { display: inline-block; opacity: 0; transform: translate3d(0, 115%, 0);
+  transition: transform calc(0.84s * var(--x, 1)) cubic-bezier(0.16, 1, 0.3, 1), opacity calc(0.36s * var(--x, 1)) ease; transition-delay: calc(var(--t0, 0s) + var(--i, 0) * var(--cs, 24ms) * var(--x, 1)); }
+.ptq.pt-1 .pq-headline .pq-ch, .ptq .pq.pq-go .pq-ch { opacity: 1; transform: none; }
+.ptq.pt-3 .pq-ch { opacity: 0; transform: translate3d(0, -115%, 0);
+  transition: transform calc(0.38s * var(--x, 1)) cubic-bezier(0.5, 0, 0.75, 0), opacity calc(0.3s * var(--x, 1)) ease calc(0.06s * var(--x, 1)); transition-delay: calc(var(--i, 0) * 9ms * var(--x, 1)); }
+.pt-q-headline.pt-3 .ptb, .pt-q-sequence.pt-3 .ptb { transition-delay: calc(0.24s * var(--x, 1)); }
+/* the sequence: the room's sections on a strip in a one-line mask, each
+   step rolling the last up and out as the next comes up into place */
+.pq-seq { height: 1.12em; overflow: hidden; }
+.pq-sstrip { transform: translate3d(0, calc(var(--k, -1) * -1.12em), 0); transition: transform var(--st, 0.2s) cubic-bezier(0.7, 0, 0.2, 1); }
+.pq-sl { height: 1.12em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+/* the headline ones flood the whole column, edge to edge, as his black
+   post does, so nothing the column showed peeks round a card; the words
+   keep the card's places (20px in, 32px from the left, 52px from the
+   window) */
+.pt-q-headline .ptb, .pt-q-sequence .ptb { inset: 0; clip-path: inset(100% 0 0 0); }
+.pt.pt-q-headline:not(.ptc) .ptb, .pt.pt-q-sequence:not(.ptc) .ptb { left: 0; }
+.ptq.pt-1.pt-q-headline .ptb, .ptq.pt-1.pt-q-sequence .ptb { clip-path: inset(0 0 0 0); }
+.ptq.pt-3.pt-q-headline .ptb, .ptq.pt-3.pt-q-sequence .ptb { clip-path: inset(0 0 100% 0); }
+.pq.pq-headline, .pq.pq-sequence { top: 20px; bottom: 20px; right: 52px; }

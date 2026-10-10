@@ -93,8 +93,30 @@
 (() => {
   const STEP = 0.03, STEP_OUT = 0.02, MIN = 14;
   const X = () => window.CURTAIN_X || 1;
-  const MODES = ["ramp", "ramp-demi", "ramp-outline", "fill", "outline", "drift", "giant", "poster", "bands", "wire", "specimen", "spine", "numeral", "grid", "frames", "merge", "swell", "rhythm", "rampfill", "rampsolid"];
+  const MODES = ["ramp", "ramp-demi", "ramp-outline", "fill", "outline", "drift", "giant", "poster", "bands", "wire", "specimen", "spine", "numeral", "grid", "frames", "merge", "swell", "rhythm", "rampfill", "rampsolid", "card", "caption", "year", "paper", "scale", "grille", "list", "listmono", "headline", "sequence"];
   const GRID = ["poster", "bands", "wire", "numeral", "grid", "frames"];
+  /* the quiet ones (10 Oct 2026): one card, one beat in, a hold, one out */
+  const QUIET = ["card", "caption", "year", "paper", "scale", "grille", "list", "listmono", "headline", "sequence"];
+  const HOLD = { card: 0.32, caption: 0.42, year: 0.8, paper: 0.32, scale: 0.7, grille: 0.45 };
+  /* a list holds long enough for its last line to land and be glanced */
+  const holdOf = (m) => {
+    const n = (META.list || []).filter(Boolean).length;
+    if ((m === "list" || m === "listmono") && n) return 0.3 + Math.min(10, n) * 0.07;
+    /* the headline holds until its last letter is down and read; the
+       sequence until its sections have run and the name is down */
+    if (m === "headline") return 0.62;
+    if (m === "sequence") return n ? SEQ_T0 + n * seqStep(n) + 0.95 - 0.55 : 0.62;
+    return HOLD[m] || 0.32;
+  };
+  /* what a cover built says how long it runs, from the card starting up;
+     the card's own rise is 0.55s of it */
+  const holdFor = (pt) => (pt && pt._q ? Math.max(0.2, pt._q - 0.55) : holdOf(MODE));
+  /* the sequence's beat: a section a step, quicker the more there are, so
+     a long room flips by like a departures board and a short one reads */
+  const SEQ_T0 = 0.28;
+  const seqStep = (n) => Math.min(0.22, Math.max(0.12, 0.9 / Math.max(1, n)));
+  let seqRun = 0;
+  const wait = (sec) => new Promise((r) => setTimeout(r, sec * 1000));
   /* what a grid treatment knows besides the name: the study's year */
   let META = {};
   /* tracked in as it grows, on the site's own ladder (crossref2.js track()) */
@@ -431,12 +453,201 @@
     });
   };
 
+  /* ── QUIET (10 Oct 2026). His "i feel like i am trying too hard here -
+     it's lost some of the sophistication - the left side of the site is
+     dense - maybe there's something interesting on the transition that
+     contrasts with the the TOC? do we play off the homepage right side?
+     maybe we look at some other more dialed back sophisticated options?"
+     The open half's own card, copied from #field rather than re-derived:
+     20px in from the top, right and foot, flush left, a 4px corner, rising
+     from its foot in 0.55s on the site's ease. On it one thing, set where
+     and as the statement is set (32px in, 20px up; crossref2's V.rest
+     size, 4.8% of the column between 24 and 40, medium, tracked -0.045em;
+     the small line at 11px demi in 46% white), rising 10px as the
+     statement does. The room says what the study is a moment later, so
+     only its name, line and year are said here:
+
+       ?curtain=card     the study's name in the statement's place and type,
+                         its line and year as the small line over it
+       ?curtain=caption  the hover caption's size (13px demi, the rest in
+                         grey) alone at the foot, a hairline drawn over it
+       ?curtain=year     the year counted back from this one through a mask,
+                         four times the statement's size, the name and line
+                         small over it
+       ?curtain=paper    the card in paper, the name in ink
+
+     Then his "some sort of dieter rams look and feel might be cool": the
+     card as a Braun face, in the index's own grey with one signal colour
+     (--sig), each showing something true about the study:
+
+       ?curtain=scale    a radio's tuning scale of the index's years, 2008
+                         to now; the needle starts at now and glides back
+                         to the study's year
+       ?curtain=grille   a speaker grille's field of dots fills the face
+                         from the top, and a small lamp comes on by the
+                         name when it is done
+
+     Then his "maybe it's a hit list of what what's in the case study -
+     something simple?", with Rams' "10 Principles of Good Design" posters
+     (a numbered list set large at the head of a white sheet, a small
+     colophon turned up the foot). The list is the room's own section
+     labels in the room's order, read off the room before it is shown
+     (crossref2 passes META.list), so it says only what the room says:
+
+       ?curtain=list      the sections numbered at the statement's size, the
+                          numbers grey; the name, line and year turned up
+                          the foot
+       ?curtain=listmono  the same in a mono, numbers in ink, as the poster
+                          sets it
+
+     Then his "maybe it's a few words that have a really slick animation
+     that a user has to watch before it loads...that last screen could be
+     that - black flood and a headlien animation that's done really well",
+     after a black post with "MOST NEVER DO." set small and level in the
+     middle, the one word bold, its corners carrying small grey labels:
+
+       ?curtain=headline  the black card, the study's name in capitals at
+                          the statement's size, its own name bold and the
+                          rest light ("IVY PARK" bold, "BY BEYONCÉ" light),
+                          each letter rising through its word's mask in
+                          turn; its line and year in the top corners
+       ?curtain=sequence  the room's sections flip through the headline's
+                          place first, light, with a count in the corner,
+                          and it lands on the name
+
+     Out, the words go first and the card lifts off the room ── */
+  const quietMode = (pt, stacks, title, sub, mode) => {
+    const W = pt.clientWidth || innerWidth;
+    const mx = Math.min(40, Math.max(24, W * 0.048));
+    const name = String(title || "").trim(), y = parseInt(META.y, 10) || 0, now = new Date().getFullYear();
+    const E = (tag, cls, txt) => { const e = document.createElement(tag); if (cls) e.className = cls; if (txt != null) e.textContent = txt; return e; };
+    const q = E("div", "pq pq-" + mode), X1 = X();
+    pt._q = 0; pt.style.setProperty("--x", String(X1));
+    q.style.setProperty("--mx", mx.toFixed(2) + "px");
+    const L = (META.list || []).filter(Boolean).slice(0, 12);
+    /* a line of capitals, each letter in its word's mask, the study's own
+       name bold and what follows it light */
+    const headline = (t0) => {
+      const main = mainOf(name), rest = name.slice(main.length);
+      const hl = E("div", "pq-hl"); let i = 0;
+      const words = (txt, cls) => txt.split(/(\s+)/).forEach((w) => {
+        if (!w) return;
+        if (/^\s+$/.test(w)) { hl.appendChild(document.createTextNode(" ")); return; }
+        const m = E("span", "pq-w" + (cls ? " " + cls : ""));
+        for (const ch of w) { const c = E("span", "pq-ch", ch); c.style.setProperty("--i", String(i++)); m.appendChild(c); }
+        hl.appendChild(m);
+      });
+      words(main, "pq-b"); if (rest) words(rest, "");
+      hl.style.setProperty("--t0", (t0 * X1).toFixed(3) + "s");
+      hl.style.setProperty("--n", String(i));
+      /* a letter every 24ms, the whole name in no more than 0.42s, so a long
+         name sets as quickly as a short one */
+      hl._cs = Math.min(0.024, 0.42 / Math.max(1, i));
+      hl.style.setProperty("--cs", (hl._cs * 1000).toFixed(1) + "ms");
+      return hl;
+    };
+    if (mode === "headline" || mode === "sequence") {
+      const tl = E("div", "pq-corner pq-tl", sub || ""), tr = E("div", "pq-corner pq-tr", y ? String(y) : "");
+      q.appendChild(tl); q.appendChild(tr);
+      const seq = mode === "sequence" && L.length;
+      if (seq) {
+        const n = L.length, st = seqStep(n), box = E("div", "pq-seq"), strip = E("div", "pq-sstrip");
+        L.forEach((t) => strip.appendChild(E("div", "pq-sl", t)));
+        strip.style.setProperty("--st", (st * X1).toFixed(3) + "s");
+        box.appendChild(strip); q.appendChild(box);
+        const ct = E("div", "pq-corner pq-bl"); q.appendChild(ct);
+        const hl = headline(0); q.appendChild(hl);
+        /* the steps run on timers from the moment the card starts up; a
+           later cover starts its own run and this one stops */
+        const run = ++seqRun, two = (v) => (v < 10 ? "0" : "") + v;
+        const at = (sec, fn) => setTimeout(() => { if (run === seqRun) fn(); }, sec * 1000 * X1);
+        for (let k = 0; k <= n; k++) at(SEQ_T0 + k * st, () => {
+          strip.style.setProperty("--k", String(k));
+          if (k < n) ct.textContent = two(k + 1) + "/" + two(n);
+          else { q.classList.add("pq-go"); ct.classList.add("pq-off"); }
+        });
+        /* the sections, then the name's letters down (each 24ms after the
+           last, settled about 0.55s after it starts), then a moment to read */
+        pt._q = SEQ_T0 + n * st + hl.style.getPropertyValue("--n") * hl._cs + 0.55 + 0.45;
+      } else { const hl = headline(0.26); q.appendChild(hl); pt._q = 0.26 + hl.style.getPropertyValue("--n") * hl._cs + 0.55 + 0.5; }
+    } else if ((mode === "list" || mode === "listmono") && L.length) {
+      pt._q = 0.16 + (L.length - 1) * 0.07 + 0.45 + 0.5;
+      const ol = E("ol", "pq-ol");
+      L.forEach((t, i) => {
+        const li = E("li"); li.style.setProperty("--d", ((0.16 + i * 0.07) * X1).toFixed(3) + "s");
+        li.appendChild(E("span", "pq-n", String(i + 1))); li.appendChild(E("span", "pq-lt", t)); ol.appendChild(li);
+      });
+      const col = E("div", "pq-colo"); col.style.setProperty("--d", ((0.2 + L.length * 0.07) * X1).toFixed(3) + "s");
+      [name, sub, y ? String(y) : ""].filter(Boolean).forEach((t) => col.appendChild(E("span", "", t)));
+      q.appendChild(ol); q.appendChild(col);
+    } else if (mode === "caption") {
+      q.appendChild(E("div", "pq-rule"));
+      const c = E("div", "pq-cap"); c.appendChild(E("span", "pq-t", name));
+      if (y) c.appendChild(E("span", "pq-g", String(y)));
+      if (sub) c.appendChild(E("span", "pq-g", sub));
+      q.appendChild(c);
+    } else if (mode === "year" && y) {
+      const by = E("div", "pq-by"); by.appendChild(E("span", "pq-t", name)); if (sub) by.appendChild(E("span", "", sub)); q.appendChild(by);
+      const big = Math.round(mx * 4), from = Math.max(y, now), n = from - y + 1;
+      const yr = E("div", "pq-yr"); yr.style.fontSize = big + "px"; yr.style.letterSpacing = track(big) + "em";
+      const strip = E("div", "pq-strip");
+      for (let v = from; v >= y; v--) strip.appendChild(E("div", "", String(v)));
+      /* the strip climbs until its last year, the study's, fills the mask */
+      strip.style.setProperty("--roll", ((-(n - 1) / n) * 100).toFixed(4) + "%");
+      yr.appendChild(strip); q.appendChild(yr);
+    } else {
+      if (mode === "scale" && y) {
+        /* the index's years, a long tick each and three short between,
+           labelled every other year; the needle carries the study's */
+        const y0 = Math.min(y, 2008), y1 = Math.max(y, now), span = Math.max(1, y1 - y0), iw = Math.max(1, W - 64);
+        const at = (v) => (((v - y0) / span) * 100).toFixed(3) + "%";
+        const sc = E("div", "pq-tuner"), tk = E("div", "pq-ticks");
+        sc.appendChild(E("i", "pq-base"));
+        for (let v = y0; v <= y1; v++) {
+          for (let k = 0; k < (v < y1 ? 4 : 1); k++) {
+            const t = E("i", k ? "pq-tk" : "pq-tk pq-tk-y");
+            t.style.left = at(v + k / 4);
+            t.style.setProperty("--d", ((0.12 + ((v + k / 4 - y0) / span) * 0.42) * X1).toFixed(3) + "s");
+            tk.appendChild(t);
+          }
+          if ((v - y0) % 2 === 0 || v === y1) { const l = E("span", "pq-yl", String(v)); l.style.left = at(v); tk.appendChild(l); }
+        }
+        sc.appendChild(tk);
+        const nd = E("div", "pq-needle"); nd.style.left = at(y);
+        nd.style.setProperty("--from", (((y1 - y) / span) * iw).toFixed(1) + "px");
+        nd.appendChild(E("span", "", String(y)));
+        sc.appendChild(nd); q.appendChild(sc);
+      }
+      const by = E("div", "pq-by"); if (sub) by.appendChild(E("span", "", sub)); if (y && mode !== "scale") by.appendChild(E("span", "", String(y)));
+      if (by.childNodes.length) q.appendChild(by);
+      q.appendChild(E("div", "pq-say", name));
+      if (mode === "grille") q.appendChild(E("i", "pq-led"));
+    }
+    stacks.forEach((s) => s.replaceChildren());
+    const host = stacks[stacks.length - 1];
+    host.appendChild(q);
+    if (mode === "grille") {
+      /* the grille fills the face down to the name, with the air the
+         statement keeps over its small line */
+      const g = E("div", "pq-holes");
+      g.style.bottom = (20 + q.offsetHeight + 48) + "px";
+      host.insertBefore(g, q);
+    }
+  };
+
   /* the name down both panels, sized so the whole line fits the panel's
      measure and counted so a whole number of lines fills its height */
   const lay = (pt, base, title, sub, mode) => {
     pt.className = base;
     const stacks = [...pt.querySelectorAll(".ptstack")];
     stacks.forEach((s) => { s.replaceChildren(); s.style.removeProperty("--ptfs"); s.style.removeProperty("--ptlh"); s.classList.remove("pt-nosub"); });
+    if (QUIET.includes(mode)) {
+      pt.classList.add("ptq", "pt-q-" + mode);
+      quietMode(pt, stacks, title, sub, mode);
+      pt.classList.add("pt-run");
+      void pt.offsetHeight;
+      return;
+    }
     if (mode) {
       pt.classList.add("ptm", "pt-m-" + mode);
       fillMode(pt, stacks, title, sub, mode);
@@ -477,8 +688,11 @@
     if (matchMedia("(prefers-reduced-motion: reduce)").matches) { location.href = href; return; }
     busy = true; build();
     lay(PT, "pt", title, sub, MODE);
-    await beat(PT, "pt-1", PT.querySelector(".ptw")); /* white falls */
-    await beat(PT, "pt-2", PT.querySelector(".ptb")); /* black rises over it */
+    if (QUIET.includes(MODE)) { await beat(PT, "pt-1", PT.querySelector(".ptb")); PT.classList.add("pt-2"); await wait(holdFor(PT) * X()); }
+    else {
+      await beat(PT, "pt-1", PT.querySelector(".ptw")); /* white falls */
+      await beat(PT, "pt-2", PT.querySelector(".ptb")); /* black rises over it */
+    }
     const s0 = PT.querySelector(".ptstack");
     const note = { t: Date.now(), title: title || "", sub: s0.classList.contains("pt-nosub") ? "" : sub || "",
       n: s0.childElementCount, lh: s0.style.getPropertyValue("--ptlh"), fs: s0.style.getPropertyValue("--ptfs") };
@@ -508,12 +722,19 @@
     META = meta || {};
     if (!COL) COL = make("ptc");
     if (colAt === 1 || colAt === 2) {
-      if (COL.classList.contains("ptm")) { const st = [...COL.querySelectorAll(".ptstack")]; st.forEach((s) => s.replaceChildren()); fillMode(COL, st, title, sub, MODE || "fill"); }
+      if (COL.classList.contains("ptq")) quietMode(COL, [...COL.querySelectorAll(".ptstack")], title, sub, MODE);
+      else if (COL.classList.contains("ptm")) { const st = [...COL.querySelectorAll(".ptstack")]; st.forEach((s) => s.replaceChildren()); fillMode(COL, st, title, sub, MODE || "fill"); }
       else retitle(COL, title, sub);
       return colRun;
     }
     colAt = 1;
     lay(COL, "pt ptc", title, sub, MODE);
+    if (QUIET.includes(MODE)) {
+      colRun = beat(COL, "pt-1", COL.querySelector(".ptb"))
+        .then(() => { COL.classList.add("pt-2"); return wait(holdFor(COL) * X()); })
+        .then(() => { colAt = 2; });
+      return colRun;
+    }
     colRun = beat(COL, "pt-1", COL.querySelector(".ptw"))
       .then(() => beat(COL, "pt-2", COL.querySelector(".ptb")))
       .then(() => { colAt = 2; });
@@ -526,7 +747,9 @@
     COL.querySelectorAll(".ptstack").forEach((s) => [...s.children].forEach((l, i) => l.style.setProperty("--d", ((n - 1 - i) * STEP_OUT * x).toFixed(3) + "s")));
     void COL.offsetHeight;
     COL.classList.add("pt-3");
-    return new Promise((res) => setTimeout(() => { if (colAt === 3) { COL.className = "pt ptc"; colAt = 0; } res(); }, ((n - 1) * STEP_OUT + 0.72) * 1000 * x));
+    /* the quiet ones lift on their own clock: words out, then the card */
+    const out = COL.classList.contains("ptq") ? 0.86 : (n - 1) * STEP_OUT + 0.72;
+    return new Promise((res) => setTimeout(() => { if (colAt === 3) { COL.className = "pt ptc"; colAt = 0; } res(); }, out * 1000 * x));
   };
   /* the lab's switch (/lab/curtain/): which treatment the next cover takes,
      "" the stack */

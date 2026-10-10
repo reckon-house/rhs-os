@@ -3137,7 +3137,10 @@
       RM.curtain = true;
       lockEntry(WORK[k]);
       const s = D.study(k) || {};
-      window.Curtain.cover(D.title(k), s.s || "", { y: s.y, pics: picsOf(k).filter((f) => !f.alpha && f.t384).slice(0, 12).map((f) => f.t384) }).then(() => {
+      /* the room's own section labels, in its order, for the curtains that
+         list what is in it (curtain.js, ?curtain=list | sequence) */
+      const list = [...room.el.querySelectorAll(".sp-sec > .sp-kick > span")].map((e) => e.textContent.trim()).filter(Boolean);
+      window.Curtain.cover(D.title(k), s.s || "", { y: s.y, pics: picsOf(k).filter((f) => !f.alpha && f.t384).slice(0, 12).map((f) => f.t384), list }).then(() => {
         /* a later click took the curtain over; it lifts it. A close, or a
            step elsewhere, lifts it here */
         if (!RM || RM.c !== c) { if (!RM || !RM.curtain) window.Curtain.lift(); return; }
