@@ -93,10 +93,10 @@
 (() => {
   const STEP = 0.03, STEP_OUT = 0.02, MIN = 14;
   const X = () => window.CURTAIN_X || 1;
-  const MODES = ["ramp", "ramp-demi", "ramp-outline", "fill", "outline", "drift", "giant", "poster", "bands", "wire", "specimen", "spine", "numeral", "grid", "frames", "merge", "swell", "rhythm", "rampfill", "rampsolid", "card", "caption", "year", "paper", "scale", "grille", "list", "listmono", "headline", "sequence"];
+  const MODES = ["ramp", "ramp-demi", "ramp-outline", "fill", "outline", "drift", "giant", "poster", "bands", "wire", "specimen", "spine", "numeral", "grid", "frames", "merge", "swell", "rhythm", "rampfill", "rampsolid", "card", "caption", "year", "paper", "scale", "grille", "list", "listmono", "headline", "sequence", "contents", "contentsall", "pictures"];
   const GRID = ["poster", "bands", "wire", "numeral", "grid", "frames"];
   /* the quiet ones (10 Oct 2026): one card, one beat in, a hold, one out */
-  const QUIET = ["card", "caption", "year", "paper", "scale", "grille", "list", "listmono", "headline", "sequence"];
+  const QUIET = ["card", "caption", "year", "paper", "scale", "grille", "list", "listmono", "headline", "sequence", "contents", "contentsall", "pictures"];
   const HOLD = { card: 0.32, caption: 0.42, year: 0.8, paper: 0.32, scale: 0.7, grille: 0.45 };
   /* a list holds long enough for its last line to land and be glanced */
   const holdOf = (m) => {
@@ -515,6 +515,26 @@
                           place first, light, with a count in the corner,
                           and it lands on the name
 
+     Then his "i like card as a base. caption - the animated line makes me
+     think it could be a loader...scale makes me think the loader could be
+     something along these lines but i dont think highlighting a year is
+     really all that interesting. is there something else where it's the
+     card design with the scale as a loader maybe somehow showing what a
+     user might see or something important?" Card, with a loader over its
+     small line that shows what the room holds, and an honest one: it does
+     not finish until the room's cover picture is in (crossref2 passes
+     META.ready, capped at 2.2s; META.at places each section where it
+     starts down the room's own length):
+
+       ?curtain=contents     a scale of the room: a long tick where each
+                             section starts, the needle stepping from one
+                             to the next and reading out its name
+       ?curtain=contentsall  the same with every section's name standing
+                             on its tick, each lighting as the needle comes
+       ?curtain=pictures     the room's pictures in a strip over the line,
+                             each coming up from grey as the line reaches it,
+                             the last when the room is ready
+
      Out, the words go first and the card lifts off the room ── */
   const quietMode = (pt, stacks, title, sub, mode) => {
     const W = pt.clientWidth || innerWidth;
@@ -522,7 +542,7 @@
     const name = String(title || "").trim(), y = parseInt(META.y, 10) || 0, now = new Date().getFullYear();
     const E = (tag, cls, txt) => { const e = document.createElement(tag); if (cls) e.className = cls; if (txt != null) e.textContent = txt; return e; };
     const q = E("div", "pq pq-" + mode), X1 = X();
-    pt._q = 0; pt.style.setProperty("--x", String(X1));
+    pt._q = 0; pt._wait = null; pt.style.setProperty("--x", String(X1));
     q.style.setProperty("--mx", mx.toFixed(2) + "px");
     const L = (META.list || []).filter(Boolean).slice(0, 12);
     /* a line of capitals, each letter in its word's mask, the study's own
@@ -546,7 +566,74 @@
       hl.style.setProperty("--cs", (hl._cs * 1000).toFixed(1) + "ms");
       return hl;
     };
-    if (mode === "headline" || mode === "sequence") {
+    /* the loaders: a beat to draw, a sweep, a wait for the room, a finish */
+    const loader = (draw, done, tEnd) => {
+      const run = ++seqRun, at = (sec, fn) => setTimeout(() => { if (run === seqRun) fn(); }, sec * 1000 * X1);
+      draw(at);
+      pt._wait = () => {
+        const rdy = META.ready && typeof META.ready.then === "function" ? Promise.race([META.ready, wait(2.2 * X1)]) : Promise.resolve();
+        return Promise.all([wait(Math.max(0.05, tEnd - 0.55) * X1), rdy]).then(() => { if (run === seqRun) done(); return wait(0.3 * X1); });
+      };
+    };
+    const nameplate = () => {
+      const by = E("div", "pq-by"); if (sub) by.appendChild(E("span", "", sub)); if (y) by.appendChild(E("span", "", String(y)));
+      if (by.childNodes.length) q.appendChild(by);
+      q.appendChild(E("div", "pq-say", name));
+    };
+    const iw = Math.max(1, W - 64);
+    if ((mode === "contents" || mode === "contentsall") && L.length) {
+      const all = mode === "contentsall", n = L.length;
+      const A0 = Array.isArray(META.at) && META.at.length === n && META.at.every((v, i, a) => v >= 0 && v < 1 && (!i || v >= a[i - 1])) ? META.at : null;
+      const A = A0 || L.map((_, i) => i / n);
+      const sc = E("div", "pq-tuner pq-cont" + (all ? " pq-all" : ""));
+      sc.style.setProperty("--iw", iw + "px"); sc.style.setProperty("--p", "0");
+      sc.appendChild(E("i", "pq-base")); sc.appendChild(E("i", "pq-prog"));
+      const tk = E("div", "pq-ticks"), MINOR = 64;
+      for (let j = 0; j <= MINOR; j++) {
+        const t = E("i", "pq-tk"); t.style.left = ((j / MINOR) * 100).toFixed(3) + "%";
+        t.style.setProperty("--d", ((0.1 + (j / MINOR) * 0.4) * X1).toFixed(3) + "s"); tk.appendChild(t);
+      }
+      const majors = A.map((a) => {
+        const t = E("i", "pq-tk pq-tk-y pq-mk"); t.style.left = (a * 100).toFixed(3) + "%";
+        t.style.setProperty("--d", ((0.1 + a * 0.4) * X1).toFixed(3) + "s"); tk.appendChild(t); return t;
+      });
+      let labs = [], tall = 0;
+      if (all) {
+        labs = A.map((a, i) => { const l = E("span", "pq-vl", L[i]); l.style.left = (a * 100).toFixed(3) + "%"; tk.appendChild(l); tall = Math.max(tall, measure(L[i], 11, 600)); return l; });
+        sc.style.paddingTop = Math.ceil(tall + 14) + "px";
+      }
+      sc.appendChild(tk);
+      const nd = E("div", "pq-needle"), rl = E("span", "pq-rl", ""); if (!all) nd.appendChild(rl); sc.appendChild(nd);
+      q.appendChild(sc); nameplate();
+      const T0 = 0.42, per = Math.min(0.26, Math.max(0.14, 0.9 / n)), tEnd = T0 + n * per + 0.3;
+      const setP = (v, dur, ease) => { sc.style.setProperty("--sd", (dur * X1).toFixed(3) + "s"); sc.style.setProperty("--se", ease); sc.style.setProperty("--p", v.toFixed(4)); };
+      loader((at) => {
+        A.forEach((a, i) => {
+          at(T0 + i * per, () => setP(a, per * 0.9, "cubic-bezier(0.45, 0, 0.2, 1)"));
+          at(T0 + i * per + per * 0.72, () => {
+            majors[i].classList.add("on"); if (labs[i]) labs[i].classList.add("on");
+            rl.textContent = L[i]; nd.classList.toggle("pq-r", a > 0.62);
+          });
+        });
+        /* past the last section it creeps on toward the end and waits */
+        const last = A[n - 1];
+        at(T0 + n * per, () => setP(last < 0.9 ? 0.9 : (last + 1) / 2, 0.9, "cubic-bezier(0.2, 0.7, 0.2, 1)"));
+      }, () => setP(1, 0.26, "cubic-bezier(0.45, 0, 0.2, 1)"), tEnd);
+    } else if (mode === "pictures" && (META.pics || []).length >= 3) {
+      const ps = META.pics.slice(0, 8), N = ps.length, T0 = 0.4, SW = 1.0, END = 0.92;
+      const fw = E("div", "pq-film");
+      const strip = E("div", "pq-frames");
+      const frames = ps.map((src, i) => {
+        const f = E("div", "pq-fr"), im = E("img"); im.alt = ""; im.decoding = "async"; im.src = src; f.appendChild(im);
+        const c = (i + 0.5) / N;
+        if (c <= END) f.style.setProperty("--d", ((T0 + (c / END) * SW) * X1).toFixed(3) + "s"); else f.classList.add("pq-late");
+        strip.appendChild(f); return f;
+      });
+      fw.appendChild(strip); fw.appendChild(E("i", "pq-base")); fw.appendChild(E("i", "pq-prog"));
+      fw.style.setProperty("--t0", (T0 * X1).toFixed(3) + "s"); fw.style.setProperty("--sw", (SW * X1).toFixed(3) + "s");
+      q.appendChild(fw); nameplate();
+      loader(() => {}, () => q.classList.add("pq-done"), T0 + SW + 0.1);
+    } else if (mode === "headline" || mode === "sequence") {
       const tl = E("div", "pq-corner pq-tl", sub || ""), tr = E("div", "pq-corner pq-tr", y ? String(y) : "");
       q.appendChild(tl); q.appendChild(tr);
       const seq = mode === "sequence" && L.length;
@@ -688,7 +775,7 @@
     if (matchMedia("(prefers-reduced-motion: reduce)").matches) { location.href = href; return; }
     busy = true; build();
     lay(PT, "pt", title, sub, MODE);
-    if (QUIET.includes(MODE)) { await beat(PT, "pt-1", PT.querySelector(".ptb")); PT.classList.add("pt-2"); await wait(holdFor(PT) * X()); }
+    if (QUIET.includes(MODE)) { await beat(PT, "pt-1", PT.querySelector(".ptb")); PT.classList.add("pt-2"); await (PT._wait ? PT._wait() : wait(holdFor(PT) * X())); }
     else {
       await beat(PT, "pt-1", PT.querySelector(".ptw")); /* white falls */
       await beat(PT, "pt-2", PT.querySelector(".ptb")); /* black rises over it */
@@ -731,7 +818,7 @@
     lay(COL, "pt ptc", title, sub, MODE);
     if (QUIET.includes(MODE)) {
       colRun = beat(COL, "pt-1", COL.querySelector(".ptb"))
-        .then(() => { COL.classList.add("pt-2"); return wait(holdFor(COL) * X()); })
+        .then(() => { COL.classList.add("pt-2"); return COL._wait ? COL._wait() : wait(holdFor(COL) * X()); })
         .then(() => { colAt = 2; });
       return colRun;
     }

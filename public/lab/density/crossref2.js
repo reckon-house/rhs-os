@@ -3139,8 +3139,21 @@
       const s = D.study(k) || {};
       /* the room's own section labels, in its order, for the curtains that
          list what is in it (curtain.js, ?curtain=list | sequence) */
-      const list = [...room.el.querySelectorAll(".sp-sec > .sp-kick > span")].map((e) => e.textContent.trim()).filter(Boolean);
-      window.Curtain.cover(D.title(k), s.s || "", { y: s.y, pics: picsOf(k).filter((f) => !f.alpha && f.t384).slice(0, 12).map((f) => f.t384), list }).then(() => {
+      const kicks = [...room.el.querySelectorAll(".sp-sec > .sp-kick > span")].filter((e) => e.textContent.trim());
+      const list = kicks.map((e) => e.textContent.trim());
+      /* where each starts down the room's own length, for the loaders that
+         draw the room as a scale; and when the room's cover picture is in,
+         so a loader does not finish before there is something to see */
+      const rt = room.el.getBoundingClientRect(), rh = Math.max(1, room.el.scrollHeight || rt.height);
+      const at = kicks.map((e) => Math.max(0, Math.min(0.999, (e.closest(".sp-sec").getBoundingClientRect().top - rt.top) / rh)));
+      const cov = room.cover;
+      const ready = new Promise((res) => {
+        if (!cov || cov.classList.contains("in")) { res(); return; }
+        const mo = new MutationObserver(() => { if (cov.classList.contains("in")) { mo.disconnect(); res(); } });
+        mo.observe(cov, { attributes: true, attributeFilter: ["class"] });
+        setTimeout(() => { mo.disconnect(); res(); }, 3000);
+      });
+      window.Curtain.cover(D.title(k), s.s || "", { y: s.y, pics: picsOf(k).filter((f) => !f.alpha && f.t384).slice(0, 12).map((f) => f.t384), list, at, ready }).then(() => {
         /* a later click took the curtain over; it lifts it. A close, or a
            step elsewhere, lifts it here */
         if (!RM || RM.c !== c) { if (!RM || !RM.curtain) window.Curtain.lift(); return; }
