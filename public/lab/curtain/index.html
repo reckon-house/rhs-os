@@ -54,7 +54,7 @@
   <div class="mk">Reckon*House</div>
   <div>
     <h1>The curtain</h1>
-    <p class="lead">The transition that plays when a study opens from the index, over the content column, in a loop. The swipe and the lines rising in and out stay the same; the type is set sixteen ways, Bands first, since it is the site's. Slow it down to watch the lines.</p>
+    <p class="lead">The transition that plays when a study opens from the index, over the content column, in a loop. The swipe and the lines rising in and out stay the same; the type is set twenty ways, Bands first, since it is the site's. Slow it down to watch the lines.</p>
   </div>
   <div>
     <div class="lbl">Treatment</div>
@@ -74,6 +74,10 @@
   /* [the treatment, its name, what it does, its switch on the site] */
   const MODES = [
     ["bands", "Bands", "The site's curtain since 8 Oct, after your Swiss poster: the name in bands of weight and fill, each band cutting it off, in the site's own grey.", ""],
+    ["merge", "Merge", "Bands, Outline and Ramp as one: the name runs edge to edge on every line, the lines grow from small to huge, the fills are Bands', and every other line is drawn.", "merge"],
+    ["swell", "Swell", "Merge, with the lines growing to the middle of the column and back down, so the biggest line sits in the center.", "swell"],
+    ["rhythm", "Rhythm", "Merge, with the sizes in an uneven beat, small and huge next to each other, the way your poster mixes them.", "rhythm"],
+    ["rampfill", "Ramp fill", "Ramp's sizes with no empty space: every line repeats the name edge to edge, every other one drawn, on the plain white and black panels.", "rampfill"],
     ["ramp", "Ramp", "The curtain from 6 to 8 Oct. The name and its category growing down the column, from small to huge, in medium, tracked by size.", "ramp"],
     ["", "Stack", "The one it replaced. The name and its category down the column at one size.", "stack"],
     ["ramp-demi", "Ramp, demi", "Ramp in demi, as it was first shown.", "ramp-demi"],
@@ -122,12 +126,20 @@
     b.addEventListener("click", () => {
       x = v; window.CURTAIN_X = v;
       /* the stylesheet's own beats, stretched (curtain.css: 0.3s and 0.34s a
-         line, 0.52s a panel, 0.22s, 0.24s and 0.68s off) */
+         line, 0.52s a panel, 0.22s, 0.24s and 0.68s off; a poster cell opens
+         in 0.46s and closes in 0.38s, its word rises in 0.62s, its cross
+         draws in 0.5s; a band's name rises in 0.5s and leaves in 0.36s) */
       slow.textContent = v === 1 ? "" :
         ".pt .ptl{transition-duration:" + 0.3 * v + "s," + 0.34 * v + "s!important}" +
         ".pt.pt-run .ptw,.pt.pt-run .ptb{transition-duration:" + 0.52 * v + "s!important}" +
         ".pt.pt-3 .ptl{transition-duration:" + 0.22 * v + "s," + 0.24 * v + "s!important}" +
-        ".pt.pt-3 .ptb{transition-duration:" + 0.68 * v + "s!important}";
+        ".pt.pt-3 .ptb{transition-duration:" + 0.68 * v + "s!important}" +
+        ".pt .ptg{transition-duration:" + 0.46 * v + "s!important}" +
+        ".pt.pt-3 .ptg{transition-duration:" + 0.38 * v + "s!important}" +
+        ".pt .ptg .ptwd{transition-duration:" + 0.62 * v + "s!important}" +
+        ".pt .ptx line{transition-duration:" + 0.5 * v + "s!important}" +
+        ".pt.pt-mb .ptr{transition-duration:" + 0.5 * v + "s!important}" +
+        ".pt.pt-mb.pt-3 .ptr{transition-duration:" + 0.36 * v + "s!important}";
       paint();
     });
     $("speed").appendChild(b);

@@ -124,3 +124,28 @@
 .pt-1 .ptg .ptpic { transform: translate3d(0, 0, 0) scale(1); }
 .pt-m-frames .ptw .ptpic { filter: grayscale(1); }
 .pt-m-frames .ptg { box-shadow: none; }
+
+/* ── THREE AS ONE (9 Oct 2026): ?curtain=merge | swell | rhythm | rampfill
+   (curtain.js, which marks the panel .pt-mb). Each line is a band the name
+   runs through edge to edge; the band holds still and the name rises into
+   it as into a mask, then leaves upward on the lift. Four classes deep so
+   the explorations' own line moves (.ptm.pt-1 / .ptm.pt-3) don't reach it ── */
+.pt.pt-mb .ptl, .pt.pt-mb.pt-1 .ptl, .pt.pt-mb.pt-3 .ptl { opacity: 1; transform: none; overflow: hidden; transition: none; animation: none; }
+.pt-mb .ptr { translate: 0 105%; transition: translate 0.5s cubic-bezier(0.16, 1, 0.3, 1) var(--d, 0s); }
+.pt-mb.pt-1 .ptr { translate: 0 0; }
+.pt-mb.pt-3 .ptr { translate: 0 -105%; transition: translate 0.36s cubic-bezier(0.5, 0, 0.75, 0) var(--d, 0s); }
+/* the fills, as Bands sets them: the poster on the rising panel, its
+   negative on the falling one; the grey is the site's. Light type on dark
+   keeps the black panel's hair of stroke, dark type on light goes without */
+.ptb .ptl.bf-w { background: #ffffff; color: #0b0b0b; --sc: #0b0b0b; -webkit-text-stroke-width: 0; }
+.ptb .ptl.bf-k { background: #0b0b0b; color: #ffffff; --sc: #ffffff; }
+.ptb .ptl.bf-g { background: var(--hl, #ECECEC); color: #0b0b0b; --sc: #0b0b0b; -webkit-text-stroke-width: 0; }
+.ptw .ptl.bf-w { background: #0b0b0b; color: #ffffff; --sc: #ffffff; -webkit-text-stroke: 0.36px currentColor; }
+.ptw .ptl.bf-k { background: #ffffff; color: #0b0b0b; --sc: #0b0b0b; }
+.ptw .ptl.bf-g { background: var(--hl, #ECECEC); color: #0b0b0b; --sc: #0b0b0b; }
+.pt-m-rampfill .ptw { --sc: var(--ink, #000); }
+.pt-m-rampfill .ptb { --sc: var(--paper, #fff); }
+/* every other line drawn, in its band's ink, the stroke a touch heavier
+   as the line grows (--sw, 1.2px to 2px) */
+.pt.pt-mb .ptl.o { color: transparent; -webkit-text-stroke: var(--sw, 1.3px) var(--sc); }
+@media (prefers-reduced-motion: reduce) { .pt-mb .ptr { transition: none !important; } }
