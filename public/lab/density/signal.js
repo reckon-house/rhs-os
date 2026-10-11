@@ -53,7 +53,7 @@ window.DENSITY_ROOMS["signal"] = {
    "kind": "line",
    "si": 2,
    "pi": 3,
-   "text": "Claude Code and Dispatch: run your Mac from your phone",
+   "text": "Put Claude to work on your computer",
    "label": "October 6 · Anthropic",
    "weight": "head",
    "where": "section-header"
@@ -64,8 +64,8 @@ window.DENSITY_ROOMS["signal"] = {
    "kind": "line",
    "si": 2,
    "pi": 4,
-   "text": "Dispatch is how I work when I'm away from the desk. I send a message from my phone and Claude does it on my Mac.",
-   "weight": "body",
+   "text": "Dispatch keeps one running conversation with Claude across your phone and your computer, so a task sent from the phone gets done on the desktop.",
+   "weight": "sub",
    "where": "text"
   },
   {
@@ -74,21 +74,91 @@ window.DENSITY_ROOMS["signal"] = {
    "kind": "line",
    "si": 2,
    "pi": 5,
-   "text": "That covers a Claude Code task on this site, a pass through my email, or a look at whatever app I need checked.",
-   "weight": "body",
+   "text": "What it does",
+   "weight": "head",
    "where": "text"
   },
   {
    "id": "sg5",
    "k": "signal",
-   "kind": "src",
+   "kind": "line",
    "si": 2,
    "pi": 6,
-   "url": "https://claude.com/product/claude-code",
+   "text": "Takes a task from your phone and leaves the finished work on your computer.",
+   "weight": "body",
+   "where": "text"
+  },
+  {
+   "id": "sg6",
+   "k": "signal",
+   "kind": "line",
+   "si": 2,
+   "pi": 7,
+   "text": "Starts a Claude Code or Cowork session for a report or a pull request.",
+   "weight": "body",
+   "where": "text"
+  },
+  {
+   "id": "sg7",
+   "k": "signal",
+   "kind": "line",
+   "si": 2,
+   "pi": 8,
+   "text": "Runs regular checks, like reading your email every morning.",
+   "weight": "body",
+   "where": "text"
+  },
+  {
+   "id": "sg8",
+   "k": "signal",
+   "kind": "line",
+   "si": 2,
+   "pi": 9,
+   "text": "Uses the computer itself when no connector fits, and asks before opening a new app.",
+   "weight": "body",
+   "where": "text"
+  },
+  {
+   "id": "sg9",
+   "k": "signal",
+   "kind": "line",
+   "si": 2,
+   "pi": 10,
+   "text": "How I use it",
+   "weight": "head",
+   "where": "text"
+  },
+  {
+   "id": "sga",
+   "k": "signal",
+   "kind": "line",
+   "si": 2,
+   "pi": 11,
+   "text": "Dispatch is how I work when I'm away from the desk. I send a message from my phone and Claude does it on my Mac.",
+   "weight": "body",
+   "where": "text"
+  },
+  {
+   "id": "sgb",
+   "k": "signal",
+   "kind": "line",
+   "si": 2,
+   "pi": 12,
+   "text": "That covers a Claude Code task on this site, a pass through my email, or a look at whatever app I need checked.",
+   "weight": "body",
+   "where": "text"
+  },
+  {
+   "id": "sgc",
+   "k": "signal",
+   "kind": "src",
+   "si": 2,
+   "pi": 13,
+   "url": "https://claude.com/blog/dispatch-and-computer-use",
    "text": "Read it at Anthropic",
    "links": [
     {
-     "url": "https://claude.com/product/claude-code",
+     "url": "https://claude.com/blog/dispatch-and-computer-use",
      "text": "Read it at Anthropic"
     }
    ]
@@ -98,43 +168,123 @@ window.DENSITY_ROOMS["signal"] = {
    "k": "signal",
    "kind": "line",
    "si": 3,
-   "pi": 7,
-   "text": "Perceptron Mk1, a model that reasons over video",
+   "pi": 14,
+   "text": "Introducing Perceptron Mk1",
    "label": "October 5 · Perceptron",
    "weight": "head",
    "where": "section-header"
   },
   {
-   "id": "sg6",
+   "id": "sgd",
    "k": "signal",
    "kind": "line",
    "si": 3,
-   "pi": 8,
+   "pi": 15,
+   "text": "Perceptron Mk1 is a model built to understand video and reason about the physical world.",
+   "weight": "sub",
+   "where": "text"
+  },
+  {
+   "id": "sge",
+   "k": "signal",
+   "kind": "line",
+   "si": 3,
+   "pi": 16,
+   "text": "What it does",
+   "weight": "head",
+   "where": "text"
+  },
+  {
+   "id": "sgf",
+   "k": "signal",
+   "kind": "line",
+   "si": 3,
+   "pi": 17,
+   "text": "Reasons across time, and breaks a video down into what happened and when.",
+   "weight": "body",
+   "where": "text"
+  },
+  {
+   "id": "sgg",
+   "k": "signal",
+   "kind": "line",
+   "si": 3,
+   "pi": 18,
+   "text": "Reads video at up to two frames a second, across a 32,000-token context.",
+   "weight": "body",
+   "where": "text"
+  },
+  {
+   "id": "sgh",
+   "k": "signal",
+   "kind": "line",
+   "si": 3,
+   "pi": 19,
+   "text": "Points to things in a frame with pixel precision.",
+   "weight": "body",
+   "where": "text"
+  },
+  {
+   "id": "sgi",
+   "k": "signal",
+   "kind": "line",
+   "si": 3,
+   "pi": 20,
+   "text": "Matches frontier models from Google, Alibaba, OpenAI and Anthropic on video and embodied reasoning.",
+   "weight": "body",
+   "where": "text"
+  },
+  {
+   "id": "sgj",
+   "k": "signal",
+   "kind": "line",
+   "si": 3,
+   "pi": 21,
+   "text": "How I use it",
+   "weight": "head",
+   "where": "text"
+  },
+  {
+   "id": "sgk",
+   "k": "signal",
+   "kind": "line",
+   "si": 3,
+   "pi": 22,
    "text": "A.R.C. runs its video scans on Mk1. You walk a room with your phone, and Mk1 reads the footage across frames, tracks each object through the space, and pulls out what's there for the insurance inventory.",
    "weight": "body",
    "where": "text"
   },
   {
-   "id": "sg7",
+   "id": "sgl",
    "k": "signal",
    "kind": "line",
    "si": 3,
-   "pi": 9,
-   "text": "It picks up the spatial context a single photo misses, and a room-by-room scan of a whole house takes minutes.",
+   "pi": 23,
+   "text": "What I think",
+   "weight": "head",
+   "where": "text"
+  },
+  {
+   "id": "sgm",
+   "k": "signal",
+   "kind": "line",
+   "si": 3,
+   "pi": 24,
+   "text": "It picks up the spatial context a single photo misses.",
    "weight": "body",
    "where": "text"
   },
   {
-   "id": "sg8",
+   "id": "sgn",
    "k": "signal",
    "kind": "src",
    "si": 3,
-   "pi": 10,
-   "url": "https://www.perceptron.inc",
+   "pi": 25,
+   "url": "https://www.perceptron.inc/blog/introducing-perceptron-mk1",
    "text": "Read it at Perceptron",
    "links": [
     {
-     "url": "https://www.perceptron.inc",
+     "url": "https://www.perceptron.inc/blog/introducing-perceptron-mk1",
      "text": "Read it at Perceptron"
     }
    ]
@@ -144,38 +294,128 @@ window.DENSITY_ROOMS["signal"] = {
    "k": "signal",
    "kind": "line",
    "si": 4,
-   "pi": 11,
+   "pi": 26,
    "text": "Dia, the AI browser from The Browser Company",
    "label": "October 5 · The Browser Company",
    "weight": "head",
    "where": "section-header"
   },
   {
-   "id": "sg9",
+   "id": "sgo",
    "k": "signal",
    "kind": "line",
    "si": 4,
-   "pi": 12,
-   "text": "You name a browser and I've used it, and really given it a week or so of daily use. I kept coming back to Dia, and not really because of the AI.",
+   "pi": 27,
+   "text": "Dia is a browser from The Browser Company with AI built in, free for Mac and Windows.",
+   "weight": "sub",
+   "where": "text"
+  },
+  {
+   "id": "sgp",
+   "k": "signal",
+   "kind": "line",
+   "si": 4,
+   "pi": 28,
+   "text": "What it does",
+   "weight": "head",
+   "where": "text"
+  },
+  {
+   "id": "sgq",
+   "k": "signal",
+   "kind": "line",
+   "si": 4,
+   "pi": 29,
+   "text": "Starts the day with a brief of your calendar, inbox and key links.",
    "weight": "body",
    "where": "text"
   },
   {
-   "id": "sga",
+   "id": "sgr",
    "k": "signal",
    "kind": "line",
    "si": 4,
-   "pi": 13,
-   "text": "As a creative person, it just looks and works so damn good: every pixel, every micro animation, smooth in all the right places.",
+   "pi": 30,
+   "text": "Answers a question across your open tabs and work apps at once.",
    "weight": "body",
    "where": "text"
   },
   {
-   "id": "sgb",
+   "id": "sgs",
+   "k": "signal",
+   "kind": "line",
+   "si": 4,
+   "pi": 31,
+   "text": "Gathers what's in Slack, Notion and Teams into a report you can share.",
+   "weight": "body",
+   "where": "text"
+  },
+  {
+   "id": "sgt",
+   "k": "signal",
+   "kind": "line",
+   "si": 4,
+   "pi": 32,
+   "text": "Keeps work, freelance and personal life in separate profiles, a swipe apart.",
+   "weight": "body",
+   "where": "text"
+  },
+  {
+   "id": "sgu",
+   "k": "signal",
+   "kind": "line",
+   "si": 4,
+   "pi": 33,
+   "text": "Turns what you've gathered into slides.",
+   "weight": "body",
+   "where": "text"
+  },
+  {
+   "id": "sgv",
+   "k": "signal",
+   "kind": "line",
+   "si": 4,
+   "pi": 34,
+   "text": "How I use it",
+   "weight": "head",
+   "where": "text"
+  },
+  {
+   "id": "sgw",
+   "k": "signal",
+   "kind": "line",
+   "si": 4,
+   "pi": 35,
+   "text": "You name a browser and I've used it, and really given it a week or so of daily use. Dia is the one I kept coming back to.",
+   "weight": "body",
+   "where": "text"
+  },
+  {
+   "id": "sgx",
+   "k": "signal",
+   "kind": "line",
+   "si": 4,
+   "pi": 36,
+   "text": "What I think",
+   "weight": "head",
+   "where": "text"
+  },
+  {
+   "id": "sgy",
+   "k": "signal",
+   "kind": "line",
+   "si": 4,
+   "pi": 37,
+   "text": "Not really because of the AI. As a creative person, it just looks and works so damn good: every pixel, every micro animation, smooth in all the right places.",
+   "weight": "body",
+   "where": "text"
+  },
+  {
+   "id": "sgz",
    "k": "signal",
    "kind": "src",
    "si": 4,
-   "pi": 14,
+   "pi": 38,
    "url": "https://www.diabrowser.com",
    "text": "Read it at The Browser Company",
    "links": [
@@ -190,43 +430,133 @@ window.DENSITY_ROOMS["signal"] = {
    "k": "signal",
    "kind": "line",
    "si": 5,
-   "pi": 15,
-   "text": "Claude Sonnet 5",
+   "pi": 39,
+   "text": "Introducing Claude Sonnet 5",
    "label": "September 6 · Anthropic",
    "weight": "head",
    "where": "section-header"
   },
   {
-   "id": "sgc",
+   "id": "sg10",
    "k": "signal",
    "kind": "line",
    "si": 5,
-   "pi": 16,
+   "pi": 40,
+   "text": "Claude Sonnet 5 is Anthropic's most agentic Sonnet model yet, close to Opus 4.8 at a lower price.",
+   "weight": "sub",
+   "where": "text"
+  },
+  {
+   "id": "sg11",
+   "k": "signal",
+   "kind": "line",
+   "si": 5,
+   "pi": 41,
+   "text": "What it does",
+   "weight": "head",
+   "where": "text"
+  },
+  {
+   "id": "sg12",
+   "k": "signal",
+   "kind": "line",
+   "si": 5,
+   "pi": 42,
+   "text": "Plans, uses tools like browsers and terminals, and runs on its own.",
+   "weight": "body",
+   "where": "text"
+  },
+  {
+   "id": "sg13",
+   "k": "signal",
+   "kind": "line",
+   "si": 5,
+   "pi": 43,
+   "text": "Checks its own output without being asked, testers say.",
+   "weight": "body",
+   "where": "text"
+  },
+  {
+   "id": "sg14",
+   "k": "signal",
+   "kind": "line",
+   "si": 5,
+   "pi": 44,
+   "text": "Matches Opus 4.8 on some tasks at higher effort.",
+   "weight": "body",
+   "where": "text"
+  },
+  {
+   "id": "sg15",
+   "k": "signal",
+   "kind": "line",
+   "si": 5,
+   "pi": 45,
+   "text": "Resists prompt injection better, and makes things up less, than Sonnet 4.6.",
+   "weight": "body",
+   "where": "text"
+  },
+  {
+   "id": "sg16",
+   "k": "signal",
+   "kind": "line",
+   "si": 5,
+   "pi": 46,
+   "text": "How I tested it",
+   "weight": "head",
+   "where": "text"
+  },
+  {
+   "id": "sg17",
+   "k": "signal",
+   "kind": "line",
+   "si": 5,
+   "pi": 47,
    "text": "The Ask on this site answers from Sonnet 5 now. Before switching, I ran twelve why questions past it and Haiku 4.5.",
    "weight": "body",
    "where": "text"
   },
   {
-   "id": "sgd",
+   "id": "sg18",
    "k": "signal",
    "kind": "line",
    "si": 5,
-   "pi": 17,
-   "text": "Haiku made up a reason for A.R.C. Sonnet answered from the study's own sentence. Sonnet takes about six tenths of a second longer each time. I switched anyway.",
+   "pi": 48,
+   "text": "Haiku made up a reason for A.R.C. Sonnet answered from the study's own sentence.",
    "weight": "body",
    "where": "text"
   },
   {
-   "id": "sge",
+   "id": "sg19",
+   "k": "signal",
+   "kind": "line",
+   "si": 5,
+   "pi": 49,
+   "text": "What I think",
+   "weight": "head",
+   "where": "text"
+  },
+  {
+   "id": "sg1a",
+   "k": "signal",
+   "kind": "line",
+   "si": 5,
+   "pi": 50,
+   "text": "Sonnet takes about six tenths of a second longer each time. I switched anyway.",
+   "weight": "body",
+   "where": "text"
+  },
+  {
+   "id": "sg1b",
    "k": "signal",
    "kind": "src",
    "si": 5,
-   "pi": 18,
-   "url": "https://www.anthropic.com/claude/sonnet",
+   "pi": 51,
+   "url": "https://www.anthropic.com/news/claude-sonnet-5",
    "text": "Read it at Anthropic",
    "links": [
     {
-     "url": "https://www.anthropic.com/claude/sonnet",
+     "url": "https://www.anthropic.com/news/claude-sonnet-5",
      "text": "Read it at Anthropic"
     }
    ]
@@ -238,9 +568,9 @@ window.DENSITY_ROOMS["signal"] = {
    "at": "sg-claude-dispatch",
    "date": "2026-10-06",
    "day": "October 6",
-   "headline": "Claude Code and Dispatch: run your Mac from your phone",
+   "headline": "Put Claude to work on your computer",
    "source": "Anthropic",
-   "url": "https://claude.com/product/claude-code",
+   "url": "https://claude.com/blog/dispatch-and-computer-use",
    "take": "Dispatch is how I work when I'm away from the desk. I send a message from my phone and Claude does it on my Mac. That covers a Claude Code task on this site, a pass through my email, or a look at whatever app I need checked.",
    "tags": [
     "Claude Code",
@@ -254,10 +584,10 @@ window.DENSITY_ROOMS["signal"] = {
    "at": "sg-perceptron-mk1",
    "date": "2026-10-05",
    "day": "October 5",
-   "headline": "Perceptron Mk1, a model that reasons over video",
+   "headline": "Introducing Perceptron Mk1",
    "source": "Perceptron",
-   "url": "https://www.perceptron.inc",
-   "take": "A.R.C. runs its video scans on Mk1. You walk a room with your phone, and Mk1 reads the footage across frames, tracks each object through the space, and pulls out what's there for the insurance inventory. It picks up the spatial context a single photo misses, and a room-by-room scan of a whole house takes minutes.",
+   "url": "https://www.perceptron.inc/blog/introducing-perceptron-mk1",
+   "take": "A.R.C. runs its video scans on Mk1. You walk a room with your phone, and Mk1 reads the footage across frames, tracks each object through the space, and pulls out what's there for the insurance inventory. It picks up the spatial context a single photo misses.",
    "tags": [
     "Models",
     "Video",
@@ -273,7 +603,7 @@ window.DENSITY_ROOMS["signal"] = {
    "headline": "Dia, the AI browser from The Browser Company",
    "source": "The Browser Company",
    "url": "https://www.diabrowser.com",
-   "take": "You name a browser and I've used it, and really given it a week or so of daily use. I kept coming back to Dia, and not really because of the AI. As a creative person, it just looks and works so damn good: every pixel, every micro animation, smooth in all the right places.",
+   "take": "You name a browser and I've used it, and really given it a week or so of daily use. Dia is the one I kept coming back to. Not really because of the AI. As a creative person, it just looks and works so damn good: every pixel, every micro animation, smooth in all the right places.",
    "tags": [
     "Browsers",
     "Tools"
@@ -285,9 +615,9 @@ window.DENSITY_ROOMS["signal"] = {
    "at": "sg-claude-sonnet-5",
    "date": "2026-09-06",
    "day": "September 6",
-   "headline": "Claude Sonnet 5",
+   "headline": "Introducing Claude Sonnet 5",
    "source": "Anthropic",
-   "url": "https://www.anthropic.com/claude/sonnet",
+   "url": "https://www.anthropic.com/news/claude-sonnet-5",
    "take": "The Ask on this site answers from Sonnet 5 now. Before switching, I ran twelve why questions past it and Haiku 4.5. Haiku made up a reason for A.R.C. Sonnet answered from the study's own sentence. Sonnet takes about six tenths of a second longer each time. I switched anyway.",
    "tags": [
     "Models",

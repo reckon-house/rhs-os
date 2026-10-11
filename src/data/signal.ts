@@ -64,10 +64,22 @@ export const SIGNAL: SignalEntry[] = [
   {
     id: "claude-dispatch",
     date: "2026-10-06",
-    headline: "Claude Code and Dispatch: run your Mac from your phone",
+    headline: "Put Claude to work on your computer",
     source: "Anthropic",
-    sourceUrl: "https://claude.com/product/claude-code",
+    sourceUrl: "https://claude.com/blog/dispatch-and-computer-use",
     take: [
+      "Dispatch is how I work when I'm away from the desk. I send a message from my phone and Claude does it on my Mac.",
+      "That covers a Claude Code task on this site, a pass through my email, or a look at whatever app I need checked.",
+    ],
+    /* the four parts (11 Oct 2026): what it is and does from the source, how he uses it, what he thinks */
+    what: "Dispatch keeps one running conversation with Claude across your phone and your computer, so a task sent from the phone gets done on the desktop.",
+    does: [
+      "Takes a task from your phone and leaves the finished work on your computer.",
+      "Starts a Claude Code or Cowork session for a report or a pull request.",
+      "Runs regular checks, like reading your email every morning.",
+      "Uses the computer itself when no connector fits, and asks before opening a new app.",
+    ],
+    use: [
       "Dispatch is how I work when I'm away from the desk. I send a message from my phone and Claude does it on my Mac.",
       "That covers a Claude Code task on this site, a pass through my email, or a look at whatever app I need checked.",
     ],
@@ -76,12 +88,26 @@ export const SIGNAL: SignalEntry[] = [
   {
     id: "perceptron-mk1",
     date: "2026-10-05",
-    headline: "Perceptron Mk1, a model that reasons over video",
+    headline: "Introducing Perceptron Mk1",
     source: "Perceptron",
-    sourceUrl: "https://www.perceptron.inc",
+    sourceUrl: "https://www.perceptron.inc/blog/introducing-perceptron-mk1",
     take: [
       "A.R.C. runs its video scans on Mk1. You walk a room with your phone, and Mk1 reads the footage across frames, tracks each object through the space, and pulls out what's there for the insurance inventory.",
-      "It picks up the spatial context a single photo misses, and a room-by-room scan of a whole house takes minutes.",
+      "It picks up the spatial context a single photo misses.",
+    ],
+    /* the four parts (11 Oct 2026): what it is and does from the source, how he uses it, what he thinks */
+    what: "Perceptron Mk1 is a model built to understand video and reason about the physical world.",
+    does: [
+      "Reasons across time, and breaks a video down into what happened and when.",
+      "Reads video at up to two frames a second, across a 32,000-token context.",
+      "Points to things in a frame with pixel precision.",
+      "Matches frontier models from Google, Alibaba, OpenAI and Anthropic on video and embodied reasoning.",
+    ],
+    use: [
+      "A.R.C. runs its video scans on Mk1. You walk a room with your phone, and Mk1 reads the footage across frames, tracks each object through the space, and pulls out what's there for the insurance inventory.",
+    ],
+    think: [
+      "It picks up the spatial context a single photo misses.",
     ],
     tags: ["Models", "Video", "A.R.C."],
   },
@@ -99,20 +125,52 @@ export const SIGNAL: SignalEntry[] = [
        looks and works so damn good. every pixel, every micro
        animation...loads smooth in all the right places and ways." */
     take: [
-      "You name a browser and I've used it, and really given it a week or so of daily use. I kept coming back to Dia, and not really because of the AI.",
-      "As a creative person, it just looks and works so damn good: every pixel, every micro animation, smooth in all the right places.",
+      "You name a browser and I've used it, and really given it a week or so of daily use. Dia is the one I kept coming back to.",
+      "Not really because of the AI. As a creative person, it just looks and works so damn good: every pixel, every micro animation, smooth in all the right places.",
+    ],
+    /* the four parts (11 Oct 2026): what it is and does from the source, how he uses it, what he thinks */
+    what: "Dia is a browser from The Browser Company with AI built in, free for Mac and Windows.",
+    does: [
+      "Starts the day with a brief of your calendar, inbox and key links.",
+      "Answers a question across your open tabs and work apps at once.",
+      "Gathers what's in Slack, Notion and Teams into a report you can share.",
+      "Keeps work, freelance and personal life in separate profiles, a swipe apart.",
+      "Turns what you've gathered into slides.",
+    ],
+    use: [
+      "You name a browser and I've used it, and really given it a week or so of daily use. Dia is the one I kept coming back to.",
+    ],
+    think: [
+      "Not really because of the AI. As a creative person, it just looks and works so damn good: every pixel, every micro animation, smooth in all the right places.",
     ],
     tags: ["Browsers", "Tools"],
   },
   {
     id: "claude-sonnet-5",
     date: "2026-09-06",
-    headline: "Claude Sonnet 5",
+    headline: "Introducing Claude Sonnet 5",
     source: "Anthropic",
-    sourceUrl: "https://www.anthropic.com/claude/sonnet",
+    sourceUrl: "https://www.anthropic.com/news/claude-sonnet-5",
     take: [
       "The Ask on this site answers from Sonnet 5 now. Before switching, I ran twelve why questions past it and Haiku 4.5.",
-      "Haiku made up a reason for A.R.C. Sonnet answered from the study's own sentence. Sonnet takes about six tenths of a second longer each time. I switched anyway.",
+      "Haiku made up a reason for A.R.C. Sonnet answered from the study's own sentence.",
+      "Sonnet takes about six tenths of a second longer each time. I switched anyway.",
+    ],
+    /* the four parts (11 Oct 2026): what it is and does from the source, how he uses it, what he thinks */
+    what: "Claude Sonnet 5 is Anthropic's most agentic Sonnet model yet, close to Opus 4.8 at a lower price.",
+    does: [
+      "Plans, uses tools like browsers and terminals, and runs on its own.",
+      "Checks its own output without being asked, testers say.",
+      "Matches Opus 4.8 on some tasks at higher effort.",
+      "Resists prompt injection better, and makes things up less, than Sonnet 4.6.",
+    ],
+    useLabel: "How I tested it",
+    use: [
+      "The Ask on this site answers from Sonnet 5 now. Before switching, I ran twelve why questions past it and Haiku 4.5.",
+      "Haiku made up a reason for A.R.C. Sonnet answered from the study's own sentence.",
+    ],
+    think: [
+      "Sonnet takes about six tenths of a second longer each time. I switched anyway.",
     ],
     tags: ["Models", "Claude"],
   },
