@@ -61,6 +61,36 @@ Every post is one of these. The kind decides the note's shape.
 - Why it matters to his work and what he would try first.
 - Only from his own words. If he has nothing to say yet, it waits.
 
+## The post in four parts (proposed 11 Oct 2026)
+
+His ask: "should we come up with a standard format? here's the 5 things
+the model, app, browser or piece of software does, here's how i am using
+it or tests it, here's my thoughts, etc, etc. so it feels a little more
+indepth?"
+
+Under the source's headline, every post has four parts:
+
+1. **What it is.** One plain sentence saying what the thing is, from the
+   source.
+2. **What it does.** Three to five short lines from the announcement it
+   links to, each a sentence with a verb. Never padded to five. A number
+   keeps its comparison ("40% less to run than Opus 5").
+3. **How I use it.** Where it runs in his work, the job it does there, and
+   one specific: a number, a before and after, or a decision. A bench
+   calls this part "How I tested it". A tool he hasn't used yet calls it
+   "What I'd try first", in his words only.
+4. **What I think.** His take in his words, one to three sentences. If he
+   hasn't said anything yet, the post waits.
+
+The kind (Built with, Bench, Switch, How I work, Watching) still labels
+the post. A post runs about 120 to 200 words, so the 25 to 80 words below
+hold only for a post that keeps the one-paragraph note. In the room, What
+it is sits under the headline and each part is a labelled run, its name in
+the left rail and its lines on the right, the way a study's opening sets
+What I did beside its body. The fields are `what`, `does`, `use` (with
+`useLabel`) and `think` in `src/data/signal.ts`; `scripts/build-signal.mjs`
+sets them. The Opus 5.5 draft is the example.
+
 ## The note
 
 - 25 to 80 words. Two short paragraphs at most.

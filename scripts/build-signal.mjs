@@ -50,7 +50,20 @@ const room = (key, { title, sub, lede, dim, tail, rule, entries, label, extra })
   entries.forEach((e, i) => {
     const si = 2 + i;
     frags.push({ id: "sg-" + e.id, k: key, kind: "line", si, pi: pi++, text: clean(e.headline), label: label(e), weight: "head", where: "section-header" });
-    lines(e.take).forEach((t) => frags.push({ id: nid(), k: key, kind: "line", si, pi: pi++, text: t, weight: "body", where: "text" }));
+    /* a post in four parts (11 Oct 2026, his "should we come up with a
+       standard format? here's the 5 things the model, app, browser or
+       piece of software does, here's how i am using it or tests it,
+       here's my thoughts"): what it is under the headline, then each
+       part as a labelled run, its name in the left rail and its lines in
+       the right, as a study's opening sets What I did beside its body */
+    const parts = [["What it does", e.does], [e.useLabel || "How I use it", e.use], ["What I think", e.think]].filter(([, v]) => lines(v || []).length);
+    if (e.what || parts.length) {
+      if (e.what) frags.push({ id: nid(), k: key, kind: "line", si, pi: pi++, text: clean(e.what), weight: "sub", where: "text" });
+      parts.forEach(([cap, v]) => {
+        frags.push({ id: nid(), k: key, kind: "line", si, pi: pi++, text: cap, weight: "head", where: "text" });
+        lines(v).forEach((t) => frags.push({ id: nid(), k: key, kind: "line", si, pi: pi++, text: t, weight: "body", where: "text" }));
+      });
+    } else lines(e.take).forEach((t) => frags.push({ id: nid(), k: key, kind: "line", si, pi: pi++, text: t, weight: "body", where: "text" }));
     const note = extra ? extra(e) : [];
     if (note.length) frags.push({ id: nid(), k: key, kind: "note", si, pi: pi++, title: "To check", items: note });
     const links = [{ url: e.sourceUrl, text: "Read it at " + clean(e.source) }];

@@ -31,8 +31,21 @@ export interface SignalEntry {
   /** Who published it. */
   source: string;
   sourceUrl: string;
-  /** His note: first person, conversational, one opinion. */
+  /** His note: first person, conversational, one opinion. A post in the
+   *  four-part format (SIGNAL.md, 11 Oct 2026) keeps a short take for the
+   *  index and lists, and the room sets the parts below instead. */
   take: string | string[];
+  /** What it is: one plain sentence, from the source. */
+  what?: string;
+  /** What it does: three to five lines from the source's own
+   *  announcement, each a short sentence with a verb. */
+  does?: string[];
+  /** How I use it: where it runs in his work, the job, one specific.
+   *  `useLabel` renames the part ("How I tested it", "What I'd try first"). */
+  use?: string | string[];
+  useLabel?: string;
+  /** What I think: his take, in his words. */
+  think?: string | string[];
   /** Topics. Title case, reused across entries. */
   tags: string[];
   /** The study the post touches, by its room key ("arc", "sally-os"):
