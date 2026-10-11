@@ -2315,8 +2315,10 @@
   const keyOf = (st) => (st.v === "shelf" ? st.key : st.v === "study" ? "study/" + st.k : "");
   const parentOf = (st) => (st.v === "study" && st.from && KEYMAP.has(st.from) ? { v: "shelf", key: st.from } : { v: "rest" });
   const rectIn = (r, box) => r.bottom > box.top + 8 && r.top < box.bottom - 8 && r.width > 0;
+  /* a credit is named by its brand (11 Oct 2026): it has no value of its
+     own, so its shelf, its foot and its running head had opened nameless */
   const nameOf = (o) => (o.g.id === "work" ? D.title(o.k) : o.g.id === "lines" ? o.line.name : o.g.id === "about" ? o.about.name
-    : o.g.id === "years" ? String(o.y) : o.g.id === "figures" ? o.fig.s : o.v);
+    : o.g.id === "years" ? String(o.y) : o.g.id === "figures" ? o.fig.s : o.g.id === "credits" ? o.credit.name : o.v);
 
   /* ── the flight: a picture showing its whole frame at A becomes the same
      picture cropped to B. The image is sized to cover B, clipped to B,
