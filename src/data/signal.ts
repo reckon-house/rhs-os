@@ -68,6 +68,43 @@ export const SIGNAL_TAIL = "Newest first, each with a link to the source.";
 
 export const SIGNAL: SignalEntry[] = [
   {
+    /* posted 11 Oct 2026 from the drafts (his "post the opus 5.5 one!"); what it
+       is and does from the announcement, read that day; the bench numbers are
+       his, from Sally Marketing OS, cleared by him to share on 8 Oct */
+    id: "claude-opus-5-5",
+    date: "2026-10-11",
+    headline: "Opus 5.5 is my daily workhorse and the best model I've used to date",
+    sourceTitle: "Introducing Claude Opus 5.5",
+    source: "Anthropic",
+    sourceUrl: "https://www.anthropic.com/claude-opus-5-5",
+    take: [
+      "The day it came out, the strategy side of Sally Marketing OS moved to it.",
+      "Copy waited for a test. Each model wrote from 18 briefs across CRM, ecommerce and store assets: the audit needed six fixes on Opus 4.6, one on Opus 5 and none on 5.5, and a blind read picked 5.5 over Opus 5 thirteen times out of sixteen. Copy moved three days later.",
+      "It's bigger than any one project. You hear about models getting nerfed, but this one somehow feels stronger a few weeks after launch.",
+    ],
+    what: "Claude Opus 5.5 is Anthropic's newest Opus model, and the first in its Claude 5.5 family.",
+    does: [
+      "Performs at the level of Claude Fable 5.1 on most work.",
+      "Leads in agentic coding, computer use and knowledge work.",
+      "Costs 40% less to run than Opus 5, and writes more than 30% faster.",
+      "Is much less likely than recent models to take a hard-to-reverse action.",
+      "Communicates more naturally than earlier models.",
+    ],
+    use: [
+      "The day it came out, the strategy side of Sally Marketing OS moved to it.",
+      "Copy waited for a test. Each model wrote from 18 briefs across CRM, ecommerce and store assets: the audit needed six fixes on Opus 4.6, one on Opus 5 and none on 5.5, and a blind read picked 5.5 over Opus 5 thirteen times out of sixteen. Copy moved three days later.",
+    ],
+    think: [
+      "It's bigger than any one project. You hear about models getting nerfed, but this one somehow feels stronger a few weeks after launch.",
+    ],
+    tags: [
+      "Claude",
+      "Models",
+      "Sally Marketing OS",
+    ],
+    study: "sally-os",
+  },
+  {
     id: "claude-dispatch",
     date: "2026-10-06",
     headline: "Dispatch is how I work when I'm away from the desk",
