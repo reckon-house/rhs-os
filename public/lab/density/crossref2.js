@@ -573,6 +573,12 @@
   /* the copy under a head reads as the body since 10 Oct 2026 (study-panel.css,
      TWO STYLES); ?deck=old brings back the middle size */
   if ((new URLSearchParams(location.search).get("deck") || "").toLowerCase() === "old") HTML.classList.add("deck-old");
+  /* a shelf's head is set as a room's since 11 Oct 2026 (his "should we
+     align the type style, size, etc for these as well?"): the name at a
+     room title's size, the line under it in the statement (shelf-stack.js
+     fitTitle, shelf-stack.css SHELF HEAD); ?shelfhead=old keeps the 64px
+     name and the 15px line */
+  if ((new URLSearchParams(location.search).get("shelfhead") || "").toLowerCase() === "old") HTML.classList.add("sh-old");
   /* the cover's small line over the statement is his name and the contact
      (4 Oct 2026, his "Work by Jeremy Prasatik hello@reckon.house LinkedIn
      in the small section above the main statement - nothing at the top?").
@@ -2769,6 +2775,9 @@
      at most, never past the edge), so it lands where it will stand */
   const fitFoot = (S) => {
     const t = S.foot && S.foot.querySelector(".sh-foot-t"); if (!t || t.classList.contains("stand")) return;
+    /* a room title's size since 11 Oct, by the stack's own hand */
+    const ST = SHELVES.stack;
+    if (ST && ST.fitTitle && ST.roomHead && ST.roomHead()) { ST.fitTitle(t, S.layer.clientWidth); return; }
     t.style.fontSize = ""; let fs = parseFloat(getComputedStyle(t).fontSize) || 64;
     const over = () => t.scrollWidth > t.clientWidth + 1 || t.offsetHeight > fs * 2.05;
     for (let i = 0; i < 24 && fs > 22 && over(); i++) { fs -= 2; t.style.fontSize = fs + "px"; }

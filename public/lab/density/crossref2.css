@@ -1217,3 +1217,11 @@ html[data-count="name"][data-mk="cell"][data-ix="e"] #idx .grp.ec .e.lock.el .nr
    stands a little more above it and leaves a little more under the
    sentence, keeping the eight pixels between two lit lines */
 html[data-count="name"][data-ix="e"] .e.el { --bt: 6px; --bb: 14px; }
+
+/* a foot's head as the shelf it carries on into (11 Oct 2026, SHELF HEAD
+   in shelf-stack.css): the name in a room title's tracking and leading,
+   fitted by the stack's fitTitle, and the line in the statement at the
+   glass's --stand. ?shelfhead=old keeps the 64px name and the 15px line */
+html.st-one:not([data-type="bold"]):not(.sh-old) .sh-foot-t:not(.stand) { letter-spacing: -0.045em; line-height: 0.9; }
+html.st-one:not([data-type="bold"]):not(.sh-old) .sh-foot .sh-foot-s { max-width: none; margin-top: 18px; font-size: var(--stand, 35px); font-weight: 500; letter-spacing: var(--stand-tr, -0.045em); line-height: 1.1; }
+html.st-one:not([data-type="bold"]):not(.sh-old) .sh-foot .sh-foot-l + .sh-foot-s { margin-top: 6px; }

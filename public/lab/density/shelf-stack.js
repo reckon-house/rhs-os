@@ -121,8 +121,30 @@
     S.nm = nm;
     return h;
   };
+  /* a shelf's head as a room's head (11 Oct 2026, his "should we align the
+     type style, size, etc for these as well?"): the name fitted as a room
+     fits its title (study-panel.js fitType), as large as a fifth of the
+     glass up to 118px, then down until it keeps to three lines, four for a
+     long name, with no word broken. A foot fits the next name by this same
+     hand (crossref2.js fitFoot), so the carry-on lands true.
+     ?shelfhead=old keeps the 64px name */
+  const roomHead = () => { const H = document.documentElement; return H.classList.contains("st-one") && H.dataset.type !== "bold" && !H.classList.contains("sh-old"); };
+  const fitTitle = (nm, W) => {
+    if (!nm || !W) return;
+    nm.style.fontSize = "";
+    const cs = getComputedStyle(nm), lh = parseFloat(cs.lineHeight) / parseFloat(cs.fontSize) || 0.9;
+    const most = nm.textContent.length > 26 ? 4 : 3;
+    let lo = Math.max(34, W * 0.07), hi = Math.min(118, W * 0.206), best = lo;
+    for (let i = 0; i < 12; i++) {
+      const mid = (lo + hi) / 2; nm.style.fontSize = mid + "px";
+      if (nm.scrollWidth <= nm.clientWidth + 1 && nm.offsetHeight <= mid * lh * most + 2) { best = mid; lo = mid; } else hi = mid;
+    }
+    nm.style.fontSize = Math.floor(best * 2) / 2 + "px";
+  };
   const fitName = (S) => {
-    const nm = S.nm; if (!nm) return; nm.style.fontSize = "";
+    const nm = S.nm; if (!nm) return;
+    if (roomHead()) { const c = S.ctx || {}; fitTitle(nm, (c.scroller && c.scroller.clientWidth) || (c.width || 0) + (S.ph ? 0 : 20)); return; }
+    nm.style.fontSize = "";
     let fs = parseFloat(getComputedStyle(nm).fontSize) || 64;
     const over = () => nm.scrollWidth > nm.clientWidth + 1 || nm.offsetHeight > fs * 2.05;
     for (let i = 0; i < 24 && fs > 22 && over(); i++) { fs -= 2; nm.style.fontSize = fs + "px"; }
@@ -438,5 +460,5 @@
     return api;
   };
 
-  REG.stack = { label: "Stack", render, peek };
+  REG.stack = { label: "Stack", render, peek, fitTitle, roomHead };
 })();

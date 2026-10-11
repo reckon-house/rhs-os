@@ -108,3 +108,20 @@ html.st-one:not([data-type="bold"]) .xk-stand { font-weight: 500; line-height: 1
    pointer keeps its size, so a carry-on finds the foot's picture and the
    shelf's alike; the zoom comes once the page is still (4 Oct) */
 html.scrolling .xk-it .xk-pic img { transform: scale(1.001); transition: none; }
+
+/* ── SHELF HEAD: a shelf's head as a room's (11 Oct 2026, his "should we
+   align the type style, size, etc for these as well?", after the copy
+   under every head in the rooms went to the body). The name in a room
+   title's tracking and leading at a room title's size (fitTitle in
+   shelf-stack.js), and the line under it in the rooms' statement, as the
+   line under a study's title is set: --stand and --stand-tr, medium, at
+   1.1, its two tones as they were, 18px under the name as a room has it.
+   The foot's copies follow (crossref2.css), so the carry-on lands true.
+   ?shelfhead=old keeps the 64px name and the 15px line ── */
+html.st-one:not([data-type="bold"]):not(.sh-old) .xk-name { letter-spacing: -0.045em; line-height: 0.9; }
+html.st-one:not([data-type="bold"]):not(.sh-old) .xk .xk-sent { max-width: none; margin-top: 18px; font-size: var(--stand, 35px); font-weight: 500; letter-spacing: var(--stand-tr, -0.045em); line-height: 1.1; }
+html.st-one:not([data-type="bold"]):not(.sh-old) .xk .xk-lbl + .xk-sent { margin-top: 6px; }
+/* on a phone the count stays beside the name, as on a desk and as the
+   foot sets it, so a name at a title's size never pushes it under and the
+   carry-on still lands (a line's run keeps its count under it) */
+html.st-one:not([data-type="bold"]):not(.sh-old) .xk.ph .xk-hl:has(> .xk-name) { flex-wrap: nowrap; }
