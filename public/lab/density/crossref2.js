@@ -570,6 +570,9 @@
      at 1.1, sized as a room sizes it (shelf-stack.js); ?statement=demi
      keeps the demi they had, as it does in the rooms */
   if ((new URLSearchParams(location.search).get("statement") || "").toLowerCase() !== "demi") HTML.classList.add("st-one");
+  /* the copy under a head reads as the body since 10 Oct 2026 (study-panel.css,
+     TWO STYLES); ?deck=old brings back the middle size */
+  if ((new URLSearchParams(location.search).get("deck") || "").toLowerCase() === "old") HTML.classList.add("deck-old");
   /* the cover's small line over the statement is his name and the contact
      (4 Oct 2026, his "Work by Jeremy Prasatik hello@reckon.house LinkedIn
      in the small section above the main statement - nothing at the top?").

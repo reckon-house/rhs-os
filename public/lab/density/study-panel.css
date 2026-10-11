@@ -847,6 +847,18 @@ html:not([data-type="bold"]) .sp .sp-stl li,
 html:not([data-type="bold"]) .sp .sp-nr { font-size: 13px; font-weight: 400; letter-spacing: -0.004em; }
 html:not([data-type="bold"]) .sp .sp-p,
 html:not([data-type="bold"]) .sp .sp-fs { line-height: 2; }
+/* TWO STYLES (10 Oct 2026, his "wondering if we just make the copy below
+   all the headlines the same as the copy below the headline at the very
+   top of case studies so we only have two type styles throughout?"): what
+   sits under a head (a section's deck, the closing's second paragraph, a
+   chapter's lead) reads as the opening's body, 13px regular at double
+   leading on its 34em measure, so a room has its statement and its body.
+   ?deck=old brings back the middle size (14-18px medium) */
+html:not([data-type="bold"]):not(.deck-old) .sp .sp-stand,
+html:not([data-type="bold"]):not(.deck-old) .sp .sp-deck,
+html:not([data-type="bold"]):not(.deck-old) .sp .sp-closing p + p,
+html:not([data-type="bold"]):not(.deck-old) .sp .sp-closing p.sp-long,
+html:not([data-type="bold"]):not(.deck-old) .sp .sp-chap .sp-chap-lead { max-width: 34em; font-size: 13px; font-weight: 400; letter-spacing: -0.004em; line-height: 2; }
 html:not([data-type="bold"]) .sp .sp-col,
 html:not([data-type="bold"]) .sp .sp-card h3 { font-size: 13px; font-weight: 600; letter-spacing: -0.01em; }
 html:not([data-type="bold"]) .sp .sp-fs b,
