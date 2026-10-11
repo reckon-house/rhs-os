@@ -333,3 +333,31 @@
 .pq-film .pq-prog { transform: scaleX(0); transition: transform var(--sw, 1s) linear var(--t0, 0.4s); }
 .ptq.pt-1 .pq-film .pq-prog { transform: scaleX(0.92); }
 .ptq.pt-1 .pq-done .pq-film .pq-prog { transform: scaleX(1); transition: transform calc(0.26s * var(--x, 1)) cubic-bezier(0.45, 0, 0.2, 1); }
+
+/* ── THE SWEEP (10 Oct 2026, his "maybe we make the loader a smooth scroll
+   vs jumping from section to section?"): the needle and the line glide in
+   one motion from the start to 92%, easing in and settling, then run the
+   rest once the room is in. Each tick and its name light on their own
+   delay (--lt), the moment the needle crosses them on that curve
+   (curtain.js bezAt); one past 92% lights at the finish ── */
+.pq-cont.pq-smooth { --p: 0; }
+.ptq.pt-1 .pq-cont.pq-smooth { --p: 0.92; }
+.ptq.pt-1 .pq-done .pq-cont.pq-smooth { --p: 1; }
+.pq-smooth .pq-needle { transition: opacity calc(0.25s * var(--x, 1)) ease calc(0.3s * var(--x, 1)), transform var(--sw, 1.3s) cubic-bezier(0.42, 0.05, 0.28, 1) var(--t0, 0.42s); }
+.pq-smooth .pq-prog { transition: transform var(--sw, 1.3s) cubic-bezier(0.42, 0.05, 0.28, 1) var(--t0, 0.42s); }
+.pq-done .pq-smooth .pq-needle { transition: opacity 0s, transform calc(0.26s * var(--x, 1)) cubic-bezier(0.45, 0, 0.2, 1); }
+.pq-done .pq-smooth .pq-prog { transition: transform calc(0.26s * var(--x, 1)) cubic-bezier(0.45, 0, 0.2, 1); }
+.pq-smooth .pq-tk.pq-mk { transition: transform calc(0.35s * var(--x, 1)) var(--ease, cubic-bezier(0.2, 0.7, 0.2, 1)) var(--d, 0s), background-color calc(0.16s * var(--x, 1)) ease var(--lt, 0s); }
+.ptq.pt-1 .pq-smooth .pq-mk:not(.pq-late), .ptq.pt-1 .pq-done .pq-smooth .pq-mk { background: #fff; }
+.pq-smooth .pq-vl { transition: opacity calc(0.4s * var(--x, 1)) ease calc(0.32s * var(--x, 1)), color calc(0.16s * var(--x, 1)) ease var(--lt, 0s); }
+.ptq.pt-1 .pq-smooth .pq-vl:not(.pq-late), .ptq.pt-1 .pq-done .pq-smooth .pq-vl { color: #fff; }
+
+/* ── THE FLOOD for the loaders (10 Oct 2026, his "we should also fill the
+   entire side with black so you cant see anything behind it at the
+   edges"): the whole column, edge to edge, rising from the foot as the
+   card did; the words keep the card's places ── */
+.pt-q-contents .ptb, .pt-q-contentsall .ptb, .pt-q-pictures .ptb { inset: 0; clip-path: inset(100% 0 0 0); }
+.pt.pt-q-contents:not(.ptc) .ptb, .pt.pt-q-contentsall:not(.ptc) .ptb, .pt.pt-q-pictures:not(.ptc) .ptb { left: 0; }
+.ptq.pt-1.pt-q-contents .ptb, .ptq.pt-1.pt-q-contentsall .ptb, .ptq.pt-1.pt-q-pictures .ptb { clip-path: inset(0 0 0 0); }
+.ptq.pt-3.pt-q-contents .ptb, .ptq.pt-3.pt-q-contentsall .ptb, .ptq.pt-3.pt-q-pictures .ptb { clip-path: inset(0 0 100% 0); }
+.pq.pq-contents, .pq.pq-contentsall, .pq.pq-pictures { right: 52px; bottom: 40px; }

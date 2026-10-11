@@ -115,6 +115,23 @@
     if (m === "sequence") return n ? SEQ_T0 + n * seqStep(n) + 0.95 - 0.55 : 0.62;
     return HOLD[m] || 0.32;
   };
+  /* when an eased sweep reaches a share of its way: the curve sampled
+     finely and read backwards, so a tick lights as the needle crosses it */
+  const bezAt = (x1, y1, x2, y2) => {
+    const N = 240, xs = [], ys = [];
+    for (let i = 0; i <= N; i++) { const t = i / N, u = 1 - t; xs.push(3 * u * u * t * x1 + 3 * u * t * t * x2 + t * t * t); ys.push(3 * u * u * t * y1 + 3 * u * t * t * y2 + t * t * t); }
+    return (v) => {
+      if (v <= 0) return 0; if (v >= 1) return 1;
+      let i = 1; while (i < N && ys[i] < v) i++;
+      const f = (v - ys[i - 1]) / Math.max(1e-6, ys[i] - ys[i - 1]);
+      return xs[i - 1] + f * (xs[i] - xs[i - 1]);
+    };
+  };
+  /* the sweep (10 Oct, his "maybe we make the loader a smooth scroll vs
+     jumping from section to section?"): one glide from the start to most
+     of the way, easing in and settling, then the rest once the room is in */
+  const SWEEP = { t0: 0.42, sw: 1.3, end: 0.92, ease: [0.42, 0.05, 0.28, 1] };
+  const sweepAt = bezAt(...SWEEP.ease);
   /* what a cover built says how long it runs, from the card starting up;
      the card's own rise is 0.55s of it */
   const holdFor = (pt) => (pt && pt._q ? Math.max(0.2, pt._q - 0.55) : holdOf(MODE));
@@ -588,13 +605,17 @@
       if (by.childNodes.length) q.appendChild(by);
       q.appendChild(E("div", "pq-say", name));
     };
-    const iw = Math.max(1, W - 64);
+    /* the loaders flood the whole column (10 Oct, his "fill the entire side
+       with black so you cant see anything behind it at the edges"); their
+       words keep the card's places, 32px in from the left, 52 from the
+       window, 40 up from the foot */
+    const iw = Math.max(1, W - 84);
     if ((mode === "contents" || mode === "contentsall") && L.length) {
       const all = mode === "contentsall", n = L.length;
       const A0 = Array.isArray(META.at) && META.at.length === n && META.at.every((v, i, a) => v >= 0 && v < 1 && (!i || v >= a[i - 1])) ? META.at : null;
       const A = A0 || L.map((_, i) => i / n);
       const sc = E("div", "pq-tuner pq-cont" + (all ? " pq-all" : ""));
-      sc.style.setProperty("--iw", iw + "px"); sc.style.setProperty("--p", "0");
+      sc.style.setProperty("--iw", iw + "px");
       sc.appendChild(E("i", "pq-base")); sc.appendChild(E("i", "pq-prog"));
       const tk = E("div", "pq-ticks"), MINOR = 64;
       for (let j = 0; j <= MINOR; j++) {
@@ -613,20 +634,19 @@
       sc.appendChild(tk);
       const nd = E("div", "pq-needle"), rl = E("span", "pq-rl", ""); if (!all) nd.appendChild(rl); sc.appendChild(nd);
       q.appendChild(sc); nameplate();
-      const T0 = 0.42, per = Math.min(0.26, Math.max(0.14, 0.9 / n)), tEnd = T0 + n * per + 0.3;
-      const setP = (v, dur, ease) => { sc.style.setProperty("--sd", (dur * X1).toFixed(3) + "s"); sc.style.setProperty("--se", ease); sc.style.setProperty("--p", v.toFixed(4)); };
+      /* each section lights as the needle crosses its tick; one that starts
+         past the sweep's end lights when the room is in */
+      const { t0: T0, sw: SW, end: END } = SWEEP, crossAt = (a) => T0 + sweepAt(a / END) * SW;
+      sc.classList.add("pq-smooth");
+      sc.style.setProperty("--t0", (T0 * X1).toFixed(3) + "s"); sc.style.setProperty("--sw", (SW * X1).toFixed(3) + "s");
+      A.forEach((a, i) => {
+        const late = a > END, lt = ((late ? 0 : crossAt(a)) * X1).toFixed(3) + "s";
+        [majors[i], labs[i]].forEach((e) => { if (!e) return; e.style.setProperty("--lt", lt); if (late) e.classList.add("pq-late"); });
+      });
       loader((at) => {
-        A.forEach((a, i) => {
-          at(T0 + i * per, () => setP(a, per * 0.9, "cubic-bezier(0.45, 0, 0.2, 1)"));
-          at(T0 + i * per + per * 0.72, () => {
-            majors[i].classList.add("on"); if (labs[i]) labs[i].classList.add("on");
-            rl.textContent = L[i]; nd.classList.toggle("pq-r", a > 0.62);
-          });
-        });
-        /* past the last section it creeps on toward the end and waits */
-        const last = A[n - 1];
-        at(T0 + n * per, () => setP(last < 0.9 ? 0.9 : (last + 1) / 2, 0.9, "cubic-bezier(0.2, 0.7, 0.2, 1)"));
-      }, () => setP(1, 0.26, "cubic-bezier(0.45, 0, 0.2, 1)"), tEnd);
+        /* the riding name changes as the needle crosses into each section */
+        if (!all) A.forEach((a, i) => at(a > END ? T0 + SW : crossAt(a), () => { rl.textContent = L[i]; nd.classList.toggle("pq-r", a > 0.62); }));
+      }, () => q.classList.add("pq-done"), T0 + SW);
     } else if (mode === "pictures" && (META.pics || []).length >= 3) {
       const ps = META.pics.slice(0, 8), N = ps.length, T0 = 0.4, SW = 1.0, END = 0.92;
       const fw = E("div", "pq-film");
