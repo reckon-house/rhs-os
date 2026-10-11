@@ -121,14 +121,24 @@
     S.nm = nm;
     return h;
   };
-  /* a shelf's head as a room's head (11 Oct 2026, his "should we align the
-     type style, size, etc for these as well?"): the name fitted as a room
-     fits its title (study-panel.js fitType), as large as a fifth of the
-     glass up to 118px, then down until it keeps to three lines, four for a
-     long name, with no word broken. A foot fits the next name by this same
-     hand (crossref2.js fitFoot), so the carry-on lands true.
-     ?shelfhead=old keeps the 64px name */
-  const roomHead = () => { const H = document.documentElement; return H.classList.contains("st-one") && H.dataset.type !== "bold" && !H.classList.contains("sh-old"); };
+  /* a shelf's head in the rooms' two styles (11 Oct 2026). His "should we
+     align the type style, size, etc for these as well?" first set the name
+     as a room title; live, his "it's awfully big for a 'label' or category
+     and not an actual project. maybe the styling is more like this second
+     screenshot" (a room's section head over its body) made it "sub": the
+     name at a section head's size, which is the statement's (--stand,
+     shelf-stack.css SHELF HEAD), so it is not fitted at all, and the line
+     under it as the body. ?shelfhead=title keeps the title-sized name,
+     fitted as a room fits its title (study-panel.js fitType: as large as a
+     fifth of the glass up to 118px, then down until it keeps to three
+     lines, four for a long name, with no word broken); ?shelfhead=old the
+     64px name. A foot sets the next name by the same hand (crossref2.js
+     fitFoot), so the carry-on lands true */
+  const headMode = () => {
+    const H = document.documentElement;
+    if (!H.classList.contains("st-one") || H.dataset.type === "bold" || H.classList.contains("sh-old")) return "old";
+    return H.classList.contains("sh-title") ? "title" : "sub";
+  };
   const fitTitle = (nm, W) => {
     if (!nm || !W) return;
     nm.style.fontSize = "";
@@ -143,7 +153,9 @@
   };
   const fitName = (S) => {
     const nm = S.nm; if (!nm) return;
-    if (roomHead()) { const c = S.ctx || {}; fitTitle(nm, (c.scroller && c.scroller.clientWidth) || (c.width || 0) + (S.ph ? 0 : 20)); return; }
+    const m = headMode();
+    if (m === "sub") { nm.style.fontSize = ""; return; }
+    if (m === "title") { const c = S.ctx || {}; fitTitle(nm, (c.scroller && c.scroller.clientWidth) || (c.width || 0) + (S.ph ? 0 : 20)); return; }
     nm.style.fontSize = "";
     let fs = parseFloat(getComputedStyle(nm).fontSize) || 64;
     const over = () => nm.scrollWidth > nm.clientWidth + 1 || nm.offsetHeight > fs * 2.05;
@@ -460,5 +472,5 @@
     return api;
   };
 
-  REG.stack = { label: "Stack", render, peek, fitTitle, roomHead };
+  REG.stack = { label: "Stack", render, peek, fitTitle, headMode };
 })();

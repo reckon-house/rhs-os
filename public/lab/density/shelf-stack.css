@@ -109,19 +109,31 @@ html.st-one:not([data-type="bold"]) .xk-stand { font-weight: 500; line-height: 1
    shelf's alike; the zoom comes once the page is still (4 Oct) */
 html.scrolling .xk-it .xk-pic img { transform: scale(1.001); transition: none; }
 
-/* ── SHELF HEAD: a shelf's head as a room's (11 Oct 2026, his "should we
-   align the type style, size, etc for these as well?", after the copy
-   under every head in the rooms went to the body). The name in a room
-   title's tracking and leading at a room title's size (fitTitle in
-   shelf-stack.js), and the line under it in the rooms' statement, as the
-   line under a study's title is set: --stand and --stand-tr, medium, at
-   1.1, its two tones as they were, 18px under the name as a room has it.
-   The foot's copies follow (crossref2.css), so the carry-on lands true.
-   ?shelfhead=old keeps the 64px name and the 15px line ── */
-html.st-one:not([data-type="bold"]):not(.sh-old) .xk-name { letter-spacing: -0.045em; line-height: 0.9; }
-html.st-one:not([data-type="bold"]):not(.sh-old) .xk .xk-sent { max-width: none; margin-top: 18px; font-size: var(--stand, 35px); font-weight: 500; letter-spacing: var(--stand-tr, -0.045em); line-height: 1.1; }
-html.st-one:not([data-type="bold"]):not(.sh-old) .xk .xk-lbl + .xk-sent { margin-top: 6px; }
+/* ── SHELF HEAD: a shelf's head in the rooms' two styles (11 Oct 2026).
+   His "should we align the type style, size, etc for these as well?",
+   after the copy under every head in the rooms went to the body, first
+   set the name as a room title and the line in the statement; live, his
+   "it's awfully big for a 'label' or category and not an actual project.
+   maybe the styling is more like this second screenshot where brand
+   design/labels/categories are the sub size then the rest body copy
+   size", a room's section head over its body. So a category is set as a
+   section head is: the name at the statement (--stand and --stand-tr,
+   medium, at 1.1, not fitted), and the line under it as the body (13px
+   regular at 2, ink, 34em), 14px under the name as a room's body sits
+   under its head. The foot's copies follow (crossref2.css), so the
+   carry-on lands true. ?shelfhead=title keeps the title-sized name and
+   the statement line; ?shelfhead=old the 64px name and the 15px line ── */
+html.st-one:not([data-type="bold"]):not(.sh-old):not(.sh-title) .xk-name { font-size: var(--stand, 35px); font-weight: 500; letter-spacing: var(--stand-tr, -0.045em); line-height: 1.1; }
+html.st-one:not([data-type="bold"]):not(.sh-old):not(.sh-title) .xk .xk-sent { max-width: 34em; margin-top: 14px; font-size: 13px; font-weight: 400; letter-spacing: -0.004em; line-height: 2; color: var(--ink); }
+html.st-one:not([data-type="bold"]):not(.sh-old):not(.sh-title) .xk .xk-sent .g { color: inherit; }
+html.st-one:not([data-type="bold"]):not(.sh-old):not(.sh-title) .xk .xk-lbl + .xk-sent { margin-top: 2px; }
+/* ?shelfhead=title: the name in a room title's tracking and leading at a
+   room title's size (fitTitle in shelf-stack.js), the line in the
+   statement, 18px under it, its two tones as they were */
+html.st-one.sh-title:not([data-type="bold"]):not(.sh-old) .xk-name { letter-spacing: -0.045em; line-height: 0.9; }
+html.st-one.sh-title:not([data-type="bold"]):not(.sh-old) .xk .xk-sent { max-width: none; margin-top: 18px; font-size: var(--stand, 35px); font-weight: 500; letter-spacing: var(--stand-tr, -0.045em); line-height: 1.1; }
+html.st-one.sh-title:not([data-type="bold"]):not(.sh-old) .xk .xk-lbl + .xk-sent { margin-top: 6px; }
 /* on a phone the count stays beside the name, as on a desk and as the
-   foot sets it, so a name at a title's size never pushes it under and the
-   carry-on still lands (a line's run keeps its count under it) */
+   foot sets it, so a long name never pushes it under and the carry-on
+   still lands (a line's run keeps its count under it) */
 html.st-one:not([data-type="bold"]):not(.sh-old) .xk.ph .xk-hl:has(> .xk-name) { flex-wrap: nowrap; }
