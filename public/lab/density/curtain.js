@@ -53,9 +53,16 @@
    stay switches; ?curtain=stack is the stack it replaced, and
    ?curtain=ramp-demi the ramp in demi as he first saw it.
 
-   BANDS IS THE CURTAIN since 8 Oct 2026, after his Swiss poster (see THE
-   POSTER below): the name in bands of weight and fill, the grey the site's
-   own. ?curtain=ramp brings back Ramp.
+   BANDS WAS THE CURTAIN from 8 to 10 Oct 2026, after his Swiss poster (see
+   THE POSTER below): the name in bands of weight and fill, the grey the
+   site's own. ?curtain=bands brings it back, ?curtain=ramp brings Ramp.
+
+   CONTENTS, ALL IS THE CURTAIN since 10 Oct 2026 (his "let's push
+   'contents, all' as the one we use live!"; see QUIET below): the
+   homepage's black card, the study's name where the statement sits, and
+   over it a scale of the room, every section's name standing on the tick
+   where it starts, the needle lighting each in turn and finishing once the
+   room's cover picture is in.
 
    THREE AS ONE (9 Oct 2026, his "is there a world where bands, outline
    and ramp outline all become one? i like the the scale differences in
@@ -122,9 +129,10 @@
   /* tracked in as it grows, on the site's own ladder (crossref2.js track()) */
   const track = (px) => (px >= 150 ? -0.06 : px >= 90 ? -0.055 : px >= 54 ? -0.05 : px >= 34 ? -0.042 : px >= 21 ? -0.03 : -0.012);
   const asked = (new URLSearchParams(location.search).get("curtain") || "").toLowerCase();
-  /* BANDS IS THE CURTAIN since 8 Oct 2026 (his "make bands the default and
-     push it all!"); ?curtain=ramp is the curtain it replaced */
-  let MODE = asked === "stack" ? "" : MODES.includes(asked) ? asked : "bands";
+  /* CONTENTS, ALL IS THE CURTAIN since 10 Oct 2026 (his "let's push
+     'contents, all' as the one we use live!"); ?curtain=bands is the
+     curtain it replaced */
+  let MODE = asked === "stack" ? "" : MODES.includes(asked) ? asked : "contentsall";
   let PT = null, busy = false;
   const make = (cls) => {
     const pt = document.createElement("div"); pt.className = "pt" + (cls ? " " + cls : ""); pt.setAttribute("aria-hidden", "true");

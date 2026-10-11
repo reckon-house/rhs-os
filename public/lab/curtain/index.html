@@ -54,7 +54,7 @@
   <div class="mk">Reckon*House</div>
   <div>
     <h1>The curtain</h1>
-    <p class="lead">The transition that plays when a study opens from the index, over the content column, in a loop. The swipe and the lines rising in and out stay the same; the type is set thirty-four ways, Bands first, since it is the site's. Slow it down to watch the lines.</p>
+    <p class="lead">The transition that plays when a study opens from the index, over the content column, in a loop. The swipe and the lines rising in and out stay the same; the type is set thirty-four ways, Contents, all first, since it is the site's. Slow it down to watch the lines.</p>
   </div>
   <div>
     <div class="lbl">Treatment</div>
@@ -73,9 +73,9 @@
 (() => {
   /* [the treatment, its name, what it does, its switch on the site] */
   const MODES = [
-    ["bands", "Bands", "The site's curtain since 8 Oct, after your Swiss poster: the name in bands of weight and fill, each band cutting it off, in the site's own grey.", ""],
+    ["contentsall", "Contents, all", "The site's curtain since 10 Oct. The homepage's black card with the study's name where the statement sits, and over it a scale of the room: every section's name standing on the tick where it starts, each turning white as the needle reaches it. It finishes only once the room's cover picture is in.", ""],
+    ["bands", "Bands", "The curtain from 8 to 10 Oct, after your Swiss poster: the name in bands of weight and fill, each band cutting it off, in the site's own grey.", "bands"],
     ["contents", "Contents", "Card, with a loader over its small line: a scale of the room, a long tick where each section starts down the room's own length, the orange needle stepping from one to the next and reading out its name. It finishes only once the room's cover picture is in.", "contents"],
-    ["contentsall", "Contents, all", "Contents with every section's name standing on its tick, each turning white as the needle reaches it.", "contentsall"],
     ["pictures", "Pictures", "Card, with the room's pictures in a strip over a drawn line, each coming up from grey as the line reaches it, the last when the room is ready.", "pictures"],
     ["card", "Card", "The homepage's black card, the study's name where the statement sits, its line and year as the small line over it.", "card"],
     ["caption", "Caption", "The black card with only a caption at its foot, at the picture captions' size, under a hairline drawn across it.", "caption"],
@@ -118,7 +118,7 @@
   STUDIES.forEach((s) => { const i = new Image(); i.src = s.img; });
   const q = new URLSearchParams(location.search);
   const qm = q.get("m");
-  let mode = qm !== null && MODES.some((m) => m[0] === qm) ? qm : "bands";
+  let mode = qm !== null && MODES.some((m) => m[0] === qm) ? qm : "contentsall";
   let x = 1, n = 0, run = 0;
   const $ = (id) => document.getElementById(id);
   const slow = document.createElement("style"); document.head.appendChild(slow);
