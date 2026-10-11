@@ -3,8 +3,8 @@
    logs what he built; this logs what he read, and what it means to
    someone building with these tools every day.
 
-   ONE ENTRY IS ONE LINK. The headline and the source are the
-   source's. The take is his, in first person, in the voice of
+   ONE ENTRY IS ONE LINK. The headline is his own line about how he
+   uses the thing; the source's title rides in the link line. The take is his, in first person, in the voice of
    VOICE.md: plain, warm, one opinion, no flourish on the end. A take
    that only says the news again is cut.
 
@@ -26,8 +26,14 @@ export interface SignalEntry {
   id: string;
   /** ISO date he posted it. Sorting and grouping both key off this. */
   date: string;
-  /** The news, as the source would title it. */
+  /** The post's headline: one ordinary sentence from his own words about
+   *  how he uses the thing (11 Oct 2026, his "do all nineteen that way").
+   *  Never a composed twist; it has to pass VOICE.md's read-aloud test. */
   headline: string;
+  /** The source's own title, set in the link line ("Read it at Anthropic:
+   *  Introducing Claude Opus 5.5"). A product page with no title of its
+   *  own leaves it out. */
+  sourceTitle?: string;
   /** Who published it. */
   source: string;
   sourceUrl: string;
@@ -64,11 +70,12 @@ export const SIGNAL: SignalEntry[] = [
   {
     id: "claude-dispatch",
     date: "2026-10-06",
-    headline: "Put Claude to work on your computer",
+    headline: "Dispatch is how I work when I'm away from the desk",
+    sourceTitle: "Put Claude to work on your computer",
     source: "Anthropic",
     sourceUrl: "https://claude.com/blog/dispatch-and-computer-use",
     take: [
-      "Dispatch is how I work when I'm away from the desk. I send a message from my phone and Claude does it on my Mac.",
+      "I send a message from my phone and Claude does it on my Mac.",
       "That covers a Claude Code task on this site, a pass through my email, or a look at whatever app I need checked.",
     ],
     /* the four parts (11 Oct 2026): what it is and does from the source, how he uses it, what he thinks */
@@ -80,7 +87,7 @@ export const SIGNAL: SignalEntry[] = [
       "Uses the computer itself when no connector fits, and asks before opening a new app.",
     ],
     use: [
-      "Dispatch is how I work when I'm away from the desk. I send a message from my phone and Claude does it on my Mac.",
+      "I send a message from my phone and Claude does it on my Mac.",
       "That covers a Claude Code task on this site, a pass through my email, or a look at whatever app I need checked.",
     ],
     tags: ["Claude Code", "Agents", "Claude"],
@@ -88,11 +95,12 @@ export const SIGNAL: SignalEntry[] = [
   {
     id: "perceptron-mk1",
     date: "2026-10-05",
-    headline: "Introducing Perceptron Mk1",
+    headline: "A.R.C. runs its video scans on Perceptron Mk1",
+    sourceTitle: "Introducing Perceptron Mk1",
     source: "Perceptron",
     sourceUrl: "https://www.perceptron.inc/blog/introducing-perceptron-mk1",
     take: [
-      "A.R.C. runs its video scans on Mk1. You walk a room with your phone, and Mk1 reads the footage across frames, tracks each object through the space, and pulls out what's there for the insurance inventory.",
+      "You walk a room with your phone, and Mk1 reads the footage across frames, tracks each object through the space, and pulls out what's there for the insurance inventory.",
       "It picks up the spatial context a single photo misses.",
     ],
     /* the four parts (11 Oct 2026): what it is and does from the source, how he uses it, what he thinks */
@@ -104,7 +112,7 @@ export const SIGNAL: SignalEntry[] = [
       "Matches frontier models from Google, Alibaba, OpenAI and Anthropic on video and embodied reasoning.",
     ],
     use: [
-      "A.R.C. runs its video scans on Mk1. You walk a room with your phone, and Mk1 reads the footage across frames, tracks each object through the space, and pulls out what's there for the insurance inventory.",
+      "You walk a room with your phone, and Mk1 reads the footage across frames, tracks each object through the space, and pulls out what's there for the insurance inventory.",
     ],
     think: [
       "It picks up the spatial context a single photo misses.",
@@ -114,7 +122,7 @@ export const SIGNAL: SignalEntry[] = [
   {
     id: "dia-browser",
     date: "2026-10-05",
-    headline: "Dia, the AI browser from The Browser Company",
+    headline: "I keep coming back to Dia",
     source: "The Browser Company",
     sourceUrl: "https://www.diabrowser.com",
     /* his words on the review page, 8 Oct 2026, in place of "more than 20
@@ -125,8 +133,8 @@ export const SIGNAL: SignalEntry[] = [
        looks and works so damn good. every pixel, every micro
        animation...loads smooth in all the right places and ways." */
     take: [
-      "You name a browser and I've used it, and really given it a week or so of daily use. Dia is the one I kept coming back to.",
-      "Not really because of the AI. As a creative person, it just looks and works so damn good: every pixel, every micro animation, smooth in all the right places.",
+      "You name a browser and I've used it, and really given it a week or so of daily use.",
+      "It's not really because of the AI. As a creative person, it just looks and works so damn good: every pixel, every micro animation, smooth in all the right places.",
     ],
     /* the four parts (11 Oct 2026): what it is and does from the source, how he uses it, what he thinks */
     what: "Dia is a browser from The Browser Company with AI built in, free for Mac and Windows.",
@@ -138,21 +146,22 @@ export const SIGNAL: SignalEntry[] = [
       "Turns what you've gathered into slides.",
     ],
     use: [
-      "You name a browser and I've used it, and really given it a week or so of daily use. Dia is the one I kept coming back to.",
+      "You name a browser and I've used it, and really given it a week or so of daily use.",
     ],
     think: [
-      "Not really because of the AI. As a creative person, it just looks and works so damn good: every pixel, every micro animation, smooth in all the right places.",
+      "It's not really because of the AI. As a creative person, it just looks and works so damn good: every pixel, every micro animation, smooth in all the right places.",
     ],
     tags: ["Browsers", "Tools"],
   },
   {
     id: "claude-sonnet-5",
     date: "2026-09-06",
-    headline: "Introducing Claude Sonnet 5",
+    headline: "I switched the Ask on this site to Sonnet 5",
+    sourceTitle: "Introducing Claude Sonnet 5",
     source: "Anthropic",
     sourceUrl: "https://www.anthropic.com/news/claude-sonnet-5",
     take: [
-      "The Ask on this site answers from Sonnet 5 now. Before switching, I ran twelve why questions past it and Haiku 4.5.",
+      "Before switching, I ran twelve why questions past it and Haiku 4.5.",
       "Haiku made up a reason for A.R.C. Sonnet answered from the study's own sentence.",
       "Sonnet takes about six tenths of a second longer each time. I switched anyway.",
     ],
@@ -166,7 +175,7 @@ export const SIGNAL: SignalEntry[] = [
     ],
     useLabel: "How I tested it",
     use: [
-      "The Ask on this site answers from Sonnet 5 now. Before switching, I ran twelve why questions past it and Haiku 4.5.",
+      "Before switching, I ran twelve why questions past it and Haiku 4.5.",
       "Haiku made up a reason for A.R.C. Sonnet answered from the study's own sentence.",
     ],
     think: [

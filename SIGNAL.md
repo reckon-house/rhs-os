@@ -105,7 +105,15 @@ sets them. The Opus 5.5 draft is the example.
 
 ## The rest of a post
 
-- **Headline:** the source's own title, as published.
+- **Headline:** one ordinary sentence from his own words about how he
+  uses the thing ("Opus 5.5 is my daily workhorse"), lightly cleaned. No
+  twist, no colon, nothing tacked on the end, and it passes VOICE.md's
+  read-aloud test. If none of his lines works, ask him; never compose one.
+  The source's own title moves to the link line: "Read it at Anthropic:
+  Introducing Claude Opus 5.5". (Changed 11 Oct 2026, his "do you think the
+  headlines should be general like that or more based on how i've used
+  them? ... it's more about real world application", then "do all nineteen
+  that way".)
 - **Link:** the publisher's own announcement (blog, newsroom, release
   notes), opened and checked before it ships.
 - **Date:** the day he posts it, not the day the news broke.

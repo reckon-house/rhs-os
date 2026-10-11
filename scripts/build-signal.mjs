@@ -66,7 +66,9 @@ const room = (key, { title, sub, lede, dim, tail, rule, entries, label, extra })
     } else lines(e.take).forEach((t) => frags.push({ id: nid(), k: key, kind: "line", si, pi: pi++, text: t, weight: "body", where: "text" }));
     const note = extra ? extra(e) : [];
     if (note.length) frags.push({ id: nid(), k: key, kind: "note", si, pi: pi++, title: "To check", items: note });
-    const links = [{ url: e.sourceUrl, text: "Read it at " + clean(e.source) }];
+    /* the source's own title rides in the link (11 Oct 2026): the headline
+       above is his line, so the news it answers is named here */
+    const links = [{ url: e.sourceUrl, text: "Read it at " + clean(e.source) + (e.sourceTitle ? ": " + clean(e.sourceTitle) : "") }];
     if (e.study && STUDY_NAME[e.study]) links.push({ url: "#study/" + e.study, text: "See it in " + STUDY_NAME[e.study] });
     frags.push({ id: nid(), k: key, kind: "src", si, pi: pi++, url: links[0].url, text: links[0].text, links });
   });

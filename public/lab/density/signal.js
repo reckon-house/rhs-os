@@ -53,7 +53,7 @@ window.DENSITY_ROOMS["signal"] = {
    "kind": "line",
    "si": 2,
    "pi": 3,
-   "text": "Put Claude to work on your computer",
+   "text": "Dispatch is how I work when I'm away from the desk",
    "label": "October 6 · Anthropic",
    "weight": "head",
    "where": "section-header"
@@ -134,7 +134,7 @@ window.DENSITY_ROOMS["signal"] = {
    "kind": "line",
    "si": 2,
    "pi": 11,
-   "text": "Dispatch is how I work when I'm away from the desk. I send a message from my phone and Claude does it on my Mac.",
+   "text": "I send a message from my phone and Claude does it on my Mac.",
    "weight": "body",
    "where": "text"
   },
@@ -155,11 +155,11 @@ window.DENSITY_ROOMS["signal"] = {
    "si": 2,
    "pi": 13,
    "url": "https://claude.com/blog/dispatch-and-computer-use",
-   "text": "Read it at Anthropic",
+   "text": "Read it at Anthropic: Put Claude to work on your computer",
    "links": [
     {
      "url": "https://claude.com/blog/dispatch-and-computer-use",
-     "text": "Read it at Anthropic"
+     "text": "Read it at Anthropic: Put Claude to work on your computer"
     }
    ]
   },
@@ -169,7 +169,7 @@ window.DENSITY_ROOMS["signal"] = {
    "kind": "line",
    "si": 3,
    "pi": 14,
-   "text": "Introducing Perceptron Mk1",
+   "text": "A.R.C. runs its video scans on Perceptron Mk1",
    "label": "October 5 · Perceptron",
    "weight": "head",
    "where": "section-header"
@@ -250,7 +250,7 @@ window.DENSITY_ROOMS["signal"] = {
    "kind": "line",
    "si": 3,
    "pi": 22,
-   "text": "A.R.C. runs its video scans on Mk1. You walk a room with your phone, and Mk1 reads the footage across frames, tracks each object through the space, and pulls out what's there for the insurance inventory.",
+   "text": "You walk a room with your phone, and Mk1 reads the footage across frames, tracks each object through the space, and pulls out what's there for the insurance inventory.",
    "weight": "body",
    "where": "text"
   },
@@ -281,11 +281,11 @@ window.DENSITY_ROOMS["signal"] = {
    "si": 3,
    "pi": 25,
    "url": "https://www.perceptron.inc/blog/introducing-perceptron-mk1",
-   "text": "Read it at Perceptron",
+   "text": "Read it at Perceptron: Introducing Perceptron Mk1",
    "links": [
     {
      "url": "https://www.perceptron.inc/blog/introducing-perceptron-mk1",
-     "text": "Read it at Perceptron"
+     "text": "Read it at Perceptron: Introducing Perceptron Mk1"
     }
    ]
   },
@@ -295,7 +295,7 @@ window.DENSITY_ROOMS["signal"] = {
    "kind": "line",
    "si": 4,
    "pi": 26,
-   "text": "Dia, the AI browser from The Browser Company",
+   "text": "I keep coming back to Dia",
    "label": "October 5 · The Browser Company",
    "weight": "head",
    "where": "section-header"
@@ -386,7 +386,7 @@ window.DENSITY_ROOMS["signal"] = {
    "kind": "line",
    "si": 4,
    "pi": 35,
-   "text": "You name a browser and I've used it, and really given it a week or so of daily use. Dia is the one I kept coming back to.",
+   "text": "You name a browser and I've used it, and really given it a week or so of daily use.",
    "weight": "body",
    "where": "text"
   },
@@ -406,7 +406,7 @@ window.DENSITY_ROOMS["signal"] = {
    "kind": "line",
    "si": 4,
    "pi": 37,
-   "text": "Not really because of the AI. As a creative person, it just looks and works so damn good: every pixel, every micro animation, smooth in all the right places.",
+   "text": "It's not really because of the AI. As a creative person, it just looks and works so damn good: every pixel, every micro animation, smooth in all the right places.",
    "weight": "body",
    "where": "text"
   },
@@ -431,7 +431,7 @@ window.DENSITY_ROOMS["signal"] = {
    "kind": "line",
    "si": 5,
    "pi": 39,
-   "text": "Introducing Claude Sonnet 5",
+   "text": "I switched the Ask on this site to Sonnet 5",
    "label": "September 6 · Anthropic",
    "weight": "head",
    "where": "section-header"
@@ -512,7 +512,7 @@ window.DENSITY_ROOMS["signal"] = {
    "kind": "line",
    "si": 5,
    "pi": 47,
-   "text": "The Ask on this site answers from Sonnet 5 now. Before switching, I ran twelve why questions past it and Haiku 4.5.",
+   "text": "Before switching, I ran twelve why questions past it and Haiku 4.5.",
    "weight": "body",
    "where": "text"
   },
@@ -553,11 +553,11 @@ window.DENSITY_ROOMS["signal"] = {
    "si": 5,
    "pi": 51,
    "url": "https://www.anthropic.com/news/claude-sonnet-5",
-   "text": "Read it at Anthropic",
+   "text": "Read it at Anthropic: Introducing Claude Sonnet 5",
    "links": [
     {
      "url": "https://www.anthropic.com/news/claude-sonnet-5",
-     "text": "Read it at Anthropic"
+     "text": "Read it at Anthropic: Introducing Claude Sonnet 5"
     }
    ]
   }
@@ -568,10 +568,10 @@ window.DENSITY_ROOMS["signal"] = {
    "at": "sg-claude-dispatch",
    "date": "2026-10-06",
    "day": "October 6",
-   "headline": "Put Claude to work on your computer",
+   "headline": "Dispatch is how I work when I'm away from the desk",
    "source": "Anthropic",
    "url": "https://claude.com/blog/dispatch-and-computer-use",
-   "take": "Dispatch is how I work when I'm away from the desk. I send a message from my phone and Claude does it on my Mac. That covers a Claude Code task on this site, a pass through my email, or a look at whatever app I need checked.",
+   "take": "I send a message from my phone and Claude does it on my Mac. That covers a Claude Code task on this site, a pass through my email, or a look at whatever app I need checked.",
    "tags": [
     "Claude Code",
     "Agents",
@@ -584,10 +584,10 @@ window.DENSITY_ROOMS["signal"] = {
    "at": "sg-perceptron-mk1",
    "date": "2026-10-05",
    "day": "October 5",
-   "headline": "Introducing Perceptron Mk1",
+   "headline": "A.R.C. runs its video scans on Perceptron Mk1",
    "source": "Perceptron",
    "url": "https://www.perceptron.inc/blog/introducing-perceptron-mk1",
-   "take": "A.R.C. runs its video scans on Mk1. You walk a room with your phone, and Mk1 reads the footage across frames, tracks each object through the space, and pulls out what's there for the insurance inventory. It picks up the spatial context a single photo misses.",
+   "take": "You walk a room with your phone, and Mk1 reads the footage across frames, tracks each object through the space, and pulls out what's there for the insurance inventory. It picks up the spatial context a single photo misses.",
    "tags": [
     "Models",
     "Video",
@@ -600,10 +600,10 @@ window.DENSITY_ROOMS["signal"] = {
    "at": "sg-dia-browser",
    "date": "2026-10-05",
    "day": "October 5",
-   "headline": "Dia, the AI browser from The Browser Company",
+   "headline": "I keep coming back to Dia",
    "source": "The Browser Company",
    "url": "https://www.diabrowser.com",
-   "take": "You name a browser and I've used it, and really given it a week or so of daily use. Dia is the one I kept coming back to. Not really because of the AI. As a creative person, it just looks and works so damn good: every pixel, every micro animation, smooth in all the right places.",
+   "take": "You name a browser and I've used it, and really given it a week or so of daily use. It's not really because of the AI. As a creative person, it just looks and works so damn good: every pixel, every micro animation, smooth in all the right places.",
    "tags": [
     "Browsers",
     "Tools"
@@ -615,10 +615,10 @@ window.DENSITY_ROOMS["signal"] = {
    "at": "sg-claude-sonnet-5",
    "date": "2026-09-06",
    "day": "September 6",
-   "headline": "Introducing Claude Sonnet 5",
+   "headline": "I switched the Ask on this site to Sonnet 5",
    "source": "Anthropic",
    "url": "https://www.anthropic.com/news/claude-sonnet-5",
-   "take": "The Ask on this site answers from Sonnet 5 now. Before switching, I ran twelve why questions past it and Haiku 4.5. Haiku made up a reason for A.R.C. Sonnet answered from the study's own sentence. Sonnet takes about six tenths of a second longer each time. I switched anyway.",
+   "take": "Before switching, I ran twelve why questions past it and Haiku 4.5. Haiku made up a reason for A.R.C. Sonnet answered from the study's own sentence. Sonnet takes about six tenths of a second longer each time. I switched anyway.",
    "tags": [
     "Models",
     "Claude"
