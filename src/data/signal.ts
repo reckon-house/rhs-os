@@ -37,6 +37,14 @@ export interface SignalEntry {
   /** Who published it. */
   source: string;
   sourceUrl: string;
+  /** The pages the post stands on (12 Oct 2026, his "i do like the
+   *  sources...can we link out? ... logos for the sources is nice"), the
+   *  first the one the headline answers: each the page's own title, who
+   *  published it, its address and the parts it backs. Under
+   *  ?signal=news they set as cards with the publisher's mark under the
+   *  headline, and as a small tag after each part they back, each a link
+   *  out. Without them the post's one source stands for all. */
+  sources?: { url: string; title: string; by: string; backs?: ("what" | "does" | "use" | "think")[] }[];
   /** His note: first person, conversational, one opinion. A post in the
    *  four-part format (SIGNAL.md, 11 Oct 2026) keeps a short take for the
    *  index and lists, and the room sets the parts below instead. */
@@ -78,6 +86,11 @@ export const SIGNAL: SignalEntry[] = [
     headline: "TinyFish is a model I've used a lot and really like",
     source: "TinyFish",
     sourceUrl: "https://www.tinyfish.ai/",
+    sources: [
+      { url: "https://www.tinyfish.ai/", title: "The web stack for AI agents", by: "TinyFish", backs: ["what"] },
+      { url: "https://docs.tinyfish.ai/mcp-integration", title: "MCP Integration", by: "TinyFish Docs", backs: ["does"] },
+      { url: "https://www.tinyfish.ai/mako", title: "A model built to operate the live web", by: "TinyFish", backs: ["does"] },
+    ],
     take: [
       "In Sally Marketing OS it fetches the pages the morning market scan watches: Ulta's newsroom, Sephora's new releases and five beauty trade publications. Claude decides what becomes a story, and the first sweep added 13 stories Gemini and Perplexity hadn't found.",
       "It's also how the OS looks through the Sally Beauty site when it picks products for a campaign, and it's the first way Competitive Compare checks a price at Sally Beauty, Amazon, Walmart and Ulta.",

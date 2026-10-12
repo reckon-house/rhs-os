@@ -71,22 +71,47 @@ window.DENSITY_ROOMS["signal"] = {
   {
    "id": "sg4",
    "k": "signal",
-   "kind": "line",
+   "kind": "cite",
    "si": 2,
    "pi": 5,
-   "text": "What it does",
-   "weight": "head",
-   "where": "text"
+   "chips": [
+    {
+     "url": "https://www.tinyfish.ai/",
+     "label": "TinyFish",
+     "more": 0,
+     "icon": "/lab/density/signal-icons/tinyfish.ai.png"
+    }
+   ]
   },
   {
    "id": "sg5",
    "k": "signal",
-   "kind": "line",
+   "kind": "srcs",
    "si": 2,
    "pi": 6,
-   "text": "Search returns structured results from the live web, with titles, snippets and links.",
-   "weight": "body",
-   "where": "text"
+   "cards": [
+    {
+     "url": "https://www.tinyfish.ai/",
+     "by": "TinyFish",
+     "title": "The web stack for AI agents",
+     "host": "tinyfish.ai",
+     "icon": "/lab/density/signal-icons/tinyfish.ai.png"
+    },
+    {
+     "url": "https://docs.tinyfish.ai/mcp-integration",
+     "by": "TinyFish Docs",
+     "title": "MCP Integration",
+     "host": "docs.tinyfish.ai",
+     "icon": "/lab/density/signal-icons/docs.tinyfish.ai.png"
+    },
+    {
+     "url": "https://www.tinyfish.ai/mako",
+     "by": "TinyFish",
+     "title": "A model built to operate the live web",
+     "host": "tinyfish.ai",
+     "icon": "/lab/density/signal-icons/tinyfish.ai.png"
+    }
+   ]
   },
   {
    "id": "sg6",
@@ -94,8 +119,8 @@ window.DENSITY_ROOMS["signal"] = {
    "kind": "line",
    "si": 2,
    "pi": 7,
-   "text": "Fetch turns any URL into clean text, ten pages at a time, and like Search it's free on every plan.",
-   "weight": "body",
+   "text": "What it does",
+   "weight": "head",
    "where": "text"
   },
   {
@@ -104,7 +129,7 @@ window.DENSITY_ROOMS["signal"] = {
    "kind": "line",
    "si": 2,
    "pi": 8,
-   "text": "Agent works through a site from a URL and a goal in plain language, clicking, filling forms and pulling data.",
+   "text": "Search returns structured results from the live web, with titles, snippets and links.",
    "weight": "body",
    "where": "text"
   },
@@ -114,7 +139,7 @@ window.DENSITY_ROOMS["signal"] = {
    "kind": "line",
    "si": 2,
    "pi": 9,
-   "text": "Browser opens a remote Chrome session that Playwright, Puppeteer or Selenium can drive.",
+   "text": "Fetch turns any URL into clean text, ten pages at a time, and like Search it's free on every plan.",
    "weight": "body",
    "where": "text"
   },
@@ -124,7 +149,7 @@ window.DENSITY_ROOMS["signal"] = {
    "kind": "line",
    "si": 2,
    "pi": 10,
-   "text": "Mako, its own model, learns from real production runs and is built to operate the live web.",
+   "text": "Agent works through a site from a URL and a goal in plain language, clicking, filling forms and pulling data.",
    "weight": "body",
    "where": "text"
   },
@@ -134,8 +159,8 @@ window.DENSITY_ROOMS["signal"] = {
    "kind": "line",
    "si": 2,
    "pi": 11,
-   "text": "How I use it",
-   "weight": "head",
+   "text": "Browser opens a remote Chrome session that Playwright, Puppeteer or Selenium can drive.",
+   "weight": "body",
    "where": "text"
   },
   {
@@ -144,19 +169,24 @@ window.DENSITY_ROOMS["signal"] = {
    "kind": "line",
    "si": 2,
    "pi": 12,
-   "text": "In Sally Marketing OS it fetches the pages the morning market scan watches: Ulta's newsroom, Sephora's new releases and five beauty trade publications. Claude decides what becomes a story, and the first sweep added 13 stories Gemini and Perplexity hadn't found.",
+   "text": "Mako, its own model, learns from real production runs and is built to operate the live web.",
    "weight": "body",
    "where": "text"
   },
   {
    "id": "sgc",
    "k": "signal",
-   "kind": "line",
+   "kind": "cite",
    "si": 2,
    "pi": 13,
-   "text": "It's also how the OS looks through the Sally Beauty site when it picks products for a campaign, and it's the first way Competitive Compare checks a price at Sally Beauty, Amazon, Walmart and Ulta.",
-   "weight": "body",
-   "where": "text"
+   "chips": [
+    {
+     "url": "https://docs.tinyfish.ai/mcp-integration",
+     "label": "TinyFish Docs",
+     "more": 1,
+     "icon": "/lab/density/signal-icons/docs.tinyfish.ai.png"
+    }
+   ]
   },
   {
    "id": "sgd",
@@ -164,7 +194,7 @@ window.DENSITY_ROOMS["signal"] = {
    "kind": "line",
    "si": 2,
    "pi": 14,
-   "text": "What I think",
+   "text": "How I use it",
    "weight": "head",
    "where": "text"
   },
@@ -174,7 +204,7 @@ window.DENSITY_ROOMS["signal"] = {
    "kind": "line",
    "si": 2,
    "pi": 15,
-   "text": "I like how easy it is to use, and that it actually works well in the tests I've run it through. For what we needed, it comes through amazingly well compared with an LLM and a headless browser.",
+   "text": "In Sally Marketing OS it fetches the pages the morning market scan watches: Ulta's newsroom, Sephora's new releases and five beauty trade publications. Claude decides what becomes a story, and the first sweep added 13 stories Gemini and Perplexity hadn't found.",
    "weight": "body",
    "where": "text"
   },
@@ -184,16 +214,69 @@ window.DENSITY_ROOMS["signal"] = {
    "kind": "line",
    "si": 2,
    "pi": 16,
-   "text": "The cost is fantastic, so good that I'm actively looking for ways to push the model and think bigger about what it can do.",
+   "text": "It's also how the OS looks through the Sally Beauty site when it picks products for a campaign, and it's the first way Competitive Compare checks a price at Sally Beauty, Amazon, Walmart and Ulta.",
    "weight": "body",
    "where": "text"
   },
   {
    "id": "sgg",
    "k": "signal",
-   "kind": "src",
+   "kind": "cite",
    "si": 2,
    "pi": 17,
+   "chips": [
+    {
+     "url": "#study/sally-os",
+     "label": "Sally Marketing OS",
+     "inner": true
+    }
+   ]
+  },
+  {
+   "id": "sgh",
+   "k": "signal",
+   "kind": "spic",
+   "si": 2,
+   "pi": 18,
+   "study": "sally-os",
+   "name": "Sally Marketing OS"
+  },
+  {
+   "id": "sgi",
+   "k": "signal",
+   "kind": "line",
+   "si": 2,
+   "pi": 19,
+   "text": "What I think",
+   "weight": "head",
+   "where": "text"
+  },
+  {
+   "id": "sgj",
+   "k": "signal",
+   "kind": "line",
+   "si": 2,
+   "pi": 20,
+   "text": "I like how easy it is to use, and that it actually works well in the tests I've run it through. For what we needed, it comes through amazingly well compared with an LLM and a headless browser.",
+   "weight": "body",
+   "where": "text"
+  },
+  {
+   "id": "sgk",
+   "k": "signal",
+   "kind": "line",
+   "si": 2,
+   "pi": 21,
+   "text": "The cost is fantastic, so good that I'm actively looking for ways to push the model and think bigger about what it can do.",
+   "weight": "body",
+   "where": "text"
+  },
+  {
+   "id": "sgl",
+   "k": "signal",
+   "kind": "src",
+   "si": 2,
+   "pi": 22,
    "url": "https://www.tinyfish.ai/",
    "text": "Read it at TinyFish",
    "links": [
@@ -212,61 +295,11 @@ window.DENSITY_ROOMS["signal"] = {
    "k": "signal",
    "kind": "line",
    "si": 3,
-   "pi": 18,
+   "pi": 23,
    "text": "Opus 5.5 is my daily workhorse and the best model I've used to date",
    "label": "October 11 · Anthropic",
    "weight": "head",
    "where": "section-header"
-  },
-  {
-   "id": "sgh",
-   "k": "signal",
-   "kind": "line",
-   "si": 3,
-   "pi": 19,
-   "text": "Claude Opus 5.5 is Anthropic's newest Opus model, and the first in its Claude 5.5 family.",
-   "weight": "sub",
-   "where": "text"
-  },
-  {
-   "id": "sgi",
-   "k": "signal",
-   "kind": "line",
-   "si": 3,
-   "pi": 20,
-   "text": "What it does",
-   "weight": "head",
-   "where": "text"
-  },
-  {
-   "id": "sgj",
-   "k": "signal",
-   "kind": "line",
-   "si": 3,
-   "pi": 21,
-   "text": "Performs at the level of Claude Fable 5.1 on most work.",
-   "weight": "body",
-   "where": "text"
-  },
-  {
-   "id": "sgk",
-   "k": "signal",
-   "kind": "line",
-   "si": 3,
-   "pi": 22,
-   "text": "Leads in agentic coding, computer use and knowledge work.",
-   "weight": "body",
-   "where": "text"
-  },
-  {
-   "id": "sgl",
-   "k": "signal",
-   "kind": "line",
-   "si": 3,
-   "pi": 23,
-   "text": "Costs 40% less to run than Opus 5, and writes more than 30% faster.",
-   "weight": "body",
-   "where": "text"
   },
   {
    "id": "sgm",
@@ -274,29 +307,40 @@ window.DENSITY_ROOMS["signal"] = {
    "kind": "line",
    "si": 3,
    "pi": 24,
-   "text": "Is much less likely than recent models to take a hard-to-reverse action.",
-   "weight": "body",
+   "text": "Claude Opus 5.5 is Anthropic's newest Opus model, and the first in its Claude 5.5 family.",
+   "weight": "sub",
    "where": "text"
   },
   {
    "id": "sgn",
    "k": "signal",
-   "kind": "line",
+   "kind": "cite",
    "si": 3,
    "pi": 25,
-   "text": "Communicates more naturally than earlier models.",
-   "weight": "body",
-   "where": "text"
+   "chips": [
+    {
+     "url": "https://www.anthropic.com/claude-opus-5-5",
+     "label": "Anthropic",
+     "more": 0,
+     "icon": "/lab/density/signal-icons/anthropic.com.png"
+    }
+   ]
   },
   {
    "id": "sgo",
    "k": "signal",
-   "kind": "line",
+   "kind": "srcs",
    "si": 3,
    "pi": 26,
-   "text": "How I use it",
-   "weight": "head",
-   "where": "text"
+   "cards": [
+    {
+     "url": "https://www.anthropic.com/claude-opus-5-5",
+     "by": "Anthropic",
+     "title": "Introducing Claude Opus 5.5",
+     "host": "anthropic.com",
+     "icon": "/lab/density/signal-icons/anthropic.com.png"
+    }
+   ]
   },
   {
    "id": "sgp",
@@ -304,8 +348,8 @@ window.DENSITY_ROOMS["signal"] = {
    "kind": "line",
    "si": 3,
    "pi": 27,
-   "text": "The day it came out, the strategy side of Sally Marketing OS moved to it.",
-   "weight": "body",
+   "text": "What it does",
+   "weight": "head",
    "where": "text"
   },
   {
@@ -314,7 +358,7 @@ window.DENSITY_ROOMS["signal"] = {
    "kind": "line",
    "si": 3,
    "pi": 28,
-   "text": "Copy waited for a test. Each model wrote from 18 briefs across CRM, ecommerce and store assets: the audit needed six fixes on Opus 4.6, one on Opus 5 and none on 5.5, and a blind read picked 5.5 over Opus 5 thirteen times out of sixteen. Copy moved three days later.",
+   "text": "Performs at the level of Claude Fable 5.1 on most work.",
    "weight": "body",
    "where": "text"
   },
@@ -324,8 +368,8 @@ window.DENSITY_ROOMS["signal"] = {
    "kind": "line",
    "si": 3,
    "pi": 29,
-   "text": "What I think",
-   "weight": "head",
+   "text": "Leads in agentic coding, computer use and knowledge work.",
+   "weight": "body",
    "where": "text"
   },
   {
@@ -334,16 +378,124 @@ window.DENSITY_ROOMS["signal"] = {
    "kind": "line",
    "si": 3,
    "pi": 30,
-   "text": "It's bigger than any one project. You hear about models getting nerfed, but this one somehow feels stronger a few weeks after launch.",
+   "text": "Costs 40% less to run than Opus 5, and writes more than 30% faster.",
    "weight": "body",
    "where": "text"
   },
   {
    "id": "sgt",
    "k": "signal",
-   "kind": "src",
+   "kind": "line",
    "si": 3,
    "pi": 31,
+   "text": "Is much less likely than recent models to take a hard-to-reverse action.",
+   "weight": "body",
+   "where": "text"
+  },
+  {
+   "id": "sgu",
+   "k": "signal",
+   "kind": "line",
+   "si": 3,
+   "pi": 32,
+   "text": "Communicates more naturally than earlier models.",
+   "weight": "body",
+   "where": "text"
+  },
+  {
+   "id": "sgv",
+   "k": "signal",
+   "kind": "cite",
+   "si": 3,
+   "pi": 33,
+   "chips": [
+    {
+     "url": "https://www.anthropic.com/claude-opus-5-5",
+     "label": "Anthropic",
+     "more": 0,
+     "icon": "/lab/density/signal-icons/anthropic.com.png"
+    }
+   ]
+  },
+  {
+   "id": "sgw",
+   "k": "signal",
+   "kind": "line",
+   "si": 3,
+   "pi": 34,
+   "text": "How I use it",
+   "weight": "head",
+   "where": "text"
+  },
+  {
+   "id": "sgx",
+   "k": "signal",
+   "kind": "line",
+   "si": 3,
+   "pi": 35,
+   "text": "The day it came out, the strategy side of Sally Marketing OS moved to it.",
+   "weight": "body",
+   "where": "text"
+  },
+  {
+   "id": "sgy",
+   "k": "signal",
+   "kind": "line",
+   "si": 3,
+   "pi": 36,
+   "text": "Copy waited for a test. Each model wrote from 18 briefs across CRM, ecommerce and store assets: the audit needed six fixes on Opus 4.6, one on Opus 5 and none on 5.5, and a blind read picked 5.5 over Opus 5 thirteen times out of sixteen. Copy moved three days later.",
+   "weight": "body",
+   "where": "text"
+  },
+  {
+   "id": "sgz",
+   "k": "signal",
+   "kind": "cite",
+   "si": 3,
+   "pi": 37,
+   "chips": [
+    {
+     "url": "#study/sally-os",
+     "label": "Sally Marketing OS",
+     "inner": true
+    }
+   ]
+  },
+  {
+   "id": "sg10",
+   "k": "signal",
+   "kind": "spic",
+   "si": 3,
+   "pi": 38,
+   "study": "sally-os",
+   "name": "Sally Marketing OS"
+  },
+  {
+   "id": "sg11",
+   "k": "signal",
+   "kind": "line",
+   "si": 3,
+   "pi": 39,
+   "text": "What I think",
+   "weight": "head",
+   "where": "text"
+  },
+  {
+   "id": "sg12",
+   "k": "signal",
+   "kind": "line",
+   "si": 3,
+   "pi": 40,
+   "text": "It's bigger than any one project. You hear about models getting nerfed, but this one somehow feels stronger a few weeks after launch.",
+   "weight": "body",
+   "where": "text"
+  },
+  {
+   "id": "sg13",
+   "k": "signal",
+   "kind": "src",
+   "si": 3,
+   "pi": 41,
    "url": "https://www.anthropic.com/claude-opus-5-5",
    "text": "Read it at Anthropic: Introducing Claude Opus 5.5",
    "links": [
@@ -362,108 +514,154 @@ window.DENSITY_ROOMS["signal"] = {
    "k": "signal",
    "kind": "line",
    "si": 4,
-   "pi": 32,
+   "pi": 42,
    "text": "Dispatch is how I work when I'm away from the desk",
    "label": "October 6 · Anthropic",
    "weight": "head",
    "where": "section-header"
   },
   {
-   "id": "sgu",
+   "id": "sg14",
    "k": "signal",
    "kind": "line",
    "si": 4,
-   "pi": 33,
+   "pi": 43,
    "text": "Dispatch keeps one running conversation with Claude across your phone and your computer, so a task sent from the phone gets done on the desktop.",
    "weight": "sub",
    "where": "text"
   },
   {
-   "id": "sgv",
+   "id": "sg15",
+   "k": "signal",
+   "kind": "cite",
+   "si": 4,
+   "pi": 44,
+   "chips": [
+    {
+     "url": "https://claude.com/blog/dispatch-and-computer-use",
+     "label": "Anthropic",
+     "more": 0,
+     "icon": "/lab/density/signal-icons/claude.com.png"
+    }
+   ]
+  },
+  {
+   "id": "sg16",
+   "k": "signal",
+   "kind": "srcs",
+   "si": 4,
+   "pi": 45,
+   "cards": [
+    {
+     "url": "https://claude.com/blog/dispatch-and-computer-use",
+     "by": "Anthropic",
+     "title": "Put Claude to work on your computer",
+     "host": "claude.com",
+     "icon": "/lab/density/signal-icons/claude.com.png"
+    }
+   ]
+  },
+  {
+   "id": "sg17",
    "k": "signal",
    "kind": "line",
    "si": 4,
-   "pi": 34,
+   "pi": 46,
    "text": "What it does",
    "weight": "head",
    "where": "text"
   },
   {
-   "id": "sgw",
+   "id": "sg18",
    "k": "signal",
    "kind": "line",
    "si": 4,
-   "pi": 35,
+   "pi": 47,
    "text": "Takes a task from your phone and leaves the finished work on your computer.",
    "weight": "body",
    "where": "text"
   },
   {
-   "id": "sgx",
+   "id": "sg19",
    "k": "signal",
    "kind": "line",
    "si": 4,
-   "pi": 36,
+   "pi": 48,
    "text": "Starts a Claude Code or Cowork session for a report or a pull request.",
    "weight": "body",
    "where": "text"
   },
   {
-   "id": "sgy",
+   "id": "sg1a",
    "k": "signal",
    "kind": "line",
    "si": 4,
-   "pi": 37,
+   "pi": 49,
    "text": "Runs regular checks, like reading your email every morning.",
    "weight": "body",
    "where": "text"
   },
   {
-   "id": "sgz",
+   "id": "sg1b",
    "k": "signal",
    "kind": "line",
    "si": 4,
-   "pi": 38,
+   "pi": 50,
    "text": "Uses the computer itself when no connector fits, and asks before opening a new app.",
    "weight": "body",
    "where": "text"
   },
   {
-   "id": "sg10",
+   "id": "sg1c",
+   "k": "signal",
+   "kind": "cite",
+   "si": 4,
+   "pi": 51,
+   "chips": [
+    {
+     "url": "https://claude.com/blog/dispatch-and-computer-use",
+     "label": "Anthropic",
+     "more": 0,
+     "icon": "/lab/density/signal-icons/claude.com.png"
+    }
+   ]
+  },
+  {
+   "id": "sg1d",
    "k": "signal",
    "kind": "line",
    "si": 4,
-   "pi": 39,
+   "pi": 52,
    "text": "How I use it",
    "weight": "head",
    "where": "text"
   },
   {
-   "id": "sg11",
+   "id": "sg1e",
    "k": "signal",
    "kind": "line",
    "si": 4,
-   "pi": 40,
+   "pi": 53,
    "text": "I send a message from my phone and Claude does it on my Mac.",
    "weight": "body",
    "where": "text"
   },
   {
-   "id": "sg12",
+   "id": "sg1f",
    "k": "signal",
    "kind": "line",
    "si": 4,
-   "pi": 41,
+   "pi": 54,
    "text": "That covers a Claude Code task on this site, a pass through my email, or a look at whatever app I need checked.",
    "weight": "body",
    "where": "text"
   },
   {
-   "id": "sg13",
+   "id": "sg1g",
    "k": "signal",
    "kind": "src",
    "si": 4,
-   "pi": 42,
+   "pi": 55,
    "url": "https://claude.com/blog/dispatch-and-computer-use",
    "text": "Read it at Anthropic: Put Claude to work on your computer",
    "links": [
@@ -478,118 +676,173 @@ window.DENSITY_ROOMS["signal"] = {
    "k": "signal",
    "kind": "line",
    "si": 5,
-   "pi": 43,
+   "pi": 56,
    "text": "A.R.C. runs its video scans on Perceptron Mk1",
    "label": "October 5 · Perceptron",
    "weight": "head",
    "where": "section-header"
   },
   {
-   "id": "sg14",
+   "id": "sg1h",
    "k": "signal",
    "kind": "line",
    "si": 5,
-   "pi": 44,
+   "pi": 57,
    "text": "Perceptron Mk1 is a model built to understand video and reason about the physical world.",
    "weight": "sub",
    "where": "text"
   },
   {
-   "id": "sg15",
+   "id": "sg1i",
+   "k": "signal",
+   "kind": "cite",
+   "si": 5,
+   "pi": 58,
+   "chips": [
+    {
+     "url": "https://www.perceptron.inc/blog/introducing-perceptron-mk1",
+     "label": "Perceptron",
+     "more": 0,
+     "icon": "/lab/density/signal-icons/perceptron.inc.png"
+    }
+   ]
+  },
+  {
+   "id": "sg1j",
+   "k": "signal",
+   "kind": "srcs",
+   "si": 5,
+   "pi": 59,
+   "cards": [
+    {
+     "url": "https://www.perceptron.inc/blog/introducing-perceptron-mk1",
+     "by": "Perceptron",
+     "title": "Introducing Perceptron Mk1",
+     "host": "perceptron.inc",
+     "icon": "/lab/density/signal-icons/perceptron.inc.png"
+    }
+   ]
+  },
+  {
+   "id": "sg1k",
    "k": "signal",
    "kind": "line",
    "si": 5,
-   "pi": 45,
+   "pi": 60,
    "text": "What it does",
    "weight": "head",
    "where": "text"
   },
   {
-   "id": "sg16",
+   "id": "sg1l",
    "k": "signal",
    "kind": "line",
    "si": 5,
-   "pi": 46,
+   "pi": 61,
    "text": "Reasons across time, and breaks a video down into what happened and when.",
    "weight": "body",
    "where": "text"
   },
   {
-   "id": "sg17",
+   "id": "sg1m",
    "k": "signal",
    "kind": "line",
    "si": 5,
-   "pi": 47,
+   "pi": 62,
    "text": "Reads video at up to two frames a second, across a 32,000-token context.",
    "weight": "body",
    "where": "text"
   },
   {
-   "id": "sg18",
+   "id": "sg1n",
    "k": "signal",
    "kind": "line",
    "si": 5,
-   "pi": 48,
+   "pi": 63,
    "text": "Points to things in a frame with pixel precision.",
    "weight": "body",
    "where": "text"
   },
   {
-   "id": "sg19",
+   "id": "sg1o",
    "k": "signal",
    "kind": "line",
    "si": 5,
-   "pi": 49,
+   "pi": 64,
    "text": "Matches frontier models from Google, Alibaba, OpenAI and Anthropic on video and embodied reasoning.",
    "weight": "body",
    "where": "text"
   },
   {
-   "id": "sg1a",
+   "id": "sg1p",
+   "k": "signal",
+   "kind": "cite",
+   "si": 5,
+   "pi": 65,
+   "chips": [
+    {
+     "url": "https://www.perceptron.inc/blog/introducing-perceptron-mk1",
+     "label": "Perceptron",
+     "more": 0,
+     "icon": "/lab/density/signal-icons/perceptron.inc.png"
+    }
+   ]
+  },
+  {
+   "id": "sg1q",
    "k": "signal",
    "kind": "line",
    "si": 5,
-   "pi": 50,
+   "pi": 66,
    "text": "How I use it",
    "weight": "head",
    "where": "text"
   },
   {
-   "id": "sg1b",
+   "id": "sg1r",
    "k": "signal",
    "kind": "line",
    "si": 5,
-   "pi": 51,
+   "pi": 67,
    "text": "You walk a room with your phone, and Mk1 reads the footage across frames, tracks each object through the space, and pulls out what's there for the insurance inventory.",
    "weight": "body",
    "where": "text"
   },
   {
-   "id": "sg1c",
+   "id": "sg1s",
+   "k": "signal",
+   "kind": "spic",
+   "si": 5,
+   "pi": 68,
+   "study": "arc",
+   "name": "A.R.C."
+  },
+  {
+   "id": "sg1t",
    "k": "signal",
    "kind": "line",
    "si": 5,
-   "pi": 52,
+   "pi": 69,
    "text": "What I think",
    "weight": "head",
    "where": "text"
   },
   {
-   "id": "sg1d",
+   "id": "sg1u",
    "k": "signal",
    "kind": "line",
    "si": 5,
-   "pi": 53,
+   "pi": 70,
    "text": "It picks up the spatial context a single photo misses.",
    "weight": "body",
    "where": "text"
   },
   {
-   "id": "sg1e",
+   "id": "sg1v",
    "k": "signal",
    "kind": "src",
    "si": 5,
-   "pi": 54,
+   "pi": 71,
    "url": "https://www.perceptron.inc/blog/introducing-perceptron-mk1",
    "text": "Read it at Perceptron: Introducing Perceptron Mk1",
    "links": [
@@ -604,128 +857,174 @@ window.DENSITY_ROOMS["signal"] = {
    "k": "signal",
    "kind": "line",
    "si": 6,
-   "pi": 55,
+   "pi": 72,
    "text": "I keep coming back to Dia",
    "label": "October 5 · The Browser Company",
    "weight": "head",
    "where": "section-header"
   },
   {
-   "id": "sg1f",
+   "id": "sg1w",
    "k": "signal",
    "kind": "line",
    "si": 6,
-   "pi": 56,
+   "pi": 73,
    "text": "Dia is a browser from The Browser Company with AI built in, free for Mac and Windows.",
    "weight": "sub",
    "where": "text"
   },
   {
-   "id": "sg1g",
+   "id": "sg1x",
+   "k": "signal",
+   "kind": "cite",
+   "si": 6,
+   "pi": 74,
+   "chips": [
+    {
+     "url": "https://www.diabrowser.com",
+     "label": "The Browser Company",
+     "more": 0,
+     "icon": "/lab/density/signal-icons/diabrowser.com.png"
+    }
+   ]
+  },
+  {
+   "id": "sg1y",
+   "k": "signal",
+   "kind": "srcs",
+   "si": 6,
+   "pi": 75,
+   "cards": [
+    {
+     "url": "https://www.diabrowser.com",
+     "by": "The Browser Company",
+     "title": "diabrowser.com",
+     "host": "diabrowser.com",
+     "icon": "/lab/density/signal-icons/diabrowser.com.png"
+    }
+   ]
+  },
+  {
+   "id": "sg1z",
    "k": "signal",
    "kind": "line",
    "si": 6,
-   "pi": 57,
+   "pi": 76,
    "text": "What it does",
    "weight": "head",
    "where": "text"
   },
   {
-   "id": "sg1h",
+   "id": "sg20",
    "k": "signal",
    "kind": "line",
    "si": 6,
-   "pi": 58,
+   "pi": 77,
    "text": "Starts the day with a brief of your calendar, inbox and key links.",
    "weight": "body",
    "where": "text"
   },
   {
-   "id": "sg1i",
+   "id": "sg21",
    "k": "signal",
    "kind": "line",
    "si": 6,
-   "pi": 59,
+   "pi": 78,
    "text": "Answers a question across your open tabs and work apps at once.",
    "weight": "body",
    "where": "text"
   },
   {
-   "id": "sg1j",
+   "id": "sg22",
    "k": "signal",
    "kind": "line",
    "si": 6,
-   "pi": 60,
+   "pi": 79,
    "text": "Gathers what's in Slack, Notion and Teams into a report you can share.",
    "weight": "body",
    "where": "text"
   },
   {
-   "id": "sg1k",
+   "id": "sg23",
    "k": "signal",
    "kind": "line",
    "si": 6,
-   "pi": 61,
+   "pi": 80,
    "text": "Keeps work, freelance and personal life in separate profiles, a swipe apart.",
    "weight": "body",
    "where": "text"
   },
   {
-   "id": "sg1l",
+   "id": "sg24",
    "k": "signal",
    "kind": "line",
    "si": 6,
-   "pi": 62,
+   "pi": 81,
    "text": "Turns what you've gathered into slides.",
    "weight": "body",
    "where": "text"
   },
   {
-   "id": "sg1m",
+   "id": "sg25",
+   "k": "signal",
+   "kind": "cite",
+   "si": 6,
+   "pi": 82,
+   "chips": [
+    {
+     "url": "https://www.diabrowser.com",
+     "label": "The Browser Company",
+     "more": 0,
+     "icon": "/lab/density/signal-icons/diabrowser.com.png"
+    }
+   ]
+  },
+  {
+   "id": "sg26",
    "k": "signal",
    "kind": "line",
    "si": 6,
-   "pi": 63,
+   "pi": 83,
    "text": "How I use it",
    "weight": "head",
    "where": "text"
   },
   {
-   "id": "sg1n",
+   "id": "sg27",
    "k": "signal",
    "kind": "line",
    "si": 6,
-   "pi": 64,
+   "pi": 84,
    "text": "You name a browser and I've used it, and really given it a week or so of daily use.",
    "weight": "body",
    "where": "text"
   },
   {
-   "id": "sg1o",
+   "id": "sg28",
    "k": "signal",
    "kind": "line",
    "si": 6,
-   "pi": 65,
+   "pi": 85,
    "text": "What I think",
    "weight": "head",
    "where": "text"
   },
   {
-   "id": "sg1p",
+   "id": "sg29",
    "k": "signal",
    "kind": "line",
    "si": 6,
-   "pi": 66,
+   "pi": 86,
    "text": "It's not really because of the AI. As a creative person, it just looks and works so damn good: every pixel, every micro animation, smooth in all the right places.",
    "weight": "body",
    "where": "text"
   },
   {
-   "id": "sg1q",
+   "id": "sg2a",
    "k": "signal",
    "kind": "src",
    "si": 6,
-   "pi": 67,
+   "pi": 87,
    "url": "https://www.diabrowser.com",
    "text": "Read it at The Browser Company",
    "links": [
@@ -740,128 +1039,174 @@ window.DENSITY_ROOMS["signal"] = {
    "k": "signal",
    "kind": "line",
    "si": 7,
-   "pi": 68,
+   "pi": 88,
    "text": "I switched the Ask on this site to Sonnet 5",
    "label": "September 6 · Anthropic",
    "weight": "head",
    "where": "section-header"
   },
   {
-   "id": "sg1r",
+   "id": "sg2b",
    "k": "signal",
    "kind": "line",
    "si": 7,
-   "pi": 69,
+   "pi": 89,
    "text": "Claude Sonnet 5 is Anthropic's most agentic Sonnet model yet, close to Opus 4.8 at a lower price.",
    "weight": "sub",
    "where": "text"
   },
   {
-   "id": "sg1s",
+   "id": "sg2c",
+   "k": "signal",
+   "kind": "cite",
+   "si": 7,
+   "pi": 90,
+   "chips": [
+    {
+     "url": "https://www.anthropic.com/news/claude-sonnet-5",
+     "label": "Anthropic",
+     "more": 0,
+     "icon": "/lab/density/signal-icons/anthropic.com.png"
+    }
+   ]
+  },
+  {
+   "id": "sg2d",
+   "k": "signal",
+   "kind": "srcs",
+   "si": 7,
+   "pi": 91,
+   "cards": [
+    {
+     "url": "https://www.anthropic.com/news/claude-sonnet-5",
+     "by": "Anthropic",
+     "title": "Introducing Claude Sonnet 5",
+     "host": "anthropic.com",
+     "icon": "/lab/density/signal-icons/anthropic.com.png"
+    }
+   ]
+  },
+  {
+   "id": "sg2e",
    "k": "signal",
    "kind": "line",
    "si": 7,
-   "pi": 70,
+   "pi": 92,
    "text": "What it does",
    "weight": "head",
    "where": "text"
   },
   {
-   "id": "sg1t",
+   "id": "sg2f",
    "k": "signal",
    "kind": "line",
    "si": 7,
-   "pi": 71,
+   "pi": 93,
    "text": "Plans, uses tools like browsers and terminals, and runs on its own.",
    "weight": "body",
    "where": "text"
   },
   {
-   "id": "sg1u",
+   "id": "sg2g",
    "k": "signal",
    "kind": "line",
    "si": 7,
-   "pi": 72,
+   "pi": 94,
    "text": "Checks its own output without being asked, testers say.",
    "weight": "body",
    "where": "text"
   },
   {
-   "id": "sg1v",
+   "id": "sg2h",
    "k": "signal",
    "kind": "line",
    "si": 7,
-   "pi": 73,
+   "pi": 95,
    "text": "Matches Opus 4.8 on some tasks at higher effort.",
    "weight": "body",
    "where": "text"
   },
   {
-   "id": "sg1w",
+   "id": "sg2i",
    "k": "signal",
    "kind": "line",
    "si": 7,
-   "pi": 74,
+   "pi": 96,
    "text": "Resists prompt injection better, and makes things up less, than Sonnet 4.6.",
    "weight": "body",
    "where": "text"
   },
   {
-   "id": "sg1x",
+   "id": "sg2j",
+   "k": "signal",
+   "kind": "cite",
+   "si": 7,
+   "pi": 97,
+   "chips": [
+    {
+     "url": "https://www.anthropic.com/news/claude-sonnet-5",
+     "label": "Anthropic",
+     "more": 0,
+     "icon": "/lab/density/signal-icons/anthropic.com.png"
+    }
+   ]
+  },
+  {
+   "id": "sg2k",
    "k": "signal",
    "kind": "line",
    "si": 7,
-   "pi": 75,
+   "pi": 98,
    "text": "How I tested it",
    "weight": "head",
    "where": "text"
   },
   {
-   "id": "sg1y",
+   "id": "sg2l",
    "k": "signal",
    "kind": "line",
    "si": 7,
-   "pi": 76,
+   "pi": 99,
    "text": "Before switching, I ran twelve why questions past it and Haiku 4.5.",
    "weight": "body",
    "where": "text"
   },
   {
-   "id": "sg1z",
+   "id": "sg2m",
    "k": "signal",
    "kind": "line",
    "si": 7,
-   "pi": 77,
+   "pi": 100,
    "text": "Haiku made up a reason for A.R.C. Sonnet answered from the study's own sentence.",
    "weight": "body",
    "where": "text"
   },
   {
-   "id": "sg20",
+   "id": "sg2n",
    "k": "signal",
    "kind": "line",
    "si": 7,
-   "pi": 78,
+   "pi": 101,
    "text": "What I think",
    "weight": "head",
    "where": "text"
   },
   {
-   "id": "sg21",
+   "id": "sg2o",
    "k": "signal",
    "kind": "line",
    "si": 7,
-   "pi": 79,
+   "pi": 102,
    "text": "Sonnet takes about six tenths of a second longer each time. I switched anyway.",
    "weight": "body",
    "where": "text"
   },
   {
-   "id": "sg22",
+   "id": "sg2p",
    "k": "signal",
    "kind": "src",
    "si": 7,
-   "pi": 80,
+   "pi": 103,
    "url": "https://www.anthropic.com/news/claude-sonnet-5",
    "text": "Read it at Anthropic: Introducing Claude Sonnet 5",
    "links": [
@@ -869,6 +1214,19 @@ window.DENSITY_ROOMS["signal"] = {
      "url": "https://www.anthropic.com/news/claude-sonnet-5",
      "text": "Read it at Anthropic: Introducing Claude Sonnet 5"
     }
+   ]
+  },
+  {
+   "id": "sg2q",
+   "k": "signal",
+   "kind": "thumbs",
+   "si": 7,
+   "pi": 104,
+   "title": "Discover more",
+   "studies": [
+    "sally-os",
+    "arc",
+    "dsc"
    ]
   }
  ],

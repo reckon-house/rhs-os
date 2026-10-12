@@ -550,8 +550,9 @@
     for (const f of (D.roomFrags ? D.roomFrags(k) : D.byStudy(k))) {
       /* a link out to a source (Signal's entries), and a reviewer's note
          under the text (Signal's drafts: what only he can confirm) */
-      if (f.kind === "src") { sec.items.push({ t: "src", f }); continue; }
+      if (f.kind === "src") { if (!SGNEWS) sec.items.push({ t: "src", f }); continue; }
       if (f.kind === "note") { sec.items.push({ t: "note", f }); continue; }
+      if (f.kind === "srcs" || f.kind === "cite" || f.kind === "spic" || f.kind === "thumbs") { if (SGNEWS) sec.items.push({ t: f.kind, f }); continue; }
       if (f.kind === "palette") { if (!M.palette) M.palette = Object.assign({}, f, { colors: (f.colors || []).map((c) => Object.assign({}, c, { name: c.name || palName(k, c.hex) })) }); continue; }
       if (f.kind === "fact") { if (f.label !== "Author") M.facts.push(f); continue; }
       if (f.kind === "tool") { M.tools.push(f); continue; }
@@ -637,6 +638,16 @@
      is the index edit since 8 Oct 2026 (his "can we push the update that
      has the intro copy to each case study restyled?"); a study with no
      edit in edits.js keeps its room as it was ── */
+  /* Signal set as an article (12 Oct 2026, from Perplexity's: his "i do
+     like the sources...can we link out? i do like an image or two being
+     worked in, logos for the sources is nice as well. and then the
+     discover more at the bottom...maybe it links out to my projects?").
+     Under ?signal=news a post shows its sources as cards with their marks
+     under the headline, a tag after each part a source backs, its study's
+     picture after How I use it, and the room ends on Discover more, the
+     projects the posts touch. The plain links under each post step aside
+     for them. scripts/build-signal.mjs writes the pieces */
+  const SGNEWS = (new URLSearchParams(location.search).get("signal") || "").toLowerCase() === "news";
   const EDIT = (() => { const q = (new URLSearchParams(location.search).get("edit") || "").toLowerCase(); return /^(today|trim|fold|index)$/.test(q) ? q : q === "off" ? "" : "index"; })();
   const EDIT_NAMES = [["today", "Today"], ["trim", "Trim"], ["fold", "Fold"], ["index", "Index"]];
   const editOf = (k) => (EDIT && EDIT !== "today" && window.DENSITY_EDITS && window.DENSITY_EDITS[k] && window.DENSITY_EDITS[k][EDIT]) || null;
@@ -769,6 +780,8 @@
     const out = []; let run = null, para = null;
     for (const it of items) {
       if (it.t === "more") { run = null; para = null; out.push(it); continue; }
+      /* a source's tag rides at the end of the paragraph it backs */
+      if (it.t === "cite") { const last = out[out.length - 1]; if (para) para.cite = it.f; else if (last && last.t === "deck") last.cite = it.f; else { run = null; out.push(it); } continue; }
       if (it.t === "body") {
         if (!run) { run = { t: "run", col: null, parts: [] }; out.push(run); para = null; }
         const fig = figs.take(it.f);
@@ -2005,7 +2018,36 @@
       function paraEl(p, cls) {
         const e = el("p", cls);
         p.lines.forEach((f, i) => { if (i) e.appendChild(document.createTextNode(" ")); e.appendChild(tag(el("span", null, esc(f.text)), f)); });
+        if (p.cite) e.appendChild(citeEl(p.cite));
         return e;
+      }
+      /* a source's tag (?signal=news): its publisher, how many more back
+         the same lines, a link out; a project's tag stays in the site */
+      function citeEl(f) {
+        /* rv-skip: the reveal leaves the tags out of the words it sweeps */
+        const w = el("span", "sp-cites rv-skip");
+        (f.chips || []).forEach((c) => {
+          const a = el("a", "sp-cite" + (c.inner ? " in" : ""), esc(c.label) + (c.more ? ' <span class="sp-cite-n">+' + c.more + "</span>" : "") + (c.inner ? ' <span aria-hidden="true">→</span>' : ""));
+          a.href = c.url; if (!c.inner) { a.target = "_blank"; a.rel = "noopener"; }
+          w.appendChild(a);
+        });
+        return w;
+      }
+      /* a project's picture in a post (?signal=news), linked to its room */
+      function spicEl(f) {
+        const st = D.study(f.study), im = st && (st.top || st.lead);
+        if (!im) return el("div");
+        const g2 = el("div", "sp-grid sp-run sp-spicw"); g2.appendChild(el("div", "sp-rail"));
+        const t = el("div", "sp-text"), fig = tag(el("figure", "sp-spic"), f);
+        const a = el("a", "sp-spicl"); a.href = "#study/" + f.study; a.setAttribute("aria-label", f.name || st.t);
+        const img = el("img"); img.alt = im.alt || ""; img.loading = "lazy"; img.decoding = "async";
+        if (im.w && im.h) { img.width = im.w; img.height = im.h; }
+        img.src = im.t768 || im.src;
+        if (im.t384 && im.t768) { img.srcset = im.t384 + " 384w, " + im.t768 + " 768w" + (im.src && im.w ? ", " + im.src + " " + im.w + "w" : ""); img.sizes = "(max-width: 760px) 92vw, 40vw"; }
+        a.appendChild(img); fig.appendChild(a);
+        fig.appendChild(el("figcaption", "sp-spicc", '<a href="#study/' + esc(f.study) + '">' + esc(f.name || st.t) + ' <span aria-hidden="true">→</span></a>' + (st.s ? ' <span class="g">' + esc(st.s) + "</span>" : "")));
+        t.appendChild(fig); g2.appendChild(t);
+        return g2;
       }
       function figBlock(list, cls) {
         const b = el("div", cls + " n" + list.length);
@@ -2418,7 +2460,7 @@
             return a;
           }
           /* a deck that is one short line is set as a bold beat of its own */
-          case "deck": return tag(el("p", "sp-deck" + (b.f.text.length <= 52 && b.f.text.indexOf(" | ") < 0 ? " sp-short" : ""), inkGrey(b.f.text)), b.f);
+          case "deck": { const d = tag(el("p", "sp-deck" + (b.f.text.length <= 52 && b.f.text.indexOf(" | ") < 0 ? " sp-short" : ""), inkGrey(b.f.text)), b.f); if (b.cite) d.appendChild(citeEl(b.cite)); return d; }
           case "pull": {
             const first = pulled++ === 0;
             const lk = first ? LOOK() : null;
@@ -2450,6 +2492,31 @@
               para = null; body.appendChild(tag(el("p", "sp-p sp-mls", inkGrey(f.text)), f));
             });
             t.appendChild(det); g2.appendChild(t); return g2;
+          }
+          case "srcs": {
+            /* the sources as cards under the headline (?signal=news): the
+               publisher's mark and name, the page's own title, a link out */
+            const t = tag(el("div", "sp-srcsw"), b.f), row = el("div", "sp-srcs");
+            (b.f.cards || []).forEach((c) => {
+              const a = el("a", "sp-scard", '<span class="sp-sby">' + (c.icon ? '<img alt="" src="' + esc(c.icon) + '" width="16" height="16">' : "<i>" + esc((c.by || "?").charAt(0)) + "</i>") + "<span>" + esc(c.by) + '</span></span><span class="sp-stt">' + esc(c.title) + "</span>");
+              a.href = c.url; a.target = "_blank"; a.rel = "noopener";
+              row.appendChild(a);
+            });
+            t.appendChild(row); return t;
+          }
+          case "cite": { const g2 = el("div", "sp-grid sp-run sp-citew"); g2.appendChild(el("div", "sp-rail")); const t = el("div", "sp-text"); t.appendChild(citeEl(b.f)); g2.appendChild(t); return g2; }
+          case "spic": return spicEl(b.f);
+          case "thumbs": {
+            /* Discover more (?signal=news): the projects the posts touch, as
+               Perplexity ends an article on more to read */
+            const t = tag(el("div", "sp-thumbsw sp-thumbs"), b.f), g = el("div", "sp-thumbs-g");
+            t.appendChild(el("p", "sp-thumbs-h", esc(b.f.title || "Discover more")));
+            (b.f.studies || []).forEach((k) => {
+              const st = D.study(k); if (!st) return; const im = st.lead || st.top;
+              const a = el("a", "sp-thumb", (im ? '<span class="sp-thumb-i"><img alt="" loading="lazy" decoding="async" src="' + esc(im.t384 || im.src) + '"></span>' : "") + '<span class="sp-thumb-t">' + esc(D.title(k) || st.t) + '</span><span class="sp-thumb-s">' + esc(st.s || "") + "</span>");
+              a.href = "#study/" + k; g.appendChild(a);
+            });
+            t.appendChild(g); return t;
           }
           case "src": {
             /* a link out, under the text it belongs to (Signal: the article

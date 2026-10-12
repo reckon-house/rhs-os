@@ -122,6 +122,32 @@ sets them. The Opus 5.5 draft is the example.
   "arc"`). New with the drafts: it shows as a second link under the note
   and opens that study's room, so Signal points back into the work.
 
+## The post as an article (proposed 12 Oct 2026, `?signal=news`)
+
+From Perplexity's automated articles, his: "the voice is straightforward,
+news room like. i want to give you notes but i do want SOME polish ...
+not sounding AI but also not sound like we're just taking my scratch
+notes and dumping them on a page", and "can we link out? ... logos for
+the sources ... the discover more at the bottom ... links out to my
+projects?"
+
+- **Two voices, one post.** What it is and what it does read like a
+  newsroom: third person, plain, only what the source says, each part
+  tagged to the page it came from. How I use it and What I think are his
+  notes, polished: his words and his claims, put in order, spelling and
+  grammar fixed, repeats and filler cut. Never a new claim, never a line he
+  wouldn't say out loud. TinyFish's What I think is the reference.
+- **Sources** (`sources` in signal.ts): the pages the post stands on,
+  first the one the headline answers. They set as cards with the
+  publisher's mark under the opening line, and as a tag after each part
+  they back (`backs`). Every one links out. Marks are fetched once into
+  public/lab/density/signal-icons/.
+- **A picture:** the project the post touches (its `study`, else the
+  project a tag names), after How I use it, linked to its room. Only his
+  own work; a publisher's photograph would need its rights.
+- **Discover more:** the room ends on the projects its posts touch, then
+  his three builds, as thumbnails into their rooms.
+
 ## Tags
 
 One list, reused, title case.

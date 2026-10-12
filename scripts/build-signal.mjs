@@ -39,6 +39,33 @@ const lines = (t) => (Array.isArray(t) ? t : [t]).map(clean).filter(Boolean);
 /* the studies a post can point at, by key, with the names the rooms use */
 const STUDY_NAME = { arc: "A.R.C.", "sally-os": "Sally Marketing OS", dsc: "Dallas Sport Collective", sizzle: "Faux Reel", "sally-design-system": "the Sally design system" };
 
+/* ── ?signal=news (12 Oct 2026, from Perplexity's articles: his "i do
+   like the sources...can we link out? i do like an image or two being
+   worked in, logos for the sources is nice as well. and then the discover
+   more at the bottom...maybe it links out to my projects?"). Each post
+   carries its sources as cards under the headline and as a small tag
+   after each part they back, its study's picture after How I use it, and
+   the room ends on the projects the posts touch. The room shows them only
+   under the switch. A publisher's mark is fetched once and kept in
+   signal-icons/, so a page never asks a third party for it ── */
+const host = (u) => { try { return new URL(u).hostname.replace(/^www\./, ""); } catch (e) { return ""; } };
+const srcsOf = (e) => (e.sources && e.sources.length ? e.sources : e.sourceUrl ? [{ url: e.sourceUrl, title: e.sourceTitle || host(e.sourceUrl), by: e.source }] : []);
+const TAG_STUDY = { "Sally Marketing OS": "sally-os", "A.R.C.": "arc", DSC: "dsc" };
+const ICON_DIR = path.join(ROOT, "public/lab/density/signal-icons");
+const ICONS = {};
+const wantIcons = async (list) => {
+  fs.mkdirSync(ICON_DIR, { recursive: true });
+  const hosts = [...new Set(list.flatMap((e) => srcsOf(e).map((x) => host(x.url))).filter(Boolean))];
+  await Promise.all(hosts.map(async (h) => {
+    const f = path.join(ICON_DIR, h + ".png");
+    if (!fs.existsSync(f)) {
+      try { const r = await fetch("https://www.google.com/s2/favicons?domain=" + encodeURIComponent(h) + "&sz=64"); if (r.ok) fs.writeFileSync(f, Buffer.from(await r.arrayBuffer())); }
+      catch (e) { /* offline: the card sets the publisher's initial */ }
+    }
+    if (fs.existsSync(f)) ICONS[h] = "/lab/density/signal-icons/" + h + ".png";
+  }));
+};
+
 const room = (key, { title, sub, lede, dim, tail, rule, entries, label, extra }) => {
   const frags = [];
   let pi = 1, n = 0;
@@ -50,20 +77,35 @@ const room = (key, { title, sub, lede, dim, tail, rule, entries, label, extra })
   entries.forEach((e, i) => {
     const si = 2 + i;
     frags.push({ id: "sg-" + e.id, k: key, kind: "line", si, pi: pi++, text: clean(e.headline), label: label(e), weight: "head", where: "section-header" });
+    /* ?signal=news: the sources as cards, and a tag after each part they back */
+    const SR = srcsOf(e);
+    /* the cards come under the opening line, as Perplexity sets them under its first paragraphs */
+    const cards = () => frags.push({ id: nid(), k: key, kind: "srcs", si, pi: pi++, cards: SR.map((x) => ({ url: x.url, by: clean(x.by), title: clean(x.title), host: host(x.url), icon: ICONS[host(x.url)] || null })) });
+    const cite = (part) => {
+      const xs = SR.filter((x) => (x.backs || ["what", "does"]).includes(part)), chips = [];
+      if (xs.length) chips.push({ url: xs[0].url, label: clean(xs[0].by), more: xs.length - 1, icon: ICONS[host(xs[0].url)] || null });
+      if (part === "use" && e.study && STUDY_NAME[e.study]) chips.push({ url: "#study/" + e.study, label: STUDY_NAME[e.study], inner: true });
+      if (chips.length) frags.push({ id: nid(), k: key, kind: "cite", si, pi: pi++, chips });
+    };
     /* a post in four parts (11 Oct 2026, his "should we come up with a
        standard format? here's the 5 things the model, app, browser or
        piece of software does, here's how i am using it or tests it,
        here's my thoughts"): what it is under the headline, then each
        part as a labelled run, its name in the left rail and its lines in
        the right, as a study's opening sets What I did beside its body */
-    const parts = [["What it does", e.does], [e.useLabel || "How I use it", e.use], ["What I think", e.think]].filter(([, v]) => lines(v || []).length);
+    const parts = [["does", "What it does", e.does], ["use", e.useLabel || "How I use it", e.use], ["think", "What I think", e.think]].filter(([, , v]) => lines(v || []).length);
     if (e.what || parts.length) {
-      if (e.what) frags.push({ id: nid(), k: key, kind: "line", si, pi: pi++, text: clean(e.what), weight: "sub", where: "text" });
-      parts.forEach(([cap, v]) => {
+      if (e.what) { frags.push({ id: nid(), k: key, kind: "line", si, pi: pi++, text: clean(e.what), weight: "sub", where: "text" }); cite("what"); }
+      cards();
+      parts.forEach(([part, cap, v]) => {
         frags.push({ id: nid(), k: key, kind: "line", si, pi: pi++, text: cap, weight: "head", where: "text" });
         lines(v).forEach((t) => frags.push({ id: nid(), k: key, kind: "line", si, pi: pi++, text: t, weight: "body", where: "text" }));
+        cite(part);
+        /* the study the post touches (or the project its tags name), in a picture of its own, after the part that says how */
+        const pk = e.study || (e.tags || []).map((t) => TAG_STUDY[t]).find(Boolean);
+        if (part === "use" && pk && STUDY_NAME[pk]) frags.push({ id: nid(), k: key, kind: "spic", si, pi: pi++, study: pk, name: STUDY_NAME[pk] });
       });
-    } else lines(e.take).forEach((t) => frags.push({ id: nid(), k: key, kind: "line", si, pi: pi++, text: t, weight: "body", where: "text" }));
+    } else { cards(); lines(e.take).forEach((t) => frags.push({ id: nid(), k: key, kind: "line", si, pi: pi++, text: t, weight: "body", where: "text" })); }
     const note = extra ? extra(e) : [];
     if (note.length) frags.push({ id: nid(), k: key, kind: "note", si, pi: pi++, title: "To check", items: note });
     /* the source's own title rides in the link (11 Oct 2026): the headline
@@ -72,6 +114,14 @@ const room = (key, { title, sub, lede, dim, tail, rule, entries, label, extra })
     if (e.study && STUDY_NAME[e.study]) links.push({ url: "#study/" + e.study, text: "See it in " + STUDY_NAME[e.study] });
     frags.push({ id: nid(), k: key, kind: "src", si, pi: pi++, url: links[0].url, text: links[0].text, links });
   });
+  /* ?signal=news: the room ends on the projects its posts touch, the
+     three builds after them, as Perplexity ends on Discover more */
+  if (entries.length) {
+    const keys = [];
+    entries.forEach((e) => [e.study, ...(e.tags || []).map((t) => TAG_STUDY[t])].forEach((k) => { if (k && STUDY_NAME[k] && !keys.includes(k)) keys.push(k); }));
+    ["sally-os", "arc", "dsc"].forEach((k) => { if (!keys.includes(k)) keys.push(k); });
+    frags.push({ id: nid(), k: key, kind: "thumbs", si: 1 + entries.length, pi: pi++, title: "Discover more", studies: keys.slice(0, 4) });
+  }
   const y = entries.length && entries[0].date ? +String(entries[0].date).slice(0, 4) : 2026;
   const study = { k: key, h: key, t: title, s: sub, y, tags: [], fact: clean(lede), rest: clean(dim), palette: null, fill: "#ECECEC", ink: "#000000", lead: null, top: null };
   const list = entries.map((e) => ({ id: e.id, at: "sg-" + e.id, date: e.date || null, day: e.date ? S.dayHead(e.date) : null, headline: clean(e.headline), source: clean(e.source),
@@ -89,6 +139,7 @@ window.DENSITY_ROOMS[${JSON.stringify(key)}] = ${JSON.stringify(data, null, 1)};
 
 /* the room on the site */
 const NEWEST = S.NEWEST || S.SIGNAL;
+await wantIcons(NEWEST);
 write("public/lab/density/signal.js", "signal", room("signal", {
   title: "Signal", sub: "AI news, with my notes", lede: S.SIGNAL_LEDE, dim: S.SIGNAL_DIM, tail: S.SIGNAL_TAIL,
   rule: "The headline is the source’s. The note under it is mine, from building with these tools.",
@@ -99,6 +150,7 @@ write("public/lab/density/signal.js", "signal", room("signal", {
 if (fs.existsSync(path.join(ROOT, "src/data/signal-drafts.ts"))) {
   const DR = load("src/data/signal-drafts.ts");
   const drafts = DR.SIGNAL_DRAFTS || [];
+  await wantIcons(drafts);
   const KIND = DR.KIND_NAME || {};
   write("public/lab/density/signal-drafts.js", "signal-drafts", room("signal-drafts", {
     title: "Signal drafts", sub: "For Jeremy to read aloud",

@@ -1485,3 +1485,46 @@ html:not([data-type="bold"]) .sp.sp-one .sp-head > .sp-stand { max-width: none; 
 .sp-note .sp-note-h { margin-bottom: 4px; font-weight: 600; color: var(--ink); }
 .sp-src { font-size: 13px; font-weight: 600; color: var(--ink); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 0.3em; }
 .sp-src:hover { color: var(--grey); }
+
+/* ── SIGNAL AS AN ARTICLE (?signal=news, 12 Oct 2026, after Perplexity's
+   articles). The sources as cards under the headline, each the
+   publisher's mark and name in the labels' style and the page's title in
+   the body's size a weight up; a tag after each part a source backs, in
+   the labels' style on a faint ground; the project's picture after How I
+   use it; Discover more at the room's foot. No new sizes: the body's, the
+   labels' and the rooms' faint grey ground ── */
+.sp .sp-srcsw { margin: 20px var(--m) 0; }
+.sp .sp-srcs { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 156px), 1fr)); gap: 8px; }
+.sp .sp-scard { display: flex; flex-direction: column; gap: 7px; min-width: 0; padding: 11px 12px 12px; border-radius: 8px; background: rgba(0, 0, 0, 0.04); color: var(--ink); text-decoration: none; transition: background-color 0.2s ease; }
+.sp .sp-scard:hover { background: rgba(0, 0, 0, 0.075); }
+.sp .sp-sby { display: flex; align-items: center; gap: 7px; min-width: 0; font-size: 11px; font-weight: 600; line-height: 1.3; color: var(--grey); }
+.sp .sp-sby > span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.sp .sp-sby img, .sp .sp-sby i { flex: none; width: 16px; height: 16px; border-radius: 4px; }
+.sp .sp-sby i { display: grid; place-items: center; font-style: normal; font-size: 9px; font-weight: 700; color: #fff; background: var(--ink); }
+.sp .sp-stt { font-size: 13px; font-weight: 600; letter-spacing: -0.01em; line-height: 1.35; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.sp .sp-cites { display: inline-flex; flex-wrap: wrap; gap: 4px; margin-left: 6px; vertical-align: 1px; text-indent: 0; }
+.sp .sp-citew .sp-cites { margin-left: 0; }
+.sp .sp-cite { display: inline-flex; align-items: baseline; gap: 3px; padding: 0 7px 1px; border-radius: 6px; background: rgba(0, 0, 0, 0.05); font-size: 11px; font-weight: 600; letter-spacing: 0; line-height: 1.6; color: var(--grey); text-decoration: none; white-space: nowrap; transition: background-color 0.2s ease, color 0.2s ease; }
+.sp .sp-cite:hover { background: rgba(0, 0, 0, 0.09); color: var(--ink); }
+.sp .sp-cite .sp-cite-n { font-weight: 500; }
+.sp .sp-spicw { margin-top: 22px; }
+.sp .sp-spic { margin: 0; }
+.sp .sp-spicl { display: block; overflow: hidden; border-radius: 4px; background: #ECECEC; }
+.sp .sp-spicl img { display: block; width: 100%; height: auto; transition: transform 1.1s cubic-bezier(0.16, 1, 0.3, 1); }
+.sp .sp-spicl:hover img { transform: scale(1.015); }
+.sp .sp-spicc { margin-top: 9px; font-size: 13px; font-weight: 400; line-height: 1.5; color: var(--grey); }
+.sp .sp-spicc a { font-weight: 600; color: var(--ink); text-decoration: none; }
+.sp .sp-spicc a:hover { color: var(--grey); }
+.sp .sp-thumbsw { margin: clamp(48px, 9cqw, 80px) var(--m) 0; }
+/* a tag waits for its paragraph's reveal, then comes in after the words */
+.sp.mo .rv:not(.rv-go) .sp-cites { opacity: 0; }
+.sp.mo .rv-go .sp-cites { opacity: 1; transition: opacity 0.4s ease 0.45s; }
+.sp .sp-thumbs-h { margin: 0 0 12px; font-size: 11px; font-weight: 600; color: var(--grey); }
+.sp .sp-thumbs-g { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 150px), 1fr)); gap: 14px 10px; }
+.sp .sp-thumb { display: flex; flex-direction: column; gap: 4px; min-width: 0; color: var(--ink); text-decoration: none; }
+.sp .sp-thumb-i { display: block; aspect-ratio: 16 / 10; overflow: hidden; border-radius: 6px; background: #ECECEC; margin-bottom: 6px; }
+.sp .sp-thumb-i img { display: block; width: 100%; height: 100%; object-fit: cover; transition: transform 1.1s cubic-bezier(0.16, 1, 0.3, 1); }
+.sp .sp-thumb:hover .sp-thumb-i img { transform: scale(1.03); }
+.sp .sp-thumb-t { font-size: 13px; font-weight: 600; letter-spacing: -0.01em; line-height: 1.35; }
+.sp .sp-thumb-s { font-size: 13px; font-weight: 400; line-height: 1.4; color: var(--grey); }
+@media (prefers-reduced-motion: reduce) { .sp .sp-spicl img, .sp .sp-thumb-i img { transition: none; } }
