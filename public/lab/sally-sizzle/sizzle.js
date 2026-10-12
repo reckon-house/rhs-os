@@ -33,7 +33,7 @@ try { const q = location.search; if (/[?&]szdots=on/.test(q)) document.documentE
    cover) it mounts over the cover's own picture, so the board's tile
    still flies into the same box and the first frame is that picture. */
 (() => {
-  const BASE = "/lab/sally-sizzle/", IMG = BASE + "img/", VID = BASE + "vid/", VQ = "?v=1";
+  const BASE = "/lab/sally-sizzle/", IMG = BASE + "img/", VID = BASE + "vid/", VQ = "?v=2";
   const VERSIONS = [{ id: "mix", name: "Mix", weight: "the work and the engine" }];
   const DEF = "mix";
   const current = () => ((new URLSearchParams(location.search).get("sizzle") || "").toLowerCase() === "still" ? "still" : DEF);
@@ -144,7 +144,7 @@ try { const q = location.search; if (/[?&]szdots=on/.test(q)) document.documentE
     const p = c.pic(name, [0, 0, c.W, c.H], { op: o && o.op });
     s.appendChild(p);
     const [a, b] = (o && o.glide) || [[1, 0, 0], [1.07, -1, 0]];
-    c.anim(p.firstChild, [{ transform: `translate(${a[1]}%, ${a[2]}%) scale(${a[0]})` }, { transform: `translate(${b[1]}%, ${b[2]}%) scale(${b[0]})` }], { duration: (o.d || 1200) + 1100, easing: "linear", fill: "forwards" });
+    c.drift(p.firstChild, [{ transform: `translate(${a[1]}%, ${a[2]}%) scale(${a[0]})` }, { transform: `translate(${b[1]}%, ${b[2]}%) scale(${b[0]})` }], { duration: (o.d || 1200) + 1100, easing: "linear", fill: "forwards" });
     return () => 0;
   } }, o || {});
   /* a statement as large as the frame takes it, the phrase that matters
@@ -158,7 +158,7 @@ try { const q = location.search; if (/[?&]szdots=on/.test(q)) document.documentE
     const lines = (o && o.lines) || 3;
     c.fit(T, lines, Math.max(16, c.W * 0.04), Math.min(c.W * 0.11, room / lines));
     T.style.top = Math.round(c.H - c.pad - T.offsetHeight) + "px";
-    if (o && o.drift) { T.style.transformOrigin = "0 100%"; c.anim(T, [{ transform: "scale(1)" }, { transform: "scale(1.03)" }], { duration: (o.d || 2000) + 700, easing: "linear", fill: "forwards" }); }
+    if (o && o.drift) { T.style.transformOrigin = "0 100%"; c.drift(T, [{ transform: "scale(1)" }, { transform: "scale(1.03)" }], { duration: (o.d || 2000) + 700, easing: "linear", fill: "forwards" }); }
     return (t0) => c.wipe(T, { at: t0, kind: "ink", dur: 760 });
   } }, o || {});
   /* a headline across the page, then drifting while the dots do */
@@ -167,7 +167,7 @@ try { const q = location.search; if (/[?&]szdots=on/.test(q)) document.documentE
     const T = c.el("div", "dsp abs", esc(text)); T.style.cssText = `left:${c.pad}px;top:${c.top + K.h() + c.H * 0.06}px;width:${c.W - 2 * c.pad}px`;
     s.appendChild(T);
     c.fit(T, 2, Math.max(15, c.W * 0.04), Math.min(c.W * 0.1, (c.H - c.top - K.h() - c.pad * 2) / 2));
-    c.anim(T, [{ transform: "translateY(0px)" }, { transform: "translateY(" + (-c.H * 0.03).toFixed(1) + "px)" }], { duration: (o.d || 1600) + 900, easing: "linear", fill: "forwards" });
+    c.drift(T, [{ transform: "translateY(0px)" }, { transform: "translateY(" + (-c.H * 0.03).toFixed(1) + "px)" }], { duration: (o.d || 1600) + 900, easing: "linear", fill: "forwards" });
     return (t0) => { K.play(t0); return c.wipe(T, { at: t0 + 150 }); };
   } }, o || {});
   /* a list, a row at a time between hairlines, as large as the page holds it */
@@ -184,7 +184,7 @@ try { const q = location.search; if (/[?&]szdots=on/.test(q)) document.documentE
     let lo = 10, hi = Math.min(c.W * 0.09, 150), best = lo;
     for (let i = 0; i < 12; i++) { const mid = (lo + hi) / 2; box.style.fontSize = mid + "px"; if (box.offsetHeight <= avail && box.scrollWidth <= w + 1) { best = mid; lo = mid; } else hi = mid; }
     box.style.fontSize = Math.floor(best * 2) / 2 + "px";
-    c.anim(box, [{ transform: "translateY(0px)" }, { transform: "translateY(" + (-c.H * 0.025).toFixed(1) + "px)" }], { duration: this.d + 800, easing: "linear", fill: "forwards" });
+    c.drift(box, [{ transform: "translateY(0px)" }, { transform: "translateY(" + (-c.H * 0.025).toFixed(1) + "px)" }], { duration: this.d + 800, easing: "linear", fill: "forwards" });
     return (t0) => {
       K.play(t0);
       const gap = (o && o.gap) || 260;
@@ -198,7 +198,7 @@ try { const q = location.search; if (/[?&]szdots=on/.test(q)) document.documentE
     const a = c.el("div", "lab", esc(head)), r = c.el("i", "rule"); H.appendChild(a); H.appendChild(r); s.appendChild(H);
     const col = c.el("div", "notes"); col.style.cssText = `left:${x}px;top:${y + H.offsetHeight + c.H * 0.045}px;width:${w}px`;
     s.appendChild(col);
-    c.anim(col, [{ transform: "translateY(0px)" }, { transform: "translateY(" + (-c.H * 0.03).toFixed(1) + "px)" }], { duration: d + 900, easing: "linear", fill: "forwards" });
+    c.drift(col, [{ transform: "translateY(0px)" }, { transform: "translateY(" + (-c.H * 0.03).toFixed(1) + "px)" }], { duration: d + 900, easing: "linear", fill: "forwards" });
     return {
       head(at) { c.go(r, at); c.wipe(a, { at: at + 60, kind: "tint", dur: 460 }); },
       add(at, o) {
@@ -248,7 +248,14 @@ try { const q = location.search; if (/[?&]szdots=on/.test(q)) document.documentE
     });
     s.appendChild(row);
     const total = o.items.length * (w + g) - g, travel = Math.max(0, total - (c.W - 2 * c.pad)) + c.W * 0.04;
-    c.anim(row, [{ transform: "translateX(0px)" }, { transform: `translateX(${-travel}px)` }], { duration: d + 900, easing: "linear", fill: "forwards" });
+    if (c.clean) {
+      /* the clean grammar: a carousel's step, a card's width at a time on
+         the screens' curve, each held before the next */
+      const step = w + g, n = Math.max(1, Math.ceil(travel / step)), X = (k) => `translateX(${-Math.min(travel, k * step).toFixed(1)}px)`;
+      const fr = [{ transform: X(0), offset: 0 }];
+      for (let k = 0; k < n; k++) { fr.push({ transform: X(k), offset: (k + 0.6) / n, easing: "cubic-bezier(0.7, 0, 0.15, 1)" }); fr.push({ transform: X(k + 1), offset: (k + 1) / n }); }
+      c.anim(row, fr, { duration: d + 900, fill: "forwards" });
+    } else c.anim(row, [{ transform: "translateX(0px)" }, { transform: `translateX(${-travel}px)` }], { duration: d + 900, easing: "linear", fill: "forwards" });
     return (t0) => { K.play(t0); c.wipe(T, { at: t0 + 120, kind: "tint" }); cards.forEach((x, i) => c.go(x, t0 + 150 + i * 110)); return 0; };
   } }, o);
   /* three emails, as cards drifting up at their own speeds */
@@ -266,7 +273,7 @@ try { const q = location.search; if (/[?&]szdots=on/.test(q)) document.documentE
       card.style.cssText = `left:${x0 + i * (cw + g)}px;top:${y}px;width:${cw}px;height:${ch}px`;
       const im = c.img(name, cw); card.appendChild(im); s.appendChild(card);
       const up = Math.min(ch - (c.H - y) + c.pad, ch * 0.45) * [0.75, 1, 0.6][i];
-      c.anim(card, [{ transform: "translateY(0px)" }, { transform: `translateY(${-Math.max(c.H * 0.06, up)}px)` }], { duration: d + 900, easing: "cubic-bezier(0.4, 0, 0.4, 1)", fill: "forwards" });
+      c.drift(card, [{ transform: "translateY(0px)" }, { transform: `translateY(${-Math.max(c.H * 0.06, up)}px)` }], { duration: d + 900, easing: "cubic-bezier(0.4, 0, 0.4, 1)", fill: "forwards" });
       return card;
     });
     return (t0) => { K.play(t0); c.wipe(T, { at: t0 + 150 }); cards.forEach((x, i) => c.go(x, t0 + 220 + i * 140)); return 0; };
@@ -276,7 +283,7 @@ try { const q = location.search; if (/[?&]szdots=on/.test(q)) document.documentE
     const d = this.d, nar = narrow(c);
     const pw = Math.round(c.W * (nar ? 0.34 : 0.3)), ph = c.H - c.top - c.pad;
     const P = c.pic("blonde", [c.pad, c.top, pw, ph], { op: "50% 30%" }); P.classList.add("rd"); s.appendChild(P);
-    c.anim(P.firstChild, [{ transform: "scale(1)" }, { transform: "scale(1.06)" }], { duration: d + 700, easing: "linear", fill: "forwards" });
+    c.drift(P.firstChild, [{ transform: "scale(1)" }, { transform: "scale(1.06)" }], { duration: d + 700, easing: "linear", fill: "forwards" });
     const x = c.pad + pw + c.W * 0.035, w = c.W - c.pad - x;
     const K = kicker(c, s, x, c.top, w, o.head);
     const S = c.el("div", "sm g abs", esc(o.say)); S.style.cssText = `left:${x}px;bottom:${c.pad}px;width:${w}px`; s.appendChild(S);
@@ -360,7 +367,7 @@ try { const q = location.search; if (/[?&]szdots=on/.test(q)) document.documentE
     const F = c.video(o.clip, { from: o.from || 0, rate: o.rate || 1, drawn: w });
     win.appendChild(F.v); s.appendChild(win);
     F.start(0);
-    c.anim(win, [{ transform: "scale(1)" }, { transform: `scale(${o.zoom || 1.06})` }], { duration: d + 700, easing: "cubic-bezier(0.45, 0, 0.35, 1)", fill: "forwards" });
+    c.drift(win, [{ transform: "scale(1)" }, { transform: `scale(${o.zoom || 1.06})` }], { duration: d + 700, easing: "cubic-bezier(0.45, 0, 0.35, 1)", fill: "forwards" });
     const tw = Math.min(c.W * (narrow(c) ? 0.62 : 0.4), 640);
     const tab = c.el("div", "tab rise"); tab.style.cssText = `${o.side === "l" ? "right" : "left"}:${c.pad}px;bottom:${c.pad}px;width:${tw}px`;
     const L = c.el("div", "lab", esc(o.lab)), Y = c.el("div", "say", esc(o.say)); tab.appendChild(L); tab.appendChild(Y); s.appendChild(tab);
@@ -422,7 +429,7 @@ try { const q = location.search; if (/[?&]szdots=on/.test(q)) document.documentE
     const w = Math.round(Math.min(c.W * 0.42, 560)), h = Math.round(w / 4);
     const m = c.el("i", "mark fd"); m.style.cssText = `left:${(c.W - w) / 2}px;top:${(c.H - h) / 2}px;width:${w}px;height:${h}px`;
     s.appendChild(m);
-    c.anim(m, [{ transform: "scale(0.94)" }, { transform: "scale(1.02)" }], { duration: (o.d || 1400) + 600, easing: "cubic-bezier(0.16, 1, 0.3, 1)", fill: "forwards" });
+    c.drift(m, [{ transform: "scale(0.94)" }, { transform: "scale(1.02)" }], { duration: (o.d || 1400) + 600, easing: "cubic-bezier(0.16, 1, 0.3, 1)", fill: "forwards" });
     return (t0) => { c.go(m, t0); return 0; };
   } }, o || {});
 
@@ -464,6 +471,18 @@ try { const q = location.search; if (/[?&]szdots=on/.test(q)) document.documentE
   };
 
   /* ── the player ── */
+  /* ── the clean grammar (11 Oct 2026, as the DSC and A.R.C. reels have it,
+     his "yes, do the sally one too" after "it feels dated ... a little
+     more slick vs powerpoint"). The camera never moves: pictures,
+     windows, statements, notes and cards hold still, and the row of
+     concepts steps a page at a time as a carousel does. The motion is
+     the work's own (the Lookbook scrolling, screens, briefs swapping).
+     Shots meet on a straight cut, and a field (a black or scarlet
+     statement) comes in and goes out as the site's curtain does.
+     ?szmotion=old, or mount(host, { motion: "old" }), keeps the zooms,
+     pans and slide cuts it replaced ── */
+  const CLEANQ = (() => { try { return (new URLSearchParams(location.search).get("szmotion") || "").toLowerCase() !== "old"; } catch (e) { return true; } })();
+
   const LIVE = new Set();
   function mount(host, opts) {
     opts = opts || {};
@@ -506,6 +525,13 @@ try { const q = location.search; if (/[?&]szdots=on/.test(q)) document.documentE
       return a;
     };
     ctx.anim = anim;
+    ctx.clean = opts.motion ? opts.motion !== "old" : CLEANQ;
+    /* a drift, a glide or a zoom: under the clean grammar it holds where it starts */
+    ctx.drift = (e, frames, o) => {
+      if (!ctx.clean) return anim(e, frames, o);
+      if (e && frames && frames[0]) Object.keys(frames[0]).forEach((k) => { if (k !== "offset" && k !== "easing") e.style[k] = frames[0][k]; });
+      return null;
+    };
     ctx.now = review ? () => vnow : () => performance.now();
     ctx.every = review
       ? (ms, fn) => { const my = gen; const tick = () => { if (dead || my !== gen) return; if (fn() !== false) T(ms, tick); }; T(ms, tick); }
@@ -587,9 +613,32 @@ try { const q = location.search; if (/[?&]szdots=on/.test(q)) document.documentE
       b.appendChild(ctx.img(name, coverW(name, w, h)));
       return b;
     };
+    /* the clean grammar's type: display words through a mask, each rising
+       into its line, as the rooms' rise sets a head (study-panel.css
+       rv-mask: 128% up, 1.2s on the headline curve, 45ms a line and a
+       few a character), in place of the band over the frame-wide
+       statements. Labels keep their faint band */
+    const rise = (node, at) => {
+      node.querySelectorAll(":scope > .bd").forEach((b) => b.remove());
+      node.classList.remove("go", "now", "wp");
+      const words = node.querySelector(".w") ? [...node.querySelectorAll(".w")] : splitWords(node);
+      words.forEach((w) => { if (!(w.firstElementChild && w.firstElementChild.classList.contains("wi"))) { const i = el("span", "wi"); while (w.firstChild) i.appendChild(w.firstChild); w.appendChild(i); } });
+      node.classList.add("rz");
+      if (still) { node.classList.add("now"); return 0; }
+      const per = Math.min(6, 420 / (node.textContent.length || 1));
+      let line = -1, top = -1e9, chars = 0, end = 0;
+      words.forEach((w) => {
+        const t = w.offsetTop; if (Math.abs(t - top) > 3) { line++; top = t; }
+        const d = line * 45 + Math.round(chars * per); chars += w.textContent.length + 1; end = Math.max(end, d);
+        w.style.setProperty("--d", d + "ms");
+      });
+      T(at, () => { void node.offsetWidth; node.classList.add("go"); });
+      return at + end + 700;
+    };
     ctx.wipe = (node, o) => {
       o = o || {};
       const kind = o.kind || "ink", dur = o.dur || (kind === "ink" ? 760 : 600), gap = o.gap || (kind === "ink" ? 95 : 70), at = o.at || 0;
+      if (ctx.clean && kind !== "tint") return rise(node, at);
       node.querySelectorAll(":scope > .bd").forEach((b) => b.remove());
       node.classList.remove("go", "now");
       const words = node.querySelector(".w") ? [...node.querySelectorAll(".w")] : splitWords(node);
@@ -630,13 +679,57 @@ try { const q = location.search; if (/[?&]szdots=on/.test(q)) document.documentE
        split, flash, pinch, shutter, slat, push, burn ── */
     const RE = "cubic-bezier(0.7, 0, 0.15, 1)";
     const dark = (x) => x && /ink|scarlet|violet|teal/.test(x.ground);
+    /* the clean grammar's cuts: straight, but where a field begins or
+       ends, the site's own curtain (curtain.css): the field comes up from
+       the foot over what was there (0.55s), and goes up and away off what
+       comes next (0.5s, a tenth late), on the curtain's curve */
+    const FIELD = /\b(ink|warm|olive|oak|scarlet)\b/;
+    const cleanCut = (a, b) => {
+      const fa = !!(a && FIELD.test(a.ground)), fb = !!(b && FIELD.test(b.ground));
+      return fb && (!fa || a.ground !== b.ground) ? "flood" : fa && !fb ? "lift" : "cut";
+    };
+    const CURTAIN = "cubic-bezier(0.2, 0.7, 0.2, 1)";
     const cut = (kind, prev, prevS, node, S) => {
+      if (ctx.clean) kind = cleanCut(prevS, S);
       const put = (under) => (under ? shots.insertBefore(node, prev) : shots.appendChild(node));
       const drop = (ms) => T(ms, () => { if (prev && prev.isConnected) prev.remove(); });
       const over = (cls, bc) => { const e = el("div", "cutc " + cls); if (bc) e.style.setProperty("--bc", bc); stage.appendChild(e); return e; };
       const contra = (x) => (dark(x) ? "#F4F3F1" : "#1C1413");
       const at = typeof S.at === "function" ? S.at(ctx) : S.at || ctx.focus || { x: ctx.W / 2, y: ctx.H / 2 };
       switch (kind) {
+        case "cut": {
+          /* straight, but never onto a window still drawing or a film
+             still finding its first frame: the shot before stays over this
+             one until they have, a quarter second at most */
+          put(true);
+          if (review) { drop(0); return 0; }
+          let gone = false;
+          const go = () => { if (gone) return; gone = true; if (prev && prev.isConnected) prev.remove(); };
+          const late = (f) => {
+            if (f.tagName === "VIDEO") return f.readyState < 2;
+            try { const d = f.contentDocument; return !(d && d.readyState === "complete" && d.body && d.body.firstChild); } catch (e) { return false; }
+          };
+          T(0, () => {
+            const fs = [...node.querySelectorAll("iframe, video")].filter(late);
+            if (!fs.length) { go(); return; }
+            let left = fs.length;
+            fs.forEach((f) => f.addEventListener(f.tagName === "VIDEO" ? "loadeddata" : "load", () => { if (--left <= 0) requestAnimationFrame(() => requestAnimationFrame(go)); }, { once: true }));
+            T(260, go);
+          });
+          return 0;
+        }
+        case "flood": {
+          put();
+          anim(node, [{ clipPath: "inset(100% 0 0 0)" }, { clipPath: "inset(0 0 0 0)" }], { duration: 550, easing: CURTAIN });
+          drop(570);
+          return 320;
+        }
+        case "lift": {
+          put(true);
+          anim(prev, [{ clipPath: "inset(0 0 0 0)" }, { clipPath: "inset(0 0 100% 0)" }], { duration: 500, delay: 100, easing: CURTAIN, fill: "forwards" });
+          drop(620);
+          return 260;
+        }
         case "mask":
           node.classList.add("cm"); put();
           T(20, () => { void node.offsetWidth; node.classList.add("go"); });
