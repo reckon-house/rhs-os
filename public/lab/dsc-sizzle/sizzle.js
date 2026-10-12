@@ -1302,8 +1302,10 @@ try { const q = location.search; if (/[?&]szdots=on/.test(q)) document.documentE
      phones hold still; the motion is the app's own (typing, replies,
      cards, checks, screens). Shots meet on a straight cut, and a field
      (a black or coloured statement) comes in and goes out as the site's
-     curtain does. ?szmotion=clean, or mount(host, { motion: "clean" }) ── */
-  const CLEANQ = (() => { try { return (new URLSearchParams(location.search).get("szmotion") || "").toLowerCase() === "clean"; } catch (e) { return false; } })();
+     curtain does. The default since his "let's push both! both are
+     better" (11 Oct 2026); ?szmotion=old, or mount(host, { motion: "old" }),
+     keeps the zooms, pans and slide cuts it replaced ── */
+  const CLEANQ = (() => { try { return (new URLSearchParams(location.search).get("szmotion") || "").toLowerCase() !== "old"; } catch (e) { return true; } })();
 
   /* ── the player ── */
   const LIVE = new Set();
@@ -1350,7 +1352,7 @@ try { const q = location.search; if (/[?&]szdots=on/.test(q)) document.documentE
       return a;
     };
     ctx.anim = anim;
-    ctx.clean = opts.motion ? opts.motion === "clean" : CLEANQ;
+    ctx.clean = opts.motion ? opts.motion !== "old" : CLEANQ;
     /* a drift or a glide: under the clean grammar it holds where it starts */
     ctx.drift = (e, frames, o) => {
       if (!ctx.clean) return anim(e, frames, o);
