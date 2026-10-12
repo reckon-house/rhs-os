@@ -68,6 +68,42 @@ export const SIGNAL_TAIL = "Newest first, each with a link to the source.";
 
 export const SIGNAL: SignalEntry[] = [
   {
+    /* posted 12 Oct 2026 from the drafts (his "yes to both, post it!"); what it
+       is and does from TinyFish's homepage, MCP docs and Mako page, read
+       11 Oct; how he uses it from Sally Marketing OS, the first sweep and
+       the Sally Beauty site cleared by him to share on 12 Oct; what he
+       thinks in his words */
+    id: "tinyfish",
+    date: "2026-10-12",
+    headline: "TinyFish is a model I've used a lot and really like",
+    source: "TinyFish",
+    sourceUrl: "https://www.tinyfish.ai/",
+    take: [
+      "In Sally Marketing OS it fetches the pages the morning market scan watches: Ulta's newsroom, Sephora's new releases and five beauty trade publications. Claude decides what becomes a story, and the first sweep added 13 stories Gemini and Perplexity hadn't found.",
+      "It's also how the OS looks through the Sally Beauty site when it picks products for a campaign, and it's the first way Competitive Compare checks a price at Sally Beauty, Amazon, Walmart and Ulta.",
+      "I like how easy it is to use, and that it actually works well in the tests I've run it through. For what we needed, it comes through amazingly well compared with an LLM and a headless browser.",
+      "The cost is fantastic, so good that I'm actively looking for ways to push the model and think bigger about what it can do.",
+    ],
+    what: "TinyFish gives AI agents the live web: search, clean page text, cloud browsers and multi-step automation on one platform.",
+    does: [
+      "Search returns structured results from the live web, with titles, snippets and links.",
+      "Fetch turns any URL into clean text, ten pages at a time, and like Search it's free on every plan.",
+      "Agent works through a site from a URL and a goal in plain language, clicking, filling forms and pulling data.",
+      "Browser opens a remote Chrome session that Playwright, Puppeteer or Selenium can drive.",
+      "Mako, its own model, learns from real production runs and is built to operate the live web.",
+    ],
+    use: [
+      "In Sally Marketing OS it fetches the pages the morning market scan watches: Ulta's newsroom, Sephora's new releases and five beauty trade publications. Claude decides what becomes a story, and the first sweep added 13 stories Gemini and Perplexity hadn't found.",
+      "It's also how the OS looks through the Sally Beauty site when it picks products for a campaign, and it's the first way Competitive Compare checks a price at Sally Beauty, Amazon, Walmart and Ulta.",
+    ],
+    think: [
+      "I like how easy it is to use, and that it actually works well in the tests I've run it through. For what we needed, it comes through amazingly well compared with an LLM and a headless browser.",
+      "The cost is fantastic, so good that I'm actively looking for ways to push the model and think bigger about what it can do.",
+    ],
+    tags: ["TinyFish", "Agents", "Sally Marketing OS"],
+    study: "sally-os",
+  },
+  {
     /* posted 11 Oct 2026 from the drafts (his "post the opus 5.5 one!"); what it
        is and does from the announcement, read that day; the bench numbers are
        his, from Sally Marketing OS, cleared by him to share on 8 Oct */
