@@ -68,6 +68,12 @@
 .st .w { opacity: 0; }
 .st.go .w { opacity: 1; transition: opacity 0.16s ease var(--d, 0ms); }
 .now .w, .now.w { opacity: 1 !important; transition: none !important; }
+/* the clean grammar's type (sizzle.js rise): each word clipped to its
+   line, rising into it, as the rooms' rise does */
+.rz .w { display: inline-block; clip-path: inset(-0.3em -0.2em -0.3em -0.2em); }
+.rz .wi { display: inline-block; transform: translateY(128%); }
+.rz.go .wi { transform: none; transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1) var(--d, 0ms); }
+.rz.now .wi { transform: none; transition: none; }
 .now > .bd { display: none; }
 /* a rule draws in from the left */
 .rule { display: block; height: 1px; background: currentColor; transform: scaleX(0); transform-origin: 0 50%; }

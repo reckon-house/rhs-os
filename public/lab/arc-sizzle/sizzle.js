@@ -45,7 +45,7 @@ try { const q = location.search; if (/[?&]szdots=on/.test(q)) document.documentE
    cover) it mounts over the cover's own picture, so the board's tile
    still flies into the same box and the first frame is that picture. */
 (() => {
-  const BASE = "/lab/arc-sizzle/", IMG = BASE + "img/", VID = BASE + "vid/", VQ = "?v=3";
+  const BASE = "/lab/arc-sizzle/", IMG = BASE + "img/", VID = BASE + "vid/", VQ = "?v=4";
   const VERSIONS = [{ id: "mix", name: "Mix", weight: "the app in use" }];
   const IDS = VERSIONS.map((v) => v.id);
   const DEF = "mix";
@@ -148,7 +148,7 @@ try { const q = location.search; if (/[?&]szdots=on/.test(q)) document.documentE
     const p = c.pic(name, [0, 0, c.W, c.H], { op: o && o.op });
     s.appendChild(p);
     const [a, b] = (o && o.glide) || [[1, 0, 0], [1.07, -1, 0]];
-    c.anim(p.firstChild, [{ transform: `translate(${a[1]}%, ${a[2]}%) scale(${a[0]})` }, { transform: `translate(${b[1]}%, ${b[2]}%) scale(${b[0]})` }], { duration: (o.d || 1200) + 1100, easing: "linear", fill: "forwards" });
+    c.drift(p.firstChild, [{ transform: `translate(${a[1]}%, ${a[2]}%) scale(${a[0]})` }, { transform: `translate(${b[1]}%, ${b[2]}%) scale(${b[0]})` }], { duration: (o.d || 1200) + 1100, easing: "linear", fill: "forwards" });
     return () => 0;
   } }, o || {});
   /* a statement as large as the frame takes it, wrapped down, the phrase
@@ -162,7 +162,7 @@ try { const q = location.search; if (/[?&]szdots=on/.test(q)) document.documentE
     const lines = (o && o.lines) || (tall(c) ? 6 : 4);
     c.fit(T, lines, Math.max(18, c.W * 0.05), Math.min(c.W * (tall(c) ? 0.16 : 0.15), room / lines));
     T.style.top = Math.round(c.H - c.pad - T.offsetHeight) + "px";
-    if (o && o.drift) { T.style.transformOrigin = "0 100%"; c.anim(T, [{ transform: "scale(1)" }, { transform: "scale(1.03)" }], { duration: (o.d || 2000) + 700, easing: "linear", fill: "forwards" }); }
+    if (o && o.drift) { T.style.transformOrigin = "0 100%"; c.drift(T, [{ transform: "scale(1)" }, { transform: "scale(1.03)" }], { duration: (o.d || 2000) + 700, easing: "linear", fill: "forwards" }); }
     return (t0) => c.wipe(T, { at: t0, kind: "ink", dur: 760 });
   } }, o || {});
   /* a figure as wide as the frame holds, its sentence under it */
@@ -178,7 +178,7 @@ try { const q = location.search; if (/[?&]szdots=on/.test(q)) document.documentE
     c.fitFig(F, (c.W - 2 * c.pad) * 0.96, Math.min(room, c.H * 0.6));
     const fs = parseFloat(F.style.fontSize) || 100, drop = /[gjpqy]/.test(fig) ? fs * 0.16 : 0;
     F.style.top = Math.round(c.H - c.pad - S.offsetHeight - c.H * 0.045 - drop - F.offsetHeight) + "px";
-    if (o && o.drift) { F.style.transformOrigin = "0 100%"; c.anim(F, [{ transform: "scale(1)" }, { transform: "scale(1.045)" }], { duration: (o.d || 2300) + 700, easing: "linear", fill: "forwards" }); }
+    if (o && o.drift) { F.style.transformOrigin = "0 100%"; c.drift(F, [{ transform: "scale(1)" }, { transform: "scale(1.045)" }], { duration: (o.d || 2300) + 700, easing: "linear", fill: "forwards" }); }
     return (t0) => { c.wipe(F, { at: t0, kind: "ink", dur: 760 }); c.wipe(S, { at: t0 + 420, kind: "tint" }); c.go(N, t0 + 700); return 0; };
   } }, o || {});
   /* a headline across the page, then drifting while the dots do */
@@ -187,7 +187,7 @@ try { const q = location.search; if (/[?&]szdots=on/.test(q)) document.documentE
     const T = c.el("div", "dsp abs", esc(text)); T.style.cssText = `left:${c.pad}px;top:${c.top + K.h() + c.H * 0.05}px;width:${c.W - 2 * c.pad}px`;
     s.appendChild(T);
     c.fit(T, tall(c) ? 5 : 2, Math.max(15, c.W * 0.04), Math.min(tall(c) ? 112 : 84, c.W * (tall(c) ? 0.16 : 0.09)));
-    c.anim(T, [{ transform: "translateY(0px)" }, { transform: "translateY(" + (-c.H * 0.03).toFixed(1) + "px)" }], { duration: (o.d || 1600) + 900, easing: "linear", fill: "forwards" });
+    c.drift(T, [{ transform: "translateY(0px)" }, { transform: "translateY(" + (-c.H * 0.03).toFixed(1) + "px)" }], { duration: (o.d || 1600) + 900, easing: "linear", fill: "forwards" });
     return (t0) => { K.play(t0); return c.wipe(T, { at: t0 + 150 }); };
   } }, o || {});
   /* the paperwork, as the study lists it: a row at a time between
@@ -209,7 +209,7 @@ try { const q = location.search; if (/[?&]szdots=on/.test(q)) document.documentE
     let lo = 10, hi = Math.min(34, c.W * (tall(c) ? 0.05 : 0.04)), best = lo;
     for (let i = 0; i < 12; i++) { const mid = (lo + hi) / 2; box.style.fontSize = mid + "px"; if (box.offsetHeight <= avail) { best = mid; lo = mid; } else hi = mid; }
     box.style.fontSize = Math.floor(best * 2) / 2 + "px";
-    c.anim(box, [{ transform: "translateY(0px)" }, { transform: "translateY(" + (-c.H * 0.025).toFixed(1) + "px)" }], { duration: this.d + 800, easing: "linear", fill: "forwards" });
+    c.drift(box, [{ transform: "translateY(0px)" }, { transform: "translateY(" + (-c.H * 0.025).toFixed(1) + "px)" }], { duration: this.d + 800, easing: "linear", fill: "forwards" });
     return (t0) => {
       K.play(t0);
       const gap = (o && o.gap) || 210;
@@ -222,7 +222,7 @@ try { const q = location.search; if (/[?&]szdots=on/.test(q)) document.documentE
     const w = Math.round(Math.min(c.W * 0.6, 520)), h = Math.round(w / 2.95);
     const m = c.el("i", "mark fd"); m.style.cssText = `left:${(c.W - w) / 2}px;top:${(c.H - h) / 2}px;width:${w}px;height:${h}px`;
     s.appendChild(m);
-    c.anim(m, [{ transform: "scale(0.94)" }, { transform: "scale(1.02)" }], { duration: (o.d || 1400) + 600, easing: "cubic-bezier(0.16, 1, 0.3, 1)", fill: "forwards" });
+    c.drift(m, [{ transform: "scale(0.94)" }, { transform: "scale(1.02)" }], { duration: (o.d || 1400) + 600, easing: "cubic-bezier(0.16, 1, 0.3, 1)", fill: "forwards" });
     return (t0) => { c.go(m, t0); return 0; };
   } }, o || {});
 
@@ -270,6 +270,18 @@ try { const q = location.search; if (/[?&]szdots=on/.test(q)) document.documentE
       const k = p.k == null ? 1 : p.k;
       return "translate(" + ((p.tx - nx) * k).toFixed(1) + "px, " + ((p.ty - ny) * k).toFixed(1) + "px) scale(" + p.s + ")";
     };
+    /* the clean grammar: no move. The first pose holds, and the camera
+       cuts closer only where a later pose, while the shot is still on,
+       comes a good step closer (15% or more), as an editor cuts to a
+       close-up instead of zooming */
+    if (c.clean) {
+      const keep = [poses[0]];
+      poses.slice(1).forEach((p) => { if (p.t * d < d - 1000 && p.s >= keep[keep.length - 1].s * 1.15) keep.push(p); });
+      if (keep.length < 2) { P.cam.style.transform = pose(keep[0]); return null; }
+      const fr = keep.map((p) => ({ transform: pose(p), offset: p.t, easing: "steps(1, end)" }));
+      fr.push({ transform: pose(keep[keep.length - 1]), offset: 1 });
+      return c.anim(P.cam, fr, { duration: d, fill: "forwards" });
+    }
     return c.anim(P.cam, poses.map((p) => ({ transform: pose(p), offset: p.t, easing: "cubic-bezier(0.45, 0, 0.35, 1)" })), { duration: d, fill: "forwards" });
   };
   /* notes: a running head over a column, then a line at a time, drifting
@@ -279,7 +291,7 @@ try { const q = location.search; if (/[?&]szdots=on/.test(q)) document.documentE
     const a = c.el("div", "lab", esc(head)), r = c.el("i", "rule"); H.appendChild(a); H.appendChild(r); s.appendChild(H);
     const col = c.el("div", "notes"); col.style.cssText = `left:${x}px;top:${y + H.offsetHeight + c.H * 0.045}px;width:${w}px`;
     s.appendChild(col);
-    c.anim(col, [{ transform: "translateY(0px)" }, { transform: "translateY(" + (-c.H * 0.03).toFixed(1) + "px)" }], { duration: d + 900, easing: "linear", fill: "forwards" });
+    c.drift(col, [{ transform: "translateY(0px)" }, { transform: "translateY(" + (-c.H * 0.03).toFixed(1) + "px)" }], { duration: d + 900, easing: "linear", fill: "forwards" });
     return {
       head(at) { c.go(r, at); c.wipe(a, { at: at + 60, kind: "tint", dur: 460 }); },
       add(at, o) {
@@ -374,7 +386,7 @@ try { const q = location.search; if (/[?&]szdots=on/.test(q)) document.documentE
       R = vphone(c, s, c.W * 0.715, c.H * 0.42, h, o.right);
       tl = labels(c, s, names(o.left), { v: true, edge }); tr = labels(c, s, names(o.right), { v: true, right: true, edge });
     }
-    const drift = (P, a, b) => c.anim(P.cam, [{ transform: "translateY(" + (a * c.H).toFixed(1) + "px) scale(1)" }, { transform: "translateY(" + (b * c.H).toFixed(1) + "px) scale(1.035)" }], { duration: d + 900, easing: "linear", fill: "forwards" });
+    const drift = (P, a, b) => c.drift(P.cam, [{ transform: "translateY(" + (a * c.H).toFixed(1) + "px) scale(1)" }, { transform: "translateY(" + (b * c.H).toFixed(1) + "px) scale(1.035)" }], { duration: d + 900, easing: "linear", fill: "forwards" });
     drift(L, 0.02, -0.03); drift(R, -0.015, 0.03);
     const run = (P, t0, tag) => {
       let t = 0;
@@ -432,6 +444,18 @@ try { const q = location.search; if (/[?&]szdots=on/.test(q)) document.documentE
     poster: 5,
   };
 
+  /* ── the clean grammar (11 Oct 2026, his "make the sizzle for ARC and
+     DSC a bit more modern/clean. i originally thought some of the zooming
+     and panning to keep some movement but it feels dated ... what can we
+     do to make it feel a little more slick vs powerpoint"). The camera
+     never moves: a shot holds its first framing and cuts closer only
+     where it comes a good step closer. Pictures, statements, notes and
+     phones hold still; the motion is the app's own (typing, replies,
+     cards, checks, screens). Shots meet on a straight cut, and a field
+     (a black or coloured statement) comes in and goes out as the site's
+     curtain does. ?szmotion=clean, or mount(host, { motion: "clean" }) ── */
+  const CLEANQ = (() => { try { return (new URLSearchParams(location.search).get("szmotion") || "").toLowerCase() === "clean"; } catch (e) { return false; } })();
+
   /* ── the player ── */
   const LIVE = new Set();
   function mount(host, opts) {
@@ -473,6 +497,13 @@ try { const q = location.search; if (/[?&]szdots=on/.test(q)) document.documentE
       return a;
     };
     ctx.anim = anim;
+    ctx.clean = opts.motion ? opts.motion === "clean" : CLEANQ;
+    /* a drift or a glide: under the clean grammar it holds where it starts */
+    ctx.drift = (e, frames, o) => {
+      if (!ctx.clean) return anim(e, frames, o);
+      if (e && frames && frames[0]) Object.keys(frames[0]).forEach((k) => { if (k !== "offset" && k !== "easing") e.style[k] = frames[0][k]; });
+      return null;
+    };
     ctx.now = review ? () => vnow : () => performance.now();
     ctx.every = review
       ? (ms, fn) => { const my = gen; const tick = () => { if (dead || my !== gen) return; if (fn() !== false) T(ms, tick); }; T(ms, tick); }
@@ -556,9 +587,32 @@ try { const q = location.search; if (/[?&]szdots=on/.test(q)) document.documentE
       if (review && im.decode) holds.push(im.decode().catch(() => null));
       return b;
     };
+    /* the clean grammar's type: display words through a mask, each rising
+       into its line, as the rooms' rise sets a head (study-panel.css
+       rv-mask: 128% up, 1.2s on the headline curve, 45ms a line and a
+       few a character), in place of the band over the frame-wide
+       statements. Labels keep their faint band */
+    const rise = (node, at) => {
+      node.querySelectorAll(":scope > .bd").forEach((b) => b.remove());
+      node.classList.remove("go", "now", "wp");
+      const words = node.querySelector(".w") ? [...node.querySelectorAll(".w")] : splitWords(node);
+      words.forEach((w) => { if (!(w.firstElementChild && w.firstElementChild.classList.contains("wi"))) { const i = el("span", "wi"); while (w.firstChild) i.appendChild(w.firstChild); w.appendChild(i); } });
+      node.classList.add("rz");
+      if (still) { node.classList.add("now"); return 0; }
+      const per = Math.min(6, 420 / (node.textContent.length || 1));
+      let line = -1, top = -1e9, chars = 0, end = 0;
+      words.forEach((w) => {
+        const t = w.offsetTop; if (Math.abs(t - top) > 3) { line++; top = t; }
+        const d = line * 45 + Math.round(chars * per); chars += w.textContent.length + 1; end = Math.max(end, d);
+        w.style.setProperty("--d", d + "ms");
+      });
+      T(at, () => { void node.offsetWidth; node.classList.add("go"); });
+      return at + end + 700;
+    };
     ctx.wipe = (node, o) => {
       o = o || {};
       const kind = o.kind || "ink", dur = o.dur || (kind === "ink" ? 760 : 600), gap = o.gap || (kind === "ink" ? 95 : 70), at = o.at || 0;
+      if (ctx.clean && kind !== "tint") return rise(node, at);
       node.querySelectorAll(":scope > .bd").forEach((b) => b.remove());
       node.classList.remove("go", "now");
       const words = node.querySelector(".w") ? [...node.querySelectorAll(".w")] : splitWords(node);
@@ -599,13 +653,58 @@ try { const q = location.search; if (/[?&]szdots=on/.test(q)) document.documentE
        Faux Reel's whip, split, flash, pinch, shutter, slat, push, burn ── */
     const RE = "cubic-bezier(0.7, 0, 0.15, 1)";
     const dark = (x) => x && /ink|olive/.test(x.ground);
+    /* the clean grammar's cuts: straight, but where a field begins or
+       ends, the site's own curtain (curtain.css): the field comes up from
+       the foot over what was there (0.55s), and goes up and away off what
+       comes next (0.5s, a tenth late), on the curtain's curve */
+    const FIELD = /\b(ink|warm|olive|oak)\b/;
+    const cleanCut = (a, b) => {
+      const fa = !!(a && FIELD.test(a.ground)), fb = !!(b && FIELD.test(b.ground));
+      return fb && (!fa || a.ground !== b.ground) ? "flood" : fa && !fb ? "lift" : "cut";
+    };
+    const CURTAIN = "cubic-bezier(0.2, 0.7, 0.2, 1)";
     const cut = (kind, prev, prevS, node, S) => {
+      if (ctx.clean) kind = cleanCut(prevS, S);
       const put = (under) => (under ? shots.insertBefore(node, prev) : shots.appendChild(node));
       const drop = (ms) => T(ms, () => { if (prev && prev.isConnected) prev.remove(); });
       const over = (cls, bc) => { const e = el("div", "cutc " + cls); if (bc) e.style.setProperty("--bc", bc); stage.appendChild(e); return e; };
       const contra = (x) => (dark(x) ? "#F1F0EE" : "#000");
       const at = typeof S.at === "function" ? S.at(ctx) : S.at || ctx.focus || { x: ctx.W / 2, y: ctx.H / 2 };
       switch (kind) {
+        case "cut": {
+          /* straight, but never onto a phone still drawing its screen or a
+             film still finding its first frame: the shot before stays
+             over this one until they have, a quarter second at most (the
+             review clock holds for phones already) */
+          put(true);
+          if (review) { drop(0); return 0; }
+          let gone = false;
+          const go = () => { if (gone) return; gone = true; if (prev && prev.isConnected) prev.remove(); };
+          const late = (f) => {
+            if (f.tagName === "VIDEO") return f.readyState < 2;
+            try { const d = f.contentDocument; return !(d && d.readyState === "complete" && d.body && d.body.firstChild); } catch (e) { return false; }
+          };
+          T(0, () => {
+            const fs = [...node.querySelectorAll("iframe, video")].filter(late);
+            if (!fs.length) { go(); return; }
+            let left = fs.length;
+            fs.forEach((f) => f.addEventListener(f.tagName === "VIDEO" ? "loadeddata" : "load", () => { if (--left <= 0) requestAnimationFrame(() => requestAnimationFrame(go)); }, { once: true }));
+            T(260, go);
+          });
+          return 0;
+        }
+        case "flood": {
+          put();
+          anim(node, [{ clipPath: "inset(100% 0 0 0)" }, { clipPath: "inset(0 0 0 0)" }], { duration: 550, easing: CURTAIN });
+          drop(570);
+          return 320;
+        }
+        case "lift": {
+          put(true);
+          anim(prev, [{ clipPath: "inset(0 0 0 0)" }, { clipPath: "inset(0 0 100% 0)" }], { duration: 500, delay: 100, easing: CURTAIN, fill: "forwards" });
+          drop(620);
+          return 260;
+        }
         case "mask":
           node.classList.add("cm"); put();
           T(20, () => { void node.offsetWidth; node.classList.add("go"); });
