@@ -2147,6 +2147,73 @@
     const reel = cur ? reelOf(cur.o) : [];
     return { reel, it: cur && reel.length ? reel[(cur.n % reel.length + reel.length) % reel.length] : { t: "rest" } };
   };
+  /* ── the cover's reel (12 Oct 2026, his "can we try doing some image
+     rotating/behind the text here? might be kinda cool if it lands on the
+     black, sits for a few seconds then a fast motion/reel through 5 or 6
+     images then pause back on the black...then maybe another 5 or 6
+     images then back to black"). ?cover=reel. At rest the field holds
+     black, then cuts through six of one line's openers behind the
+     statement, the line named small at the field's head, and cuts back to
+     black; the next run is the next line's. Straight cuts, as the reels
+     have had since 11 Oct. A run waits until all its pictures are decoded,
+     so no frame lands half drawn. Anything hovered, a room or a shelf
+     open, a hidden tab, a phone or reduced motion: it stops on black ── */
+  const CVR = (() => {
+    const on = (new URLSearchParams(location.search).get("cover") || "").toLowerCase() === "reel";
+    if (!on || matchMedia("(prefers-reduced-motion: reduce)").matches) return { sync() {} };
+    const HOLD = 3500, FRAME = 150, PER = 6;
+    const box = el("div", "cvr"), frames = el("div", "cvr-f"), name = el("div", "cvr-n");
+    box.appendChild(frames); box.appendChild(el("i", "cvr-s")); box.appendChild(name); FIELD.appendChild(box);
+    let t = null, live = false, gen = 0, li = 0, lap = 0;
+    /* the studies the last two runs showed: a study sits in several lines,
+       and the same picture twice running reads as a mistake */
+    const recent = [];
+    const ok = () => FIELD.classList.contains("on") && !document.body.classList.contains("staged") && !phone() && !document.hidden;
+    const runs = () => (G.lines ? G.lines.items : []).map((o) => ({ name: nameOf(o), pics: shelfOrder(o).map((k) => ({ k, p: D.study(k) && D.study(k).lead })).filter((x) => x.p && x.p.src) }))
+      .filter((r) => r.pics.length >= 3);
+    /* the full file on a sharp screen, the 768 rung where it would be drawn smaller */
+    const srcOf = (p) => ((FIELD.clientWidth || 800) * (devicePixelRatio || 1) > 900 || !p.t768 ? p.src : p.t768);
+    const load = (src) => new Promise((res) => {
+      const im = new Image(); im.alt = ""; im.decoding = "async"; let done = false;
+      const fin = (x) => { if (!done) { done = true; res(x); } };
+      im.onload = () => (im.decode ? im.decode().then(() => fin(im), () => fin(im)) : fin(im)); im.onerror = () => fin(null);
+      setTimeout(() => fin(im.complete && im.naturalWidth ? im : null), 3000);
+      im.src = src;
+    });
+    const clear = () => { box.classList.remove("on"); frames.replaceChildren(); name.textContent = ""; };
+    const stop = () => { live = false; gen++; clearTimeout(t); t = null; clear(); };
+    const later = () => { clearTimeout(t); t = setTimeout(run, HOLD); };
+    const run = async () => {
+      const my = ++gen; if (!ok()) { stop(); return; }
+      const R = runs(); if (!R.length) return;
+      const r = R[li % R.length]; li++; if (li % R.length === 0) lap++;
+      /* each lap starts a line's run further along its studies, so a run is seldom the same six twice */
+      const start = (lap * PER) % r.pics.length, order = [], pick = [];
+      for (let i = 0; i < r.pics.length; i++) order.push(r.pics[(start + i) % r.pics.length]);
+      order.forEach((x) => { if (pick.length < PER && !recent.includes(x.k)) pick.push(x); });
+      order.forEach((x) => { if (pick.length < Math.min(PER, 3) && !pick.includes(x)) pick.push(x); });
+      pick.forEach((x) => recent.push(x.k)); recent.splice(0, Math.max(0, recent.length - PER * 2));
+      const ims = (await Promise.all(pick.map((x) => load(srcOf(x.p))))).filter(Boolean);
+      if (my !== gen) return;
+      if (!ok()) { stop(); return; }
+      if (ims.length < 3) { later(); return; }
+      frames.replaceChildren(...ims);
+      const say = document.querySelector("#focus .layer.dark .say"), fr = FIELD.getBoundingClientRect();
+      name.style.left = Math.max(20, say ? Math.round(say.getBoundingClientRect().left - fr.left) : 32) + "px";
+      name.textContent = r.name;
+      box.classList.add("on");
+      ims.forEach((im, i) => setTimeout(() => { if (my !== gen) return; ims.forEach((x) => x.classList.toggle("on", x === im)); }, i * FRAME));
+      setTimeout(() => { if (my !== gen) return; clear(); if (ok()) later(); else stop(); }, ims.length * FRAME);
+    };
+    document.addEventListener("visibilitychange", () => { if (document.hidden) stop(); else if (ok()) { live = true; later(); } });
+    return {
+      /* the field at rest or not, from render */
+      sync(rest) {
+        if (rest && !live) { live = true; later(); }
+        else if (!rest && live) stop();
+      },
+    };
+  })();
   const render = () => {
     let { reel, it } = itemOf();
     timers.forEach(clearTimeout); timers = [];
@@ -2173,6 +2240,7 @@
     const dark = it.t === "rest" && !phone() && !document.body.classList.contains("staged");
     if (dark) { FIELD.style.setProperty("--fc", "var(--ink)"); FIELD.classList.add("on"); layer.classList.add("dark"); }
     else FIELD.classList.remove("on");
+    CVR.sync(dark);
 
     /* the caption first, so the thing itself gets whatever height is left.
        A cluster of one study names it here; a cluster of several names
