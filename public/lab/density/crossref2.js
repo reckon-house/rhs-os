@@ -2163,16 +2163,30 @@
     if (!on || matchMedia("(prefers-reduced-motion: reduce)").matches) return { sync() {} };
     const HOLD = 3500, FRAME = 150, PER = 6;
     const box = el("div", "cvr"), frames = el("div", "cvr-f"), name = el("div", "cvr-n");
-    box.appendChild(frames); box.appendChild(el("i", "cvr-s")); box.appendChild(name); FIELD.appendChild(box);
+    box.appendChild(frames); box.appendChild(name); FIELD.appendChild(box);
     let t = null, live = false, gen = 0, li = 0, lap = 0;
     /* the studies the last two runs showed: a study sits in several lines,
        and the same picture twice running reads as a mistake */
     const recent = [];
     const ok = () => FIELD.classList.contains("on") && !document.body.classList.contains("staged") && !phone() && !document.hidden;
-    const runs = () => (G.lines ? G.lines.items : []).map((o) => ({ name: nameOf(o), pics: shelfOrder(o).map((k) => ({ k, p: D.study(k) && D.study(k).lead })).filter((x) => x.p && x.p.src) }))
+    /* full colour, and only the studies' big heroes (12 Oct, his "can we
+       try them full color?! and maybe only use the really larger hero
+       images we have in the case studies"): a room's top picture, opaque
+       and at least 2400px across */
+    const runs = () => (G.lines ? G.lines.items : []).map((o) => ({ name: nameOf(o), pics: shelfOrder(o).map((k) => ({ k, p: D.study(k) && D.study(k).top })).filter((x) => x.p && x.p.src && x.p.w >= 2400 && !x.p.alpha) }))
       .filter((r) => r.pics.length >= 3);
-    /* the full file on a sharp screen, the 768 rung where it would be drawn smaller */
-    const srcOf = (p) => ((FIELD.clientWidth || 800) * (devicePixelRatio || 1) > 900 || !p.t768 ? p.src : p.t768);
+    /* a hero averages a megabyte, so the site asks the image service for
+       the width the field draws it at (cover in a tall field draws it
+       wider than the field), AVIF or WebP; on this machine's dev server,
+       which serves no resized images, the file itself */
+    const LOCAL = /^(localhost|127\.|\[::1\])/.test(location.hostname);
+    const SIZES = [1600, 1920, 2400, 3840];
+    const srcOf = (p) => {
+      if (LOCAL) return encodeURI(p.src);
+      const fw = FIELD.clientWidth || 800, fh = FIELD.clientHeight || 900, need = Math.max(fw, fh * (p.w / p.h)) * Math.min(2, devicePixelRatio || 1);
+      const w = SIZES.find((x) => x >= need && x <= p.w) || SIZES.filter((x) => x <= p.w).pop() || 1600;
+      return "/_next/image?url=" + encodeURIComponent(p.src) + "&w=" + w + "&q=75";
+    };
     const load = (src) => new Promise((res) => {
       const im = new Image(); im.alt = ""; im.decoding = "async"; let done = false;
       const fin = (x) => { if (!done) { done = true; res(x); } };

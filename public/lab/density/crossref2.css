@@ -1233,12 +1233,11 @@ html.st-one.sh-title:not([data-type="bold"]):not(.sh-old) .sh-foot .sh-foot-s { 
 html.st-one.sh-title:not([data-type="bold"]):not(.sh-old) .sh-foot .sh-foot-l + .sh-foot-s { margin-top: 6px; }
 
 /* the cover's reel (?cover=reel, 12 Oct 2026, crossref2.js CVR): a line's
-   openers cut one after another inside the black field, behind the
-   statement, under a scrim that keeps the words legible where they sit;
-   the line's name small at the head, where the statement's text starts */
+   big heroes cut one after another inside the black field, behind the
+   statement, in full colour (his "can we try them full color?!"); the
+   line's name small at the head, where the statement's text starts */
 .cvr { position: absolute; inset: 0; pointer-events: none; visibility: hidden; }
 .cvr.on { visibility: visible; }
 .cvr-f img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; visibility: hidden; }
 .cvr-f img.on { visibility: visible; }
-.cvr-s { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.55) 40%, rgba(0, 0, 0, 0.22) 100%); }
 .cvr-n { position: absolute; top: 26px; font-size: 11px; font-weight: 600; color: rgba(255, 255, 255, 0.78); }
