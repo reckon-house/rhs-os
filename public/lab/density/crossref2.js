@@ -2169,24 +2169,53 @@
        away to the right; rise, up from the foot as the field itself
        rises, the black flooding back up over the last; slide, Faux Reel's
        push in from the right. A moving picture moves, then holds */
-    const MODE = (() => { const q = (new URLSearchParams(location.search).get("cvx") || "").toLowerCase(); return ["cut", "wipe", "rise", "slide"].includes(q) ? q : "cut"; })();
-    const CUT_F = 230, MOVE = 300, STILL = 170, STEP = MODE === "cut" ? CUT_F : MOVE + STILL;
-    const EZ = { wipe: "cubic-bezier(0.45, 0, 0.2, 1)", rise: "cubic-bezier(0.2, 0.7, 0.2, 1)", slide: "cubic-bezier(0.7, 0, 0.15, 1)" }[MODE];
-    const enter = (im, prev) => {
-      if (MODE === "wipe") im.animate([{ clipPath: "inset(0 100% 0 0)" }, { clipPath: "inset(0 0 0 0)" }], { duration: MOVE, easing: EZ });
-      else if (MODE === "rise") im.animate([{ clipPath: "inset(100% 0 0 0)" }, { clipPath: "inset(0 0 0 0)" }], { duration: MOVE, easing: EZ });
-      else if (MODE === "slide") {
-        im.animate([{ transform: "translateX(100%)" }, { transform: "translateX(0)" }], { duration: MOVE, easing: EZ });
-        if (prev) prev.animate([{ transform: "translateX(0)" }, { transform: "translateX(-30%)" }], { duration: MOVE, easing: EZ, fill: "forwards" });
+    /* mix (the default since his "should we mix them? and throw a burn or
+       two like faux reel has?"): each run plays one of four sentences of
+       moves, straight cuts between the moving ones and a burn in each, and
+       goes back to black by the black coming up or by a cut */
+    const MODE = (() => { const q = (new URLSearchParams(location.search).get("cvx") || "").toLowerCase(); return ["cut", "wipe", "rise", "slide", "mix"].includes(q) ? q : "mix"; })();
+    const MIX = [
+      { ins: ["burn", "cut", "cut", "rise", "cut", "wipe"], out: "rise" },
+      { ins: ["rise", "cut", "wipe", "cut", "burn", "cut"], out: "rise" },
+      { ins: ["wipe", "cut", "cut", "slide", "burn", "cut"], out: "cut" },
+      { ins: ["slide", "cut", "rise", "cut", "cut", "burn"], out: "rise" },
+    ];
+    const MOVE = 300, STILL = 170;
+    const EZS = { wipe: "cubic-bezier(0.45, 0, 0.2, 1)", rise: "cubic-bezier(0.2, 0.7, 0.2, 1)", slide: "cubic-bezier(0.7, 0, 0.15, 1)", burn: "cubic-bezier(0.72, 0, 0.18, 1)" };
+    /* a straight cut is quicker among moving pictures than alone; a burn
+       is Faux Reel's beat, 640ms */
+    const stepOf = (kind) => (kind === "cut" ? (MODE === "mix" ? 200 : 230) : kind === "burn" ? 640 : MOVE + STILL);
+    /* when the picture under the new one can go: once the new one covers it */
+    const coverAt = (kind) => (kind === "cut" ? 0 : kind === "burn" ? 200 : MOVE + 20);
+    const enter = (kind, im, prev) => {
+      if (kind === "wipe") im.animate([{ clipPath: "inset(0 100% 0 0)" }, { clipPath: "inset(0 0 0 0)" }], { duration: MOVE, easing: EZS.wipe });
+      else if (kind === "rise") im.animate([{ clipPath: "inset(100% 0 0 0)" }, { clipPath: "inset(0 0 0 0)" }], { duration: MOVE, easing: EZS.rise });
+      else if (kind === "slide") {
+        im.animate([{ transform: "translateX(100%)" }, { transform: "translateX(0)" }], { duration: MOVE, easing: EZS.slide });
+        if (prev) prev.animate([{ transform: "translateX(0)" }, { transform: "translateX(-30%)" }], { duration: MOVE, easing: EZS.slide, fill: "forwards" });
+      } else if (kind === "burn") {
+        /* Faux Reel's burn (sizzle-reel.js szBurnImg, szBurnPop,
+           szBurnWash): the picture flares in hot and settles, a cream
+           wash flashes over it, and a pop punches the colour; its blur is
+           left out, as every cut's has been since 29 Sept */
+        im.animate([
+          { opacity: 0, transform: "scale(1.02)", filter: "brightness(1.5) saturate(2.6) contrast(1.5)" },
+          { opacity: 1, transform: "scale(1.015)", filter: "brightness(1.35) saturate(2.2) contrast(1.4)", offset: 0.22 },
+          { opacity: 1, transform: "scale(1)", filter: "brightness(1) saturate(1) contrast(1)" },
+        ], { duration: 640, easing: EZS.burn });
+        [["cvr-p", [{ opacity: 0 }, { opacity: 1, offset: 0.18 }, { opacity: 0 }]], ["cvr-w", [{ opacity: 0 }, { opacity: 0.95, offset: 0.16 }, { opacity: 0.3, offset: 0.4 }, { opacity: 0 }]]].forEach(([c, kf]) => {
+          const o = el("i", c); box.appendChild(o);
+          o.animate(kf, { duration: 640, easing: EZS.burn }).finished.then(() => o.remove(), () => o.remove());
+        });
       }
     };
     /* back to black: a cut; the last picture wiped away or pushed off; or
        the black coming up over it, as the field came up at the start */
-    const leave = (im) => new Promise((res) => {
+    const leave = (kind, im) => new Promise((res) => {
       let a = null;
-      if (MODE === "wipe") a = im.animate([{ clipPath: "inset(0 0 0 0)" }, { clipPath: "inset(0 0 0 100%)" }], { duration: MOVE, easing: EZ, fill: "forwards" });
-      else if (MODE === "rise") { const k = el("i", "cvr-k"); box.appendChild(k); a = k.animate([{ clipPath: "inset(100% 0 0 0)" }, { clipPath: "inset(0 0 0 0)" }], { duration: MOVE + 80, easing: EZ, fill: "forwards" }); }
-      else if (MODE === "slide") a = im.animate([{ transform: "translateX(0)" }, { transform: "translateX(-100%)" }], { duration: MOVE, easing: EZ, fill: "forwards" });
+      if (kind === "wipe") a = im.animate([{ clipPath: "inset(0 0 0 0)" }, { clipPath: "inset(0 0 0 100%)" }], { duration: MOVE, easing: EZS.wipe, fill: "forwards" });
+      else if (kind === "rise") { const k = el("i", "cvr-k"); box.appendChild(k); a = k.animate([{ clipPath: "inset(100% 0 0 0)" }, { clipPath: "inset(0 0 0 0)" }], { duration: MOVE + 80, easing: EZS.rise, fill: "forwards" }); }
+      else if (kind === "slide") a = im.animate([{ transform: "translateX(0)" }, { transform: "translateX(-100%)" }], { duration: MOVE, easing: EZS.slide, fill: "forwards" });
       if (a) a.finished.then(res, res); else res();
     });
     const box = el("div", "cvr"), frames = el("div", "cvr-f"), name = el("div", "cvr-n");
@@ -2221,7 +2250,7 @@
       setTimeout(() => fin(im.complete && im.naturalWidth ? im : null), 3000);
       im.src = src;
     });
-    const clear = () => { box.classList.remove("on"); frames.replaceChildren(); name.textContent = ""; box.querySelectorAll(".cvr-k").forEach((x) => x.remove()); };
+    const clear = () => { box.classList.remove("on"); frames.replaceChildren(); name.textContent = ""; box.querySelectorAll(".cvr-k, .cvr-p, .cvr-w").forEach((x) => x.remove()); };
     const stop = () => { live = false; gen++; clearTimeout(t); t = null; clear(); };
     const later = () => { clearTimeout(t); t = setTimeout(run, HOLD); };
     const run = async () => {
@@ -2243,20 +2272,26 @@
       name.style.left = Math.max(20, say ? Math.round(say.getBoundingClientRect().left - fr.left) : 32) + "px";
       name.textContent = r.name;
       box.classList.add("on");
-      ims.forEach((im, i) => setTimeout(() => {
-        if (my !== gen) return;
-        im.style.zIndex = String(i + 1); im.classList.add("on");
-        if (MODE === "cut") { ims.forEach((x) => { if (x !== im) x.classList.remove("on"); }); return; }
-        enter(im, ims[i - 1]);
-        /* the one under it goes once this one has arrived */
-        const prev = ims[i - 1]; if (prev) setTimeout(() => { if (my === gen) prev.classList.remove("on"); }, MOVE + 20);
-      }, i * STEP));
+      const plan = MODE === "mix" ? MIX[(li - 1) % MIX.length] : { ins: ims.map(() => MODE), out: MODE };
+      let at = 0;
+      ims.forEach((im, i) => {
+        const kind = plan.ins[i] || "cut";
+        setTimeout(() => {
+          if (my !== gen) return;
+          im.style.zIndex = String(i + 1); im.classList.add("on");
+          enter(kind, im, ims[i - 1]);
+          /* the ones under it go once this one covers them */
+          const under = ims.slice(0, i);
+          setTimeout(() => { if (my === gen) under.forEach((x) => x.classList.remove("on")); }, coverAt(kind));
+        }, at);
+        at += stepOf(kind);
+      });
       setTimeout(async () => {
         if (my !== gen) return;
-        if (MODE !== "cut") await leave(ims[ims.length - 1]);
+        await leave(plan.out, ims[ims.length - 1]);
         if (my !== gen) return;
         clear(); if (ok()) later(); else stop();
-      }, ims.length * STEP);
+      }, at);
     };
     document.addEventListener("visibilitychange", () => { if (document.hidden) stop(); else if (ok()) { live = true; later(); } });
     return {

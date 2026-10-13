@@ -1247,3 +1247,8 @@ html.st-one.sh-title:not([data-type="bold"]):not(.sh-old) .sh-foot .sh-foot-l + 
 .cvr-f { position: absolute; inset: 0; overflow: hidden; }
 .cvr-k { position: absolute; inset: 0; z-index: 9; background: #000; }
 .cvr-n { z-index: 10; }
+/* the burn's pop and wash (?cvx=mix and burn beats), Faux Reel's values
+   without the pop's blur: over the pictures, under the black and the name */
+.cvr-p, .cvr-w { position: absolute; inset: 0; z-index: 8; pointer-events: none; opacity: 0; }
+.cvr-p { background: rgba(243, 240, 237, 0.35); -webkit-backdrop-filter: saturate(4.5) contrast(2.2); backdrop-filter: saturate(4.5) contrast(2.2); }
+.cvr-w { background: #F3F0ED; }
