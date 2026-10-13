@@ -2161,7 +2161,34 @@
   const CVR = (() => {
     const on = (new URLSearchParams(location.search).get("cover") || "").toLowerCase() === "reel";
     if (!on || matchMedia("(prefers-reduced-motion: reduce)").matches) return { sync() {} };
-    const HOLD = 3500, FRAME = 150, PER = 6;
+    const HOLD = 3500, PER = 6;
+    /* how a picture arrives (12 Oct, his "maybe it's a tiny bit too fast?
+       or, do we work some quick transition in like faux reel has or some
+       of our signature swipes?"), ?cvx=: cut, straight, a little slower
+       than the first 150ms; wipe, the site's swipe in from the left and
+       away to the right; rise, up from the foot as the field itself
+       rises, the black flooding back up over the last; slide, Faux Reel's
+       push in from the right. A moving picture moves, then holds */
+    const MODE = (() => { const q = (new URLSearchParams(location.search).get("cvx") || "").toLowerCase(); return ["cut", "wipe", "rise", "slide"].includes(q) ? q : "cut"; })();
+    const CUT_F = 230, MOVE = 300, STILL = 170, STEP = MODE === "cut" ? CUT_F : MOVE + STILL;
+    const EZ = { wipe: "cubic-bezier(0.45, 0, 0.2, 1)", rise: "cubic-bezier(0.2, 0.7, 0.2, 1)", slide: "cubic-bezier(0.7, 0, 0.15, 1)" }[MODE];
+    const enter = (im, prev) => {
+      if (MODE === "wipe") im.animate([{ clipPath: "inset(0 100% 0 0)" }, { clipPath: "inset(0 0 0 0)" }], { duration: MOVE, easing: EZ });
+      else if (MODE === "rise") im.animate([{ clipPath: "inset(100% 0 0 0)" }, { clipPath: "inset(0 0 0 0)" }], { duration: MOVE, easing: EZ });
+      else if (MODE === "slide") {
+        im.animate([{ transform: "translateX(100%)" }, { transform: "translateX(0)" }], { duration: MOVE, easing: EZ });
+        if (prev) prev.animate([{ transform: "translateX(0)" }, { transform: "translateX(-30%)" }], { duration: MOVE, easing: EZ, fill: "forwards" });
+      }
+    };
+    /* back to black: a cut; the last picture wiped away or pushed off; or
+       the black coming up over it, as the field came up at the start */
+    const leave = (im) => new Promise((res) => {
+      let a = null;
+      if (MODE === "wipe") a = im.animate([{ clipPath: "inset(0 0 0 0)" }, { clipPath: "inset(0 0 0 100%)" }], { duration: MOVE, easing: EZ, fill: "forwards" });
+      else if (MODE === "rise") { const k = el("i", "cvr-k"); box.appendChild(k); a = k.animate([{ clipPath: "inset(100% 0 0 0)" }, { clipPath: "inset(0 0 0 0)" }], { duration: MOVE + 80, easing: EZ, fill: "forwards" }); }
+      else if (MODE === "slide") a = im.animate([{ transform: "translateX(0)" }, { transform: "translateX(-100%)" }], { duration: MOVE, easing: EZ, fill: "forwards" });
+      if (a) a.finished.then(res, res); else res();
+    });
     const box = el("div", "cvr"), frames = el("div", "cvr-f"), name = el("div", "cvr-n");
     box.appendChild(frames); box.appendChild(name); FIELD.appendChild(box);
     let t = null, live = false, gen = 0, li = 0, lap = 0;
@@ -2194,7 +2221,7 @@
       setTimeout(() => fin(im.complete && im.naturalWidth ? im : null), 3000);
       im.src = src;
     });
-    const clear = () => { box.classList.remove("on"); frames.replaceChildren(); name.textContent = ""; };
+    const clear = () => { box.classList.remove("on"); frames.replaceChildren(); name.textContent = ""; box.querySelectorAll(".cvr-k").forEach((x) => x.remove()); };
     const stop = () => { live = false; gen++; clearTimeout(t); t = null; clear(); };
     const later = () => { clearTimeout(t); t = setTimeout(run, HOLD); };
     const run = async () => {
@@ -2216,8 +2243,20 @@
       name.style.left = Math.max(20, say ? Math.round(say.getBoundingClientRect().left - fr.left) : 32) + "px";
       name.textContent = r.name;
       box.classList.add("on");
-      ims.forEach((im, i) => setTimeout(() => { if (my !== gen) return; ims.forEach((x) => x.classList.toggle("on", x === im)); }, i * FRAME));
-      setTimeout(() => { if (my !== gen) return; clear(); if (ok()) later(); else stop(); }, ims.length * FRAME);
+      ims.forEach((im, i) => setTimeout(() => {
+        if (my !== gen) return;
+        im.style.zIndex = String(i + 1); im.classList.add("on");
+        if (MODE === "cut") { ims.forEach((x) => { if (x !== im) x.classList.remove("on"); }); return; }
+        enter(im, ims[i - 1]);
+        /* the one under it goes once this one has arrived */
+        const prev = ims[i - 1]; if (prev) setTimeout(() => { if (my === gen) prev.classList.remove("on"); }, MOVE + 20);
+      }, i * STEP));
+      setTimeout(async () => {
+        if (my !== gen) return;
+        if (MODE !== "cut") await leave(ims[ims.length - 1]);
+        if (my !== gen) return;
+        clear(); if (ok()) later(); else stop();
+      }, ims.length * STEP);
     };
     document.addEventListener("visibilitychange", () => { if (document.hidden) stop(); else if (ok()) { live = true; later(); } });
     return {
