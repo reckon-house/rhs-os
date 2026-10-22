@@ -1252,3 +1252,6 @@ html.st-one.sh-title:not([data-type="bold"]):not(.sh-old) .sh-foot .sh-foot-l + 
 .cvr-p, .cvr-w { position: absolute; inset: 0; z-index: 8; pointer-events: none; opacity: 0; }
 .cvr-p { background: rgba(243, 240, 237, 0.35); -webkit-backdrop-filter: saturate(4.5) contrast(2.2); backdrop-filter: saturate(4.5) contrast(2.2); }
 .cvr-w { background: #F3F0ED; }
+/* the film (22 Oct 2026, crossref2.js CVR's film): cut eleven of the uber
+   reel filling the field as the pictures do, under the names */
+.cvr-v { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; background: #000; }

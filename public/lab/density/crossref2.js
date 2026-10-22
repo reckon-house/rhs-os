@@ -2159,8 +2159,16 @@
      so no frame lands half drawn. Anything hovered, a room or a shelf
      open, a hidden tab, a phone or reduced motion: it stops on black ── */
   const CVR = (() => {
-    const on = (new URLSearchParams(location.search).get("cover") || "").toLowerCase() === "reel";
-    if (!on || matchMedia("(prefers-reduced-motion: reduce)").matches) return { sync() {} };
+    const cover = (new URLSearchParams(location.search).get("cover") || "").toLowerCase();
+    /* the film (22 Oct 2026, his "the desktop video is amazing! let's push
+       it up"): cut eleven of the uber reel from the lab
+       (/lab/cover-fable.html?c=uber11, his take uber11-1), rendered frame
+       by frame without the statement, plays in the field at rest on a
+       desk, by default. ?cover=reel brings back the pictures cut below
+       (Mix), ?cover=off the plain black; a phone, reduced motion or a
+       data saver keeps the black */
+    const FILM = cover !== "reel" && cover !== "off" && !phone() && !(navigator.connection && navigator.connection.saveData);
+    if (!(FILM || cover === "reel") || matchMedia("(prefers-reduced-motion: reduce)").matches) return { sync() {} };
     const HOLD = 3500, PER = 6;
     /* how a picture arrives (12 Oct, his "maybe it's a tiny bit too fast?
        or, do we work some quick transition in like faux reel has or some
@@ -2220,6 +2228,59 @@
     });
     const box = el("div", "cvr"), frames = el("div", "cvr-f"), name = el("div", "cvr-n");
     box.appendChild(frames); box.appendChild(name); FIELD.appendChild(box);
+    /* the film, rendered for two shapes of field: tall, a laptop's
+       (1488x1680, a 14" MacBook's field at 2x), and wide, a monitor's
+       (1632x1398); the nearer one plays, AV1 where the browser takes it
+       and H.264 elsewhere. It waits on the black until it can play
+       through, picks up where a hover left it, and at its end holds the
+       black and starts over. The names at the field's head are the page's
+       own, cued from the render: [second, words] */
+    const film = FILM ? (() => {
+      const CUES = [
+        [0, ""], [0.4, "Selected work"], [0.533, "Campaigns"], [1.533, "Capitan Boot Co."],
+        [2.033, "Selected work"], [4.033, "Ivy Park by Beyoncé"], [4.167, "Capitan Boot Co."], [4.533, "Ivy Park by Beyoncé"],
+        [5.3, "Black & white type"], [6.3, "Selected work"], [7.8, "Digital"], [9.033, "Nordstrom personalization"],
+        [9.533, "Nordstrom framework"], [10.3, "Nordstrom personalization"], [10.533, "Selected work"], [12.533, "Nordstrom personalization"],
+        [13.3, "Selected work"], [14.8, "Apps"], [16.033, "A.R.C. - AI Home Inventory"], [16.533, "Sally Marketing OS"],
+        [17.3, "A.R.C. - AI Home Inventory"], [18.167, "Sally Marketing OS"], [18.8, "A.R.C. - AI Home Inventory"], [18.9, "Sally Marketing OS"],
+        [19.167, "Dallas Sport Collective"], [19.533, "Selected work"], [23.033, "Interiors"], [24.3, "Hill Country home"],
+        [25.533, "Selected work"], [30.933, ""],
+      ];
+      const TALL = 1488 / 1680, WIDE = 1632 / 1398;
+      const sh = FIELD.clientWidth / Math.max(1, FIELD.clientHeight) < Math.sqrt(TALL * WIDE) ? "tall" : "wide";
+      const v = el("video", "cvr-v");
+      v.muted = true; v.playsInline = true; v.preload = "auto"; v.disablePictureInPicture = true;
+      ["muted", "playsinline"].forEach((a) => v.setAttribute(a, "")); v.setAttribute("aria-hidden", "true");
+      [["av1.mp4", 'video/mp4; codecs="av01.0.12M.10"'], ["mp4", 'video/mp4; codecs="avc1.640032"']].forEach(([x, type]) => {
+        const so = document.createElement("source"); so.src = "/lab/density/cover/uber11-" + sh + "." + x; so.type = type; v.appendChild(so);
+      });
+      box.insertBefore(v, frames);
+      /* once it can play through, a pause keeps what it has */
+      const can = new Promise((res) => v.addEventListener("canplaythrough", res, { once: true }));
+      let my = -1, cb = 0;
+      const said = (t) => { let w = ""; for (const c of CUES) { if (c[0] > t + 0.001) break; w = c[1]; } if (name.textContent !== w) name.textContent = w; };
+      const tick = (now, md) => {
+        cb = 0;
+        if (my !== gen || v.paused) return;
+        said(md ? md.mediaTime : v.currentTime);
+        cb = v.requestVideoFrameCallback ? v.requestVideoFrameCallback(tick) : requestAnimationFrame(() => tick());
+      };
+      v.addEventListener("ended", () => { if (my !== gen) return; clear(); v.currentTime = 0; if (ok()) later(); else stop(); });
+      return {
+        async run(g) {
+          my = g; await can;
+          if (my !== gen) return;
+          if (!ok()) { stop(); return; }
+          const say = document.querySelector("#focus .layer.dark .say"), fr = FIELD.getBoundingClientRect();
+          name.style.left = Math.max(20, say ? Math.round(say.getBoundingClientRect().left - fr.left) : 32) + "px";
+          said(v.currentTime); box.classList.add("on");
+          try { await v.play(); } catch (e) { if (my === gen) clear(); return; }
+          if (my !== gen) { v.pause(); return; }
+          tick();
+        },
+        halt() { v.pause(); if (cb) { if (v.cancelVideoFrameCallback) v.cancelVideoFrameCallback(cb); else cancelAnimationFrame(cb); cb = 0; } },
+      };
+    })() : null;
     let t = null, live = false, gen = 0, li = 0, lap = 0;
     /* the studies the last two runs showed: a study sits in several lines,
        and the same picture twice running reads as a mistake */
@@ -2250,11 +2311,12 @@
       setTimeout(() => fin(im.complete && im.naturalWidth ? im : null), 3000);
       im.src = src;
     });
-    const clear = () => { box.classList.remove("on"); frames.replaceChildren(); name.textContent = ""; box.querySelectorAll(".cvr-k, .cvr-p, .cvr-w").forEach((x) => x.remove()); };
+    const clear = () => { if (film) film.halt(); box.classList.remove("on"); frames.replaceChildren(); name.textContent = ""; box.querySelectorAll(".cvr-k, .cvr-p, .cvr-w").forEach((x) => x.remove()); };
     const stop = () => { live = false; gen++; clearTimeout(t); t = null; clear(); };
     const later = () => { clearTimeout(t); t = setTimeout(run, HOLD); };
     const run = async () => {
       const my = ++gen; if (!ok()) { stop(); return; }
+      if (film) { film.run(my); return; }
       const R = runs(); if (!R.length) return;
       const r = R[li % R.length]; li++; if (li % R.length === 0) lap++;
       /* each lap starts a line's run further along its studies, so a run is seldom the same six twice */
