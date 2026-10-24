@@ -39,6 +39,16 @@
      paper above the pictures, never over them). See THE SHELF CONTRACT
      just below, and THE SHELF, PLUGGABLE for the frame the page keeps.
 
+   - A phone's strip (19 Oct 2026, his "norgram has a split desktop like
+     mine and they do a toggle/tab in mobile at the bottom - would
+     something like that be simple and work?", with the wires kept and
+     the index in columns). A phone no longer stacks the page: it runs
+     as a desk does, the index and the glass side by side on one strip
+     (#strip, and html.tab, both from crossref2.html), the wires between
+     them, and phone-tab.js slides the strip with a tab at the foot or a
+     swipe. What differs on a phone is marked TAB; the strip's look is
+     phone-tab.css.
+
    Nothing here writes a sentence; every word on the page is a fragment's
    own. The words of its own are structural: Close, Next, Work, and the
    group names the index already used. */
@@ -133,6 +143,11 @@
   const reEsc = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
   const HTML = document.documentElement;
   const phone = () => HTML.classList.contains("stack");
+  /* TAB: a phone's strip (19 Oct 2026, see the top of this file):
+     crossref2.html sets html.tab at 760px and under, and on a phone held
+     sideways, where it had set html.stack */
+  const TAB = () => HTML.classList.contains("tab");
+  const STRIP = $("#strip");
   const IDX = $("#idx"), MARK = $("#mark"), FOCUS = $("#focus"), FIELD = $("#field"), WIRES = $("#wires"), STAGE = $("#stage");
   /* the wires are drawn twice: behind the index, where the words wear a
      halo of paper so a wire passes under them instead of striking them
@@ -957,9 +972,10 @@
      column in this order. */
   const buildE = () => {
     const wrap = el("div", "eg");
-    ["vr1", "vr2", "vr3"].forEach((v) => wrap.appendChild(el("i", "vr " + v)));
+    /* TAB: two columns on a phone's strip, the desk's four halved */
+    (TAB() ? ["vr1"] : ["vr1", "vr2", "vr3"]).forEach((v) => wrap.appendChild(el("i", "vr " + v)));
     const mas = el("div", "emas"); wrap.appendChild(mas);
-    const cols = [0, 1, 2, 3].map(() => { const c = el("div", "ecol"); mas.appendChild(c); return c; });
+    const cols = (TAB() ? [0, 1] : [0, 1, 2, 3]).map(() => { const c = el("div", "ecol"); mas.appendChild(c); return c; });
     let order = 0;
     const put = (node, ci) => { node.style.order = order++; if (ci != null) cols[ci].appendChild(node); else { node.classList.add("pk"); cols[0].appendChild(node); } return node; };
 
@@ -967,7 +983,7 @@
     const lines = el("div", "elines"); G.lines.items.forEach((o) => lines.appendChild(entryEl(o, "Eline")));
     put(cellE("lines", 1, [headE("01", "lines"), lines], "c-lines"), 0);
     G.work.items.filter((o) => LEAD_OF[o.k]).sort((x, y) => LEAD_OF[x.k].i - LEAD_OF[y.k].i)
-      .forEach((o, i) => { const c = cellE("work", 1, [entryEl(o, "Efeat")], "c-feat"); c.dataset.tx = "lead-" + LEAD_OF[o.k].l.tag; put(c, 1 + (i % 3)); });
+      .forEach((o, i) => { const c = cellE("work", 1, [entryEl(o, "Efeat")], "c-feat"); c.dataset.tx = "lead-" + LEAD_OF[o.k].l.tag; put(c, TAB() ? (i % 2 ? 0 : 1) : 1 + (i % 3)); });
 
     /* the rest, packed where there is room */
     /* the list counts down by the studies' numbers, so the column reads
@@ -1184,9 +1200,12 @@
      fills its column beside nothing, as the contents page's largest words */
   const fitE = () => {
     const root = HTML.style;
-    root.setProperty("--fs", phone() ? "12px" : "11px");
-    const ls = [...IDX.querySelectorAll(".e.el")]; if (!ls.length) return;
-    root.setProperty("--fl", "100px");
+    root.setProperty("--fs", phone() ? "12px" : TAB() ? "11.5px" : "11px");
+    const ls = [...IDX.querySelectorAll(".e.el")]; if (!ls.length) { root.removeProperty("--fl"); return; }
+    /* the probe size goes on the names themselves, the only readers of
+       --fl here: on the page's root it restyled every element twice per
+       fit, which a phone pays on every turn (20 Oct 2026, measured) */
+    ls.forEach((a) => a.style.setProperty("--fl", "100px"));
     const room = ls[0].clientWidth * 0.97;
     /* a count locked up with its name keeps its own size, so its width
        comes off the room before the name is scaled into what is left */
@@ -1194,13 +1213,15 @@
       const c = a.querySelector(".nr .cnt"), cw = c ? c.offsetWidth + (parseFloat(getComputedStyle(c).marginLeft) || 0) : 0;
       return ((room - cw) / a.querySelector(".t").offsetWidth) * 100;
     }));
+    ls.forEach((a) => a.style.removeProperty("--fl"));
     /* no larger than 26px, his size from the tweaks panel (27 Sept) */
-    root.setProperty("--fl", Math.floor(Math.min(26, fl) * 4) / 4 + "px");
+    const v = Math.floor(Math.min(26, fl) * 4) / 4 + "px";
+    if (root.getPropertyValue("--fl") !== v) root.setProperty("--fl", v);
   };
   const sizeIndex = () => {
     const root = HTML.style;
     root.removeProperty("--ts"); root.removeProperty("--lw"); root.removeProperty("--gc");
-    root.removeProperty("--fs"); root.removeProperty("--fl"); root.removeProperty("--cols");
+    root.removeProperty("--fs"); if (IX !== "e") root.removeProperty("--fl"); root.removeProperty("--cols");
     if (IX === "e") { fitE(); packE(); gridSoon(); }
     else if (IX === "d") fitD();
     else if (IX === "a") {
@@ -1230,27 +1251,33 @@
     ts.forEach((t) => { t.style.fontSize = ""; });
     const pr = document.createElement("span"); pr.style.cssText = "position:absolute;visibility:hidden;white-space:nowrap;font-size:100px";
     let size = 26; /* his 26px from the tweaks panel is the top (27 Sept) */
-    ts.forEach((t) => {
-      const w = t.parentNode.clientWidth || t.clientWidth; if (!w) return;
-      const words = t.textContent.trim().split(/\s+/);
-      t.appendChild(pr);
-      let wid = 1; words.forEach((x) => { pr.textContent = x; wid = Math.max(wid, pr.offsetWidth); });
-      pr.remove();
-      size = Math.min(size, (w / wid) * 100 * 0.98);
+    /* every word is set in its own probe and all are measured in one pass:
+       a probe rewritten word by word cost a layout per word (20 Oct 2026) */
+    const ws = ts.map((t) => t.parentNode.clientWidth || t.clientWidth);
+    const words = ts.map((t) => t.textContent.trim().split(/\s+/));
+    const prs = ts.map((t, i) => (!ws[i] ? [] : words[i].map((x) => { const p = pr.cloneNode(); p.textContent = x; t.appendChild(p); return p; })));
+    prs.forEach((ps, i) => {
+      if (!ws[i]) return;
+      let wid = 1; ps.forEach((p) => { wid = Math.max(wid, p.offsetWidth); });
+      size = Math.min(size, (ws[i] / wid) * 100 * 0.98);
     });
+    prs.forEach((ps) => ps.forEach((p) => p.remove()));
     size = Math.max(15, Math.floor(size * 2) / 2);
     ts.forEach((t) => { t.style.fontSize = size + "px"; });
   };
   const fit = (fresh) => {
     const was = HTML.classList.contains("stack");
-    let stack = innerWidth <= 760 || Math.min(innerWidth * 0.46, 760) < 430;
+    /* TAB: a phone's strip runs as a desk, never stacked */
+    let stack = !TAB() && (innerWidth <= 760 || Math.min(innerWidth * 0.46, 760) < 430);
     HTML.classList.remove("scrolly");
     HTML.classList.toggle("stack", stack);
     /* on a desk the mark heads the index on one line with the switch, as
        buildIndex meant it to (it had been set a line above); stacked, it
        sits over the band */
     const top = IDX.querySelector(".ixtop");
-    if (stack) { if (MARK.parentNode !== document.body) document.body.insertBefore(MARK, FOCUS); }
+    /* TAB: beside the focus, wherever that sits (the layers are on the
+       strip at every width, which is nothing on a desk) */
+    if (stack) { if (MARK.parentNode !== FOCUS.parentNode) FOCUS.parentNode.insertBefore(MARK, FOCUS); }
     else if (top && top.firstChild !== MARK) top.insertBefore(MARK, top.firstChild);
     sizeIndex();
     fitFeat();
@@ -2017,7 +2044,7 @@
         const fw = phone() ? W : Math.min(W, Math.round(mx * 18));
         say.style.maxWidth = fw + "px"; setSize(say, mx, -0.045);
         if (say.scrollWidth > fw + 1 || say.offsetHeight > fh) fitType(say, fw, fh, mx, 19, -0.045);
-      } else fitType(say, Math.min(W, phone() ? W : 600), fh, phone() ? 28 : 36, 19);
+      } else fitType(say, Math.min(W, phone() ? W : 600), fh, phone() || TAB() ? 28 : 36, 19);
     },
     pic(main, W, H, it) { main.appendChild(picture(it.f, Math.min(W, H * ratio(it.f)))); main.firstChild.classList.add("rise"); },
     cluster(main, W, H, it) { main.appendChild(cluster(it.pics, W, H, { caps: it.multi, flip: !!cur && (cur.o.i + cur.n) % 2 === 1 })); },
@@ -2165,8 +2192,9 @@
        (/lab/cover-fable.html?c=uber11, his take uber11-1), rendered frame
        by frame without the statement, plays in the field at rest on a
        desk, by default. ?cover=reel brings back the pictures cut below
-       (Mix), ?cover=off the plain black; a phone, reduced motion or a
-       data saver keeps the black */
+       (Mix), ?cover=off the plain black; on a phone's tab (H's glass) the
+       phone render plays (23 Oct, his "mobile version of this sizzle");
+       reduced motion or a data saver keeps the black */
     const FILM = cover !== "reel" && cover !== "off" && !phone() && !(navigator.connection && navigator.connection.saveData);
     if (!(FILM || cover === "reel") || matchMedia("(prefers-reduced-motion: reduce)").matches) return { sync() {} };
     const HOLD = 3500, PER = 6;
@@ -2228,9 +2256,11 @@
     });
     const box = el("div", "cvr"), frames = el("div", "cvr-f"), name = el("div", "cvr-n");
     box.appendChild(frames); box.appendChild(name); FIELD.appendChild(box);
-    /* the film, rendered for two shapes of field: tall, a laptop's
-       (1488x1680, a 14" MacBook's field at 2x), and wide, a monitor's
-       (1632x1398); the nearer one plays, AV1 where the browser takes it
+    /* the film, rendered for three shapes of field: tall, a laptop's
+       (1488x1680, a 14" MacBook's field at 2x), wide, a monitor's
+       (1632x1398), and phone, H's glass (730x1352, the black card of a
+       393-wide phone at 2x). A phone's tab plays phone, a desk the nearer
+       of the other two, AV1 where the browser takes it
        and H.264 elsewhere. It waits on the black until it can play
        through, picks up where a hover left it, and at its end holds the
        black and starts over. The names at the field's head are the page's
@@ -2246,19 +2276,29 @@
         [19.167, "Dallas Sport Collective"], [19.533, "Selected work"], [23.033, "Interiors"], [24.3, "Hill Country home"],
         [25.533, "Selected work"], [30.933, ""],
       ];
+      /* TAB: at the index, the wires follow the film's names to their
+         entries (tabReel), as they follow the reel's pictures; the names
+         are matched to the studies once the index is built */
+      let KEY = null, KS = [];
+      const keyed = () => { if (KEY) return; KEY = new Map(Object.keys(WORK).map((k) => [D.study(k) ? D.title(k) : "", k])); KS = [...new Set(CUES.map((c) => KEY.get(c[1])).filter(Boolean))]; };
       const TALL = 1488 / 1680, WIDE = 1632 / 1398;
-      const sh = FIELD.clientWidth / Math.max(1, FIELD.clientHeight) < Math.sqrt(TALL * WIDE) ? "tall" : "wide";
+      const sh = TAB() ? "phone" : FIELD.clientWidth / Math.max(1, FIELD.clientHeight) < Math.sqrt(TALL * WIDE) ? "tall" : "wide";
       const v = el("video", "cvr-v");
       v.muted = true; v.playsInline = true; v.preload = "auto"; v.disablePictureInPicture = true;
       ["muted", "playsinline"].forEach((a) => v.setAttribute(a, "")); v.setAttribute("aria-hidden", "true");
-      [["av1.mp4", 'video/mp4; codecs="av01.0.12M.10"'], ["mp4", 'video/mp4; codecs="avc1.640032"']].forEach(([x, type]) => {
+      /* the film's files are asked for once the fonts are in, when the
+         first screen draws: asked for with the page, a phone on a slow
+         connection shared the first screen's bandwidth with them (23 Oct
+         2026, measured) */
+      const feed = () => [["av1.mp4", 'video/mp4; codecs="av01.0.12M.10"'], ["mp4", 'video/mp4; codecs="avc1.640032"']].forEach(([x, type]) => {
         const so = document.createElement("source"); so.src = "/lab/density/cover/uber11-" + sh + "." + x; so.type = type; v.appendChild(so);
       });
       box.insertBefore(v, frames);
+      if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => requestAnimationFrame(feed)); else feed();
       /* once it can play through, a pause keeps what it has */
       const can = new Promise((res) => v.addEventListener("canplaythrough", res, { once: true }));
       let my = -1, cb = 0;
-      const said = (t) => { let w = ""; for (const c of CUES) { if (c[0] > t + 0.001) break; w = c[1]; } if (name.textContent !== w) name.textContent = w; };
+      const said = (t) => { let w = ""; for (const c of CUES) { if (c[0] > t + 0.001) break; w = c[1]; } if (name.textContent !== w) { name.textContent = w; if (KEY) tabReel.cut(KEY.get(w) || null); } };
       const tick = (now, md) => {
         cb = 0;
         if (my !== gen || v.paused) return;
@@ -2268,11 +2308,16 @@
       v.addEventListener("ended", () => { if (my !== gen) return; clear(); v.currentTime = 0; if (ok()) later(); else stop(); });
       return {
         async run(g) {
-          my = g; await can;
+          my = g;
+          /* TAB: a phone fetches a film on play(), not on preload, so a
+             muted play, paused at once, asks for it before the wait */
+          if (TAB() && v.readyState < 4) { try { await v.play(); v.pause(); v.currentTime = 0; } catch (e) {} if (my !== gen) return; }
+          await can;
           if (my !== gen) return;
           if (!ok()) { stop(); return; }
           const say = document.querySelector("#focus .layer.dark .say"), fr = FIELD.getBoundingClientRect();
           name.style.left = Math.max(20, say ? Math.round(say.getBoundingClientRect().left - fr.left) : 32) + "px";
+          if (TAB()) { keyed(); tabReel.run({ line: null }, KS); }
           said(v.currentTime); box.classList.add("on");
           try { await v.play(); } catch (e) { if (my === gen) clear(); return; }
           if (my !== gen) { v.pause(); return; }
@@ -2290,7 +2335,8 @@
        try them full color?! and maybe only use the really larger hero
        images we have in the case studies"): a room's top picture, opaque
        and at least 2400px across */
-    const runs = () => (G.lines ? G.lines.items : []).map((o) => ({ name: nameOf(o), pics: shelfOrder(o).map((k) => ({ k, p: D.study(k) && D.study(k).top })).filter((x) => x.p && x.p.src && x.p.w >= 2400 && !x.p.alpha) }))
+    /* TAB: a run knows its line, so a phone wires the line's entry too (tabReel) */
+    const runs = () => (G.lines ? G.lines.items : []).map((o) => ({ name: nameOf(o), line: o.line, pics: shelfOrder(o).map((k) => ({ k, p: D.study(k) && D.study(k).top })).filter((x) => x.p && x.p.src && x.p.w >= 2400 && !x.p.alpha) }))
       .filter((r) => r.pics.length >= 3);
     /* a hero averages a megabyte, so the site asks the image service for
        the width the field draws it at (cover in a tall field draws it
@@ -2301,7 +2347,10 @@
     const srcOf = (p) => {
       if (LOCAL) return encodeURI(p.src);
       const fw = FIELD.clientWidth || 800, fh = FIELD.clientHeight || 900, need = Math.max(fw, fh * (p.w / p.h)) * Math.min(2, devicePixelRatio || 1);
-      const w = SIZES.find((x) => x >= need && x <= p.w) || SIZES.filter((x) => x <= p.w).pop() || 1600;
+      /* TAB: a phone asks for 1920 across at most: the cover draws a
+         hero far wider than the phone, six of them a run, on a phone's data */
+      const top = TAB() ? 1920 : Infinity;
+      const w = SIZES.find((x) => x >= need && x <= p.w && x <= top) || SIZES.filter((x) => x <= p.w && x <= top).pop() || 1600;
       return "/_next/image?url=" + encodeURIComponent(p.src) + "&w=" + w + "&q=75";
     };
     const load = (src) => new Promise((res) => {
@@ -2311,7 +2360,7 @@
       setTimeout(() => fin(im.complete && im.naturalWidth ? im : null), 3000);
       im.src = src;
     });
-    const clear = () => { if (film) film.halt(); box.classList.remove("on"); frames.replaceChildren(); name.textContent = ""; box.querySelectorAll(".cvr-k, .cvr-p, .cvr-w").forEach((x) => x.remove()); };
+    const clear = () => { if (TAB()) tabReel.run(null); if (film) film.halt(); box.classList.remove("on"); frames.replaceChildren(); name.textContent = ""; box.querySelectorAll(".cvr-k, .cvr-p, .cvr-w").forEach((x) => x.remove()); };
     const stop = () => { live = false; gen++; clearTimeout(t); t = null; clear(); };
     const later = () => { clearTimeout(t); t = setTimeout(run, HOLD); };
     const run = async () => {
@@ -2325,7 +2374,8 @@
       order.forEach((x) => { if (pick.length < PER && !recent.includes(x.k)) pick.push(x); });
       order.forEach((x) => { if (pick.length < Math.min(PER, 3) && !pick.includes(x)) pick.push(x); });
       pick.forEach((x) => recent.push(x.k)); recent.splice(0, Math.max(0, recent.length - PER * 2));
-      const ims = (await Promise.all(pick.map((x) => load(srcOf(x.p))))).filter(Boolean);
+      const got = await Promise.all(pick.map((x) => load(srcOf(x.p))));
+      const ims = got.filter(Boolean), iks = pick.filter((x, i) => got[i]).map((x) => x.k);
       if (my !== gen) return;
       if (!ok()) { stop(); return; }
       if (ims.length < 3) { later(); return; }
@@ -2334,6 +2384,7 @@
       name.style.left = Math.max(20, say ? Math.round(say.getBoundingClientRect().left - fr.left) : 32) + "px";
       name.textContent = r.name;
       box.classList.add("on");
+      if (TAB()) tabReel.run(r, iks);
       const plan = MODE === "mix" ? MIX[(li - 1) % MIX.length] : { ins: ims.map(() => MODE), out: MODE };
       let at = 0;
       ims.forEach((im, i) => {
@@ -2342,6 +2393,7 @@
           if (my !== gen) return;
           im.style.zIndex = String(i + 1); im.classList.add("on");
           enter(kind, im, ims[i - 1]);
+          if (TAB()) tabReel.cut(iks[i]);
           /* the ones under it go once this one covers them */
           const under = ims.slice(0, i);
           setTimeout(() => { if (my === gen) under.forEach((x) => x.classList.remove("on")); }, coverAt(kind));
@@ -2449,10 +2501,13 @@
   const draw = (pairs, o) => {
     const going = clearWires(!(o && o.live));
     if (phone() || !pairs.length) return null;
+    /* TAB: the wires ride the strip, so they are drawn in its frame */
+    const ox = TAB() && STRIP ? STRIP.getBoundingClientRect().left : 0;
     const g = document.createElementNS(NS, "g");
     const dots = new Map();
     pairs.forEach(({ x, q, me }) => {
-      const p = endOf(x); if (!p || !q) return;
+      let p = endOf(x); if (!p || !q) return;
+      p = [p[0] - ox, p[1]]; q = [q[0] - ox, q[1]];
       const path = document.createElementNS(NS, "path"); path.setAttribute("d", pathD(p, q));
       if (me) path.setAttribute("class", "me");
       g.appendChild(path);
@@ -2490,7 +2545,7 @@
   };
   const wire = (live) => {
     if (staged()) return;
-    if (phone() || !cur) { clearWires(true); return; }
+    if (phone() || !cur) { if (!phone() && !cur && TAB() && tabReel.wired(live === true)) return; clearWires(true); return; }
     const layer = layerOf(); if (!layer) return;
     const m = layer.querySelector(".main"); if (!m) return;
     const r = m.getBoundingClientRect();
@@ -2505,6 +2560,34 @@
     pairs.push({ x: cur.o, q, me: true });
     draw(pairs, live === true ? { live: true } : null);
   };
+  /* TAB: the cover's reel wired to the index (19 Oct 2026, his "the
+     wirelines are gone...is there a world we can keep those somehow?").
+     A phone has no hover, so at rest the reel does what a hover does on a
+     desk: while a run plays, each study in it sends a hairline from its
+     name in the index to the black card's edge, the line's own name with
+     them, and the study on the glass is drawn in ink. Back to black, they
+     draw back to their names. Only while the index is in view */
+  const tabReel = (() => {
+    let R = null; /* { o: the line's entry, ks: its studies, me: the one on the glass } */
+    const node = () => { const f = FIELD.getBoundingClientRect(); return [f.left - 3, f.top + f.height * 0.5]; };
+    const pairs = () => {
+      const q = node(), out = [];
+      R.ks.forEach((k) => { const x = WORK[k]; if (x && x.a) out.push({ x, q, me: k === R.me }); });
+      if (R.o && R.o.a) out.push({ x: R.o, q, me: true });
+      return out;
+    };
+    const ok = () => TAB() && !staged() && !cur && HTML.classList.contains("at-index");
+    return {
+      run(r, ks) {
+        if (!r) { const had = !!R; R = null; if (had && ok()) clearWires(true); return; }
+        R = { o: (G.lines && G.lines.items.find((x) => x.line === r.line)) || null, ks: [...new Set(ks || [])], me: null };
+        if (ok()) draw(pairs());
+      },
+      cut(k) { if (!R) return; R.me = k; if (ok()) draw(pairs(), { live: true }); },
+      /* drawn again where the index has scrolled, or once it comes into view */
+      wired(live) { if (!R || !ok()) return false; draw(pairs(), live ? { live: true } : null); return true; },
+    };
+  })();
 
   /* ── hover, stepping ── */
   const show = (o, n) => {
@@ -2783,11 +2866,11 @@
     lead: (k) => leadOf(k),
     /* less the site's 20px margin on a desk, so a shelf's pictures stop
        where its type does instead of running off the right edge */
-    get width() { return (S.layer.clientWidth || STAGE.clientWidth) - (phone() ? 0 : 20); },
+    get width() { return (S.layer.clientWidth || STAGE.clientWidth) - (phone() || TAB() ? 0 : 20); },
     get height() { return Math.max(0, (S.layer.clientHeight || innerHeight) - HEAD); },
     scroller: S.layer,
     head: HEAD,
-    get phone() { return phone(); },
+    get phone() { return phone() || TAB(); },
     /* a preview until a click makes it the shelf; a layout may load less
        while it is only a preview */
     get preview() { return !!S.pv; },
@@ -2808,11 +2891,11 @@
     studies: shelfOrder(o).slice(),
     pics: (k) => picsOf(k),
     lead: (k) => leadOf(k),
-    get width() { return (layer.clientWidth || STAGE.clientWidth) - (phone() ? 0 : 20); },
+    get width() { return (layer.clientWidth || STAGE.clientWidth) - (phone() || TAB() ? 0 : 20); },
     get height() { return Math.max(0, (layer.clientHeight || innerHeight) - HEAD); },
     scroller: layer,
     head: HEAD,
-    get phone() { return phone(); },
+    get phone() { return phone() || TAB(); },
     preview: false,
     gone: false,
     num: (k) => D.num(k),
@@ -2880,6 +2963,12 @@
     if (box._lenis !== undefined) return box._lenis;
     box._lenis = null;
     if (!window.Lenis || matchMedia("(prefers-reduced-motion: reduce)").matches) return null;
+    /* TAB: under a finger Lenis eases nothing (its syncTouch is off), so a
+       phone with no mouse or trackpad keeps only the blocking touch
+       listener Lenis brought, which lets the strip's swipe stop a scroll,
+       and not its clock, a frame loop per box for as long as the box
+       lives (20 Oct 2026, measured) */
+    if (TAB() && !matchMedia("(any-pointer: fine)").matches) { box.addEventListener("touchmove", () => {}, { passive: false }); return null; }
     let L = null;
     try { L = new window.Lenis({ wrapper: box, content: box, smoothWheel: true, duration: 1.65, easing: (t) => 1 - Math.pow(1 - t, 6), wheelMultiplier: 0.65, touchMultiplier: 1.4, naiveDimensions: true }); } catch (e) { return null; }
     const tick = (t) => { if (!box.isConnected) { L.destroy(); box._lenis = undefined; return; } L.raf(t); requestAnimationFrame(tick); };
@@ -3096,7 +3185,7 @@
            room has opened; its wires belong to the shelf, so they are drawn
            only while the shelf is the page (27 Sept review) */
         if (VIEW.v !== "shelf" || SH !== S) return;
-        if (S.hovK) wireTile(S); else if (hov) wireShelf(S, hov);
+        if (S.hovK) wireTile(S); else if (hov) wireShelf(S, hov); else if (TAB()) wireShelf(S, S.o);
       });
     }, { passive: true });
     return S;
@@ -3210,11 +3299,11 @@
     paint(new Set([k]), WORK[k]);
     wireTile(S);
   };
-  const wireShelf = (S, o) => {
+  const wireShelf = (S, o, anim) => {
     const lb = S.layer.getBoundingClientRect(), view = { top: lb.top + HEAD, bottom: lb.bottom };
     const pairs = S.ks.filter((k) => o.rel.has(k)).map((k) => tileOf(S, k))
       .filter((n) => n && rectIn(n.getBoundingClientRect(), view)).map((n) => ({ x: o, q: anchorOf(n, S.layer), me: true }));
-    draw(pairs, { live: true });
+    draw(pairs, anim ? null : { live: true });
   };
 
   /* ── the preview: the shelf a hover shows. A picture under the pointer
@@ -3582,7 +3671,8 @@
     let cv = RM.room.cover && RM.room.cover.getBoundingClientRect();
     if (!cv || !cv.height || cv.top > s.bottom - 60 || cv.bottom < s.top + 60) { const t = RM.room.el.querySelector(".sp-ct"); if (t) cv = t.getBoundingClientRect(); }
     const mid = cv && cv.height ? cv.top + Math.min(cv.height / 2, 220) : s.top + 60;
-    return [s.left - 1, Math.max(s.top + 60, Math.min(s.bottom - 60, mid))];
+    /* TAB: just inside the room's edge, so the fan shows on either half */
+    return [s.left + (TAB() ? 7 : -1), Math.max(s.top + 60, Math.min(s.bottom - 60, mid))];
   };
   const fanPairs = (except, inkOwn) => {
     const q = roomNode(), own = WORK[RM.k];
@@ -3651,7 +3741,7 @@
     const o = KEYMAP.get(s);
     return o.room ? { v: "study", k: o.room, from: null } : { v: "shelf", key: o.key };
   };
-  const apply = (st, how) => {
+  const apply0 = (st, how) => {
     how = how || {};
     cutFlights();
     VIEW = st; hov = null;
@@ -3669,6 +3759,18 @@
     else if (SH && !RM) { /* a room opened from a shelf it does not belong to keeps no shelf behind it */ }
     openRoom(st.k, st.from && KEYMAP.has(st.from) ? st.from : null, how);
   };
+  /* TAB: every step tells the strip, so it can slide to what changed
+     (phone-tab.js); a shelf on a phone is wired to its entry once its
+     pictures are down, since no pointer will hover it */
+  const apply = (st, how) => {
+    const was = VIEW;
+    apply0(st, how);
+    if (!TAB()) return;
+    const v = VIEW;
+    document.dispatchEvent(new CustomEvent("xref:view", { detail: { v: v.v, key: v.key || null, k: v.k || null, was: was.v, label: tabLabel(v) } }));
+    if (v.v === "shelf") setTimeout(() => { if (VIEW === v && SH && SH.visible && !hov && !SH.hovK) wireShelf(SH, SH.o, true); }, 820);
+  };
+  const tabLabel = (st) => (st.v === "study" ? D.title(st.k) : st.v === "shelf" && KEYMAP.get(st.key) ? nameOf(KEYMAP.get(st.key)) : "");
   const go = (st, how) => {
     how = how || {};
     if (how.push) {
@@ -3775,6 +3877,8 @@
     clearTimeout(intentT);
     /* on glass a tap is the hover; a second tap opens */
     if (phone() && !staged() && !(cur && cur.o === o)) { show(o, 0); return; }
+    /* TAB: a tap in the index brings the glass to what it opens */
+    if (TAB()) document.dispatchEvent(new CustomEvent("xref:tap", { detail: { key: o.key } }));
     /* a study opens under the curtain in the content column; its picture
        no longer flies over from the index (27 Sept, see openRoom) */
     open(o, o.g.id === "work" ? { curtain: true } : null);
@@ -3847,7 +3951,7 @@
   let sc = 0;
   const rewire = () => {
     if (!staged()) { wire(true); return; }
-    if (VIEW.v === "shelf" && SH) { if (SH.hovK) wireTile(SH); else if (hov) wireShelf(SH, hov); }
+    if (VIEW.v === "shelf" && SH) { if (SH.hovK) wireTile(SH); else if (hov) wireShelf(SH, hov); else if (TAB()) wireShelf(SH, SH.o); }
     else if (VIEW.v === "study" && RM) { if (LW) drawLive(); else wireRoom(true); }
   };
   IDX.addEventListener("scroll", () => { cancelAnimationFrame(sc); sc = requestAnimationFrame(rewire); }, { passive: true });
@@ -3870,6 +3974,7 @@
       clearWires();
       /* a room keeps its fan */
       if (VIEW.v === "study" && RM) { if (LW) drawLive(); else wireRoom(true); }
+      else if (TAB() && VIEW.v === "shelf" && SH) wireShelf(SH, SH.o);
     });
   });
 
@@ -3885,5 +3990,5 @@
     if (st.v !== "rest") apply(st, { curtain: false });
   };
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(start); else start();
-  window.XREF = { ENTRIES, GROUPS, FIGS, KEYMAP, show, fit, go, setIndex, setMark, setTexture, setMotion, setGrid, get ix() { return IX; }, get view() { return VIEW; }, get shelf() { return SH; }, get room() { return RM; }, shelves: SHELVES, get layout() { return SH ? SH.lid : layoutId(); }, setShelf: setShelfLayout };
+  window.XREF = { ENTRIES, GROUPS, FIGS, KEYMAP, show, fit, go, setIndex, setMark, setTexture, setMotion, setGrid, get ix() { return IX; }, get view() { return VIEW; }, get shelf() { return SH; }, get room() { return RM; }, shelves: SHELVES, get layout() { return SH ? SH.lid : layoutId(); }, setShelf: setShelfLayout, rewire };
 })();

@@ -1335,14 +1335,19 @@
        gone it names the section the reader is in, numbered as the index
        numbers its own, and a rule of ink along its hairline shows how
        far through the room they are */
-    let trT = 0, curSec;
+    let trT = 0, curSec, pgEl = null;
     const track = () => {
       trT = 0; if (dead) return;
       const max = container.scrollHeight - container.clientHeight;
-      root.style.setProperty("--pg", max > 0 ? Math.min(1, container.scrollTop / max).toFixed(4) : "0");
       const line = container.getBoundingClientRect().top + 64;
       let now = null;
       for (const se of root.querySelectorAll(".sp-sec")) { if (se.getBoundingClientRect().top <= line) now = se; else break; }
+      /* the rule is the bar's (its ::after), so --pg is set there: set on
+         the room it restyled every element in the room on every frame of a
+         scroll, and the sections were then measured after it, which made
+         the browser do that at once (20 Oct 2026, measured on a phone) */
+      if (!pgEl || !pgEl.isConnected) pgEl = root.querySelector(".sp-bar-in") || root;
+      pgEl.style.setProperty("--pg", max > 0 ? Math.min(1, container.scrollTop / max).toFixed(4) : "0");
       if (now === curSec) return;
       curSec = now;
       const slot = root.querySelector(".sp-bar-s");

@@ -1,0 +1,91 @@
+/* ── A PHONE'S STRIP AND ITS TAB (19 Oct 2026) ───────────────────────
+   His, with Norgram's phone beside its desk: "norgram has a split desktop
+   like mine and they do a toggle/tab in mobile at the bottom - would
+   something like that be simple and work?" Built in the lab as H, beside
+   the phone concepts A to G (/lab/phone/), and his pick for the homepage
+   the same day.
+
+   On a phone (html.tab, set by crossref2.html) the desk's two halves sit
+   side by side on #strip: the index on the left, then the glass one
+   window wide, and the strip slides between them. At the index a sliver
+   of the glass (--sl) stays at the right edge: the black card at rest,
+   the room or the shelf when one is open. At the glass the window is the
+   glass. The tab at the foot says which, and slides it (phone-tab.js).
+
+   crossref2.css sets the desk from --m, --idxw and --gut, so the strip
+   only sets those for a phone and every rule hung off them (the field,
+   the focus, the stage, the wires' clips, the curtain's column) lands
+   where it should. Those layers are fixed to the strip now, not the
+   window: a box with a transform holds its fixed children, so they move
+   with it. On a desk the strip is nothing (display: contents). ── */
+#strip { display: contents; }
+#tabs, #sliver { display: none; }
+
+/* 14px margins, a 10px gap between the index and the glass, and 32px of
+   the glass beside the index (14px of paper, then the black card's edge) */
+html.tab { --m: 14px; --gut: 20px; --sl: 32px; --top: 18px;
+  --idxw: calc(100vw - var(--sl) - var(--m) - var(--gut) / 2); }
+/* where the strip stands is the strip's own, and passes to nothing on it:
+   set on the page's root it restyled every element at each turn of the
+   tab and each swipe's end, a long frame on a phone (20 Oct 2026, measured) */
+@property --tx { syntax: "<length>"; inherits: false; initial-value: 0px; }
+html.tab #strip { --tx: calc(var(--sl) - 100vw); }
+html.tab.at-index #strip { --tx: 0px; }
+html.tab #strip { display: block; position: fixed; z-index: 0; top: 0; left: 0; bottom: 0; width: calc(var(--stl) + 100vw);
+  transform: translate3d(var(--tx), 0, 0); }
+/* a tap slides it on the reels' cut, deliberate both ways; let go of a
+   drag and it carries on as the finger left it */
+html.tab.slides #strip { transition: transform 0.58s cubic-bezier(0.65, 0, 0.25, 1); }
+html.tab.slides.flung #strip { transition-duration: 0.42s; transition-timing-function: cubic-bezier(0.2, 0.7, 0.2, 1); }
+html.tab.drag #strip { transition: none; }
+/* a mouse's drag selects nothing; a finger's selects nothing anyway, and
+   the rule on the root restyled the whole page as each swipe began */
+html.tab.mdrag { -webkit-user-select: none; user-select: none; }
+
+/* the black card keeps the margin all round on the glass; at the index
+   its edge is the sliver */
+html.tab #field, html.tab #focus { left: calc(var(--stl) + var(--m)); }
+html.tab .hm-cover { padding: var(--m) calc(var(--m) * 2) calc(var(--m) + var(--peek) + 66px) calc(var(--m) * 2); }
+html.tab .layer.home .folio { left: calc(var(--m) * 2); right: calc(var(--m) * 2); }
+/* a room or a shelf at the index's edge reads as a page beside it */
+html.tab.at-index body.staged #stage { box-shadow: -1px 0 0 var(--hair); }
+html.tab #sliver { all: unset; display: block; position: fixed; z-index: 9; top: 0; bottom: 0; left: var(--stl); width: var(--sl);
+  cursor: pointer; -webkit-tap-highlight-color: transparent; }
+html.tab:not(.at-index) #sliver { display: none; }
+/* at the index the cover's words keep off the sliver, which shows the
+   black's edge and the reel's pictures moving in it; they come back
+   with the glass */
+html.tab .layer.home .hm-cover { transition: opacity 0.3s ease 0.2s; }
+html.tab.at-index .layer.home .hm-cover { opacity: 0; transition-delay: 0s; }
+
+/* the index: E's columns two abreast, the desk's four halved */
+html.tab #idx { padding-bottom: 120px; }
+html.tab[data-ix="e"] #idx { --eg: 16px; }
+html.tab[data-ix="e"] .emas { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+html.tab[data-ix="e"] .vr1 { left: 50%; }
+html.tab[data-ix="e"] .ecol { gap: 40px; }
+
+/* room under the tab at the foot of everything that scrolls */
+html.tab .roomc::after, html.tab .shelf:not(.pv)::after, html.tab #desk::after { content: ""; display: block; height: 76px; }
+/* the reel's picker is a lab tool, for a desk */
+html.tab .cr-pick { display: none !important; }
+
+/* ── the tab: Norgram's, two words on a pill at the foot, the one in view
+   set solid. The second word is what the glass holds ── */
+html.tab #tabs { position: fixed; z-index: 300; left: 50%; bottom: max(14px, env(safe-area-inset-bottom)); transform: translateX(-50%);
+  display: flex; align-items: center; height: 40px; padding: 4px; border-radius: 20px; background: var(--paper);
+  box-shadow: 0 0 0 1px var(--hair), 0 8px 24px rgba(0, 0, 0, 0.14);
+  font-size: 12.5px; font-weight: 600; letter-spacing: -0.01em; line-height: 1; user-select: none; -webkit-user-select: none; }
+html.tab #tabs button { all: unset; position: relative; z-index: 1; display: flex; align-items: center; height: 32px; padding: 0 16px;
+  border-radius: 16px; color: var(--ink); cursor: pointer; -webkit-tap-highlight-color: transparent; transition: color 0.3s ease; }
+html.tab #tabs button span { display: block; max-width: 44vw; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+html.tab #tabs button[aria-pressed="true"] { color: var(--paper); }
+html.tab #tabs button:focus-visible { outline: 1px solid var(--ink); outline-offset: 2px; }
+html.tab #tabs .knob { position: absolute; z-index: 0; top: 4px; left: 0; height: 32px; width: var(--kw, 0px); border-radius: 16px;
+  background: var(--ink); transform: translateX(var(--kl, 0px)); }
+html.tab.slides #tabs .knob { transition: transform 0.58s cubic-bezier(0.65, 0, 0.25, 1), width 0.58s cubic-bezier(0.65, 0, 0.25, 1); }
+html.tab.drag #tabs .knob { transition: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  html.tab.slides #strip, html.tab.slides #tabs .knob { transition-duration: 0.01s; }
+}
