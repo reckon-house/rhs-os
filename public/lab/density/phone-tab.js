@@ -211,7 +211,10 @@
      the index; an address, what it opens */
   place(at);
   relabel();
-  (document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve()).then(() => knob());
+  /* the knob is set to its words once the fonts are in, or after 4s, as the
+     page's first screen is (crossref2.js FONTS_IN), and again when they come */
+  const fr = document.fonts && document.fonts.ready;
+  (fr ? Promise.race([fr, new Promise((r) => setTimeout(r, 4000))]) : Promise.resolve()).then((f) => { knob(); if (fr && !f) fr.then(() => knob()); });
   addEventListener("resize", () => knob());
   /* a narrow window on a desk widened past a phone's width is the desk
      again: the page is laid out for one or the other, so it reloads at

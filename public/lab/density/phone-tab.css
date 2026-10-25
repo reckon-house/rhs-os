@@ -67,8 +67,21 @@ html.tab[data-ix="e"] .ecol { gap: 40px; }
 
 /* room under the tab at the foot of everything that scrolls */
 html.tab .roomc::after, html.tab .shelf:not(.pv)::after, html.tab #desk::after { content: ""; display: block; height: 76px; }
+/* but not under a shelf's foot: the foot is a glass of paper already, and
+   the room let the shelf scroll its foot 76px past where the next shelf
+   sets its head, so everything dropped as it carried on (25 Oct 2026) */
+html.tab .shelf:not(.pv):has(> .sh-foot)::after { content: none; }
 /* the reel's picker is a lab tool, for a desk */
 html.tab .cr-pick { display: none !important; }
+/* a foot sets its words as the shelf it carries on into sets its head on a
+   phone (shelf-stack.css, .xk.ph): its margins, and a line's run the full
+   width with the count under it. Set as a desk's, the run beside the count,
+   it changed lines at the hand-off (25 Oct 2026, his "it sort of jumps into
+   place and some shifting happens") */
+html.tab .sh-foot { padding-top: 24px; padding-left: 16px; padding-right: 16px; }
+html.tab .hm-foot { padding-top: calc(24px + 44px - var(--peek)); }
+html.tab .sh-foot-hl:has(.stand) { flex-wrap: wrap; row-gap: 14px; }
+html.tab .sh-foot-t.stand { flex-basis: 100%; }
 
 /* ── the tab: Norgram's, two words on a pill at the foot, the one in view
    set solid. The second word is what the glass holds ── */

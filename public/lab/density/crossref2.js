@@ -142,6 +142,12 @@
   const esc = (s) => D.esc(clean(s));
   const reEsc = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
   const HTML = document.documentElement;
+  /* the fonts are waited on before the first screen sets its names, but not
+     for ever: a font request that stalls held the page at its logo (25 Oct
+     2026, his "didn't seem to load at all - I waited over a minute" on an
+     iPhone). After 4s it sets them in what it has, and sets them again when
+     the fonts come */
+  const FONTS_IN = !(document.fonts && document.fonts.ready) ? Promise.resolve() : Promise.race([document.fonts.ready, new Promise((r) => setTimeout(r, 4000))]);
   const phone = () => HTML.classList.contains("stack");
   /* TAB: a phone's strip (19 Oct 2026, see the top of this file):
      crossref2.html sets html.tab at 760px and under, and on a phone held
@@ -2294,7 +2300,7 @@
         const so = document.createElement("source"); so.src = "/lab/density/cover/uber11-" + sh + "." + x; so.type = type; v.appendChild(so);
       });
       box.insertBefore(v, frames);
-      if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => requestAnimationFrame(feed)); else feed();
+      FONTS_IN.then(() => requestAnimationFrame(feed));
       /* once it can play through, a pause keeps what it has */
       const can = new Promise((res) => v.addEventListener("canplaythrough", res, { once: true }));
       let my = -1, cb = 0;
@@ -3989,6 +3995,6 @@
        the curtain there */
     if (st.v !== "rest") apply(st, { curtain: false });
   };
-  if (document.fonts && document.fonts.ready) document.fonts.ready.then(start); else start();
+  FONTS_IN.then((f) => { start(); if (!f && document.fonts) document.fonts.ready.then(() => dispatchEvent(new Event("resize"))); });
   window.XREF = { ENTRIES, GROUPS, FIGS, KEYMAP, show, fit, go, setIndex, setMark, setTexture, setMotion, setGrid, get ix() { return IX; }, get view() { return VIEW; }, get shelf() { return SH; }, get room() { return RM; }, shelves: SHELVES, get layout() { return SH ? SH.lid : layoutId(); }, setShelf: setShelfLayout, rewire };
 })();
