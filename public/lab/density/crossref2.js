@@ -2194,8 +2194,10 @@
   const CVR = (() => {
     const cover = (new URLSearchParams(location.search).get("cover") || "").toLowerCase();
     /* the film (22 Oct 2026, his "the desktop video is amazing! let's push
-       it up"): cut eleven of the uber reel from the lab
-       (/lab/cover-fable.html?c=uber11, his take uber11-1), rendered frame
+       it up"): the uber reel from the lab, cut twelve since 25 Oct (his
+       notes on cut eleven's landings and chapter breaks; cut eleven
+       played from 22 Oct) (/lab/cover-fable.html?c=uber12, his take
+       uber12-1), rendered frame
        by frame without the statement, plays in the field at rest on a
        desk, by default. ?cover=reel brings back the pictures cut below
        (Mix), ?cover=off the plain black; on a phone's tab (H's glass) the
@@ -2297,7 +2299,7 @@
          connection shared the first screen's bandwidth with them (23 Oct
          2026, measured) */
       const feed = () => [["av1.mp4", 'video/mp4; codecs="av01.0.12M.10"'], ["mp4", 'video/mp4; codecs="avc1.640032"']].forEach(([x, type]) => {
-        const so = document.createElement("source"); so.src = "/lab/density/cover/uber11-" + sh + "." + x; so.type = type; v.appendChild(so);
+        const so = document.createElement("source"); so.src = "/lab/density/cover/uber12-" + sh + "." + x; so.type = type; v.appendChild(so);
       });
       box.insertBefore(v, frames);
       FONTS_IN.then(() => requestAnimationFrame(feed));
