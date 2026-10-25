@@ -157,8 +157,10 @@ html.cursor-shape-on * { cursor: none !important; }
    heavy. Licensed and hosted now, like the rest.
 
    woff2, cut from the purchased woff: 127KB to 66KB for the same 1130
-   glyphs. The four .woff files below are the older format and are
-   worth re-cutting the same way when someone is next in here. */
+   glyphs. The weights below were cut the same way on 25 Oct 2026 (his
+   "i have full license"), glyph for glyph the same: 401KB to 255KB.
+   Each .woff stays behind its woff2, and MorphingGlyph reads the .woff
+   files directly, since opentype.js cannot read woff2. */
 @font-face {
   font-family: 'Avenir Next';
   src: url('/fonts/AvenirNext-Regular.woff2') format('woff2'),
@@ -181,7 +183,8 @@ html.cursor-shape-on * { cursor: none !important; }
 
 @font-face {
   font-family: 'Avenir Next';
-  src: url('/fonts/AvenirNext-Medium.woff') format('woff');
+  src: url('/fonts/AvenirNext-Medium.woff2') format('woff2'),
+       url('/fonts/AvenirNext-Medium.woff') format('woff');
   font-weight: 500;
   font-display: swap;
   font-style: normal;
@@ -189,7 +192,8 @@ html.cursor-shape-on * { cursor: none !important; }
 
 @font-face {
   font-family: 'Avenir Next';
-  src: url('/fonts/AvenirNext-DemiBold.woff') format('woff');
+  src: url('/fonts/AvenirNext-DemiBold.woff2') format('woff2'),
+       url('/fonts/AvenirNext-DemiBold.woff') format('woff');
   font-weight: 600;
   font-display: swap;
   font-style: normal;
@@ -197,7 +201,8 @@ html.cursor-shape-on * { cursor: none !important; }
 
 @font-face {
   font-family: 'Avenir Next';
-  src: url('/fonts/AvenirNext-Bold.woff') format('woff');
+  src: url('/fonts/AvenirNext-Bold.woff2') format('woff2'),
+       url('/fonts/AvenirNext-Bold.woff') format('woff');
   font-weight: 700;
   font-display: swap;
   font-style: normal;
@@ -213,7 +218,8 @@ html.cursor-shape-on * { cursor: none !important; }
 
 @font-face {
   font-family: 'Avenir Next';
-  src: url('/fonts/AvenirNext-Heavy.woff') format('woff');
+  src: url('/fonts/AvenirNext-Heavy.woff2') format('woff2'),
+       url('/fonts/AvenirNext-Heavy.woff') format('woff');
   font-weight: 800;
   font-display: swap;
   font-style: normal;
@@ -221,7 +227,8 @@ html.cursor-shape-on * { cursor: none !important; }
 
 @font-face {
   font-family: 'Avenir Next';
-  src: url('/fonts/AvenirNext-HeavyItalic.woff') format('woff');
+  src: url('/fonts/AvenirNext-HeavyItalic.woff2') format('woff2'),
+       url('/fonts/AvenirNext-HeavyItalic.woff') format('woff');
   font-weight: 800;
   font-display: swap;
   font-style: italic;

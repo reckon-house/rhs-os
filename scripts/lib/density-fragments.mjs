@@ -22,12 +22,28 @@
    public/lab/density/thumbs/. A dense field of three hundred pictures
    must never fetch three hundred full files.
 
+   A picture can also have a phone rung, tp (25 Oct 2026, his "let's
+   make the images phone sized for sure so long as we dont lose quality.
+   build time works"): 1320 across (@1320), or at its own width when it
+   is narrower and heavy (@<width>). H draws a room's pictures the
+   phone's full width, 1,320 device pixels on the widest iPhone, so a
+   phone took the whole file. Each rung is the smallest of a few JPEG
+   and WebP encodings that ssimulacra2 scores 90 or more against the
+   original at the rung's pixels (90 is its "visually lossless"), and
+   only if it saves at least 15% of the original's bytes; else the
+   phone keeps the original. The choices are kept in phone-rungs.json,
+   so a rerun only encodes new or changed pictures. Without ssimulacra2
+   (brew install jpeg-xl) no new rung is made.
+
        node scripts/lib/density-fragments.mjs
 */
 import fs from "node:fs";
+import os from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { createRequire } from "node:module";
+import { execFile, spawnSync } from "node:child_process";
+import { promisify } from "node:util";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..");
 const require = createRequire(import.meta.url);
@@ -64,9 +80,18 @@ const hasAlpha = (file) => {
   return false;
 };
 const thumbJobs = [];
+const PR = 1320, phoneJobs = new Map();
+const phoneJob = (src, dataSlug, w) => {
+  if (phoneJobs.has(src)) return;
+  /* narrower than a phone draws it: only worth a rung when it is heavy */
+  if (w <= PR) { let b = 0; try { b = fs.statSync(path.join(ROOT, "public", src)).size; } catch (e) { return; } if (b < 200 * 1024) return; }
+  const base = src.split("/").pop().replace(/\.[a-z0-9]+$/i, ""), tw = Math.min(PR, w);
+  phoneJobs.set(src, { src, tw, from: path.join(ROOT, "public", src), to: "/lab/density/thumbs/" + dataSlug + "/" + base + "@" + tw });
+};
 function thumbs(src, houseKey, dataSlug, w) {
   const base = src.split("/").pop().replace(/\.[a-z0-9]+$/i, "");
   const out = {};
+  phoneJob(src, dataSlug, w);
   for (const n of [384, 768]) {
     if (n === 768 && w <= 900) continue;
     const board = ["board-thumbs/" + houseKey, "board-thumbs/" + dataSlug].map((d) => "/lab/" + d + "/" + base + "@" + n + ".webp").find((u) => fs.existsSync(path.join(ROOT, "public", u)));
@@ -97,7 +122,7 @@ for (const s of Object.values(H.studies)) {
   let lead = null;
   if (s.frames && s.frames[0]) {
     const t384 = s.frames[0], full = t384.replace("@384", "");
-    if (fs.existsSync(path.join(ROOT, "public", full))) lead = { src: full, t384, t768: s.r768 ? t384.replace("@384", "@768") : null, w: s.nat[0], h: s.nat[1] };
+    if (fs.existsSync(path.join(ROOT, "public", full))) { lead = { src: full, t384, t768: s.r768 ? t384.replace("@384", "@768") : null, w: s.nat[0], h: s.nat[1] }; phoneJob(full, s.h, s.nat[0]); }
   }
   /* the picture the study opens on: its hero section's (a carousel's first
      slide), which is what sits at the top of the study's own page. The
@@ -286,6 +311,79 @@ for (const j of thumbJobs) {
 /* a thumbnail that could not be made falls back to the file itself */
 if (failed.length) frags.forEach((f) => ["t384", "t768"].forEach((r) => { if (f[r] && !fs.existsSync(path.join(ROOT, "public", f[r]))) f[r] = f.src; }));
 
+/* ── the phone rungs (25 Oct 2026; see the head of this file) ── */
+const MANIFEST = path.join(ROOT, "scripts/lib/phone-rungs.json");
+let rungs = {}; try { rungs = JSON.parse(fs.readFileSync(MANIFEST, "utf8")); } catch (e) { /* first run */ }
+const SS2 = !spawnSync("ssimulacra2", [], { stdio: "ignore" }).error;
+const TMP = fs.mkdtempSync(path.join(fs.realpathSync(os.tmpdir()), "phone-rung-"));
+/* the encodings tried, smallest first once made; JPEG only where nothing is see-through */
+const ENCS = [
+  ["jpg90", (im) => im.jpeg({ quality: 90, mozjpeg: true, chromaSubsampling: "4:4:4" }), "jpg"],
+  ["jpg94", (im) => im.jpeg({ quality: 94, mozjpeg: true, chromaSubsampling: "4:4:4" }), "jpg"],
+  ["jpg97", (im) => im.jpeg({ quality: 97, mozjpeg: true, chromaSubsampling: "4:4:4" }), "jpg"],
+  ["webp94", (im) => im.webp({ quality: 94, effort: 4, smartSubsample: true, alphaQuality: 100 }), "webp"],
+  ["webp97", (im) => im.webp({ quality: 97, effort: 4, smartSubsample: true, alphaQuality: 100 }), "webp"],
+  ["webp100", (im) => im.webp({ quality: 100, effort: 4, smartSubsample: true, alphaQuality: 100 }), "webp"],
+  ["webpNL60", (im) => im.webp({ nearLossless: true, quality: 60, effort: 4 }), "webp"],
+  ["webpLL", (im) => im.webp({ lossless: true, effort: 4 }), "webp"],
+];
+const run = promisify(execFile);
+const score = async (a, b) => +(await run("ssimulacra2", [a, b])).stdout.trim().split(/\s+/).pop();
+const save = () => fs.writeFileSync(MANIFEST, JSON.stringify(Object.fromEntries(Object.entries(rungs).sort(([a], [b]) => a.localeCompare(b))), null, 1) + "\n");
+let pMade = 0, pKept = 0, pSkipped = 0, seq = 0;
+const phoneRung = async (j) => {
+  let st; try { st = fs.statSync(j.from); } catch (e) { return; }
+  const had = rungs[j.src];
+  if (had && had.bytes === st.size && (had.keep || fs.existsSync(path.join(ROOT, "public", had.file)))) return;
+  if (!SS2) { pSkipped++; return; }
+  try {
+    const meta = await sharp(j.from).metadata(), alpha = !!meta.hasAlpha, n = ++seq;
+    /* the rung's pixels, colour profile kept, turned as the browser turns it */
+    const base = await sharp(j.from).rotate().resize({ width: j.tw, kernel: "lanczos3", withoutEnlargement: true }).keepIccProfile().png().toBuffer();
+    const flat = (im) => (alpha ? im.flatten({ background: "#808080" }) : im);
+    const ref = path.join(TMP, n + "-ref.png"), cand = path.join(TMP, n + "-cand.png");
+    await flat(sharp(base)).keepIccProfile().png().toFile(ref);
+    /* the quick encodings first, scored smallest first; the two slow
+       lossless-leaning ones only for a drawing or a screen, or when
+       nothing quick reaches 90 */
+    const slow = (name) => name === "webpNL60" || name === "webpLL";
+    const flatArt = alpha || /\.png$/i.test(j.from);
+    let pick = null, best = 0;
+    for (const round of [ENCS.filter(([name]) => !slow(name) || (flatArt && name === "webpNL60")), ENCS.filter(([name]) => slow(name) && !(flatArt && name === "webpNL60"))]) {
+      const tries = [];
+      for (const [name, enc, ext] of round) { if (alpha && ext === "jpg") continue; tries.push({ name, ext, buf: await enc(sharp(base).keepIccProfile()).toBuffer() }); }
+      tries.sort((a, b) => a.buf.length - b.buf.length);
+      for (const t of tries) {
+        await flat(sharp(t.buf)).keepIccProfile().png().toFile(cand);
+        const s = await score(ref, cand); best = Math.max(best, s);
+        if (s >= 90) { pick = Object.assign(t, { ss2: +s.toFixed(1) }); break; }
+      }
+      if (pick) break;
+    }
+    fs.rmSync(ref, { force: true }); fs.rmSync(cand, { force: true });
+    const entry = { bytes: st.size, w: meta.width };
+    if (!pick) Object.assign(entry, { keep: "original", why: "no encoding reached 90 (best " + best.toFixed(1) + ")" });
+    else if (pick.buf.length > st.size * 0.85) Object.assign(entry, { keep: "original", why: "the rung was " + Math.round((100 * pick.buf.length) / st.size) + "% of the original's bytes", enc: pick.name, ss2: pick.ss2 });
+    else {
+      const file = j.to + "." + pick.ext;
+      fs.mkdirSync(path.dirname(path.join(ROOT, "public", file)), { recursive: true });
+      for (const x of ["jpg", "webp"]) { const o = path.join(ROOT, "public", j.to + "." + x); if (x !== pick.ext && fs.existsSync(o)) fs.unlinkSync(o); }
+      fs.writeFileSync(path.join(ROOT, "public", file), pick.buf);
+      Object.assign(entry, { file, pw: j.tw, enc: pick.name, ss2: pick.ss2, kb: Math.round(pick.buf.length / 1024) });
+    }
+    rungs[j.src] = entry; save();
+    entry.keep ? pKept++ : pMade++;
+  } catch (e) { console.log("phone rung failed for", j.src, String(e.message || e).slice(0, 120)); }
+};
+/* a few at once: each is a resize, a handful of encodes and a score or two */
+const queue = [...phoneJobs.values()];
+await Promise.all(Array.from({ length: Math.max(1, Math.min(6, os.cpus().length - 2)) }, async () => { while (queue.length) await phoneRung(queue.shift()); }));
+fs.rmSync(TMP, { recursive: true, force: true });
+save();
+/* every copy of a picture carries its rung, wherever the fragments name it */
+const tag = (f) => { const r = f && f.src && rungs[f.src]; if (r && r.file && fs.existsSync(path.join(ROOT, "public", r.file))) f.tp = r.file; };
+frags.forEach(tag); studies.forEach((s) => { tag(s.top); tag(s.lead); });
+
 const counts = frags.reduce((m, f) => ((m[f.kind] = (m[f.kind] || 0) + 1), m), {});
 const out = { made: "26 Sept 2026", studies, lines: H.lines, about, practice: H.practice, method: H.method, links: H.links, email: H.email, statement: H.statement, frags };
 const file = path.join(ROOT, "public/lab/density/fragments.js");
@@ -293,4 +391,5 @@ fs.mkdirSync(path.dirname(file), { recursive: true });
 fs.writeFileSync(file, "/* generated by scripts/lib/density-fragments.mjs from src/data and the board's house data; do not edit by hand */\nwindow.DENSITY = " + JSON.stringify(out) + ";\n");
 console.log("wrote", path.relative(ROOT, file), Math.round(fs.statSync(file).size / 1024) + "KB:", studies.length, "studies,", frags.length, "fragments", JSON.stringify(counts));
 console.log("thumbnails: made", made, "of", thumbJobs.length, "needed", failed.length ? "; failed " + failed.join(", ") : "");
+console.log("phone rungs:", Object.values(rungs).filter((r) => r.file).length, "in use; this run made", pMade, "and kept the original for", pKept, pSkipped ? "; " + pSkipped + " left for a machine with ssimulacra2" : "");
 if (skipped.length) console.log("no data file for", skipped.join(", "));

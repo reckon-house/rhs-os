@@ -317,8 +317,10 @@
     if (window.XREF_LIVE && window.XREF_LIVE(f)) { if (!small) { box._loaded = true; window.XREF_LIVE(f, box); } return; }
     const w = box.offsetWidth || 400, h = box.offsetHeight || 300;
     const need = Math.max(w, h * ratio(f)) * Math.min(2, window.devicePixelRatio || 1);
-    const want = f.t384 && need <= 384 ? f.t384 : f.t768 && need <= 768 ? f.t768 : f.src;
-    const rungs = [f.t384, f.t768, f.src].filter(Boolean);
+    /* a phone's rung, where the picture has one (25 Oct 2026, density.js) */
+    const p = window.D && window.D.phoneRung ? window.D.phoneRung(f) : null;
+    const want = f.t384 && need <= 384 ? f.t384 : f.t768 && need <= 768 ? f.t768 : p && (need <= 1320 || f.w <= 1320) ? p : f.src;
+    const rungs = [f.t384, f.t768, p, f.src].filter(Boolean);
     const quick = rungs.indexOf(want) > 0 ? rungs[rungs.indexOf(want) - 1] : null;
     /* the small rung goes ahead of every honest file in flight, so a
        box the reader has reached is never left waiting behind a large

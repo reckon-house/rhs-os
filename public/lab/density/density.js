@@ -49,19 +49,33 @@
   /* ── pictures, honestly ── */
   const maxCss = (f) => (f && f.w ? f.w / 2 : 0);
   const dpr = () => Math.min(2, window.devicePixelRatio || 1);
+  /* a phone (H's tab) also has a rung, tp (25 Oct 2026, his "let's
+     make the images phone sized for sure so long as we dont lose
+     quality"): 1320 across, or the picture's own width when it is
+     narrower but heavy. H draws a room's pictures the phone's full
+     width, past 768 on any phone, so it took the whole file. Each rung
+     scores as the original does at its pixels
+     (scripts/lib/density-fragments.mjs). Looked up by file, so every
+     copy of a picture finds its rung; a desk gets what it got before */
+  const PR = {};
+  FR.concat(DATA.studies.flatMap((s) => [s.top, s.lead])).forEach((f) => { if (f && f.tp) PR[f.src] = f.tp; });
+  const phoneRung = (f) => (f && document.documentElement.classList.contains("tab") && PR[f.src]) || null;
+  const rungW = (f) => Math.min(1320, f.w || 1320);
   const rung = (f, cssW) => {
-    const need = cssW * dpr();
+    const need = cssW * dpr(), p = phoneRung(f);
     if (f.t384 && need <= 384) return f.t384;
     if (f.t768 && need <= 768) return f.t768;
+    if (p && (need <= 1320 || f.w <= 1320)) return p;
     return f.src;
   };
   const img = (f, cssW, o) => {
     const im = el("img"); const opt = o || {};
     im.alt = f.alt || ""; im.decoding = "async"; im.loading = opt.eager ? "eager" : "lazy";
-    const set = [];
+    const set = [], p = phoneRung(f);
     if (f.t384) set.push(encodeURI(f.t384) + " 384w");
     if (f.t768) set.push(encodeURI(f.t768) + " 768w");
-    set.push(encodeURI(f.src) + " " + f.w + "w");
+    if (p) set.push(encodeURI(p) + " " + rungW(f) + "w");
+    if (!p || f.w > 1320) set.push(encodeURI(f.src) + " " + f.w + "w");
     im.srcset = set.join(", ");
     im.sizes = Math.max(1, Math.round(cssW || 200)) + "px";
     im.src = encodeURI(rung(f, cssW || 200));
@@ -162,7 +176,7 @@
     byKind: (kind) => FR.filter((f) => f.kind === kind),
     byStudy: (k) => FR.filter((f) => f.k === k),
     title, year, href, words, search, tokens,
-    img, rung, maxCss, lum, ink, el, esc,
+    img, rung, phoneRung, rungW, maxCss, lum, ink, el, esc,
     /* a caption the house would write: the study, then its year in grey */
     cap: (k) => esc(title(k)) + (year(k) ? ' <span class="y">' + year(k) + "</span>" : ""),
   };

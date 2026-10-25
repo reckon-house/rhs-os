@@ -664,7 +664,7 @@ try { const q = location.search; if (/[?&]szdots=on/.test(q)) document.documentE
   /* a section that names a screen takes its page and its steps, and
      keeps its own time and tag */
   const screenOf = (x) => (x && x.screen ? Object.assign({}, (window.DSCScreens || {})[x.screen], x) : x);
-  const FONTS = [[400, "Regular.woff2"], [500, "Medium.woff"], [600, "DemiBold.woff"], [700, "Bold.woff"], [800, "Heavy.woff"]]
+  const FONTS = [[400, "Regular.woff2"], [500, "Medium.woff2"], [600, "DemiBold.woff2"], [700, "Bold.woff2"], [800, "Heavy.woff2"]]
     .map(([w, f]) => "@font-face{font-family:'Avenir Next';src:url('/fonts/AvenirNext-" + f + "');font-weight:" + w + ";font-display:block}").join("");
   /* inside a phone: a status bar, the demos' reveal and press, a tap, a
      caret, and the neutral AI surface the athlete demo draws (ours, on

@@ -2048,7 +2048,8 @@
         const img = el("img"); img.alt = im.alt || ""; img.loading = "lazy"; img.decoding = "async";
         if (im.w && im.h) { img.width = im.w; img.height = im.h; }
         img.src = im.t768 || im.src;
-        if (im.t384 && im.t768) { img.srcset = im.t384 + " 384w, " + im.t768 + " 768w" + (im.src && im.w ? ", " + im.src + " " + im.w + "w" : ""); img.sizes = "(max-width: 760px) 92vw, 40vw"; }
+        const pr = D.phoneRung(im); /* a phone's rung (25 Oct 2026, density.js) */
+        if (im.t384 && im.t768) { img.srcset = im.t384 + " 384w, " + im.t768 + " 768w" + (pr ? ", " + pr + " " + D.rungW(im) + "w" : "") + (im.src && im.w && !(pr && im.w <= 1320) ? ", " + im.src + " " + im.w + "w" : ""); img.sizes = "(max-width: 760px) 92vw, 40vw"; }
         a.appendChild(img); fig.appendChild(a);
         fig.appendChild(el("figcaption", "sp-spicc", '<a href="#study/' + esc(f.study) + '">' + esc(f.name || st.t) + ' <span aria-hidden="true">→</span></a>' + (st.s ? ' <span class="g">' + esc(st.s) + "</span>" : "")));
         t.appendChild(fig); g2.appendChild(t);

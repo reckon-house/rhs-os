@@ -333,8 +333,10 @@
     if (window.XREF_LIVE && window.XREF_LIVE(f, box)) return;
     const w = box.offsetWidth || 300, h = box.offsetHeight || 200;
     const need = coverW(w, h, f) * Math.min(2, window.devicePixelRatio || 1);
-    const want = f.t384 && need <= 384 ? f.t384 : f.t768 && need <= 768 ? f.t768 : f.src;
-    const rungs = [f.t384, f.t768, f.src].filter(Boolean);
+    /* a phone's rung, where the picture has one (25 Oct 2026, density.js) */
+    const p = window.D && window.D.phoneRung ? window.D.phoneRung(f) : null;
+    const want = f.t384 && need <= 384 ? f.t384 : f.t768 && need <= 768 ? f.t768 : p && (need <= 1320 || f.w <= 1320) ? p : f.src;
+    const rungs = [f.t384, f.t768, p, f.src].filter(Boolean);
     const quick = rungs.indexOf(want) > 0 ? rungs[rungs.indexOf(want) - 1] : null;
     const add = (src, then) => {
       const im = el("img"); im.alt = f.alt || ""; im.decoding = "async"; im.draggable = false;
