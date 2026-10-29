@@ -970,10 +970,66 @@ try { const q = location.search; if (/[?&]szdots=on/.test(q)) document.documentE
     return api;
   }
 
+  /* ── THE ROOM'S COVER SINCE 29 OCT 2026: cut two of the case-study reel
+     (public/lab/arc-reel/), the homepage sizzle's grammar with the app
+     walked through, after his "looks great! can we push them to the ARC
+     case study then live?". It is drawn frame by frame on his Mac and
+     plays here as a film, as the homepage's cover does (film/, encoded by
+     .playwright-mcp/demo/encode-arc.sh): AV1 where the browser plays it,
+     else H.264, in three shapes, as the reel lays itself out to its box:
+     the desk's (764x884 at 2x), the wide's (1088x972 at 1.5x, for a big
+     screen, where the cover is wider than tall and the desk's would lose
+     its statements' first lines) and the phone's (390x529 at 2x, for a
+     box under 560 wide, the reel's own NARROW). Its first
+     frame is the lead picture, which stays under it until the film plays,
+     so the tile still flies into the same box. Its files are asked for
+     once the box is on screen; off screen or in a hidden tab it pauses;
+     held still (reduced motion) it stays the picture. ?arcreel=old brings
+     back the live reel above ── */
+  const FILM = BASE + "film/arc2-";
+  const film = (box, fig, o) => {
+    if ((o && o.still) || matchMedia("(prefers-reduced-motion: reduce)").matches) return () => {};
+    const v = document.createElement("video");
+    v.muted = true; v.playsInline = true; v.loop = true; v.preload = "auto"; v.disablePictureInPicture = true;
+    ["muted", "playsinline"].forEach((a) => v.setAttribute(a, "")); v.setAttribute("aria-hidden", "true");
+    /* a box between the shapes crops the film; more of the crop falls to the
+       right and the foot, as the feature screens' statements sit top left */
+    v.style.cssText = "position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:30% 30%;display:block;z-index:2;pointer-events:none;opacity:0;transition:opacity .35s";
+    box.appendChild(v);
+    let dead = false, seen = false, sh = "";
+    const go = () => { if (dead || !sh) return; if (seen && !document.hidden) { const p = v.play(); if (p && p.catch) p.catch(() => { /* held */ }); } else v.pause(); };
+    /* the shape for the box, the wide one past the two desk shapes' mean;
+       a box that changes shape swaps the film, at the same second */
+    const feed = () => {
+      const w = box.clientWidth, h = box.clientHeight; if (!w || !h) return;
+      const s = w < 560 ? "phone" : w / h > Math.sqrt((764 / 884) * (1088 / 972)) ? "wide" : "desk";
+      if (s === sh) return;
+      const t = sh ? v.currentTime : 0; sh = s;
+      v.replaceChildren(...[["av1.mp4", 'video/mp4; codecs="av01.0.12M.10"'], ["mp4", 'video/mp4; codecs="avc1.640032"']].map(([x, type]) => { const so = document.createElement("source"); so.src = FILM + s + "." + x; so.type = type; return so; }));
+      v.load();
+      if (t) v.addEventListener("loadedmetadata", () => { v.currentTime = t; }, { once: true });
+      go();
+    };
+    v.addEventListener("playing", () => { v.style.opacity = "1"; });
+    const vis = () => go();
+    document.addEventListener("visibilitychange", vis);
+    let io = null, ro = null;
+    if ("IntersectionObserver" in window) {
+      io = new IntersectionObserver((es) => es.forEach((e) => { seen = e.isIntersecting && e.intersectionRatio >= 0.3; if (seen && !sh) feed(); else go(); }), { threshold: [0, 0.3, 0.6] });
+      io.observe(box);
+    } else { seen = true; requestAnimationFrame(feed); }
+    if ("ResizeObserver" in window) { ro = new ResizeObserver(() => { if (sh || seen) feed(); }); ro.observe(box); }
+    return () => {
+      dead = true; if (io) io.disconnect(); if (ro) ro.disconnect(); document.removeEventListener("visibilitychange", vis);
+      try { v.pause(); v.replaceChildren(); v.removeAttribute("src"); v.load(); } catch (e) { /* gone */ }
+      v.remove();
+    };
+  };
+
   window.SP_LIVE = window.SP_LIVE || {};
-  window.SP_LIVE.arc = (box, fig, o) => {
+  window.SP_LIVE.arc = /[?&]arcreel=old\b/.test(location.search) ? (box, fig, o) => {
     const p = mount(box, { still: o && o.still });
     return () => p.destroy();
-  };
+  } : film;
   window.ARCSizzle = { mount, versions: VERSIONS, current };
 })();
