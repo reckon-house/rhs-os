@@ -1,0 +1,65 @@
+/* ── THE INDEX'S TUNE (31 Oct 2026) ─────────────────────────────────────
+   His own tune of the index, set by hand on the mixer in the TOC lab
+   (public/lab/toc-explore/live/tn-mixer, "playing with the mixer is helping
+   a ton - airing things out in general makes it feel more 'designed'") and
+   pasted back as its Copy CSS; then the reels' titles (Claude Code,
+   Ecommerce Design, Engineering, Nordstrom) set to match the lead titles.
+   Live from 31 Oct on his "push this bar and all the type/sizing changes
+   we've made live!". Lab copy: public/lab/toc-explore/live/tn-jeremy.
+
+   knob: before → now
+   Words 26 → 20 · Lead titles 22 → 20 · Years 21 → 20 · Figures 34 → 20 · Lead caps 15 → 13
+   Lists 11 · Sentences 12 → 11 · Labels 11 → 8 · Big weight 600 → 500 · Leading 1.45 → 1.5
+   Mark to index 26 → 13 · Column gap 20 → 48 · Section gap 50 → 60 · Card to card -8 → -15
+   Label below 14 → 7 · Lead to run 16 → 40 · Figs to run 24 → 40
+   Line below 19 → 20 · Line gap 10 → 5 · Card gap 8 → 4 · Card kind 7 → 13 · Work below 7 → 20
+   Year below 2 → 13 · About below 13 → 32 · About gap 3 → 2 · Figure between 24 → 32 · Figure gap 7 → 2
+   Cap below 5 → 17 · Tool below 10 → 19 · Tool bar 4 → 8 · Credit rows 6 → 7 · Run leading 1.5 → 2.09
+   Reel around 16 → 24 · Reel gap 10 → 13
+
+   Loaded last, after phone-tab.css, as the lab loaded it. Desks only:
+   html:not(.stack, .tab) keeps a phone's strip (html.tab) and the narrow
+   stack as they were, and carries the same weight as the lab's guard, so
+   every rule wins where it won there. */
+
+html:not(.stack, .tab)[data-ix="e"] #idx .e.el :is(.t, .nr) { font-size: 20px; }
+html:not(.stack, .tab)[data-count="name"][data-ix="e"] #idx .e.el .nr .cnt { top: -7.7px; }
+html:not(.stack, .tab)[data-ix="e"] #idx .e.ef .t { font-size: 20px !important; }
+html:not(.stack, .tab)[data-ix="e"] #idx .e.ey .t { font-size: 20px; }
+html:not(.stack, .tab)[data-ix="e"] #idx .e.efig .fn { font-size: 20px; }
+html:not(.stack, .tab)[data-ix="e"] #idx .e.ecap:not(.ecrd) { font-size: 13px; }
+html:not(.stack, .tab)[data-ix="e"] #idx .e .dk { font-size: 11px; }
+html:not(.stack, .tab)[data-ix="e"] #idx :is(.grp h2.eh, .e .kk.caps, .e .cr.caps) { font-size: 8px; }
+html:not(.stack, .tab)[data-ix="e"] #idx :is(.e.el .t, .e.ef .t, .e.ey .t, .e.efig .fn) { font-weight: 500; }
+html:not(.stack, .tab)[data-ix="e"] #idx .e .dk { line-height: 1.5; }
+html:not(.stack, .tab)[data-ix="e"] .ixtop { margin-bottom: 13px; }
+html:not(.stack, .tab)[data-ix="e"] #idx { --eg: 48px; }
+html:not(.stack, .tab)[data-ix="e"] #idx .ecol { gap: 60px; }
+html:not(.stack, .tab)[data-ix="e"] .ecol > .c-feat + .c-feat { margin-top: -15px; }
+html:not(.stack, .tab)[data-ix="e"] #idx .grp h2.eh { margin-bottom: 7px; }
+html:not(.stack, .tab)[data-ix="e"] #idx :is(.ecaps, .etools) { margin-bottom: 40px; }
+html:not(.stack, .tab)[data-ix="e"] #idx .ebig { margin-bottom: 40px; }
+html:not(.stack, .tab)[data-ix="e"] #idx .e.el { padding-bottom: 20px; --bb: 15px; }
+html:not(.stack, .tab)[data-ix="e"] #idx .e.el .dk { margin-top: 5px; }
+html:not(.stack, .tab)[data-ix="e"] #idx .e.ef .nr + .dk { margin-top: 4px; }
+html:not(.stack, .tab)[data-ix="e"] #idx .e.ef .cr { margin-top: 13px; }
+html:not(.stack, .tab)[data-ix="e"] #idx .e.ew { padding-bottom: 20px; --bb: 18px; }
+html:not(.stack, .tab)[data-ix="e"] #idx .e.ey { padding-bottom: 13px; --bb: 14px; }
+html:not(.stack, .tab)[data-ix="e"] #idx .e.ea:not(.ereel) { padding-bottom: 32px; --bb: 29px; }
+html:not(.stack, .tab)[data-ix="e"] #idx .e.ea:not(.ereel) .dk { margin-top: 2px; }
+html:not(.stack, .tab)[data-ix="e"] #idx .e.efig + .e.efig { margin-top: 32px; }
+html:not(.stack, .tab)[data-ix="e"] #idx .e.efig .dk { margin-top: 2px; }
+html:not(.stack, .tab)[data-ix="e"] #idx .e.ecap:not(.ecrd) { padding-bottom: 17px; --bb: 16px; }
+html:not(.stack, .tab)[data-ix="e"] #idx .e.etool { padding-bottom: 19px; --bb: 16px; }
+html:not(.stack, .tab)[data-ix="e"] #idx .e.etool .bar { margin-top: 8px; }
+html:not(.stack, .tab)[data-ix="e"] #idx .e.ecap.ecrd { padding: 7px 0 7.55px; }
+html:not(.stack, .tab)[data-ix="e"] #idx .erun { line-height: 2.09; }
+html:not(.stack, .tab)[data-ix="e"] #idx .grp.ec .e.ereel { margin-top: 24px; margin-bottom: 26px; }
+html:not(.stack, .tab)[data-ix="e"] #idx .grp.ec h2.eh + .e.ereel { margin-top: 2px; }
+html:not(.stack, .tab)[data-ix="e"] #idx .e.ereel .rl { margin-bottom: 13px; }
+
+/* 31 Oct, later: the reels' titles (Claude Code under Tools, Ecommerce
+   Design and Engineering under Capabilities, Nordstrom under Worked With)
+   set like the lead titles, 20px Medium, and their sentence at the card gap */
+html:not(.stack, .tab)[data-ix="e"] #idx .e.ereel .t { font-size: 20px; font-weight: 500; letter-spacing: -0.04em; line-height: 0.98; text-wrap: balance; }
+html:not(.stack, .tab)[data-ix="e"] #idx .e.ereel .dk { margin-top: 4px; }

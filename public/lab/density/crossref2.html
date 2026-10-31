@@ -302,6 +302,11 @@
 <link rel="stylesheet" href="/lab/density/shelf-grid.css" onerror="this.remove()">
 <link rel="stylesheet" href="/lab/density/shelf-spread.css" onerror="this.remove()">
 <link rel="stylesheet" href="/lab/density/phone-tab.css">
+<!-- the index's tune and the burn bar across the top (31 Oct 2026, his
+     "push this bar and all the type/sizing changes we've made live!"):
+     desks only, last so they win where they won in the lab -->
+<link rel="stylesheet" href="/lab/density/index-tune.css">
+<link rel="stylesheet" href="/lab/density/burn.css">
 <script>/* a phone (19 Oct 2026, his "norgram has a split desktop like mine and
    they do a toggle/tab in mobile at the bottom"): at 760px and under, or
    on a phone held sideways, the page is the strip (html.tab), the desk's
@@ -359,6 +364,7 @@ document.documentElement.dataset.ix = ((/[?&]index=([abcd])\b/i.exec(location.se
 <!-- a phone's tab and swipe (19 Oct 2026): slide the strip between the
      index and the glass -->
 <script src="/lab/density/phone-tab.js"></script>
+<script src="/lab/density/burn.js"></script>
 <!-- the type tweaks panel (27 Sept): a lab tool, the "Type" button at the foot;
      loaded only with the lab flag, so a visitor never sees it -->
 <script>if ("lab" in document.documentElement.dataset) { const s = document.createElement("script"); s.src = "/lab/density/tweaks.js"; document.body.appendChild(s); }</script>

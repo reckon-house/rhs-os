@@ -1,0 +1,78 @@
+/* BURN (31 Oct 2026, his "for this top bar - should we try putting the
+   'burn bar' back up there? at one point we lost the burn bar..."): the
+   board's burn (public/lab/board.html, 20 Sept "the whole top of the glass
+   is the burn", lifted there from Masthead.tsx) put back behind the right
+   side's running heads: a shelf's bar (Digital ... Close) and a room's
+   (Ivy Park by Beyoncé 01 02 03 ... Close).
+
+   What it is: a backdrop filter, an SVG displacement (#burnMelt: fractal
+   noise, scale 18) plus blur, saturate and contrast that heat while the
+   column scrolls and cool after (climb hard while moving, hold with a slow
+   bleed for two seconds, then fade; the board's three stages and numbers).
+   Over paper it does nothing; work passing under the bar melts. The bar's
+   words ride above it and never melt.
+
+   Live on the homepage from 31 Oct 2026 (his "i like it! ... push this
+   bar ... live!"), desks only (html:not(.stack, .tab)); burn.js makes the filter
+   and the heat. Lab copy: public/lab/toc-explore/live/burn. ?burn=wash keeps a light paper wash under the
+   words (the board's first pill had one; the whole-glass band dropped it).
+   Chromium (Dia, Chrome) draws the displacement; Safari keeps the blur and
+   colour only, as the board did.
+
+   31 Oct, later (his "i kinda like it - it's a bit of flare...can we look
+   at making the bar run across the top and having the logo persistent?"):
+   one band, 44px, edge to edge across the top of the glass. On the left
+   the mark's row stays put (sticky in the index) and is the band there,
+   so the index scrolls under the logo and melts; on the right the shelf's
+   bar, the room's bar, or with nothing open a band over the cover, all at
+   the same height with their words on the mark's line. Any scroll on
+   either side heats the whole band. The melt's displacement now follows
+   the heat too (a soft frost (blur 6) at rest on the bars, none on the cover strip; melt in five steps from 4 to 18 while moving), so the band is still until something
+   moves. */
+
+/* The bar itself is the band (its paper goes, the burn takes its place);
+   the words keep their ink, plain (a paper halo on them was tried and taken
+   off on his "let's remove the halo/glow from the other side"; the logo
+   keeps its). Printing them in difference, as the room's bar does over its
+   cover, was tried too: a blending child isolates the bar and the burn
+   under it stops drawing. */
+html:not(.stack, .tab) .sh-bar {
+  background: var(--burn-wash, transparent);
+  backdrop-filter: var(--burn-f, none); -webkit-backdrop-filter: var(--burn-fw, none);
+}
+
+/* the room: once its title has gone by, its band (::before, paper until
+   now) is the burn; before that the bar's words sit over the cover in
+   difference, as they always have */
+html:not(.stack, .tab) .sp.sp-past .sp-bar-in::before {
+  background: var(--burn-wash, transparent);
+  backdrop-filter: var(--burn-f, none); -webkit-backdrop-filter: var(--burn-fw, none);
+}
+
+/* ── ACROSS THE TOP ── */
+/* the left: the mark's row is the band, 44px from the top of the index's
+   glass, the logo on the same line as the right side's words; the index
+   scrolls under it */
+html:not(.stack, .tab)[data-ix="e"] #idx .ixtop {
+  position: sticky; top: -22px; z-index: 8; box-sizing: border-box; height: 44px; /* the index's 22px padding insets the sticky edge */
+  margin-top: -22px; margin-left: -14px; margin-right: -14px; padding: 22px 14px 0;
+  background: var(--burn-wash, transparent);
+  backdrop-filter: var(--burn-f, none); -webkit-backdrop-filter: var(--burn-fw, none);
+  border-bottom: 1px solid transparent; transition: border-color 0.2s ease;
+}
+html:not(.stack, .tab)[data-ix="e"] #idx.burn-moved .ixtop { border-bottom-color: var(--hair); }
+html:not(.stack, .tab)[data-ix="e"] #idx .ixtop #mark {
+  text-shadow: 0 0 2px var(--burn-halo, transparent), 0 0 6px var(--burn-halo, transparent), 0 0 14px var(--burn-halo2, transparent);
+}
+/* the room's words come down to the mark's line (27px, as the shelf's),
+   its band and its reading rule with them */
+html:not(.stack, .tab) .sp-bar-in { padding-top: 27px; }
+html:not(.stack, .tab) .sp-bar-in::before { height: 44px; }
+html:not(.stack, .tab) .sp-bar-in::after { top: 43px; }
+/* the right with nothing open: the band runs on over the cover */
+html:not(.stack, .tab) #burnTop {
+  position: fixed; top: 0; right: 0; height: 44px; z-index: 6; pointer-events: none;
+  backdrop-filter: var(--burn-top-f, none); -webkit-backdrop-filter: var(--burn-top-fw, none);
+}
+html:not(.stack, .tab) body.staged #burnTop,
+html:is(.stack, .tab) #burnTop { display: none; }
