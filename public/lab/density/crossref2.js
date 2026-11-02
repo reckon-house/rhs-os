@@ -2985,6 +2985,57 @@
   };
   /* a scroll set where Lenis owns the box goes through it, or it is undone */
   const setY = (box, y) => { if (box._lenis) box._lenis.scrollTo(y, { immediate: true, force: true }); else box.scrollTop = y; };
+  /* ── the end of a box, for a foot's carry-on (2 Nov 2026, his "there's
+     a slight pause/hiccup when it finally loads"). Lenis eases the last
+     of a glide out over most of a second: the foot's rule sat between 95
+     and 100% for ~580ms (measured) while the page crawled its last 45px,
+     and only then did the next shelf come. Where Lenis owns the box, the
+     end is reached RIDE px short of it: the glide is sent the rest of the
+     way (carryOn) and the next shelf rides those px with it (ride), so
+     nothing waits and nothing jumps, and the rule beside Next is full
+     there, where it carries on. A box Lenis does not own (a phone's)
+     ends where it stops ── */
+  const RIDE = 64;
+  const restOf = (box) => { const L = box._lenis; return L ? Math.max(0, L.limit - L.animatedScroll) : 0; };
+  const atEndOf = (box) => (box._lenis ? restOf(box) <= RIDE : box.scrollTop + box.clientHeight >= box.scrollHeight - 2);
+  /* a foot reached from below carries on again only once the reader has
+     gone back up off it, past where it would */
+  const armAt = (box) => HEAD + 60 + (box._lenis ? RIDE : 0);
+  const fpOf = (box, lb, fb) => Math.max(0, Math.min(1, (lb.bottom - fb.top) / Math.max(1, fb.height - (box._lenis ? RIDE : 0))));
+  /* what is left of the way to the end, as a glide: Lenis sent there,
+     if it was not already headed there. False when there is none left */
+  const glideOn = (box) => {
+    const L = box._lenis; if (!L || restOf(box) < 0.5) return false;
+    if (L.targetScroll < L.limit - 0.5) L.scrollTo(L.limit);
+    return true;
+  };
+  /* the shelf carried on to follows what is left of the glide on the box
+     it came from, frame by frame, its words and pictures held that far
+     down until the glide is spent; then `done`. The rest of the flick
+     that brought the reader here is not its to take: the shelf holds
+     still under the ride, as the end of the box before held still, so it
+     lands on its head and the two never part while one fades in over
+     the other */
+  const ride = (S, box, done) => {
+    const L = box._lenis, N = S.layer._lenis, t0 = performance.now();
+    let over = false, off = null;
+    const fin = () => { if (over) return; over = true; if (off) off(); S.body.style.translate = ""; if (N) N.start(); if (done) done(); };
+    const step = () => {
+      if (over) return;
+      if (!(box.isConnected && SH === S && S.layer.isConnected)) { fin(); return; }
+      const r = restOf(box);
+      S.body.style.translate = r < 0.5 ? "" : "0 " + r.toFixed(2) + "px";
+      if (S.view && S.view.drift) { try { S.view.drift(); } catch (e) { /* the layout's own */ } }
+      /* the box before is let go once the shelf has faded in over it (240ms) */
+      if (r < 0.5) { const w = 240 - (performance.now() - t0); if (w <= 0) fin(); else setTimeout(step, w); }
+    };
+    if (!L) { fin(); return; }
+    if (N) N.stop();
+    off = L.on("scroll", step);
+    step();
+    /* a glide Lenis leaves short of its end (a resize, a box gone) lets go */
+    setTimeout(fin, 2400);
+  };
   let homeY = 0, homeAt = null;
   /* the home's foot carries the first line's openers (4 Oct). Their small
      files are asked for once the page has loaded and gone quiet, the rest
@@ -3016,13 +3067,18 @@
       homeY = lay.scrollTop;
       if (pk && homeY > 8) pk.load(false);
       const lb = lay.getBoundingClientRect(), fb = foot.getBoundingClientRect();
-      foot.style.setProperty("--fp", Math.max(0, Math.min(1, (lb.bottom - fb.top) / Math.max(1, fb.height))).toFixed(3));
+      foot.style.setProperty("--fp", fpOf(lay, lb, fb).toFixed(3));
       /* back from below, it waits until the reader has scrolled up off the foot */
-      if (!armed && fb.top > lb.top + HEAD + 60) armed = true;
-      const atEnd = lay.scrollTop + lay.clientHeight >= lay.scrollHeight - 2;
+      if (!armed && fb.top > lb.top + armAt(lay)) armed = true;
       /* the last pixels first: "at the end" allows two, and the shelf
-         lands where the very end puts the foot (4 Oct) */
-      if (armed && atEnd && fb.top <= lb.top + HEAD + 12) { armed = false; setY(lay, lay.scrollHeight); go({ v: "shelf", key: first.key }, { push: true, via: "scroll", home: true }); }
+         lands where the very end puts the foot (4 Oct); where Lenis owns
+         the home, the last RIDE px are glided and ridden (2 Nov, atEndOf) */
+      if (armed && atEndOf(lay) && fb.top - restOf(lay) <= lb.top + HEAD + 12) {
+        armed = false;
+        const glide = glideOn(lay);
+        if (!glide) setY(lay, lay.scrollHeight);
+        go({ v: "shelf", key: first.key }, { push: true, via: "scroll", home: true, glide });
+      }
     };
     lay.addEventListener("scroll", () => { if (!t) t = requestAnimationFrame(check); }, { passive: true });
     foot.addEventListener("click", (ev) => {
@@ -3109,16 +3165,18 @@
   const footScroll = (S) => {
     const f = S.foot; if (!f || !f.isConnected || S.pv) return;
     const lb = S.layer.getBoundingClientRect(), fb = f.getBoundingClientRect();
-    f.style.setProperty("--fp", Math.max(0, Math.min(1, (lb.bottom - fb.top) / Math.max(1, fb.height))).toFixed(3));
-    if (S.contd && SH === S && fb.top > lb.top + HEAD + 60) S.contd = false;
-    const atEnd = S.layer.scrollTop + S.layer.clientHeight >= S.layer.scrollHeight - 2;
-    if (atEnd && fb.top <= lb.top + HEAD + 12 && !S.contd) carryOn(S);
+    f.style.setProperty("--fp", fpOf(S.layer, lb, fb).toFixed(3));
+    if (S.contd && SH === S && fb.top > lb.top + armAt(S.layer)) S.contd = false;
+    if (atEndOf(S.layer) && fb.top - restOf(S.layer) <= lb.top + HEAD + 12 && !S.contd) carryOn(S);
   };
+  /* the glide still running is left to finish under the next shelf, which
+     rides it (ride); a box at rest is set at its very end, as before */
   const carryOn = (S) => {
     if (!S.foot || S.gone2 || VIEW.v !== "shelf" || SH !== S || !S.visible || S.pv) return;
     S.contd = true; S.gone2 = true;
-    setY(S.layer, S.layer.scrollHeight);
-    go({ v: "shelf", key: S.foot.dataset.key }, { push: true, via: "scroll" });
+    const glide = glideOn(S.layer);
+    if (!glide) setY(S.layer, S.layer.scrollHeight);
+    go({ v: "shelf", key: S.foot.dataset.key }, { push: true, via: "scroll", glide });
   };
   /* back up the way the reader came: past the top of a shelf reached by
      carrying on, to the end of the one before, through the history */
@@ -3383,7 +3441,13 @@
       if (how.home) { FOCUS.style.transition = "none"; FOCUS.style.opacity = "1"; setTimeout(() => { FOCUS.style.opacity = ""; FOCUS.style.transition = ""; }, 260); }
       if (!still()) S.layer.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 200, easing: "ease" });
       shelfEnter(S, { delay: 0, keep: S.body.querySelector("header"), shown: from && from._peek ? from._peek.n : 0 });
-      setTimeout(() => { if (old && old !== SH) destroyShelf(old); }, 240);
+      /* carried on mid-glide (2 Nov): the shelf rides what is left of it,
+         and the one it came from stays under it until the glide is spent */
+      const src = how.home ? from && from.closest(".home") : old && old.layer;
+      let gone = false;
+      const drop = () => { if (gone) return; gone = true; if (old && old !== SH) destroyShelf(old); };
+      if (how.glide && src) ride(S, src, drop);
+      else setTimeout(drop, 240);
       return;
     }
     /* back up from the shelf after it: this one arrives at its end, its

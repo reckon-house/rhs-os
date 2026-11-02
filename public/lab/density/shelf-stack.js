@@ -216,14 +216,21 @@
        observer first reports, so a shelf carried on from a foot that
        showed them has them on its first frame (4 Oct) */
     S.items.forEach((t) => { if (t.fig.offsetTop < S.avail) { S.io.unobserve(t.box); load(t.box, S); } });
-    /* the drift (8 Oct 2026, his "can we make the right column images in
-       the category sections have the subtle up/down movment within the mask
-       like the case studies?"): the rooms' own, a picture drawn a tenth
-       taller than its box and moving up through that tenth as it crosses
-       the glass (study-panel.js, .sp-pic.par). Only where the taller
-       drawing still keeps to half the file's pixels, never on a
-       transparent picture or a running reel, never in a hover's preview */
-    const mo = !still() && !ctx.preview;
+    parOf(S, !still() && !ctx.preview);
+    drift(S);
+  };
+  /* the drift (8 Oct 2026, his "can we make the right column images in
+     the category sections have the subtle up/down movment within the mask
+     like the case studies?"): the rooms' own, a picture drawn a tenth
+     taller than its box and moving up through that tenth as it crosses
+     the glass (study-panel.js, .sp-pic.par). Only where the taller
+     drawing still keeps to half the file's pixels, never on a
+     transparent picture or a running reel, never in a hover's preview.
+     A foot's preview draws it too (2 Nov 2026): without it the preview
+     drew its pictures at the box's size and the shelf a tenth taller,
+     so every carry-on ended in a jump, his "the image then
+     jumps/increases in size" */
+  const parOf = (S, mo) => {
     S.items.forEach((t) => {
       const f = t.box._f, w = t.box.offsetWidth, h = t.box.offsetHeight;
       const ok = mo && f && !f.alpha && !(window.XREF_LIVE && window.XREF_LIVE(f)) && w && h && Math.max(w / f.w, (h * 1.1) / f.h) <= 0.5;
@@ -236,7 +243,6 @@
         t.box.querySelectorAll("img").forEach((im) => { im.style.objectPosition = t.box._pos; });
       }
     });
-    drift(S);
   };
   const drift = (S) => {
     const sc = S.ctx.scroller; if (!sc) return;
@@ -415,6 +421,9 @@
       },
       enter: (o) => enter(S, o),
       leave: (keep) => leave(S, keep),
+      /* the drift again, for a shelf moved by something other than its own
+         scroll (a carry-on riding the last of the glide, crossref2.js) */
+      drift: () => drift(S),
       /* an index entry under the pointer: the openers it touches have their
          names set in ink bands, and nothing else changes */
       light(ks) { S.items.forEach((t) => t.fig.classList.toggle("hit", !!ks && ks.has(t.k))); },
@@ -452,8 +461,15 @@
         const t = figureOf(S, S.ks[i], i, rh, true); if (!t) continue;
         root.appendChild(t.fig); S.items.push(t); y += t.fig.offsetHeight;
       }
+      /* drawn and drifting as the shelf will draw them, so the carry-on
+         lands on the same picture at the same size */
+      parOf(S, !still());
+      drift(S);
       const l = S.lvl; S.lvl = 0; if (l) api.load(l === 1);
     };
+    let dT = 0;
+    const onScroll = () => { if (!dT) dT = requestAnimationFrame(() => { dT = 0; drift(S); }); };
+    if (ctx.scroller) ctx.scroller.addEventListener("scroll", onScroll, { passive: true });
     const api = {
       /* the small rungs only, or everything the shelf will ask for */
       load(small) {
@@ -468,7 +484,7 @@
       },
       relayout() { if (Math.abs(ctx.width - S.W) > 2 || Math.abs(ctx.height - S.avail) > 2 || !!ctx.phone !== S.ph) lay(); },
       get n() { return S.items.length; },
-      destroy() { if (S.io) S.io.disconnect(); root.remove(); foot.classList.remove("peeks"); },
+      destroy() { if (ctx.scroller) ctx.scroller.removeEventListener("scroll", onScroll); cancelAnimationFrame(dT); if (S.io) S.io.disconnect(); root.remove(); foot.classList.remove("peeks"); },
     };
     lay();
     return api;
